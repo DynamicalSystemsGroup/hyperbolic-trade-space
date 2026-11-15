@@ -105,7 +105,7 @@ PRIOR_FIELDS = ("does", "shares", "differs", "cites")
 WORDS_BANNED_IN_PRIOR_ART = re.compile(r"\b(novel|first|new)\b", re.I)
 # Fitted vocabulary that Appendix C must not contain; the system vocabulary D must not contain.
 FITTED_WORDS = re.compile(
-    r"\b(temperature|tau|frac_above_?|objective_|n_eff_?|reach|log V|gamma|radius|status)\b", re.I
+    r"\b(temperature|tau|frac_above_?|loss_|n_eff_?|reach|log V|gamma|radius|status)\b", re.I
 )
 SYSTEM_WORDS = re.compile(
     r"(Declared (min|max)|Ordered levels|slew_deg|t_end_s|max_step_s|removed in this order|"
@@ -1448,7 +1448,7 @@ def test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice
     optimum has ``w_j = 0`` off the support. (ii) Every row with a positive dual is tight, and
     every primal optimum is tight on those rows. (iii) The active system ``[U_P[:, S], -1; 1^T, 0]``
     has full column rank, so (i) and (ii) leave one point. The two HiGHS methods return that
-    support, and the K = 1 tension report of record prints it: a 5-lemma in both regimes.
+    support, and the K = 1 trade-off report of record prints it: a 5-lemma in both regimes.
     """
     import case
     from scipy.optimize import linprog
@@ -1977,9 +1977,9 @@ def test_appendix_h_wording_unit_defines_its_terms_and_states_counts():
     )  # FW-19, the second boundary with its number
     assert "(its fourth)" in text and "analyst with other domain" not in text  # FW-13, FW-20
     assert "linear program" not in text and "sequential quadratic" not in text  # FW-17
-    assert "shortfall from the best value" in text and "how far its objective is" in text  # FW-16
+    assert "shortfall from the best value" in text and "how far its loss is" in text  # FW-16
     assert (
-        "the paper [@chami2021horopca] (objective)" in text
+        "the paper [@chami2021horopca] (its loss)" in text
         and "c9a9996 (Adam, random starts)" in text
     )
     conditions = str(generate_prior_art.horopca_conditions())
@@ -2083,8 +2083,8 @@ def test_search_section_is_short_future_work_without_numbers():
 
 
 def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
-    """R-17, R-18: L1 to L17 once each (and L20, the noise corollary, after L6), each with the
-    parts of the form. The paper's order is the
+    """R-17, R-18: L1 to L17 once each (and L20, the noise corollary, after L6, and L21, the
+    tension, after L7), each with the parts of the form. The paper's order is the
     algorithm's (E-8): the alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
     blocks = _blocks()
     tags = [re.search(r"\(L(\d+)(?:, [^)]*)?\)\s*$", title).group(1) for _, title, _, _ in blocks]
@@ -2097,6 +2097,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         6,
         20,
         7,
+        21,
         8,
         9,
         10,
@@ -2135,7 +2136,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         ), label
     kinds = [(k, int(re.search(r"\(L(\d+)[,)]", t).group(1))) for k, t, _, _ in blocks]
     assert kinds[6] == ("corollary", 20)
-    assert kinds[12:] == [
+    assert kinds[13:] == [
         ("theorem", 16),
         ("theorem", 15),
         ("lemma", 12),
@@ -2485,7 +2486,7 @@ NUM_CELLS = [
     "num-nondominated", "num-certificates", "num-margin", "num-temperature",
     "num-regimes", "num-predict", "num-recovery", "num-predict-reading",
     "num-choosing-k", "num-terms", "num-elasticity", "num-k-temperatures", "num-participation",
-    "num-decision",
+    "num-decision", "num-tension",
 ]  # fmt: skip
 
 
@@ -2515,6 +2516,7 @@ def _case_sentences():
         "num-k-temperatures": gf.k_temperatures_sentence(study, fits),
         "num-participation": gf.participation_sentence(),
         "num-decision": gf.decision_sentence(gf.decision(study, fits)),
+        "num-tension": gf.tension_sentence(study, fits, gf.decision(study, fits)),
     }
 
 
@@ -2666,7 +2668,9 @@ def test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give()
         "B": [{"settling time", "control effort"}, {"depth of discharge"}],  # terms in share order
     }
     contending = {
-        panel: [{st.names[i] for i in r.contending_set} for r in tensions.tension_report(est, st.M)]
+        panel: [
+            {st.names[i] for i in r.contending_set} for r in tensions.trade_off_report(est, st.M)
+        ]
         for panel, (st, est) in fits.items()
     }
     assert contending["A"] == [
@@ -2725,7 +2729,9 @@ def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
     assert f"{results} results in {len(record)} files and {steps} steps" in text
     last = max(lem["number"] for lem in record.values())  # derived from the record, never typed
     assert f"(L12 to L{last})" in text and "L15. descent" in _proof_text()
-    heading = f"### B.2 The several-term fit and its levels of guarantee (L12 to L{last})"
+    heading = (
+        f"### B.2 The several-term fit, its levels of guarantee and the tension (L12 to L{last})"
+    )
     assert heading in _src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-B-2"))
 
 
@@ -3025,11 +3031,11 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
     assert "def-nlemma" in _section("Methods")
     # fig-regimes-caption left with Figure 9 at the supervisor's word "Cut to a pointer" (S-3,
     # R-10, WP28-decisions.md).
-    for cell_id in ("fig-tensions-case-caption",):
-        caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == cell_id))
-        assert "Outlined" in caption or "outlined" in caption, cell_id
-    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tensions-case-caption"))
-    assert "exact-maximum" in caption and "so an outlined metric can be grey" in caption
+    # WP42: Figure 7 became the tension matrix of each term; the association figure, which
+    # outlined the contending set, left the paper's figures (it stays in the package as
+    # plot_association). The contending set is read from the K = 1 and K = 2 sentences below.
+    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tension-matrix-caption"))
+    assert "carry an exponent on the term" in caption and "balanced point" in caption
     k1 = _cell_out(PAPER_NB, "num-k1")
     assert "exact-maximum fit has a" in k1 and "exponents at the fit temperature" in k1
     assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-terms")
@@ -3172,7 +3178,7 @@ def test_the_case_reads_one_named_k():
         src = (ROOT / "paper" / "figures" / name).read_text(encoding="utf-8")
         assert "CASE_K" in src and "fits[3]" not in src and "n_terms=3" not in src, name
     cells = {c.id: _src(c) for c in _nb(PAPER_NB).cells}
-    assert "case.CASE_K" in cells["fit-case"] and "fit_case" in cells["fig-tensions-case"]
+    assert "case.CASE_K" in cells["fit-case"] and "fit_case" in cells["fig-tension-matrix"]
     assert not [i for i, t in cells.items() if "fits[3]" in t or "fit3" in t]
     for fn in (gf.terms_sentence, gf.elasticity_sentence, gf.choosing_k_sentence):
         assert "CASE_K" in inspect.getsource(fn), fn.__name__
@@ -3248,7 +3254,7 @@ def test_the_proposers_radius_is_the_stated_rule_of_the_check_designs():
     assert check_designs.REACH_QUANTILE == 0.02 and check_designs.HOLES == 300
     assert (
         "a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest "
-        "predicted distances to the 300 most isolated holes"
+        "predicted distances to the 300 most isolated points of white space"
     ) in text
     assert not re.search(r"\d\.\d{2,}", text)  # the value is the data's, not typed
 
@@ -3795,6 +3801,51 @@ def test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in
     assert d.baseline["unit_cost_usd"] == 461_360.0
 
 
+@pytest.mark.slow
+def test_the_picks_tension_sentence_agrees_with_finite_differences_of_the_fitted_surface(decided):
+    """WP42: the numbers of Section 9's sentence on the pick's tension are the derivative of the
+    K = 2 surface at the picked design, in the attributes' own units, against central differences
+    taken through the conditioning (the level held): -1.4 M USD per arcsecond on the pick's term,
+    2.4 percent per percent, -0.4 on the other term."""
+    import generate_findings as gf
+    from scipy.optimize import brentq
+
+    study, fits, d = decided
+    est = fits[2].estimator
+    attrs = list(study.spec.attributes)
+    pe, fc = attrs.index("pointing_error_deg"), attrs.index("fleet_cost_usd")
+    pre = study.conditioner.named_transformers_["metrics"]
+    pick = d.picks["between"]
+    idx = int(np.flatnonzero(study.feasible["design_id"].to_numpy() == pick["design_id"])[0])
+    raw0 = study.feasible[attrs].to_numpy(float)[idx]
+    assert int(est.assign_cells(study.M[idx : idx + 1])[0]) == 0  # the pick is on term 1
+    h = 1e-5
+
+    def slope():
+        target = float(est.score_samples(pre.transform(raw0[None]))[0])
+        pts = []
+        for sgn in (+1, -1):
+            r = raw0.copy()
+            r[pe] *= 1 + sgn * h
+
+            def level(c, r=r):
+                q = r.copy()
+                q[fc] = c
+                return float(est.score_samples(pre.transform(q[None]))[0]) - target
+
+            c = brentq(level, raw0[fc] * 0.9, raw0[fc] * 1.1, xtol=1e-9, rtol=1e-14)
+            pts.append((r[pe], c))
+        return (pts[0][1] - pts[1][1]) / (pts[0][0] - pts[1][0])
+
+    fd = slope()  # USD per degree on the pick's own term
+    text = str(gf.tension_sentence(study, fits, d))
+    assert f"{fd / 3600.0 / 1e6:+.1f} M USD per arcsecond" in text
+    assert f"goes with {abs(fd) * raw0[pe] / raw0[fc]:.1f} percent less fleet cost" in text
+    assert "-1.4 M USD per arcsecond" in text and "2.4 percent" in text
+    assert text.endswith("on the other term of the fit it is -0.4 M USD per arcsecond.")
+    assert "5 medium-wheel, fine-tracker satellites" in text
+
+
 def _tracker_cost_of(d):
     import generate_findings as gf
 
@@ -3898,7 +3949,13 @@ def test_section_9_closes_with_the_decision_and_leaves_the_neighbouring_paragrap
     and its paragraph, 'Two regimes' and 'Propose, predict, check' are as they were."""
     ids = [c.id for c in _nb(PAPER_NB).cells]
     tail = ids[ids.index("num-predict") + 1 : ids.index("sec-discussion")]
-    assert tail == ["decision-case", "num-decision", "tab-decision", "tab-decision-caption"]
+    assert tail == [
+        "decision-case",
+        "num-decision",
+        "tab-decision",
+        "tab-decision-caption",
+        "num-tension",
+    ]  # WP42: the pick's tension closes the section
     kept = ("sec-ternary-pair", "fig-ternary-pair-caption", "fig-ternary-pair-lines",
             "sec-case-analysis-3b", "num-regimes", "sec-case-analysis-5",
             "num-predict")  # fmt: skip
@@ -4035,7 +4092,7 @@ def test_appendix_e_cubesat_rows_carry_the_temperatures_and_slacks_of_the_data_o
     assert f"Band {band} (primary)" in note
     frac = lambda r: ", ".join(f"{fits[r][K].estimator.frac_above_:.3f}" for K in (1, 2, 3))  # noqa: E731
     assert f"Fraction above {frac('primary')} (primary) and {frac('stock')} (baseline)" in note
-    obj = lambda r, K: fits[r][K].estimator.objective_  # noqa: E731
+    obj = lambda r, K: fits[r][K].estimator.loss_  # noqa: E731
     for r, name in (("primary", "primary"), ("stock", "baseline")):
         assert f"{obj(r, 3):.3f} against {obj(r, 1):.3f} ({name}" in note
         assert f"{obj(r, 1):.3f} to {obj(r, 3):.3f} ({name}" in note
@@ -4215,21 +4272,6 @@ def test_reach_is_the_word_for_beta_and_the_package_is_named():
     assert not re.search(r"\boffsets?\b", text)  # the conditioning's offset b is the one exception
     first = min(i for i, c in enumerate(nb.cells) if "package" in _src(c))
     assert "The package is the scikit-learn estimator of" in _src(nb.cells[first])
-
-
-@pytest.mark.slow
-def test_figure_7_caption_claim_about_peak_slew_power_is_the_data():
-    """87: peak slew power carries no K = 1 exponent and leads term 1 at K = 2."""
-    import case
-
-    study = case.load_study("primary")
-    fits = case.k_fits(study, (1, case.CASE_K))
-    j = study.names.index("peak slew power")
-    assert fits[1].estimator.exponents_[0][j] <= case.EXPONENT_FLOOR
-    assert int(np.argmax(fits[case.CASE_K].estimator.exponents_[:, j])) == 0
-    assert "peak slew power carries no exponent; here it leads term 1" in _cell_src(
-        "fig-tensions-case-caption"
-    )
 
 
 @pytest.mark.slow

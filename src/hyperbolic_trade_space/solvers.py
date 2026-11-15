@@ -1,6 +1,6 @@
 """Solvers for the entropic soft-maximum fit (numpy and scipy only, no scikit-learn).
 
-The fit minimizes the log-mean-exp objective ``J_tau(w) = (1/tau) log((1/N) sum_i exp(tau w.u_i))``
+The fit minimizes the log-mean-exp loss ``J_tau(w) = (1/tau) log((1/N) sum_i exp(tau w.u_i))``
 over the simplex (see the documentation). At ``tau = inf`` it is the linear
 program ``min_w max_i w.u_i``; at finite ``tau`` it is a smooth convex program solved by SLSQP,
 warm-started from the linear program.
@@ -35,29 +35,29 @@ __all__ = [
     "distinct_terms",
     "fixed_assignment_bound",
     "log_mean_exp",
-    "objective_and_grad",
+    "loss_and_grad",
     "simplex_gap",
     "single_term_termination",
     "soft_certificate",
     "soft_hessian",
-    "soft_objective",
+    "soft_loss",
     "soft_weights",
     "solve_lp",
     "solve_slsqp",
     "solve_terms",
     "support_weights",
     "term_gap",
-    "term_objective",
+    "term_loss",
 ]
 
 _TIE_TOL = 1e-12
 EPS_KKT = 1e-8  # first-order gap tolerance of the stopping declaration
 EPS_FEAS = 1e-9  # feasibility and margin-positivity tolerance
-GUARD_TOL = 1e-12  # the monotone guard rejects an objective increase above this
+GUARD_TOL = 1e-12  # the monotone guard rejects a loss increase above this
 POLISH_STEPS = 5  # reduced-Newton steps after each finite-tau term refit
 _ACTIVE_TOL = 1e-10
 DISTINCT_TERMS_DISTANCE = 1e-3  # exponent vectors closer than this (Euclidean) are one term
-_SOFT_STOP = 1e-10  # the soft alternation stops when the soft objective falls by less than this
+_SOFT_STOP = 1e-10  # the soft alternation stops when the soft loss falls by less than this
 _SOFT_EMPTY = 1e-9  # a term whose weight mass is below this (in rows) is empty
 _SOFT_POLISH_STEPS = 30  # joint reduced-Newton steps after the soft alternation
 
@@ -70,7 +70,7 @@ class SolveResult:
     ----------
     w : ndarray of shape (d,)
         Minimizer on the simplex.
-    beta, p, objective, n_iter, success, message
+    beta, p, loss, n_iter, success, message
         As in Attributes below; the fields are set once by the solvers and are read-only in use.
 
     Attributes
@@ -81,8 +81,8 @@ class SolveResult:
         Offset, ``J_tau(w)`` (the log-mean-exp of ``U @ w``).
     p : ndarray of shape (N,)
         Support weights (softmax weights; LP duals at ``tau = inf``). Nonnegative, sum 1.
-    objective : float
-        Objective value at ``w`` (equal to ``beta``).
+    loss : float
+        Loss value at ``w`` (equal to ``beta``).
     n_iter : int
         Solver iterations (at least 1).
     success : bool
@@ -102,7 +102,7 @@ class SolveResult:
     w: np.ndarray
     beta: float
     p: np.ndarray
-    objective: float
+    loss: float
     n_iter: int
     success: bool
     message: str
@@ -181,8 +181,8 @@ def support_weights(s, tau):
     return p / p.sum()
 
 
-def objective_and_grad(w, U, tau):
-    """Objective ``J_tau(w)`` and gradient ``U^T p``.
+def loss_and_grad(w, U, tau):
+    """Loss ``J_tau(w)`` and gradient ``U^T p``.
 
     Parameters
     ----------
@@ -195,14 +195,14 @@ def objective_and_grad(w, U, tau):
 
     Returns
     -------
-    objective : float
+    loss : float
     grad : ndarray of shape (d,)
 
     Examples
     --------
     >>> import numpy as np
     >>> U = np.array([[0.0, 1.0], [1.0, 0.0]])
-    >>> f, g = objective_and_grad(np.array([0.5, 0.5]), U, 5.0)
+    >>> f, g = loss_and_grad(np.array([0.5, 0.5]), U, 5.0)
     >>> round(f, 4), g.round(4).tolist()
     (0.5, [0.5, 0.5])
     """
@@ -278,7 +278,7 @@ def _simplex_min(fun, w0, args, min_exponent, tol, max_iter):
 
 
 def _reweighted(w, U, tau, prev, alpha, eps):
-    f, g = objective_and_grad(w, U, tau)
+    f, g = loss_and_grad(w, U, tau)
     return f + alpha * np.sum(w / (prev + eps)), g + alpha / (prev + eps)
 
 
@@ -314,7 +314,7 @@ def solve_slsqp(
     Returns
     -------
     SolveResult
-        ``p`` are the softmax weights at the solution; ``beta`` and ``objective`` are the
+        ``p`` are the softmax weights at the solution; ``beta`` and ``loss`` are the
         unpenalized ``J_tau`` at the returned ``w`` (so ``beta`` stays the log-mean-exp offset).
 
     Notes
@@ -339,11 +339,11 @@ def solve_slsqp(
         w0 = solve_lp(U, min_exponent).w
     w0 = np.clip(np.asarray(w0, dtype=float), min_exponent, None)
     w0 = w0 / w0.sum()
-    res = _simplex_min(objective_and_grad, w0, (U, tau), min_exponent, tol, max_iter)
+    res = _simplex_min(loss_and_grad, w0, (U, tau), min_exponent, tol, max_iter)
     w = np.clip(res.x, min_exponent, None)
     w = w / w.sum()
-    f, _ = objective_and_grad(w, U, tau)
-    f0, _ = objective_and_grad(w0, U, tau)
+    f, _ = loss_and_grad(w, U, tau)
+    f0, _ = loss_and_grad(w0, U, tau)
     if f0 < f:  # never return worse than the warm start
         w, f = w0, f0
     if penalty == "reweighted_l1" and alpha > 0:
@@ -397,8 +397,8 @@ def simplex_gap(g, w, min_exponent=0.0):
     return float(g @ np.asarray(w, dtype=float) - _dual_value(g, min_exponent))
 
 
-def term_objective(U, w, ubar, tau):
-    """Term refit objective ``f_k(w) = J_tau(U w) - ubar . w``.
+def term_loss(U, w, ubar, tau):
+    """Term refit loss ``f_k(w) = J_tau(U w) - ubar . w``.
 
     Parameters
     ----------
@@ -419,7 +419,7 @@ def term_objective(U, w, ubar, tau):
     --------
     >>> import numpy as np
     >>> U = np.array([[0.0, 1.0], [1.0, 0.0]])
-    >>> round(term_objective(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 6)
+    >>> round(term_loss(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 6)
     0.0
     """
     return float(log_mean_exp(U @ w, tau) - np.asarray(ubar) @ w)
@@ -470,7 +470,7 @@ def term_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
         if p is None:
             p = solve_lp(U - ubar, min_exponent).p
         g = U.T @ np.asarray(p) - ubar
-        return float(term_objective(U, w, ubar, tau) - _dual_value(g, min_exponent))
+        return float(term_loss(U, w, ubar, tau) - _dual_value(g, min_exponent))
     g = U.T @ support_weights(U @ w, tau) - ubar
     return simplex_gap(g, w, min_exponent)
 
@@ -516,7 +516,7 @@ def assignment_margin(U, W, beta):
 
 
 def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
-    """Fixed-assignment objective ``F`` and the approximate-certificate bound ``sum_k |C_k|/N G_k``.
+    """Fixed-assignment loss ``F`` and the approximate-certificate bound ``sum_k |C_k|/N G_k``.
 
     Parameters
     ----------
@@ -559,7 +559,7 @@ def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
     for k in np.flatnonzero(shares):
         ubar = U[labels == k].mean(axis=0)
         gaps[k] = term_gap(U, W[k], ubar, tau, min_exponent, None if P is None else P[k])
-        F += shares[k] * term_objective(U, W[k], ubar, tau)
+        F += shares[k] * term_loss(U, W[k], ubar, tau)
     return float(np.nansum(shares * gaps)), gaps, float(F)
 
 
@@ -568,7 +568,7 @@ def _newton_polish(Uc, w, tau, min_exponent=0.0, n_steps=POLISH_STEPS):
 
     The active set is ``w > m`` (coordinates at the floor are held); each step solves the KKT
     system of the Hessian restricted to it and the equality ``1.step = 0``, then backtracks so
-    the objective never increases.
+    the loss never increases.
     """
     w = np.asarray(w, dtype=float).copy()
     m = min_exponent
@@ -642,10 +642,10 @@ class Termination:
         margin is positive (``gamma > eps_feas``). ``"stationary_without_margin"``: the same with
         ``gamma <= eps_feas`` (a row ties between terms, for example two identical terms) or an
         empty term. ``"uncertified"``: the assignment is fixed but a residual or the gap exceeds
-        its tolerance. ``"guard_stop"``: an iteration raised the objective by more than
+        its tolerance. ``"guard_stop"``: an iteration raised the loss by more than
         ``guard_tol`` and the previous state was returned. ``"iteration_cap"``: ``max_iter`` was
-        reached with the assignment still changing; ``max_gap`` and ``objective_change`` say
-        whether the terms were stationary and the objective had stopped moving (a cycle among
+        reached with the assignment still changing; ``max_gap`` and ``loss_change`` say
+        whether the terms were stationary and the loss had stopped moving (a cycle among
         tied rows). ``"not_applicable"``: ``refit_step="tangent"``, a ``penalty``, or the
         ``K = 1`` / ``d = 1`` / ``N < K`` shortcut, or a soft fit at ``tau = inf``; the gaps are
         then diagnostics.
@@ -653,7 +653,7 @@ class Termination:
         A *soft* fit (finite ``term_temperature``, weights in place of labels) has two more
         outcomes and a different meaning of ``"certified"``. ``"certified"``: every term's
         term gap is at most ``eps_kkt`` and ``min_curvature > eps_feas`` (the second-order
-        sufficient condition: a strict local minimizer of the soft objective).
+        sufficient condition: a strict local minimizer of the soft loss).
         ``"stationary"``: the gaps hold and ``min_curvature <= eps_feas`` (a saddle or a flat
         direction). ``"uncertified"`` as above (a residual or a gap exceeds its tolerance).
         ``"stationary_without_margin"`` is the label-fit status and never occurs for a soft fit.
@@ -670,8 +670,8 @@ class Termination:
     bound : float
         The approximate-certificate corollary (L14): ``sum_k |C_k|/N G_k``, a bound on
         ``F(W) - F*_fixed`` for the assignment of this run (not across restarts).
-    objective_change : float
-        Absolute change of the objective at the last accepted step (``nan`` with none).
+    loss_change : float
+        Absolute change of the loss at the last accepted step (``nan`` with none).
     assignment_changes : int
         Rows whose returned label trails the maximum score under ``(W, beta)`` by more than
         ``EPS_FEAS`` (exact ties are not changes).
@@ -685,7 +685,7 @@ class Termination:
         Per-term gap (``nan`` for an empty term) and row share ``|C_k|/N``.
     min_curvature : float
         Soft fit only (finite ``term_temperature`` with ``refit_step="support"``, unpenalized):
-        the smallest eigenvalue of the Hessian ``H = D - kappa M`` of the soft objective on the
+        the smallest eigenvalue of the Hessian ``H = D - kappa M`` of the soft loss on the
         tangent space of the active face (``soft_certificate``). ``nan`` for every other fit.
     n_distinct_terms : int
         Distinct terms of the returned model: the exponent vectors, counted as one when within
@@ -720,7 +720,7 @@ class Termination:
     offset_residual: float
     max_gap: float
     bound: float
-    objective_change: float
+    loss_change: float
     assignment_changes: int
     n_empty: int
     gamma: float
@@ -747,7 +747,7 @@ class TermsResult:
     labels : ndarray of shape (N,), dtype int
         Cell of each row (argmax of ``w_k . u - beta_k``); for a soft fit the dominant term, an
         analysis (the fit used weights).
-    objective : float
+    loss : float
         Mean slack ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)``; ``beta`` for ``n_terms = 1``; for a
         soft fit the mean slack of the soft model, ``-mean_i Phi_kappa(u_i)``.
     n_iter : int
@@ -757,7 +757,7 @@ class TermsResult:
     message : str
         Stop reason.
     history : ndarray
-        Objective after the initial fit and after each accepted iteration (non-increasing up to
+        Loss after the initial fit and after each accepted iteration (non-increasing up to
         ``GUARD_TOL``).
     termination : Termination
         Stopping record of the returned run (status, gaps, margin, tolerances).
@@ -766,7 +766,7 @@ class TermsResult:
     W: np.ndarray
     beta: np.ndarray
     labels: np.ndarray
-    objective: float
+    loss: float
     n_iter: int
     success: bool
     message: str
@@ -913,8 +913,8 @@ def aggregation_shift(n_terms, kappa, aggregation="sum"):
     return float(np.log(n_terms) / kappa)
 
 
-def soft_objective(U, W, beta, kappa, aggregation="sum"):
-    """Soft objective ``F = mean_i (-Phi_kappa(u_i))``, the mean slack of the soft model.
+def soft_loss(U, W, beta, kappa, aggregation="sum"):
+    """Soft loss ``F = mean_i (-Phi_kappa(u_i))``, the mean slack of the soft model.
 
     Parameters
     ----------
@@ -940,7 +940,7 @@ def soft_objective(U, W, beta, kappa, aggregation="sum"):
     --------
     >>> import numpy as np
     >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
-    >>> round(soft_objective(U, np.eye(2), np.zeros(2), 1e6), 6)
+    >>> round(soft_loss(U, np.eye(2), np.zeros(2), 1e6), 6)
     -1.0
     """
     S = np.asarray(U) @ np.asarray(W).T - np.asarray(beta)
@@ -949,7 +949,7 @@ def soft_objective(U, W, beta, kappa, aggregation="sum"):
 
 
 def soft_hessian(U, W, tau, kappa):
-    """Gradient and Hessian ``H = D - kappa M`` of the soft objective in the exponents.
+    """Gradient and Hessian ``H = D - kappa M`` of the soft loss in the exponents.
 
     The offsets are tied to the exponents, ``beta_k = J_tau(U w_k)``. With weights ``alpha``
     (``soft_weights``), support weights ``p_k`` of term ``k``, ``utilde_k = U^T p_k``,
@@ -1049,7 +1049,7 @@ def soft_certificate(U, W, tau, kappa, min_exponent=0.0):
         Smallest eigenvalue of ``B' (D - kappa M) B``, ``B`` an orthonormal basis of the tangent
         space of the active face (``inf`` if the face is a point). If ``gap`` is within
         ``EPS_KKT`` and the curvature is positive, the point is a strict local minimizer of the
-        soft objective (second-order sufficient condition, Nocedal and Wright, chapter 12).
+        soft loss (second-order sufficient condition, Nocedal and Wright, chapter 12).
 
     Examples
     --------
@@ -1091,11 +1091,11 @@ def _soft_polish(U, W, tau, kappa, min_exponent, n_steps=_SOFT_POLISH_STEPS):
             break
         step = (B @ np.linalg.solve(Hr, gr)).reshape(W.shape)
         beta = np.array([log_mean_exp(U @ w, tau) for w in W])
-        f0, t = soft_objective(U, W, beta, kappa), 1.0
+        f0, t = soft_loss(U, W, beta, kappa), 1.0
         while t > 1e-6:
             W1 = W - t * step
             b1 = np.array([log_mean_exp(U @ w, tau) for w in W1])
-            if (min_exponent <= W1).all() and soft_objective(U, W1, b1, kappa) <= f0 + 1e-15:
+            if (min_exponent <= W1).all() and soft_loss(U, W1, b1, kappa) <= f0 + 1e-15:
                 break
             t *= 0.5
         else:
@@ -1160,8 +1160,8 @@ def _solve_terms_soft(U, K, tau, kappa, seed, max_iter, kw):
 
     The same start and first refit as ``_solve_terms_once``; then the weights come from the
     current model, each term is refit as the supporting hyperplane centred at its weighted mean
-    (the monotone guard watches the soft objective), and a joint Newton polish on the Hessian of
-    the soft objective follows the alternation.
+    (the monotone guard watches the soft loss), and a joint Newton polish on the Hessian of
+    the soft loss follows the alternation.
     """
     N, d = U.shape
     Z = U @ helmert_basis(d).T
@@ -1169,14 +1169,14 @@ def _solve_terms_soft(U, K, tau, kappa, seed, max_iter, kw):
     labels = np.argmin(((Z[:, None] - centers) ** 2).sum(-1), axis=1)
     W, beta = np.full((K, d), 1.0 / d), np.zeros(K)
     W, beta, _, P = _refit(U, labels, W, beta, tau, kw)  # the first refit is hard (step B)
-    obj = soft_objective(U, W, beta, kappa)
+    obj = soft_loss(U, W, beta, kappa)
     history, n_iter, stop, message = [obj], 0, "cap", "max_iter reached"
     while n_iter < max_iter:
         n_iter += 1
         A = soft_weights(U, W, beta, kappa)
         W2, beta2, P2 = _refit_soft(U, A, W, beta, tau, kw)
-        obj2 = soft_objective(U, W2, beta2, kappa)
-        if obj2 > obj + GUARD_TOL:  # monotone guard on the soft objective: reject, stop
+        obj2 = soft_loss(U, W2, beta2, kappa)
+        if obj2 > obj + GUARD_TOL:  # monotone guard on the soft loss: reject, stop
             stop, message = "guard", "no further decrease"
             break
         W, beta, P = W2, beta2, P2
@@ -1184,13 +1184,13 @@ def _solve_terms_soft(U, K, tau, kappa, seed, max_iter, kw):
         done = obj - obj2 < _SOFT_STOP
         obj = obj2
         if done:
-            stop, message = "fixed", "soft objective stationary"
+            stop, message = "fixed", "soft loss stationary"
             break
     ok = np.isfinite(tau) and kw["penalty"] is None
     if stop != "guard" and ok:
         W2 = _soft_polish(U, W, tau, kappa, kw["min_exponent"])
         beta2 = np.array([log_mean_exp(U @ w, tau) for w in W2])
-        obj2 = soft_objective(U, W2, beta2, kappa)
+        obj2 = soft_loss(U, W2, beta2, kappa)
         if obj2 <= obj + GUARD_TOL:
             W, beta, obj = W2, beta2, obj2
             P = np.array([support_weights(U @ w, tau) for w in W])
@@ -1260,7 +1260,7 @@ def _solve_terms_once(U, K, tau, seed, max_iter, kw, tangent=False, kappa=np.inf
         labels, W, beta, obj, P = new, W2, beta2, obj2, P2
         history.append(obj)
         best = min(best, (obj, labels, W, beta, P), key=lambda t: t[0])
-    if tangent:  # the objective is not monotone under step D: keep the best iterate seen
+    if tangent:  # the loss is not monotone under step D: keep the best iterate seen
         obj, labels, W, beta, P = best
     applicable = not tangent and kw["penalty"] is None
     term = _termination(
@@ -1300,7 +1300,7 @@ def solve_terms(
     min_exponent, penalty, alpha, tol
         Passed to ``solve_slsqp`` for every term.
     n_restarts : int, default=5
-        Initializations (seeds drawn from ``random_state``); the lowest objective is kept.
+        Initializations (seeds drawn from ``random_state``); the lowest loss is kept.
     max_iter : int, default=50
         Maximum partition-and-refit iterations per restart.
     random_state : int, RandomState or None
@@ -1316,14 +1316,14 @@ def solve_terms(
         value over all rows in both. The first refit is always step B. ``penalty`` and ``alpha``
         act on step B only. The mean slack is *not* monotone under ``"tangent"`` (the guard is
         applied to ``"support"`` only): the iteration stops at a fixed assignment or ``max_iter``
-        and returns the lowest-objective iterate seen, so ``history`` need not be non-increasing.
+        and returns the lowest-loss iterate seen, so ``history`` need not be non-increasing.
     term_temperature : float, default=np.inf
         Softness ``kappa`` of the weights. At ``np.inf`` every row has the label of its dominant
         term (the fit above). Finite ``kappa`` (with ``refit_step="support"``) fits the soft
         model: every row carries the weights ``softmax_k(kappa (w_k . u_i - beta_k))`` on every
         term, the refit of term ``k`` is the supporting hyperplane centred at the *weighted*
-        mean of the rows, and the objective is the mean slack of the soft model,
-        ``-mean_i Phi_kappa(u_i)`` (``soft_objective``), which the monotone guard watches. The
+        mean of the rows, and the loss is the mean slack of the soft model,
+        ``-mean_i Phi_kappa(u_i)`` (``soft_loss``), which the monotone guard watches. The
         alternation is followed by a joint reduced-Newton polish on the Hessian
         ``D - kappa M`` (``soft_hessian``). ``labels`` stay the analysis: the dominant term of
         each row. Read ``kappa`` on the scale of ``tau``; ``kappa`` far below ``tau`` merges terms.
@@ -1331,7 +1331,7 @@ def solve_terms(
     aggregation : {"sum", "mean"}, default="sum"
         Term aggregation of the soft model. The fit is carried out on the sum form (the weights,
         Hessian and certificate are the same for both: ``Phi`` differs by the constant
-        ``log K / kappa``), and for ``"mean"`` the reported ``objective`` and ``history`` are
+        ``log K / kappa``), and for ``"mean"`` the reported ``loss`` and ``history`` are
         shifted by ``+ log K / kappa``, the mean slack of the log-mean-exp model.
 
     Returns
@@ -1347,16 +1347,16 @@ def solve_terms(
     planted ``K = 3``, ``d = 4`` frontier returns vertices, not the planted exponents). The term
     is therefore fitted as a supporting hyperplane: ``w_k`` minimizes
     ``J_tau(U w) - mean_k(U) . w`` over *all* rows, which is ``solve_slsqp`` on ``U`` centered at
-    the term's mean; ``beta_k = J_tau(U w_k)``. The objective is the mean slack
+    the term's mean; ``beta_k = J_tau(U w_k)``. The loss is the mean slack
     ``(1/N) sum_i (beta_{k(i)} - w_{k(i)} . u_i)``, which both steps decrease (refit by convexity,
     reassignment to ``argmax_k (w_k . u - beta_k)`` by the choice of the largest score); a guard
-    additionally rejects any iteration whose objective increased and returns the previous state.
+    additionally rejects any iteration whose loss increased and returns the previous state.
     It stops at a fixed assignment or ``max_iter``. For ``K = 1`` (and degenerate input
     ``d = 1``, ``N < K``, where the ``K = 1`` solution is repeated) it returns exactly the
-    ``solve_slsqp`` result, with ``objective = beta``.
+    ``solve_slsqp`` result, with ``loss = beta``.
 
     Step D (``refit_step="tangent"``) is the evidence-driven alternative measured in the research
-    spikes; the objective is not monotone under it (see ``refit_step``). Recovery rate on the
+    spikes; the loss is not monotone under it (see ``refit_step``). Recovery rate on the
     planted data, ``make_frontier_data(400, 4, n_terms=3, random_state=s)``, ``s = 0..19`` (every
     term has at least ``d + 1`` frontier rows), estimator defaults, ``random_state=0``, five
     restarts, pass = exponent error below 0.05 after matching and at least 90% of the frontier rows
@@ -1406,8 +1406,8 @@ def solve_terms(
     runs = [
         _solve_terms_once(U, K, tau, s, max_iter, kw, refit_step == "tangent", kappa) for s in seeds
     ]
-    best = min(runs, key=lambda r: r.objective)
+    best = min(runs, key=lambda r: r.loss)
     shift = aggregation_shift(K, kappa, aggregation) if refit_step == "support" else 0.0
     if shift:
-        best = replace(best, objective=best.objective + shift, history=best.history + shift)
+        best = replace(best, loss=best.loss + shift, history=best.history + shift)
     return best

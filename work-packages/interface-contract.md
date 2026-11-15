@@ -32,7 +32,7 @@ package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
 package.version_changed_by = "WP8b"
-package.public_names = ["HyperbolicTradeSpace", "LogAffinePreconditioner", "TradeSpaceRegressor", "__version__", "frontier_in_original_units", "make_configured_frontier_data", "make_frontier_data", "select_temperature", "tension_report"]
+package.public_names = ["HyperbolicTradeSpace", "LogAffinePreconditioner", "TradeSpaceRegressor", "__version__", "design_tensions", "frontier_in_original_units", "make_configured_frontier_data", "make_frontier_data", "select_temperature", "tension_matrix", "trade_off_report"]
 package.submodules = ["plotting", "gaps", "solvers", "coordinates", "datasets", "preconditioning", "predictive", "tensions", "tuning", "estimator"]
 package.estimator.fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_", "mean_slack_", "cell_", "coefficients_", "term_share_"]
 package.estimator.term_aggregation_default = "sum"
@@ -53,14 +53,14 @@ derivation.chain_length = 14
 derivation.generated_dir = "build/generated/"
 derivation.generated_pages = ["derivations.md", "verification.md"]
 derivation.generated_by = "scripts/build_generated.py"
-docs.pages = ["index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "theory.md", "further-reading.md", "code-owners.md"]
+docs.pages = ["index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "theory.md", "further-reading.md", "code-owners.md", "user-guide/tension-routes.md"]
 docs.generated_dir = "docs/generated/"
 docs.generated_pages = ["glossary.md"]
 docs.glossary_source = "glossary.yaml"
-docs.glossary_entry_field_names = ["id", "term", "short", "register", "formal", "not", "symbol", "defined_in", "aliases", "avoid"]
+docs.glossary_entry_field_names = ["id", "term", "short", "register", "formal", "not", "symbol", "defined_in", "layer", "used_in", "elsewhere", "aliases", "avoid"]
 docs.glossary_entry_required_field_names = ["id", "term", "short", "register", "formal", "not"]
 docs.glossary_list_field_names = ["aliases", "avoid"]
-docs.glossary_file_key_names = ["entries", "assumed", "stems"]
+docs.glossary_file_key_names = ["preamble", "entries", "assumed", "stems"]
 docs.paper_sources_dir = "docs/superpowers/notes/paper-sources/"
 docs.bibliography = "docs/references.bib"
 docs.citation_syntax = "[@key]"
@@ -141,10 +141,10 @@ certificate functions; from version 16 the `estimator` constants `EPS_ZERO_EXPON
 `exponents_`, `log_offset_`, `training_log_v_`; from version 3 also `mean_slack_`, `cell_`, `coefficients_`,
 `term_share_`, which exist for every number of terms: at one term `cell_` is all zeros and
 `term_share_` is `[1.0]`; `mean_slack_` is the mean slack, the quantity to compare across numbers of
-terms, while `objective_` is what the solver minimized); the `Termination` field names and status strings;
-the per-term report fields of `TensionReport`. From version 6 the record also carries
+terms, while `loss_` is what the solver minimized); the `Termination` field names and status strings;
+the per-term report fields of `TradeOffReport`. From version 6 the record also carries
 `min_curvature` and the status `"stationary"`, and `solvers` also offers `soft_weights`,
-`soft_objective`, `soft_hessian` and `soft_certificate` (see below).
+`soft_loss`, `soft_hessian` and `soft_certificate` (see below).
 
 *The soft fit (version 6, WP17).* A finite `term_temperature` kappa, with `n_terms > 1` and
 `refit_step="support"`, selects the soft fit: every design carries the weights
@@ -181,7 +181,7 @@ only: no other field, status or number changes.
 *The estimator's constants (version 16, WP25-3 P-1).* `estimator` also offers `EPS_ZERO_EXPONENT`
 (`1e-12`): an exponent at or below it is numerically zero, so `score_samples` reads a zero metric
 there as `0 log 0 := 0`; and `PARTICIPATION_THRESHOLD` (`1e-3`): an exponent above it participates,
-the default `threshold` of `tension_report` and the participating set of `conditioning_`. The
+the default `threshold` of `trade_off_report` and the participating set of `conditioning_`. The
 paper sources cite both by name. `plotting.CATEGORY_COLORS` and `plotting.DATA_COLOR` are not in
 `plotting.__all__`: row 11 is the plotting surface and the palette is internal.
 
@@ -355,6 +355,7 @@ the last row of the change log.
 | 22 | 2026-11-12 | A router page (WP33 "D-2 rulings" item 6, the typed address `/docs/user-guide/`): `docs/user-guide/index.md` is added to `docs.pages` and `presentation_pages`, so that the address of the user guide's directory lands on one line pointing to the Overview instead of a directory listing. The page is a router and carries no content; it is not a navigation entry (`mkdocs.yml` `nav` unchanged). No number changes | presentation (the docs pages; `tests/test_site.py`, `tests/test_docs.py`) | `WP33-decisions.md`, "D-2 rulings, items 5 and 6" (the assistant's rulings) |
 | 23 | 2026-11-12 | The known gap on the package docstring is closed (WP33 review F-5, the task of the closing round): the docstring of `src/hyperbolic_trade_space/__init__.py` now says in one sentence what the package is and names the documentation site; the gaps row leaves section 17 and `gaps.init_docstring` leaves the manifest. No number changes | technical (`src/hyperbolic_trade_space/__init__.py`, docstring only) | `WP33-review.md`, F-5 |
 | 24 | 2026-11-14 | The code owners' page (WP47 D-4): `docs/code-owners.md` is added to `docs.pages` and `presentation_pages` and to the navigation under a "Project" heading (`mkdocs.yml` `nav`). No number changes | presentation (the docs pages; `tests/test_site.py`) | `WP47-scope-of-work.md`, D-4 |
+| 25 | 2026-11-14 | Tension, the glossary's layers and the loss (WP42 Amendment 1, the build after the spike): the package renames `tension_report`, `TensionReport` and its module member to `trade_off_report` and `TradeOffReport`, the report fields `tension_directions` and `tension_loadings` to `spread_directions` and `spread_loadings`, `plotting.plot_tensions` to `plot_association`; it gains `tension_matrix`, `design_tensions` and `DesignTensions` (public names and `tensions` members); the solver's function is the loss everywhere: the estimator attribute `objective_` is `loss_`, the `Termination` field `objective_change` is `loss_change`, and the `solvers` names `objective_and_grad`, `soft_objective` and `term_objective` are `loss_and_grad`, `soft_loss` and `term_loss`, with no alias since nothing is released. The glossary schema gains the entry fields `layer`, `used_in` and `elsewhere` and the file key `preamble` (`docs.glossary_entry_field_names`, `docs.glossary_file_key_names`); the Glossary page opens with the preamble. No number changes | both | `WP42-decisions.md` ("Scope A, all of it"; "Rename all"; "Compact tension matrix"; "Accept as drafted"), `WP11-decisions.md` (15:50, loss for the solver's function everywhere) |
 
 ## 15. Consumers: may assume, must not touch
 

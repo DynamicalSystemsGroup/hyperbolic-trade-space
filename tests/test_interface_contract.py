@@ -273,7 +273,7 @@ def test_r1_termination_fields_statuses_and_report_fields():
     mod_name, _, cls_name = est["report_class"].rpartition(".")
     rep = getattr(importlib.import_module(mod_name), cls_name)
     missing = set(est["report_fields"]) - {f.name for f in dataclasses.fields(rep)}
-    assert not missing, msg("R-1", f"TensionReport lacks fields {sorted(missing)} (floor)")
+    assert not missing, msg("R-1", f"TradeOffReport lacks fields {sorted(missing)} (floor)")
 
 
 def test_r1_estimator_methods_and_fitted_attributes():
@@ -299,7 +299,7 @@ def test_r1_docstring_style_pinned():
     assert PKG["docstrings"]["style"] == "numpydoc", msg(
         "R-1", "docstring style is numpydoc (OD2 source)", "both"
     )
-    for name in ("HyperbolicTradeSpace", "select_temperature", "tension_report"):
+    for name in ("HyperbolicTradeSpace", "select_temperature", "trade_off_report"):
         doc = inspect.getdoc(getattr(_pkg(), name)) or ""
         assert "----------" in doc or "Parameters" in doc or "Returns" in doc, msg(
             "R-1", f"{name} carries a numpydoc docstring (the API reference source)", "both"

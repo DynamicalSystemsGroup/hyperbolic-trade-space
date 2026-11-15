@@ -90,11 +90,11 @@ def test_L1_invariant_value_homogeneity_and_invariant_form(ctx, inst):
 def test_L2_objective_and_shift(ctx, inst):
     S, L2 = ctx["S"], ctx["L2"]
     U, w = inst["U"], inst["w"]
-    f, _ = solvers.objective_and_grad(w, U, TAU)
+    f, _ = solvers.loss_and_grad(w, U, TAU)
     assert ev(L2["J"], S, inst) == pytest.approx(f, abs=TOL)
     c = 0.8
     shifted = ev(L2["J_shifted"].subs(S.c, c), S, inst)
-    assert shifted == pytest.approx(solvers.objective_and_grad(w, U + c, TAU)[0], abs=TOL)
+    assert shifted == pytest.approx(solvers.loss_and_grad(w, U + c, TAU)[0], abs=TOL)
     # reduced form J + c, and the implementation's offset shifts the same way
     assert ev(L2["J_shifted_reduced"].subs(S.c, c), S, inst) == pytest.approx(f + c, abs=TOL)
     assert shifted == pytest.approx(f + c, abs=TOL)
@@ -126,7 +126,7 @@ def test_L5_log_mean_exp(ctx, inst):
 def test_L3_gradient_and_support_weights(ctx, inst):
     S, L3 = ctx["S"], ctx["L3"]
     U, w, v = inst["U"], inst["w"], inst["v"]
-    _, grad = solvers.objective_and_grad(w, U, TAU)
+    _, grad = solvers.loss_and_grad(w, U, TAU)
     p = solvers.support_weights(U @ w, TAU)
     # directional derivative dJ/dt of J(w + t v) at 0 equals v . grad
     assert ev(L3["dJ"], S, inst) == pytest.approx(v @ grad, abs=TOL)

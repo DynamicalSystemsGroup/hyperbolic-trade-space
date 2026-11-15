@@ -19,8 +19,8 @@ Visual vocabulary (module constants, shared by every function)
 * **Ternary plot** (``plot_ternary``): the shares of a total among three metrics (or three groups
   of metrics) as a triangle; a term's exponent vector is a marker (its own shape, numbered), the
   regions are tinted by the term that dominates, and the terms use the palette's colours.
-* **Tension** (``plot_tensions``): a diverging map (``TENSION_CMAP``), negative association
-  (tension) to positive (aligned); the contending set is outlined in black.
+* **Association** (``plot_association``): a diverging map (``TENSION_CMAP``), negative association
+  (traded) to positive (aligned); the contending set is outlined in black.
 
 Examples
 --------
@@ -45,7 +45,7 @@ HOLE_COLOR = "#D55E00"
 CATEGORY_COLORS = ("#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#F0E442")
 DATA_COLOR = CATEGORY_COLORS[0]
 TENSION_CMAP = "PuOr"
-PARTICIPATION = 1e-3  # a term participates in a metric above this exponent (tension report's)
+PARTICIPATION = 1e-3  # a term participates in a metric above this exponent (the trade-off report's)
 
 __all__ = [
     "BAND_COLOR",
@@ -53,10 +53,10 @@ __all__ = [
     "HOLE_COLOR",
     "TENSION_CMAP",
     "cell_labels",
+    "plot_association",
     "plot_frontier_coordinates",
     "plot_frontier_surface_3d",
     "plot_log_plane",
-    "plot_tensions",
     "plot_ternary",
     "plot_v_by_variable",
     "ternary_marker_values",
@@ -462,40 +462,40 @@ def _annotation_color(rgba):
     return "black" if luminance > 0.5 else "white"
 
 
-def plot_tensions(report, names=None, ax=None):
+def plot_association(report, names=None, ax=None):
     """One heatmap per report: a list of reports (one per term at ``K > 1``) goes side by side.
 
     Returns the ``Axes`` for a single report and a list of ``Axes`` for a list; ``ax`` is then a
-    sequence of axes. See ``_tension_panel`` for what each panel draws.
+    sequence of axes. See ``_association_panel`` for what each panel draws.
     """
     if not isinstance(report, (list, tuple)):
-        return _tension_panel(report, names, ax)
+        return _association_panel(report, names, ax)
     axs = ax if ax is not None else _plt().subplots(1, len(report), squeeze=False)[1][0]
-    out = [_tension_panel(r, names, a) for r, a in zip(report, axs, strict=True)]
+    out = [_association_panel(r, names, a) for r, a in zip(report, axs, strict=True)]
     for k, a in enumerate(out):
         a.set_title(f"term {k + 1}: {a.get_title()}")
     return out
 
 
-def _tension_panel(report, names=None, ax=None):
+def _association_panel(report, names=None, ax=None):
     """Association among near-frontier designs, with exponents and the contending set.
 
-    Draws the association matrix of the log-metrics (negative: tension, positive: aligned) as a
+    Draws the association matrix of the log-metrics (negative: traded, positive: aligned) as a
     heatmap in ``TENSION_CMAP``. Tick labels carry each metric's frontier exponent; metrics that
     do not participate are labelled in grey; the contending set (the metrics that define the
     ``n``-lemma) is outlined in black on the diagonal. A report whose ``n_near_frontier`` is
-    below ten (the default guard of ``tension_report``) has too few designs for a correlation:
+    below ten (the default guard of ``trade_off_report``) has too few designs for a correlation:
     its panel is drawn like the others, with the cells empty (no colour, no number) and the line
     "N near-frontier designs; no association reading" inside it.
 
     Parameters
     ----------
-    report : TensionReport
-        From ``hyperbolic_trade_space.tensions.tension_report``. Only these attributes are
+    report : TradeOffReport
+        From ``hyperbolic_trade_space.tensions.trade_off_report``. Only these attributes are
         used: ``participating`` (bool per metric), ``exponents`` (per metric), ``association``
         (``d x d``), ``contending_set`` (metric indices), ``n_lemma`` (int), and, when present,
         ``n_near_frontier`` (int). The principal
-        ``tension_directions`` and ``tension_loadings`` are reported numerically and not drawn.
+        ``spread_directions`` and ``spread_loadings`` are reported numerically and not drawn.
     names : sequence of str, default=None
         Metric names; default ``m0, m1, ...``.
     ax : matplotlib Axes, default=None
@@ -514,7 +514,7 @@ def _tension_panel(report, names=None, ax=None):
     ...     exponents=np.array([0.5, 0.5, 0.0]),
     ...     association=np.array([[1, -0.6, 0.1], [-0.6, 1, 0.0], [0.1, 0.0, 1]]),
     ...     contending_set=np.array([0, 1]), n_lemma=2)
-    >>> plot_tensions(r, names=["mass", "power", "cost"]).get_title()
+    >>> plot_association(r, names=["mass", "power", "cost"]).get_title()
     'dilemma (2 metrics contend)'
     """
     A = np.asarray(report.association, dtype=float)
@@ -528,7 +528,7 @@ def _tension_panel(report, names=None, ax=None):
         A = np.full_like(A, np.nan)
     ax = _axes(ax)
     im = ax.imshow(np.ma.masked_invalid(A), cmap=TENSION_CMAP, vmin=-1.0, vmax=1.0)
-    ax.figure.colorbar(im, ax=ax, label="association (negative = tension)")
+    ax.figure.colorbar(im, ax=ax, label="association (negative = traded)")
     for i in range(d):
         for j in range(d):
             if not np.isfinite(A[i, j]):

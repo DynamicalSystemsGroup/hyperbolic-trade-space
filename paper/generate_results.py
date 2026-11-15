@@ -302,11 +302,11 @@ def regime_table():
             for q in rows.index
             if q.count(", ") == 1
             and q[0].islower()
-            and f"tension | {regime} | {q} | pearson" in _names()
+            and f"association | {regime} | {q} | pearson" in _names()
         ):
             q = f"{a}, {b}"
-            pe = _signed(stable(f"tension | {regime} | {q} | pearson", lambda v: f"{v:+.2f}"))
-            sp = _signed(stable(f"tension | {regime} | {q} | spearman", lambda v: f"{v:+.2f}"))
+            pe = _signed(stable(f"association | {regime} | {q} | pearson", lambda v: f"{v:+.2f}"))
+            sp = _signed(stable(f"association | {regime} | {q} | spearman", lambda v: f"{v:+.2f}"))
             rows.at[q, regime] = f"{pe} ({sp})"
     return rows.reset_index()
 
@@ -327,7 +327,7 @@ def _names():
 CONCLUSIONS = (
     ("the contending sets (K = 1 and each term at K = 3)", ("contending |",), ""),
     ("each term's leading metrics", ("leading |",), ""),
-    ("the signs of the reported tensions", ("tension |",), "sign"),
+    ("the signs of the reported associations", ("association |",), "sign"),
     ("the fit temperatures, to the printed 0.1", ("tau |",), ""),
     ("the certificate statuses", ("certificate |",), "| status"),
     ("the pass or miss of each check design", ("predict |", "predict, committed checks |"),
@@ -362,7 +362,7 @@ def _moving_rows():
             (f"near-frontier designs, K = 1, {r}", f"fit | {r} K=1 | near-frontier designs", None),
         ]
         groups += [
-            (f"{kind}, {pair}, {r}", f"tension | {r} | {pair} | {kind}", four)
+            (f"{kind}, {pair}, {r}", f"association | {r} | {pair} | {kind}", four)
             for pair in (f"{a}, {b}" for a, b in case.CUBESAT.association_pairs)
             for kind in ("pearson", "spearman")
         ]
@@ -502,7 +502,7 @@ def conditioning_diagnostic() -> Md:
     Returns
     -------
     Md
-        The smallest eigenvalue of the restricted Hessian of the objective at each term's fit, to
+        The smallest eigenvalue of the restricted Hessian of the loss at each term's fit, to
         two digits: a small value flags a nearly flat direction (weak identifiability of the
         exponents); a read-only diagnostic of the estimator.
     """
@@ -734,7 +734,7 @@ def pca_chain() -> Md:
     -------
     Md
         The share of spread along each of the first three directions and the metrics that load
-        most on it, signed with the largest loading positive; the tension report's own analysis.
+        most on it, signed with the largest loading positive; the trade-off report's own analysis.
     """
     study, fits = _study("primary"), _fits("primary")
     table = case.pca_directions(study, fits[1])

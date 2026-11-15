@@ -10,7 +10,7 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
   monomial in raw attributes.
 - [`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the
   chart of position and log V. Fitted attributes for every number of terms include `exponents_`,
-  `cell_`, `coefficients_`, `term_share_`, `objective_` (what the solver minimized) and
+  `cell_`, `coefficients_`, `term_share_`, `loss_` (what the solver minimized) and
   `mean_slack_`, to compare fits across numbers of terms.
 - [`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target
   fraction above V = 1.
@@ -18,8 +18,8 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
   frontier.
 - [`make_configured_frontier_data`](user-guide/prediction.md), a function: the same with
   configuration variables.
-- [`tension_report`](user-guide/tensions.md), a function: contending set, elasticities and
-  tension directions.
+- [`trade_off_report`, `tension_matrix`, `design_tensions`](user-guide/tensions.md), functions: contending
+  set and elasticities; the slope of one metric against another.
 - [`TradeSpaceRegressor`](user-guide/prediction.md), a regressor: metrics, coordinates and novelty
   from configuration.
 
@@ -29,14 +29,14 @@ Submodules are used by import path:
   `from_frontier_coordinates`, the chart's bases and its two maps ([fitting](user-guide/fitting.md)).
 - `hyperbolic_trade_space.gaps`: `knn_gap_scores`, `find_holes`, `frontier_targets`, `orient_by_pca`
   ([chart](user-guide/chart.md)).
-- `hyperbolic_trade_space.tensions`: `TensionReport`, the object `tension_report` returns.
-- `hyperbolic_trade_space.plotting`: `plot_tensions`, `plot_log_plane`, `plot_frontier_surface_3d`,
+- `hyperbolic_trade_space.tensions`: `TradeOffReport`, `DesignTensions`: what the functions return.
+- `hyperbolic_trade_space.plotting`: `plot_association`, `plot_log_plane`, `plot_frontier_surface_3d`,
   `plot_frontier_coordinates`, `plot_v_by_variable`, `plot_ternary`, `ternary_marker_values`,
   `cell_labels`.
 - `hyperbolic_trade_space.estimator`: `EPS_ZERO_EXPONENT` (`1e-12`). An exponent at or below it is
   numerically zero, so `score_samples` reads a zero metric there as `0 log 0 := 0`.
   `PARTICIPATION_THRESHOLD` (`1e-3`). An exponent above it participates. It is the threshold of
-  `tension_report` and of `conditioning_`.
+  `trade_off_report` and of `conditioning_`.
 - `hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the
   certificate functions ([Reading termination](user-guide/termination.md)).
 
@@ -59,6 +59,13 @@ Submodules are used by import path:
 ### `TradeSpaceRegressor`
 
 ::: hyperbolic_trade_space.TradeSpaceRegressor
+    options:
+      show_root_heading: false
+      heading_level: 4
+
+### `design_tensions`
+
+::: hyperbolic_trade_space.design_tensions
     options:
       show_root_heading: false
       heading_level: 4
@@ -91,9 +98,16 @@ Submodules are used by import path:
       show_root_heading: false
       heading_level: 4
 
-### `tension_report`
+### `tension_matrix`
 
-::: hyperbolic_trade_space.tension_report
+::: hyperbolic_trade_space.tension_matrix
+    options:
+      show_root_heading: false
+      heading_level: 4
+
+### `trade_off_report`
+
+::: hyperbolic_trade_space.trade_off_report
     options:
       show_root_heading: false
       heading_level: 4

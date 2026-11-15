@@ -13,17 +13,36 @@
 #   formal      the formal object
 #   not         what it is not
 #   defined_in  optional, where it is defined or proved (lemma and ledger ids)
+#   layer       optional: decision, design or method, the layer of the nested optimizations the
+#               word belongs to (see `preamble`)
+#   used_in     optional: the register or registers in which this is the word's ordinary meaning
+#   elsewhere   optional: how another register uses the same word (the caveat; it lives here and
+#               in the detailed sections, never on an intuitive surface)
 #   aliases     optional list of strings: variants the prose may use for the term (plural,
 #               abbreviation); each resolves to this entry
 #   avoid       optional list of {phrase, reason}: variants that must not appear in prose, each
 #               with the reason (docs/superpowers/notes/vocabulary-review.md)
 #
-# File-level lists besides `entries`
+# File-level keys besides `entries`
+#   preamble    the three layers in full, shown at the top of the docs Glossary page
 #   assumed     optional list of {term, reason}: standard vocabulary assumed of the reader (calculus,
 #               linear algebra, convex optimization at the level of Boyd and Vandenberghe,
 #               scikit-learn's documented terms), each with the reason it needs no entry here
 #   stems       optional list of strings: the stems that mark a term of art in this subject; a
 #               phrase built on one must resolve to an entry, an alias or an assumed term
+preamble: |
+  Three optimizations are nested in this project, and one word can mean something different in
+  each. The decision layer is the decision-maker's choice of a design: its words are objective
+  (a metric the decision-maker wants more of), constraint (a requirement's limit) and the Pareto
+  notions. The design layer is the designer's optimization of a configuration, inside which the
+  fitted model appears as a function of the metrics: generalized geometric program and log-convex
+  belong here. The method layer is the fit, an optimization over the exponents: its word is loss,
+  the function the solver minimizes, which is scikit-learn's word. The words loss, metric,
+  attribute and objective mean different things in decision analysis, in optimization and in
+  machine learning. This glossary gives each one meaning, names the layer and the register of every
+  entry, and the surfaces hold to it: plain words on the intuitive surfaces, the caveats in the
+  entries and the detailed sections.
+
 entries:
   - id: 'configuration'
     term: 'configuration'
@@ -320,11 +339,22 @@ entries:
 
   - id: 'white-space'
     term: 'white space'
-    short: 'A hole in the chart coordinates; a region of the trade space no evaluated design occupies.'
+    short: 'A region of the chart where the fit speaks and no evaluated design is; the one word for it.'
     register: 'white space'
     formal: 'a hole in the distribution of Z'
-    not: 'evidence that a design there is attainable'
+    not: 'evidence that a design there is attainable; the term gap or an entry of the gaps ledger'
+    layer: 'design'
+    used_in: 'this method'
     defined_in: 'Novelty and white space'
+    avoid:
+      - phrase: 'hole in the chart'
+        reason: 'one word for an unoccupied region of the chart: white space'
+      - phrase: 'holes in the chart'
+        reason: 'one word for an unoccupied region of the chart: white space'
+      - phrase: 'gaps in the table'
+        reason: 'gap names the term gap and the gaps ledger; an unoccupied region is white space'
+      - phrase: 'table has gaps'
+        reason: 'gap names the term gap and the gaps ledger; an unoccupied region is white space'
 
   - id: 'temperature'
     term: 'fit temperature'
@@ -427,7 +457,7 @@ entries:
     symbol: '-w_k / w_j'
     short: 'Within a term, the percentage of one metric given up per percentage gained in another.'
     register: 'elasticity'
-    formal: 'the derivative of one log-metric with respect to another along the term''s hyperplane; a ratio of exponents'
+    formal: 'the derivative of one log-metric with respect to another along the term''s hyperplane; a ratio of exponents; the log-log form of the tension, constant on the term'
     not: 'a causal exchange or an intervention effect'
     defined_in: 'L7, A1, A2, G-3'
     aliases:
@@ -442,9 +472,102 @@ entries:
       - phrase: 'varying rate'
         reason: 'the rate at which one metric trades for another is the elasticity, which changes from term to term'
 
+  - id: 'objective'
+    term: 'objective'
+    short: 'A metric the decision-maker wants more of; the objectives are a subset of the metrics, and a metric need not be one.'
+    register: 'objective'
+    formal: 'a metric in the subset of the metrics on which the decision-maker chooses among designs'
+    not: 'the function the solver minimizes (that is the loss), a requirement''s limit (that is a constraint), or any metric of the fit'
+    layer: 'decision'
+    used_in: 'decision analysis, multi-objective optimization'
+    elsewhere: 'optimization and machine learning call the function a solver minimizes the objective; here that function is the loss'
+    defined_in: 'WP11-decisions.md (the supervisor, 2026-11-14, 11:50, 15:50)'
+    aliases:
+      - 'objectives'
+    avoid:
+      - phrase: 'fit objective'
+        reason: 'the function the fit minimizes is the loss; objective is the decision-maker''s subset of the metrics'
+      - phrase: 'soft objective'
+        reason: 'the function the soft fit minimizes is the loss; objective is the decision-maker''s subset of the metrics'
+      - phrase: 'noisy objective'
+        reason: 'the function the fit minimizes under noise is the loss; objective is the decision-maker''s subset of the metrics'
+      - phrase: 'convex objective'
+        reason: 'the function the solver minimizes is the loss; objective is the decision-maker''s subset of the metrics'
+      - phrase: 'dual objective'
+        reason: 'the dual of the fit''s problem has a value, not an objective; objective is the decision-maker''s subset of the metrics'
+      - phrase: 'primal objective'
+        reason: 'the primal value of the fit''s problem is the loss at its minimizer; objective is the decision-maker''s subset of the metrics'
+
+  - id: 'constraint'
+    term: 'constraint'
+    short: 'A requirement''s limit on a measure: a design meets it or does not. The fit never sees constraints; they are read after it.'
+    register: 'constraint'
+    formal: 'a bound on an attribute or a metric, applied to designs after the fit'
+    not: 'a condition of the fit itself (the exponents lie on the simplex); an objective'
+    layer: 'decision'
+    used_in: 'decision analysis, optimization'
+    defined_in: 'Requirements after the fit; Appendix D.17'
+    aliases:
+      - 'constraints'
+
+  - id: 'trade-off'
+    term: 'trade-off'
+    short: 'Metrics that cannot all rise together: raising one costs another. The plain word; its local measure is the tension, its constant-per-term form the elasticity.'
+    register: 'trade-off'
+    formal: 'the negative tension between metrics on a term of the fitted reference surface'
+    not: 'a causal exchange, or a count of the metrics in tension in the data'
+    layer: 'decision'
+    used_in: 'decision analysis, engineering'
+    aliases:
+      - 'trade-offs'
+    avoid:
+      - phrase: 'tradeoff'
+        reason: 'one spelling; the glossary''s is trade-off'
+      - phrase: 'tradeoffs'
+        reason: 'one spelling; the glossary''s is trade-off'
+
+  - id: 'tension'
+    term: 'tension'
+    symbol: 'T_{ij}'
+    short: 'How much one metric changes when another rises by a unit along the surface, with the others held, at a point; negative where both are carried by the term.'
+    register: 'tension'
+    formal: 'the partial derivative of m_j with respect to m_i along a term of the fitted reference surface, in the conditioned metrics: -(w_ki / w_kj)(m_j / m_i); zero where i carries no exponent, undefined where j carries none, reciprocal across the diagonal, piecewise at K > 1; the elasticity is its log-log form, constant on the term'
+    not: 'a correlation of the data (association), or the effect of changing a design variable; it is a rate along the fitted reference surface'
+    layer: 'design'
+    used_in: 'this method'
+    elsewhere: 'in mechanics a tension is a force; here it is a derivative between two metrics'
+    defined_in: 'L21, Definition (tension)'
+    aliases:
+      - 'tensions'
+
+  - id: 'term-tension-matrix'
+    term: 'tension matrix'
+    short: 'The tensions of every ordered pair of metrics along one term, at the term''s balanced point; from the fit.'
+    register: 'tension matrix'
+    formal: 'T_k with T_k[i, j] = -(w_ki / w_kj)(m*_j / m*_i), m* the balanced point of term k; blank where j carries no exponent'
+    not: 'a design''s tensions (from the data), or the association among a term''s near-frontier designs'
+    layer: 'design'
+    used_in: 'this method'
+    defined_in: 'L21'
+    aliases:
+      - 'tension matrices'
+      - 'term''s tension matrix'
+
+  - id: 'design-tensions'
+    term: 'design tensions'
+    short: 'The tension formula at one design''s own metric ratios, on the term it belongs to; from the data. In attribute units they carry the conditioning.'
+    register: 'design tensions'
+    formal: 'T_k[i, j] at the design''s metrics, k its term; in attributes, ds_j/ds_i = -(w_ki alpha_i)/(w_kj alpha_j) (a_j + s_j)/(a_i + s_i) (L9 pull-back)'
+    not: 'the term''s tension matrix (from the fit); a one-sided value near a seam is reported with the other term''s'
+    layer: 'design'
+    used_in: 'this method'
+    defined_in: 'L21, L9'
+    aliases:
+      - 'design''s tensions'
+
   - id: 'participation-threshold'
     term: 'participation threshold'
-    short: 'A working-temperature exponent above 1e-3 counts as participating; the threshold is a parameter of tension_report.'
+    short: 'A working-temperature exponent above 1e-3 counts as participating; the threshold is a parameter of trade_off_report.'
     register: 'participation threshold'
     formal: 'the exponent cutoff for membership in the participating set'
     not: 'a statistical test'
@@ -499,7 +622,7 @@ entries:
     short: 'The smallest gap by which a design''s term beats the runner-up; positive means each design has one maximizing term.'
     register: 'assignment margin'
     formal: 'the minimum over rows of the best score minus the second-best'
-    not: 'the objective''s margin'
+    not: 'the loss''s margin'
     defined_in: 'L13, R2'
 
   - id: 'stable-radius'
@@ -522,9 +645,27 @@ entries:
     not: 'evidence about the boundary between observations (G-18)'
     defined_in: 'L14, L15, G-18'
 
+  - id: 'loss'
+    term: 'loss'
+    short: 'The function the solver minimizes: the soft maximum of the scores at one term, the mean slack at several; scikit-learn''s word. We choose it for the method layer.'
+    register: 'loss'
+    formal: 'J_tau at one term; the mean slack at several terms'
+    not: 'an objective (the decision-maker''s subset of the metrics); a measure of how good a design is'
+    layer: 'method'
+    used_in: 'machine learning (scikit-learn)'
+    elsewhere: 'optimization texts call it the objective; here that word is reserved for the decision layer'
+    defined_in: 'WP11-decisions.md (the supervisor, 2026-11-14, 15:50); Section 3'
+    avoid:
+      - phrase: 'solver objective'
+        reason: 'the function the solver minimizes is the loss'
+      - phrase: 'refit objective'
+        reason: 'the function a term refit minimizes is the loss'
+      - phrase: 'weight objective'
+        reason: 'the function minimized over the weights is the loss'
+
   - id: 'certificate'
     term: 'certificate'
-    short: 'That the optimizer reached a local minimizer of the objective; for a soft fit, that the second-order test holds.'
+    short: 'That the optimizer reached a local minimizer of the loss; for a soft fit, that the second-order test holds.'
     register: 'certificate'
     formal: 'for a soft fit, the second-order sufficient conditions of L17. For a sharp fit, levels 1 to 3 (L15, L12, L13 and L14)'
     not: 'evidence that the surface describes the designs or holds outside the table'
@@ -543,15 +684,15 @@ entries:
     symbol: 'conditioning_'
     short: 'The smallest eigenvalue of the restricted Hessian at each term; small means a nearly flat direction.'
     register: 'conditioning of the exponents'
-    formal: 'the smallest eigenvalue of the restricted Hessian of the objective on the simplex tangent space'
+    formal: 'the smallest eigenvalue of the restricted Hessian of the loss on the simplex tangent space'
     not: 'a confidence interval'
     defined_in: 'L3, L4, R1, G-2'
 
   - id: 'ridge'
     term: 'ridge'
-    short: 'A penalty on the squared size of the exponents added to the objective. Noise on the metrics adds one, and the penalty pulls the fitted exponents toward equal weights.'
+    short: 'A penalty on the squared size of the exponents added to the loss. Noise on the metrics adds one, and the penalty pulls the fitted exponents toward equal weights.'
     register: 'ridge'
-    formal: 'the term (tau/2) w'' Sigma w added to the fit objective by Gaussian noise of covariance Sigma on the metrics (L20)'
+    formal: 'the term (tau/2) w'' Sigma w added to the loss of the fit by Gaussian noise of covariance Sigma on the metrics (L20)'
     not: 'a ridge regression fit or a ridge of the data. The model has no such penalty; the noise induces it'
     defined_in: 'L20, L6, L18'
 
@@ -607,7 +748,9 @@ entries:
     short: 'Measure of effectiveness: a measure of how well a system serves its purpose that a stakeholder states without knowing the design; here the pointing error and the launch cost.'
     register: 'MoE'
     formal: 'a metric a stakeholder states on the system in use, independent of the design'
-    not: 'an MoP, which measures the system''s performance under the engineer''s scenario'
+    not: 'an MoP, which measures the system''s performance under the engineer''s scenario; not by itself an objective (the decision-maker chooses which metrics are objectives)'
+    layer: 'decision'
+    used_in: 'systems engineering'
     defined_in: 'cubesat_r2.sysml (the mark in the doc of the metric''s element); WP23-review.md'
     aliases:
       - 'MoEs'
@@ -618,7 +761,9 @@ entries:
     short: 'Measure of performance: a measure of a system''s performance under the scenario the engineer states; here the settling time, the total mass, the control effort, the power margin, the energy balance, the peak slew power, the depth of discharge.'
     register: 'MoP'
     formal: 'a metric of the system''s performance under a stated scenario'
-    not: 'an MoE, which a stakeholder states without knowing the design'
+    not: 'an MoE, which a stakeholder states without knowing the design; not by itself an objective'
+    layer: 'decision'
+    used_in: 'systems engineering'
     defined_in: 'cubesat_r2.sysml (the mark in the doc of the metric''s element); WP23-review.md'
     aliases:
       - 'MoPs'
@@ -665,6 +810,9 @@ assumed:
     reason: 'polyhedral geometry: a maximal proper face of a polyhedron; used only where a polyhedron is meant (R1''s relative interior of a facet of the supporting envelope, L11''s blocking facet), each sentence marked vocab-exempt (WP24, A1); everywhere else the model object is the monomial term'
 
 stems:
+  - 'objective'
+  - 'loss'
+  - 'tension'
   - 'posynomial'
   - 'monomial'
   - 'program'

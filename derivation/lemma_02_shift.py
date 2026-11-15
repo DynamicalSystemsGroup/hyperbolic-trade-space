@@ -86,7 +86,7 @@ def verify(ctx):
     shift, Jw, Jw2 = r["shift_amount"], r["J_w"], r["J_w2"]
     # [L2.6] beta shifts by c: the shift amount of J(w*; .) is c
     assert sp.simplify(shift - S.c) == 0, "L2 FAIL: beta does not shift by c"
-    # [L2.7] for any weights w, w' the gap of the shifted objective equals the unshifted gap
+    # [L2.7] for any weights w, w' the gap of the shifted loss equals the unshifted gap
     assert sp.simplify(((Jw2 + shift) - (Jw + shift)) - (Jw2 - Jw)) == 0, (
         "L2 FAIL: the shift does not cancel in the gap J(w') - J(w)"
     )

@@ -71,7 +71,7 @@ from derivation.sumtools import (
 )
 from derivation.symbols import J0, L
 
-TITLE = "gradient of the soft-maximum objective and the full simplex KKT conditions"
+TITLE = "gradient of the soft-maximum loss and the full simplex KKT conditions"
 STATEMENT = (
     "d/dt J_tau(w + t v)|_0 = sum_i p_i (v . u_i) = sum_j v_j (sum_i p_i u_ij), "
     "p = softmax(tau U w), "

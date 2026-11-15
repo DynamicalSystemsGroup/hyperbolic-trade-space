@@ -45,7 +45,7 @@ def test_every_lemma_title_and_statement(pages):
         assert f"### L{n}\n" in pages["derivations"]
         assert mod.TITLE in pages["derivations"]
         assert mod.STATEMENT in pages["derivations"]
-    assert len(R.CHAIN) == 20
+    assert len(R.CHAIN) == 21  # L21, the tension, joined the chain with WP42
 
 
 def test_ledger_equals_axioms(pages):
@@ -152,16 +152,18 @@ def test_glossary_page_is_exactly_the_yaml(pages):
     assert lines[0] == "# Glossary"
     bullets = [ln for ln in lines if ln.startswith("- ")]
     headings = [ln for ln in lines[1:] if ln.startswith("## ")]
-    assert len(bullets) + len(headings) + 1 == len(lines), "no free text beyond the yaml"
+    preamble = build_generated.load_glossary_preamble(GLOSSARY)
+    assert lines[1] == " ".join(preamble.split()), "the preamble opens the page"
+    assert len(bullets) + len(headings) + 2 == len(lines), "no free text beyond the yaml"
     assert len(bullets) == len(entries)
     for e in entries:
         assert f"- **{e['term'].strip()}**: {e['short'].strip()}" in bullets
-    assert pages["glossary"] == build_generated.glossary_page(entries)
+    assert pages["glossary"] == build_generated.glossary_page(entries, preamble)
     # grouped alphabetically: headings ascend and each bullet sits under its own letter
     letters = [h[3:] for h in headings]
     assert letters == sorted(letters)
     current = None
-    for ln in lines[1:]:
+    for ln in lines[2:]:  # lines[1] is the preamble
         if ln.startswith("## "):
             current = ln[3:]
         else:
@@ -187,6 +189,8 @@ def test_glossary_validation_rejects_bad_sources(tmp_path):
         "repeated term": [_entry(), _entry(id="y")],
         "not a list": "text",
         "empty": [],
+        "layer outside the three": [_entry(layer="nested")],
+        "empty used_in": [_entry(used_in=" ")],
     }
     for label, entries in bad.items():
         with pytest.raises(ValueError):
@@ -194,6 +198,18 @@ def test_glossary_validation_rejects_bad_sources(tmp_path):
         assert label
     with pytest.raises(ValueError):
         build_generated.load_glossary(_write(tmp_path, yaml.safe_dump([_entry()])))
+    # WP42: the layer, used_in and elsewhere fields and the preamble are accepted when well formed
+    good = [_entry(layer="method", used_in="machine learning", elsewhere="optimization texts")]
+    assert load(good)[0]["layer"] == "method"
+    path = _write(tmp_path, yaml.safe_dump({"preamble": "Three layers.", "entries": good}))
+    assert build_generated.load_glossary_preamble(path) == "Three layers."
+    assert "Three layers." in build_generated.glossary_page(
+        build_generated.load_glossary(path), "Three layers."
+    )
+    with pytest.raises(ValueError):
+        build_generated.load_glossary(
+            _write(tmp_path, yaml.safe_dump({"preamble": " ", "entries": good}))
+        )
 
 
 CLASS_WORDS = (

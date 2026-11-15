@@ -11,7 +11,7 @@ expectation of the noisy sum, not the expectation of the logarithm.
 
 What this proves (symbolic d, n):
   1. J^R(w) = J_tau(w) + (tau/2) w'Sigma w exactly: the noise is a ridge of weight tau Sigma / 2
-     on the clean objective (L18's cumulant, row by row; the rows need not be independent).
+     on the clean loss (L18's cumulant, row by row; the rows need not be independent).
   2. The ridge has directional derivative tau v'Sigma w, and J_tau has the mixed second
      derivative tau Cov_p(v.u, delta.u) = tau v'C delta (L3, L4).
   3. At w*, with G_j = lambda (L3, the KKT conditions on the face), the first-order stationarity

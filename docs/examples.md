@@ -7,7 +7,7 @@ For a worked case: a synthetic satellite demonstrator, [a cubesat model](paper:s
 The primary regime's table has 2,134 feasible designs of 3,000. With the fit temperature chosen by `select_temperature` for a tenth of designs
 above V = 1:
 
-- **One term.** The tension report finds a contending set of seven metrics that trade off: unit cost, available power,
+- **One term.** The trade-off report finds a contending set of seven metrics that trade off: unit cost, available power,
   pointing error, fleet cost, momentum headroom, settling time, depth of discharge. Seven contending metrics make a 7-lemma.
 - **Two terms.** The case is read at K = 2, the K the [choosing-K checks](user-guide/choosing-k.md) pick. At the
   one-term temperature the designs' mean level below the surface falls from 0.122 to 0.043. At the
@@ -27,13 +27,13 @@ import case
 
 study = case.load_study("primary")
 fit = case.fit_study(study, K=1)
-case.tension_figure(study, fit)
+case.association_figure(study, fit)
 ```
 
 <figure markdown>
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
-<figcaption>Figure 5. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, below the participation threshold.</figcaption>
+<figcaption>Figure 5. The trade-off report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, below the participation threshold.</figcaption>
 </figure>
 
 ## Choosing K on the case

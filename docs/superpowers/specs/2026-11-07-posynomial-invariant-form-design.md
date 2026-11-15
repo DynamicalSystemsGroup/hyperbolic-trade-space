@@ -232,7 +232,7 @@ term set {(θ_k, β_k)} plugs in; kernel PCA is the feature-engineering kin to c
 ## 5. Package (src/hyperbolic_trade_space/)
 
 - `solvers.py` (numpy/scipy): `log_mean_exp(s, tau)` (τ=inf → max), `support_weights(s, tau)`
-  (softmax; τ=inf → argmax, ties averaged), `objective_and_grad(w, U, tau)`, `solve_lp(U,
+  (softmax; τ=inf → argmax, ties averaged), `loss_and_grad(w, U, tau)`, `solve_lp(U,
   min_exponent)` via `linprog(method="highs")` on (w, t): min t s.t. Uw ≤ t·1, Σw = 1,
   w ≥ min_exponent, duals → p; `solve_slsqp(U, tau, min_exponent, w0, tol, max_iter)` with analytic
   jac, warm-started from the LP; `SolveResult(w, beta, p, objective, n_iter, success, message)`.
@@ -251,7 +251,7 @@ term set {(θ_k, β_k)} plugs in; kernel PCA is the feature-engineering kin to c
   `improvement_factors` = V^{−1/w_j}, `level_set(Z, value=1.0)` → metric points on {V = value};
   `get_feature_names_out` (`ilr0..`, `log_v`); `__sklearn_tags__`. No `predict`, `decision_function`
   or `score`. Fitted: `exponents_` (n_terms, d), `log_offset_` (n_terms,), `support_weights_`,
-  `n_eff_`, `frac_above_`, `objective_`, `n_iter_` (≥ 1 also on the LP path), `basis_`,
+  `n_eff_`, `frac_above_`, `loss_`, `n_iter_` (≥ 1 also on the LP path), `basis_`,
   `training_log_v_`, `n_features_in_`, `feature_names_in_`.
 - `predictive.py`: `TradeSpaceRegressor(regressor, trade_space)` (RegressorMixin, BaseEstimator):
   `fit(X_config, Y_metrics)` fits `trade_space` (a `HyperbolicTradeSpace` or a Pipeline of

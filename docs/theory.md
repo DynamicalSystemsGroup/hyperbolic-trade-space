@@ -49,7 +49,7 @@ $$
 $$
 
 where $Z$ is free of overall scale and says where along the surface the design sits, and $\log V$ says
-how far from it. [The map is reversible](paper:thm-chart) for every row with strictly positive metrics. Holes in the $Z$ plane are candidates for white space, places no evaluated design occupies.
+how far from it. [The map is reversible](paper:thm-chart) for every row with strictly positive metrics. Regions of the $Z$ plane that no evaluated design occupies are white space.
 
 ## Elasticities and the n-lemma
 

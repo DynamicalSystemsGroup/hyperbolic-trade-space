@@ -78,14 +78,14 @@ _PV, _DV = sp.symbols("v_primal v_dual", real=True)  # I1: the optimal LP primal
 _MSUM = sp.Symbol("Mgf_sum", real=True)  # I5: the MGF of the independent sum
 _MG1 = sp.Function("Mgf1")  # I5: the single-variable MGF, applied at tau w_j
 
-_gr = sp.IndexedBase("gr")  # I10: the gradient components g_j of the objective at the minimizer
+_gr = sp.IndexedBase("gr")  # I10: the gradient components g_j of the loss at the minimizer
 _lam = sp.Symbol(
     "lambda", real=True
 )  # I10: the multiplier of the equality constraint sum_j w_j = 1
 _mu = sp.IndexedBase("mu", nonnegative=True)  # I10: the multipliers of w_j >= 0
 _P_LINE = sp.Symbol("second_derivative_nonneg_on_every_line")  # I11 premise
 _Q_CONVEX = sp.Symbol("convex")  # I11 conclusion
-_GP_OBJ = sp.Symbol("objective_is_posynomial")  # I13 premises and conclusion
+_GP_OBJ = sp.Symbol("loss_is_posynomial")  # I13 premises and conclusion
 _GP_EQ = sp.Symbol("equalities_are_monomial_equal_one")
 _GP_INEQ = sp.Symbol("inequalities_are_posynomial_at_most_one")
 _GP_STD = sp.Symbol("geometric_program_in_standard_form")
@@ -492,9 +492,9 @@ AXIOMS = {
         "first-order convexity inequality: a differentiable convex f satisfies "
         "f(v) >= f(w) + grad f(w).(v - w) for all feasible v, w",
         citation="Boyd & Vandenberghe, Convex Optimization, section 3.1.3",
-        role="turns the simplex first-order gap into an objective-error bound: "
+        role="turns the simplex first-order gap into a loss-error bound: "
         "0 <= f(w) - f* <= G, so a reported gap certifies how far a term refit is from optimal",
-        failure_mode="for a nonconvex objective (the penalized refit, a tangent refit) the "
+        failure_mode="for a nonconvex loss (the penalized refit, a tangent refit) the "
         "inequality fails and a small gap certifies only first-order stationarity",
         relation=(_GE(_f_v, _f_w + _gdv, evaluate=False),),
     ),
@@ -525,7 +525,7 @@ AXIOMS = {
         "necessary conditions) with Definition 12.4 (LICQ); for a convex f the same conditions "
         "are also Boyd & Vandenberghe, Convex Optimization, section 5.5.3, a remark and not the "
         "basis",
-        role="turns stationarity of the soft-maximum objective on the simplex into the "
+        role="turns stationarity of the soft-maximum loss on the simplex into the "
         "multiplier equations of L3: equal gradient components where no bound is active, and "
         "g_j >= lambda with complementary slackness in general",
         failure_mode="the conditions are necessary at a local minimizer of a continuously "
@@ -588,7 +588,7 @@ AXIOMS = {
         "(standard form, problem (3)), section 2.3 (g1 = g2 as g1/g2 = 1) and section 2.5 "
         "(logarithmic change of variables, problem (6)); read in the authors' PDF "
         "https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf",
-        role="names the one-term fit as a geometric program: L4 shows that its objective is a "
+        role="names the one-term fit as a geometric program: L4 shows that its loss is a "
         "posynomial in x = exp(w) and its simplex constraints are monomial, so the fit is a "
         "geometric program in standard form and the problem in w is its convex form",
         failure_mode="holds for a program that meets all three premises; a negative coefficient, "
@@ -598,7 +598,7 @@ AXIOMS = {
         "terms): that fit is not a geometric program as a whole",
         relation=(sp.Equivalent(sp.And(_GP_OBJ, _GP_EQ, _GP_INEQ), _GP_STD),),
         objects=(
-            ("objective", _GP_OBJ),
+            ("loss", _GP_OBJ),
             ("equalities", _GP_EQ),
             ("inequalities", _GP_INEQ),
             ("conclusion", _GP_STD),
@@ -616,7 +616,7 @@ AXIOMS = {
         "permutation average of a program that is convex and symmetric in its terms, and for "
         "the concave logarithm (the convex function -log) in Gibbs' inequality",
         failure_mode="holds for every convex f and every convex combination; for a function "
-        "that is not convex it fails, which is how L16 exhibits that the several-term objective "
+        "that is not convex it fails, which is how L16 exhibits that the several-term loss "
         "is not convex",
         relation=(
             _LE(_JF_MEAN, _JMEAN_F, evaluate=False),
@@ -634,7 +634,7 @@ AXIOMS = {
         "section 5.4 defines the generalized geometric program with a generalized posynomial "
         "objective and inequalities and monomial equalities); read in the authors' PDF "
         "https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf",
-        role="names the exponential of the fixed-weight objective of L16 as a generalized "
+        role="names the exponential of the fixed-weight loss of L16 as a generalized "
         "posynomial: a product of positive powers of posynomials and of monomials",
         failure_mode="a power that is not positive, a posynomial with a negative coefficient or "
         "a difference of posynomials leaves the class",
@@ -659,8 +659,8 @@ AXIOMS = {
         "book's text (Kent State, pages as in the printed edition, p. 333), not the "
         "publisher's: to be confirmed by the author against the printed second edition",
         role="turns a first-order stationary point of the soft-weight fit, at which the Hessian "
-        "D - kappa M of the soft objective is positive definite on the tangent space of the "
-        "active face, into a strict local minimizer of that objective: the certificate of L17",
+        "D - kappa M of the soft loss is positive definite on the tangent space of the "
+        "active face, into a strict local minimizer of that loss: the certificate of L17",
         failure_mode="the theorem is about an exact KKT point: a numerical stationarity "
         "tolerance is not covered by it; the critical cone is contained in the tangent space "
         "of the active face (bounds with a positive multiplier fixed), so positive definiteness "
@@ -750,7 +750,7 @@ AXIOMS = {
         "positive assignment margin: gamma = min_i [s_i,k(i) - max_{k != k(i)} s_ik] > 0, where "
         "s_ik = w_k.u_i - beta_k, so every row has a unique maximizing term",
         role="gives unique maximizing terms and an assignment-stable neighborhood (radius "
-        "gamma / (2 max_i ||(u_i, -1)||_2)) on which the several-term objective equals its "
+        "gamma / (2 max_i ||(u_i, -1)||_2)) on which the several-term loss equals its "
         "fixed-assignment expression, so Proposition 3 applies: a fit whose terms are exactly "
         "optimal is a local minimizer, and with gap-bounded terms the approximate-certificate "
         "corollary bounds the remaining improvement",

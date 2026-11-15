@@ -2,7 +2,7 @@
 
 The module takes a *table of designs* (configurations and their evaluated attributes) through the
 whole analysis: load, feasibility, conditioning, temperature selection and fit at K = 1, the K sweep
-with the certificate columns, the tension report, the regime comparison, nondominated counts,
+with the certificate columns, the trade-off report, the regime comparison, nondominated counts,
 candidate designs and propose-predict-check. Everything specific to the cubesat is **data**: the
 :class:`CaseSpec` named :data:`CUBESAT` lists the regimes and their files, the attributes with
 names, units and orientations, the covariates and design variables, the feasibility flag columns,
@@ -602,7 +602,7 @@ def fit_line(study, fit):
     e = fit.estimator
     return pd.DataFrame([{
         "K": fit.K, "tau": fit.tau, "band 1/tau": fit.band, "frac_above_": e.frac_above_,
-        "n_eff_": e.n_eff_, "objective_": e.objective_, "n": len(study.M),
+        "n_eff_": e.n_eff_, "loss_": e.loss_, "n": len(study.M),
         "sum of exponents": float(np.atleast_2d(e.exponents_)[0].sum()),
     }])  # fmt: skip
 
@@ -751,7 +751,7 @@ def k_table(study, fits):
     Returns
     -------
     pandas.DataFrame
-        Columns ``K``, ``tau``, ``band 1/tau``, ``objective_``, ``frac_above_``, ``term rows``,
+        Columns ``K``, ``tau``, ``band 1/tau``, ``loss_``, ``frac_above_``, ``term rows``,
         ``term shares``, ``max gap``, ``status``, ``gamma`` (margin), ``radius``, ``bound``.
     """
     _, k_terms, _ = _lib()
@@ -826,7 +826,7 @@ def mean_slack_fixed_tau(study, fits, tau=None):
     -------
     pandas.DataFrame
         Columns ``K``, ``tau`` and ``mean_slack_``; ``mean_slack_`` is comparable across ``K`` at
-        a fixed temperature (``objective_`` is not).
+        a fixed temperature (``loss_`` is not).
     """
     _, k_terms, _ = _lib()
     tau = fits[min(fits)].tau if tau is None else float(tau)
@@ -973,7 +973,7 @@ def margin_scale(study, fits):
 def pca_directions(study, fit, n=3, leading=3):
     """Principal directions of the near-frontier chart coordinates of the fit (its first term).
 
-    The tension report already runs a principal component analysis on the chart coordinates ``Z``
+    The trade-off report already runs a principal component analysis on the chart coordinates ``Z``
     of the near-frontier designs; this table reads it: the share of the spread along each of the
     first ``n`` directions and the metrics that load most on it.
 
@@ -996,7 +996,7 @@ def pca_directions(study, fit, n=3, leading=3):
     rep = _reports(study, fit)[0]
     rows = []
     for i in range(min(n, len(rep.explained_spread))):
-        load = np.asarray(rep.tension_loadings[i], float)
+        load = np.asarray(rep.spread_loadings[i], float)
         load = load if load[np.argmax(np.abs(load))] > 0 else -load
         top = np.argsort(-np.abs(load))[:leading]
         rows.append({
@@ -1011,9 +1011,9 @@ MIN_NEAR_FRONTIER = 10
 
 
 def term_reports(estimator, M, band, **kw):
-    """Every term's tension report, the guard of ten applied per term and not over all terms.
+    """Every term's trade-off report, the guard of ten applied per term and not over all terms.
 
-    The library's ``tension_report`` refuses a fit at K > 1 when any one term has fewer than
+    The library's ``trade_off_report`` refuses a fit at K > 1 when any one term has fewer than
     ``min_near_frontier`` near-frontier rows. The fit itself (exponents, cells, shares, the
     contending sets on each term's rows) exists for every term, and only the association
     reading needs the rows, so the report is called with the library's guard set to zero and
@@ -1029,16 +1029,16 @@ def term_reports(estimator, M, band, **kw):
     band : float
         The near-frontier band.
     **kw
-        Passed to ``tension_report`` (``association``).
+        Passed to ``trade_off_report`` (``association``).
 
     Returns
     -------
-    list of TensionReport
+    list of TradeOffReport
         One per term; a term without the rows carries an association it does not stand behind,
         which :func:`has_reading` tells apart and no caller reads.
     """
     hts, _, _ = _lib()
-    r = hts.tension_report(estimator, M, band=band, min_near_frontier=0, **kw)
+    r = hts.trade_off_report(estimator, M, band=band, min_near_frontier=0, **kw)
     return r if isinstance(r, list) else [r]
 
 
@@ -1075,7 +1075,7 @@ def _sorted_contending(rep, names):
     return [names[rep.contending_set[i]] for i in order]
 
 
-def tension_table(study, fit, band=None):
+def trade_off_table(study, fit, band=None):
     """Per term: the contending set (largest exponent first) and the facts of its report.
 
     Parameters
@@ -1696,21 +1696,21 @@ def candidate_table(study, fit):
 
 
 def white_space_targets(study, n=3, resolution=30, threshold=2.0):
-    """The most isolated holes of the chart and the attributes that put a design on V = 1 there.
+    """The most isolated white space of the chart, with the attributes that put a design on V = 1.
 
     Parameters
     ----------
     study : Study
         A subset view (see :func:`view_study`).
     n : int
-        Number of well-separated holes.
+        Number of well-separated points of white space.
     resolution, threshold : int, float
         Grid and isolation threshold of ``find_holes``.
 
     Returns
     -------
     pandas.DataFrame
-        ``hole score`` and one column per attribute in attribute units.
+        ``white-space score`` and one column per attribute in attribute units.
     """
     from hyperbolic_trade_space.gaps import find_holes, frontier_targets
 
@@ -1732,7 +1732,9 @@ def white_space_targets(study, n=3, resolution=30, threshold=2.0):
         tg["attributes"], columns=[f"{spec.short[a]} ({spec.units[a]})" for a in study.attrs]
     )
     tab.insert(
-        0, "hole score", hscore[[int(np.argmin(np.linalg.norm(holes - p, axis=1))) for p in pick]]
+        0,
+        "white-space score",
+        hscore[[int(np.argmin(np.linalg.norm(holes - p, axis=1))) for p in pick]],
     )
     return tab
 
@@ -2250,7 +2252,7 @@ def _member_title(rep, who):
     """A panel title that says what the count counts: the members of the exact-maximum support.
 
     The panel outlines the contending set (the support of the exact-maximum fit on the term's
-    rows, the tension report's) on the diagonal; the exponent in each label is the working
+    rows, the trade-off report's) on the diagonal; the exponent in each label is the working
     temperature's, which grades how strongly a member contends and can be small.
     """
     n = int(rep.n_lemma)
@@ -2259,12 +2261,12 @@ def _member_title(rep, who):
 
 
 @_legible
-def tension_figure(study, fit, band=None):
+def association_figure(study, fit, band=None):
     """Association among the near-frontier designs, one map per term.
 
     Every term is drawn. A term whose near-frontier rows do not meet the guard
     (:func:`has_reading`) keeps its title, labels and contending set, its cells are empty and one
-    line inside the panel gives the count (``plot_tensions``).
+    line inside the panel gives the count (``plot_association``).
 
     Parameters
     ----------
@@ -2282,16 +2284,96 @@ def tension_figure(study, fit, band=None):
     fig, axes = plt.subplots(len(reps), 1, figsize=(FIGURE_WIDTH_IN, 6.8 * len(reps)),
                              squeeze=False)  # fmt: skip
     for k, (ax, rep) in enumerate(zip(axes[:, 0], reps, strict=True)):
-        plotting.plot_tensions(rep, names=study.names, ax=ax)
+        plotting.plot_association(rep, names=study.names, ax=ax)
         ax.set_title(_wrap(_member_title(rep, f"term {k + 1}"), 60))
         plt.setp(ax.get_xticklabels(), rotation=90, ha="center")
     fig.tight_layout()
     return fig
 
 
+TENSION_LIMIT = 1.3
+"""The colour scale of the tension matrix: |tension| from 10**-1.3 to 10**1.3 about 1."""
+
+
+@_legible
+def tension_matrix_figure(study, fit):
+    """The tension matrix of every term, at the term's balanced point, cut to the metrics that
+    carry an exponent on the term (sorted by exponent, largest first).
+
+    A cell is the change in the column metric per one unit of the row metric's conditioned value,
+    along the term: ``hyperbolic_trade_space.tension_matrix``. The metrics with no exponent on the
+    term are not drawn and the line under the panel names them, so a zero or a blank cell is not
+    shown. The grey diagonal is a metric against itself.
+
+    Parameters
+    ----------
+    study : Study
+    fit : Fit
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
+    from matplotlib.colors import TwoSlopeNorm
+
+    hts, _, _ = _lib()
+    plt = _plt()
+    T = hts.tension_matrix(fit.estimator, study.M)
+    W = np.atleast_2d(fit.estimator.exponents_)
+    names = list(study.names)
+    norm = TwoSlopeNorm(vcenter=0.0, vmin=-TENSION_LIMIT, vmax=TENSION_LIMIT)
+    cmap = plt.get_cmap("BrBG")
+    fig, axes = plt.subplots(len(W), 1, figsize=(FIGURE_WIDTH_IN, 7.4 * len(W)), squeeze=False)
+    for k, ax in enumerate(axes[:, 0]):
+        w = W[k]
+        keep = [
+            j for j in np.argsort(-w, kind="stable") if w[j] > hts.estimator.PARTICIPATION_THRESHOLD
+        ]
+        gone = [names[j] for j in range(len(w)) if j not in set(keep)]
+        n = len(keep)
+        for a, i in enumerate(keep):
+            for b, j in enumerate(keep):
+                if i == j:
+                    ax.add_patch(plt.Rectangle((b - 0.5, a - 0.5), 1, 1, fc="#d9d9d9", ec="none"))
+                    continue
+                v = T[k, i, j]
+                col = cmap(norm(np.log10(-v)))
+                ax.add_patch(plt.Rectangle((b - 0.5, a - 0.5), 1, 1, fc=col, ec="none"))
+                lum = 0.2126 * col[0] + 0.7152 * col[1] + 0.0722 * col[2]
+                size = abs(v)
+                text = (
+                    f"{-size:.2f}"
+                    if size < 1
+                    else (f"{-size:.1f}" if size < 10 else f"{-size:.0f}")
+                )
+                ax.text(b, a, text, ha="center", va="center",
+                        color="black" if lum > 0.5 else "white")  # fmt: skip
+        ax.set_xlim(-0.5, n - 0.5)
+        ax.set_ylim(n - 0.5, -0.5)
+        ax.set_aspect("equal")
+        ax.set_xticks(range(n), [names[j] for j in keep], rotation=90)
+        ax.set_yticks(range(n), [f"{names[j]}  w={w[j]:.2f}" for j in keep])
+        ax.tick_params(length=0)
+        for side in ax.spines.values():
+            side.set_visible(False)
+        ax.set_xlabel(
+            _wrap("column: the metric that gives way. No exponent on this term, so not drawn: "
+                  + ", ".join(gone), 60)
+        )  # fmt: skip
+        ax.set_ylabel("row: the metric that rises")
+        ax.set_title(f"term {k + 1}: {n} of {len(w)} metrics carry an exponent")
+        sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
+        cb = fig.colorbar(sm, ax=ax, fraction=0.035, pad=0.03)
+        cb.set_ticks([-1, 0, 1], labels=["0.1", "1", "10"])
+        cb.set_label("size of the tension (log scale)")
+        cb.outline.set_visible(False)
+    fig.tight_layout()
+    return fig
+
+
 @_legible
 def regime_figure(spec=CUBESAT, n_max=None):
-    """The tension maps of every regime side by side.
+    """The association maps of every regime side by side.
 
     Parameters
     ----------
@@ -2310,7 +2392,7 @@ def regime_figure(spec=CUBESAT, n_max=None):
     for ax, regime in zip(axes[:, 0], spec.regimes, strict=True):
         st = load_study(regime, spec, n_max)
         rep = _reports(st, fit_study(st))[0]
-        plotting.plot_tensions(rep, names=st.names, ax=ax)
+        plotting.plot_association(rep, names=st.names, ax=ax)
         ax.set_title(_member_title(rep, regime))
         plt.setp(ax.get_xticklabels(), rotation=40, ha="right")
     fig.tight_layout()

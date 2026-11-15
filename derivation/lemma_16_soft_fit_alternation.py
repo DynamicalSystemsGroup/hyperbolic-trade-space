@@ -1,5 +1,5 @@
-"""L16 - soft-weight alternation: the symmetry argument, the bound by the fixed-weight objective,
-and the fixed-weight objective as a generalized posynomial.
+"""L16 - soft-weight alternation: the symmetry argument, the bound by the fixed-weight loss,
+and the fixed-weight loss as a generalized posynomial.
 
 Setting.  K terms with exponents w_k on the simplex and offsets beta_k = J_tau(U w_k) (the log-mean-
 exp over ALL N designs, so every design constrains every term).  Row i has score x_ik = w_k.u_i -
@@ -31,11 +31,11 @@ What this proves (symbolic K, d, N; plain SymPy):
          -Phi_i  <=  sum_k alpha_ik s_ik  -  H_i / kappa,        H_i = -sum_k alpha_ik log alpha_ik,
      with equality when x_i = x0_i (the weights' own model).  Averaged over the rows, the
      alpha-weighted slack regroups as sum_k (n_k/N)(beta_k - ubar_k . w_k) with n_k = sum_i alpha_ik
-     and n_k ubar_k = sum_i alpha_ik u_i.  The fixed-weight objective is this sum less the constant
+     and n_k ubar_k = sum_i alpha_ik u_i.  The fixed-weight loss is this sum less the constant
      E = (1/(kappa N)) sum_i H_i, which does not depend on W (so it has the same minimizers as
      the sum): F(W) <= G_alpha(W) - E for every W, with equality at the weights' own model.  This is
      the arithmetic-geometric mean inequality applied to the sum over terms.
-(iii) The program.  With x_kj = exp(w_kj), the exponential of the fixed-weight objective is a
+(iii) The program.  With x_kj = exp(w_kj), the exponential of the fixed-weight loss is a
      product over terms of positive powers of the posynomial P_k(x) = (1/N) sum_i prod_j
      x_kj^(tau u_ij) and of the monomial prod_j x_kj^(-ubar_kj): a generalized posynomial in x
      (the tutorial's section 5.3; I15).  The program minimizes its logarithm, as in L4.22.
@@ -57,9 +57,9 @@ TITLE = "soft-weight alternation: symmetry, the fixed-weight bound and the gener
 STATEMENT = (
     "Soft-weight alternation: with weights alpha_ik = softmax_k(kappa score_ik) from the current "
     "model, (i) a convex program symmetric in the terms attains its minimum with all terms "
-    "equal, so the objective over all terms is not convex in them in general; (ii) the soft "
-    "model's slack is bounded above by the fixed-weight objective, with equality at the weights' "
-    "own model; (iii) the fixed-weight objective is a generalized posynomial in exp(w)."
+    "equal, so the loss over all terms is not convex in them in general; (ii) the soft "
+    "model's slack is bounded above by the fixed-weight loss, with equality at the weights' "
+    "own model; (iii) the fixed-weight loss is a generalized posynomial in exp(w)."
 )
 AXIOMS_USED = ["A1", "A2", "A3", "A6", "I14", "I15"]
 
@@ -311,7 +311,7 @@ def verify(ctx):
     )
     # [L16.43] the mean of the nonnegative Jensen slacks is nonnegative: F <= G_alpha - E
     assert r["rows_nonneg"] is True, (
-        "L16 FAIL: the soft slack is not bounded by the fixed-weight objective"
+        "L16 FAIL: the soft slack is not bounded by the fixed-weight loss"
     )
     # [L16.44] the alpha-weighted mean slack regroups by terms
     assert r["regroup_gap"] == 0, "L16 FAIL: the weighted mean slack does not regroup by terms"
@@ -321,7 +321,7 @@ def verify(ctx):
     assert r["mono"], "L16 FAIL: the weighted mean term is not a monomial in x"
     # [L16.47] the power n_k/(N tau) is positive
     assert r["power_positive"] is True, "L16 FAIL: the power of P_k is not positive"
-    # [L16.48] the logarithm of the product over terms is the fixed-weight objective
+    # [L16.48] the logarithm of the product over terms is the fixed-weight loss
     assert r["log_gap"] == 0, "L16 FAIL: log of the product is not G_alpha"
     # [L16.49] the product over the terms is a generalized posynomial (I15's premise held at L16.31)
     assert r["generalized_posynomial"], "L16 FAIL: not a generalized posynomial"

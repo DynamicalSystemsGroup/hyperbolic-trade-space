@@ -26,7 +26,7 @@ BLOB = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/mai
 CHECK_COMMAND = "uv run python -m derivation.proofmap"
 PARTS = (
     ("The fit and its geometry", 1, 11),
-    ("The solver for K > 1 and its three levels of guarantee", 12, None),
+    ("The solver for K > 1, its three levels of guarantee, and the tension", 12, None),
 )  # fmt: skip
 """Name, first and last lemma of each part; the last of the final part is the record's last."""
 KIND_ORDER = ("computed", "axiom", "result")
@@ -461,7 +461,7 @@ def checker(path=RECORD) -> Md:
         "are the same set. A proved result is imported from an earlier proof and applied by a "
         "step. A symbol declared positive, nonnegative or real is declared as a premise, never "
         "assumed silently: the last column of the second table counts them per file, and in L14 "
-        "the premise that every exponent vector minimizes its term objective enters as the sign "
+        "the premise that every exponent vector minimizes its term loss enters as the sign "
         "of the nonnegative symbol dfk. The fingerprint of each step (its tag, "
         "prose and line of code) and of each ledger entry equals the record's.\n\n"
         + head + "\n\n" + per_file

@@ -1752,12 +1752,71 @@ words_added = 14
 job = "the open item is the supervisor's: a submartingale property, outward in expectation, with a convergence result when the expected progress ceases; future work, no conditions derived (WP36-decisions.md, 2026-11-14, 12:20)"
 reader = "the reader who would read the search section as promising a monotone loop"
 
+# WP42 Amendment 1 (the build after the spike): tension, the glossary's layers, loss. Each row says what
+# the added words do; the deletions it makes are the [[cut]] rows below.
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 14
+job = "objectives are glossed at first use (the measures the decision-maker wants more of), so the word that stays with the decision is defined where the paper first meets it; PCA's sentence says what it keeps in plain words, since 'loss' is now the method layer's word"
+reader = "the decision-maker meeting objective before the notation section"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 89
+job = "the three nested optimizations in brief (decision, design, method), each with its own word, and where objective, constraint and loss belong; points to Appendix A, which gives each word with its layer"
+reader = "the reader from decision analysis, optimization or machine learning, for whom objective and loss mean different things"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 229
+job = "the definition of tension beside the elasticity (WP42 Amendment 1): the derivative along the term in the conditioned metrics, its negative, zero, blank and reciprocal cases, the term's matrix from the fit and a design's tensions from the data as two objects, the route to the attributes' own units, and that it is a rate and not an effect of changing a variable"
+reader = "the reader who will read a number off the tension matrix or the Section 9 sentence and must know what it is and is not"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 236
+job = "Theorem L21 in the form of the other results: statement, hypotheses, sketch and the pointer to its script, so the definition of tension has its derivation in one place with its steps in Appendix B"
+reader = "the reader who checks the mathematics"
+
 [[raise]]
 date = "2026-11-14"
 section = "Case construction"
 words_added = 20
 job = "Figure 3's caption counts the arrows that leave the slew experiment's box (eleven) and says how the box's own ten of thirteen relates to them"
 reader = "the reader who counted the arrows against the box's ten of thirteen"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 287
+job = "Figure 7's caption for the tension matrix (what a cell is, the diagonal, which metrics are drawn, the scale, the elasticity as companion), the sentence that says the matrices are read from the fit while the association stays in the package, and the one generated sentence on the pick's tension (Section 9), which the supervisor accepted as drafted"
+reader = "the decision-maker and the practitioner reading the case"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 6
+job = "the plain words of the glossary: trade-offs for the regional ones, white space for the unoccupied region"
+reader = "the reader who met the glossary's one word for each object"
+
+[[raise]]
+date = "2026-11-14"
+section = "Future work and final remark"
+words_added = 1
+job = "dents and disconnected regions replaces dents and holes, since hole is reserved for the topological object of a later study"
+reader = "the reader of the future-work list"
+
+[[cut]]
+date = "2026-11-14"
+section = "Case analysis"
+words_removed = 173
+no_longer_did = "Figure 7 as the association among near-frontier designs, its caption (the Pearson correlation, the outlined contending set, the near-collinear pair, 'peak slew power carries no exponent at K = 1; here it leads term 1', the thin-term line), its claims rows and tests: the association is an analysis of designs and not of the model, stays in the package as plot_association, and the paper's figure draws the model's own rates"
+authority = "the supervisor, 'Compact tension matrix (Recommended)' (WP42-decisions.md, 2026-11-14, 23:00); the 173 words are the old caption and its shows-line, counted before the raise row above, whose 287 is the new caption, shows-line, sentence and generated paragraph"
 
 [[raise]]
 date = "2026-11-14"

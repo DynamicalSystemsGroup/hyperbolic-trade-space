@@ -3,7 +3,9 @@
 The table is never typed. ``glossary.yaml`` (the shared source of the register's phrases) holds
 the fields ``term``, ``symbol``, ``register``, ``formal``, ``not``, ``defined_in``; the table lists
 one row per entry in the glossary's order. An optional ``anchor`` field (the scikit-learn or Boyd
-and Vandenberghe usage an entry anchors to) is shown as a column when any entry has it.
+and Vandenberghe usage an entry anchors to) is shown as a column when any entry has it, as is the
+optional ``layer`` (decision, design or method: the layer of the nested optimizations the word
+belongs to).
 """
 
 from __future__ import annotations
@@ -36,13 +38,18 @@ def register_rows(entries=None) -> tuple[list[str], list[list[str]]]:
     """Headers and rows of the register table, one row per glossary entry."""
     entries = glossary_entries() if entries is None else entries
     anchored = any(e.get("anchor") for e in entries)
+    layered = any(e.get("layer") for e in entries)
     headers = ["Term", "Symbol", "Meaning in this paper", "Not", "Defined in"]
+    if layered:
+        headers.append("Layer")
     if anchored:
         headers.append("Anchored to")
     rows = []
     for e in entries:
         row = [e["register"], symbol_markup(e["symbol"]) if e.get("symbol") else "", e["formal"],
                e["not"], e.get("defined_in", "")]  # fmt: skip
+        if layered:
+            row.append(e.get("layer", ""))
         if anchored:
             row.append(e.get("anchor", ""))
         rows.append(row)

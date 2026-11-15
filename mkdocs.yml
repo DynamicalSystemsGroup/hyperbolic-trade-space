@@ -70,7 +70,8 @@ nav:
       - Conditioning: user-guide/conditioning.md
       - Fitting: user-guide/fitting.md
       - Choosing K: user-guide/choosing-k.md
-      - Tensions: user-guide/tensions.md
+      - Trade-offs and tensions: user-guide/tensions.md
+      - Routes back from a tension: user-guide/tension-routes.md
       - Chart: user-guide/chart.md
       - Prediction: user-guide/prediction.md
       - Termination: user-guide/termination.md

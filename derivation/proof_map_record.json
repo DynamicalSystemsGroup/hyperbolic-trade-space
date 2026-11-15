@@ -232,9 +232,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "for any weights w, w' the gap of the shifted objective equals the unshifted gap",
+     "prose": "for any weights w, w' the gap of the shifted loss equals the unshifted gap",
      "code": "assert sp.simplify(Jw2 + shift - (Jw + shift) - (Jw2 - Jw)) == 0, \"L2 FAIL: the shift does not cancel in the gap J(w') - J(w)\"",
-     "fingerprint": "d30e4c41f73f51d76ca9a495c99034c65d247b7806621f85a1240699263cf51d",
+     "fingerprint": "909489f980b954e86698a8ca4e73e31bfb01266e6dde1cb7b00b7d3d44690668",
      "result": "Uniform shift: J_tau(w; U + c 1^T) = J_tau(w; U) + c"
     },
     {
@@ -268,7 +268,7 @@
    ],
    "results": [
     {
-     "name": "gradient of the soft-maximum objective and the full simplex KKT conditions",
+     "name": "gradient of the soft-maximum loss and the full simplex KKT conditions",
      "steps": [
       1,
       2,
@@ -319,7 +319,7 @@
      "prose": "A2: if Z were all d coordinates the simplex sum would be 0, but A2 makes it 1",
      "code": "whole_zero_set = sp.Eq(A2.rule(0)[1], sp.Sum(sp.S.Zero, (j, 1, d)).doit())",
      "fingerprint": "1b9aee763f1de9719d492ffe04594ae4b6cb73885ea6d30c7e9be6152710e717",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.2",
@@ -329,7 +329,7 @@
      "prose": "the combination alpha 1 + sum_j gamma_j e_j has component alpha + gamma_m at m",
      "code": "licq_comp = al + piece_in_range(sp.Sum(gam[j] * sp.KroneckerDelta(j, J0), (j, 1, d)).doit(), S)",
      "fingerprint": "7ce96f3faf6d152078812e384dbdc948ba782ebf2651b183eb3286b2244d5388",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.3",
@@ -339,7 +339,7 @@
      "prose": "a coordinate outside Z (gamma = 0) and one inside Z force alpha = 0 and gamma = 0",
      "code": "licq_solution = sp.solve([licq_comp.subs(gam[J0], 0), licq_comp], [al, gam[J0]], dict=True)",
      "fingerprint": "8d72ae91759f72b0db9e1618f5ea2698c148e23a976eb99c3ea2e4fc90121784",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.4",
@@ -349,7 +349,7 @@
      "prose": "negative control: with Z all coordinates only the inside equation remains, alpha free",
      "code": "licq_control = sp.solve([licq_comp], [al, gam[J0]], dict=True)",
      "fingerprint": "353d163dd672508ccf26ebf1a81f3634e06fd4d412034e2987074a2ab1d24899",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.5",
@@ -361,7 +361,7 @@
      "prose": "I10: the first-order conditions have gradient components g_j and multipliers mu_j >= 0",
      "code": "gr, mu = (I10.obj('gradient'), I10.obj('mu'))",
      "fingerprint": "5d9b1bf029e996c62403ddc510c83bf359921c1373f9dc713e389dc8a693fb40",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.6",
@@ -373,7 +373,7 @@
      "prose": "I10: stationarity of J - lambda (sum_j w_j - 1) - sum_j mu_j w_j along e_{j0}",
      "code": "stat_full = sp.Sum(delta * I10.rule(0)[0], (j, 1, d)).doit()",
      "fingerprint": "8a332b98683177a260f81aab8a26647fbb4aca690c6120fa358dbaea77aa19c8",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.7",
@@ -385,7 +385,7 @@
      "prose": "I10: g_j = lambda + mu_j and w_j mu_j = 0 termwise, so sum_j w_j (g_j - lambda) = 0",
      "code": "zero_sum = I10.rewrite(sp.Sum(w[j] * (sp.solve(I10.rule(0)[0], gr[j])[0] - LAM), (j, 1, d)), only=(2,)).doit()",
      "fingerprint": "73009fa6077654487f5991d7c3fb2e5c751424ddb373064dd8cad23fff512102",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.8",
@@ -397,7 +397,7 @@
      "prose": "A2: sum_j w_j = 1 reduces sum_j w_j (g_j - lambda) to w.g - lambda",
      "code": "reduced = A2.rewrite(linear(sp.Sum(w[j] * (gr[j] - LAM), (j, 1, d))))",
      "fingerprint": "0aa1ba6d590c5ab64473d967e91838f1303be0f8ee35eaaf9a1dad2e41d5ae72",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.9",
@@ -409,7 +409,7 @@
      "prose": "R1: the balanced point has w_j > 0, so w_j is a positive coordinate",
      "code": "wp = R1.positive_symbol('wp')",
      "fingerprint": "2cb48e8151f8421fb30b70c3c82c9be666d484fa3bd3952097eb34742f9c1426",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.10",
@@ -421,7 +421,7 @@
      "prose": "I10: the multiplier mu_j >= 0 of a coordinate",
      "code": "mup = I10.nonneg_symbol('mup')",
      "fingerprint": "a176a1311fa417c0d9891de81607663c3587ffab71d3cafb94f10793b9deda2d",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.11",
@@ -433,7 +433,7 @@
      "prose": "I10 with R1: w_j mu_j = 0 and w_j > 0 (so w_j != 0) force mu_j = 0",
      "code": "mu_zero = [sp.simplify(I10.rule(2)[1] / wp)] if wp.is_nonzero is True else []",
      "fingerprint": "11504a0e2c711f278ad93d4c5cb04546914ec89460893fb72962fc122897b1d4",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.12",
@@ -443,7 +443,7 @@
      "prose": "d/dt J_tau(w + t v) at 0 equals sum_i p_i (v.u_i), p the softmax of tau U w",
      "code": "assert sp.simplify(linearize(c['dJ']) - linearize(claim_L)) == 0, 'L3 FAIL: d/dt J(w+tv)|0 != sum_i p_i (v.u_i)'",
      "fingerprint": "662445f2334f92fd1155ae70b040034004c90d5d037b188b17c0640f95a8decd",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.13",
@@ -453,7 +453,7 @@
      "prose": "swapping the finite sums: sum_i p_i (v.u_i) = sum_j v_j sum_i p_i u_ij for any p",
      "code": "assert sum_swap_equal(lhs, rhs), 'L3 FAIL: sum_i p_i (v.u_i) != sum_j v_j sum_i p_i u_ij'",
      "fingerprint": "88c13e13afc8b2f30d9a8c9182f8654157a570d26e4759e44588797db6486c78",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.14",
@@ -463,7 +463,7 @@
      "prose": "the swap identity holds at the softmax weights p = softmax(tau U w)",
      "code": "assert linearize(inst_lhs) == linearize(sp.Sum(p_def(i) * sp.Sum(u[i, j] * v[j], (j, 1, d)), (i, 1, n))) and linearize(inst_lhs) == linearize(claim), 'L3 FAIL: softmax instance of the swap identity'",
      "fingerprint": "ed1724e8167d288e866171238bf0aa38329fe30a723d04b859c9057c9b46127f",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.15",
@@ -473,7 +473,7 @@
      "prose": "hence the gradient is G_j = sum_i p_i u_ij, as v is arbitrary",
      "code": "assert linearize(replace_indexed(c['rhs_abs'], S.p, p_def)) == linearize(grad_form), 'L3 FAIL: gradient form'",
      "fingerprint": "6cba08df6c19f20d7e1a41ad61f709e3c6f340ba099d883a7e1888da4ee415fa",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.16",
@@ -483,7 +483,7 @@
      "prose": "the zero set is a proper subset of the coordinates, so some coordinate k0 has w_k0 > 0",
      "code": "assert lq['whole_zero_set'] is sp.false, 'L3 FAIL: A2 allows w = 0 on every coordinate'",
      "fingerprint": "c04ff365726377132f217801bc3ab60824945c3c8e6fd04ddc1987c69aa6db27",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.17",
@@ -493,7 +493,7 @@
      "prose": "the active gradients 1 and e_j (j in Z) are linearly independent: LICQ holds",
      "code": "assert lq['solution'] == [{lq['al']: 0, lq['gam'][J0]: 0}], 'L3 FAIL: LICQ on the simplex'",
      "fingerprint": "577537495fe70058eab35cd7e40fc9ded3f00962da7e1eb8f38dd5d62ed75317",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.18",
@@ -503,7 +503,7 @@
      "prose": "negative control: with Z all coordinates they are dependent (1 - sum_j e_j = 0)",
      "code": "assert lq['control'] == [{lq['al']: -lq['gam'][J0]}], 'L3 FAIL: LICQ negative control'",
      "fingerprint": "19a4f0300b6b3efc3ecdba867a6f4fe591132a207926f461f84187416f78e442",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.19",
@@ -513,7 +513,7 @@
      "prose": "the constraint sum_j w_j has directional derivative sum_j v_j",
      "code": "assert sp.simplify(c['dsimplex'] - sp.Sum(v[j], (j, 1, d)).doit()) == 0, 'L3 FAIL: derivative of the simplex constraint'",
      "fingerprint": "c836c260eeeca74ecb41644749f4e2306511297456c750beff77a029d593bd68",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.20",
@@ -525,7 +525,7 @@
      "prose": "I10, R1: along e_j0 it reads G_j0 - lambda - mu_j0, and w_j0 > 0 forces mu_j0 = 0",
      "code": "val = replace_indexed(piece_in_range(kb['stat_full'], S), kb['gr'], G).subs(I10.obj('mu')[J0], kb['positive_case_solution'][0])",
      "fingerprint": "f9a5041efb935aa70ed4db345dc2e06337af2f537cd8b0dafa2955b2add5ef59",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.21",
@@ -535,7 +535,7 @@
      "prose": "the stationarity condition along e_j0 evaluates to G_j0 - lambda = 0",
      "code": "assert sp.simplify(val - (G(J0) - LAM)) == 0, 'L3 FAIL: stationarity along e_{j0}'",
      "fingerprint": "7f4af2dc30f9224ef642a8e5b0b0a4dbd63e07e5a01aabfd6ad219a2c079c426",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.22",
@@ -545,7 +545,7 @@
      "prose": "G_j0 = lambda for every j0, so all components of U^T p are equal",
      "code": "assert sp.simplify(gap - (G(J0) - G(K0))) == 0, 'L3 FAIL: components of U^T p not equal'",
      "fingerprint": "87ffe544ea5ed4aac29a0463b477bcbfe90519150b877652cb7f85c20aa09f8a",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.23",
@@ -555,7 +555,7 @@
      "prose": "full simplex KKT: stationarity along e_j0 gives mu_j0 = G_j0 - lambda",
      "code": "assert sp.simplify(val_full - (kb['gr'][J0] - LAM - mu[J0])) == 0, 'L3 FAIL: stationarity of the full Lagrangian along e_{j0}'",
      "fingerprint": "f780b94ca3bb762b82d69e197963b7e663f62f880db6ec73e1975f98aa4aa7b8",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.24",
@@ -565,7 +565,7 @@
      "prose": "mu_j >= 0, hence G_j >= lambda for every j",
      "code": "assert mu[J0].is_nonnegative is True, 'L3 FAIL: mu_j >= 0 not carried (g_j >= lambda)'",
      "fingerprint": "5d4f3a6bb6457a6fa51b654092d25b0f1a738cdca1181e633dbb16cd8cd93b01",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.25",
@@ -575,7 +575,7 @@
      "prose": "complementary slackness summed with sum_j w_j = 1 gives lambda = w.G",
      "code": "assert kb['lambda_solved'] == [kb['lambda_abstract']], 'L3 FAIL: complementary slackness with sum_j w_j = 1 does not give lambda = w.g'",
      "fingerprint": "464b6dbc7c0df47f152c8777c5072085b43fa42ec90a2c13c10b0de6f36aff8a",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.26",
@@ -585,7 +585,7 @@
      "prose": "a coordinate with w_j > 0 and w_j mu_j = 0 forces mu_j = 0, i.e. G_j = lambda",
      "code": "assert kb['positive_case_solution'] == [0], 'L3 FAIL: w_j > 0 and w_j mu_j = 0 do not force mu_j = 0'",
      "fingerprint": "7857615c49a394d7b129175655fdcb3c95eaffa7065b645d87ef7d1108bac679",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.27",
@@ -595,7 +595,7 @@
      "prose": "lambda = w.G instantiates at the softmax gradient G = U^T p",
      "code": "assert replace_indexed(kb['lambda_abstract'], kb['gr'], G) == sp.Sum(S.w[j] * G(j), (j, 1, d)), 'L3 FAIL: lambda = w.G at the softmax gradient'",
      "fingerprint": "4aaf8c7af6a199ba6404f8459b5e8dcf179d96ecd83cfa11a0773fc910de038a",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.28",
@@ -605,7 +605,7 @@
      "prose": "constructed instance: at tau = inf primal and dual values are equal (both 1)",
      "code": "assert ex['hard_primal'] == ex['hard_dual'] == 1, 'L3 FAIL: hard-support instance not optimal'",
      "fingerprint": "b79b6760a154bf2a18edcb3bfcaf48a540939ade1cec7c3bdb779f5bafaeb272",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.29",
@@ -615,7 +615,7 @@
      "prose": "the hard-support geometry is balanced: U^T p = (1, 1)",
      "code": "assert ex['balanced'][0] == ex['balanced'][1], 'L3 FAIL: hard-support instance not balanced'",
      "fingerprint": "417c7687d7792a1199605896396390c27491bab67b324d58092ba9ea41300dac",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.30",
@@ -625,7 +625,7 @@
      "prose": "at tau = 1, J is strictly convex in s on the simplex segment",
      "code": "assert ex['d2J'].is_positive is True, 'L3 FAIL: instance J_tau not convex in s'",
      "fingerprint": "9e014dccc088916a01482e7005827289e77677665c4405bb1256382493fc171f",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.31",
@@ -635,7 +635,7 @@
      "prose": "J is decreasing at s = 1, so the finite-tau minimizer is w = (1, 0)",
      "code": "assert bool(ex['dJ_at_1'].evalf() < 0), 'L3 FAIL: J_tau not decreasing toward w = (1, 0)'",
      "fingerprint": "a5d6e95556dc6b6cb9e5da93fa6e91a68d3de2215d85968691e2008cf93df5b8",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.32",
@@ -645,7 +645,7 @@
      "prose": "the finite-tau minimizer of the instance is the boundary point w = (1, 0)",
      "code": "assert ex['w_star'] == (1, 0)",
      "fingerprint": "3ce1fd121a509fb57ab87a2baabe2a046280d6dd5859e6bddf100b864a57714c",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.33",
@@ -655,7 +655,7 @@
      "prose": "at w = (1, 0), lambda = w.g equals g_1",
      "code": "assert sp.simplify(ex['lam'] - ex['g'][0]) == 0",
      "fingerprint": "f07c411149cbe2e3d8b5b84e49cc67323ce94070170ba90263d77739d50f0a7e",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.34",
@@ -665,7 +665,7 @@
      "prose": "g_2 - lambda equals minus the boundary slope of J at s = 1",
      "code": "assert sp.simplify(ex['g_inactive_minus_lambda'] + ex['dJ_at_1']) == 0, 'L3 FAIL: g_2 - lambda is not minus the boundary slope'",
      "fingerprint": "dc8e4c18a95f34dd7a049770aeff7e097eefe7cb32c8ac8c6fc385c09a9d406e",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     },
     {
      "tag": "L3.35",
@@ -675,7 +675,7 @@
      "prose": "g_2 > lambda at the inactive coordinate: balanced hard support, boundary minimizer",
      "code": "assert bool(ex['g_inactive_minus_lambda'].evalf() > 0), 'L3 FAIL: boundary instance has g_2 <= lambda'",
      "fingerprint": "8f6c3c82c2fd75263a0f9a95b1eb30f0399af4d30ceecfffd5b85f2f6e0dbd74",
-     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+     "result": "gradient of the soft-maximum loss and the full simplex KKT conditions"
     }
    ]
   },
@@ -704,7 +704,7 @@
    ],
    "results": [
     {
-     "name": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)",
+     "name": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)",
      "steps": [
       1,
       2,
@@ -744,7 +744,7 @@
      "prose": "by L3: the scores w.u_i and v.u_i and the softmax weights p, as L3 defined and proved",
      "code": "a0, sv, p_def = L3_RESULT.take(ctx, 'a0', 'sv', 'p_def')",
      "fingerprint": "6881f52b394c69b4925e22aabcc1cb0b03eb73238335c29399857f5692d6fcca",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.2",
@@ -756,7 +756,7 @@
      "prose": "A1: u = log m is real, so the scores w.u_i and v.u_i are real families",
      "code": "a_r, s_r = (A1.real_base('a_r'), A1.real_base('s_r'))",
      "fingerprint": "2a38f352417d24d82c2bf5d78ae66f0152d18194b414916e4d38c7fc5533c109",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.3",
@@ -766,7 +766,7 @@
      "prose": "d^2/dt^2 J_tau(w + t v) at 0 equals tau Var_p(v.u) for the softmax weights p",
      "code": "assert sp.simplify(linearize(c['d2']) - tau * linearize(var_L)) == 0, 'L4 FAIL: second directional derivative != tau * Var_p(v.u)'",
      "fingerprint": "57fc15a68a1ba504255402e8d327db5cd94ee4192dea898bb706bbb95941727d",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.4",
@@ -776,7 +776,7 @@
      "prose": "the softmax weights satisfy the normalization sum_i p_i = 1",
      "code": "assert sp.simplify(norm_lhs - S.p_normalized.rhs) == 0, 'L4 FAIL: softmax not normalized'",
      "fingerprint": "a2735d2ef6bfe74933672b016a780eb56f3e2ac98b8aac9e573eb394807ab319",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.5",
@@ -786,7 +786,7 @@
      "prose": "with sum_i p_i = 1: 2 Var_p(s) = sum_i sum_k p_i p_k (s_i - s_k)^2",
      "code": "assert sp.simplify(expanded - two_var) == 0, 'L4 FAIL: Var_p(s) != (1/2) double sum'",
      "fingerprint": "f7e697a91327b159d43333aee108b448b4f46201e9d00945ef453710c865b99c",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.6",
@@ -796,7 +796,7 @@
      "prose": "negative control: without sum_i p_i = 1 the identity fails, so it is used",
      "code": "assert sp.simplify(unnormalized - two_var) != 0, 'L4 FAIL: normalization not load-bearing'",
      "fingerprint": "965c71af45e9334c7b9a0302e487d2fa86ebce812c53508cb6fcfbb6ce669c25",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.7",
@@ -806,7 +806,7 @@
      "prose": "each term exp(tau a_i) of the normalizer is positive (real argument, tau > 0)",
      "code": "assert term_exp.is_positive is True, 'L4 FAIL: exp term not positive'",
      "fingerprint": "d2e11ffe96a496fe31a8d7b592063a25c819038cfcfc69fbe2d5a687f313311f",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.8",
@@ -816,7 +816,7 @@
      "prose": "the normalizer Z, a net sum of positive terms, is positive",
      "code": "assert Z_r.is_positive is True, 'L4 FAIL: normalizer not positive (net of positive terms)'",
      "fingerprint": "3a2ae78e3ccfb2d0ad94e92817323f7a5783883a612de70206747749df29babb",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.9",
@@ -826,7 +826,7 @@
      "prose": "each softmax weight p_i = exp(tau a_i) / Z is positive",
      "code": "assert p_r(i).is_positive is True, 'L4 FAIL: softmax weight not positive'",
      "fingerprint": "463ad97da25cf8e9c626d2e69efb3a1c6cceba51e1af1181c778cd078091cedc",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.10",
@@ -836,7 +836,7 @@
      "prose": "each summand p_i p_k (s_i - s_k)^2 is a positive factor times a square, so >= 0",
      "code": "assert summand.is_nonnegative is True, 'L4 FAIL: per-term p_i p_k (s_i-s_k)^2 not >= 0'",
      "fingerprint": "1a5c792c44ae757ba4df9887a646d2574dde82f61a7c8a41a5b3a6560462ec4f",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.11",
@@ -846,7 +846,7 @@
      "prose": "the double sum of nonnegative summands is nonnegative",
      "code": "assert double.is_nonnegative is True, 'L4 FAIL: net double sum not >= 0'",
      "fingerprint": "a3abb047bd2546851c631efd83efca6663547e257633587d2d4347f4799695ac",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.12",
@@ -858,7 +858,7 @@
      "prose": "A3: tau > 0, so (tau / 2) times the double sum is nonnegative: convex along every line",
      "code": "assert (A3.positive(tau) / 2 * double).is_nonnegative is True, 'L4 FAIL: (tau/2) * double sum not >= 0'",
      "fingerprint": "664fb01586bc0cc174c40f7e65828ee15ee7f26f81de4d31752f83871e84cec6",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.13",
@@ -870,7 +870,7 @@
      "prose": "I11: the second derivative along every line is >= 0, so J_tau is convex",
      "code": "assert I11.entails([sp.Equivalent(I11.obj('premise'), nonneg_everywhere)], I11.obj('conclusion')), 'L4 FAIL: convexity does not follow from the sign of the second derivative'",
      "fingerprint": "46c8c44586208851bb12f7b74a75505cb434cdac1c0c24db99cff6c220cccf5e",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.14",
@@ -882,7 +882,7 @@
      "prose": "A2: the exponents satisfy w_j >= 0, so they are real and x_j = exp(w_j) is positive",
      "code": "wn = A2.nonneg_base('wn')",
      "fingerprint": "47dec10b03ebdc377b1000d5b3732dd6093876959d0e95e43a410723f250907a",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.15",
@@ -894,7 +894,7 @@
      "prose": "A1: the log-metrics u_ij = log m_ij are real, so the exponents tau u_ij are real",
      "code": "ur = A1.real_base('ur')",
      "fingerprint": "60972e180c7f8ba53207eed944bf56ede79a617acbe4807d7aed72b0b3f1355d",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.16",
@@ -906,17 +906,17 @@
      "prose": "A2 licenses the logarithm of the positive x_j: prod_j x_j^(tau u_ij) = exp(tau w.u_i)",
      "code": "assert sp.simplify(product_to_exp_sum(score_term, A2) - sp.exp(tau * sp.Sum(wn[j] * ur[i, j], lim))) == 0",
      "fingerprint": "66ebfbcf3dfff40e51f781c72c0a049c9ab6e1f34f1c1f5be9b9624a8ebaae4d",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.17",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the objective (1/n) sum_i prod_j x_j^(tau u_ij) is a posynomial: coefficient 1/n > 0",
-     "code": "assert posy, 'L4 FAIL: the objective is not a posynomial in x = exp(w)'",
-     "fingerprint": "d11beed1505562a28371ee89b73e90f6e5ef0b1c65f2175dce71fa402e03cff4",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "prose": "the loss (1/n) sum_i prod_j x_j^(tau u_ij) is a posynomial: coefficient 1/n > 0",
+     "code": "assert posy, 'L4 FAIL: the loss is not a posynomial in x = exp(w)'",
+     "fingerprint": "40616380e25925e425be133f1f3011740a979e0d4980bfbb22ea6ef6d0d44905",
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.18",
@@ -928,7 +928,7 @@
      "prose": "A2: sum_j w_j = 1 is prod_j x_j = e (the product is exp of the sum, which is 1)",
      "code": "assert A2.rewrite(product_to_exp_sum(x_prod, A2), rename={S.w: wn}) == sp.E",
      "fingerprint": "8565ccb1affc1a0f5d9e3f7076d64a01c03cec46036a829ed1d767421078cc36",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.19",
@@ -938,7 +938,7 @@
      "prose": "prod_j x_j = e is the monomial equality (1/e) prod_j x_j = 1: positive coefficient 1/e",
      "code": "assert mono_eq, 'L4 FAIL: the simplex is not a monomial equality in x'",
      "fingerprint": "023bdf8e84598234e8e4c79ef34730090c8c86df542c04729a2ffb15e5ea3f0a",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.20",
@@ -948,7 +948,7 @@
      "prose": "w_j >= 0 is x_j >= 1: exp(y) >= 1 holds exactly for y in [0, oo)",
      "code": "assert sp.solve_univariate_inequality(sp.exp(y) >= 1, y, relational=False, domain=sp.S.Reals) == sp.Interval(0, sp.oo)",
      "fingerprint": "7da985510129945ce95aea6622a04b602ad28f658d40622283e94740cb88b9f1",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.21",
@@ -958,7 +958,7 @@
      "prose": "x_j >= 1 is the monomial inequality x_j^(-1) <= 1: coefficient 1, exponent -1",
      "code": "assert mono_ineq, 'L4 FAIL: x_j >= 1 is not a monomial bounded by one'",
      "fingerprint": "da01c16965b381980a57f9764be3e4589246fe8eac2f8c6ac427d4f35a6cb957",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.22",
@@ -967,10 +967,10 @@
       "A2"
      ],
      "results": [],
-     "prose": "A2 licenses the logs: the logarithm of the objective f0 in w is tau J_tau(w)",
+     "prose": "A2 licenses the logs: the logarithm of the loss f0 in w is tau J_tau(w)",
      "code": "assert sp.simplify(sp.log(sp.Sum(product_to_exp_sum(f0_terms, A2), (L, 1, n)) / n) - tau * J_w) == 0, 'L4 FAIL: log f0(exp w) != tau J_tau(w)'",
-     "fingerprint": "7e59f8de3a0479878a8f2671109a753ec984514d2f79e3df1419018529785bf9",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "fingerprint": "782efbf1933c4597edf68b2a57582caf9878df22e0aa8f7b945ab3273226f6e8",
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.23",
@@ -980,7 +980,7 @@
      "prose": "the problem in w (minimize log f0(exp w) = tau J_tau(w)) is convex, by L4.13",
      "code": "assert ctx['L4']['convex'] is True, 'L4 FAIL: the convex form is not convex'",
      "fingerprint": "18a0392432878b0cfceacf8cc4d4e965ca58f29bc52099211c3ee315401b6651",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.24",
@@ -989,10 +989,10 @@
       "I13"
      ],
      "results": [],
-     "prose": "I13: a posynomial objective, monomial equality and monomial inequalities make the",
-     "code": "assert I13.entails([sp.Equivalent(I13.obj('objective'), sp.true if posy else sp.false), sp.Equivalent(I13.obj('equalities'), sp.true if mono_eq else sp.false), sp.Equivalent(I13.obj('inequalities'), sp.true if mono_ineq else sp.false)], I13.obj('conclusion')), 'L4 FAIL: the one-term fit is not a geometric program in standard form'",
-     "fingerprint": "a1bbbdc5c2b8dfa00bedf29f403ab4ae08780535b802b40abe0e994812884b31",
-     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+     "prose": "I13: a posynomial loss, monomial equality and monomial inequalities make the",
+     "code": "assert I13.entails([sp.Equivalent(I13.obj('loss'), sp.true if posy else sp.false), sp.Equivalent(I13.obj('equalities'), sp.true if mono_eq else sp.false), sp.Equivalent(I13.obj('inequalities'), sp.true if mono_ineq else sp.false)], I13.obj('conclusion')), 'L4 FAIL: the one-term fit is not a geometric program in standard form'",
+     "fingerprint": "9e756ecd7410e594f69afbb5554300b9ca1099a01221680c04fd93c86d003d7b",
+     "result": "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
     }
    ]
   },
@@ -2875,9 +2875,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the LP gap is the primal objective minus the dual objective",
+     "prose": "the LP gap is the primal value minus the dual value",
      "code": "assert lp['gap_at_optimum'] == lp['primal_at_optimum'] - lp['dual_at_optimum'], 'L12 FAIL: LP gap is not primal minus dual'",
-     "fingerprint": "e41551eb541795a24955849ca52af443e33240fe01598d9c41de3fc7bba4c29b",
+     "fingerprint": "6690d69c173686249d82b76498ab74215d6504e64ba744d318d013ee6b413b3f",
      "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
@@ -3416,9 +3416,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "on the neighborhood the full objective equals the fixed-assignment expression",
-     "code": "assert r['objective_agrees'] == 0, 'L14 FAIL: full objective differs from the fixed-assignment expression'",
-     "fingerprint": "9efcf35d438ca1a45a47a74eecc75bc2697e6b69e9af5341b7a55c974f187e64",
+     "prose": "on the neighborhood the full loss equals the fixed-assignment expression",
+     "code": "assert r['loss_agrees'] == 0, 'L14 FAIL: full loss differs from the fixed-assignment expression'",
+     "fingerprint": "b91fe8fe8ff44c7e445a418182e80d90a13b905c401690dfb00735475d440177",
      "result": "Proposition 3"
     },
     {
@@ -3725,9 +3725,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "negative control: without H1 (a flat term objective, several minimizers) the stop",
+     "prose": "negative control: without H1 (a flat term loss, several minimizers) the stop",
      "code": "assert satisfiable(sp.And(by_h2, rule, zero_refit, sp.Not(stop))) is not False, 'L15 FAIL: the stop followed without the unique-minimizer hypothesis'",
-     "fingerprint": "342e0111a0073f26b2c64b479a26c907a1b5871e97911d6e9d99dd874487559f",
+     "fingerprint": "4909e9caa76bcd43aceba750c433d8f7de2bfa26f382786bd6266a33af1b13cb",
      "result": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule"
     },
     {
@@ -4301,8 +4301,8 @@
      "applies": [],
      "results": [],
      "prose": "the mean of the nonnegative Jensen slacks is nonnegative: F <= G_alpha - E",
-     "code": "assert r['rows_nonneg'] is True, 'L16 FAIL: the soft slack is not bounded by the fixed-weight objective'",
-     "fingerprint": "f4190d6550c098fba91b8dbdbd7ae67bb9697e6598e5f8630b6a0340cb0168c7",
+     "code": "assert r['rows_nonneg'] is True, 'L16 FAIL: the soft slack is not bounded by the fixed-weight loss'",
+     "fingerprint": "a93814d748d90853c391b3d975c0a12787214f2c14cef0f3e0267ef4de0ba0f8",
      "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
     },
     {
@@ -4350,9 +4350,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the logarithm of the product over terms is the fixed-weight objective",
+     "prose": "the logarithm of the product over terms is the fixed-weight loss",
      "code": "assert r['log_gap'] == 0, 'L16 FAIL: log of the product is not G_alpha'",
-     "fingerprint": "141276341f8ffd5686abd4e19dcacad98371279bd154fcb62e54288bfd626480",
+     "fingerprint": "b99222f294b6fba2fd905a8669cf8f61f4d2929785e32db5baf67d377ec364b5",
      "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
     },
     {
@@ -6641,6 +6641,264 @@
      "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
     }
    ]
+  },
+  "lemma_21_tension.py": {
+   "number": 21,
+   "axioms_used": [
+    "A1",
+    "A4"
+   ],
+   "hypotheses": [
+    {
+     "symbol": "p",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "w_i > 0 and w_j > 0 (both metrics carry an exponent on the term)"
+    },
+    {
+     "symbol": "q",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "w_i > 0 and w_j > 0 (both metrics carry an exponent on the term)"
+    },
+    {
+     "symbol": "c1",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "c_i > 0 and c_j > 0 (the sizes of alpha_i and alpha_j, whose signs are the orientations)"
+    },
+    {
+     "symbol": "c2",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "c_i > 0 and c_j > 0 (the sizes of alpha_i and alpha_j, whose signs are the orientations)"
+    }
+   ],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
+   "imports": [
+    "A1",
+    "A4"
+   ],
+   "results": [
+    {
+     "name": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units",
+     "steps": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+     ]
+    }
+   ],
+   "steps": [
+    {
+     "tag": "L21.1",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the metric m_i is strictly positive",
+     "code": "mi = A1.positive_symbol('m_i')",
+     "fingerprint": "a3ac19709b54966fb792a22e7c66be934015b670df594de7f77e5a2de26fff95",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.2",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the metric m_j is strictly positive",
+     "code": "mj = A1.positive_symbol('m_j')",
+     "fingerprint": "81ccd168202f6c35404120d4bef81c017d9a9a0a8ff7f48e031254e8ce0fc6b2",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.3",
+     "kind": "axiom",
+     "applies": [
+      "A4"
+     ],
+     "results": [],
+     "prose": "A4: x_i = a_i + s_i is strictly positive, the domain of the conditioning",
+     "code": "xi = A4.positive_symbol('x_i')",
+     "fingerprint": "273e52a629d5d1a377cdec69b70b91db2bc393b572ea313797e1d6b9e9e6ec89",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.4",
+     "kind": "axiom",
+     "applies": [
+      "A4"
+     ],
+     "results": [],
+     "prose": "A4: x_j = a_j + s_j is strictly positive, the domain of the conditioning",
+     "code": "xj = A4.positive_symbol('x_j')",
+     "fingerprint": "851c100ea65502ff92e3c454003f6f35f3eb9fb5b9ebe9ffd87363c57b95540d",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.5",
+     "kind": "axiom",
+     "applies": [
+      "A4"
+     ],
+     "results": [],
+     "prose": "A4: u_i = alpha_i log(a_i + s_i) + b_i, so m_i = exp(u_i)",
+     "code": "u_i = A4.rewrite(S.u[i0]).replace(sp.log, lambda arg: sp.log(xi))",
+     "fingerprint": "d041ff9e3ab7aff50dbb7da007e6afa357cb461dc21605c749a44cc85e56c767",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.6",
+     "kind": "axiom",
+     "applies": [
+      "A4"
+     ],
+     "results": [],
+     "prose": "A4: u_j = alpha_j log(a_j + s_j) + b_j, so m_j = exp(u_j)",
+     "code": "u_j = A4.rewrite(S.u[j0]).replace(sp.log, lambda arg: sp.log(xj))",
+     "fingerprint": "90d609a899bee533fdddab9fbf3d154657bdb18484eb0c458b2322fb723cfcb3",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.7",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the metric-space tension is -(w_i/w_j)(m_j/m_i)",
+     "code": "assert sp.simplify(r['T_ij'] + wi / wj * (mj / mi)) == 0, 'L21 FAIL: T_ij formula'",
+     "fingerprint": "ec1b18c4a36474f99db1c928d07bb4652e104451bd5bdcefea5d19210b883417",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.8",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "its log-log form is L7's elasticity -w_i/w_j",
+     "code": "assert sp.simplify(r['elasticity'] + wi / wj) == 0, 'L21 FAIL: elasticity != -w_i/w_j'",
+     "fingerprint": "f0af458f1220ea99b54ba734d55d7772a4e4c4ee80c39605bcc53cf0da383de1",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.9",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "zero case: w_i = 0 gives T_ij = 0 (w_j nonzero)",
+     "code": "assert sp.simplify(r['T_ij'].subs(wi, 0)) == 0, 'L21 FAIL: zero case'",
+     "fingerprint": "2ce2b2adf0f37bd18b6560debaffc639f75e6b5cc7606efa9cea5e5622e40d42",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.10",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "blank case: w_j = 0 makes dG/dm_j vanish, so m_j is not determined by m_i",
+     "code": "assert sp.diff(r['G'], mj).subs(wj, 0) == 0, 'L21 FAIL: blank case'",
+     "fingerprint": "5fcd440b602e92518b0e038b903a5686fdaf8fc6540fe7af1a365f0e9e446449",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.11",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "blank case: the tension has w_j in its denominator, so it has no finite value",
+     "code": "assert sp.denom(sp.together(r['T_ij'])).subs(wj, 0) == 0, 'L21 FAIL: blank not undefined'",
+     "fingerprint": "734463768fa02fbc11425d8a69a0715ae24651b206b6bf32a9ca53c7225cdf30",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.12",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "reciprocal across the diagonal: T_ij T_ji = 1 where both are nonzero",
+     "code": "assert sp.simplify(r['T_ij'] * r['T_ji'] - 1) == 0, 'L21 FAIL: reciprocal'",
+     "fingerprint": "ed3b0668cf5bc1f03812aa0bacd7fb7094d6afb65b1f149394976248c47777c1",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.13",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "negative where both exponents are positive (hypothesis of the statement)",
+     "code": "assert r['T_ij'].subs({wi: W_I, wj: W_J, mi: mi, mj: mj}).is_negative, 'L21 FAIL: tension not negative for positive exponents'",
+     "fingerprint": "ec20026886dd170929f933103a655fd96baf0ce852d94dd8c5de3d341c6afb06",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.14",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "attribute units: the chain rule on T_ij and the implicit derivative of L9's V agree",
+     "code": "assert sp.simplify(r['T_x'] - r['T_x2']) == 0, 'L21 FAIL: two routes to the pull-back differ'",
+     "fingerprint": "f01602f391389fad3ee25f300032aa4acf5bb7c86e5928735aea8eeeb957fffd",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.15",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "attribute units: d s_j / d s_i = -(w_i alpha_i)/(w_j alpha_j) (x_j / x_i)",
+     "code": "assert sp.simplify(r['T_x2'] + wi * ai / (wj * aj) * (xj / xi)) == 0, 'L21 FAIL: attribute-unit formula'",
+     "fingerprint": "533bf6293e117b894d71320b229e9958c541e91443148f0158816ae66e5247b1",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.16",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "its sign is minus the sign of alpha_i alpha_j: negative for one orientation",
+     "code": "assert r['T_x2'].subs({wi: W_I, wj: W_J, ai: -C_I, aj: -C_J}).is_negative, 'L21 FAIL: orientation sign (same orientation)'",
+     "fingerprint": "cf71cdde0f42eb30581cc862c7cd6840b1925d8e5e86d1631265f631ec8a69f2",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.17",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "its sign is minus the sign of alpha_i alpha_j: positive for mixed orientation",
+     "code": "assert r['T_x2'].subs({wi: W_I, wj: W_J, ai: C_I, aj: -C_J}).is_positive, 'L21 FAIL: orientation sign (mixed orientation)'",
+     "fingerprint": "7c07b7d184066cf912384169b9894c26e745ec445c756a29a6fe596d88dd6059",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    },
+    {
+     "tag": "L21.18",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "a design on the level set V = v: the level set is the surface scaled by v (L1),",
+     "code": "assert sp.simplify(r['T_ij'].subs({mi: v * mi, mj: v * mj}, simultaneous=True) - r['T_ij']) == 0, 'L21 FAIL: level-set scaling'",
+     "fingerprint": "fd5461751f47747343c61779a79f16c2ccfd8f573f91096dbbeda039755af5d8",
+     "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
+    }
+   ]
   }
  },
  "ledger": {
@@ -6668,7 +6926,7 @@
   "I10": "90e29324759fa587ec1b820db1e5519ac0d78d3aca2223dd132d0b37b8296c62",
   "I11": "ebcb6a1847dbfc77e6127957a173fd6ec9dfcc21db586ad6ce314ff5b815f6b1",
   "I12": "a9b9e7d03dbc1fc0705983f7b0d7d3217bba2cb33523b3b3a694a82ae275806f",
-  "I13": "593b861f45acc60788a22de75b2902d3f0454ed0c7612997f9772753a0ed4408",
+  "I13": "3b983b90eaa149ed2712216fd7a60d13d328cf4be271f0f11dbeb26b9b78985c",
   "I14": "ead5becfc717ccd920a77c9a92f7ae47bf5a80d981eec5f3f6ba21e6979a43eb",
   "I15": "4aacdaf3b5cfeba77d4de2f4ae041a267baae11ffa435f93ad67e9553714255d",
   "I16": "3a6b8998c00ccc585ef8354f5bd57e0e96d8802ab71ab90021806038fd6f2275",

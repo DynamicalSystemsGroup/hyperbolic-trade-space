@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 24
+contract_version = 25
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -45,11 +45,13 @@ public_names = [
   "LogAffinePreconditioner",
   "TradeSpaceRegressor",
   "__version__",
+  "design_tensions",
   "frontier_in_original_units",
   "make_configured_frontier_data",
   "make_frontier_data",
   "select_temperature",
-  "tension_report",
+  "tension_matrix",
+  "trade_off_report",
 ]
 submodules = [
   "plotting", "gaps", "solvers", "coordinates", "datasets", "preconditioning",
@@ -61,20 +63,20 @@ submodules = [
 solvers = [
   "DISTINCT_TERMS_DISTANCE", "EPS_FEAS", "EPS_KKT", "GUARD_TOL", "POLISH_STEPS", "SolveResult", "Termination", "TermsResult",
   "assignment_margin", "distinct_terms", "fixed_assignment_bound", "log_mean_exp",
-  "objective_and_grad", "simplex_gap", "single_term_termination", "soft_certificate",
-  "soft_hessian", "soft_objective", "soft_weights", "solve_lp", "solve_slsqp", "solve_terms",
-  "support_weights", "term_gap", "term_objective",
+  "loss_and_grad", "simplex_gap", "single_term_termination", "soft_certificate",
+  "soft_hessian", "soft_loss", "soft_weights", "solve_lp", "solve_slsqp", "solve_terms",
+  "support_weights", "term_gap", "term_loss",
 ]
 coordinates = ["alr_basis", "from_frontier_coordinates", "helmert_basis", "to_frontier_coordinates"]
 gaps = ["find_holes", "frontier_targets", "knn_gap_scores", "orient_by_pca"]
 plotting = [
   "cell_labels", "plot_frontier_coordinates", "plot_frontier_surface_3d", "plot_log_plane",
-  "plot_tensions", "plot_ternary", "plot_v_by_variable", "ternary_marker_values",
+  "plot_association", "plot_ternary", "plot_v_by_variable", "ternary_marker_values",
 ]
 datasets = ["make_configured_frontier_data", "make_frontier_data"]
 preconditioning = ["LogAffinePreconditioner", "frontier_in_original_units"]
 predictive = ["TradeSpaceRegressor"]
-tensions = ["TensionReport", "tension_report"]
+tensions = ["DesignTensions", "TradeOffReport", "design_tensions", "tension_matrix", "trade_off_report"]
 tuning = ["select_temperature"]
 estimator = ["EPS_ZERO_EXPONENT", "HyperbolicTradeSpace", "PARTICIPATION_THRESHOLD"]
 
@@ -99,18 +101,18 @@ term_aggregation_values = ["sum", "mean"]
 termination_class = "hyperbolic_trade_space.solvers.Termination"
 termination_fields = [
   "status", "reason", "n_iter", "sum_residual", "floor_residual", "offset_residual", "max_gap",
-  "bound", "objective_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
+  "bound", "loss_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
   "eps_feas", "guard_tol", "gaps", "shares", "min_curvature", "n_distinct_terms",
 ]
 termination_statuses = [
   "certified", "stationary_without_margin", "stationary", "uncertified", "guard_stop",
   "iteration_cap", "not_applicable",
 ]
-# Per-term report: the fields of hyperbolic_trade_space.tensions.TensionReport.
-report_class = "hyperbolic_trade_space.tensions.TensionReport"
+# Per-term report: the fields of hyperbolic_trade_space.tensions.TradeOffReport.
+report_class = "hyperbolic_trade_space.tensions.TradeOffReport"
 report_fields = [
   "participating", "exponents", "elasticities", "association", "association_kind",
-  "closure_note", "tension_directions", "tension_loadings", "explained_spread", "contending_set",
+  "closure_note", "spread_directions", "spread_loadings", "explained_spread", "contending_set",
   "contending_exponents", "n_lemma", "lemma_name", "band", "n_near_frontier",
 ]
 
@@ -122,7 +124,7 @@ POLISH_STEPS = 5
 
 # The estimator's module constants (version 16, WP25-3 P-1): an exponent at or below
 # EPS_ZERO_EXPONENT is numerically zero (0 log 0 := 0 in score_samples); an exponent above
-# PARTICIPATION_THRESHOLD participates (tension_report's default threshold; conditioning_).
+# PARTICIPATION_THRESHOLD participates (trade_off_report's default threshold; conditioning_).
 [package.estimator.constants]
 EPS_ZERO_EXPONENT = 1e-12
 PARTICIPATION_THRESHOLD = 1e-3
@@ -246,7 +248,7 @@ generated_consumer = "the paper's build (appendices); not the docsite"
 dir = "docs/"
 pages = [
   "index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md",
-  "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md",
+  "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/tension-routes.md", "user-guide/chart.md",
   "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md",
   "examples.md", "theory.md", "further-reading.md", "code-owners.md",
 ]
@@ -254,10 +256,10 @@ generated_dir = "docs/generated/"
 generated_pages = ["glossary.md"]
 generated_by = "scripts/build_generated.py"
 glossary_source = "glossary.yaml"
-glossary_entry_field_names = ["id", "term", "short", "register", "formal", "not", "symbol", "defined_in", "aliases", "avoid"]
+glossary_entry_field_names = ["id", "term", "short", "register", "formal", "not", "symbol", "defined_in", "layer", "used_in", "elsewhere", "aliases", "avoid"]
 glossary_entry_required_field_names = ["id", "term", "short", "register", "formal", "not"]
 glossary_list_field_names = ["aliases", "avoid"]
-glossary_file_key_names = ["entries", "assumed", "stems"]
+glossary_file_key_names = ["preamble", "entries", "assumed", "stems"]
 paper_sources_dir = "docs/superpowers/notes/paper-sources/"
 bibliography = "docs/references.bib"
 notes_dir = "docs/superpowers/notes/"
@@ -274,7 +276,7 @@ api_reference_page = "docs/api-reference.md"
 api_reference_source = "numpydoc docstrings of the public names, rendered by the docsite"
 presentation_pages = [
   "docs/index.md", "docs/getting-started.md", "docs/user-guide/index.md", "docs/user-guide/overview.md",
-  "docs/user-guide/conditioning.md", "docs/user-guide/fitting.md", "docs/user-guide/choosing-k.md", "docs/user-guide/tensions.md",
+  "docs/user-guide/conditioning.md", "docs/user-guide/fitting.md", "docs/user-guide/choosing-k.md", "docs/user-guide/tensions.md", "docs/user-guide/tension-routes.md",
   "docs/user-guide/chart.md", "docs/user-guide/prediction.md", "docs/user-guide/termination.md",
   "docs/user-guide/limitations.md", "docs/examples.md", "docs/theory.md",
   "docs/further-reading.md", "docs/code-owners.md", "docs/api-reference.md",

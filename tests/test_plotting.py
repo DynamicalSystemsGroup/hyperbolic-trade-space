@@ -99,23 +99,23 @@ def make_report(d=3):
         participating=np.array([True, True] + [False] * (d - 2)),
         exponents=np.array([0.5, 0.5] + [0.0] * (d - 2)),
         association=A,
-        tension_directions=np.zeros((0, d - 1)),
-        tension_loadings=np.zeros((0, d)),
+        spread_directions=np.zeros((0, d - 1)),
+        spread_loadings=np.zeros((0, d)),
         contending_set=np.array([0, 1]),
         n_lemma=2,
     )
 
 
 def test_plot_tensions_with_stand_in_report():
-    ax = P.plot_tensions(make_report(), names=["mass", "power", "cost"])
+    ax = P.plot_association(make_report(), names=["mass", "power", "cost"])
     assert isinstance(ax, Axes)
     assert ax.get_title() == "dilemma (2 metrics contend)"
     assert len(ax.patches) == 2  # contending set outlined
     assert ax.get_images()[0].get_cmap().name == P.TENSION_CMAP
-    assert P.plot_tensions(SimpleNamespace(**{**vars(make_report(4)), "n_lemma": 5})).get_title()
+    assert P.plot_association(SimpleNamespace(**{**vars(make_report(4)), "n_lemma": 5})).get_title()
     one = make_report(3)
     one.n_lemma, one.contending_set = 1, np.array([0])
-    assert P.plot_tensions(one).get_title().startswith("monolemma")
+    assert P.plot_association(one).get_title().startswith("monolemma")
 
 
 def test_module_does_not_import_matplotlib_at_import_time():
@@ -131,8 +131,8 @@ def test_plot_tensions_with_real_report():
 
     X, _ = make_frontier_data(500, 3, random_state=0)
     hts = HyperbolicTradeSpace().fit(X)
-    report = tensions.tension_report(hts, X, band=0.5)
-    ax = P.plot_tensions(report, names=["a", "b", "c"])
+    report = tensions.trade_off_report(hts, X, band=0.5)
+    ax = P.plot_association(report, names=["a", "b", "c"])
     assert isinstance(ax, Axes)
     assert ax.get_title().startswith(report.lemma_name)
     assert len(ax.patches) == report.n_lemma
@@ -217,9 +217,9 @@ def test_surface_k3_one_colour_by_default_and_coordinates_cell_colouring():
 
 
 def test_plot_tensions_list_of_reports_side_by_side():
-    axs = P.plot_tensions([make_report(), make_report()], names=["a", "b", "c"])
+    axs = P.plot_association([make_report(), make_report()], names=["a", "b", "c"])
     assert len(axs) == 2 and axs[1].get_title().startswith("term 2: dilemma")
-    assert isinstance(P.plot_tensions(make_report()), Axes)
+    assert isinstance(P.plot_association(make_report()), Axes)
 
 
 def test_log_plane_k3_draws_term_only_where_it_has_weight_on_both_metrics():
@@ -252,7 +252,7 @@ def test_tension_annotations_contrast_with_their_cell():
         contending_set=np.array([0, 1]),
         n_lemma=2,
     )
-    ax = P.plot_tensions(r)
+    ax = P.plot_association(r)
     im = ax.images[0]
     texts = {t.get_text(): t for t in ax.texts if t.get_text()[:1] in "-01"}
     assert len(ax.texts) >= 9
@@ -484,12 +484,12 @@ def test_ternary_marker_values_needs_three_metrics():
 
 
 def _planted_k3_reports(band):
-    from hyperbolic_trade_space import tension_report
+    from hyperbolic_trade_space import trade_off_report
 
     W = [[0.5, 0.5, 0, 0], [0, 0.5, 0.5, 0], [0, 0, 0.5, 0.5]]
     X, _ = make_frontier_data(900, 4, exponents=W, n_terms=3, random_state=0)
     est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
-    return tension_report(est, X, band=band, min_near_frontier=0)
+    return trade_off_report(est, X, band=band, min_near_frontier=0)
 
 
 def test_tensions_thin_term_is_drawn_with_empty_cells_and_its_count():
@@ -497,7 +497,7 @@ def test_tensions_thin_term_is_drawn_with_empty_cells_and_its_count():
     reps = _planted_k3_reports(band=0.03)
     counts = [r.n_near_frontier for r in reps]
     assert min(counts) < 10 <= max(counts), counts
-    axs = P.plot_tensions(reps, names=list("abcd"), ax=plt.subplots(1, 3)[1])
+    axs = P.plot_association(reps, names=list("abcd"), ax=plt.subplots(1, 3)[1])
     for rep, ax in zip(reps, axs, strict=True):
         assert rep.lemma_name in ax.get_title()
         assert len(ax.patches) == len(np.atleast_1d(rep.contending_set))  # the outline is drawn
@@ -524,5 +524,5 @@ def test_tensions_a_report_without_a_count_is_drawn_in_full():
         contending_set=np.array([0, 1]),
         n_lemma=2,
     )
-    ax = P.plot_tensions(r)
+    ax = P.plot_association(r)
     assert sum(bool(re.fullmatch(r"-?\d\.\d\d", t.get_text())) for t in ax.texts) == 4

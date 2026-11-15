@@ -25,7 +25,7 @@ pytestmark = pytest.mark.slow
 REFERENCE = Path(__file__).parent / "data" / "soft_fit_default_reference.npz"
 TERM_NUM = (
     "n_iter", "sum_residual", "floor_residual", "offset_residual", "max_gap", "bound",
-    "objective_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
+    "loss_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
     "eps_feas", "guard_tol",
 )  # fmt: skip
 # The reference was recorded in the environment of record (linux/arm64 container), then re-recorded
@@ -39,7 +39,7 @@ TERM_NUM = (
 RECORDED_ON = tuple(np.load(REFERENCE)["recorded_on"].tolist())
 EXACT = of_record() or (sys.platform, platform.machine()) == RECORDED_ON
 RELAXED_SKIP = (
-    "status", "reason", "n_iter_", "term_n_iter", "term_objective_change", "support_weights_",
+    "status", "reason", "n_iter_", "term_n_iter", "term_loss_change", "support_weights_",
 )  # fmt: skip
 TOL_FIT = 1e-6  # exponents and offsets of the tau = inf planted fits off the recording's platform
 
@@ -62,7 +62,7 @@ def _record(est):
     t = est.termination_
     d = {
         "exponents_": est.exponents_, "log_offset_": est.log_offset_,
-        "objective_": est.objective_, "mean_slack_": est.mean_slack_, "cell_": est.cell_,
+        "loss_": est.loss_, "mean_slack_": est.mean_slack_, "cell_": est.cell_,
         "support_weights_": est.support_weights_, "n_iter_": est.n_iter_,
         "term_share_": est.term_share_, "conditioning_": est.conditioning_,
         "status": t.status, "reason": t.reason, "gaps": t.gaps, "shares": t.shares,
@@ -121,7 +121,7 @@ def test_r2_default_planted_fits_equal_the_recording(name, reference):
     the table reproduce it (25 of 30 on the previous test) and pass with this allowance.
     The quantities of the final steps of a degenerate linear program are not compared off the
     recording's platform; the exact list is ``RELAXED_SKIP``: ``status``, ``reason``, ``n_iter_``,
-    ``term_n_iter``, ``term_objective_change`` and ``support_weights_``. They differ between
+    ``term_n_iter``, ``term_loss_change`` and ``support_weights_``. They differ between
     platforms while the fitted terms agree (gap G-10). Every other quantity keeps its comparison
     above.
     """
@@ -172,7 +172,7 @@ def _compare_planted(name, est, X, relaxed, reference):
             elif k == "shares":
                 tol += n_tied / len(X)
             _close(f"{name}/{k}", np.asarray(v)[back], ref, tol, " (after matching by exponent)")
-        elif relaxed and k == "objective_":
+        elif relaxed and k == "loss_":
             _close(f"{name}/{k}", v, ref, TOL_FIT)
         elif relaxed and k == "cell_":
             differ = to_ref[np.asarray(v)] != np.asarray(ref)
@@ -264,17 +264,17 @@ def test_r1_the_soft_objective_never_rises_across_the_history(bench):
     for X, _, _, soft in bench:
         r = S.solve_terms(np.log(X), 3, TAU, random_state=0, term_temperature=TAU)
         assert (np.diff(r.history) <= S.GUARD_TOL).all() and r.history.size > 2
-        assert r.objective == soft.objective_
+        assert r.loss == soft.loss_
 
 
 def test_r4_the_soft_fit_serves_its_model(bench):
     for X, _, hard, soft in bench:
         U = np.log(X)
-        f_soft = S.soft_objective(U, soft.exponents_, soft.log_offset_, TAU)
-        f_hard = S.soft_objective(U, hard.exponents_, hard.log_offset_, TAU)
+        f_soft = S.soft_loss(U, soft.exponents_, soft.log_offset_, TAU)
+        f_hard = S.soft_loss(U, hard.exponents_, hard.log_offset_, TAU)
         assert f_soft <= f_hard + 1e-12
         assert soft.mean_slack_ == pytest.approx(f_soft, abs=1e-12)  # the slack of the model
-        assert soft.objective_ == pytest.approx(f_soft, abs=1e-12)
+        assert soft.loss_ == pytest.approx(f_soft, abs=1e-12)
 
 
 def test_r7_the_benchmark_tables_are_certified(bench):
@@ -333,7 +333,7 @@ def test_r7_gradient_and_hessian_match_finite_differences():
 
     def f(W_):
         b = np.array([S.log_mean_exp(U @ w, TAU) for w in W_])
-        return S.soft_objective(U, W_, b, TAU)
+        return S.soft_loss(U, W_, b, TAU)
 
     h = 1e-6
     for _ in range(10):
@@ -357,13 +357,13 @@ def test_r7_all_terms_equal_is_stationary_and_not_certified():
     W = np.tile(one, (3, 1))
     gap, curvature = S.soft_certificate(U, W, TAU, TAU)
     assert gap <= S.EPS_KKT and curvature < -1.0  # stationary, and a saddle
-    # the objective falls from it in some feasible direction
+    # the loss falls from it in some feasible direction
     beta = np.array([S.log_mean_exp(U @ w, TAU) for w in W])
-    f0 = S.soft_objective(U, W, beta, TAU)
+    f0 = S.soft_loss(U, W, beta, TAU)
     fit = HyperbolicTradeSpace(
         n_terms=3, temperature=TAU, term_temperature=TAU, random_state=0
     ).fit(X)
-    assert S.soft_objective(U, fit.exponents_, fit.log_offset_, TAU) < f0 - 0.1
+    assert S.soft_loss(U, fit.exponents_, fit.log_offset_, TAU) < f0 - 0.1
 
 
 def test_r7_a_soft_fit_at_infinite_tau_is_not_applicable():
@@ -373,7 +373,7 @@ def test_r7_a_soft_fit_at_infinite_tau_is_not_applicable():
     ).fit(X)
     assert est.termination_.status == "not_applicable" and np.isnan(est.termination_.min_curvature)
     assert est.mean_slack_ == pytest.approx(
-        S.soft_objective(np.log(X), est.exponents_, est.log_offset_, 20.0), abs=1e-12
+        S.soft_loss(np.log(X), est.exponents_, est.log_offset_, 20.0), abs=1e-12
     )
 
 

@@ -3,7 +3,7 @@ optimality, step B.
 
 Setting.  K terms with exponents w_k on the simplex, cells C_1..C_K a partition of the N rows,
 n_k = |C_k|, reaches beta_k = J_tau(U w_k), mean slack
-F(W) = (1/N) sum_i (beta_k(i) - w_k(i).u_i) for the unpenalized step-B objective.  f_k(w) =
+F(W) = (1/N) sum_i (beta_k(i) - w_k(i).u_i) for the unpenalized step-B loss.  f_k(w) =
 J_tau(U w) - ubar_k.w (ubar_k the mean of the rows of C_k) is the term refit of L12.
 
 What this proves (symbolic d, n_k, K; plain SymPy):
@@ -16,7 +16,7 @@ What this proves (symbolic d, n_k, K; plain SymPy):
      chi_ki >= 1), applied by import; the swap of the row and cell sums is Fubini (L3's
      ``sum_swap_equal``) and the cell sum is n_k f_k(w_k).  With share_k = n_k/N it gives
      F(W) = sum_k share_k f_k(w_k), and beta_k = J_tau(U w_k) is the reach itself.
-  3. The full objective (1/N) sum_i min_k (beta_k - w_k.u_i) equals the fixed-assignment
+  3. The full loss (1/N) sum_i min_k (beta_k - w_k.u_i) equals the fixed-assignment
      expression on the assignment-stable neighborhood: R2 (positive margin) and L13 keep k(i)
      the unique maximizing term of every row, so the max score of row i is its score on k(i)
      and the termwise difference vanishes.
@@ -26,7 +26,7 @@ What this proves (symbolic d, n_k, K; plain SymPy):
      F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k)) is a sum of nonnegative terms: a local
      minimizer on the neighborhood.
   5. The approximate-certificate corollary.  F(W) - F*_fixed = sum_k share_k (f_k(w_k) - f_k*)
-     (the fixed-assignment objective is separable, so its minimum is the sum of the term
+     (the fixed-assignment loss is separable, so its minimum is the sum of the term
      minima), and L12 gives f_k(w_k) - f_k* <= G_k termwise, so
      F(W) - F*_fixed <= sum_k share_k G_k: a sum of nonnegative terms share_k (G_k - (f_k - f_k*)).
 
@@ -129,12 +129,12 @@ def derive(ctx):
     shares = A8.rewrite(ncell[k] / N, only=(2,))
     F_regroup = sp.simplify(sp.Sum(n_k * f_k, (k, 1, K)) / N - sp.Sum(shares * f_k, (k, 1, K)))
 
-    # 2-3. the objective on the neighborhood: scores s_fixed[i] on k(i), max score M[i]
+    # 2-3. the loss on the neighborhood: scores s_fixed[i] on k(i), max score M[i]
     sfix = sp.IndexedBase("sfix")
     Mx = sp.IndexedBase("Mx")
     # [L14.6] R2: the margin is positive, so row i's maximum score M_i is its score s_i,k(i)
     agree = R2.rewrite(sp.Sum(sfix[i] - Mx[i], (i, 1, N)))
-    objective_agrees = sp.simplify(agree.doit())
+    loss_agrees = sp.simplify(agree.doit())
 
     # 4. local minimality: F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k)), terms >= 0
     # [L14.7] A8: share_x = n_x / N = sum_i chi_xi / N, nonnegative because chi >= 0
@@ -167,7 +167,7 @@ def derive(ctx):
         nk=nk,
         regroup_leftover=leftover,
         regroup_swap_equal=regroup_swap_equal,
-        objective_agrees=objective_agrees,
+        loss_agrees=loss_agrees,
         rows_to_cells=rows_to_cells,
         cells_swap_equal=cells_swap_equal,
         cell_regroup_ok=cell_regroup_ok,
@@ -203,10 +203,8 @@ def verify(ctx):
     assert r["cell_regroup_ok"] is True, "L14 FAIL: the cell sum is not n_k f_k(w_k)"
     # [L14.15] A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k), share_k = n_k / N
     assert r["F_regroup"] == 0, "L14 FAIL: F(W) != sum_k share_k f_k(w_k)"
-    # [L14.16] on the neighborhood the full objective equals the fixed-assignment expression
-    assert r["objective_agrees"] == 0, (
-        "L14 FAIL: full objective differs from the fixed-assignment expression"
-    )
+    # [L14.16] on the neighborhood the full loss equals the fixed-assignment expression
+    assert r["loss_agrees"] == 0, "L14 FAIL: full loss differs from the fixed-assignment expression"
     # [L14.17] F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))
     assert sp.simplify(r["local_min_slack"]) == 0, (
         "L14 FAIL: F(W') - F(W) != sum_k share_k (f_k(w'_k) - f_k(w_k))"

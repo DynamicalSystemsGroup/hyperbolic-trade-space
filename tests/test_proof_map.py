@@ -842,7 +842,7 @@ from derivation.sumtools import posynomial_term  # noqa: E402
 def _gp_facts(obj, eq, ineq):
     t = lambda b: sp.true if b else sp.false  # noqa: E731
     return [
-        sp.Equivalent(I13.obj("objective"), t(obj)),
+        sp.Equivalent(I13.obj("loss"), t(obj)),
         sp.Equivalent(I13.obj("equalities"), t(eq)),
         sp.Equivalent(I13.obj("inequalities"), t(ineq)),
     ]
@@ -964,9 +964,9 @@ def test_L16_is_in_the_chain_with_its_exact_statement_and_new_entries():
     assert mod.STATEMENT == (
         "Soft-weight alternation: with weights alpha_ik = softmax_k(kappa score_ik) from the "
         "current model, (i) a convex program symmetric in the terms attains its minimum with all "
-        "terms equal, so the objective over all terms is not convex in them in general; (ii) the "
-        "soft model's slack is bounded above by the fixed-weight objective, with equality at the "
-        "weights' own model; (iii) the fixed-weight objective is a generalized posynomial in "
+        "terms equal, so the loss over all terms is not convex in them in general; (ii) the "
+        "soft model's slack is bounded above by the fixed-weight loss, with equality at the "
+        "weights' own model; (iii) the fixed-weight loss is a generalized posynomial in "
         "exp(w)."
     )
     assert set(mod.AXIOMS_USED) == {"A1", "A2", "A3", "A6", "I14", "I15"}
@@ -1134,7 +1134,7 @@ def test_L17_is_in_the_chain_with_its_exact_statement_and_the_new_entry():
     mod = importlib.import_module("derivation.lemma_17_soft_fit_certificate")
     assert mod.STATEMENT == (
         "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order "
-        "(KKT) conditions hold, if the Hessian H = D - kappa M of the soft objective is positive "
+        "(KKT) conditions hold, if the Hessian H = D - kappa M of the soft loss is positive "
         "definite on the tangent space of the active face, the point is a strict local minimizer; "
         "D and M are both positive semidefinite, D the weighted within-term curvature and kappa M "
         "the designs' ambiguity between terms."

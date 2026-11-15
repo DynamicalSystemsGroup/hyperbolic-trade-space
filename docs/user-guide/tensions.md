@@ -1,35 +1,35 @@
-# Reading the tension report
+# Reading trade-offs and tensions
 
-`tension_report(estimator, X)` returns a frozen `TensionReport` that says which metrics contend and
-how they trade. The model looks for the binding constraint, so the report describes a tension, where
+`trade_off_report(estimator, X)` returns a frozen `TradeOffReport` that says which metrics contend and
+how they trade. The model looks for the binding constraint, so the report describes a trade-off, where
 principal component analysis would describe spread.
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
     HyperbolicTradeSpace,
     make_frontier_data,
-    tension_report,
+    trade_off_report,
 )
 
 X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
-report = tension_report(ts, X)
+report = trade_off_report(ts, X)
 print(report.contending_set, report.n_lemma, report.lemma_name)
 print(report.elasticities.round(2))
 ```
 
-`plot_tensions` draws the report as a heatmap:
+`plot_association` draws the report as a heatmap:
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import plot_tensions
+from hyperbolic_trade_space.plotting import plot_association
 
-plot_tensions(report, names=["m0", "m1", "m2"])
+plot_association(report, names=["m0", "m1", "m2"])
 ```
 
 <figure markdown>
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-light.png#only-light)
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-dark.png#only-dark)
-<figcaption>Figure 3. The tension report of the three-metric table. Association is the correlation of the log-metrics near the frontier. Negative (orange) marks metrics that are traded, diagonal outlines mark the contending set, and w under a name is its exponent.</figcaption>
+<figcaption>Figure 3. The trade-off report of the three-metric table. Association is the correlation of the log-metrics near the frontier. Negative (orange) marks metrics that are traded, diagonal outlines mark the contending set, and w under a name is its exponent.</figcaption>
 </figure>
 
 ## The contending set and the n-lemma
@@ -57,15 +57,37 @@ is aligned; `association_kind` says which. The `band` is 1/tau by default, or 0.
 constraint produces negative association even where no designer traded the metrics (`closure_note`
 says so).
 
-## Tension directions
+## Spread directions
 
 Three fields describe the spread of the near-frontier designs along the surface:
 
-- `tension_directions`: the principal directions of the near-frontier chart coordinates.
-- `tension_loadings`: the same directions as loadings on the log-metrics.
+- `spread_directions`: the principal directions of the near-frontier chart coordinates.
+- `spread_loadings`: the same directions as loadings on the log-metrics.
 - `explained_spread`: the share of variance along each.
 
 They equal `orient_by_pca` on the same rows.
+
+## The tension matrix
+
+The elasticity is the same at every point of a term; the tension is not. It is the derivative of
+one metric along the term as another rises, the others held: `T[i, j] = -(w_i / w_j)(m_j / m_i)`.
+`tension_matrix` gives each term's matrix at the term's balanced point, from the fit;
+`design_tensions` gives each design's own, from the data.
+
+```python {.runnable}
+from hyperbolic_trade_space import design_tensions, tension_matrix
+
+T = tension_matrix(ts, X)
+print(T.shape, T[0].round(2))
+dt = design_tensions(ts, X[:2])
+print(dt.term, dt.tensions[0].round(2))
+```
+
+A cell is negative where both metrics carry an exponent on the term, `0` where only the row metric
+carries none, and `nan` (blank, not zero) where the column metric carries none. At K > 1 `by_term`
+reports the other terms' values beside a design's own, never merged. A tension is a rate along the
+surface with the other metrics held, not the effect of changing a design variable
+([routes back](tension-routes.md)).
 
 ## With several terms
 
@@ -90,7 +112,7 @@ one = HyperbolicTradeSpace(temperature=np.inf).fit(Xc)
 two = HyperbolicTradeSpace(
     n_terms=2, temperature=50.0, random_state=0
 ).fit(Xc)
-reports = tension_report(two, Xc)
+reports = trade_off_report(two, Xc)
 print(round(one.mean_slack_, 3), round(two.mean_slack_, 3))
 print([r.lemma_name for r in reports])
 assert "monolemma" in [r.lemma_name for r in reports]
@@ -102,6 +124,6 @@ as separate terms, at a fraction of the mean slack (0.043 against 0.351).
 
 ## What it cannot say
 
-Each report describes one term and so one tension. It depends on the band and is a statement about
-the sampled table. Tensions the sampling never exercised cannot appear. Whether a contending set is
+Each report describes one term and so one trade-off. It depends on the band and is a statement about
+the sampled table. Trade-offs the sampling never exercised cannot appear. Whether a contending set is
 a recognizable dilemma is for the engineer to decide.

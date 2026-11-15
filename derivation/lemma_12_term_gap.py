@@ -23,7 +23,7 @@ What this proves (symbolic d, plain SymPy):
      the active rows (p_i (M - s_i) = 0), with U_c the rows centred at ubar_k.  Sum swap (L3's
      device) and sum_i p_i = 1 give g.w = sum_i p_i s_i - ubar.w = M - ubar.w = f(w), where the
      termwise zero p_i (M - s_i) = 0 is I12 applied to each summand, so G = f(w) -
-     min_j (U_c^T p)_j is the primal objective minus the dual objective of the LP: the LP duality
+     min_j (U_c^T p)_j is the primal value minus the dual value of the LP: the LP duality
      gap (I1), zero at an optimal primal-dual pair.  An exact two-metric LP checks it.
 
 Hypotheses (ledger).  A2 (simplex), F12 (min representation: no symbolic-d min
@@ -31,7 +31,7 @@ in SymPy, as F5 and F10), I8 (first-order convexity inequality, cited), I1 (LP d
 tau = infinity).
 
 What this does NOT prove: that the fitted term is globally optimal (G is a certificate, G = 0 is
-optimality), anything for the penalized objective or the tangent refit (their f is not this f), or
+optimality), anything for the penalized loss or the tangent refit (their f is not this f), or
 the finite-tau formula at tau = infinity (there the gap needs the LP duals).
 """
 
@@ -270,7 +270,7 @@ def verify(ctx):
     # [L12.30] g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w
     assert split.has(r["ubj"]), "L12 FAIL: centring term lost"
     lp = r["lp"]
-    # [L12.31] the LP gap is the primal objective minus the dual objective
+    # [L12.31] the LP gap is the primal value minus the dual value
     assert lp["gap_at_optimum"] == lp["primal_at_optimum"] - lp["dual_at_optimum"], (
         "L12 FAIL: LP gap is not primal minus dual"
     )

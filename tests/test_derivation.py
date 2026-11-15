@@ -1046,7 +1046,7 @@ def test_L14_fails_loudly_when_premise_or_step_broken():
         ("local_min_nonneg", False),
         ("cor_slack", 1),
         ("cor_nonneg", False),
-        ("objective_agrees", 1),
+        ("loss_agrees", 1),
     ):
         ctx, mods = _run_wp13(12, 13, 14)
         ctx["L14"][key] = bad
@@ -1083,7 +1083,7 @@ def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
 
     with redirect_stdout(buf):
         assert main() == 0
-    assert "L1 -> L17" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
+    assert "L1 -> L21" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
 
 
 # --- WP10 C-1: L15, Level 1 (descent) ---
@@ -1094,7 +1094,7 @@ def test_L15_is_followed_by_L16_and_states_level_one_exactly():
     assert mod.STATEMENT == (
         "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing term "
         "does not increase the mean slack F, and refitting each term to a minimizer of its "
-        "convex term objective does not increase F; so F is non-increasing along accepted "
+        "convex term loss does not increase F; so F is non-increasing along accepted "
         "iterations."
     )
     assert set(mod.AXIOMS_USED) == {"A8", "F12"}

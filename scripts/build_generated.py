@@ -31,9 +31,10 @@ DEFAULT_OUT = ROOT / "build" / "generated"  # derivations.md, verification.md (p
 DOCS_GENERATED = ROOT / "docs" / "generated"  # glossary.md (the docsite's generated page)
 GLOSSARY_SOURCE = ROOT / "glossary.yaml"
 GLOSSARY_REQUIRED = ("id", "term", "short", "register", "formal", "not")
-GLOSSARY_OPTIONAL = ("symbol", "defined_in", "aliases", "avoid")
+GLOSSARY_OPTIONAL = ("symbol", "defined_in", "layer", "used_in", "elsewhere", "aliases", "avoid")
+GLOSSARY_LAYERS = ("decision", "design", "method")
 GLOSSARY_LIST_FIELDS = ("aliases", "avoid")
-GLOSSARY_FILE_KEYS = ("entries", "assumed", "stems")  # "entries" is required; the others optional
+GLOSSARY_FILE_KEYS = ("preamble", "entries", "assumed", "stems")  # "entries" is required
 GAPS_LEDGER = "docs/superpowers/notes/abstraction-gaps.md"
 SKLEARN_TEST_FILE = "tests/test_sklearn_compat.py"
 
@@ -355,9 +356,11 @@ def _check_glossary_lists(data, where):
 def load_glossary(path=None):
     """Read and validate ``glossary.yaml``; return the entries as a list of dicts.
 
-    The file has the key ``entries`` and, optionally, the lists ``assumed`` (terms assumed of the
+    The file has the key ``entries`` and, optionally, the string ``preamble`` (the three layers in
+    full; the Glossary page opens with it) and the lists ``assumed`` (terms assumed of the
     reader, each a mapping with ``term`` and ``reason``) and ``stems`` (strings); read them with
-    :func:`load_glossary_lists`. An entry may carry ``aliases`` (a list of strings, accepted
+    :func:`load_glossary_lists`. An entry may also carry ``layer`` (decision, design or method),
+    ``used_in`` and ``elsewhere`` (strings), ``aliases`` (a list of strings, accepted
     variants) and ``avoid`` (a list of mappings with ``phrase`` and ``reason``, variants that must
     not appear). Raises ``ValueError`` on a missing or unknown field, a non-string or empty value,
     a multi-line ``short``, a repeated ``id`` or ``term``, or an alias or avoided phrase that is
@@ -372,6 +375,8 @@ def load_glossary(path=None):
             f"{path.name}: the top level has the key 'entries' and optionally "
             f"{[k for k in GLOSSARY_FILE_KEYS if k != 'entries']}, nothing else"
         )
+    if "preamble" in data:
+        _nonempty_str(data["preamble"], path.name, "the preamble")
     entries = data["entries"]
     if not isinstance(entries, list) or not entries:
         raise ValueError(f"{path.name}: 'entries' must be a non-empty list")
@@ -397,6 +402,8 @@ def load_glossary(path=None):
                     raise ValueError(f"{where}: field '{key}' must be a non-empty list")
             elif not isinstance(value, str) or not value.strip():
                 raise ValueError(f"{where}: field '{key}' must be a non-empty string")
+        if "layer" in entry and entry["layer"] not in GLOSSARY_LAYERS:
+            raise ValueError(f"{where}: layer must be one of {list(GLOSSARY_LAYERS)}")
         for alias in entry.get("aliases", []):
             _nonempty_str(alias, where, "an alias")
         for item in entry.get("avoid", []):
@@ -443,10 +450,21 @@ def load_glossary_lists(path=None):
     return {"assumed": data.get("assumed", []), "stems": data.get("stems", [])}
 
 
-def glossary_page(entries):
-    """Markdown for the Glossary page: term and short only, grouped alphabetically."""
+def load_glossary_preamble(path=None):
+    """The ``preamble`` of ``glossary.yaml`` (the three layers in full), or ``None``."""
+    import yaml
+
+    path = Path(path) if path else GLOSSARY_SOURCE
+    load_glossary(path)
+    return yaml.safe_load(path.read_text(encoding="utf-8")).get("preamble")
+
+
+def glossary_page(entries, preamble=None):
+    """Markdown for the Glossary page: the preamble, then term and short, grouped alphabetically."""
     ordered = sorted(entries, key=lambda e: (e["term"].casefold(), e["id"]))
     out = ["# Glossary", ""]
+    if preamble:
+        out += [" ".join(preamble.split()), ""]
     letter = None
     for e in ordered:
         first = e["term"].strip()[0].upper()
@@ -502,7 +520,7 @@ def build(
     docs_out = Path(docs_out)
     docs_out.mkdir(parents=True, exist_ok=True)
     path = docs_out / "glossary.md"
-    _write_atomic(path, glossary_page(entries))
+    _write_atomic(path, glossary_page(entries, load_glossary_preamble(glossary_path)))
     paths.append(path)
     return paths
 

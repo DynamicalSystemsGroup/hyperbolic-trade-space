@@ -21,12 +21,12 @@ validation in `fit`, fitted attributes ending in an underscore.
 | `select_temperature` | function | choose $\tau$ by target fraction above the frontier (L5) | 3 |
 | `make_frontier_data` | function | synthetic data with a planted frontier | testing |
 | `make_configured_frontier_data` | function | planted frontier with configuration variables | testing |
-| `tension_report` | function | which metrics contend, align, and the directions of trade | 4 |
+| `trade_off_report` | function | which metrics contend, align, and the directions of trade | 4 |
 | `TradeSpaceRegressor` | regressor | metrics, coordinates and novelty from configuration | 4 |
 | `__version__` | string | package version | |
 
 Submodules used by import path: `hyperbolic_trade_space.gaps` (`knn_gap_scores`, `find_holes`,
-`frontier_targets`, `orient_by_pca`), `hyperbolic_trade_space.tensions` (`TensionReport`) and
+`frontier_targets`, `orient_by_pca`), `hyperbolic_trade_space.tensions` (`TradeOffReport`) and
 `hyperbolic_trade_space.plotting` (the plotting helpers). They are stage 4 tools.
 `hyperbolic_trade_space.solvers` holds the solvers and the certificate functions of stage 3
 ([Stopping record](#stopping-record-conditioning-and-conventions)).
@@ -49,7 +49,7 @@ single-term fit (A1, A2, A4).
 `coordinates` (`"ilr"` or `"alr"`), `n_terms` ($K$, default 1), `term_temperature` ($\kappa$,
 default `np.inf`), `tol`, `max_iter`, `penalty` and `alpha` (the sparsity option), `random_state`.
 Fitted attributes: `exponents_` of shape `(n_terms, d)`, `log_offset_` of shape `(n_terms,)`,
-`support_weights_`, `n_eff_`, `frac_above_`, `objective_`, `n_iter_`, `basis_`, `training_log_v_`,
+`support_weights_`, `n_eff_`, `frac_above_`, `loss_`, `n_iter_`, `basis_`, `training_log_v_`,
 `termination_` and `conditioning_` (and, for $K>1$, `cell_`, `coefficients_` and `term_share_`; see the $K>1$ section below). `transform` is the invertible chart $[Z\mid\log V]$ (L8, A7); `inverse_transform`
 inverts it; `score_samples` returns $\log V$ (L1); `invariant_value` and `project` give $V$ and the
 projection to the frontier. It has no `predict`: it follows the decomposition-family semantics of
@@ -98,7 +98,7 @@ Corollary 4, L14). Its fields:
   the gap of every term (`nan` when its cell is empty) and the row share $n_k/N$ of every term.
 - `bound`: the approximate-certificate bound (L14) $\sum_k\frac{n_k}{N}G_k$ on $F(W)-F^*_{\rm fixed}$, for the
   assignment of this run.
-- `objective_change`, `assignment_changes`, `n_empty`: the change of the mean slack at the last
+- `loss_change`, `assignment_changes`, `n_empty`: the change of the mean slack at the last
   accepted step, the rows whose argmax differs from the returned label, and the empty cells.
 - `gamma`, `radius`: the assignment margin $\gamma$ and the assignment-stable radius
   $\gamma/(2\max_i\|(u_i,-1)\|_2)$; `inf` for $K=1$.
@@ -119,7 +119,7 @@ refit). `fit` raises a scikit-learn `ConvergenceWarning` naming the status and t
 
 **The certificate functions** (`hyperbolic_trade_space.solvers`): `simplex_gap(g, w,
 min_exponent=0.0)`, the gap $g\cdot w-\min_jg_j$ of a gradient $g$ at a feasible $w$ (with the
-floor, the gap to the floored simplex); `term_objective(U, w, ubar, tau)`, $f_k$;
+floor, the gap to the floored simplex); `term_loss(U, w, ubar, tau)`, $f_k$;
 `term_gap(U, w, ubar, tau, min_exponent=0.0, p=None)`, $G_k$ (at $\tau=\infty$ the LP duality gap
 for the dual weights `p`, by default the dual of the term's linear program); `assignment_margin(U,
 W, beta)`, the pair $(\gamma,r)$; `fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0,
@@ -160,10 +160,10 @@ the exponent is 1.
 - `orient_by_pca(Z, mask=None)`: rotation to the principal axes of the masked rows, with a fixed
   sign convention; returns `(Z_rotated, components, explained_variance_ratio)`.
 
-### The tension report (`tension_report`)
+### The tension report (`trade_off_report`)
 
-`tension_report(estimator, X, band=None, min_near_frontier=10, threshold=1e-3, association="pearson")`
-returns a frozen `TensionReport`. The model is built to find tensions, not variance: the fit picks
+`trade_off_report(estimator, X, band=None, min_near_frontier=10, threshold=1e-3, association="pearson")`
+returns a frozen `TradeOffReport`. The model is built to find tensions, not variance: the fit picks
 the positive combination of log-metrics with the smallest upper extent (L3, L4), a binding
 constraint, where PCA picks the directions of largest spread. The report has three parts, plus the
 contending set.
@@ -179,8 +179,8 @@ contending set.
    is almost constant (L1), so a binding constraint induces negative association among participating
    metrics even where no designer traded them. Association is evidence of tension only together
    with the exponents and the directions.
-3. **Tension directions.** `tension_directions` are the principal directions of the near-frontier
-   $Z$ (unit vectors in chart coordinates), `tension_loadings` the same directions as loadings on
+3. **Tension directions.** `spread_directions` are the principal directions of the near-frontier
+   $Z$ (unit vectors in chart coordinates), `spread_loadings` the same directions as loadings on
    the log-metrics through the chart basis (L8, A7), and `explained_spread` the share of near-frontier
    variance along each. They equal `orient_by_pca` on the same rows.
 
@@ -233,7 +233,7 @@ expected-failure dicts.
 ### Plotting (`hyperbolic_trade_space.plotting`)
 
 `plot_log_plane`, `plot_frontier_surface_3d`, `plot_frontier_coordinates`, `plot_v_by_variable` and
-`plot_tensions` each accept an optional `ax`, return a matplotlib `Axes`, and share one visual
+`plot_association` each accept an optional `ax`, return a matplotlib `Axes`, and share one visual
 vocabulary declared as module constants: `FRONTIER_COLOR` (frontier $V=1$, black), `BAND_COLOR`
 (near-frontier band, grey), `HOLE_COLOR` (white space), `CATEGORY_COLORS` (one qualitative palette),
 `DATA_COLOR`, and `TENSION_CMAP` (diverging, tension to aligned). Targets are open markers.
@@ -307,7 +307,7 @@ Any other value raises `ValueError`.
   none.
 - `termination_`: the stopping record of the chosen run and `conditioning_`, shape `(K,)`, the
   smallest restricted-Hessian eigenvalue per term (see [Stopping record](#stopping-record-conditioning-and-conventions)).
-- `objective_`: for $K>1$, the mean slack $\frac1N\sum_i(\beta_{k(i)}-w_{k(i)}\cdot u_i)$ of the
+- `loss_`: for $K>1$, the mean slack $\frac1N\sum_i(\beta_{k(i)}-w_{k(i)}\cdot u_i)$ of the
   partition fit. `support_weights_` combines each term's weights on its own rows, scaled by its row
   share (sum 1).
 
@@ -316,7 +316,7 @@ $\arg\max_k(w_k\cdot\log m-\beta_k)$; $-1$ for a zero metric; all zeros at $K=1$
 `score_samples` returns $\log V=\Phi_K(u)$ (L10), `transform` the chart $[Z\mid\Phi_K(u)]$, and
 `inverse_transform` its inverse in closed form: since $B\mathbf 1=0$ and $\Phi_K$ is shift
 equivariant, $u=B^{+}Z+(\log V-\Phi_K(B^{+}Z))\mathbf 1$, exact for every $\kappa$ because $Z$ is
-the same for every term (L8, L10). `tension_report` returns a list of $K$ reports, as above.
+the same for every term (L8, L10). `trade_off_report` returns a list of $K$ reports, as above.
 `invariant_value` and `project` use the score $\Phi_K$ (L10), and `improvement_factors` uses the exponents of each row's active term (L7). A maximizer of $V$ is
 Pareto-efficient in the contending metrics (L11, A1, A2); the converse is not claimed.
 

@@ -12,13 +12,6 @@ reason = "SYNONYM of fit temperature: the glossary entry's own wording uses the 
 
 [[violation]]
 kind = "avoid"
-file = "paper/paper.ipynb"
-phrase = "fitted posynomial reference surface"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
 file = "paper/supporting_material.ipynb"
 phrase = "fitted surface"
 owner = "WP10 paper stream"
@@ -139,13 +132,6 @@ reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a pr
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
-phrase = "reference surface"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
 phrase = "row gap"
 owner = "WP10 paper stream"
 reason = "BASELINE: ordinary word gap: the per-row score difference whose minimum is the assignment margin (L13) (WP10 re-triage 2026-11-09)"
@@ -219,13 +205,6 @@ file = "paper/supporting_material.ipynb"
 phrase = "max gap"
 owner = "WP10 paper stream"
 reason = "BASELINE: column header of the generated termination table (record field max_gap) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "objective margin"
-owner = "WP10 paper stream"
-reason = "BASELINE: lemma-script identifier or cell label in a generated table (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -422,3 +401,10 @@ file = "src/hyperbolic_trade_space/tuning.py"
 phrase = "return temperature"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc Returns entry of a docstring (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/index.md"
+phrase = "table has gaps"
+owner = "docshome branch (the driver)"
+reason = "WP42 makes white space the one word for an unoccupied region of the chart (gap stays with the term gap and the gaps ledger); docs/index.md is held by the docshome branch and not edited by the WP42 build, which adds this row; the docshome branch rewrites the clause and removes the row"

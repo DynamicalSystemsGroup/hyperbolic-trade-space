@@ -29,7 +29,7 @@ def test_k3_fits_and_three_reports(result):
     assert (np.bincount(est.cell_, minlength=3) > 0).all()
     assert all(r.n_lemma == len(r.contending_set) >= 1 for r in reps)
     assert list(out["diag"].K) == [1, 2, 3] and list(out["fixed_diag"].K) == [1, 2, 3]
-    assert out["diag"].objective_.is_monotonic_decreasing
+    assert out["diag"].loss_.is_monotonic_decreasing
 
 
 def test_tau_reselected_at_each_k_holds_the_fraction(result):

@@ -55,7 +55,7 @@ def test_fit_invariants(tau, min_exponent):
         assert est.frac_above_ == 0 and V.max() <= 1 + 1e-9
     else:
         assert 0 < est.frac_above_ < 0.5
-    assert est.objective_ == pytest.approx(est.log_offset_[0])
+    assert est.loss_ == pytest.approx(est.log_offset_[0])
     assert est.n_iter_ >= 1
 
 
@@ -570,14 +570,14 @@ def _one_warning(est, X, pattern):
 
 def test_convergence_warning_at_the_cap_while_the_objective_still_moves(monkeypatch):
     # one partition-and-refit round: every term is stationary on its rows (the gap is at machine
-    # precision) but the assignment step is still moving rows and the objective still falls
+    # precision) but the assignment step is still moving rows and the loss still falls
     real = _solvers.solve_terms
     monkeypatch.setattr(_solvers, "solve_terms", lambda *a, **k: real(*a, max_iter=1, **k))
     X, est = _k3(1)
     msg = _one_warning(est, X, "iteration_cap")
     t = est.termination_
-    assert t.status == "iteration_cap" and t.max_gap <= est.tol < t.objective_change
-    assert f"{t.max_gap:.2e}" in msg and f"{t.objective_change:.2e}" in msg
+    assert t.status == "iteration_cap" and t.max_gap <= est.tol < t.loss_change
+    assert f"{t.max_gap:.2e}" in msg and f"{t.loss_change:.2e}" in msg
     assert f"tol {est.tol:g}" in msg
 
 
@@ -586,13 +586,13 @@ def test_convergence_warning_at_the_cap_while_the_objective_still_moves(monkeypa
     [(1e-15, 1e-16, False), (1e-15, 1e-5, True), (1e-5, 1e-16, True), (float("nan"), 0.0, True)],
 )
 def test_iteration_cap_warns_only_when_not_stationary_to_tol(monkeypatch, gap, change, warns):
-    # a run stopped at the cap is silent when the terms are stationary and the objective had
+    # a run stopped at the cap is silent when the terms are stationary and the loss had
     # stopped moving, both to within tol; the status and the gap are recorded either way
     real = _solvers.solve_terms
 
     def capped(*a, **k):
         r = real(*a, **k)
-        t = replace(r.termination, status="iteration_cap", max_gap=gap, objective_change=change)
+        t = replace(r.termination, status="iteration_cap", max_gap=gap, loss_change=change)
         return replace(r, success=False, message="max_iter reached", termination=t)
 
     monkeypatch.setattr(_solvers, "solve_terms", capped)
@@ -605,12 +605,12 @@ def test_iteration_cap_warns_only_when_not_stationary_to_tol(monkeypatch, gap, c
             warnings.simplefilter("error")
             est.fit(X)
     t = est.termination_
-    assert t.status == "iteration_cap" and t.objective_change == change
+    assert t.status == "iteration_cap" and t.loss_change == change
     assert t.max_gap == gap or (np.isnan(gap) and np.isnan(t.max_gap))
 
 
 def test_a_cycle_among_tied_rows_at_the_cap_is_silent():
-    # on macOS this table reaches the cap (50 rounds) with the objective constant over the last
+    # on macOS this table reaches the cap (50 rounds) with the loss constant over the last
     # rounds and no row trailing its best term beyond EPS_FEAS: rows that tie exactly between two
     # terms change label at each round; where the ties resolve into a fixed assignment the fit
     # is certified; either way the fit is stationary and nothing is reported as a failure
@@ -623,7 +623,7 @@ def test_a_cycle_among_tied_rows_at_the_cap_is_silent():
     assert t.status in ("iteration_cap", "certified", "stationary_without_margin")
     assert t.max_gap <= est.tol and t.assignment_changes == 0
     if t.status == "iteration_cap":
-        assert t.n_iter == 50 and t.objective_change <= est.tol
+        assert t.n_iter == 50 and t.loss_change <= est.tol
 
 
 def test_convergence_warning_keyed_to_guard_stop(monkeypatch):
@@ -739,8 +739,8 @@ def test_attributes_exist_for_every_k_and_k1_numbers_are_unchanged():
     assert HyperbolicTradeSpace().fit(Xz).cell_[5] == -1  # zero metric, as at K > 1
     # the fitted numbers of the K = 1 fit are those of the pre-change code (literals)
     e = HyperbolicTradeSpace(temperature=50.0).fit(X)
-    assert e.objective_ == pytest.approx(-0.06947951610557283, rel=1e-12)
-    assert e.log_offset_[0] == pytest.approx(e.objective_, rel=1e-12)
+    assert e.loss_ == pytest.approx(-0.06947951610557283, rel=1e-12)
+    assert e.log_offset_[0] == pytest.approx(e.loss_, rel=1e-12)
 
 
 def test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized():
@@ -750,14 +750,14 @@ def test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_mini
     e1 = HyperbolicTradeSpace(temperature=50.0).fit(X)
     expected = e1.log_offset_[0] - np.mean(U @ e1.exponents_[0])
     assert e1.mean_slack_ == pytest.approx(expected, rel=1e-12)
-    assert e1.mean_slack_ > 0 and e1.objective_ < e1.mean_slack_
+    assert e1.mean_slack_ > 0 and e1.loss_ < e1.mean_slack_
     # K > 1: the mean slack is what the solver minimized
     for tau in (np.inf, 50.0):
         e2 = HyperbolicTradeSpace(n_terms=2, temperature=tau, random_state=0).fit(X)
         k = e2.cell_
         slack = e2.log_offset_[k] - np.einsum("ij,ij->i", e2.exponents_[k], U)
         assert e2.mean_slack_ == pytest.approx(slack.mean(), rel=1e-12)
-        assert e2.mean_slack_ == pytest.approx(e2.objective_, rel=1e-9)
+        assert e2.mean_slack_ == pytest.approx(e2.loss_, rel=1e-9)
     # zero-metric rows are masked
     Xz = X.copy()
     Xz[7, 2] = 0.0

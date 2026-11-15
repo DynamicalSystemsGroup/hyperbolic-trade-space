@@ -2,7 +2,7 @@
 
 The fit never selects the number of terms K; you do. Every check below reads fits at one
 temperature, selected at K = 1 on your table ([the recipe](#the-temperature)). `mean_slack_` is
-comparable across K, and `objective_` is not. The package has no held-out criterion for K.
+comparable across K, and `loss_` is not. The package has no held-out criterion for K.
 
 ## Methods
 

@@ -7,7 +7,7 @@ time, pointing error. You want the shape of the
 trade: which numbers pull against each other, at what elasticity, where the evaluated designs
 end, and where the table is empty.
 
-The package answers with tensions, not variance. Principal component analysis (PCA) finds the directions in which the data spread;
+The package answers with trade-offs, not variance. Principal component analysis (PCA) finds the directions in which the data spread;
 this method finds the positive combination of the metrics along which the data stop, the binding
 constraint among metrics that are all better when larger. The answer is one weight per metric, and the
 weights sum to one. The metrics with positive weight in the exact-maximum fit (tau = inf)
@@ -28,7 +28,7 @@ A study has five stages and the package covers the last three:
 3. [Condition](conditioning.md) the attributes into metrics: positive, larger-is-better, comparable
    spread.
 4. [Fit](fitting.md) `HyperbolicTradeSpace` to the metrics.
-5. Read: the [tension report](tensions.md), the [chart](chart.md), a
+5. Read: the [trade-off report and the tensions](tensions.md), the [chart](chart.md), a
    [prediction](prediction.md) from configuration.
 
 ## What you supply, what you get back

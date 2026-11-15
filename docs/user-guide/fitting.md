@@ -21,7 +21,7 @@ The fitted values to read first:
 - `exponents_`: shape `(n_terms, d)`, each row non-negative and summing to one.
 - `frac_above_`: the fraction of designs beyond the surface V = 1.
 - `n_eff_`: how many designs carry the fit.
-- `objective_` and `mean_slack_`: `objective_` is what the solver minimized, the soft maximum at one
+- `loss_` and `mean_slack_`: `loss_` is what the solver minimized, the soft maximum at one
   term and the mean slack at several, so it is not comparable across numbers of terms.
   `mean_slack_` is the mean shortfall below the fitted reference surface, defined at
   every number of terms; compare fits with it, at a fixed temperature.
@@ -99,7 +99,7 @@ With several terms the term planes are not supporting planes, so `frac_above_` l
 zero as tau grows and the default target 0.10 raises "not bracketed". Choose a target above the
 level-off.
 
-`tension_report` takes its band from the temperature, 1/tau. A term whose cell has fewer than
+`trade_off_report` takes its band from the temperature, 1/tau. A term whose cell has fewer than
 `min_near_frontier` designs in the band raises. The message names the `band` that holds enough
 designs and the matching `temperature`.
 

@@ -5,7 +5,7 @@ metrics, so a *gap* in ``Z`` is a ratio profile no design has explored, whatever
 functions find such gaps (``knn_gap_scores``, ``find_holes``), place frontier targets over
 them (``frontier_targets``, using ``V = 1`` and the inverse chart, and the pull-back
 to attributes through a preconditioner when one is given), and orient the near-frontier spread
-(``orient_by_pca``, shared with ``hyperbolic_trade_space.tensions.tension_report``).
+(``orient_by_pca``, shared with ``hyperbolic_trade_space.tensions.trade_off_report``).
 """
 
 from __future__ import annotations

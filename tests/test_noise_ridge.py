@@ -26,7 +26,7 @@ from derivation.run import run_chain
 from hyperbolic_trade_space import HyperbolicTradeSpace
 from hyperbolic_trade_space import coordinates as coords
 from hyperbolic_trade_space.datasets import make_frontier_data
-from hyperbolic_trade_space.solvers import objective_and_grad
+from hyperbolic_trade_space.solvers import loss_and_grad
 
 W = np.array([0.4, 0.3, 0.2, 0.1])
 N = 20000
@@ -40,7 +40,7 @@ def minimise(U, tau, ridge=None, w0=None):
     d = U.shape[1]
 
     def f(w):
-        j, g = objective_and_grad(w, U, tau)
+        j, g = loss_and_grad(w, U, tau)
         if ridge is not None:
             j = j + tau * 0.5 * w @ ridge @ w
             g = g + tau * ridge @ w

@@ -151,7 +151,7 @@ def test_k_sweep_small_sample_has_certificate_columns(small):
     assert {"max gap", "status", "gamma", "radius", "bound"} <= set(t.columns)
     assert t.status.iloc[0] == "not_applicable" and np.isnan(t.gamma.iloc[0])
     assert t.status.iloc[1] in {"certified", "stationary_without_margin"}
-    assert t.objective_.is_monotonic_decreasing
+    assert t.loss_.is_monotonic_decreasing
 
 
 def test_certificate_table_matches_termination(small):
@@ -169,7 +169,7 @@ def test_term_and_tension_tables_small(small):
     assert list(f.term) == [1, 2] and f.share.between(0, 1).all()
     assert f["rows"].sum() == N and (f["n_lemma"] >= 1).all()
     assert np.allclose(f["gap G_k"], fits[2].estimator.termination_.gaps)
-    t = case.tension_table(small, fits[1], band=band)
+    t = case.trade_off_table(small, fits[1], band=band)
     assert len(t) == 1 and t["near-frontier"].iloc[0] >= 10
     assert set(t["contending set"].iloc[0].split(", ")) <= set(small.names)
 
@@ -219,13 +219,43 @@ def test_figures_return_figures_and_do_not_save(small, small_fit, tmp_path, monk
         case.log_plane_figure(small, fits[2], band=0.08),
         case.coordinates_figure(small, small_fit),
         case.coordinates_figure(small, fits[2], band=0.08),
-        case.tension_figure(small, fits[2], band=0.08),
+        case.association_figure(small, fits[2], band=0.08),
         case.regime_figure(n_max=N),
     ]
     assert all(isinstance(f, plt.Figure) for f in figs)
     for f in figs:
         plt.close(f)
     assert list(tmp_path.iterdir()) == []
+
+
+def test_the_tension_matrix_figure_draws_the_terms_that_carry_an_exponent(small, small_fit):
+    """WP42, Figure 7: one panel per term, the metrics that carry an exponent sorted by exponent,
+    the others named under the panel, every off-diagonal cell a negative tension."""
+    import matplotlib.pyplot as plt
+
+    from hyperbolic_trade_space import tension_matrix
+
+    fits = case.k_fits(small, Ks=(1, 2))
+    fit = fits[2]
+    fig = case.tension_matrix_figure(small, fit)
+    axes = [a for a in fig.axes if a.get_title()]
+    W = fit.estimator.exponents_
+    T = tension_matrix(fit.estimator, small.M)
+    assert len(axes) == len(W)
+    for k, ax in enumerate(axes):
+        keep = [j for j in np.argsort(-W[k], kind="stable") if W[k][j] > 1e-3]
+        assert (
+            ax.get_title() == f"term {k + 1}: {len(keep)} of {len(W[k])} metrics carry an exponent"
+        )
+        assert [t.get_text() for t in ax.get_xticklabels()] == [small.names[j] for j in keep]
+        gone = [small.names[j] for j in range(len(W[k])) if j not in keep]
+        assert all(name in ax.get_xlabel().replace("\n", " ") for name in gone)
+        sub = T[k][np.ix_(keep, keep)]
+        assert (sub[~np.eye(len(keep), dtype=bool)] < 0).all()  # every drawn cell is negative
+        cells = [t.get_text() for t in ax.texts]
+        assert len(cells) == len(keep) * (len(keep) - 1)
+        assert all(c.startswith("-") for c in cells)
+    plt.close(fig)
 
 
 def test_tau_sweep_figure_marks_the_fit_temperature_and_orders_the_rows(small, small_fit):
@@ -331,7 +361,7 @@ def test_nondominated_counts_on_frozen_primary(primary):
 
 
 # the K record on the thirteen-metric data of record (the WP30 gate: 3,000 designs per regime, host-
-# recorded), as k_terms.py prints it: tau, objective_, frac_above_, term rows; then gamma and radius
+# recorded), as k_terms.py prints it: tau, loss_, frac_above_, term rows; then gamma and radius
 # (the radius scales with the number of metrics)
 RECORD = {
     "primary": {
@@ -361,7 +391,7 @@ def test_k_sweep_equals_the_record(regime, request):
     for K, (tau, obj, frac, rows) in RECORD[regime].items():
         r = t.loc[K]
         assert r.tau == pytest.approx(tau, abs=0.006)
-        assert r.objective_ == pytest.approx(obj, abs=6e-5)
+        assert r.loss_ == pytest.approx(obj, abs=6e-5)
         assert r.frac_above_ == pytest.approx(frac, abs=6e-4)
         assert sorted(r["term rows"]) == sorted(rows)
     assert t.loc[1, "max gap"] == pytest.approx(GAP_K1[regime], rel=0.05)
@@ -412,7 +442,7 @@ def test_thin_term_is_reported_from_the_estimator_and_gets_its_reason(primary, p
     )
     with pytest.raises(ValueError, match="3 of ten"):
         case._reports(primary, fit, band)
-    fig = case.tension_figure(primary, fit, band=band)
+    fig = case.association_figure(primary, fit, band=band)
     texts = [t.get_text().replace("\n", " ") for ax in fig.axes for t in ax.texts]
     assert any(t == "3 near-frontier designs; no association reading" for t in texts)
     assert len(fig.axes) == 6  # every term drawn: three panels, three colour bars
@@ -420,13 +450,13 @@ def test_thin_term_is_reported_from_the_estimator_and_gets_its_reason(primary, p
 
 
 def test_k1_contending_set_equals_the_record(primary, primary_fits, stock, stock_fits):
-    p = case.tension_table(primary, primary_fits[1]).iloc[0]
+    p = case.trade_off_table(primary, primary_fits[1]).iloc[0]
     assert p["contending set"] == (
         "unit cost, available power, pointing error, fleet cost, momentum headroom, settling time, "
         "depth of discharge"
     )
     assert p.n_lemma == 7 and p["near-frontier"] == 238
-    s = case.tension_table(stock, stock_fits[1]).iloc[0]
+    s = case.trade_off_table(stock, stock_fits[1]).iloc[0]
     assert set(s["contending set"].split(", ")) == {
         "momentum headroom", "available power", "total mass", "settling time", "pointing error",
         "depth of discharge", "unit cost", "fleet cost",
@@ -472,7 +502,7 @@ def test_predict_check_within_the_band(primary, regressor):
 
 def test_white_space_targets(primary):
     t = case.white_space_targets(case.view_study(primary))
-    assert len(t) == 3 and t["hole score"].min() > 2.0
+    assert len(t) == 3 and t["white-space score"].min() > 2.0
     assert "total mass (kg)" in t.columns
 
 
@@ -566,7 +596,7 @@ def test_the_module_import_in_process_is_cheap():
 def test_docstrings_run_and_are_numpydoc():
     assert doctest.testmod(case, optionflags=doctest.ELLIPSIS).failed == 0
     for name in (
-        "load_study", "fit_study", "k_sweep", "k_table", "term_table", "tension_table",
+        "load_study", "fit_study", "k_sweep", "k_table", "term_table", "trade_off_table",
         "nondominated_counts", "regime_comparison", "predict_check", "candidate_table",
         "log_plane_figure", "feasible_mask",
     ):  # fmt: skip
@@ -642,7 +672,7 @@ def test_panel_titles_count_the_exact_maximum_support_and_outline_exactly_those(
     import matplotlib.pyplot as plt
 
     rep = case._reports(small, small_fit)[0]
-    fig = case.tension_figure(small, small_fit)
+    fig = case.association_figure(small, small_fit)
     ax = fig.axes[0]
     n = rep.n_lemma
     plural = "s" if n != 1 else ""

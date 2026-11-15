@@ -703,7 +703,7 @@ note = "Paper's own statement, uncited by design (reading_pass n=1 'now'); regis
 
 [[claim]]
 id = "C050"
-fragment = "It seeks responsible choice among conflicting objectives [@keeney1993decisions]"
+fragment = "responsible choice among conflicting objectives (the measures the decision-maker wants more of) [@keeney1993decisions]"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "L"
@@ -787,7 +787,7 @@ note = "reading_pass n=8 supported (document-based to model-based, Henderson); n
 
 [[claim]]
 id = "C057"
-fragment = "PCA reduces dimensionality and increases interpretability while minimizing information loss [@jolliffe2016principal]"
+fragment = "PCA reduces dimensionality and increases interpretability while keeping as much of the information as it can [@jolliffe2016principal]"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "L"
@@ -1549,7 +1549,7 @@ note = "Raw-attribute exponents are w_j alpha_j and the offset changes: exponent
 
 [[claim]]
 id = "C121"
-fragment = "K = 1 finds one tension; several regional tensions need K > 1."
+fragment = "K = 1 finds one trade-off; several regional trade-offs need K > 1."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1753,7 +1753,7 @@ note = "Guard rejects a rise beyond GUARD_TOL and returns the previous state"
 
 [[claim]]
 id = "C139"
-fragment = "fixed-weight objective bounds the soft model's mean slack from above and equals it at the model the weights came from"
+fragment = "fixed-weight loss bounds the soft model's mean slack from above and equals it at the model the weights came from"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "M"
@@ -1801,7 +1801,7 @@ note = "Stated as a non-result in the L16 docstring ('What this does NOT prove')
 
 [[claim]]
 id = "C143"
-fragment = "the gradient and the Hessian $D-\\kappa M$ of its objective"
+fragment = "the gradient and the Hessian $D-\\kappa M$ of its loss"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "M"
@@ -1945,7 +1945,7 @@ note = "k_fits re-selects the temperature at each K; the test asserts the temper
 
 [[claim]]
 id = "C155"
-fragment = "where `mean_slack_` is comparable across K and `objective_` is not"
+fragment = "where `mean_slack_` is comparable across K and `loss_` is not"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1953,11 +1953,11 @@ backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "definitions pinned (mean_slack_ at K=1 and K>1, objective_ = soft max at one term, mean slack at several); 'comparable at one temperature' is the design reading of the definition"
+note = "definitions pinned (mean_slack_ at K=1 and K>1, loss_ = soft max at one term, mean slack at several); 'comparable at one temperature' is the design reading of the definition"
 
 [[claim]]
 id = "C156"
-fragment = "The tension report runs a principal component analysis on the chart coordinates Z of the near-frontier designs in a term's cell."
+fragment = "The trade-off report runs a principal component analysis on the chart coordinates Z of the near-frontier designs in a term's cell."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -2141,7 +2141,7 @@ fragment = "summing to one. `report.contending_set` lists the metrics that"
 file = "docs/getting-started.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "func:src/hyperbolic_trade_space/tensions.py::tension_report"]
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2257,7 +2257,7 @@ note = "exponents_, cell_, coefficients_, term_share_ exist at K=1 and K>1"
 
 [[claim]]
 id = "C183"
-fragment = "`cell_`, `coefficients_`, `term_share_`, `objective_` (what the solver minimized) and"
+fragment = "`cell_`, `coefficients_`, `term_share_`, `loss_` (what the solver minimized) and"
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
@@ -2265,7 +2265,7 @@ backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "objective_ and mean_slack_ at K=1 and K=2; the test asserts the solver-minimized quantity per K"
+note = "loss_ and mean_slack_ at K=1 and K=2; the test asserts the solver-minimized quantity per K"
 
 [[claim]]
 id = "C184"
@@ -2317,11 +2317,12 @@ note = "configured data with config_map to (Z, log V), reproducible by seed"
 
 [[claim]]
 id = "C188"
-fragment = "[`tension_report`](user-guide/tensions.md), a function: contending set, elasticities and"
+fragment = "[`trade_off_report`, `tension_matrix`, `design_tensions`](user-guide/tensions.md), functions: contending set and elasticities; the slope of one metric against another."
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent", "test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+backing = [
+  "test:tests/test_tensions.py::test_the_tension_matrix_agrees_with_finite_differences_at_k1","test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent", "test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2341,15 +2342,15 @@ note = "predict (metrics), predict_coordinates and predict_novelty from configur
 
 [[claim]]
 id = "C190"
-fragment = "`hyperbolic_trade_space.tensions`: `TensionReport`, the object `tension_report` returns."
+fragment = "`hyperbolic_trade_space.tensions`: `TradeOffReport`, `DesignTensions`: what the functions return."
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields", "func:src/hyperbolic_trade_space/tensions.py::tension_report"]
+backing = ["test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "TensionReport is in tensions and tension_report returns it (test_tensions asserts report fields)"
+note = "TradeOffReport is in tensions and trade_off_report returns it (test_tensions asserts report fields)"
 
 [[claim]]
 id = "C191"
@@ -2517,7 +2518,7 @@ backing = ["test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_con
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Contending set computed from the tau=inf fit and pinned for planted supports of size 3; found from data is the design of tension_report"
+note = "Contending set computed from the tau=inf fit and pinned for planted supports of size 3; found from data is the design of trade_off_report"
 
 [[claim]]
 id = "C205"
@@ -2748,7 +2749,7 @@ backing = ["test:tests/test_tensions.py::test_exponents_and_elasticities_consist
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "tension_report exposes weights (exponents) and participating mask, asserted"
+note = "trade_off_report exposes weights (exponents) and participating mask, asserted"
 
 [[claim]]
 id = "C225"
@@ -3168,7 +3169,7 @@ backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "At K=1 objective_ < mean_slack_ (different quantities); contract v3 says objective_ is what the solver minimized and mean_slack_ is the one to compare."
+note = "At K=1 loss_ < mean_slack_ (different quantities); contract v3 says loss_ is what the solver minimized and mean_slack_ is the one to compare."
 
 [[claim]]
 id = "C260"
@@ -3244,7 +3245,7 @@ note = "Same table (300,4,n_terms=2,seed 777); default target raises 'not bracke
 
 [[claim]]
 id = "C267"
-fragment = "returns a frozen `TensionReport` that says which metrics contend and"
+fragment = "returns a frozen `TradeOffReport` that says which metrics contend and"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3256,7 +3257,7 @@ note = "frozen dataclass asserted (FrozenInstanceError); contending set recovere
 
 [[claim]]
 id = "C268"
-fragment = "`plot_tensions` draws the report as a heatmap:"
+fragment = "`plot_association` draws the report as a heatmap:"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3424,7 +3425,7 @@ note = "fields exist with shapes (d-1,d-1), (d-1,d), (d-1,)"
 
 [[claim]]
 id = "C282"
-fragment = "`tension_directions`: the principal directions of the near-frontier chart coordinates."
+fragment = "`spread_directions`: the principal directions of the near-frontier chart coordinates."
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3436,7 +3437,7 @@ note = "principal direction recovers planted spread within 5 degrees; unit norms
 
 [[claim]]
 id = "C283"
-fragment = "`tension_loadings`: the same directions as loadings on the log-metrics."
+fragment = "`spread_loadings`: the same directions as loadings on the log-metrics."
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3700,7 +3701,7 @@ note = "3d axes for three metrics"
 
 [[claim]]
 id = "C306"
-fragment = "`plot_frontier_coordinates(Z, log_v)`: the chart, the columns of `ts.transform(X)`, with optional holes and targets."
+fragment = "`plot_frontier_coordinates(Z, log_v)`: the chart, the columns of `ts.transform(X)`, with optional white space and targets."
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
@@ -3724,7 +3725,7 @@ note = "log V against a numeric or categorical variable"
 
 [[claim]]
 id = "C308"
-fragment = "`plot_tensions`: the tension report as a heatmap."
+fragment = "`plot_association`: the association among near-frontier designs, from the trade-off report, as a heatmap."
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
@@ -3952,7 +3953,7 @@ note = "status and the warning pinned with a +10 rise; the threshold obj2 > obj 
 
 [[claim]]
 id = "C331"
-fragment = "- `iteration_cap`: alternation cap reached, fit kept. Warned only when gap or last objective"
+fragment = "- `iteration_cap`: alternation cap reached, fit kept. Warned only when gap or last loss"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4096,7 +4097,7 @@ note = "radius = gamma/(2U), U the largest norm of (u,-1) (L13.11); values test 
 
 [[claim]]
 id = "C343"
-fragment = "A single term has constant elasticities and finds one tension, at"
+fragment = "A single term has constant elasticities and finds one trade-off, at"
 file = "docs/user-guide/limitations.md"
 anchor = ""
 kind = "M"
@@ -4176,7 +4177,7 @@ backing = ["test:tests/test_tensions.py::test_closure_induces_negative_associati
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Test asserts closure induces negative association without any trade; tension_report carries closure_note"
+note = "Test asserts closure induces negative association without any trade; trade_off_report carries closure_note"
 
 [[claim]]
 id = "C351"
@@ -4280,7 +4281,7 @@ fragment = "replacement for it, and the two chain: the tension report already ru
 file = "site/index.html"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions", "func:src/hyperbolic_trade_space/tensions.py::tension_report"]
+backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4336,7 +4337,7 @@ note = "Exponent vectors within DISTINCT_TERMS_DISTANCE = 1e-3 (Euclidean, singl
 
 [[claim]]
 id = "C375"
-fragment = "[`certified`](paper:thm-certificate) is the first: a local optimum of the objective, not of other restarts"
+fragment = "[`certified`](paper:thm-certificate) is the first: a local optimum of the loss, not of other restarts"
 file = "docs/user-guide/termination.md"
 anchor = "What to decide from it"
 kind = "M"
@@ -4386,7 +4387,7 @@ anchor = "A cap can hide a slope"
 kind = "S"
 backing = [
   "test:tests/test_tensions.py::test_monolemma_and_names",
-  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+  "func:src/hyperbolic_trade_space/tensions.py::trade_off_report",
 ]
 status = "backed"
 disposition = "keep"
@@ -4564,7 +4565,7 @@ note = "the docs' one sentence on the position, pointing to Appendix B of the pa
 
 [[claim]]
 id = "C391"
-fragment = "within a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest predicted distances to the 300 most isolated holes"
+fragment = "within a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest predicted distances to the 300 most isolated points of white space"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -4576,23 +4577,6 @@ status = "backed"
 disposition = "keep"
 source = "swap-evidence part 6, finding 4 (the paper's fix-forward)"
 note = "Proposer.draw computes the reach as the REACH_QUANTILE (0.02) quantile of the nearest predicted distances of the HOLES (300) most isolated holes, at run time; the test pins both constants and the sentence, and that no value is typed in it. The values (0.6222 here, 0.351 on the slew-time view) are not printed: no committed record holds them (CR-3 of change-register.md states them)."
-
-[[claim]]
-id = "C392"
-fragment = "A term with fewer than ten near-frontier designs is drawn without cells, and a line in its panel gives the count"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "R"
-backing = [
-  "gen:examples/adcs/case.py::tension_figure",
-  "func:examples/adcs/case.py::has_reading",
-  "test:tests/test_case.py::test_thin_term_is_reported_from_the_estimator_and_gets_its_reason",
-  "test:tests/test_plotting.py::test_tensions_thin_term_is_drawn_with_empty_cells_and_its_count",
-]
-status = "backed"
-disposition = "keep"
-source = "swap-evidence part 5 item 2 (the per-term rule); part 6, finding 7"
-note = "MIN_NEAR_FRONTIER = 10 is applied per term (has_reading); tension_figure draws every term through plot_tensions, which leaves the cells of a term below ten near-frontier designs empty and writes '3 near-frontier designs; no association reading' in its panel (supervisor, WP19-decisions.md, the missing term); the tests find that line, the empty cells, and the title, labels and outline kept"
 
 [[claim]]
 id = "C393"
@@ -4852,7 +4836,7 @@ note = "The stopping declaration defines certified for the sharp kind in the ter
 
 [[claim]]
 id = "C409"
-fragment = "For two metrics with identical columns the objective is flat along their swap"
+fragment = "For two metrics with identical columns the loss is flat along their swap"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "M"
@@ -4944,11 +4928,11 @@ fragment = "centred on the cell's mean log-metric: $f_k$ of equation (2) on the 
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/tensions.py::tension_report", "test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports"]
+backing = ["func:src/hyperbolic_trade_space/tensions.py::trade_off_report", "test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports"]
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (CR-15)"
-note = "tension_report at K > 1 solves the tau = inf LP on the rows assigned to the term with their mean subtracted (_report(..., Uk - Uk.mean(0), ...)): min_w max_i w.(u_i - ubar_k) over the cell equals J_inf(U_k w) - ubar_k.w, the term refit f_k restricted to the cell's rows."
+note = "trade_off_report at K > 1 solves the tau = inf LP on the rows assigned to the term with their mean subtracted (_report(..., Uk - Uk.mean(0), ...)): min_w max_i w.(u_i - ubar_k) over the cell equals J_inf(U_k w) - ubar_k.w, the term refit f_k restricted to the cell's rows."
 
 [[claim]]
 id = "C417"
@@ -4992,7 +4976,7 @@ fragment = "The contending set is a third fit, read after the fit: $f_k$ at $\\t
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::_refit", "func:src/hyperbolic_trade_space/tensions.py::tension_report", "file:paper/supporting_material.ipynb"]
+backing = ["func:src/hyperbolic_trade_space/solvers.py::_refit", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report", "file:paper/supporting_material.ipynb"]
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (CR-15)"
@@ -5028,7 +5012,7 @@ note = "Narrowed in the third paper unit (change request 137): the sentence no l
 
 [[claim]]
 id = "C423"
-fragment = "`conditioning_` is that objective's curvature along its flattest direction: where it is small, moving the exponents along that direction barely changes the objective"
+fragment = "`conditioning_` is that loss's curvature along its flattest direction: where it is small, moving the exponents along that direction barely changes the loss"
 file = "paper/supporting_material.ipynb"
 anchor = "D.12 The conditioning of the exponents"
 kind = "M"
@@ -5247,7 +5231,7 @@ note = "As C340: the Hessian of J_tau is tau times a weighted covariance (L17.5)
 
 [[claim]]
 id = "C444"
-fragment = "`mean_slack_` is comparable across K, and `objective_` is not."
+fragment = "`mean_slack_` is comparable across K, and `loss_` is not."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
@@ -5255,7 +5239,7 @@ backing = ["glossary:mean-slack", "test:tests/test_estimator.py::test_mean_slack
 status = "backed"
 disposition = "keep"
 source = "WP31 review G-1, G-3, G-4"
-note = "As C402 and C155: mean_slack_ is defined at every K; objective_ is the soft maximum at one term and the mean slack at several, so it is not comparable. Narrowed from 'only there' to the comparison the case test makes."
+note = "As C402 and C155: mean_slack_ is defined at every K; loss_ is the soft maximum at one term and the mean slack at several, so it is not comparable. Narrowed from 'only there' to the comparison the case test makes."
 
 [[claim]]
 id = "C445"
@@ -5936,7 +5920,7 @@ kind = "S"
 backing = [
   "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator",
   "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
-  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+  "func:src/hyperbolic_trade_space/tensions.py::trade_off_report",
 ]
 status = "backed"
 disposition = "keep"
@@ -6124,7 +6108,7 @@ note = "The three readers who arrive at the paper in the journeys map (P1 and P8
 
 [[claim]]
 id = "C564"
-fragment = "Beyond pencil-and-paper checks, the Lean theorem prover, starting with the log-mean-exp bounds and the convexity of the fit objective"
+fragment = "Beyond pencil-and-paper checks, the Lean theorem prover, starting with the log-mean-exp bounds and the convexity of the fit's loss"
 file = "paper/paper.ipynb"
 anchor = "Future work and final remark"
 kind = "L"
@@ -6344,7 +6328,7 @@ anchor = "H.4 What the table shows"
 kind = "S"
 backing = [
   "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
-  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+  "func:src/hyperbolic_trade_space/tensions.py::trade_off_report",
 ]
 status = "backed"
 disposition = "keep"
@@ -6415,7 +6399,7 @@ note = "The authors' paper, Section 3 (three generalizations: the subspace, the 
 
 [[claim]]
 id = "C586"
-fragment = "That objective is not convex: the authors' code runs Adam from random starts, and nothing bounds how far its objective is from the best frame's"
+fragment = "That loss is not convex: the authors' code runs Adam from random starts, and nothing bounds how far its loss is from the best frame's"
 file = "paper/supporting_material.ipynb"
 anchor = "H.5 How the formalism and the solvers differ"
 kind = "S"
@@ -6437,7 +6421,7 @@ kind = "M"
 backing = [
   "lemma:L4",
   "func:src/hyperbolic_trade_space/solvers.py::log_mean_exp",
-  "func:src/hyperbolic_trade_space/solvers.py::objective_and_grad",
+  "func:src/hyperbolic_trade_space/solvers.py::loss_and_grad",
 ]
 status = "backed"
 disposition = "keep"
@@ -7216,21 +7200,6 @@ status = "backed"
 disposition = "keep"
 source = "final round, second paper unit, change requests 32 to 92"
 note = "leading_direction reads case._reports(study, fit1)[0], the tension report of the K = 1 fit's band; the chart coordinates do not depend on the fit, so the K = 2 chart is drawn along it."
-
-[[claim]]
-id = "C636"
-fragment = "At K = 1 peak slew power carries no exponent; here it leads term 1."
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::terms_sentence",
-  "test:tests/test_paper.py::test_figure_7_caption_claim_about_peak_slew_power_is_the_data",
-]
-status = "backed"
-disposition = "keep"
-source = "final round, second paper unit, change requests 32 to 92"
-note = "K = 1 exponent of peak slew power is zero; at K = 2 its largest exponent is on term 1 (0.43)."
 
 [[claim]]
 id = "C637"
@@ -8938,4 +8907,140 @@ status = "backed"
 disposition = "keep"
 source = "final round, fourth paper unit, cold read of Figure 6"
 note = "The surface line is drawn under the points (zorder 1.5 against 2) and the top of the axis leaves room above the highest design, so the 203 designs above log V = 0 show; V is Definition 2 (def-invariant); the axis's percentage is share = explained_spread of the first principal direction (leading_direction)."
+
+[[claim]]
+id = "C793"
+fragment = "the tension of $j$ against $i$ is the derivative of $m_j$ with respect to $m_i$ along the term, the other metrics held, in the conditioned metrics"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L21.7",
+  "lemma:L21.8",
+  "test:tests/test_tensions.py::test_the_tension_matrix_agrees_with_finite_differences_at_k1",
+  "test:tests/test_tensions.py::test_the_tension_matrix_agrees_with_finite_differences_at_k2",
+  "glossary:tension",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1 (the build after the spike)"
+note = "L21.7: T_ij = -(w_i/w_j)(m_j/m_i), the implicit derivative of the term's hyperplane; L21.8: its log-log form is L7's elasticity. The finite-difference tests take the fitted estimator as a black box (the level from score_samples) and agree to 1e-5 relative on every defined cell (the spike's largest was 2.7e-6 on 288 cells of the case)."
+
+[[claim]]
+id = "C794"
+fragment = "It is negative where $w_{ki},w_{kj}>0$, zero where $w_{ki}=0<w_{kj}$"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L21.9",
+  "lemma:L21.10",
+  "lemma:L21.11",
+  "lemma:L21.12",
+  "lemma:L21.13",
+  "test:tests/test_tensions.py::test_the_cases_of_the_definition",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1"
+note = "The cases of the definition: zero (L21.9), blank because dG/dm_j vanishes and the quotient has no finite value (L21.10, L21.11), reciprocal across the diagonal (L21.12), negative for positive exponents (L21.13); the test reads every cell of both terms of a K = 2 fit."
+
+[[claim]]
+id = "C795"
+fragment = "negative for two attributes of one orientation and positive for mixed, so \"negative where both contend\" is a statement in the metrics only"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L21.14",
+  "lemma:L21.15",
+  "lemma:L21.16",
+  "lemma:L21.17",
+  "test:tests/test_tensions.py::test_a_designs_tensions_in_the_attributes_units_agree_with_finite_differences",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1"
+note = "L21.14 and L21.15: the chain rule on T_ij and the implicit derivative of L9's surface agree and give -(w_i alpha_i)/(w_j alpha_j)(a_j + s_j)/(a_i + s_i); L21.16 and L21.17: the sign by the orientation. The test differences the fitted surface in the raw attributes through the preconditioner."
+
+[[claim]]
+id = "C796"
+fragment = "A tension is a rate along the fitted reference surface, not the effect of changing a design variable."
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L21",
+  "glossary:tension",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1"
+note = "L21 differentiates the term's hyperplane in two metrics with the others held; it says nothing of how a configuration moves a design (the lemma's own 'does not prove' clause). The routes page of the docs states what is computable and what is a conjecture past the sampled designs."
+
+[[claim]]
+id = "C797"
+fragment = "At the picked fleet ({cfg} satellites) the surface's tension between the operator's ... pointing error and the sponsor's fleet cost is {per_arcsec(t_own)} M USD"
+file = "paper/generate_findings.py"
+anchor = "def tension_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::tension_sentence",
+  "lemma:L21.15",
+  "test:tests/test_paper.py::test_the_picks_tension_sentence_agrees_with_finite_differences_of_the_fitted_surface",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1 (the supervisor, 'Accept as drafted')"
+note = "Computed from the fit and the table by design_tensions at the picked design (1858, on term 1, 0.16 in score from the seam) in USD per arcsecond; the test takes the central difference of the fitted surface through the conditioning and agrees. The quantities are not in the five-regeneration stability study (stability_extra.json), so they print at two figures from the data of record."
+
+[[claim]]
+id = "C798"
+fragment = "{percent:.1f} percent less fleet cost. It is a rate at that design with the other ... metrics held, not the price of the better tracker, and on the other term of the fit it ... is {per_arcsec(t_other)} M USD per arcsecond."
+file = "paper/generate_findings.py"
+anchor = "def tension_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::tension_sentence",
+  "lemma:L21",
+  "test:tests/test_paper.py::test_the_picks_tension_sentence_agrees_with_finite_differences_of_the_fitted_surface",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1"
+note = "One percent more pointing error goes with the percent given of the fleet cost in the attributes' own units: |dFC/dPE| PE/FC at the pick. 'Not the price of the better tracker': the tension holds the other metrics fixed along the surface, and the tracker changes several (the fleets differ in the tracker grade, D.19)."
+
+[[claim]]
+id = "C799"
+fragment = "the function its solver minimizes is the loss, scikit-learn's word; we choose it so that objective stays with the decision"
+file = "paper/paper.ipynb"
+anchor = "Preliminaries and notation"
+kind = "L"
+backing = [
+  "bib:pedregosa2011scikit",
+  "glossary:loss",
+  "glossary:objective",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1 (WP11-decisions.md, the supervisor, 2026-11-14, 15:50)"
+note = "scikit-learn documents the quantity a solver minimizes as the loss (loss functions, loss_ attributes of its estimators); the choice of loss for the method layer and objective for the decision layer is the supervisor's ruling, entered in the glossary with its layer."
+
+[[claim]]
+id = "C800"
+fragment = "Only the metrics that carry an exponent on the term are drawn, sorted by exponent, and the line under each panel names the others"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "func:examples/adcs/case.py::tension_matrix_figure",
+  "lemma:L21.13",
+  "test:tests/test_case.py::test_the_tension_matrix_figure_draws_the_terms_that_carry_an_exponent",
+]
+status = "backed"
+disposition = "keep"
+source = "WP42 Amendment 1 (Figure 7)"
+note = "case.tension_matrix_figure draws hyperbolic_trade_space.tension_matrix cut to the metrics with an exponent above the participation threshold; every drawn off-diagonal cell is negative (L21.13), which the test asserts on the figure's cells."
 

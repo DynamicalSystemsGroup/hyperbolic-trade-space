@@ -67,7 +67,7 @@ for A4 are written here and marked as such. The register of mathematical express
 | id | statement | interpretive role | failure mode |
 |---|---|---|---|
 | R1 | the balanced point lies in the relative interior of a facet of the frontier with positive normal; this is a statement about the hard-support (tau = infinity) geometry and does not imply that the finite-tau minimizer of J_tau is interior | makes the KKT balanced point a genuine interior frontier point, so the gradient condition identifies w* as the facet normal and the improvement factors and elasticities can be read as trade-offs along the frontier; where the fitted minimizer has w_j > 0 the equal-gradient condition holds on those coordinates | at a vertex, an edge or a facet with a zero normal component the gradient condition holds only as a subgradient inclusion: w* is not unique, some elasticities are undefined, and the frontier reading degrades to the weaker invariant-form reading; at finite tau the multiplicity of the observations can put the minimizer on the simplex boundary even when the hard-support geometry is balanced, and then only the full simplex KKT (g_j >= lambda, w_j (g_j - lambda) = 0) holds, with equal gradients on the positive-weight coordinates only |
-| R2 | positive assignment margin: gamma = min_i [s_i,k(i) - max_{k != k(i)} s_ik] > 0, where s_ik = w_k.u_i - beta_k, so every row has a unique maximizing term | gives unique maximizing terms and an assignment-stable neighborhood (radius gamma / (2 max_i \|\|(u_i, -1)\|\|_2)) on which the several-term objective equals its fixed-assignment expression, so Proposition 3 applies: a fit whose terms are exactly optimal is a local minimizer, and with gap-bounded terms the approximate-certificate corollary bounds the remaining improvement | ridge rows: a frontier row on two term planes has margin zero at tau = infinity, and duplicate terms give identical scores; the neighborhood is then empty, Proposition 3 does not apply, and termination reports stationary_without_margin: the fit is first-order stationary per term (levels 1 and 2) with no local-optimality claim |
+| R2 | positive assignment margin: gamma = min_i [s_i,k(i) - max_{k != k(i)} s_ik] > 0, where s_ik = w_k.u_i - beta_k, so every row has a unique maximizing term | gives unique maximizing terms and an assignment-stable neighborhood (radius gamma / (2 max_i \|\|(u_i, -1)\|\|_2)) on which the several-term loss equals its fixed-assignment expression, so Proposition 3 applies: a fit whose terms are exactly optimal is a local minimizer, and with gap-bounded terms the approximate-certificate corollary bounds the remaining improvement | ridge rows: a frontier row on two term planes has margin zero at tau = infinity, and duplicate terms give identical scores; the neighborhood is then empty, Proposition 3 does not apply, and termination reports stationary_without_margin: the fit is first-order stationary per term (levels 1 and 2) with no local-optimality claim |
 | R3 | the clean fit is interior to its face and well conditioned there: at the minimizer w* of J_tau on the simplex the participating exponents (w*_j > 0) form the face on which the fit is read, the coordinates outside it have g_j > lambda (strict complementarity, so a small perturbation of the problem leaves them at zero), and the covariance C = Cov_p(u) of the softmax weights at w* is positive definite on the tangent space {v : sum_j v_j = 0, v_j = 0 off the support} of the face (every vector that sums to zero when all exponents are positive): v'Cv >= m \|\|v\|\|^2 with m > 0, m the smallest eigenvalue of C there (conditioning_ = tau m) | lets the first-order condition be read on the face, makes the shift unique, and gives its size: the shift is at most \|\|P Sigma w*\|\| / m | when a coordinate sits close to the boundary of the simplex without being at it, or strict complementarity fails, the face changes with the noise and the formula can send an exponent below zero, which the constrained fit would not do; when m is near zero the shift is large and the first-order reading is outside its range |
 | A4 | conditioning is log-affine and invertible: log m_j = alpha_j log(a_j + s_j) + b_j with alpha_j != 0 (negative alpha_j marks a cost attribute) | A4 is posited, so the ledger records none; stated here: it makes the pull-back to raw attributes an exact, invertible log-affine map (L9), so the fitted frontier can be read in the units of the attributes and negative exponents mark cost attributes | stated here: if conditioning is not log-affine and invertible (or is poorly chosen), the pulled-back formula no longer describes the attributes, the exponents $w$ describe the conditioned metrics only, and a different conditioning answers a different question |
 | F5 | max representation for L5: the maximum of the scores is a symbol M with s_i <= M for all i in 1..n and s_{i0} = M for some i0 in 1..n | lets the tau -> infinity limit and the bound LME <= max be proved for symbolic n (sympy has no symbolic-n max and cannot take limits through the symbolic Sum): M - (log n)/tau <= LME <= M is squeezed with sympy.limit | the statement is about the actual maximum only when M really is max_i s_i; if M is any upper bound that is not attained the lower squeeze bound is lost and the limit is only an upper bound on the true limit |
@@ -154,7 +154,7 @@ distance: the signed Euclidean distance from $u$ to the hyperplane is $\log V/\|
 
 The fit asks for the positive combination of log-metrics along which the data have the smallest
 upper extent, using a smooth (entropic) soft maximum. Let $s_i=w\cdot u_i$ and let $\tau>0$ be the
-temperature (A3). The objective is the log-mean-exp of the scores,
+temperature (A3). The loss is the log-mean-exp of the scores,
 
 $$
 J_\tau(w)=\frac1\tau\log\Big(\frac1N\sum_{i=1}^{N}\exp(\tau\,w\cdot u_i)\Big),\qquad
@@ -242,7 +242,7 @@ $$
 <!-- lemma: L4 -->
 
 where $s_i=v\cdot u_i$. Each term is a positive weight times a square, so the sum is nonnegative.
-Needs: A1 (so $w\cdot u_i$ and $v\cdot u_i$ are real) and A3. L4 proves convexity of the objective,
+Needs: A1 (so $w\cdot u_i$ and $v\cdot u_i$ are real) and A3. L4 proves convexity of the loss,
 not strict convexity; existence, uniqueness and stability are separate statements, made under
 [Existence, uniqueness, stability](#what-the-stage-learns-and-why-it-is-shape) below. The code
 reports the effective sample size $n_\mathrm{eff}=1/\sum_ip_i^2$ so the analyst can see how many
@@ -252,7 +252,7 @@ designs carry the fit.
 |---|---|---|
 | $\mathrm{LME}_\tau(s)$, $\tau=\infty\Rightarrow\max$ | `solvers.log_mean_exp` | `test_matches_derivation.py` (L5 group), L5 `verify` |
 | $p=\mathrm{softmax}(\tau Uw)$ | `solvers.support_weights` | L3 `verify` |
-| $J_\tau$ and $\nabla J_\tau=U^\top p$ | `solvers.objective_and_grad` | `test_matches_derivation.py` (L3 group) |
+| $J_\tau$ and $\nabla J_\tau=U^\top p$ | `solvers.loss_and_grad` | `test_matches_derivation.py` (L3 group) |
 | $\tau=\infty$ fit (linear program) | `solvers.solve_lp` | LP duality, I1 (checked numerically in the solver tests) |
 | finite-$\tau$ fit | `solvers.solve_slsqp` | gradient and simplex KKT cross-check (L3) |
 | shift by $c$ | `HyperbolicTradeSpace.fit` | `test_matches_derivation.py` (L2 group) |
@@ -306,7 +306,7 @@ boundary layer of depth about $1/\tau$. Needs: A3. The depth statement is a read
 weights, not a separate lemma.
 
 **4. Noise.** Under the log-space Gaussian model, $u=u^{\rm true}+\varepsilon$ with $\varepsilon_j$
-i.i.d. $N(0,\sigma^2)$ and independent across $j$ (A5), the population objective gains
+i.i.d. $N(0,\sigma^2)$ and independent across $j$ (A5), the population loss gains
 $\frac1\tau\log\mathbb{E}\exp(\tau\,w\cdot\varepsilon)$, and L6 (using I5 for the product of moment
 generating functions) is the population identity
 
@@ -316,7 +316,7 @@ $$
 <!-- lemma: L6 -->
 
 The identity is between population quantities; it states the cumulant and is not a finite-sample
-statement. Since the term is smallest where $w$ is uniform, in the population objective it acts as
+statement. Since the term is smallest where $w$ is uniform, in the population loss it acts as
 a ridge toward balanced exponents. Needs: A2, A5, I5.
 
 **5. The normalization.** The $1/N$ normalization of L5 (see the fit) makes the sample functional
@@ -327,7 +327,7 @@ identifiability of the minimizer, entered as conditions in the gaps ledger, and 
 supplies them.
 
 **6. Invariances.** Uniform scaling shifts $\beta$ by $\log k$ and leaves $w$ and $V$ unchanged
-(L2, L1). Permuting the metrics permutes $w$ (a symmetry of the objective, covered by the tests, not
+(L2, L1). Permuting the metrics permutes $w$ (a symmetry of the loss, covered by the tests, not
 a lemma). Rescaling a single metric changes which term is tangent; this is the documented lever
 of stage 2 and is outside L2. L8 gives the bijection between $u$ and $(Z,\text{log-scale})$; the passage to
 $(Z,\log V)$ is an invertible affine change of coordinates that uses A2 and the fitted $w$ (our step, not part of L8), with $Z$
@@ -352,7 +352,7 @@ fit, not a theorem, and the fit reports it through `conditioning_`.
 or of $\tau$, moves the exponents by $\delta w=-T H_S^{-1}T^\top\delta g_S$, so
 $\|\delta w\|\le\|T^\top\delta g_S\|/\lambda_{\min}(H_S)$. Nearly correlated metrics make
 $\lambda_{\min}(H_S)$ small: a change of $\tau$ then moves $w$ along the flat direction while the
-objective changes only by about $\tfrac12\lambda_{\min}\|\delta w\|^2$. The estimator exposes
+loss changes only by about $\tfrac12\lambda_{\min}\|\delta w\|^2$. The estimator exposes
 $\lambda_{\min}(H_S)$ per term as `conditioning_`, with $S$ the coordinates above the
 participation threshold; it is `nan` at $\tau=\infty$, where $J_\tau$ is not twice differentiable,
 and for a term with fewer than two participating exponents.
@@ -655,7 +655,7 @@ speed are future work. In the style of Boyd and Vandenberghe's algorithm boxes [
 > 2. *Refit (step B, the default).* For each term $k$, with $\bar u_k$ the mean of its rows, find the supporting
 >    hyperplane $w_k=\arg\min_{w\in\Delta}\ J_\tau(Uw)-\bar u_k\cdot w$ over **all** $N$ rows (at finite
 >    $\tau$, polish the solver's answer with five reduced-Newton steps on the active set), and set
->    $\beta_k=J_\tau(Uw_k)$. Compute the objective, the mean slack
+>    $\beta_k=J_\tau(Uw_k)$. Compute the loss, the mean slack
 >    $\bar s=\frac1N\sum_i\big(\beta_{k(i)}-w_{k(i)}\cdot u_i\big)$.
 >
 > **repeat**
@@ -674,7 +674,7 @@ speed are future work. In the style of Boyd and Vandenberghe's algorithm boxes [
 > in step 5 is not applied, and the iterate with the smallest $\bar s$ is returned.)
 
 **The per-term problem as step 2 solves it.** The refit is written $J_\tau(Uw)-\bar u_k\cdot w$,
-where $J_\tau(Uw)$ is the objective of the fit section applied to **all** rows. It is the entropic
+where $J_\tau(Uw)$ is the loss of the fit section applied to **all** rows. It is the entropic
 fit with the log-metrics centred at the term's mean, so it is the same convex program as the
 $K=1$ fit (`solvers.solve_slsqp`, or the linear program at $\tau=\infty$) on shifted data. Read
 geometrically, $w_k$ is the supporting hyperplane of the whole cloud that is tightest on the
@@ -694,9 +694,9 @@ roughly 130 interior rows locate it
 solver reduces to the single-term fit of the fit section (`solvers.solve_terms` returns the
 `solvers.solve_slsqp` result).
 
-**The objective.** The alternation minimizes the mean slack $\bar s$, the average over rows of
+**The loss.** The alternation minimizes the mean slack $\bar s$, the average over rows of
 the gap between the row's own term plane and the row. It is the $K>1$ analogue of the $K=1$
-reach: at $K=1$ the objective is the reach $J_\tau(w)$, the size of the envelope above the cloud;
+reach: at $K=1$ the loss is the reach $J_\tau(w)$, the size of the envelope above the cloud;
 at $K>1$ the sum of the terms' reaches is degenerate (every term would repeat the $K=1$ fit),
 and the non-degenerate size of a $K$-term envelope against the whole cloud is the mean slack, the
 one-sided volume between the cloud and the envelope (the one-sided $L^1$ criterion of Magnani and
@@ -706,7 +706,7 @@ the refit minimizes a convex function of $w_k$ of which the previous $w_k$ is a 
 The guard enforces the monotonicity in the code regardless of how well the inner solver
 converged. The measured fraction of half-steps in which the mean slack got worse is 0.000 for
 both the reassignment and the refit of step B, at $\tau=\infty$ and at $\tau=50$ (the second
-spike, table 1); every other objective the spike tried (touch counts, band means, entropic
+spike, table 1); every other loss the spike tried (touch counts, band means, entropic
 variants) worsens in some half-steps of B, or is constant at $\tau=\infty$. The scheme stops at a
 fixed assignment, the guard or the iteration cap, and returns a fit whose stopping record says
 which of the three levels below hold; the restarts keep the best of several by mean slack.
@@ -730,7 +730,7 @@ visited, but the sequence of iterates need not decrease.
 
 **Which step the paper presents.** Both steps are kept in the code and the evidence base
 (supervisor's decision at the acceptance gate of WP9), but the paper presents the mean-slack
-approach, step B, because of its monotone guarantee: the objective it minimizes is an
+approach, step B, because of its monotone guarantee: the loss it minimizes is an
 interpretable quantity (the envelope's one-sided volume) that cannot rise, and it is the default.
 Step D is offered as the alternative that uses the near-frontier evidence directly, with its
 non-monotonicity disclosed.
@@ -739,7 +739,7 @@ non-monotonicity disclosed.
 
 The several-term fit carries three statements of increasing strength, and the stopping declaration
 below says which of them hold for a returned fit. They are not equivalent: a small change of the
-objective, a stop at the iteration cap or a small gap does not by itself establish local
+loss, a stop at the iteration cap or a small gap does not by itself establish local
 optimality. They are stated for step B (`refit_step="support"`), unpenalized, with the support
 offsets $\beta_k=J_\tau(Uw_k)$ only. Write $C_k$ for the rows assigned to term $k$, $n_k=|C_k|$,
 $\bar u_k$ for their mean log-metric, and
@@ -776,9 +776,9 @@ hold ($g_j\ge\lambda$, $w_j(g_j-\lambda)=0$, $\lambda=w\cdot g$). Needs: A2, A3,
 convexity inequality I8 for the bound, and the min representation F12 for symbolic $d$.
 
 The gap is the residual of the KKT conditions as one number, and it bounds how far the term's
-objective is from its optimum. At $\tau=\infty$ the refit is a linear program, and with its dual
-weights $p$ the gap is $f_k(w)-\min_j(U^\top p-\bar u_k)_j$, the primal objective minus the dual
-objective: the linear-programming duality gap (I1, L12), zero at an optimal primal-dual pair. The
+loss is from its optimum. At $\tau=\infty$ the refit is a linear program, and with its dual
+weights $p$ the gap is $f_k(w)-\min_j(U^\top p-\bar u_k)_j$, the primal value minus the dual
+value: the linear-programming duality gap (I1, L12), zero at an optimal primal-dual pair. The
 solver keeps the duals; uniform weights on tied rows give a valid but loose bound. At finite $\tau$
 SLSQP stops with $G_k$ of order $10^{-5}$ although its point is within $10^{-11}$ of $f_k^*$, so
 the bound is loose by six orders there; the solver therefore polishes each term with five
@@ -818,11 +818,11 @@ F(W')-F(W)=\sum_k\frac{n_k}{N}\big(f_k(w'_k)-f_k(w_k)\big)\ \ge0,
 $$
 <!-- lemma: L14 -->
 
-so $W$ is a local minimizer of the mean slack. The full objective, the mean over rows of the
+so $W$ is a local minimizer of the mean slack. The full loss, the mean over rows of the
 smallest slack, equals the fixed-assignment expression $F$ there because R2 keeps each row's
 maximizing term. Needs: A2, R2. Global optimality and global convergence are not claimed.
 
-**Corollary 4 (L14).** With $F^*_{\rm fixed}=\sum_k\frac{n_k}{N}f_k^*$ the optimum of the objective
+**Corollary 4 (L14).** With $F^*_{\rm fixed}=\sum_k\frac{n_k}{N}f_k^*$ the optimum of the loss
 at the fixed assignment, the term gaps of Lemma 1 give the approximate certificate
 
 $$
@@ -839,7 +839,7 @@ $\beta_k=J_\tau(Uw_k)$. Level 1 holds for step B alone: the mean slack is not mo
 step D. Level 2 is reported at every setting and certifies only the unpenalized $f_k$: under step D
 the exponent $w_k$ is a total-least-squares normal, not the minimizer of $f_k$, so $G_k>0$ is
 expected and measures how far the normal sits from the support optimum; under the penalty the
-refit minimizes a different objective, and the gap of the unpenalized $f_k$ is a diagnostic. The
+refit minimizes a different loss, and the gap of the unpenalized $f_k$ is a diagnostic. The
 status is `not_applicable` for both. With `min_exponent` $m>0$ the feasible set is
 $\{w\ge m,\ \mathbf 1\cdot w=1\}$ and the implemented gap is measured to it,
 $G=g\cdot w-m\,\mathbf 1\cdot g-(1-dm)\min_jg_j$ (`solvers.simplex_gap`); the lemmas are proved
@@ -854,9 +854,9 @@ $\varepsilon_{\rm feas}=10^{-9}$ (`EPS_FEAS`) for the feasibility residuals (the
 one, the floor holds) and for the positivity of the margin, $10^{-12}$ (`GUARD_TOL`) for the guard,
 five Newton steps (`POLISH_STEPS`), and an iteration cap of 50. The record holds the status, the
 iterations, the feasibility and offset residuals, the maximal gap, the Corollary bound, the
-objective change at the last accepted step, the assignment changes (rows whose argmax differs from
+loss change at the last accepted step, the assignment changes (rows whose argmax differs from
 the returned label), the number of empty cells, the margin and radius, and the per-term gaps and
-shares. The stopping rule is the fixed assignment, not a small objective change, and the record
+shares. The stopping rule is the fixed assignment, not a small loss change, and the record
 reports both.
 
 | status | what holds | what is claimed |
@@ -886,7 +886,7 @@ frontier row lies on two term planes. The case-study record
 
 | Formula | Implementation | Cross-check |
 |---|---|---|
-| $f_k$, $F(W)$ | `solvers.term_objective`, `solvers.fixed_assignment_bound` | L14 `verify`; solver tests |
+| $f_k$, $F(W)$ | `solvers.term_loss`, `solvers.fixed_assignment_bound` | L14 `verify`; solver tests |
 | $G_k$ | `solvers.simplex_gap`, `solvers.term_gap` | L12 `verify`; LP duality gap and $0\le f-f^*\le G$ in the solver tests |
 | $\gamma$, $r$ | `solvers.assignment_margin` | L13 `verify`; perturbation tests within the radius |
 | Corollary bound | `solvers.fixed_assignment_bound`, the `bound` field of `solvers.Termination` | L14 `verify`; solver tests against independent per-term solves |
@@ -906,13 +906,13 @@ barely determined and its mean-slack optimum sits in a local optimum that no res
 seed 8 is a local optimum with a well-populated term (11 frontier rows). The generator at
 `n_terms=K` guarantees at least $d+1$ frontier rows per term. That condition is **necessary**:
 a term with fewer frontier rows than dimensions is not determined by them, every edge-only
-objective is flat across the family of hyperplanes through them, and no restart of either step
+loss is flat across the family of hyperplanes through them, and no restart of either step
 passed on such a term (second spike, section 2). It is **not sufficient**: seeds 3 and 8 satisfy
 it and still fail in some settings, and a thin term near the bound leaves local optima. The claim
 is therefore the measured rate on these 20 seeds under the generator's conditions, not a
 guarantee of recovery. The two spikes hold the measurements and the throwaway scripts that
 produced them: `docs/superpowers/notes/spike-facet-refit/` (the per-term step: oracle recovery,
-the alternation from common starts) and `work-packages/spikes/spike-objective/` (the objective:
+the alternation from common starts) and `work-packages/spikes/spike-objective/` (the loss:
 monotonicity, identifiability, selection among restarts).
 
 After the fit, scoring uses $\Phi_K$ with the hard offsets $\beta_k$ kept. At the default
@@ -951,8 +951,8 @@ not a lemma.
 
 **Inherited.** That alternating partition and refit stops at a local optimum rather than cycling
 is the result of Magnani and Boyd for the least-squares max-affine problem (ledger entry I7). Our
-objective (mean slack) and refit (a supporting hyperplane of the entropic fit) are different, so I7
-is the pattern the scheme follows and not a theorem about this objective; what protects against
+loss (mean slack) and refit (a supporting hyperplane of the entropic fit) are different, so I7
+is the pattern the scheme follows and not a theorem about this loss; what protects against
 cycling here is the monotone guard and the iteration cap. I7 states a local optimum, with the
 failure mode that the limit depends on the initial partition; restarts mitigate it. I7 is a solver-level inherited entry, a result the implementation leans on that no lemma consumes (the rule is in the proof conventions, "Solver-level inherited entries"). The first-order convexity inequality (I8), Cauchy-Schwarz (I9) and LP duality (I1) are the inherited steps of Lemmas 1 and 2.
 
@@ -964,7 +964,7 @@ well-populated term (see the measured recovery above). At $N=600$ with half the 
 frontier the rate was 19 or 20 of 20. (ii) The cubesat record
 (`docs/superpowers/notes/k3-cubesat.md`, in history at bf2a83c; the record of record is printed by
 `examples/adcs/k_terms.py`) reports the $K=1,2,3$ fits on two datasets. The mean
-slack at $K=3$ is 0.117 against 0.204 at $K=1$ in the primary regime (0.093 against 0.131 in the stock regime), at a temperature re-selected at each $K$; the $K=3$ objective agrees across five seeds to
+slack at $K=3$ is 0.117 against 0.204 at $K=1$ in the primary regime (0.093 against 0.131 in the stock regime), at a temperature re-selected at each $K$; the $K=3$ loss agrees across five seeds to
 within $2\times10^{-6}$ in the primary regime, and in the stock regime one seed of five reaches a worse optimum (0.114 against 0.093). (iii) The temperature is re-selected at each $K$ by
 the $K=1$ criterion, a tenth of the designs above $V=1$: $\tau$ is 38.1, 113 and 195 at $K=1,2,3$ in the primary regime and `frac_above_` is 0.096, 0.096 and 0.098. Reusing the $K=1$ $\tau$ instead raises the fraction (0.096, 0.261, 0.382), because each term is a supporting hyperplane at that $\tau$ but the envelope is the maximum over terms; that table is kept in the record as a diagnostic. Whether the target fraction should differ by $K$ is open. (iv) The sliver: refitting a term on its own rows tilts to a simplex vertex on the planted data
 (0 of 60 terms recovered from the true labels). That the rows of one term lie in a cone of the
@@ -997,7 +997,7 @@ beyond it.
    of a non-convex problem, stationary per term and, when the margin is positive, a local optimum
    (levels 2 and 3; I7 is the pattern the scheme follows), and which one depends on the initial
    centres. *Defence:* every refit is
-   convex, the objective never increases under the default step (the guard), the restarts keep the
+   convex, the loss never increases under the default step (the guard), the restarts keep the
    best of several (five by default), and on the planted and cubesat data the optimum was
    reproducible across seeds (observed above). Thin terms (five or six frontier rows) are the
    known trap. *Beyond:* a global search or a certificate of global optimality; none is claimed.
@@ -1005,9 +1005,9 @@ beyond it.
 3. **The analyst chooses $K$.** There is no automatic selection of the number of terms
    (supervisor's decision OD1). *Defence:* the right $K$ is a modelling choice about how many
    trade-off regimes to distinguish, in the way the number of retained components is for PCA, and a
-   criterion would hide it. The diagnostic is a table of the objective and `frac_above_` by $K$,
+   criterion would hide it. The diagnostic is a table of the loss and `frac_above_` by $K$,
    read like a scree plot (for the cubesat primary regime the mean slack is 0.2036, 0.0900 and
-   0.0529 at $K=1,2,3$; the objective falls with $K$ by construction, so it cannot choose $K$ by
+   0.0529 at $K=1,2,3$; the loss falls with $K$ by construction, so it cannot choose $K$ by
    itself). *Beyond:* a selection rule, for example one that penalizes complexity or uses held-out
    designs, is future work.
 
@@ -1028,8 +1028,8 @@ beyond it.
    alternatives were built and measured and are parked. A non-monotone evidence step, D
    (`refit_step="tangent"`, kept in the code), takes the direction from the near-frontier rows and
    recovers about as often (16 or 17 of 20) but gives up the guarantee. A frontier-weighted
-   objective (a slack counted on near-frontier rows only, or an entropic variant) was measured
-   against the mean slack and was not better: edge-only objectives are flat on terms with too few
+   loss (a slack counted on near-frontier rows only, or an entropic variant) was measured
+   against the mean slack and was not better: edge-only losses are flat on terms with too few
    frontier rows, and the exact minimizer of the entropic variant destroyed the fit on planted and
    cubesat data. A joint fit of all terms would remove the term-by-term dependence. None is
    claimed.

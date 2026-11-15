@@ -47,7 +47,7 @@ def _span(groups) -> str:
 
 
 def _contending(study, fit) -> list[str]:
-    row = case.tension_table(study, fit).iloc[0]
+    row = case.trade_off_table(study, fit).iloc[0]
     return [s.strip() for s in row["contending set"].split(",")]
 
 
@@ -965,6 +965,48 @@ def decision_sentence(d: Decision) -> Md:
         f"if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
         f"{held('sponsor', 'fleet_cost_usd', _musd)} M USD is the cheapest fleet. The method "
         f"prices the question and does not answer it; the numbers are nominal ({_C8})."
+    )
+
+
+_ARCSEC_PER_DEG = 3600.0
+
+
+def tension_sentence(study, fits, d: Decision) -> Md:
+    """Section 9's sentence on the pick's tension: the design that balances the operator's pointing
+    error and the sponsor's fleet cost, read in the attributes' own units on the K = 2 fit.
+
+    The tension is ``design_tensions`` at that design (from the data), in USD per arcsecond; the
+    percent per percent is the same slope scaled by the attributes' own ratio, and the other term's
+    value is the formula at the same design on the other term of the fit. Every number is computed
+    here from the fit and the table, none typed; the quantities are not in the five-regeneration
+    stability study, so they print at two figures from the data of record.
+    """
+    from hyperbolic_trade_space import design_tensions
+
+    est = fits[case.CASE_K].estimator
+    assert est.exponents_.shape[0] == 2, "premise of the sentence: it names the other term"
+    names, attrs = list(study.names), list(study.spec.attributes)
+    pe, fc = names.index("pointing error"), names.index("fleet cost")
+    assert attrs[pe] == "pointing_error_deg" and attrs[fc] == "fleet_cost_usd", attrs
+    pick = d.picks["between"]
+    idx = int(np.flatnonzero(study.feasible["design_id"].to_numpy() == pick["design_id"])[0])
+    raw = study.feasible[attrs].to_numpy(float)[idx : idx + 1]
+    pre = study.conditioner.named_transformers_["metrics"]
+    dt = design_tensions(est, study.M[idx : idx + 1], preconditioner=pre, attributes=raw)
+    own = int(dt.term[0])
+    ratio = (raw[0, pe] + pre.shift_[pe]) / (raw[0, fc] + pre.shift_[fc])  # x_i / x_j
+    t_own = dt.attribute_by_term[0, own, pe, fc]  # USD per degree
+    t_other = dt.attribute_by_term[0, 1 - own, pe, fc]
+    percent = abs(t_own) * ratio  # percent of fleet cost per percent of pointing error
+    cfg = f"{int(pick['fleet_size'])} {pick['wheel_class']}-wheel, {pick['st_grade']}-tracker"
+    per_arcsec = lambda t: f"{t / _ARCSEC_PER_DEG / 1e6:+.1f}"  # noqa: E731  (M USD)
+    return Md(
+        f"At the picked fleet ({cfg} satellites) the surface's tension between the operator's "
+        f"pointing error and the sponsor's fleet cost is {per_arcsec(t_own)} M USD "
+        f"per arcsecond: along the surface, one percent more pointing error goes with "
+        f"{percent:.1f} percent less fleet cost. It is a rate at that design with the other "
+        f"metrics held, not the price of the better tracker, and on the other term of the fit it "
+        f"is {per_arcsec(t_other)} M USD per arcsecond."
     )
 
 

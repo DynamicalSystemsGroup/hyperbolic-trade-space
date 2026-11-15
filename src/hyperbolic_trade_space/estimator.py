@@ -1,7 +1,7 @@
 """The ``HyperbolicTradeSpace`` estimator: a monomial (K = 1) frontier in a log-ratio chart.
 
 The model is ``V(m) = prod_j m_j^{w_j} e^{-beta}`` with ``w`` on the simplex;
-the fit minimizes the log-mean-exp objective ``J_tau``; the chart ``(Z, log V)`` is a linear
+the fit minimizes the log-mean-exp loss ``J_tau``; the chart ``(Z, log V)`` is a linear
 bijection of log space. Mathematics: see the documentation site.
 """
 
@@ -34,7 +34,7 @@ __all__ = [
 
 _ABOVE_TOL = 1e-9  # V > 1 + tol counts as "above the frontier" at tau = inf
 EPS_ZERO_EXPONENT = 1e-12  # an exponent at or below this is numerically zero: 0 * log 0 := 0
-PARTICIPATION_THRESHOLD = 1e-3  # exponents above this participate (tension_report's threshold)
+PARTICIPATION_THRESHOLD = 1e-3  # exponents above this participate (trade_off_report's threshold)
 _WARN_STATUSES = ("guard_stop", "uncertified")  # "iteration_cap" warns on its own rule, see fit
 
 
@@ -90,7 +90,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         means the assignment step was still moving rows, possibly cycling among rows that tie
         between terms while every term is already stationary on its rows. The fit is kept, with
         status ``"iteration_cap"`` and its gap in ``termination_``; ``fit`` warns only when
-        that gap or the last change of the objective exceeds ``tol``.
+        that gap or the last change of the loss exceeds ``tol``.
     penalty : {None, "reweighted_l1"}, default=None
         Sparsity option for the exponents (see ``solve_slsqp``); acts at finite ``temperature``.
     alpha : float, default=0.0
@@ -122,7 +122,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Effective number of supporting rows, ``1 / sum p_i^2``.
     frac_above_ : float
         Fraction of (non-degenerate) training rows with ``V > 1``.
-    objective_ : float
+    loss_ : float
         What the solver minimized: ``J_tau(w)`` at the solution (equals ``beta``, a soft maximum)
         for ``n_terms = 1``; for ``n_terms > 1`` the mean slack
         ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)`` of the partition fit, or, for the soft fit
@@ -132,7 +132,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         The mean slack ``mean_i (beta_k(i) - w_k(i) . u_i)`` over the rows with no zero metric,
         with ``k(i)`` the row's cell (``cell_``); defined for every ``n_terms``. At
         ``n_terms = 1`` it is ``beta - mean_i (w . u_i)``. At a fixed ``temperature`` it is
-        comparable across ``n_terms`` (and across restarts); ``objective_`` is not. With a finite
+        comparable across ``n_terms`` (and across restarts); ``loss_`` is not. With a finite
         ``term_temperature`` and ``n_terms > 1`` it is the slack of the reported model,
         ``-mean_i Phi_K(u_i)``.
     n_iter_ : int
@@ -168,11 +168,11 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         and radius, the Corollary bound and the tolerances (``EPS_KKT``, ``EPS_FEAS``,
         ``GUARD_TOL``). Level 3 (conditional local optimality) is for ``n_terms > 1`` with
         ``refit_step="support"`` and no penalty; ``n_terms = 1`` and the degenerate shortcuts
-        record ``"not_applicable"`` with the gap of the fitted objective, read only. For the soft
+        record ``"not_applicable"`` with the gap of the fitted loss, read only. For the soft
         fit (finite ``term_temperature``, finite ``temperature``) ``"certified"`` means the
-        term gaps are within ``EPS_KKT`` and the Hessian of the soft objective is positive
+        term gaps are within ``EPS_KKT`` and the Hessian of the soft loss is positive
         definite on the tangent space of the active face (a strict local minimizer of the soft
-        objective); ``"stationary"`` means the gaps hold and the curvature is not positive;
+        loss); ``"stationary"`` means the gaps hold and the curvature is not positive;
         ``min_curvature`` is the smallest curvature (``nan`` otherwise); the margin, radius and
         bound are ``nan``. A soft fit at ``temperature = inf`` is ``"not_applicable"``.
     conditioning_ : ndarray of shape (n_terms,)
@@ -180,7 +180,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         ``tau (U^T diag(p) U - (U^T p)(U^T p)^T)`` with ``p`` the softmax weights over the valid
         rows, restricted to the simplex tangent space and to the participating exponents
         (``w_j > PARTICIPATION_THRESHOLD``). Small values flag a nearly flat direction (weak
-        identifiability of the exponents). ``nan`` at ``temperature = inf`` (the objective is not
+        identifiability of the exponents). ``nan`` at ``temperature = inf`` (the loss is not
         twice differentiable) and for a term with fewer than two participating exponents. A
         read-only diagnostic.
     n_features_in_ : int
@@ -195,7 +195,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     Notes
     -----
     Zero metrics are tolerated: ``log 0 = -inf``, the row has support weight 0 and is excluded
-    from the objective; its ``Z`` is ``nan`` and it has no inverse. Scoring follows the
+    from the loss; its ``Z`` is ``nan`` and it has no inverse. Scoring follows the
     continuous extension of a monomial: ``log V = sum_{j: w_j > EPS_ZERO_EXPONENT} w_j log m_j -
     beta`` with ``0 log 0 := 0``, so a zero metric on a numerically zero exponent leaves
     ``log V`` finite and a zero metric on a participating exponent gives ``V = 0``,
@@ -209,7 +209,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     ``term_temperature``. ``K > 1`` is a local optimum of a partition-and-refit scheme; restarts
     are drawn from ``random_state``. Degenerate input (one metric, one valid row, fewer valid
     rows than ``n_terms``) repeats the ``K = 1`` fit. A single valid row is a declared
-    convention: the fitted object does not exist for it (the objective has no minimizer worth
+    convention: the fitted object does not exist for it (the loss has no minimizer worth
     the name), uniform exponents are returned, and ``fit`` emits a ``UserWarning`` saying so.
 
     Examples
@@ -360,7 +360,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                 term_temperature=self.term_temperature,
                 aggregation=self.term_aggregation,
             )  # fmt: skip
-            res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.objective
+            res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.loss
             term = tr.termination
         else:
             if d == 1:
@@ -395,13 +395,13 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
             )
         if res is not None and term.status == "iteration_cap":
             # the alternation stopped at its cap: silent when every term is stationary on its
-            # rows and the objective had stopped moving, both to within tol (the assignment step
+            # rows and the loss had stopped moving, both to within tol (the assignment step
             # cycles among rows that tie between terms); the status and the gap are recorded
-            if not (term.max_gap <= self.tol and term.objective_change <= self.tol):
+            if not (term.max_gap <= self.tol and term.loss_change <= self.tol):
                 warnings.warn(
                     "iteration cap reached before the fit was stationary to tol "
-                    f"{self.tol:g} (max term gap {term.max_gap:.2e}, last objective change "
-                    f"{term.objective_change:.2e}); termination status 'iteration_cap'",
+                    f"{self.tol:g} (max term gap {term.max_gap:.2e}, last loss change "
+                    f"{term.loss_change:.2e}); termination status 'iteration_cap'",
                     ConvergenceWarning,
                     stacklevel=2,
                 )
@@ -456,7 +456,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         lv = lab[valid]
         self.mean_slack_ = float(np.mean(betas[lv] - np.einsum("ij,ij->i", W[lv], Uv)))
         if K > 1 and np.isfinite(kappa):  # the slack of the reported (soft) model
-            self.mean_slack_ = _solvers.soft_objective(Uv, W, betas, kappa, self.term_aggregation)
+            self.mean_slack_ = _solvers.soft_loss(Uv, W, betas, kappa, self.term_aggregation)
         support = np.zeros(n)
         support[valid] = p
         above = log_v[valid] > (_ABOVE_TOL if np.isinf(tau) else 0.0)
@@ -464,7 +464,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.support_weights_ = support
         self.n_eff_ = float(1.0 / np.sum(p**2))
         self.frac_above_ = float(np.mean(above))
-        self.objective_ = float(beta)
+        self.loss_ = float(beta)
         self.n_iter_ = max(int(n_iter), 1)
         self.training_log_v_ = log_v
         self.termination_ = term

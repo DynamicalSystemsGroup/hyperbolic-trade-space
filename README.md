@@ -16,19 +16,19 @@ from hyperbolic_trade_space import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     make_frontier_data,
-    tension_report,
+    trade_off_report,
 )
 
 A, _ = make_frontier_data(300, 3, random_state=0)
 A[:, 1] = 10 / A[:, 1]  # pretend column 1: smaller is better
 M = LogAffinePreconditioner(orientation=[1, -1, 1]).fit_transform(A)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(M)  # real table: `select_temperature`
-print(tension_report(ts, M).exponents.round(2))
+print(trade_off_report(ts, M).exponents.round(2))
 ```
 
 ## Layout
 
-- `src/hyperbolic_trade_space/`: the Python package (fit a frontier, read its tensions).
+- `src/hyperbolic_trade_space/`: the Python package (fit a frontier, read its trade-offs).
 - `docs/`: the user guide and API reference, built into the docs site.
 - `paper/`: the paper as two notebooks and what rebuilds them; `site/` is the root page that links the docs and the paper.
 - `examples/adcs/`: the cubesat attitude-control case study the paper uses: model, data, experiments, system model.

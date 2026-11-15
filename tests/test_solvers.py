@@ -9,7 +9,7 @@ from hyperbolic_trade_space.datasets import make_frontier_data
 from hyperbolic_trade_space.solvers import (
     SolveResult,
     log_mean_exp,
-    objective_and_grad,
+    loss_and_grad,
     solve_lp,
     solve_slsqp,
     solve_terms,
@@ -48,7 +48,7 @@ def test_gradient_check(tau):
     U = rng.normal(size=(30, 4))
     w = rng.dirichlet(np.ones(4))
     err = check_grad(
-        lambda x: objective_and_grad(x, U, tau)[0], lambda x: objective_and_grad(x, U, tau)[1], w
+        lambda x: loss_and_grad(x, U, tau)[0], lambda x: loss_and_grad(x, U, tau)[1], w
     )
     assert err < 1e-5 * max(1.0, tau)
 
@@ -59,7 +59,7 @@ def test_lp_hand_built():
     r = solve_lp(U)
     assert isinstance(r, SolveResult) and r.success
     np.testing.assert_allclose(r.w, [0.5, 0.5], atol=1e-9)
-    assert r.beta == pytest.approx(0.5) and r.objective == pytest.approx(0.5)
+    assert r.beta == pytest.approx(0.5) and r.loss == pytest.approx(0.5)
     np.testing.assert_allclose(r.p, [0.5, 0.5, 0.0], atol=1e-9)
     assert r.p.sum() == pytest.approx(1.0) and r.n_iter >= 1
 
@@ -87,7 +87,7 @@ def test_slsqp_agrees_with_lp(d):
     np.testing.assert_allclose(lp.w, info["exponents"], atol=1e-6)
     assert lp.beta - sq.beta >= -1e-9 and lp.beta - sq.beta <= np.log(300) / 1e3 + 1e-9
     assert sq.p.sum() == pytest.approx(1.0) and (sq.p >= 0).all()
-    assert sq.objective == pytest.approx(sq.beta)
+    assert sq.loss == pytest.approx(sq.beta)
     assert sq.n_iter >= 1
 
 
@@ -160,7 +160,7 @@ def test_terms_recovers_planted_k3(tau):
 def test_terms_monotone_history_and_stops():
     U = _planted_k3()
     r = solve_terms(U, 3, np.inf, n_restarts=1, random_state=1, max_iter=50)
-    assert (np.diff(r.history) <= 1e-12).all() and r.history[-1] == pytest.approx(r.objective)
+    assert (np.diff(r.history) <= 1e-12).all() and r.history[-1] == pytest.approx(r.loss)
     assert r.success and r.n_iter < 50  # stopped at a fixed assignment
     assert (np.argmax(U @ r.W.T - r.beta, axis=1) == r.labels).all()
     short = solve_terms(U, 3, np.inf, n_restarts=1, random_state=1, max_iter=1)
@@ -172,7 +172,7 @@ def test_terms_k1_equals_slsqp_and_degenerate():
     one = solve_terms(U, 1, 20.0)
     ref = solve_slsqp(U, 20.0)
     np.testing.assert_array_equal(one.W[0], ref.w)
-    assert one.beta[0] == ref.beta and one.objective == ref.beta and (one.labels == 0).all()
+    assert one.beta[0] == ref.beta and one.loss == ref.beta and (one.labels == 0).all()
     few = solve_terms(U[:2], 3, 20.0)  # fewer rows than terms: the K=1 fit repeated
     assert few.W.shape == (3, 3)
     single = solve_terms(U[:, :1], 2, 20.0)  # d = 1
@@ -196,7 +196,7 @@ def test_default_term_step_is_unchanged_literals():
     # arbitrary, so the rows are compared sorted)
     X, _ = make_frontier_data(400, 4, n_terms=3, random_state=0)
     r = solve_terms(np.log(X), 3, np.inf, random_state=0)
-    assert r.objective == pytest.approx(0.708229464326431, rel=1e-9)
+    assert r.loss == pytest.approx(0.708229464326431, rel=1e-9)
     ref = np.array([[0.54164484, 0.07901886, 0.25635204, 0.12298427],
                     [0.21154331, 0.33382619, 0.24539256, 0.20923794],
                     [0.12557359, 0.23657699, 0.13115001, 0.50669941]])  # fmt: skip
@@ -229,7 +229,7 @@ def test_tangent_keeps_best_iterate_and_is_deterministic():
     a = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, refit_step="tangent")
     b = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, refit_step="tangent")
     np.testing.assert_array_equal(a.W, b.W)
-    assert a.objective == pytest.approx(a.history.min())  # not monotone: the best is returned
+    assert a.loss == pytest.approx(a.history.min())  # not monotone: the best is returned
 
 
 def test_tangent_falls_back_to_support_without_enough_near_rows():
@@ -237,7 +237,7 @@ def test_tangent_falls_back_to_support_without_enough_near_rows():
     sup = solve_terms(U, 3, np.inf, random_state=3)
     tan = solve_terms(U, 3, np.inf, random_state=3, refit_step="tangent")
     np.testing.assert_allclose(tan.W, sup.W, atol=1e-9)
-    assert tan.objective == pytest.approx(sup.objective, abs=1e-9)  # ties in labels are not tested
+    assert tan.loss == pytest.approx(sup.loss, abs=1e-9)  # ties in labels are not tested
 
 
 # ------------------------------------------------ WP13 (E-1): gap, margin, polish, termination
@@ -403,8 +403,8 @@ def test_corollary_bound_on_every_planted_fit(tau):
             _, fk = _term_optimum(U, ubar, tau)
             fstar += rows.sum() / N * fk
             fixed += rows.sum() / N * (log_mean_exp(U @ r.W[k], tau) - ubar @ r.W[k])
-        assert fixed == pytest.approx(r.objective, abs=1e-12)  # the mean slack is F(W)
-        assert -1e-11 <= r.objective - fstar <= t.bound + 1e-11
+        assert fixed == pytest.approx(r.loss, abs=1e-12)  # the mean slack is F(W)
+        assert -1e-11 <= r.loss - fstar <= t.bound + 1e-11
         bound, _, f_fixed = fixed_assignment_bound(U, r.W, r.labels, tau)
         assert f_fixed == pytest.approx(fixed, abs=1e-12)
         assert bound == pytest.approx(t.bound, abs=1e-12)
@@ -471,7 +471,7 @@ def test_guard_stop_returns_the_consistent_previous_state(monkeypatch):
     r = solve_terms(U, 3, INF, n_restarts=1, random_state=1)
     t = r.termination
     assert t.status == "guard_stop" and len(calls) == 2
-    assert r.objective == r.history[-1] == r.history[0] and len(r.history) == 1
+    assert r.loss == r.history[-1] == r.history[0] and len(r.history) == 1
     S_ = U @ r.W.T - r.beta
     changes = int((S_.max(axis=1) - S_[np.arange(len(U)), r.labels] > EPS_FEAS).sum())
     assert t.assignment_changes == changes > 0

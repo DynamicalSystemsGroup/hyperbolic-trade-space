@@ -37,7 +37,7 @@ print(ts.conditioning_.round(1))
   and 2.
 - `uncertified`: assignment fixed, a residual or the gap above tolerance.
 - `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged.
-- `iteration_cap`: alternation cap reached, fit kept. Warned only when gap or last objective
+- `iteration_cap`: alternation cap reached, fit kept. Warned only when gap or last loss
   change exceeds the tolerance `tol`.
 - `not_applicable`: one term, `refit_step="tangent"`, a `penalty`, one metric, fewer designs than
   terms, or a soft fit at infinite tau.
@@ -47,7 +47,7 @@ print(ts.conditioning_.round(1))
 A soft fit, one with finite `term_temperature`, weighs every term: no assignment, no margin.
 
 - `certified`: term gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
-  minimizer of the soft objective.
+  minimizer of the soft loss.
 - `stationary`: the gaps hold, the curvature does not. It is a saddle or a flat direction.
 - `uncertified`: as above.
 
@@ -59,7 +59,7 @@ A soft fit, one with finite `term_temperature`, weighs every term: no assignment
 - `bound`: the row-share-weighted sum of term gaps, bounding the distance from the fixed-assignment
   optimum.
 - `gamma`, `radius`: the margin and stable radius, `nan` at one term.
-- `sum_residual`, `floor_residual`, `offset_residual`, `objective_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
+- `sum_residual`, `floor_residual`, `offset_residual`, `loss_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
 - `min_curvature`: a soft fit's smallest curvature; `nan` otherwise.
   A soft fit leaves `gamma`, `radius` and `bound` `nan`.
 
@@ -74,7 +74,7 @@ temperature and for a term with fewer than two participating exponents.
 
 Along a flat direction many exponent vectors fit almost equally well, so the reported
 exponents and the contending set are not pinned by the data. Two metrics that move together in log space
-cause it. How it is computed: the Hessian of the objective at the fit is the temperature times the
+cause it. How it is computed: the Hessian of the loss at the fit is the temperature times the
 support-weighted covariance of the log-metrics, restricted to the participating exponents and to
 directions that keep their sum fixed. The smallest eigenvalue is read off. On
 your own problem, read `conditioning_` after `fit`, comparing fits at one temperature because the value
@@ -120,6 +120,6 @@ tightest design sits a hundredfold nearer a seam than the typical one.
 
 ## What to decide from it
 
-Keep three claims apart. [`certified`](paper:thm-certificate) is the first: a local optimum of the objective, not of other restarts. The second, a description of the observed designs, is read from `mean_slack_`. The
+Keep three claims apart. [`certified`](paper:thm-certificate) is the first: a local optimum of the loss, not of other restarts. The second, a description of the observed designs, is read from `mean_slack_`. The
 certificate does not make the third, that it holds outside the table or supports a decision. Check it
 on held-out evaluations.

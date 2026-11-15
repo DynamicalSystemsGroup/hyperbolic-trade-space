@@ -26,16 +26,16 @@ is convexity.
 The geometric program (L4.14 to L4.24).  With x_j = exp(w_j) the fit of ONE term,
 minimize J_tau(w) over the simplex, is a geometric program in standard form (Boyd, Kim,
 Vandenberghe and Hassibi 2007, I13), and the problem in w is its convex form:
-  * exp(tau w.u_i) = prod_j x_j^(tau u_ij) (L4.16), so the objective (1/n) sum_i prod_j
+  * exp(tau w.u_i) = prod_j x_j^(tau u_ij) (L4.16), so the loss (1/n) sum_i prod_j
     x_j^(tau u_ij) is a posynomial in x: n terms, coefficient 1/n > 0, real exponents tau u_ij that
     do not depend on x (L4.17);
   * sum_j w_j = 1 is the monomial equality prod_j x_j = e (L4.18, L4.19), and w_j >= 0 is the
     monomial inequality x_j >= 1, that is 1/x_j <= 1 (L4.20, L4.21);
-  * the logarithm of the objective in w is tau J_tau(w) (L4.22), which L4.13 shows convex, so the
+  * the logarithm of the loss in w is tau J_tau(w) (L4.22), which L4.13 shows convex, so the
     problem in w is the convex form of this program (L4.23); I13 concludes that it is a geometric
     program in standard form (L4.24).
 Not claimed: the fit of SEVERAL terms is not a geometric program as a whole (each design counts
-against its nearest term, a minimum over terms, and the objective is neither a posynomial nor
+against its nearest term, a minimum over terms, and the loss is neither a posynomial nor
 convex); each term's refit with its assigned rows is a program of the one-term kind.
 
 Real-valuedness: the sign argument needs w.u_i and v.u_i real.  That is A1 (u = log m with
@@ -46,7 +46,7 @@ needed.
 
 What this does NOT prove: strict convexity or uniqueness of the minimizer over the simplex
 (that needs Var > 0 on the tangent space, a rank condition on the row differences u_i - u_k),
-or anything about the constrained problem beyond convexity of the objective.
+or anything about the constrained problem beyond convexity of the loss.
 
 Mimicked from symproof: library/convex.py ``convex_scalar`` / ``convex_hessian`` (compute the
 second derivative, simplify, certify it is nonnegative) and ``gp_to_convex`` (the log-sum-exp
@@ -63,7 +63,7 @@ from derivation.results import ProvedResult
 from derivation.sumtools import linearize, posynomial_term, product_to_exp_sum
 from derivation.symbols import L
 
-TITLE = "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+TITLE = "convexity of the soft-maximum loss (second directional derivative = tau Var_p)"
 STATEMENT = (
     "d^2/dt^2 J_tau(w + t v)|_0 = tau Var_p(v.u) = (tau/2) sum_i sum_k p_i p_k (s_i - s_k)^2 "
     ">= 0 with p = softmax(tau U w), s_i = v.u_i, so J_tau is convex"
@@ -209,8 +209,8 @@ def verify(ctx):
         == 0
     )
     posy = posynomial_term(1 / n, tau * ur[i, j], wn)
-    # [L4.17] the objective (1/n) sum_i prod_j x_j^(tau u_ij) is a posynomial: coefficient 1/n > 0
-    assert posy, "L4 FAIL: the objective is not a posynomial in x = exp(w)"
+    # [L4.17] the loss (1/n) sum_i prod_j x_j^(tau u_ij) is a posynomial: coefficient 1/n > 0
+    assert posy, "L4 FAIL: the loss is not a posynomial in x = exp(w)"
     x_prod = sp.Product(sp.exp(wn[j]), lim)
     # [L4.18] A2: sum_j w_j = 1 is prod_j x_j = e (the product is exp of the sum, which is 1)
     assert A2.rewrite(product_to_exp_sum(x_prod, A2), rename={S.w: wn}) == sp.E
@@ -227,18 +227,18 @@ def verify(ctx):
     assert mono_ineq, "L4 FAIL: x_j >= 1 is not a monomial bounded by one"
     J_w = sp.log(sp.Sum(sp.exp(tau * sp.Sum(wn[j] * ur[L, j], lim)), (L, 1, n)) / n) / tau
     f0_terms = sp.Product(sp.exp(wn[j]) ** (tau * ur[L, j]), lim)
-    # [L4.22] A2 licenses the logs: the logarithm of the objective f0 in w is tau J_tau(w)
+    # [L4.22] A2 licenses the logs: the logarithm of the loss f0 in w is tau J_tau(w)
     assert (
         sp.simplify(sp.log(sp.Sum(product_to_exp_sum(f0_terms, A2), (L, 1, n)) / n) - tau * J_w)
         == 0
     ), "L4 FAIL: log f0(exp w) != tau J_tau(w)"
     # [L4.23] the problem in w (minimize log f0(exp w) = tau J_tau(w)) is convex, by L4.13
     assert ctx["L4"]["convex"] is True, "L4 FAIL: the convex form is not convex"
-    # [L4.24] I13: a posynomial objective, monomial equality and monomial inequalities make the
+    # [L4.24] I13: a posynomial loss, monomial equality and monomial inequalities make the
     # one-term fit a geometric program in standard form
     assert I13.entails(
         [
-            sp.Equivalent(I13.obj("objective"), sp.true if posy else sp.false),
+            sp.Equivalent(I13.obj("loss"), sp.true if posy else sp.false),
             sp.Equivalent(I13.obj("equalities"), sp.true if mono_eq else sp.false),
             sp.Equivalent(I13.obj("inequalities"), sp.true if mono_ineq else sp.false),
         ],

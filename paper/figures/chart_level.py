@@ -6,7 +6,7 @@ energy differential). Against any position coordinate the surface of the fit is 
 put the first Helmert coordinate ``Z0`` on the horizontal axis and readers took nothing from it
 (WP11 CR-30), so the axis is now the direction along which the near-frontier designs spread the
 most: the first principal direction of the near-frontier chart, the one Appendix D.16 reads
-(``case.pca_directions``: the tension report's analysis of the K = 1 fit's band, signed with its
+(``case.pca_directions``: the trade-off report's analysis of the K = 1 fit's band, signed with its
 largest loading positive). The chart coordinates ``Z`` do not depend on the fit, so the same
 direction serves the chart of the case's ``case.CASE_K`` terms drawn here. Designs are one
 neutral colour (the supervisor's ruling against the cluster idiom,
@@ -53,9 +53,9 @@ def leading_direction(study, fit, leading=LEADING):
     """
     case = _case()
     rep = case._reports(study, fit)[0]
-    load = np.asarray(rep.tension_loadings[0], float)
+    load = np.asarray(rep.spread_loadings[0], float)
     sign = 1.0 if load[np.argmax(np.abs(load))] > 0 else -1.0
-    load, direction = sign * load, sign * np.asarray(rep.tension_directions[0], float)
+    load, direction = sign * load, sign * np.asarray(rep.spread_directions[0], float)
     top = np.argsort(-np.abs(load))[:leading]
     better = [study.names[j] for j in top if load[j] > 0]
     worse = [study.names[j] for j in top if load[j] < 0]

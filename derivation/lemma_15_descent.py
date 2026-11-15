@@ -4,7 +4,7 @@ Setting.  As in L14: K terms with exponents w_k on the simplex, reaches beta_k =
 cells C_1..C_K a partition of the N rows (the membership family chi of A8), slack of row i on term
 k s_ki = beta_k - w_k.u_i, and the mean slack F(W) = (1/N) sum_i s_{k(i) i}.  One iteration is
 (i) reassign every row to its maximizing term, which is the term of least slack, then (ii) refit
-each term to a minimizer of its convex term objective f_k (L12's setting) on the new cells.
+each term to a minimizer of its convex term loss f_k (L12's setting) on the new cells.
 
 What this proves (symbolic K, N; plain SymPy):
   1. Reassignment (i).  Write m_i = min_k s_ki, so r_ki = s_ki - m_i >= 0 with equality at the
@@ -21,7 +21,7 @@ What this proves (symbolic K, N; plain SymPy):
      sequence of accepted iterates is non-increasing in F.
 
 What this does NOT prove: that F converges, that the limit is a local or global minimizer, or any
-statement for the penalized objective or the tangent refit (step D), where beta_k is not the reach
+statement for the penalized loss or the tangent refit (step D), where beta_k is not the reach
 J_tau(U w_k) or the refit is not an exact term minimizer; that every cell stays nonempty
 after reassignment (A8 requires it: an iteration that empties a cell is not an accepted one).
 
@@ -29,9 +29,9 @@ Second result (steps L15.17 to L15.22): finite termination of the sharp alternat
 is: assign every row to its maximizing term (a fixed tie rule), stop if the assignment is
 unchanged, else refit each term on its new cell and repeat.  Write chi_t for the partition at
 iteration t and Phi_t for the mean slack after the refit on chi_t.  Two hypotheses of this result:
-(H1) unique term minimizers: each cell's term objective has one minimizer, so the refit on a cell
+(H1) unique term minimizers: each cell's term loss has one minimizer, so the refit on a cell
 set is a function of the cells and of nothing else (fails when a cell's centred log-metrics do not
-span, where the term objective is flat along a direction); (H2) a fixed tie rule: the assignment
+span, where the term loss is flat along a direction); (H2) a fixed tie rule: the assignment
 is a function of the exponents and their reaches (the implementation's argmax takes the lowest
 index on a tie).  The argument: Phi is non-increasing (the first result), and a repeated
 partition chi_t = chi_s, t > s, pins Phi_{s+1} = Phi_s, so both drops of iteration s are zero; a
@@ -57,7 +57,7 @@ TITLE = "descent (Level 1): reassignment and term refit do not increase the mean
 STATEMENT = (
     "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing term does "
     "not increase the mean slack F, and refitting each term to a minimizer of its convex term "
-    "objective does not increase F; so F is non-increasing along accepted iterations."
+    "loss does not increase F; so F is non-increasing along accepted iterations."
 )
 AXIOMS_USED = ["A8", "F12"]
 # Two results share this file (as L14): the step tags run in one sequence, each owned by one.
@@ -115,7 +115,7 @@ def derive(ctx):
     partition_identity = L14_RESULT.holds(ctx, "partition_identity")
     # [L15.8] by L12: a minimizing refit has e_k = f'_k(w_k) - f'_k* >= 0
     e = L12_RESULT.family(ctx, "lower_nonneg", "e")
-    fnew = sp.IndexedBase("fnew")  # f'_k(w_k), the term objective on the new cells at the old fit
+    fnew = sp.IndexedBase("fnew")  # f'_k(w_k), the term loss on the new cells at the old fit
     F_cells = sp.Sum(share * fnew[k], (k, 1, K))
     F_refit = sp.Sum(share * (fnew[k] - e[k]), (k, 1, K))
     refit_diff = sp.simplify(linear(F_cells - F_refit) - linear(sp.Sum(share * e[k], (k, 1, K))))
@@ -184,7 +184,7 @@ def verify(ctx):
     assert satisfiable(sp.And(by_h1, by_h2, rule, zero_refit, sp.Not(stop))) is False, (
         "L15 FAIL: a repeated partition does not force the stop"
     )
-    # [L15.20] negative control: without H1 (a flat term objective, several minimizers) the stop
+    # [L15.20] negative control: without H1 (a flat term loss, several minimizers) the stop
     # does not follow, so H1 is load-bearing
     assert satisfiable(sp.And(by_h2, rule, zero_refit, sp.Not(stop))) is not False, (
         "L15 FAIL: the stop followed without the unique-minimizer hypothesis"

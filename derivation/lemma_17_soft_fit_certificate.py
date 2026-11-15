@@ -31,7 +31,7 @@ What this proves (symbolic N, K, d; plain SymPy), along an arbitrary direction V
      eigenvalue, so the point is stationary and is not certified, while at kappa = 1/2 the same
      point is certified; D and M are positive semidefinite there.
 
-The statement is for a finite kappa and tau (the soft objective is smooth) and for a point at
+The statement is for a finite kappa and tau (the soft loss is smooth) and for a point at
 which the first-order conditions hold exactly: a numerical tolerance on the gaps is not covered by
 the theorem (see I16's failure mode).  What this does NOT prove: that the alternation reaches a
 stationary point, a radius of the minimizer, anything at tau or kappa infinite, or that a
@@ -48,7 +48,7 @@ from derivation.sumtools import fuse, linearize, push_in, replace_indexed, split
 TITLE = "the soft-fit certificate: Hessian D - kappa M and the second-order test"
 STATEMENT = (
     "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order "
-    "(KKT) conditions hold, if the Hessian H = D - kappa M of the soft objective is positive "
+    "(KKT) conditions hold, if the Hessian H = D - kappa M of the soft loss is positive "
     "definite on the tangent space of the active face, the point is a strict local minimizer; D "
     "and M are both positive semidefinite, D the weighted within-term curvature and kappa M the "
     "designs' ambiguity between terms."

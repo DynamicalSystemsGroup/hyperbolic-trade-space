@@ -314,7 +314,7 @@ def quantities(data_dir: Path | str) -> dict:
 
     Returns a mapping ``name -> value`` (floats, ints, bools, strings), names of the form
     ``group | row | column``. Groups: ``sentence`` (the paper's generated sentences, verbatim),
-    ``contending`` (contending sets), ``leading`` (each term's leading metrics), ``tension``
+    ``contending`` (contending sets), ``leading`` (each term's leading metrics), ``association``
     (association signs and values), ``tau``, ``certificate``, ``regime``, ``nondominated``,
     ``candidate``, ``predict`` (and ``predict, committed checks``), and the Appendix D tables
     (``D k_table``, ``D exponents``, ``D terms``, ``D tau_sweep``, ``D sensitivity``,
@@ -343,7 +343,7 @@ def quantities(data_dir: Path | str) -> dict:
             q[f"tau | {r} K={K} | tau selected (printed .1f)"] = f"{f[K].tau:.1f}"
             q[f"fit | {r} K={K} | tau selected (raw)"] = float(f[K].tau)
         for K in (1, 2, 3):
-            tt = case.tension_table(st, f[K], band=base.band)
+            tt = case.trade_off_table(st, f[K], band=base.band)
             ft = case.term_table(st, f, K=K, band=base.band)
             for _, row in tt.iterrows():
                 q[f"contending | {r} K={K} term {int(row['term'])} | set"] = row["contending set"]
@@ -371,15 +371,15 @@ def quantities(data_dir: Path | str) -> dict:
         q.update(_flat(f"D tau_sweep | {r}", case.tau_sweep(st)))
         q.update(_flat(f"D sensitivity | {r}", case.sensitivity_table(st), key="variant"))
         q.update(_flat(f"D refits | {r}", case.category_refits(st), key="wheel_class"))
-    # signs of the tensions: the associations among the near-frontier designs, K = 1, both regimes
+    # signs of the associations among the near-frontier designs, K = 1, both regimes
     for r, st in studies.items():
         assoc = case.association_table(st, fits[r][1])
         for _, row in assoc.iterrows():
             pair = f"{row['metric a']}, {row['metric b']}"
-            q[f"tension | {r} | {pair} | pearson sign"] = _sign(row["pearson"])
-            q[f"tension | {r} | {pair} | spearman sign"] = _sign(row["spearman"])
-            q[f"tension | {r} | {pair} | pearson"] = float(row["pearson"])
-            q[f"tension | {r} | {pair} | spearman"] = float(row["spearman"])
+            q[f"association | {r} | {pair} | pearson sign"] = _sign(row["pearson"])
+            q[f"association | {r} | {pair} | spearman sign"] = _sign(row["spearman"])
+            q[f"association | {r} | {pair} | pearson"] = float(row["pearson"])
+            q[f"association | {r} | {pair} | spearman"] = float(row["spearman"])
     # the candidates and propose-predict-check on the primary regime
     q.update(_flat("candidate", case.candidate_table(prim, k1), key="candidate"))
     reg = case.fit_regressor(prim)
@@ -475,7 +475,7 @@ def _same(a, b) -> bool:
 CONCLUSIONS = (
     ("the contending sets (K = 1, both regimes; each term at K = 3)", ("contending |",)),
     ("each term's leading metrics", ("leading |",)),
-    ("the signs of the tensions (the reported pairs, both regimes)", ("tension |",)),
+    ("the signs of the associations (the reported pairs, both regimes)", ("association |",)),
     ("the selected temperatures (K = 1, 2, 3, both regimes)", ("tau |",)),
     ("the certificate statuses (K = 1, 2, 3, both regimes)", ("certificate |",)),
     ("the regime comparison", ("regime |", "sentence | regime")),
@@ -494,7 +494,7 @@ def verdicts(table: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for label, prefixes in CONCLUSIONS:
         sel = table[table["quantity"].str.startswith(prefixes)]
-        if "tension" in prefixes[0]:
+        if "association" in prefixes[0]:
             sel = sel[sel["quantity"].str.endswith("sign")]
         if "predict" in prefixes[0]:
             sel = sel[sel["quantity"].str.endswith("outcome")]

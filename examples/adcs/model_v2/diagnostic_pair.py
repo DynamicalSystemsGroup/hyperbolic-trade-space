@@ -14,7 +14,7 @@ round's two tables, the traded-metric list of the coverage table and an output f
 * ``k3_record.md``: per regime, the K = 1 fit (temperature, fraction above, effective size, the
   contending set and its n-lemma) and the K = 3 fit per monomial term (its cell's rows and share,
   the contending set, the n-lemma, the leading metrics by exponent, the near-frontier count, the
-  reach and the gap), as :func:`case.fit_line`, :func:`case.tension_table`,
+  reach and the gap), as :func:`case.fit_line`, :func:`case.trade_off_table`,
   :func:`case.term_table` and :func:`case.exponent_table` report them;
 * ``coverage.md``, copied from beside the coverage table.
 
@@ -133,9 +133,9 @@ def zero_across_tau(study) -> list[str]:
 
 
 def k1_reading(study, fits) -> str:
-    """The K = 1 contending set as :func:`case.tension_table` reports it, or its refusal."""
+    """The K = 1 contending set as :func:`case.trade_off_table` reports it, or its refusal."""
     try:
-        k1 = case.tension_table(study, fits[1]).iloc[0]
+        k1 = case.trade_off_table(study, fits[1]).iloc[0]
     except ValueError as exc:  # the report's own guard on the near-frontier count
         return f"K = 1 report refused at the band 1/tau = {fits[1].band:.4g}: {exc}"
     return (

@@ -42,6 +42,7 @@ NAV_PAGES = [
     "user-guide/fitting.md",
     "user-guide/choosing-k.md",
     "user-guide/tensions.md",
+    "user-guide/tension-routes.md",
     "user-guide/chart.md",
     "user-guide/prediction.md",
     "user-guide/termination.md",
@@ -69,17 +70,18 @@ BUDGETS = {
     "user-guide/conditioning.md": 610,
     "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
     "user-guide/choosing-k.md": 573,  # 707 until WP33 (the cubesat block moved to Examples)
-    "user-guide/tensions.md": 700,
+    "user-guide/tensions.md": 730,  # 700 until WP42 (the tension matrix)
+    "user-guide/tension-routes.md": 220,  # WP42
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
     "user-guide/termination.md": 743,  # 600 until WP28 S-10
     "user-guide/limitations.md": 491,
-    "api-reference.md": 287,  # api.md (300) merged in; the ::: directives are not prose
+    "api-reference.md": 291,  # api.md (300) merged in; the ::: are not prose; 287 until WP42
     "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7237  # 7472 until WP33 (Home, cubesat block, tops, API merge)
+TOTAL_BUDGET = 7430  # 7237 until WP42 (the routes page, the tension matrix); 7472 until WP33
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",

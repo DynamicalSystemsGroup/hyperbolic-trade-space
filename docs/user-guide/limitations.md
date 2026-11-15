@@ -4,10 +4,10 @@
 reference or the scale of one metric changes which term is tangent. Refit under a second reasonable
 conditioning and report what moves ([Conditioning](conditioning.md)).
 
-**The surface is log-convex.** Dents, holes and disconnected regions are invisible to it, and no
-number of terms represents them. A hole is an opportunity only if the trade space is log-convex around it.
+**The surface is log-convex.** Dents and disconnected regions are invisible to it, and no
+number of terms represents them. White space is an opportunity only if the trade space is log-convex around it.
 
-**One term has one tension.** A single term has constant elasticities and finds one tension, at
+**One term has one trade-off.** A single term has constant elasticities and finds one trade-off, at
 its balanced point. Away from that point a design can score below 1 while locally on the frontier. If a weight is exactly zero at the balanced point, exponents are not unique and some elasticities are undefined. For
 regionally varying elasticities fit [several terms](fitting.md).
 
@@ -24,7 +24,7 @@ samples, such as grids, are not independent observations: the exponents describe
 no sampling error.
 
 **Contending sets are a reading.** The set is exact at infinite temperature with `min_exponent` at
-0. At a fit temperature participation is graded. A tension is a binding constraint, not a correlation, and
+0. At a fit temperature participation is graded. A trade-off is a binding constraint, not a correlation, and
 negative association near the surface is partly a [closure effect](tensions.md).
 
 **Local fits.** A multi-term fit is a local optimum chosen among seeded restarts. A trade-off with few

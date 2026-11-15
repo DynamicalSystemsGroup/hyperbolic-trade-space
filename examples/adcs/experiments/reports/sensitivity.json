@@ -976,7 +976,7 @@
    "max": 6.959780114e-06,
    "min": 6.959529215e-06
   },
-  "D k_table | primary | 1 | objective_": {
+  "D k_table | primary | 1 | loss_": {
    "committed": 0.1217917438,
    "identical": false,
    "max": 0.1217917691,
@@ -1033,7 +1033,7 @@
    "max": 5.939693182e-15,
    "min": 1.387778781e-15
   },
-  "D k_table | primary | 2 | objective_": {
+  "D k_table | primary | 2 | loss_": {
    "committed": 0.08742628949,
    "identical": false,
    "max": 0.08742632382,
@@ -1090,7 +1090,7 @@
    "max": 7.716050021e-15,
    "min": 2.02615702e-15
   },
-  "D k_table | primary | 3 | objective_": {
+  "D k_table | primary | 3 | loss_": {
    "committed": 0.06927383729,
    "identical": false,
    "max": 0.06927390013,
@@ -1147,7 +1147,7 @@
    "max": 3.165425373e-05,
    "min": 3.165406341e-05
   },
-  "D k_table | stock | 1 | objective_": {
+  "D k_table | stock | 1 | loss_": {
    "committed": 0.114827464,
    "identical": false,
    "max": 0.1148274691,
@@ -1204,7 +1204,7 @@
    "max": 1.348920975e-14,
    "min": 3.302913498e-15
   },
-  "D k_table | stock | 2 | objective_": {
+  "D k_table | stock | 2 | loss_": {
    "committed": 0.09960106324,
    "identical": false,
    "max": 0.09960106324,
@@ -1261,7 +1261,7 @@
    "max": 4.979350265e-14,
    "min": 3.719247132e-15
   },
-  "D k_table | stock | 3 | objective_": {
+  "D k_table | stock | 3 | loss_": {
    "committed": 0.08029640523,
    "identical": false,
    "max": 0.08029640523,
@@ -4180,112 +4180,112 @@
   "tau | stock K=3 | tau selected (printed .1f)": {
    "identical": true
   },
-  "tension | primary | pointing error, control effort | pearson": {
+  "association | primary | pointing error, control effort | pearson": {
    "committed": -0.5239314068,
    "identical": false,
    "max": -0.5239306232,
    "min": -0.523932
   },
-  "tension | primary | pointing error, control effort | pearson sign": {
+  "association | primary | pointing error, control effort | pearson sign": {
    "identical": true
   },
-  "tension | primary | pointing error, control effort | spearman": {
+  "association | primary | pointing error, control effort | spearman": {
    "committed": -0.6628347648,
    "identical": true,
    "max": -0.6628347648,
    "min": -0.6628347648
   },
-  "tension | primary | pointing error, control effort | spearman sign": {
+  "association | primary | pointing error, control effort | spearman sign": {
    "identical": true
   },
-  "tension | primary | settling time, pointing error | pearson": {
+  "association | primary | settling time, pointing error | pearson": {
    "committed": 0.3616110762,
    "identical": false,
    "max": 0.3616110762,
    "min": 0.3616110762
   },
-  "tension | primary | settling time, pointing error | pearson sign": {
+  "association | primary | settling time, pointing error | pearson sign": {
    "identical": true
   },
-  "tension | primary | settling time, pointing error | spearman": {
+  "association | primary | settling time, pointing error | spearman": {
    "committed": 0.4749601551,
    "identical": true,
    "max": 0.4749601551,
    "min": 0.4749601551
   },
-  "tension | primary | settling time, pointing error | spearman sign": {
+  "association | primary | settling time, pointing error | spearman sign": {
    "identical": true
   },
-  "tension | primary | settling time, total mass | pearson": {
+  "association | primary | settling time, total mass | pearson": {
    "committed": -0.4561958297,
    "identical": false,
    "max": -0.4561958297,
    "min": -0.4561958297
   },
-  "tension | primary | settling time, total mass | pearson sign": {
+  "association | primary | settling time, total mass | pearson sign": {
    "identical": true
   },
-  "tension | primary | settling time, total mass | spearman": {
+  "association | primary | settling time, total mass | spearman": {
    "committed": -0.4585370825,
    "identical": true,
    "max": -0.4585370825,
    "min": -0.4585370825
   },
-  "tension | primary | settling time, total mass | spearman sign": {
+  "association | primary | settling time, total mass | spearman sign": {
    "identical": true
   },
-  "tension | stock | pointing error, control effort | pearson": {
+  "association | stock | pointing error, control effort | pearson": {
    "committed": -0.691856274,
    "identical": false,
    "max": -0.6918562683,
    "min": -0.6918563136
   },
-  "tension | stock | pointing error, control effort | pearson sign": {
+  "association | stock | pointing error, control effort | pearson sign": {
    "identical": true
   },
-  "tension | stock | pointing error, control effort | spearman": {
+  "association | stock | pointing error, control effort | spearman": {
    "committed": -0.7650031821,
    "identical": true,
    "max": -0.7650031821,
    "min": -0.7650031821
   },
-  "tension | stock | pointing error, control effort | spearman sign": {
+  "association | stock | pointing error, control effort | spearman sign": {
    "identical": true
   },
-  "tension | stock | settling time, pointing error | pearson": {
+  "association | stock | settling time, pointing error | pearson": {
    "committed": 0.6842065057,
    "identical": false,
    "max": 0.6842065057,
    "min": 0.6842065057
   },
-  "tension | stock | settling time, pointing error | pearson sign": {
+  "association | stock | settling time, pointing error | pearson sign": {
    "identical": true
   },
-  "tension | stock | settling time, pointing error | spearman": {
+  "association | stock | settling time, pointing error | spearman": {
    "committed": 0.7628172406,
    "identical": true,
    "max": 0.7628172406,
    "min": 0.7628172406
   },
-  "tension | stock | settling time, pointing error | spearman sign": {
+  "association | stock | settling time, pointing error | spearman sign": {
    "identical": true
   },
-  "tension | stock | settling time, total mass | pearson": {
+  "association | stock | settling time, total mass | pearson": {
    "committed": -0.1574024045,
    "identical": false,
    "max": -0.1574024045,
    "min": -0.1574024046
   },
-  "tension | stock | settling time, total mass | pearson sign": {
+  "association | stock | settling time, total mass | pearson sign": {
    "identical": true
   },
-  "tension | stock | settling time, total mass | spearman": {
+  "association | stock | settling time, total mass | spearman": {
    "committed": -0.1387586219,
    "identical": true,
    "max": -0.1387586219,
    "min": -0.1387586219
   },
-  "tension | stock | settling time, total mass | spearman sign": {
+  "association | stock | settling time, total mass | spearman sign": {
    "identical": true
   }
  },

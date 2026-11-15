@@ -79,7 +79,7 @@ def select_tau(M, K, target=0.10):
 
 
 def reports(est, M, band=None):
-    """List of per-term TensionReports (a one-element list at K = 1), the guard per term.
+    """List of per-term TradeOffReports (a one-element list at K = 1), the guard per term.
 
     ``case.term_reports``: every term is reported from the estimator; the association reading of
     a term without ten near-frontier rows is not drawn (``case.has_reading``).
@@ -119,7 +119,7 @@ def _slice(est, U, labels, band, j, k):
     """Terms drawable in the (j, k) log plane, with their exponents and offsets there.
 
     A term is drawn only where it has weight on both plotted metrics (exponents above the
-    plotting module's participation threshold, the tension report's).
+    plotting module's participation threshold, the trade-off report's).
     """
     W, keep, ws, bs = est.exponents_, [], [], []
     rest = [i for i in range(U.shape[1]) if i not in (j, k)]
@@ -170,14 +170,14 @@ def certificate(est):
 
 
 def summary(fits, M):
-    """One row per K: objective, fraction above V = 1, term rows and shares, certificate."""
+    """One row per K: loss, fraction above V = 1, term rows and shares, certificate."""
     rows = []
     for K, e in fits.items():
         sizes = np.bincount(e.cell_, minlength=K) if K > 1 else [len(M)]
         share = e.term_share_ if K > 1 else [1.0]
         rows.append({"K": K, "tau": round(float(e.temperature), 2),
                      "band 1/tau": round(1 / float(e.temperature), 4),
-                     "objective_": e.objective_, "frac_above_": e.frac_above_,
+                     "loss_": e.loss_, "frac_above_": e.frac_above_,
                      "term rows": list(map(int, sizes)),
                      "term shares": [round(float(x), 3) for x in share],
                      **certificate(e)})  # fmt: skip
@@ -224,7 +224,7 @@ def run_regime(regime, seeds=range(5), n_max=None, verbose=True):
         e = fit_k(M, 3, taus[3], s)
         r = reports(e, M, band)
         sig = " | ".join(sorted("+".join(sorted(contend(x))) for x in r))
-        stab.append({"seed": s, "objective_": e.objective_, "frac_above_": e.frac_above_,
+        stab.append({"seed": s, "loss_": e.loss_, "frac_above_": e.frac_above_,
                      "shares (sorted)": sorted(round(float(x), 3) for x in e.term_share_),
                      **certificate(e), "contending sets": sig})  # fmt: skip
     stab = pd.DataFrame(stab)

@@ -1,4 +1,4 @@
-# The chart, holes and plots
+# The chart, white space and plots
 
 A fitted model gives every design two kinds of coordinate. One is log V, the level offset
 to the fitted reference surface: negative inside, positive beyond. The other `d - 1` say where along the surface the design sits,
@@ -58,9 +58,9 @@ good.
 For a multi-term fit, log V is the maximum over terms at the default `term_temperature=inf`, and
 `improvement_factors` uses each row's assigned term.
 
-## Holes and white space
+## White space
 
-Gaps in the designs' spread over the position coordinates are candidates for white space, the regions no design occupies:
+Regions of the position coordinates that no design occupies are white space. The functions below find them:
 
 - `knn_gap_scores(Z, k=5)`: mean distance to the k nearest neighbours, normalized by its median.
 - `find_holes(Z, resolution=50, threshold=2.0)`: grid points inside the convex hull of Z that sit far
@@ -69,7 +69,7 @@ Gaps in the designs' spread over the position coordinates are candidates for whi
   maps back to metrics and, with a preconditioner, to attributes.
 - `orient_by_pca(Z, mask=None)`: rotates to the principal axes of the masked rows.
 
-Holes of a three-metric fit, most isolated first:
+The white space of a three-metric fit, most isolated first:
 
 ```python {.runnable}
 from hyperbolic_trade_space.gaps import find_holes
@@ -81,7 +81,7 @@ holes, scores = find_holes(chart3[:, :-1], resolution=30, threshold=3.0)
 print(len(holes), scores[:3].round(2))
 ```
 
-A hole is a candidate and not a verdict. An empty region can be an opportunity, a categorical
+White space is a candidate and not a verdict. An empty region can be an opportunity, a categorical
 stratum that cannot be occupied, or unsampled. The score cannot tell these apart; you decide.
 The surface is also convex in log space, so structure that is not convex there is invisible to it.
 
@@ -92,9 +92,9 @@ The surface is also convex in log space, so structure that is not convex there i
 - `plot_log_plane`: two metrics, the data, the frontier and its band.
 - `plot_frontier_surface_3d`: three metrics, the frontier surface.
 - `plot_frontier_coordinates(Z, log_v)`: the chart, the columns of `ts.transform(X)`, with optional
-  holes and targets.
+  white space and targets.
 - `plot_v_by_variable`: log V against a configuration variable.
-- `plot_tensions`: the tension report as a heatmap.
+- `plot_association`: the association among near-frontier designs, from the trade-off report, as a heatmap.
 - `plot_ternary`: three metrics as shares of a total, with the region each term dominates
   ([example](../examples.md#three-metrics-as-shares-of-a-total)); `ternary_marker_values` gives V at its markers.
 

@@ -151,7 +151,7 @@ def test_no_wp3_signatures_quoted():
     # the analysis toolkit is described by concept; no WP3 API names appear
     for page in PAGES:
         t = _text(page)
-        for name in ("knn_gap_scores", "find_holes", "tension_report", "select_temperature"):
+        for name in ("knn_gap_scores", "find_holes", "trade_off_report", "select_temperature"):
             assert name not in t, f"{page.name} quotes {name}"
 
 

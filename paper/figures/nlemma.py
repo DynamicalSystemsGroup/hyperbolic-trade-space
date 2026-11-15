@@ -5,7 +5,7 @@ point of it, and the smallest face holding that point is the term's contending s
 one binding metric, an edge a dilemma of the two metrics at its ends, the interior a trilemma
 (assumption A2 and Definition 5 of the paper). The figure fits a synthetic table of three
 metrics with three planted terms, two on edges and one inside, and draws each fitted exponent
-vector. The n-lemma printed for each term is the tension report's (the
+vector. The n-lemma printed for each term is the trade-off report's (the
 support of the exact-maximum fit on the term's cell), not read off the marker.
 
 Run ``uv run python paper/figures/nlemma.py`` to write ``fig-nlemma.png`` beside this file.
@@ -28,7 +28,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 PLANTED = [[0.0, 0.35, 0.65], [0.5, 0.25, 0.25], [0.7, 0.3, 0.0]]
 TABLE = {"n_samples": 900, "n_features": 3, "n_terms": 3, "random_state": 0}
 FIT = {"n_terms": 3, "temperature": 50.0, "random_state": 0}
-BAND = 0.1  # near-frontier rows of each term for the tension report
+BAND = 0.1  # near-frontier rows of each term for the trade-off report
 NAMES = ("metric 1", "metric 2", "metric 3")
 SQ3 = np.sqrt(3.0) / 2.0
 INK = "#1c1c1c"
@@ -50,13 +50,13 @@ def nlemma_data():
         ``fitted`` (K, 3) and ``planted`` (K, 3) exponent vectors, matched term by term;
         ``support`` a list of index arrays (the exact-maximum support); ``lemma`` the names.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, tension_report
+    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, trade_off_report
 
     X, _ = make_frontier_data(exponents=PLANTED, **TABLE)
     est = HyperbolicTradeSpace(**FIT).fit(X)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        reports = tension_report(est, X, band=BAND)
+        reports = trade_off_report(est, X, band=BAND)
     W = np.asarray(est.exponents_, float)
     P = np.asarray(PLANTED, float)
     match = [int(np.argmin(np.abs(P - w).sum(axis=1))) for w in W]
