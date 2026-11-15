@@ -2337,4 +2337,12 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   unit writes the 0.1.0 entry); fast suite running. wp41-land rebased, lands after wp46. WP42 build: its second
   failure still being named. WP43: lint subagent still on its rerun check. PM16 blocked since 19:15, no reply; the
   fifth unit active in paper5.
+- **WP47, WP48 and WP50 landed (2026-11-14 21:31 EST).** WP47 as one commit at 1cd23db after its verification (ruff, format, lock at
+  194 packages, vocabulary, attribution clean; fast suite 2,031 passed with the one shared docs-figure failure, which
+  is fixed on dev and confirmed gone after the rebase; the release checks dry-run locally; the three test files and the
+  register 62 passed). WP48's three records at ba62c15 and WP50's readout, instance script and outputs at 5233126,
+  records only. CI dispatched on 1cd23db. Still to land: wp46 (notebooks re-executing), the WP42 build (re-executing
+  and verifying after its rebase, whose conflicts in two notebooks and the length ledger were resolved by taking the
+  build's notebooks and replaying fix4's edits, and the figure module keeping the build's function with fix4's one-line
+  titles), wp41, WP43 (the rerun changed only the timing columns of its result files, as its record says).
 
