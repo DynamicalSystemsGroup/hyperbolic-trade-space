@@ -41,8 +41,9 @@ conventions; the register the requirements.
   the sign and reciprocal convention one across matrix, caption and prose; the decision-maker's ternary of unit cost,
   fleet cost and coverage probability, the measure named and no formula in the figure, with the prose that says the
   three objectives were not guaranteed to collapse to one trade-off, that on this model they do and why, and that a
-  revised cost scaling is checked by refitting; every caption cut to what is drawn, the Shows and Does-not-show lines
-  moved to the review record; each figure through the loop at the first three depths with screenshots before the
+  revised cost scaling is checked by refitting; every caption in the paper and the supporting material (Figures 1 to 7 and the generated figures of
+  the appendices, not only Sections 7 to 9) cut to what is drawn, the Shows, Does-not-show and Good-for lines moved
+  to the review record and their register rows re-anchored or retired; each figure through the loop at the first three depths with screenshots before the
   section is soft-confirmed; the output printed beside the call that made it where a number is read from a cell.
 - G4. **The performance aggregate as a modelling choice in the model.** Coverage probability defined and justified in
   the SysML v2 system model as a derived attribute of the fleet (formula, units, constants with their readings), the
