@@ -130,11 +130,9 @@ def render_list(entries):
     for e in rows:
         names = ", ".join(html.escape(p["name"]) for p in e.get("people") or [])
         who = f' <span class="who">{names}</span>' if names else ""
-        special = (
-            ' <span class="special">a special case where the work was highly public</span>'
-            if e.get("special_case")
-            else ""
-        )
+        # the record keeps the special-case flag as bookkeeping; the page's words carry no mark
+        # (the supervisor, 2026-11-14: the mark made readers think about the setting)
+        special = ""
         out.append(
             f'    <li><span class="yr">{year(e)}</span> '
             f'<a href="{html.escape(e["url"], quote=True)}">{html.escape(e["title"])}</a>'

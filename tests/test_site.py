@@ -590,17 +590,24 @@ def test_history_record_holds_the_schema_and_every_entry_has_its_required_fields
 
 
 def test_history_record_credits_who_the_source_credits_and_lists_only_the_arc():
-    """WP37 closing unit 2 (the supervisor, 2026-11-13): the block-diagrams entry names Zeke
-    Medley and Danilo Bernardineli, not Carolina; cadCAD is the work of its 19 contributors; the
+    """WP37 closing unit 2 (the supervisor, 2026-11-13) and WP52 (2026-11-14): the block-diagrams
+    entry names Zeke Medley (the author), Carolina Riascos-Álvarez (credited in the write-up,
+    not
+    the git history) and Danilo Bernardineli (reviewer); cadCAD is the work of its 19
+    contributors; the
     Boyd tutorial and the exploratory repositories are not entries."""
     entries = {e["id"]: e for e in HISTORY_RECORD.load()}
     people = {p["name"] for p in entries["2024-dynamical-block-diagrams"]["people"]}
-    assert people == {"Zeke Medley", "Danilo Bernardineli"}
+    assert people == {"Zeke Medley", "Danilo Bernardineli", "Carolina Riascos-Álvarez"}
     assert "19 contributors" in entries["2018-cadcad-contributors"]["shows"]
     assert entries["2018-cadcad-repo"]["url"] == "https://github.com/cadCAD-org/cadCAD"
     assert len(entries["2018-cadcad-repo"]["people"]) > 1
     assert "not of one person" in entries["2018-cadcad-repo"]["shows"]
-    assert min(e["date"] for e in entries.values() if e["kind"] != "role") >= "2013"
+    # the arc starts in 2013; Roth 2002 is cited background the supervisor named (WP52, 2026-11-14)
+    arc = (
+        e for e in entries.values() if e["kind"] != "role" and not e["id"].startswith("2002-roth")
+    )
+    assert min(e["date"] for e in arc) >= "2013"
     for gone in ("2007-gp-tutorial", "2026-flexo-rtm", "2026-toaster", "2026-view-editor"):
         assert gone not in entries, gone
     assert not any("Boyd" in p["name"] for e in entries.values() for p in e.get("people", []))
@@ -645,7 +652,7 @@ def test_history_record_validation_names_each_defect():
 
 def test_history_list_is_generated_from_the_record_oldest_first():
     """WP37 D-9: the list beneath the prose is rendered from the record at build time: listed
-    entries only, chronological, the year, the title as a link, the people; special cases marked."""
+    entries only, chronological, the year, the title as a link, the people; no special-case mark."""
     entries = HISTORY_RECORD.load()
     page = HISTORY_RECORD.build_page(HISTORY.read_text(encoding="utf-8"), entries)
     assert HISTORY_RECORD.MARKER not in page and page.count('id="record"') == 1
@@ -657,9 +664,9 @@ def test_history_list_is_generated_from_the_record_oldest_first():
         e["url"] for e in sorted(listed, key=lambda e: (e["date"], e["id"]))
     ]
     assert [y for y, _ in items] == sorted(y for y, _ in items)
-    for e in listed:
-        if e.get("special_case"):
-            assert page.count("a special case where the work was highly public") >= 1
+    # the special-case flag stays in the record and the trace; the list carries no mark of it
+    # (the supervisor, 2026-11-14)
+    assert "a special case where the work was highly public" not in page
     # a source whose title carries a banned word keeps it only as the link's title
     block = page[page.index('<section class="record"') :]
     assert "Blockchain" in block
@@ -799,14 +806,15 @@ def test_history_list_holds_no_banned_word_outside_link_titles():
     block = built[built.index('<section class="record"') : built.index("</section>")]
     own = re.sub(r"<a [^>]*>.*?</a>", " ", block)
     text = " ".join(_visible(own)).lower()
-    assert "dated references" in text and "special case" in text
+    assert "dated references" in text and "special case" not in text
     for banned in _BANNED:
         assert not re.search(banned, text), banned
 
 
-def test_history_special_case_sentences_say_so():
-    """R-7: every prose sentence that cites a record entry flagged special_case says in that
-    sentence that it is a special case where the work was highly public."""
+def test_history_special_case_sentences_carry_no_mark_but_the_trace_does():
+    """R-7 as the supervisor revised it on 2026-11-14 (WP52-decisions.md): a prose sentence that
+    cites a record entry flagged special_case says what the work was in neutral words and carries
+    no "special case" mark; the flag lives in the record and shows in the trace table."""
     entries = HISTORY_RECORD.load()
     page = HISTORY.read_text(encoding="utf-8")
     cited = 0
@@ -814,9 +822,9 @@ def test_history_special_case_sentences_say_so():
         _, _, _, special, _ = HISTORY_RECORD.classify(sentence, entries)
         if special:
             cited += 1
-            assert "special case" in sentence["text"].lower(), sentence["text"]
-            assert "highly public" in sentence["text"], sentence["text"]
+            assert "special case" not in sentence["text"].lower(), sentence["text"]
     assert cited >= 1
+    assert "| yes |" in HISTORY_RECORD.TRACE.read_text(encoding="utf-8")
 
 
 def test_history_team_account_sentences_are_marked():
@@ -950,8 +958,11 @@ def test_history_page_links_resolve_over_the_network():
     assert not failed, failed
 
 
-#: the page's word ceiling (WP37 closing unit 2: 406 words before it; the ceiling goes down only)
-WORDS_CEILING = 397
+#: the page's word ceiling. WP37 closing unit 2: 406 words before it, 397 after. On 2026-11-15 the
+#: supervisor set 1,000 words as guidance ("the length can be relaxed. 1000 words is okay with me";
+#: "the 1000 word is a guidance not a hard requirement"); the test's bound sits above it, and
+#: moved once more after his additions of 2026-11-15 took the page to 1,141 words
+WORDS_CEILING = 1200
 
 
 def test_history_page_is_one_screen_in_the_root_page_register():
@@ -1028,10 +1039,13 @@ def test_history_page_credits_the_fourteen_named_people():
 
 
 def test_history_page_marks_the_team_account_and_credits_cadcad_to_its_contributors():
-    """WP37 W3 decisions: the team's own account is marked each time; cadCAD is the work of its
-    contributors (19 on GitHub, the supervisor 2026-11-13), the names those AUTHORS.txt gives."""
+    """WP37 W3 decisions as revised by the supervisor on 2026-11-14 (WP52-decisions.md): the
+    page does not say "in our own account" ("stuff we say is by definition in our own account"); the
+    team's account is marked in the record and the trace, not in the prose. cadCAD is the work of
+    its contributors (19 on GitHub, the supervisor 2026-11-13), the names those AUTHORS.txt
+    gives."""
     text = _history_text()
-    assert text.count("our own account") + text.count("the same account") >= 3
+    assert text.count("our own account") + text.count("the same account") == 0
     assert "cadCAD is the work of 19 contributors" in text
     assert "implemented" not in text
     raw = HISTORY.read_text(encoding="utf-8")
@@ -1064,7 +1078,9 @@ def test_history_page_follows_the_supervisors_wording_rulings():
     assert "cannot describe here" in text
     for ref in ("gds-axelrod", "10.1007/s10614-023-10445-9", "dynamical-block-diagrams"):
         assert ref in raw, ref
-    assert "cleared for public release" in text and "the RAI controller" in text
+    # the "cleared for public release" aside is gone (the supervisor, 2026-11-14: it made readers
+    # think about the setting more than they would have); the two public items stay
+    assert "cleared for public release" not in text and "algorithmic debt market" in text
     assert "workshop in Edinburgh (ICMS), October 2024" in text
 
 
@@ -1084,7 +1100,7 @@ def test_history_page_follows_the_scope_order_and_the_closing_unit_rulings():
         "cadCAD",
         "Jamsheed",
         "serves on",
-        "Jakob Hackel",
+        "client projects we cannot name",  # Hackel is also named earlier, on the 2024 paper
     )
     positions = [
         text.index(m, text.index("Before the firm") if m != "Before the firm" else 0) for m in order
