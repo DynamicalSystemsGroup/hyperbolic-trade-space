@@ -140,3 +140,13 @@ candidates only if that one fails its cold reads.
 along the pair's axis (Z); if the construction needs stating, the caption says the axis is the difference of the two
 log-metrics, scaled to unit length, and the square root of two appears nowhere on the figure.
 
+**Supervisor (2026-11-14 22:38 EST):** "my impression is that since this is visual story telling the refinement loops will need to use
+screenshots and user feedback loops, both for the figure and the index page as a whole to get us to a solid top level
+index page"
+
+**Applied as:** the figure loop for the root page runs with him in it, iteration by iteration: each candidate is
+screenshotted as rendered (desktop and phone width, light and dark) and sent to him in chat, his words come back and are
+recorded, and the next iteration follows; the same loop then runs over the index page as a whole (prose, both figures,
+the doors). The fresh-reader cold reads stay as the screen before his, not instead of it. WP51's good-enough is his word
+on the whole page, not a unit's gates.
+
