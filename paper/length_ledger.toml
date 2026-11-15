@@ -1824,3 +1824,31 @@ section = "Case analysis"
 words_added = 23
 job = "Figure 6's caption names V once as the invariant value (Definition 2) and says what the percentage on the horizontal axis is"
 reader = "the reader who found the axis's percentage unexplained and V undefined"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 29
+job = "lists A11, the row-noise assumption that L19 declares, so the codes of the scripts and of Section 3 agree (request 174)"
+reader = "the reader who found A11 in a lemma script and in no list of the main text"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 50
+job = "the proof sketch of Corollary 1 says whose Hessian is tau C (J_tau's) and that J^R's is tau (C + Sigma), the Sigma term of the shift set aside as second order (request 177); the refit comparison says its 60 planted terms are three on each of twenty tables (request 183)"
+reader = "the reader who checked the Hessian of the ridge objective by hand"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 9
+job = "Figure 6's caption names the band as Definition 4 gives it, on both sides of the line, and Table 2's caption says the band claim is of the five picks and not of the baseline row (requests 175, 182)"
+reader = "the reader who read the figure's band and the table's levels against Definition 4"
+
+[[cut]]
+date = "2026-11-14"
+section = "Case construction"
+words_removed = 6
+no_longer_did = "named the 900-row worked example of Appendix C.7 in the sentence that gives the recovery count, which is on twenty other tables of 400 rows; the count now says what it is on"
+authority = "final round, fifth paper unit, request 173; marginal-value test; measured by tests/test_paper.py words_by_section"

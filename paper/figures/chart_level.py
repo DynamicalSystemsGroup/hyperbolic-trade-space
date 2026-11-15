@@ -2,7 +2,9 @@
 
 The chart rewrites each design as a position along the surface ``Z`` and a level ``log V`` (the
 energy differential). Against any position coordinate the surface of the fit is the flat line
-``log V = 0``, which is what the chart does and what no log-metric plane shows. The first drawing
+``log V = 0``, which is what the chart does and what no log-metric plane shows. The near-frontier
+band is drawn as Definition 4 gives it, ``|log V| < band`` on both sides of the line, and its width
+is in the legend (an earlier drawing showed it below the line only). The first drawing
 put the first Helmert coordinate ``Z0`` on the horizontal axis and readers took nothing from it
 (WP11 CR-30), so the axis is now the direction along which the near-frontier designs spread the
 most: the first principal direction of the near-frontier chart, the one Appendix D.16 reads
@@ -79,7 +81,7 @@ def chart_level_figure(study=None, fit=None, band=None, fit1=None):
     direction, better, worse, share = leading_direction(study, fit1)
     position, logv = chart[:, :-1] @ direction, chart[:, -1]
     fig, ax = plt.subplots(figsize=(case.FIGURE_WIDTH_IN, 3.8))
-    ax.axhspan(-band, 0.0, color="0.75", alpha=0.6, linewidth=0, zorder=1)
+    ax.axhspan(-band, band, color="0.75", alpha=0.6, linewidth=0, zorder=1)
     ax.axhline(0.0, color=INK, lw=1.6, zorder=1.5)
     ax.scatter(position, logv, s=12, color=DESIGN, linewidth=0, zorder=2)
     ax.set_ylim(top=max(0.0, float(logv.max())) + 0.12 * (float(logv.max()) - float(logv.min())))
@@ -95,7 +97,7 @@ def chart_level_figure(study=None, fit=None, band=None, fit1=None):
     handles = [
         Line2D([], [], marker="o", ls="", color=DESIGN, label="designs"),
         Line2D([], [], color=INK, label="the surface, log V = 0"),
-        Patch(color="0.75", alpha=0.6, label="near-frontier band"),
+        Patch(color="0.75", alpha=0.6, label=f"near-frontier band, |log V| < {band:.4f}"),
     ]
     ax.legend(handles=handles, frameon=False, loc="lower left", fontsize=9)
     fig.tight_layout()

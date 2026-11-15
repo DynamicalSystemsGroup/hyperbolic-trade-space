@@ -136,15 +136,32 @@ def exponents_and_terms() -> Md:
             )
             + f"\n\n{_cite(r)}, K = {case.CASE_K}, per term:\n\n"
             + frame_table(_terms(r, ftc, case.CASE_K))
+            + _band_sentence(r, case.CASE_K)
             + _thin_terms(ftc)
             + f"\n\n{_cite(r)}, K = 3:\n\n"
             + frame_table(_exponents(exp3, f"D exponents K=3 | {r}"))
             + f"\n\n{_cite(r)}, K = 3, per term:\n\n"
             + frame_table(_terms(r, ft3))
+            + _band_sentence(r, 3)
             + _thin_terms(ft3)
             + _summed_text(r, _fits(r))
         )  # fmt: skip
     return Md("\n\n".join(parts))
+
+
+def _band_sentence(regime, K) -> str:
+    """The two bands of a per-term table: the count's and the share's (they are not the same).
+
+    The count of near-frontier designs of a term is read at the K = 1 band, the one band of the
+    report at every K (gap G-9); the share is the fraction of the designs inside the fit's own
+    band that the term takes (``term_share_``), so a share is not the ratio of the counts.
+    """
+    band = lambda k: stable(f"D k_table | {regime} | {k} | band 1/tau", lambda v: f"{v:.4f}")  # noqa: E731
+    return (
+        f"\n\nThe near-frontier column counts the designs within the K = 1 band ({band(1)}) of "
+        f"the K = {K} fit; the share column is the fraction of the designs within that fit's own "
+        f"band ({band(K)}) that the term takes, so it is not the ratio of the counts."
+    )
 
 
 def _thin_terms(ft) -> str:
@@ -527,7 +544,11 @@ RECOVERY_SEEDS = 20
 RECOVERY_TAUS = (np.inf, 50.0)
 """The exact maximum and a working temperature."""
 RECOVERY_ROWS = 400
-"""Rows of each planted table (four metrics, three terms)."""
+"""Rows of each planted table."""
+RECOVERY_METRICS = 4
+"""Metrics of each planted table."""
+RECOVERY_TERMS = 3
+"""Planted terms of each table."""
 RECOVERY_RIGHT = 0.9
 """A table is recovered when at least this fraction of its frontier rows lie on the right term."""
 
@@ -554,10 +575,14 @@ def recovery_runs() -> tuple:
     out = []
     for tau in RECOVERY_TAUS:
         for seed in range(RECOVERY_SEEDS):
-            X, info = make_frontier_data(RECOVERY_ROWS, 4, n_terms=3, random_state=seed)
+            X, info = make_frontier_data(
+                RECOVERY_ROWS, RECOVERY_METRICS, n_terms=RECOVERY_TERMS, random_state=seed
+            )
             planted = np.asarray(info["exponents"], float)
             truth, front = np.asarray(info["term"]), np.asarray(info["frontier_mask"])
-            est = HyperbolicTradeSpace(temperature=tau, n_terms=3, random_state=0).fit(X)
+            est = HyperbolicTradeSpace(temperature=tau, n_terms=RECOVERY_TERMS, random_state=0).fit(
+                X
+            )
             fitted = np.atleast_2d(est.exponents_)
             error, perm = min(
                 (float(np.abs(fitted[list(p)] - planted).max()), p)
@@ -621,7 +646,8 @@ def planted_recovery() -> Md:
     cap_above = sum(r["status"] == "iteration_cap" and r["max_gap"] >= tol for r in runs)
     return Md(
         f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at {RECOVERY_ROWS} "
-        f"rows, 4 metrics and 3 terms, seeds 0 to {RECOVERY_SEEDS - 1}, the solver's defaults "
+        f"rows, {RECOVERY_METRICS} metrics and {RECOVERY_TERMS} terms, seeds 0 to "
+        f"{RECOVERY_SEEDS - 1}, the solver's defaults "
         f"(five restarts, `random_state = 0`). A table is recovered when the largest error of "
         f"the exponents, after matching fitted to planted terms, is under {OWN_ROWS_TOLERANCE} "
         f"and at least {RECOVERY_RIGHT:.0%} of its frontier rows lie on the right term.\n\n"

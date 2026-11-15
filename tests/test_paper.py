@@ -2751,7 +2751,11 @@ def test_the_claims_of_c1_have_their_true_basis():
     intro = _section("The decision problem")
     assert "a reading and not a result" in intro
     results = _section("Results")
-    assert "recovered none of 60 planted terms" in results and "D.13" in results
+    assert (
+        "recovered none of the 60 planted terms (three on each of twenty tables of 400 rows)"
+        in results
+        and "D.13" in results
+    )
     assert "ill-posed" not in results  # what D.13 observed, not a verdict
     own = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit")
     text = _out_text(own)
@@ -4245,12 +4249,70 @@ def test_the_known_answer_sentence_says_what_the_eleven_row_failure_is():
     assert got == [m.group(3), m.group(4), m.group(5)]
 
 
+@pytest.mark.slow
+def test_the_executive_table_caption_band_claim_holds_of_the_picks_and_not_the_baseline(decided):
+    """182: "all inside the near-frontier band" is said of the five picks, in the K = 1 band the
+    shortlist uses, and the baseline row (the level of Table 2's first row) is outside it."""
+    _, fits, d = decided
+    band = fits[1].band
+    five = ("sponsor", "operator", "between", "balanced", "cheapest unit")
+    assert all(abs(d.picks[k]["log V K=2"]) < band for k in five)
+    assert abs(d.baseline["log V K=2"]) > band
+
+
+def test_figure_6_draws_the_band_on_both_sides():
+    """175: Definition 4's band is |log V| < 1/tau; the figure shades it above and below the
+    surface line, with its width in the legend, and the designs it holds are the ones D.3 counts."""
+    import case
+    from figures.chart_level import chart_level_figure
+
+    study = case.load_study("primary")
+    fits = case.k_fits(study)
+    fig = chart_level_figure()
+    band = fits[1].band
+    box = fig.axes[0].patches[0]
+    span = np.array([box.get_y(), box.get_y() + box.get_height()])
+    assert span.min() == pytest.approx(-band) and span.max() == pytest.approx(band)
+    assert (
+        f"|log V| < {band:.4f}" in [t.get_text() for t in fig.axes[0].get_legend().get_texts()][2]
+    )
+    logv = fits[case.CASE_K].estimator.transform(study.M)[:, -1]
+    d3 = " ".join(
+        _out_text(
+            next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
+        ).split()
+    )
+    assert int((abs(logv) < band).sum()) == 318 + 119 and "| 318 |" in d3 and "| 119 |" in d3
+
+
+def test_d3_names_the_band_of_each_column():
+    """176: the near-frontier counts are at the K = 1 band, the shares at the fit's own band."""
+    import case
+    import generate_results as gr
+
+    text = _out_text(
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
+    )
+    assert text == str(gr.exponents_and_terms())
+    assert "column counts the designs within the K = 1 band (0.0240) of the K = 2 fit" in text
+    assert "within that fit's own band (0.0088)" in text
+    study = case.load_study("primary")
+    fits = case.k_fits(study)
+    est = fits[case.CASE_K].estimator
+    own = abs(est.training_log_v_) < fits[case.CASE_K].band
+    shares = [(own & (est.cell_ == k)).sum() / own.sum() for k in range(2)]
+    assert shares == pytest.approx(list(est.term_share_))
+
+
 def test_the_executive_table_caption_and_the_shortlist_say_their_rules():
     """38, 50, 71, 70: the executives' measures, the order of the rows, the rule names and the
     band."""
     cap = _cell_src("tab-decision-caption")
     assert "the operator's pointing error, the sponsor's unit cost and fleet cost" in cap
     assert "do not rank them" in cap and "Balanced between the terms is the design whose" in cap
+    assert (
+        "of the five designs they pick, all inside the near-frontier band that the shortlist" in cap
+    )
     assert any("(sub-d-19)=" in _src(c) for c in _nb(SUPPORT_NB).cells)  # the pointer resolves
 
 

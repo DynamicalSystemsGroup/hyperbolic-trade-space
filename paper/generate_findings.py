@@ -17,7 +17,6 @@ from paper_stability import cell, entry, stable, summary
 
 from hyperbolic_trade_space.estimator import PARTICIPATION_THRESHOLD
 
-_C7 = appendix_link("sub-c-7", "Appendix C.7")
 _D3 = appendix_link("sub-d-3", "Appendix D.3")
 _D5 = appendix_link("sub-d-5", "Appendix D.5")
 _D8 = appendix_link("sub-d-8", "Appendix D.8")
@@ -739,24 +738,20 @@ def elasticity_sentence(study, fits) -> Md:
 
 
 def planted_sentence() -> Md:
-    """The worked example of Appendix C.7, the planted table of the case sections, with its size.
+    """The recovery count of Appendix D.14, with what the tables it counts are.
 
-    The twenty tables the case analysis fits (D.14), drawn by the same generator, are named where
-    they are read (:func:`recovery_sentence`); the n-lemma figure's three-metric table is named by
-    the text that precedes this sentence.
+    The twenty tables are drawn by the generator of Appendix C.7 at a size of their own
+    (``RECOVERY_ROWS``), not the 900-row table of C.7's worked example, so the sentence names their
+    size and leaves that example to C.7 and the sentence before it.
     """
-    from generate_model import planted_table
-
-    X, info = planted_table()
-    k, d = np.asarray(info["exponents"]).shape
     import generate_results as gr
 
     exact = [r for r in gr.recovery_runs() if r["tau"] == gr.RECOVERY_TAUS[0]]
     good = sum(r["recovered"] for r in exact)
     return Md(
-        f"The worked example of {_C7} has {len(X)} rows, {d} metrics and {k} planted terms. "
-        f"The fit recovers all {_NUMBER_WORDS[k]} terms on {good} of {len(exact)} such tables "
-        f"(Section 9, {_D14})."
+        f"The fit recovers all {_NUMBER_WORDS[gr.RECOVERY_TERMS]} terms on {good} of {len(exact)} "
+        f"planted tables of {gr.RECOVERY_ROWS} rows, {gr.RECOVERY_METRICS} metrics and "
+        f"{gr.RECOVERY_TERMS} terms each ({_D14}, Section 9)."
     )
 
 

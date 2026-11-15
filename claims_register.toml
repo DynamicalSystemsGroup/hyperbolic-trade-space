@@ -4960,7 +4960,7 @@ note = "assign_cells(X) is argmax_k (w_k . log m - beta_k) of the fitted model; 
 
 [[claim]]
 id = "C419"
-fragment = "recovered none of 60 planted terms with the true labels given (largest error 0.97) ... recovered all 60 (largest error 0.001"
+fragment = "recovered none of the 60 planted terms (three on each of twenty tables of 400 rows) with the true labels given (largest error 0.97) ... recovered all 60 (largest error 0.001"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "R"
@@ -7203,7 +7203,7 @@ note = "leading_direction reads case._reports(study, fit1)[0], the tension repor
 
 [[claim]]
 id = "C637"
-fragment = "the levels, all inside the near-frontier band, do not rank them"
+fragment = "the levels of the five designs they pick, all inside the near-frontier band that the shortlist uses, do not rank them; the baseline's level is outside it"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "R"
@@ -7721,7 +7721,7 @@ note = "L14 and L15 take A8's cells to be the argmax cells of W; for the sharp f
 
 [[claim]]
 id = "C672"
-fragment = "The fit recovers all {_NUMBER_WORDS[k]} terms on {good} of {len(exact)} such tables"
+fragment = "The fit recovers all {_NUMBER_WORDS[gr.RECOVERY_TERMS]} terms on {good} of {len(exact)}"
 file = "paper/generate_findings.py"
 anchor = "def planted_sentence"
 kind = "R"
@@ -9028,4 +9028,97 @@ status = "backed"
 disposition = "keep"
 source = "WP42 Amendment 1 (Figure 7)"
 note = "case.tension_matrix_figure draws hyperbolic_trade_space.tension_matrix cut to the metrics with an exponent above the participation threshold; every drawn off-diagonal cell is negative (L21.13), which the test asserts on the figure's cells."
+
+[[claim]]
+id = "C801"
+fragment = "The fit recovers all {_NUMBER_WORDS[gr.RECOVERY_TERMS]} terms on {good} of {len(exact)}"
+file = "paper/generate_findings.py"
+anchor = "def planted_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::planted_sentence",
+  "test:tests/test_paper.py::test_appendix_e_rows_agree_with_appendix_d",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
+note = "Request 173: the 16 of 20 are on twenty tables of 400 rows, 4 metrics and 3 terms (D.14); the sentence no longer names C.7's 900-row example, which the count is not on. Sizes come from RECOVERY_ROWS, RECOVERY_METRICS and RECOVERY_TERMS."
+
+
+[[claim]]
+id = "C802"
+fragment = "A11: the noise that a row's weighted metrics carry is independent across rows and $N(0,v^2)$ with $v>0$"
+file = "paper/paper.ipynb"
+anchor = "Preliminaries and notation"
+kind = "M"
+backing = [
+  "lemma:L19",
+  "file:derivation/axioms.py",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
+note = "Request 174: A11 is declared in derivation/axioms.py and used by L19 only; Section 3's list now carries it."
+
+
+[[claim]]
+id = "C803"
+fragment = "the ridge adds $\\tau\\Sigma$ to the Hessian, so $J^R$ has Hessian $\\tau(C+\\Sigma)$"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L20",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
+note = "Request 177: L20.24 (J_tau mixed derivative tau v'C delta) and L20.35 (ridge derivative at the shifted point, tau v'Sigma w + tau v'Sigma delta, the second term set aside); the Hessian of the ridge (tau/2) w'Sigma w is tau Sigma, checked in SymPy."
+
+
+[[claim]]
+id = "C804"
+fragment = "grey: the near-frontier band, $|\\log V|<1/\\tau$ of the K = 1 fit, on both sides of the line (the legend gives its width)"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_figure_6_draws_the_band_on_both_sides",
+  "func:paper/figures/chart_level.py::chart_level_figure",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
+note = "Request 175: 437 of 2,134 designs lie in |log V| < 0.0240 at K = 2 (279 below the line, 158 above), D.3's 318 + 119; the figure shaded the lower half only."
+
+
+[[claim]]
+id = "C805"
+fragment = "The near-frontier column counts the designs within the K = 1 band"
+file = "paper/generate_results.py"
+anchor = "def _band_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::exponents_and_terms",
+  "test:tests/test_paper.py::test_d3_names_the_band_of_each_column",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
+note = "Request 176: counts 318 and 119 are at the K = 1 band 0.0240 (437 designs); the shares 0.7384 and 0.2616 are 127 and 45 of 172 designs in the K = 2 fit's own band 0.0088."
+
+
+[[claim]]
+id = "C806"
+fragment = "the baseline's level is outside it"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_the_executive_table_caption_band_claim_holds_of_the_picks_and_not_the_baseline",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
+note = "Request 182: the five picks' K = 2 levels (+0.016 to -0.022) lie inside the K = 1 band 0.0240; the baseline's is -0.330."
 
