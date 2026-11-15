@@ -582,3 +582,9 @@ Cooperation in Networked Multi-Agent Systems\""
 Applied on dev, the essay having landed at 3700a64: the title in full as the link's text, in place of the driver's gloss
 "consensus and sensor fusion".
 
+**Supervisor (10:40 EST):** "(also he was my undergraduate advisor and i was his student at the time this paper was
+published)"
+
+Applied in the same sentence, on his word (the 2018 proposal's acknowledgement names Olfati-Saber as his undergraduate
+advisor; the site gives the Dartmouth degree of 2008).
+
