@@ -492,3 +492,13 @@ analysis, economics and governance."
 The five strands replace the driver's four-field reading as the page's frame. The conviction-voting question is assessed
 in chat after the three sources are read (the two posts answer 403 to curl; read in the browser pane).
 
+**Read (the driver, 07:15 EST):** the conviction-voting proposal "Sensor Networks and Social Choice" (Zargham, dated
+30 July 2018, "at the request of Frank Wang of X-Order Research firm"; conviction voting "derived from the Discounted
+Integral Priority algorithm" of his 2014 GLOBECOM paper; governance as sensor fusion; Stella and Python prototypes;
+acknowledges Jadbabaie, Preciado and Olfati-Saber); Jeff Emmett's Commons Stack explainer on Giveth's blog (3 July 2019:
+"derived from the paper on 'Social Sensor Fusion' by Dr. Michael Zargham"; the cadCAD model); and "A Brief History of
+Conviction Voting" (Zargham, 26 December 2020: Balancer proofs with Koch and Martinelli, the Zug prototype as dynamic
+average consensus, Griff Green, Emmett and the Commons Stack, SourceCred, deployment by the 1Hive DAO). Both Medium
+hosts answer 403 to automated readers. The assessment, the focus read and the compatibility check against his site are in
+chat; his calls to follow.
+
