@@ -12,3 +12,7 @@ build a structured coherent document which is internally compatible, and grounde
 Salado for the decision and design-optimization layer; the scikit-learn documentation and API for the
 machine-learning layer; Boyd for the optimization layer) and his own IEEE TAC, CDC and TCNS papers for his style; a
 style spike reads his papers before WP55 is scoped; WP56's prework reads OpenMDAO and Salado.
+
+## The two spikes delivered; the scope drafted (13:27 EST)
+
+`WP55-rounds/spike-notation.md` (wp55spike 6291442; Boyd and Vandenberghe, the GP tutorial, Hoburg and Abbeel, Magnani and Boyd, the scikit-learn decomposition page) and `WP55-rounds/spike-his-style.md` (bbec3bc; eight of his papers resolved, three read in full). The scope `WP55-scope-of-work.md` is drafted from them and the register; it executes after WP54 lands. The driver approves it as his proxy when WP54 is landed, recorded here.
