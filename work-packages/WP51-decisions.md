@@ -186,3 +186,7 @@ is not changed for the figure without his word, since it is the paper's.
 **Applied as:** a constraint relaxed for round 3: a row may show two of the three terms; the figure as a whole shows all
 three; the unit need not plant the example so that every slice carries every term.
 
+**Supervisor (2026-11-14 23:02 EST):** "its even okay if a row has only one term, as long as all 3 terms appear in at least one row"
+
+**Applied as:** the constraint relaxed further: a row may show one term; the figure as a whole shows all three.
+
