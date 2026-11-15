@@ -89,3 +89,15 @@ the chart's slice, the third metric as the fan) was never dispatched to a unit. 
 `wp51fig`, with G3's caption, G1b's prose revisions and G4's loop, for his close read in the morning; it merges only on
 his word, as the scope's good-enough says.
 
+## The fan figure delivered for his close read (2026-11-14 22:07 EST)
+
+Branch `wp51fig` at 2abc4d8 (six commits, no trailers): the generator (`fan_values`, `slice_pieces`, `draw_fan` in
+`scripts/build_site_figures.py`, drawn from the one `fit_why()` fit, with R-1 tests); the root page shows the fan figure
+in the how section in place of the paper's Figure 1 and the ternary stays as the whole view with its caption saying so;
+the assembler no longer copies `figure1.png`; the figure loop recorded with two Haiku cold reads (both took the
+takeaway from the image alone; the caption completed the shades), nothing changed after them; register rows added and
+C358 narrowed. The unit's gates: ruff, format, lock, vocabulary and residuals clean; site and register tests 77 passed;
+the fast suite 2,034 passed with one failure, the paper test that pinned the assembler copying Figure 1, updated in the
+last commit and not re-run in full. The driver reruns the suite and does the browser pass at phone width and in dark;
+the page is served on port 8851 for his close read; it merges only on his word.
+
