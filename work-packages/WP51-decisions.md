@@ -322,3 +322,9 @@ reading; the captions use "binds".
 **Applied as:** "each region is where one term binds" on the ternary's caption; the docs page and the glossary carry the
 rule and the qualification; "dominates" leaves the plotting module's docstring in the same unit.
 
+**Supervisor (2026-11-14 23:41 EST), after "so at finite temperature its which team dominates and at infinite temperature its binds?"
+and the driver's note that "dominates" is Pareto's word in the paper:** "okay binds it is then"
+
+**Applied as:** one word at every temperature: the term that binds. The glossary entry carries the exact-maximum sense
+and the finite-temperature reading; "dominates" is not used of terms anywhere.
+
