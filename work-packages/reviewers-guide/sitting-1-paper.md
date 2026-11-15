@@ -21,7 +21,7 @@ appendices). Sources: `paper/paper.ipynb`, `paper/supporting_material.ipynb`. St
   `work-packages/WP42-decisions.md` and the build record `work-packages/WP42-rounds/build-record/`.
 - [ ] Section 9's closing subsection, "What the executives decide", and its table, with Appendix D.19. Accepted by you;
   review against `work-packages/WP39-review.md`.
-- [ ] Section 7's paragraph on the way back from the chart to the design space (WP41; it lands with the bridge page).
+- [ ] Section 7's paragraph on the way back from the chart to the design space (WP41; landed with the bridge page at af54b3b).
   Review it against your intent as written in `work-packages/WP41-decisions.md` ("The gap", "The method's intent"):
   no new claim, the names of Section 7 held.
 - [ ] The future-work paragraph beside the abstract's three thrusts, and what a theorem prover would and would not

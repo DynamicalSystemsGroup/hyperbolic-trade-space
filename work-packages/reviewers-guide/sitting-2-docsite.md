@@ -24,7 +24,7 @@ http://127.0.0.1:8791/history.html. The pages `scripts/stage_site.py` prints are
 - [ ] Walk the user guide from Getting started to the Overview; run the five-line example and compare it with the
   output shown (`work-packages/release-punch-list.md`, post-release checks). New pages to read: the tension pages
   (`docs/user-guide/tensions.md` and `docs/user-guide/tension-routes.md`) against `work-packages/WP42-decisions.md`.
-- [ ] The two pages still landing, when they have landed: the bridge page (`docs/bridge.md`) against
+- [ ] The two pages landed last: the bridge page (`docs/bridge.md`) against
   `work-packages/WP41-decisions.md`, and the temperature page (`docs/user-guide/temperature.md`) against
   `work-packages/WP46-decisions.md`. The fresh reader's page requests on the bridge page are in
   `work-packages/WP41-review.md`.

@@ -5,7 +5,8 @@ mandate"). Nothing is tagged, published or merged.
 
 ## What the package is
 
-The candidate is the `dev` branch at the head `HEAD-TO-BE-NAMED`. It holds the Python package
+The candidate is the `dev` branch at the head `415d889` (commits after it on `dev` are records: this guide, the
+driver log and the cleanup manifest). It holds the Python package
 `hyperbolic_trade_space`, the paper with its supporting material, the docsite, the root page with the history page, the
 derivations, the cubesat case study, and the release engineering for the first publication (workflows, code owners,
 contributing page, covenant, templates). The package is at version 0.0.1 on `dev`: a candidate for 0.1, not 0.1 until the
@@ -19,9 +20,9 @@ the tension matrix as Figure 7, the glossary's layers, the renamed package funct
 direction; WP47 release engineering with the covenant and the contributing page of WP49; the WP48 and WP50 readouts;
 the abstract with its three thrusts.
 
-Still landing when the records were last read: the fifth paper unit (the record defects of the held-out reads), the
-bridge page of WP41 and the temperature page of WP46. Each is in the candidate only if `work-packages/driver-log.md`
-records its landing before `HEAD-TO-BE-NAMED`.
+Landed after those, in order: the fifth paper unit (the record defects of the held-out reads, a573155), the bridge
+page of WP41 (af54b3b), the docs home's quickstart block drawing the figure it shows (30ba54d) and the temperature
+page of WP46 (415d889); each landing is recorded with its checks in `work-packages/driver-log.md`.
 
 Waiting on your word: the fan figure of WP51 (branch `wp51fig`, served apart from the staged site), the abstract
 phrases the readers flagged (change request 172), the dependency and the first package that WP50 leaves for after 0.1,
