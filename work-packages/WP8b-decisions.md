@@ -96,3 +96,15 @@ convention, the approval being the recorded act, not an edit to the line.
 - **Callers checked.** The Pages workflow runs `uv run python scripts/assemble_site.py` on a release tag to publish: it must build the real paper, so it takes the strict default and is not edited (the earlier unit's note left this to the driver; a deployed placeholder in place of the paper is the failure strict exists to stop). `tests/test_site.py`'s `assembled` fixture already passes `--paper placeholder`; the tests that call `assemble`/`build_paper` pass `paper=` explicitly.
 - **Tests** (`tests/test_build_generated.py`): `test_assemble_site_command_line_is_strict_by_default` (default arguments, failing paper, exit 1, message names the failure and the flag, no placeholder written) and `test_assemble_site_placeholder_flag_still_assembles` (exit 0, placeholder in place).
 - **Scope count.** `WP8b-scope-of-work.md` D-3 and R-12 now say 20 boxes (corrected from 22, the count of the list; WP8b review G-5). The sentence in the context section ("All 22 boxes are unticked") describes the list as the scope found it and is left as written.
+
+## The version and the candidate (2026-11-14 22:46 EST)
+
+**Supervisor, verbatim (asked whether the candidate carries 0.1.0 tonight or stays at 0.0.1):** "the candidate is a
+candidate for 0.1 but is not 0.1 until we're doing the workflow to merge it to main 0.1.0 is the semantic version we're
+giving the first release"
+
+**Applied as:** dev stays at 0.0.1 through his review. The version bump to 0.1.0 (pyproject, the lock, `__version__`)
+and the changelog's dated `## [0.1.0]` entry are steps of the release workflow, done on his word when the merge to
+`main` is being done, before the tag; the release workflow's version and changelog gates then pass by construction. The
+reviewer's guide says so.
+

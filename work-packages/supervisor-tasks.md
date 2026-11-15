@@ -19,7 +19,7 @@ question he answers.
 | W8 | Reading pass G.2 | before the PR | the paper's Appendix G.2 |
 | W9 | Accept each remaining package as it is delivered and verified (WP41, WP43, WP45, WP46, WP47, WP48, WP49 readouts; the WP42 build; the held-out reads' triage) | as they land | the driver log |
 | W9b | Assess the abstract's last sentence as a list of three (search; holes by topological data analysis; formal methods and performance), on the draft the WP50 readout carries | after the WP50 readout | `WP50-rounds/spike/readout.md` |
-| W11 | The version unit's timing (0.1.0 lands with WP47's metadata) | when WP47 delivers | `WP47-rounds/pypi-checklist.md` |
+| W11 | The version bump to 0.1.0 and the dated changelog entry, done as part of the merge-to-main workflow on his word (his ruling of 2026-11-14 night, WP8b-decisions) | with W12 | `WP47-rounds/pypi-checklist.md` |
 | W12 | Review the PR from `dev` to `main` with the reviewer's guide, in sittings; merge it `--no-ff`; push the `v0.1.0` tag | the last step | WP8b |
 
 ## Together at a keyboard
