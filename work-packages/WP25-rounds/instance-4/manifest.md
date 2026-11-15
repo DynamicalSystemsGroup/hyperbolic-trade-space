@@ -135,3 +135,5 @@ Each delivery branch below was squashed onto dev as one commit, so its tip is no
 | wp43-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
 | wp47-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
 | paper5-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
+| wp42 (spike) | 19c6b5a | its records are on dev under WP42-rounds (27 files on dev against 22 on the branch) | removed (clean) | deleted; tip in refs/backup/landed-wp42 and the bundle |
+| wp27model | 05f8a2a | ancestral; the directory was no longer a registered worktree after the prune, its untracked handover file absent | directory left for the next tidiness instance | branch kept |
