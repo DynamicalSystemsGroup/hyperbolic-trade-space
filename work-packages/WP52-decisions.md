@@ -570,3 +570,9 @@ the narrative arc"
 The "Before the firm" paragraph is to open the arc: resource allocation among many decision makers was already
 economics and governance; the dissertation (Penn, 2014) is to be on the record and in the text.
 
+**Supervisor (09:25 EST):** "okay i think the history is passable for now. we did a lot of curation work to gather
+knowledge about lineage that exists no where outside my head. should we look at something else now"
+
+Read as acceptance of the essay draft for landing on dev once its tests pass, with the carving pass ("carve it down to
+ensure everyone word and reference earns its place") as a later unit on his read.
+
