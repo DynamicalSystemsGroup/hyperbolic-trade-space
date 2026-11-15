@@ -2236,4 +2236,13 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   both research-spike readouts, under the driver's standard checks and fast suites now, their readouts to be read next.
   CI 43657206539 on d0d6196: fast jobs green on both platforms, slow and docs-paper still running. PM16 running (fifth
   paper unit briefed); no reply yet to the fix4 return.
+- **WP43 and WP48 checked; the history essay pass in progress (2026-11-15, 08:10 EST).** WP43 at c56892a: fast suite
+  1,972 passed, lock, vocabulary and attribution clean, but ruff reports 5 fixable findings and 6 unformatted files:
+  returned to PM16 for lint. WP48 at 879d1ad: every check clean, 1,972 passed; readout to be read. History branch: his
+  rulings of 06:30 to 07:58 (the essay framing, the five strands, the ideas as the thread, the Alston credit through the
+  cybernetics paper and the two joint works, conviction voting as the substance of computer-aided governance, the
+  TAC paper's four authors before the firm, the debt-market arc, the bound at 2,000) applied in one pass: eleven new
+  record entries, the prose at 1,636 words, the register re-pointed (thirty stale rows removed, rows C728 to C770
+  added with the old notes carried where a sentence survived), the trace regenerated; register and history tests
+  running; browser read next; the merge waits on his read and the carving pass.
 
