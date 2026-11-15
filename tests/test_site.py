@@ -58,8 +58,10 @@ ROUTER_PAGES = {"user-guide/index.md"}
 # Word budgets of the hand-written pages (code blocks and tables excluded), total at most 7,600.
 BUDGETS = {
     # 206 until 2026-11-14, when the supervisor asked for a figure and a quickstart on the docs
-    # home ("docs home needs a figure and a quickstart code block"); the alt text and caption count
-    "index.md": 250,
+    # home ("docs home needs a figure and a quickstart code block"); the alt text and caption count.
+    # 350 from 2026-11-15, his number: "call it 350 going forward so it doesn't raise an alarm but
+    # disincentivizes bloating it"
+    "index.md": 350,
     "getting-started.md": 348,
     "user-guide/index.md": 4,  # the router: its title line, "Start here: Overview"
     "user-guide/overview.md": 399,
