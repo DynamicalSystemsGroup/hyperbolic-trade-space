@@ -2328,4 +2328,13 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   Verification per branch in the background: ruff, format, lock, vocabulary, attribution, the lemma chain where
   touched, the fast suite; CI on dev after each landing; the slow and docs-paper jobs on the final head. Root page
   assembled at dev's head and served on 8797 for his read. The clock labels are the machine's from here.
+- **Tick (2026-11-14 21:20 EST).** fix4 landed on dev at 3ef3a5c (its suite 1,980 passed; the one failure was the docs figure
+  numbering shared with dev, fixed at d53e080: the home's figure is an unnumbered preview of Getting started's
+  Figure 1, both figure tests say so). CI 43667024072 on d53e080 running. wp46-land rebased on dev (register tail
+  resolved, the regenerated supporting-material notebook taken from wp46 and re-executing on the merged tree, paper
+  tests to follow); wp47-land committed as one commit, its three test files and the register 62 passed, SBOM export
+  and check, pins, version and changelog gates dry-run locally (the changelog gate refuses, rightly, until the version
+  unit writes the 0.1.0 entry); fast suite running. wp41-land rebased, lands after wp46. WP42 build: its second
+  failure still being named. WP43: lint subagent still on its rerun check. PM16 blocked since 19:15, no reply; the
+  fifth unit active in paper5.
 
