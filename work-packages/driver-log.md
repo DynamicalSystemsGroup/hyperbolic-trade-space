@@ -2435,4 +2435,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   docs-paper still running. The fifth unit's corrected tree still executing its notebooks; the figure unit on round 4
   with four files in progress. Overnight plan unchanged: land the fifth unit, wp41, wp46; the guide with the head;
   CI on the final head; the figure served, not merged.
+- **Fifth paper unit landed (2026-11-15 00:24 EST).** As one commit at a573155 after the corrected merge: on the merged tree the
+  notebooks regenerated with a warm font cache (no stderr), vocabulary 0 new, and the paper, register, contract,
+  generated and fast site tests 374 passed; the unit's own tree had the full fast suite at 2,034 and the lemma chain
+  passing. Its rows are C801 to C806. CI dispatched on the head. wp41 next, then wp46.
 
