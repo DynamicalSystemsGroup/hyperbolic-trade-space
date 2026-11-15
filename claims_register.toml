@@ -8067,7 +8067,7 @@ note = "L9: the pull-back through the conditioning gives V in the raw attributes
 
 [[claim]]
 id = "C692"
-fragment = "Future work has two key thrusts: (1) searching the design space by sampling white space and pushing the frontier, and (2) formal verification and performance by moving beyond Python into Rust and using theorem provers."
+fragment = "Future work has three key thrusts: (1) searching the design space by sampling white space and pushing the frontier, (2) identifying and filling holes by topological data analysis, and (3) formal verification and performance by moving beyond Python into Rust and using theorem provers."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "P"
@@ -8077,7 +8077,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP11 abstract, the supervisor's text of 2026-11-14"
-note = "Framing, not a checkable claim: the supervisor's statement of intent for work outside 0.1 (the release line); not a claim about the method; the Rust and theorem-prover clauses are scoped in the body's Future work and Appendix G of the record."
+note = "Framing, not a checkable claim: the supervisor's statement of intent for work outside 0.1 (the release line); not a claim about the method; the Rust and theorem-prover clauses are scoped in the body's Future work and Appendix G of the record. The second thrust (holes by topological data analysis) added on his word of 2026-11-15 after the WP50 readout (draft A); hole is the reserved word for that later work (WP50-decisions.md)."
 
 [[claim]]
 id = "C693"

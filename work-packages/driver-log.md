@@ -2278,4 +2278,9 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   all the parse. On dev after the merge: ruff, format, lock and vocabulary clean, register 21 passed, the trace current.
   The record's links: 0 failures, 8 blocked. The page read in the browser at each step (port 8796). Register ids on
   dev now end at C771; PM16 told. The full history selection reruns on dev in the background; CI dispatched.
+- **The abstract closes on three thrusts (2026-11-15, 10:55 EST).** His call on the WP50 readout's draft A; the
+  notebook's abstract cell edited, register row C692 re-pointed with the reason, vocabulary 0 new, register 21 passed,
+  the abstract's target test and the front-matter tests passed. Olfati-Saber's paper by its full title and the
+  advisor clause landed before it (74d5bae, 29101b6). CI dispatched on each head. WP50's dependency choice and first
+  package stay with him after v0.1.
 
