@@ -2479,3 +2479,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   lint clean, the slow figure test 1 passed in 8.5 minutes locally. The slow and fast jobs at dfc3fd2 are green on
   both platforms; af54b3b's run still in flight. The driver's lesson: the docs home landed with the fast selection
   only; the slow figure test joins the landing selection for any change to a page with a figure.
+- **wp46 landed (2026-11-15 02:12 EST).** 415d889 on dev: the fit temperature page and the temperature path, the small-temperature
+  lemma as L22 (the proof map regenerated with its entry; the chain 22), Appendix B's heading range to L22, contract 27
+  (the page between Fitting and Choosing K), rows C823 to C841, budgets 8,916. Resolved twice against dev (eleven
+  conflicts against the WP42 build, then the register tail, budgets and contract against wp41); notebooks re-executed
+  on each merged tree; lint, format, lock, attribution clean; residuals and vocabulary 0 new; the docsite builds; the
+  landing selection 341 passed before the last rebase and the site, contract and register tests 170 after it; the full
+  fast suite on the pre-rebase tree 2,063 passed. CI dispatched (run 43688871149). This is the candidate's last content
+  landing tonight; the reviewer's guide names this head and follows it as a record.
