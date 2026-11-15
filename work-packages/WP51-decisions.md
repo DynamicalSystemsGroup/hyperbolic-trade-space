@@ -256,3 +256,12 @@ the repository link's text is "Source code"; a Documentation link to the docs ho
 (a placeholder until the first publish; the site tests allow it as the punch list names it). Applied by the figure unit
 in its page edit, since it holds the file tonight.
 
+**Supervisor (2026-11-14 23:29 EST):** "the call to action will need a minor update. we still want the two doors: one for reading paper
+and one for using the code, but we may need to update it to fit in cleanly with the updated prose and visual content and
+footer."
+
+**Applied as:** the two doors stay (read the paper; use the code); their lead sentence and labels are redrafted to sit
+after the slices figure and before the new footer, in the page's register, as one short paragraph; drafted by the
+figure unit with the page and shown to him in the morning read of the page as a whole. The earlier ruling that the
+summary paragraph and the two doors were "unchanged" is superseded for the doors' wording, not their presence.
+
