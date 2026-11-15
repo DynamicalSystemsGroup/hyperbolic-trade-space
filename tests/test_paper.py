@@ -2043,8 +2043,9 @@ BLOCK = re.compile(
     r":::\{prf:(theorem|lemma|proposition|corollary)\} ([^\n]*)\n:label: (\S+)\n(.*?)\n:::\n", re.S
 )
 BADGES = ("Derived", "Numerical", "Open")
-# "however" left the pattern on 2026-11-15: his Section 1 sentence opens on it as a contrast, not a hedge
-# (WP11-decisions.md, the PCA paragraph); the hedges the readers flagged were "caveat" and "note that".
+# "however" left the pattern on 2026-11-15: his Section 1 sentence opens on it as a contrast,
+# not a hedge (WP11-decisions.md, the PCA paragraph); the hedges the readers flagged were
+# "caveat" and "note that".
 HEDGES = re.compile(r"caveat|note that", re.I)
 
 
@@ -3289,8 +3290,8 @@ def test_cr13_the_first_generated_range_says_what_varies():
     assert re.search(r"\d+ to \d+", first) or "is printed as a range" in first
     assert "five regenerations of the data under rounding-level perturbation" in first
     assert "Appendix D.11" in first
-    # The sentence left Section 1 for Case analysis on his word (2026-11-15, WP11-decisions.md), so it is
-    # no longer the text's first range; what it says about a range still holds.
+    # The sentence left Section 1 for Case analysis on his word (2026-11-15, WP11-decisions.md),
+    # so it is no longer the text's first range; what it says about a range still holds.
 
 
 def test_cr15_appendix_b_says_where_two_statements_share_a_script():
