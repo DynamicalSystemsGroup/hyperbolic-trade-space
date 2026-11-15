@@ -351,3 +351,11 @@ with every decision surface explicit so that its governance is informed and acco
 advances only when it conforms and is fit for its purpose, and its evidence is a byproduct of the work"; "a firm post"
 is "a post"; the test's word bound sits above his guidance of 1,000 (1,100) with his words in the comment.
 
+**Supervisor, verbatim (04:05 EST):** "i might also suggest spending a sentence or two to acknowledge that the BDP and MSML
+work was subsumed by adopting the OMG standard sysmlv2 and the openmbee implementations"
+
+**Applied as (for his read):** one sentence after the block-diagrams and MSML work: that work was subsumed when the firm
+adopted the OMG standard SysML v2 and the OpenMBEE implementations of it, in which this paper's cubesat model is
+written; the claim of subsumption is the team's account; the links are the OMG specification and OpenSysML (the
+record's existing entry).
+
