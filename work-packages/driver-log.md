@@ -2505,3 +2505,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   names a63d390 as the candidate's head in place of 415d889; the records after it are the guide's own commit, the driver
   log and the cleanup manifest. CI dispatched on a63d390; the full local run on 7ed29ef continues and is re-run on a63d390
   only if it finds a failure that the three prose lines could affect (none can: no code, data or test changed).
+- **415d889 fully green on both platforms (2026-11-15 03:45 EST).** CI run 43688871149: Linux fast, slow and docs-paper and Windows
+  fast and slow all green, the first fully green run since the docs home landed (the docs-paper job's first-fit
+  failure is gone with 30ba54d). Run 43690036922 on 62525f2 (three prose lines and the checker's pattern after
+  415d889): four jobs green, docs-paper running. The full local run with the slow tests on dev is past 60 percent with
+  no failure.
