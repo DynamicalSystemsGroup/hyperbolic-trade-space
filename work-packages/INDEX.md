@@ -64,12 +64,12 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 50 | Topological holes in the chart by persistent homology (research spike; future direction) | landed | a5f1278 | 5233126 | in history: `git show 5233126:work-packages/<file>` |
 | 51 | The root page recast (why, what, how) with the three-metric figure | landed | 83b2e36 | 01ad083 | in place (landed, not yet archived: in flight) |
 | 52 | The governance lineage on the history page (research spike, then a proposal) | landed, accepted | d63e7a6 | 03790a0 | in history: `git show 03790a0:work-packages/<file>` |
-| 53 | Integrate the review batch of 2026-11-15 | landed | c0c7fd4 | da8d57a | in place (landed, not yet archived: in flight) |
-| 54 | The paper's skeleton | in flight (the paper skeleton) | c0c7fd4 | not landed | in place (not landed or in flight) |
+| 53 | Integrate his review batch of 2026-11-15 (abstract, Sections 1 to 3) | landed, his read pending | 0dd4e79 | da8d57a | in place until his read; then in history |
+| 54 | The paper's skeleton (Section 7 into Future work; AI acknowledgement and Reproducibility) | landed, his read pending | 65624d3 | e435e4a | in place until his read; then in history |
 | 55 | The mathematics builds up (Section 3's fitting problem, Sections 4 to 6) | scoped (after WP54) | 022c4d2 | not landed | in place (not landed or in flight) |
 | 56 | Sections 7 to 9 from the current model; the decision-maker's ternary | directed (decisions only; its spikes delivered) | 2b160b4 | not landed | in place (not landed or in flight) |
 | 57 | The appendices (a planning package and its children) | scoped (planning package) | e0b4ee4 | not landed | in place (not landed or in flight) |
 | 58 | The docsite, root page and README swept; the reviewer's guide at the new head | directed (no documents yet) | - | not landed | in place (not landed or in flight) |
-| 59 | Conditioning and feature engineering on the three public cases (research spike) | landed | a2533ca | a9cfb60 | in place (landed, not yet archived: in flight) |
-| 60 | The three example pages (perovskite, amniote, Broadbalk wheat) | landed | 177ac05 | 65b0683 | in place (landed, not yet archived: in flight) |
-| 61 | Archive the completed packages and index them by delivery commit | in flight (this index) | 48d1e39 | not landed | in place (not landed or in flight) |
+| 59 | Conditioning and feature engineering on the three public cases (spike) | landed, accepted by the driver, his read pending | a2533ca | a9cfb60 | in place until his read; `examples/*/variants.py` stay (code) |
+| 60 | The three example pages | landed, his read pending | 022c4d2 | 65b0683 | in place until his read; then in history |
+| 61 | The work-packages directory indexed and thinned | landed | 48d1e39 | a1a73ab | in place (the protocol) |
