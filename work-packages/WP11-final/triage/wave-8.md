@@ -7,7 +7,7 @@ Sonnet (F01, F15, F17, F18, F23), m2 Haiku (F10); all wording 1. Their G twins a
 the driver and was not consulted: this triage records what each reader stated, quotes every reading that contradicts
 a sentence of the paper (reader's words from the report, the paper's from `raw/paper.txt` or `raw/supporting-material.txt`,
 both checked by search), classifies findings, and applies the wave-7 rule (wrong belief or defect counts at once;
-friction or missing at two cells; preference logged). Request ids are H8-1 to H8-10; the driver renumbers globally.
+friction or missing at two cells; preference logged). Request ids are 172 to 181; the driver renumbers globally.
 Earlier requests are cited by their wave-7 numbers (1 to 165). Report items are cited as (6.n).
 
 The depths, from the final-round plan: A abstract only (F01, F15); B headings, results, figures and captions (F23);
@@ -37,7 +37,7 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
 - Depth job: done for the problem, the idea and wanting to read on (to the cubesat result and the plain statement of
   what the frontier assumption excludes). The finding is not stated, and the reader says so: the abstract states
   none.
-- Change requests: H8-1 (abstract, for the supervisor). The abstract phrases above join the supervisor's list.
+- Change requests: 172 (abstract, for the supervisor). The abstract phrases above join the supervisor's list.
 
 ## F15 (P2-A, Sonnet)
 
@@ -60,7 +60,7 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
   description). The finding is not stated (6.2, 8: "what is the cubesat result in plain terms"), for the same
   reason as F01. The reader's next step is a rerun on a finished study of its own, "from the abstract alone I cannot
   yet tell if I could do it on Monday".
-- Change requests: H8-1 (the same abstract sentence).
+- Change requests: 172 (the same abstract sentence).
 
 ## F23 (P6-B, Sonnet)
 
@@ -79,9 +79,9 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
 - Findings:
   - defect: Figure 6 draws the grey near-frontier band below zero only (about -0.02 to 0; image checked), while
     Definition 4 gives "The near-frontier band is $|\log V|<1/\tau$" (6.6; F17 read the same figure and found it
-    clear). One cell, counts at once: H8-4.
+    clear). One cell, counts at once: 175.
   - friction: Figure 8's two triples came from a search (105 of 291 fits); no chance baseline (6.8, 8, 22; F17 (6.36)):
-    two cells, H8-9. What K = 2 adds over K = 1 (6.22, 8; F17 (6.33, 8), F18 (9)): three cells, H8-8.
+    two cells, 180. What K = 2 adds over K = 1 (6.22, 8; F17 (6.33, 8), F18 (9)): three cells, 179.
   - friction, joining earlier requests: Figure 1's face against the point drawn (6.1; joins 37, F17 (6.13): two more
     cells); Figure 3's count "ten of the thirteen" (6.3; joins 26); Figure 4's evenly spaced axis and the 74
     effective designs (6.4; joins 56 and 61); Figure 5's cloud well below the line at high power (6.5; joins 36);
@@ -94,7 +94,7 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
   - preference: "energy differential" as a name (6.6); Theorem 9 "adds no content specific to this fit" (6.18).
 - Depth job: done. B-slice limits seen: the heading "Abstract" with no text, and Table 1's caption without its body
   (6.9, 6.10).
-- Change requests: H8-4, H8-8, H8-9.
+- Change requests: 175, 179, 180.
 
 ## F17 (P4-C, Sonnet)
 
@@ -116,8 +116,8 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
     Section 9 and again in the Discussion.
 - Findings (the whole main text; forty-three items, most joining earlier requests):
   - friction, new at two cells: "baseline" for the Table 2 configuration and for the stock regime (6.28; F10 (6.14)):
-    H8-7. What K = 2 adds (6.33; see F23): H8-8. The Figure 8 selection (6.36): H8-9. The estimator's call and its
-    defaults not in the main text; Section 11 is three sentences and defers (6.42, 8; G09 in wave 7: two cells): H8-10.
+    178. What K = 2 adds (6.33; see F23): 179. The Figure 8 selection (6.36): 180. The estimator's call and its
+    defaults not in the main text; Section 11 is three sentences and defers (6.42, 8; G09 in wave 7: two cells): 181.
   - friction, silent drop of a zero row (6.16; F10 (6.5): two cells): a reaction to the package's behaviour that
     request 57 asked the text to state, and it now does ("without a warning"); a package decision, for the supervisor.
   - friction, joining earlier requests: Section 1's pointers to Theorems, Lemmas and Q1 to Q4 before they are defined
@@ -140,7 +140,7 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
 - Depth job: done, whys owed (the reader names the whys that the text leaves to appendices: 6.7, 6.12, 6.14, 6.17,
   6.18, 6.25, 6.42 and 6.43). The reader would go on to C.4, the register of terms, D.15, D.14, Appendix E and
   Appendix F.
-- Change requests: H8-7, H8-8, H8-9, H8-10.
+- Change requests: 178, 179, 180, 181.
 
 ## F10 (P3-D, Haiku)
 
@@ -161,10 +161,10 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
 - Findings:
   - defect, two cells (with F18 (6.13)): Section 8's "The worked example of Appendix C.7 has 900 rows, 4 metrics and
     3 planted terms. The fit recovers all three terms on 16 of 20 such tables" against D.14's "twenty tables of 400
-    rows and 4 metrics" (6.10): H8-2.
+    rows and 4 metrics" (6.10): 173.
   - defect, one cell: D.3's per-term table prints near-frontier counts 318 and 119 beside shares 0.7384 and 0.2616;
-    318 over 437 is 0.728; the band each column uses is not named (6.22): H8-5.
-  - friction, two cells with F17: "baseline" (6.14): H8-7. The zero-row clause (6.5, see F17).
+    318 over 437 is 0.728; the band each column uses is not named (6.22): 176.
+  - friction, two cells with F17: "baseline" (6.14): 178. The zero-row clause (6.5, see F17).
   - friction, joining earlier requests: the "package's mean" in Definition 3 (6.2; joins 5); the closed and the open
     band (6.3; joins 17); the boundary soft over designs and sharp over terms (6.4); Theorem 2's hypotheses (6.7;
     joins 24, 137); "machine-checked" against "not formal verification" (6.6; counted since wave 2); the own-rows
@@ -192,7 +192,7 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
     or outside the two pages); the reader says it could check no proof step.
 - Depth job: done. Every pointer it followed was found, and four of them surfaced a disagreement (C.7 against D.14;
   D.3's shares; D.14's second condition; Appendix E's labels).
-- Change requests: H8-2, H8-5, H8-7.
+- Change requests: 173, 176, 178.
 
 ## F18 (P5-D, Sonnet)
 
@@ -212,10 +212,10 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
 - Contradictions with the paper: 0.
 - Findings:
   - defect, one cell: Section 3 lists A1 to A10, and L19 declares an axiom "A11" (independent N(0, v^2) row noise)
-    that no list in the main text carries (6.17; joins 118): H8-3.
+    that no list in the main text carries (6.17; joins 118): 174.
   - defect (precision), one cell: Proof 7 says "Its Hessian is $\tau C$ (Theorem 3)" of the ridge objective; that is
     J_tau's Hessian; the ridge objective's is tau (C + Sigma), the Sigma term being set aside to first order (6.8):
-    H8-6.
+    177.
   - defect (capture), one cell: table bodies loaded late and Appendix E was cut off after about G-16; F10 read these
     tables in full. The same class as the "Loading" incidents of earlier waves (the README's incidents).
   - friction, joining earlier requests: "log-convex" against "convex in u" (6.1; joins 117); "in the exponents"
@@ -238,7 +238,7 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
   - Boundary: the lemma scripts and the repository test of uniqueness; the rendered figures.
 - Depth job: done for what it read, with two pointers that came back empty on a late-loading page (a capture
   defect, not the paper's).
-- Change requests: H8-3, H8-6, H8-8.
+- Change requests: 174, 177, 179.
 
 ## Roll-up, wave 8
 
@@ -265,34 +265,34 @@ C whole main text (F17); D main text plus supporting material (F10, F18).
 
 ## Change requests added at wave 8 (H8-n; the driver renumbers)
 
-H8-1. Abstract (the supervisor's hand): "Pareto improvements increase energy, and a design that maximizes energy is
+172. Abstract (the supervisor's hand): "Pareto improvements increase energy, and a design that maximizes energy is
       weakly Pareto-efficient." is read as "raising energy is a Pareto improvement" (F15; F01 in weaker form: wrong
       belief). Constraint: say only what Theorem 9 and its converse note support; no new claim.
-H8-2. Section 8: "The worked example of Appendix C.7 has 900 rows, 4 metrics and 3 planted terms. The fit recovers all
+173. Section 8: "The worked example of Appendix C.7 has 900 rows, 4 metrics and 3 planted terms. The fit recovers all
       three terms on 16 of 20 such tables" against D.14's twenty tables of 400 rows (F10, F18: defect). Constraint:
       the record says C.7 is one table of 900 rows with no noise and the twenty tables have 400 rows each; say which is
       which.
-H8-3. Section 3's list A1 to A10 and L19's A11 (independent Gaussian row noise): add A11 to the list or say the script
+174. Section 3's list A1 to A10 and L19's A11 (independent Gaussian row noise): add A11 to the list or say the script
       declares it (F18: defect; extends 118). Constraint: the codes in the scripts and in Section 3 agree.
-H8-4. Figure 6: the grey near-frontier band is drawn below zero only, while Definition 4 gives a band of |log V| <
+175. Figure 6: the grey near-frontier band is drawn below zero only, while Definition 4 gives a band of |log V| <
       1/tau, and the caption names neither side nor width (F23: defect). Constraint: draw the band on both sides, or
       say it is one-sided; name its width (the K = 1 band 0.024 used at every K, per the Section 8 sentence); figure
       review loop with 41, 141.
-H8-5. D.3's per-term table: near-frontier counts 318 and 119 against shares 0.7384 and 0.2616 (318 of 437 is 0.728): say
+176. D.3's per-term table: near-frontier counts 318 and 119 against shares 0.7384 and 0.2616 (318 of 437 is 0.728): say
       the band each column uses (F10: defect). Constraint: the shares in Section 9 (0.74 and 0.26) are the record's.
-H8-6. Proof 7 (Corollary 1): "Its Hessian is $\tau C$ (Theorem 3)" of the ridge objective: the ridge objective's
+177. Proof 7 (Corollary 1): "Its Hessian is $\tau C$ (Theorem 3)" of the ridge objective: the ridge objective's
       Hessian is tau (C + Sigma); say that it holds to first order in the noise, or attribute tau C to J_tau (F18: precision defect).
       Constraint: the closed form and L20's statement are unchanged.
-H8-7. "Baseline" names Table 2's baseline configuration and, in "the stock (baseline) regime" and "the baseline
+178. "Baseline" names Table 2's baseline configuration and, in "the stock (baseline) regime" and "the baseline
       regime's feasible designs", the stock regime (F10, F17: friction). Constraint: one name for each object; the
       glossary's term.
-H8-8. Section 9 and the Discussion: what the two-term reading gives over the one-term fit, and what the record holds
+179. Section 9 and the Discussion: what the two-term reading gives over the one-term fit, and what the record holds
       for K = 2 against K = 1 (the checks of D.15), with no held-out comparison implied (F23, F18, F17; wave 7's G09
       asked the same of the terms' meaning: friction). Constraint: say what D.15 holds; add no claim; one clause.
-H8-9. Figure 8's caption or Section 9: the triples are picked from a search (105 of 291 fits showed two stable terms);
+180. Figure 8's caption or Section 9: the triples are picked from a search (105 of 291 fits showed two stable terms);
       say whether a search of the same size on data without planted contention was run and what it gave, or that none
       was (F23, F17: friction). Constraint: extends 28; no number not in the record.
-H8-10. Section 11: name the estimator class and the call's shape in a sentence (the parameters and their defaults are in
+181. Section 11: name the estimator class and the call's shape in a sentence (the parameters and their defaults are in
       Appendix F) and say where the conditioning rule sits (Appendix C.4, the Conditioning page) (F17; wave 7's
       G09: reader-need, two cells). Constraint: the marginal-value test, the supervisor decides; no how-to.
 

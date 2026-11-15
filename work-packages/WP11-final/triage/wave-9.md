@@ -8,7 +8,7 @@ Forms as in `wave-1.md`; counting rules as in `wave-7.md` (wrong belief and defe
 missing at two cells; preference logged). The answer key is not used here: no key marks are cited, and "wrong
 belief" below means a reading that contradicts a sentence of the paper, each checked by grep against
 `raw/paper.txt` (and `raw/supporting-material.txt`). Quotes of figure text were read from the figure images.
-Requests are labelled H9-1 and on; the driver renumbers them globally.
+Requests are labelled 182 and on; the driver renumbers them globally.
 
 ## G01 (P1-A, wording 2, Haiku)
 
@@ -83,19 +83,19 @@ Requests are labelled H9-1 and on; the driver renumbers them globally.
   conditioned outcomes), what it must settle first (orientation, shift, scaler, "these choices define the question"),
   and what stays its own (conditioning, zero and negative outputs, the evaluation's behaviour at the edges). It could
   not find the conditioning rule in words, a rule of thumb for rows against d and K, how a human or ordinal assessment
-  is conditioned, or the noise size at which the contending set changes (D.18's table did not render): see H9-11.
+  is conditioned, or the noise size at which the contending set changes (D.18's table did not render): see 192.
 - Findings that count: Table 2's caption "the levels, all inside the near-frontier band" against the baseline row's
   -0.330 and the reader's expectation that a larger level is better (6.45; G18 (14); F10 (19) states the same for the K =
-  2 band: three cells; new: H9-1); "900 rows" against "twenty tables of 400 rows" (6.35; F10, F18 (both ask to reconcile
-  it): three cells; new: H9-2); Definition 4's "the open one, as the code counts it" (6.13; G17, G18 (5), G23 (15); F10,
-  F17: six cells; joins 17: H9-5); Definition 3's "the formula is the sum" against "the package's mean" (6.12; G17,
-  G18 (4), G23 (14); F17, F23: six cells; joins 5, 131: H9-6); R1 as "a tau = infinity condition and does not give it" (6.21;
-  G17, G18 (9), G23 (19): four cells; joins 24, 102: H9-7); the zero metric left out "without a warning" against A1
-  and "negative values are rejected" (6.18; G17, G18 (6); F10, F17, F18: six cells; joins 57: H9-12); Figure 5's
-  vertical axis (6.37; G17, G23 (4): joins 36: H9-8); Figure 4's "evenly spaced on a log scale, not to scale" (6.34;
-  G17, G23 (3); joins 56, 140: H9-13); Figure 8's selection ("which eight of the thirteen", the picking rule) (6.42; G23
-  (8); joins 28, 63, 132: H9-9); the conditioning rule only as a table in C.4 (6.8, section 8 item 1; the wave-7 G09
-  read ends the same way: two cells: H9-11).
+  2 band: three cells; new: 182); "900 rows" against "twenty tables of 400 rows" (6.35; F10, F18 (both ask to reconcile
+  it): three cells; new: 183); Definition 4's "the open one, as the code counts it" (6.13; G17, G18 (5), G23 (15); F10,
+  F17: six cells; joins 17: 186); Definition 3's "the formula is the sum" against "the package's mean" (6.12; G17,
+  G18 (4), G23 (14); F17, F23: six cells; joins 5, 131: 187); R1 as "a tau = infinity condition and does not give it" (6.21;
+  G17, G18 (9), G23 (19): four cells; joins 24, 102: 188); the zero metric left out "without a warning" against A1
+  and "negative values are rejected" (6.18; G17, G18 (6); F10, F17, F18: six cells; joins 57: 193); Figure 5's
+  vertical axis (6.37; G17, G23 (4): joins 36: 189); Figure 4's "evenly spaced on a log scale, not to scale" (6.34;
+  G17, G23 (3); joins 56, 140: 194); Figure 8's selection ("which eight of the thirteen", the picking rule) (6.42; G23
+  (8); joins 28, 63, 132: 190); the conditioning rule only as a table in C.4 (6.8, section 8 item 1; the wave-7 G09
+  read ends the same way: two cells: 192).
 - Counted already: "invariant" in two senses (6.10), Definition 2's potential line (6.11, logged as preference),
   Definition 7's "how far" (6.16; joins 59), Section 3's A, R, F, I codes (6.9, 6.24; joins 55), the three thresholds
   (6.14; 19), "certified" and the 37 designs near a seam (6.28, 6.29; 21, 114), Theorem 10 (i) (6.25; 22, 97), Theorem 11's
@@ -133,10 +133,10 @@ Requests are labelled H9-1 and on; the driver renumbers them globally.
   score_samples returns in sign.
 - Findings that count: score_samples "returns the energy differential" with negative inside and positive beyond, against
   a score_samples that reads higher as more typical (F17 asks whether it fits the sklearn contract; logged once at
-  wave 4: second cell: H9-10); Definition 4's open band (joins H9-5); Definition 3's sum and mean (H9-6); R1 (H9-7); the zero
-  row dropped without a warning (H9-12); Figure 5's vertical axis (H9-8); Figure 4's axis words (H9-13); "none of 60
+  wave 4: second cell: 191); Definition 4's open band (joins 186); Definition 3's sum and mean (187); R1 (188); the zero
+  row dropped without a warning (193); Figure 5's vertical axis (189); Figure 4's axis words (194); "none of 60
   planted terms" and "the 20 planted tables" with no word that 60 is twenty tables of three terms (with G10
-  (35): H9-2); Figure 6's axis as a model quantity (the caption already says it is a reading; joins 41).
+  (35): 183); Figure 6's axis as a model quantity (the caption already says it is a reading; joins 41).
 - Counted already: the abstract's "n-lemma" with n as the metric count (the n-lemma name), "like PCA" against
   "not a PCA of any kind" (the PCA item), Theorem 3 "not claimed strictly", the three objects (54), the
   hyperbola as a special case, the three thresholds (19), Figure 1, A1 to A10 (55), Section 8's
@@ -173,9 +173,9 @@ Requests are labelled H9-1 and on; the driver renumbers them globally.
   no figure (it says so: "I did not take screenshots") and did not reach the proofs behind Theorems 3, 10 and 12. The
   convexity and noise statements were checked from the main text's own sketches.
 - Findings that count: Table 2's caption "all inside the near-frontier band" against the baseline row at -0.330 (6.14:
-  H9-1, with G10 and F10); the zero metric against A1 and G-5 (6.6: H9-12); Definition 4's closed and open band (6.5:
-  H9-5); Definition 3's sum and mean (6.4: H9-6); R1 against "the balanced point ... in the relative interior of a facet"
-  (6.9: H9-7); "frontier" in three objects (6.3; joins 54: four cells in this wave with G10 (7), G23 (17), G17); "proved" for steps
+  182, with G10 and F10); the zero metric against A1 and G-5 (6.6: 193); Definition 4's closed and open band (6.5:
+  186); Definition 3's sum and mean (6.4: 187); R1 against "the balanced point ... in the relative interior of a facet"
+  (6.9: 188); "frontier" in three objects (6.3; joins 54: four cells in this wave with G10 (7), G23 (17), G17); "proved" for steps
   that are posited axioms, 160 of 505 steps "by a declared axiom" in Appendix B (6.7; the "Derived" and "machine-
   checked" items, 31); Theorem 11's finite stop resting on unique term minimizers that G-2 says cannot be shown for a
   data set (6.11; joins 23, 139: the text states the hypothesis, the reader asks what the cubesat fits then rest on).
@@ -204,10 +204,10 @@ Requests are labelled H9-1 and on; the driver renumbers them globally.
      the contending set)". Paper, Definition 6: "They nest in size, and the last two read different fits."; Section 9: "At
      the fit temperature total mass also carries 0.02 and is not in the contending set"; Figure 7's caption: "so an
      outlined metric can be grey and a black one not outlined". Term 2 has total mass at 0.01 black and not outlined:
-     the figure and the paper agree; the reading does not (H9-3).
+     the figure and the paper agree; the reading does not (184).
   2. The reader: "The soft-weight alternation descends the mean slack (Theorem 11), and finishes after at most K^N + 1
      iterations". Paper, Theorem 11: "The sharp alternation then stops after finitely many iterations"; the soft-weight
-     alternation is Theorem 10 (ii), its certificate Theorem 12 (H9-4).
+     alternation is Theorem 10 (ii), its certificate Theorem 12 (185).
 - Pointers (B): the reader wanted Section 2 and Table 1 (the prior-art families) to judge novelty; at this depth it had
   Table 1's caption and the heading "Prior art, by family" only: boundary. Appendices D.3, D.15, D.19: named by captions,
   not in this depth's material: boundary.
@@ -216,10 +216,10 @@ Requests are labelled H9-1 and on; the driver renumbers them globally.
   convention); the question it came with (whether the gap to the established frontier methods is real or terminology)
   is answered only in Section 2 and Table 1, outside depth B. For the supervisor: at this depth the novelty statement
   is the one sentence of Main results.
-- Findings that count: Figure 7's count (H9-3, above; F23 (7) reads the same legend as two systems that "disagree by
-  design": two cells; joins 73, 153, 87, 42); Figure 5's axis label (6.4; H9-8); Figure 4's markers and axis (6.3;
-  H9-13, joins 140); Figure 8's "where its V peaks", "fixed total" and the picking (6.8; H9-9, joins 63, 132, 28);
-  Definition 4's open band (6.15; H9-5); Definition 3 (6.14; H9-6); R1 (6.19; H9-7); the main results' sentence "two
+- Findings that count: Figure 7's count (184, above; F23 (7) reads the same legend as two systems that "disagree by
+  design": two cells; joins 73, 153, 87, 42); Figure 5's axis label (6.4; 189); Figure 4's markers and axis (6.3;
+  194, joins 140); Figure 8's "where its V peaks", "fixed total" and the picking (6.8; 190, joins 63, 132, 28);
+  Definition 4's open band (6.15; 186); Definition 3 (6.14; 187); R1 (6.19; 188); the main results' sentence "two
   terms hold different contending sets where one term merges them into one" with no way to tell which merge (6.24;
   joins 87 and 151, whose caption and Section 9 sentence name peak slew power).
 - Counted already: Figure 1 (6.1; 37), Figure 3's caption against its box (6.2; 26, 88: the box lists four of ten, the
@@ -250,7 +250,7 @@ Requests are labelled H9-1 and on; the driver renumbers them globally.
   never set side by side there.
 - Definition 3, Definition 4 and the R1 remark each stop four of the six readers although earlier requests (5, 17, 24,
   131) put a sentence there: the fixes are present and still read as two aggregators, a definition adjusted to the code,
-  and a negative statement. H9-5, H9-6 and H9-7 say the same facts positively.
+  and a negative statement. 186, 187 and 188 say the same facts positively.
 - Held fixed from wave 7's roll-up: no reader's main results contradict the record's mathematics; G10 and G17 state
   "formal verification" only of the requirement checks and the lemma scripts as pencil-and-paper checks; G18 re-derived
   the noise identity and found the paper's cumulant statement right.
@@ -292,58 +292,58 @@ Read from the F reports at the same head (5ac44f7); wave 8's own triage may add 
 
 Defects and wrong beliefs (count at once):
 
-H9-1. Table 2's caption: "the levels, all inside the near-frontier band, do not rank them" while the baseline row's level
+182. Table 2's caption: "the levels, all inside the near-frontier band, do not rank them" while the baseline row's level
       is -0.330 and the sponsor-alone row's +0.016 lies inside the K = 1 band (0.0240) and outside the K = 2 band (0.0088).
       Name the band the sentence means (the K = 1 band, as the shortlist uses, G-9) and say the sentence holds for the
       picks, the baseline row being context with the last two rows. Constraint: the order-of-the-rules sentence (50) and
       the table's numbers stay.
-H9-2. Section 8's closing sentence and Section 6.2: "The worked example of Appendix C.7 has 900 rows ... 16 of 20 such
+183. Section 8's closing sentence and Section 6.2: "The worked example of Appendix C.7 has 900 rows ... 16 of 20 such
       tables" while D.14's twenty tables have 400 rows, and "none of 60 planted terms" carries no word that 60 is twenty
       tables of three. Say once: twenty tables of 400 rows, 4 metrics and three terms (60 planted terms), distinct from
       C.7's single 900-row example. Constraint: the counts are the record's, unchanged.
-H9-3. Definition 6's "They nest in size, and the last two read different fits": read as "participating is a subset of
+184. Definition 6's "They nest in size, and the last two read different fits": read as "participating is a subset of
       contending" and then Figure 7's term 2 (seven outlined, eight black labels) looks inconsistent. Give the thresholds
       by their order as numbers (10^-12, 10^-9, 10^-3), say that the contending set and the participating set read
       different fits so that neither contains the other in general, and in Figure 7's caption name term 2 as the case
       (total mass, 0.01, participates and is not contending). Constraint: the thresholds stay conventions; joins 73, 153.
-H9-4. Main results, "three levels of guarantee, descent (Theorem 11) ...": say these are the sharp alternation's, as
+185. Main results, "three levels of guarantee, descent (Theorem 11) ...": say these are the sharp alternation's, as
       Theorem 11 and Theorem 10 (ii) say, so that Theorem 11 is not read as the soft-weight alternation's descent.
       Constraint: the stopping declaration stays a paragraph, not a numbered result (80).
 
 Frictions and missing (two cells or more):
 
-H9-5. Definition 4: "the band here is the open one, as the code counts it" reads as a definition adjusted to the code
+186. Definition 4: "the band here is the open one, as the code counts it" reads as a definition adjusted to the code
       (G10, G17, G18, G23; F10, F17). Say the band is open, |log V| < 1/tau, and that L5.25's bound on the closed band
       contains it; drop "as the code counts it". Constraint: the lemma script is not edited (17).
-H9-6. Definition 3's "Term aggregation": "the formula is the sum. The package's mean (kappa = infinity: the maximum)
+187. Definition 3's "Term aggregation": "the formula is the sum. The package's mean (kappa = infinity: the maximum)
       subtracts the constant" reads as two aggregators (G10, G17, G18, G23; F17, F23). One order: the model's formula is
       the sum; the reported level subtracts (log K)/kappa; at the fits of record, kappa = infinity, the aggregate is the
       maximum and the offset is zero. Constraint: Theorem 8's statement unchanged (5, 131).
-H9-7. Theorem 2's remark on R1: "R1 is a tau = infinity condition and does not give it" stops readers (G10, G17, G18, G23).
+188. Theorem 2's remark on R1: "R1 is a tau = infinity condition and does not give it" stops readers (G10, G17, G18, G23).
       State the positive fact: at the fit temperature each exponent read as an elasticity must be positive in that fit,
       and R1 secures the facet at tau = infinity only. Constraint: the L3.9 pointer stays (24, 102).
-H9-8. Figure 5's vertical-axis label ("log of the conditioned unit cost (inverse USD; larger is better)") does not show
+189. Figure 5's vertical-axis label ("log of the conditioned unit cost (inverse USD; larger is better)") does not show
       the shift the title and caption give ("adjusted for the other eleven metrics"); two readers read the plain metric
       (G17, G23; G10's first read of the caption). Make the label say it is shifted. Constraint: the figure-review loop;
       the line's slope stays the elasticity (36).
-H9-9. Figure 8's caption: "the 56 triples of eight of the thirteen metrics": name the eight (or the appendix row) and
+190. Figure 8's caption: "the 56 triples of eight of the thirteen metrics": name the eight (or the appendix row) and
       say how the two displayed were picked (the stable two-term pattern, 105 of 291 fits); the legend's "where its V
       peaks" read as a physical optimum. Constraint: no new result; the caption stays shows and does not show (28, 63, 132).
-H9-10. Section 3's estimator paragraph: "score_samples returns the energy differential": give the sign and direction
+191. Section 3's estimator paragraph: "score_samples returns the energy differential": give the sign and direction
       there (log V, positive beyond the surface and so higher is further out), since the method's name for a score
       reads higher as more typical (G17; F17 asks; logged at wave 4). Constraint: the interface unchanged.
-H9-11. Appendix C.4 and Section 11: C.4 is a table with no sentence of the rule; Section 11's "supply configurations,
+192. Appendix C.4 and Section 11: C.4 is a table with no sentence of the rule; Section 11's "supply configurations,
       attributes and a conditioning rule" sends to the docs. State the case's rule in words above the table
       (orientation by reciprocal for a smaller-is-better attribute; log-spread scaling to a standard deviation of one
       in the log-metric) and, in Section 11, list what the table must meet before the fit (strictly positive, larger-is-
       better; a zero row left out without a warning; negatives rejected; feasible designs). Constraint: record only, no
       new method content; the docs' Conditioning page stays the guide (G09, G10).
-H9-12. Section 5's "the package tolerates a zero metric by leaving that row out of the fit, without a warning" against
+193. Section 5's "the package tolerates a zero metric by leaving that row out of the fit, without a warning" against
       A1 and "negative values are rejected": say why there is no warning (or that there is one), and in G-5 mark which
       sentence is the bridging assumption ("carries no information about the other exponents") and which the unproved
       part ("the row still constrains the other metrics"). Constraint: package behaviour is the supervisor's; the
       statement must match the code (extends 57; G10, G17, G18; F10, F17, F18).
-H9-13. Figure 4's caption: "evenly spaced on a log scale, not to scale" reads as saying both (G10; G17 parses it; G23 on
+194. Figure 4's caption: "evenly spaced on a log scale, not to scale" reads as saying both (G10; G17 parses it; G23 on
       the two markers): say the columns are the sweep's values at equal spacing and not a linear temperature axis.
       Constraint: the ring-and-line explanation of 140 stays.
 
