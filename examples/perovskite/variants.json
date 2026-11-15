@@ -1,0 +1,2858 @@
+{
+  "carry_threshold": 0.75,
+  "chains": {
+    "device_metrics": {
+      "all_columns_fit": {
+        "association": {
+          "Jsc|FF": -0.6274698572219451,
+          "Voc|FF": -0.38620342786579626,
+          "Voc|Jsc": -0.142553563053765
+        },
+        "band": 0.05305502573772887,
+        "contending_exponents": {
+          "FF": 0.427317476432078,
+          "Jsc": 0.4064432526678338,
+          "Voc": 0.16623927090008814
+        },
+        "contending_set": [
+          "Voc",
+          "Jsc",
+          "FF"
+        ],
+        "elasticities": {
+          "FF|Jsc": -0.9751319430418195,
+          "FF|Voc": -0.4138892341681383,
+          "Jsc|FF": -1.025502248322014,
+          "Jsc|Voc": -0.4244443401957024,
+          "Voc|FF": -2.4161053669585426,
+          "Voc|Jsc": -2.3560215210760522
+        },
+        "exponents": {
+          "FF": 0.41858147158321135,
+          "Jsc": 0.40817216370624104,
+          "Voc": 0.1732463647105477
+        },
+        "frac_above": 0.103059058559121,
+        "k2": {
+          "contending_sets": [
+            [
+              "Voc",
+              "Jsc",
+              "FF"
+            ],
+            [
+              "Voc",
+              "Jsc",
+              "FF"
+            ]
+          ],
+          "mean_slack": 0.5598306487825426,
+          "mean_slack_k1": 0.5942947685617991,
+          "second_term_exponents": {
+            "FF": 0.7308268119191124,
+            "Jsc": 0.0,
+            "Voc": 0.26917318808088764
+          },
+          "second_term_index": 1,
+          "second_term_share": 0.024495058014611087,
+          "shares": [
+            0.975504941985389,
+            0.024495058014611087
+          ],
+          "status": "certified",
+          "terms": [
+            {
+              "FF": 0.4152303673547924,
+              "Jsc": 0.41266185712123876,
+              "Voc": 0.1721077755239689
+            },
+            {
+              "FF": 0.7308268119191124,
+              "Jsc": 0.0,
+              "Voc": 0.26917318808088764
+            }
+          ]
+        },
+        "metrics": [
+          "Voc",
+          "Jsc",
+          "FF"
+        ],
+        "n_eff": 36.909175861915806,
+        "n_lemma": 3,
+        "n_near_frontier": 4563,
+        "rows": 40045,
+        "spread_first_direction": {
+          "explained": 0.6308611776125638,
+          "loadings": {
+            "FF": -0.6418912215357686,
+            "Jsc": -0.11606897112440123,
+            "Voc": 0.7579601926601698
+          }
+        },
+        "tau": 18.848355760741303
+      },
+      "columns": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "ica_rewriting": {
+        "k2": {
+          "association": {
+            "ICA1|ICA2": -0.9078667293526785
+          },
+          "band": 0.04979709857507692,
+          "components": [
+            {
+              "FF": 0.8564286982472407,
+              "Jsc": 0.4502894133356495,
+              "Voc": -0.2525258977934212
+            },
+            {
+              "FF": -0.37341754667307137,
+              "Jsc": 0.11665208302636483,
+              "Voc": 0.9202997486483818
+            }
+          ],
+          "contending_exponents": {
+            "ICA1": 0.6820193689629929,
+            "ICA2": 0.3179806310370072
+          },
+          "contending_set": [
+            "ICA1",
+            "ICA2"
+          ],
+          "elasticities": {
+            "ICA1|ICA2": -0.4792286996602509,
+            "ICA2|ICA1": -2.0866863789855445
+          },
+          "exponents": {
+            "ICA1": 0.6760279869026878,
+            "ICA2": 0.3239720130973122
+          },
+          "frac_above": 0.09534273941815458,
+          "k2": {
+            "contending_sets": "term 1: only 3 near-frontier rows (|log V| < 0.0497971) but min_near_frontier = 10; use a larger band, band=0.12 (the smallest round band with 10 rows on this term), or fit at temperature=8.33 (the ba",
+            "mean_slack": 0.5671995718833021,
+            "mean_slack_k1": 0.5701275899469669,
+            "second_term_exponents": {
+              "ICA1": 0.6665166677230895,
+              "ICA2": 0.3334833322769105
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.0006893382352941177,
+            "shares": [
+              0.9993106617647058,
+              0.0006893382352941177
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "ICA1": 0.6813676927806123,
+                "ICA2": 0.3186323072193878
+              },
+              {
+                "ICA1": 0.6665166677230895,
+                "ICA2": 0.3334833322769105
+              }
+            ]
+          },
+          "metrics": [
+            "ICA1",
+            "ICA2"
+          ],
+          "n_eff": 19.772947655395665,
+          "n_lemma": 2,
+          "n_near_frontier": 4336,
+          "rows": 40045,
+          "rule": "first 2 ICA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 1.0,
+            "loadings": {
+              "ICA1": 0.7071067811865475,
+              "ICA2": -0.7071067811865475
+            }
+          },
+          "tau": 20.08149126384027
+        },
+        "k3": {
+          "association": {
+            "ICA1|ICA2": -0.509033453695423,
+            "ICA1|ICA3": -0.4421299238712081,
+            "ICA2|ICA3": -0.46640869531063434
+          },
+          "band": 0.038646847956357644,
+          "components": [
+            {
+              "FF": 0.9578613321745758,
+              "Jsc": -0.2650440584360655,
+              "Voc": -0.11069469459954483
+            },
+            {
+              "FF": -0.19699338470688507,
+              "Jsc": -0.04747672819713064,
+              "Voc": 0.9792545974675948
+            },
+            {
+              "FF": -0.07959828195918518,
+              "Jsc": 0.9502116751625279,
+              "Voc": -0.3012671337766013
+            }
+          ],
+          "contending_exponents": {
+            "ICA1": 0.3551743792668956,
+            "ICA2": 0.27536692761747933,
+            "ICA3": 0.3694586931156251
+          },
+          "contending_set": [
+            "ICA1",
+            "ICA2",
+            "ICA3"
+          ],
+          "elasticities": {
+            "ICA1|ICA2": -0.7929986327767247,
+            "ICA1|ICA3": -1.0547947916935174,
+            "ICA2|ICA1": -1.2610362220908877,
+            "ICA2|ICA3": -1.330134439198338,
+            "ICA3|ICA1": -0.9480517043456936,
+            "ICA3|ICA2": -0.7518037053477786
+          },
+          "exponents": {
+            "ICA1": 0.35114906559137943,
+            "ICA2": 0.2784607289147883,
+            "ICA3": 0.37039020549383234
+          },
+          "frac_above": 0.1057310525658634,
+          "k2": {
+            "contending_sets": [
+              [
+                "ICA1",
+                "ICA2",
+                "ICA3"
+              ],
+              [
+                "ICA1",
+                "ICA2",
+                "ICA3"
+              ]
+            ],
+            "mean_slack": 0.4031063182436923,
+            "mean_slack_k1": 0.4278213114426488,
+            "second_term_exponents": {
+              "ICA1": 0.5637964653527715,
+              "ICA2": 0.28506134999357374,
+              "ICA3": 0.15114218465365473
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.018270660718079455,
+            "shares": [
+              0.9817293392819205,
+              0.018270660718079455
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "ICA1": 0.3491270314441613,
+                "ICA2": 0.2783870726762573,
+                "ICA3": 0.3724858958795814
+              },
+              {
+                "ICA1": 0.5637964653527715,
+                "ICA2": 0.28506134999357374,
+                "ICA3": 0.15114218465365473
+              }
+            ]
+          },
+          "metrics": [
+            "ICA1",
+            "ICA2",
+            "ICA3"
+          ],
+          "n_eff": 42.35032161016135,
+          "n_lemma": 3,
+          "n_near_frontier": 4633,
+          "rows": 40045,
+          "rule": "first 3 ICA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 0.6137475694292103,
+            "loadings": {
+              "ICA1": 0.5518695424227852,
+              "ICA2": -0.7970681573128294,
+              "ICA3": 0.24519861489004435
+            }
+          },
+          "tau": 25.875331440464702
+        }
+      },
+      "pca_changes_reading": {
+        "changed": true,
+        "rewritings_with_fewer_contending_scores_than_scores": [
+          "k2",
+          "k3"
+        ],
+        "screen_drops_from_contending_set": [
+          "Jsc"
+        ]
+      },
+      "pca_rewriting": {
+        "k2": {
+          "association": {
+            "PCA1|PCA2": -0.11955239322592319
+          },
+          "band": 0.1329849938122454,
+          "components": [
+            {
+              "FF": 0.5749501771538389,
+              "Jsc": 0.5876935835897136,
+              "Voc": 0.5692526201944526
+            },
+            {
+              "FF": -0.6378589786511075,
+              "Jsc": -0.11377403509862136,
+              "Voc": 0.7617029554173621
+            }
+          ],
+          "contending_exponents": {
+            "PCA1": 1.0
+          },
+          "contending_set": [
+            "PCA1"
+          ],
+          "elasticities": {
+            "PCA1|PCA2": -0.0,
+            "PCA2|PCA1": null
+          },
+          "explained_variance_ratio": [
+            0.622343874613917,
+            0.19713698501641366
+          ],
+          "exponents": {
+            "PCA1": 1.0,
+            "PCA2": 0.0
+          },
+          "frac_above": 0.10650518167062055,
+          "k2": {
+            "contending_sets": [
+              [
+                "PCA1",
+                "PCA2"
+              ],
+              [
+                "PCA1",
+                "PCA2"
+              ]
+            ],
+            "mean_slack": 0.627239656383999,
+            "mean_slack_k1": 0.7088517416257616,
+            "second_term_exponents": {
+              "PCA1": 0.5074713207648595,
+              "PCA2": 0.4925286792351405
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.0012230375806092952,
+            "shares": [
+              0.9987769624193907,
+              0.0012230375806092952
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "PCA1": 1.0,
+                "PCA2": 0.0
+              },
+              {
+                "PCA1": 0.5074713207648595,
+                "PCA2": 0.4925286792351405
+              }
+            ]
+          },
+          "metrics": [
+            "PCA1",
+            "PCA2"
+          ],
+          "n_eff": 2.3196231201828406,
+          "n_lemma": 1,
+          "n_near_frontier": 8983,
+          "rows": 40045,
+          "rule": "first 2 PCA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 1.0,
+            "loadings": {
+              "PCA1": 0.7071067811865475,
+              "PCA2": -0.7071067811865475
+            }
+          },
+          "tau": 7.51964542263955
+        },
+        "k3": {
+          "association": {
+            "PCA1|PCA2": -0.9012934975115495,
+            "PCA1|PCA3": -0.9409023883201431,
+            "PCA2|PCA3": 0.8313356748752786
+          },
+          "band": 0.1268121219791735,
+          "components": [
+            {
+              "FF": 0.5749501771538389,
+              "Jsc": 0.5876935835897136,
+              "Voc": 0.5692526201944526
+            },
+            {
+              "FF": -0.6378589786511075,
+              "Jsc": -0.11377403509862136,
+              "Voc": 0.7617029554173621
+            },
+            {
+              "FF": -0.5124141070900912,
+              "Jsc": 0.8010441440675152,
+              "Voc": -0.3094512273528845
+            }
+          ],
+          "contending_exponents": {
+            "PCA1": 0.8433919866904223,
+            "PCA3": 0.15660801330957785
+          },
+          "contending_set": [
+            "PCA1",
+            "PCA3"
+          ],
+          "elasticities": {
+            "PCA1|PCA2": -0.34038992368262566,
+            "PCA1|PCA3": -0.43361865085425755,
+            "PCA2|PCA1": -2.9378072922404854,
+            "PCA2|PCA3": -1.273888034531119,
+            "PCA3|PCA1": -2.306173865053852,
+            "PCA3|PCA2": -0.7849983459245465
+          },
+          "explained_variance_ratio": [
+            0.622343874613917,
+            0.19713698501641366,
+            0.1805191403696693
+          ],
+          "exponents": {
+            "PCA1": 0.5636951333569832,
+            "PCA2": 0.191876143423651,
+            "PCA3": 0.24442872321936585
+          },
+          "frac_above": 0.10056186789861406,
+          "k2": {
+            "contending_sets": [
+              [
+                "PCA1",
+                "PCA2",
+                "PCA3"
+              ],
+              [
+                "PCA1",
+                "PCA2",
+                "PCA3"
+              ]
+            ],
+            "mean_slack": 0.27681033088346657,
+            "mean_slack_k1": 0.33833815697757097,
+            "second_term_exponents": {
+              "PCA1": 0.5298417024188141,
+              "PCA2": 0.2159112988929537,
+              "PCA3": 0.2542469986882321
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.30285815728741344,
+            "shares": [
+              0.6971418427125865,
+              0.30285815728741344
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "PCA1": 0.8449515722059419,
+                "PCA2": 2.065520797557324e-17,
+                "PCA3": 0.1550484277940581
+              },
+              {
+                "PCA1": 0.5298417024188141,
+                "PCA2": 0.2159112988929537,
+                "PCA3": 0.2542469986882321
+              }
+            ]
+          },
+          "metrics": [
+            "PCA1",
+            "PCA2",
+            "PCA3"
+          ],
+          "n_eff": 8.871147432405616,
+          "n_lemma": 2,
+          "n_near_frontier": 16825,
+          "rows": 40045,
+          "rule": "first 3 PCA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 0.9177994096010964,
+            "loadings": {
+              "PCA1": 0.8164296548896313,
+              "PCA2": -0.417268222531646,
+              "PCA3": -0.3991614323579852
+            }
+          },
+          "tau": 7.885681466352493
+        }
+      },
+      "rows": 40045,
+      "screen": {
+        "carried": [
+          "Voc",
+          "FF"
+        ],
+        "communality_first_two": {
+          "FF": 0.857804233457802,
+          "Jsc": 0.6524979177148401,
+          "Voc": 0.948140427718347
+        },
+        "explained_variance_ratio": [
+          0.6223438746139172,
+          0.19713698501641358
+        ],
+        "loadings": [
+          {
+            "FF": 0.5749501771538388,
+            "Jsc": 0.5876935835897138,
+            "Voc": 0.5692526201944524
+          },
+          {
+            "FF": -0.6378589786511074,
+            "Jsc": -0.1137740350986216,
+            "Voc": 0.7617029554173621
+          }
+        ],
+        "rule": "carried when the first two components hold at least 0.75 of its variance"
+      },
+      "screened_fit": {
+        "association": {
+          "Voc|FF": -0.6217680047416901
+        },
+        "band": 0.09998881732129754,
+        "contending_exponents": {
+          "FF": 0.7447815182760666,
+          "Voc": 0.2552184817239334
+        },
+        "contending_set": [
+          "Voc",
+          "FF"
+        ],
+        "elasticities": {
+          "FF|Voc": -0.408758106675303,
+          "Voc|FF": -2.4464346606692504
+        },
+        "exponents": {
+          "FF": 0.7098450722388528,
+          "Voc": 0.29015492776114715
+        },
+        "frac_above": 0.10081158696466475,
+        "k2": {
+          "contending_sets": [
+            [
+              "Voc",
+              "FF"
+            ],
+            [
+              "Voc",
+              "FF"
+            ]
+          ],
+          "mean_slack": 0.6972553846456081,
+          "mean_slack_k1": 0.7101953307393165,
+          "second_term_exponents": {
+            "FF": 0.6808624679394195,
+            "Voc": 0.31913753206058043
+          },
+          "second_term_index": 1,
+          "second_term_share": 0.10330173259235044,
+          "shares": [
+            0.8966982674076496,
+            0.10330173259235044
+          ],
+          "status": "certified",
+          "terms": [
+            {
+              "FF": 0.7750116092259112,
+              "Voc": 0.2249883907740888
+            },
+            {
+              "FF": 0.6808624679394195,
+              "Voc": 0.31913753206058043
+            }
+          ]
+        },
+        "metrics": [
+          "Voc",
+          "FF"
+        ],
+        "n_eff": 87.99573937709454,
+        "n_lemma": 2,
+        "n_near_frontier": 6238,
+        "rows": 40045,
+        "rule": "the carried columns of the screen, primary conditioning",
+        "spread_first_direction": {
+          "explained": 1.0,
+          "loadings": {
+            "FF": -0.7071067811865475,
+            "Voc": 0.7071067811865475
+          }
+        },
+        "tau": 10.001118392936535
+      }
+    },
+    "jv_and_stability": {
+      "all_columns_fit": {
+        "association": {
+          "default_FF|T80_hours": -0.08433906276308688,
+          "default_FF|default_PCE": 0.4104934730482858,
+          "default_FF|end_of_experiment_PCE": -0.15485336509810152,
+          "default_Jsc|T80_hours": -0.09097893002533573,
+          "default_Jsc|default_FF": 0.19150932279910657,
+          "default_Jsc|default_PCE": 0.31782141004267733,
+          "default_Jsc|end_of_experiment_PCE": -0.019191259658059616,
+          "default_PCE|T80_hours": -0.11314363851696903,
+          "default_PCE|end_of_experiment_PCE": -0.20678350130600678,
+          "default_Voc|T80_hours": -0.03382215150631166,
+          "default_Voc|default_FF": -0.08813411428404043,
+          "default_Voc|default_Jsc": -0.7211469866097837,
+          "default_Voc|default_PCE": -0.0421435065125545,
+          "default_Voc|end_of_experiment_PCE": -0.48891408608362186,
+          "end_of_experiment_PCE|T80_hours": 0.23521328147818435
+        },
+        "band": 0.038646847956357644,
+        "contending_exponents": {
+          "default_Jsc": 0.3138751836613689,
+          "default_Voc": 0.4248224301531985,
+          "end_of_experiment_PCE": 0.26130238618543267
+        },
+        "contending_set": [
+          "default_Voc",
+          "default_Jsc",
+          "end_of_experiment_PCE"
+        ],
+        "elasticities": {
+          "T80_hours|default_FF": null,
+          "T80_hours|default_Jsc": null,
+          "T80_hours|default_PCE": null,
+          "T80_hours|default_Voc": null,
+          "T80_hours|end_of_experiment_PCE": null,
+          "default_FF|T80_hours": null,
+          "default_FF|default_Jsc": null,
+          "default_FF|default_PCE": null,
+          "default_FF|default_Voc": null,
+          "default_FF|end_of_experiment_PCE": null,
+          "default_Jsc|T80_hours": -2.752947671315987e-17,
+          "default_Jsc|default_FF": -5.345679833070195e-17,
+          "default_Jsc|default_PCE": -0.0,
+          "default_Jsc|default_Voc": -2.553531957235586,
+          "default_Jsc|end_of_experiment_PCE": -0.4728741229409917,
+          "default_PCE|T80_hours": null,
+          "default_PCE|default_FF": null,
+          "default_PCE|default_Jsc": null,
+          "default_PCE|default_Voc": null,
+          "default_PCE|end_of_experiment_PCE": null,
+          "default_Voc|T80_hours": -1.0780940741764929e-17,
+          "default_Voc|default_FF": -2.0934454405095226e-17,
+          "default_Voc|default_Jsc": -0.3916144449128353,
+          "default_Voc|default_PCE": -0.0,
+          "default_Voc|end_of_experiment_PCE": -0.1851843371691803,
+          "end_of_experiment_PCE|T80_hours": -5.821734659943567e-17,
+          "end_of_experiment_PCE|default_FF": -1.1304657146014447e-16,
+          "end_of_experiment_PCE|default_Jsc": -2.114727686473101,
+          "end_of_experiment_PCE|default_PCE": -0.0,
+          "end_of_experiment_PCE|default_Voc": -5.40002472825994
+        },
+        "exponents": {
+          "T80_hours": 6.83723304728185e-18,
+          "default_FF": 1.3276554144374234e-17,
+          "default_Jsc": 0.24836044355370762,
+          "default_PCE": 0.0,
+          "default_Voc": 0.6341963295275973,
+          "end_of_experiment_PCE": 0.11744322691869516
+        },
+        "frac_above": 0.10653409090909091,
+        "k2": {
+          "contending_sets": [
+            [
+              "default_Voc",
+              "default_Jsc"
+            ],
+            [
+              "default_Voc",
+              "default_Jsc",
+              "end_of_experiment_PCE",
+              "T80_hours"
+            ]
+          ],
+          "mean_slack": 0.21188720388869778,
+          "mean_slack_k1": 0.4134468434221244,
+          "second_term_exponents": {
+            "T80_hours": 0.07183089331272592,
+            "default_FF": 7.261910576174366e-17,
+            "default_Jsc": 0.004791180512293811,
+            "default_PCE": 0.0,
+            "default_Voc": 0.0,
+            "end_of_experiment_PCE": 0.9233779261749802
+          },
+          "second_term_index": 1,
+          "second_term_share": 0.49836065573770494,
+          "shares": [
+            0.5016393442622951,
+            0.49836065573770494
+          ],
+          "status": "certified",
+          "terms": [
+            {
+              "T80_hours": 3.86956794984195e-18,
+              "default_FF": 2.546745668540847e-17,
+              "default_Jsc": 0.43676533332995887,
+              "default_PCE": 0.0,
+              "default_Voc": 0.5632346666700412,
+              "end_of_experiment_PCE": 4.975358534908366e-17
+            },
+            {
+              "T80_hours": 0.07183089331272592,
+              "default_FF": 7.261910576174366e-17,
+              "default_Jsc": 0.004791180512293811,
+              "default_PCE": 0.0,
+              "default_Voc": 0.0,
+              "end_of_experiment_PCE": 0.9233779261749802
+            }
+          ]
+        },
+        "metrics": [
+          "default_Voc",
+          "default_Jsc",
+          "default_FF",
+          "default_PCE",
+          "end_of_experiment_PCE",
+          "T80_hours"
+        ],
+        "n_eff": 16.674143553408907,
+        "n_lemma": 3,
+        "n_near_frontier": 130,
+        "rows": 1408,
+        "spread_first_direction": {
+          "explained": 0.7876788199345347,
+          "loadings": {
+            "T80_hours": -0.9064608705731754,
+            "default_FF": 0.23244026260874348,
+            "default_Jsc": 0.18449050513974197,
+            "default_PCE": 0.23855712327494552,
+            "default_Voc": 0.15598442949321137,
+            "end_of_experiment_PCE": 0.094988550056533
+          }
+        },
+        "tau": 25.875331440464702
+      },
+      "columns": [
+        "default_Voc",
+        "default_Jsc",
+        "default_FF",
+        "default_PCE",
+        "end_of_experiment_PCE",
+        "T80_hours"
+      ],
+      "ica_rewriting": {
+        "k2": {
+          "association": {
+            "ICA1|ICA2": -0.9045345820973639
+          },
+          "band": 0.06416437970041473,
+          "components": [
+            {
+              "T80_hours": -0.03444714335053036,
+              "default_FF": 0.488504190895662,
+              "default_Jsc": 0.5316240024435472,
+              "default_PCE": 0.5848893271869885,
+              "default_Voc": 0.36630709050665394,
+              "end_of_experiment_PCE": -0.03572898271107102
+            },
+            {
+              "T80_hours": 0.7037818886689857,
+              "default_FF": -0.00952322538997495,
+              "default_Jsc": -0.10152652711329727,
+              "default_PCE": -0.038867199492742206,
+              "default_Voc": -0.0040958077730580585,
+              "end_of_experiment_PCE": 0.7019724288134667
+            }
+          ],
+          "contending_exponents": {
+            "ICA1": 0.5921781915147991,
+            "ICA2": 0.4078218084852009
+          },
+          "contending_set": [
+            "ICA1",
+            "ICA2"
+          ],
+          "elasticities": {
+            "ICA1|ICA2": -0.28806381350026045,
+            "ICA2|ICA1": -3.471453036217949
+          },
+          "exponents": {
+            "ICA1": 0.7763590510958779,
+            "ICA2": 0.22364094890412212
+          },
+          "frac_above": 0.09375,
+          "k2": {
+            "contending_sets": [
+              [
+                "ICA1"
+              ],
+              [
+                "ICA1",
+                "ICA2"
+              ]
+            ],
+            "mean_slack": 0.45873791957742455,
+            "mean_slack_k1": 0.6746905226765457,
+            "second_term_exponents": {
+              "ICA1": 0.06700306157232544,
+              "ICA2": 0.9329969384276746
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.10465116279069768,
+            "shares": [
+              0.8953488372093024,
+              0.10465116279069768
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "ICA1": 0.9782814312191714,
+                "ICA2": 0.02171856878082855
+              },
+              {
+                "ICA1": 0.06700306157232544,
+                "ICA2": 0.9329969384276746
+              }
+            ]
+          },
+          "metrics": [
+            "ICA1",
+            "ICA2"
+          ],
+          "n_eff": 14.121161895958831,
+          "n_lemma": 2,
+          "n_near_frontier": 124,
+          "rows": 1408,
+          "rule": "first 2 ICA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 1.0,
+            "loadings": {
+              "ICA1": 0.7071067811865475,
+              "ICA2": -0.7071067811865475
+            }
+          },
+          "tau": 15.584971048875213
+        },
+        "k3": {
+          "association": {
+            "ICA1|ICA2": -0.9634159385753687,
+            "ICA1|ICA3": -0.19938136534167852,
+            "ICA2|ICA3": 0.02011496853893906
+          },
+          "band": 0.03404623544562931,
+          "components": [
+            {
+              "T80_hours": 0.025394297019586558,
+              "default_FF": -0.3757449755916908,
+              "default_Jsc": 0.4198862583616657,
+              "default_PCE": -0.12220834754667403,
+              "default_Voc": 0.8156752776134814,
+              "end_of_experiment_PCE": -0.04006662346146263
+            },
+            {
+              "T80_hours": -0.047938066475909584,
+              "default_FF": 0.7029641454093223,
+              "default_Jsc": 0.2654864075389169,
+              "default_PCE": 0.6441821372578445,
+              "default_Voc": -0.13414430029570085,
+              "end_of_experiment_PCE": -0.009746804587417293
+            },
+            {
+              "T80_hours": 0.7044871326563141,
+              "default_FF": -0.020215434371664637,
+              "default_Jsc": -0.0962629737654338,
+              "default_PCE": -0.04498796381594556,
+              "default_Voc": 0.01025903493075835,
+              "end_of_experiment_PCE": 0.7013511897264237
+            }
+          ],
+          "contending_exponents": {
+            "ICA1": 0.6696908264482131,
+            "ICA2": 0.330309173551787
+          },
+          "contending_set": [
+            "ICA1",
+            "ICA2"
+          ],
+          "elasticities": {
+            "ICA1|ICA2": -0.5111218524492436,
+            "ICA1|ICA3": -0.024561761472435748,
+            "ICA2|ICA1": -1.956480622395819,
+            "ICA2|ICA3": -0.04805461037272874,
+            "ICA3|ICA1": -40.713692343370504,
+            "ICA3|ICA2": -20.809657850592117
+          },
+          "exponents": {
+            "ICA1": 0.6511757961956092,
+            "ICA2": 0.33283017922161084,
+            "ICA3": 0.015994024582779987
+          },
+          "frac_above": 0.10298295454545454,
+          "k2": {
+            "contending_sets": "term 1: only 3 near-frontier rows (|log V| < 0.0340462) but min_near_frontier = 10; use a larger band, band=0.069 (the smallest round band with 10 rows on this term), or fit at temperature=14.5 (the b",
+            "mean_slack": 0.2816543239438714,
+            "mean_slack_k1": 0.3721718120293714,
+            "second_term_exponents": {
+              "ICA1": 0.00020312490028249995,
+              "ICA2": 0.0,
+              "ICA3": 0.9997968750997175
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.019230769230769232,
+            "shares": [
+              0.9807692307692307,
+              0.019230769230769232
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "ICA1": 0.6560020058724195,
+                "ICA2": 0.33517848235958475,
+                "ICA3": 0.008819511767995804
+              },
+              {
+                "ICA1": 0.00020312490028249995,
+                "ICA2": 0.0,
+                "ICA3": 0.9997968750997175
+              }
+            ]
+          },
+          "metrics": [
+            "ICA1",
+            "ICA2",
+            "ICA3"
+          ],
+          "n_eff": 9.00993423827919,
+          "n_lemma": 2,
+          "n_near_frontier": 150,
+          "rows": 1408,
+          "rule": "first 3 ICA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 0.8837559046782342,
+            "loadings": {
+              "ICA1": 0.413074040348812,
+              "ICA2": 0.4034034506032193,
+              "ICA3": -0.8164774909520313
+            }
+          },
+          "tau": 29.371822961072045
+        }
+      },
+      "pca_changes_reading": {
+        "changed": true,
+        "rewritings_with_fewer_contending_scores_than_scores": [
+          "k3"
+        ],
+        "screen_drops_from_contending_set": [
+          "default_Jsc",
+          "default_Voc",
+          "end_of_experiment_PCE"
+        ]
+      },
+      "pca_rewriting": {
+        "k2": {
+          "association": {
+            "PCA1|PCA2": -0.9079521412033542
+          },
+          "band": 0.07283480813777511,
+          "components": [
+            {
+              "T80_hours": 0.16616302229397414,
+              "default_FF": 0.4843041771770535,
+              "default_Jsc": 0.5010812829749816,
+              "default_PCE": 0.5720359340544262,
+              "default_Voc": 0.3640252667597584,
+              "end_of_experiment_PCE": 0.16436957490394236
+            },
+            {
+              "T80_hours": 0.686433957407461,
+              "default_FF": -0.08467635028677972,
+              "default_Jsc": -0.18037697081973786,
+              "default_PCE": -0.12796388218421684,
+              "default_Voc": -0.06054780811223484,
+              "end_of_experiment_PCE": 0.6848807881719898
+            }
+          ],
+          "contending_exponents": {
+            "PCA1": 0.7071177697892518,
+            "PCA2": 0.2928822302107482
+          },
+          "contending_set": [
+            "PCA1",
+            "PCA2"
+          ],
+          "elasticities": {
+            "PCA1|PCA2": -0.5545207119406694,
+            "PCA2|PCA1": -1.8033591504639674
+          },
+          "explained_variance_ratio": [
+            0.41305915464806026,
+            0.2174087874880486
+          ],
+          "exponents": {
+            "PCA1": 0.6432850925167772,
+            "PCA2": 0.3567149074832227
+          },
+          "frac_above": 0.09517045454545454,
+          "k2": {
+            "contending_sets": [
+              [
+                "PCA1"
+              ],
+              [
+                "PCA1",
+                "PCA2"
+              ]
+            ],
+            "mean_slack": 0.5032963590573036,
+            "mean_slack_k1": 0.7259124504832691,
+            "second_term_exponents": {
+              "PCA1": 0.22483779781201424,
+              "PCA2": 0.7751622021879857
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.24096385542168675,
+            "shares": [
+              0.7590361445783133,
+              0.24096385542168675
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "PCA1": 1.0,
+                "PCA2": 0.0
+              },
+              {
+                "PCA1": 0.22483779781201424,
+                "PCA2": 0.7751622021879857
+              }
+            ]
+          },
+          "metrics": [
+            "PCA1",
+            "PCA2"
+          ],
+          "n_eff": 27.712273576823883,
+          "n_lemma": 2,
+          "n_near_frontier": 130,
+          "rows": 1408,
+          "rule": "first 2 PCA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 1.0,
+            "loadings": {
+              "PCA1": 0.7071067811865475,
+              "PCA2": -0.7071067811865475
+            }
+          },
+          "tau": 13.72969910359878
+        },
+        "k3": {
+          "association": {
+            "PCA1|PCA2": -0.2453614104659564,
+            "PCA1|PCA3": -0.9747269244240828,
+            "PCA2|PCA3": 0.26117028669924514
+          },
+          "band": 0.046739229545458685,
+          "components": [
+            {
+              "T80_hours": 0.16616302229397414,
+              "default_FF": 0.4843041771770535,
+              "default_Jsc": 0.5010812829749816,
+              "default_PCE": 0.5720359340544262,
+              "default_Voc": 0.3640252667597584,
+              "end_of_experiment_PCE": 0.16436957490394236
+            },
+            {
+              "T80_hours": 0.686433957407461,
+              "default_FF": -0.08467635028677972,
+              "default_Jsc": -0.18037697081973786,
+              "default_PCE": -0.12796388218421684,
+              "default_Voc": -0.06054780811223484,
+              "end_of_experiment_PCE": 0.6848807881719898
+            },
+            {
+              "T80_hours": 0.04517942815731159,
+              "default_FF": -0.5249121510106116,
+              "default_Jsc": 0.2877734708383657,
+              "default_PCE": -0.28874538083790185,
+              "default_Voc": 0.7454765600342668,
+              "end_of_experiment_PCE": -0.022434035719921697
+            }
+          ],
+          "contending_exponents": {
+            "PCA1": 0.544414807306259,
+            "PCA3": 0.455585192693741
+          },
+          "contending_set": [
+            "PCA1",
+            "PCA3"
+          ],
+          "elasticities": {
+            "PCA1|PCA2": -0.0,
+            "PCA1|PCA3": -0.8187971983265553,
+            "PCA2|PCA1": null,
+            "PCA2|PCA3": null,
+            "PCA3|PCA1": -1.221303641541256,
+            "PCA3|PCA2": -0.0
+          },
+          "explained_variance_ratio": [
+            0.41305915464806026,
+            0.2174087874880486,
+            0.1539847972931504
+          ],
+          "exponents": {
+            "PCA1": 0.5498139104899014,
+            "PCA2": 0.0,
+            "PCA3": 0.4501860895100987
+          },
+          "frac_above": 0.10085227272727272,
+          "k2": {
+            "contending_sets": [
+              [
+                "PCA1",
+                "PCA3"
+              ],
+              [
+                "PCA1",
+                "PCA2",
+                "PCA3"
+              ]
+            ],
+            "mean_slack": 0.29767219136589085,
+            "mean_slack_k1": 0.3929436322887305,
+            "second_term_exponents": {
+              "PCA1": 0.17345065414868202,
+              "PCA2": 0.8091189326808617,
+              "PCA3": 0.0174304131704564
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.062111801242236024,
+            "shares": [
+              0.937888198757764,
+              0.062111801242236024
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "PCA1": 0.550503258054404,
+                "PCA2": 6.125148912865379e-17,
+                "PCA3": 0.44949674194559597
+              },
+              {
+                "PCA1": 0.17345065414868202,
+                "PCA2": 0.8091189326808617,
+                "PCA3": 0.0174304131704564
+              }
+            ]
+          },
+          "metrics": [
+            "PCA1",
+            "PCA2",
+            "PCA3"
+          ],
+          "n_eff": 11.62123353620799,
+          "n_lemma": 2,
+          "n_near_frontier": 157,
+          "rows": 1408,
+          "rule": "first 3 PCA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 0.614202365739868,
+            "loadings": {
+              "PCA1": 0.815550203342728,
+              "PCA2": -0.4418103682448196,
+              "PCA3": -0.37373983509790837
+            }
+          },
+          "tau": 21.395303468308086
+        }
+      },
+      "rows": 1408,
+      "screen": {
+        "carried": [
+          "default_PCE"
+        ],
+        "communality_first_two": {
+          "T80_hours": 0.683074888988912,
+          "default_FF": 0.5906525128119875,
+          "default_Jsc": 0.6647129128671536,
+          "default_PCE": 0.8323400574915444,
+          "default_Voc": 0.333199875508644,
+          "end_of_experiment_PCE": 0.6788274051484151
+        },
+        "explained_variance_ratio": [
+          0.4130591546480599,
+          0.21740878748804873
+        ],
+        "loadings": [
+          {
+            "T80_hours": 0.16616302229397426,
+            "default_FF": 0.48430417717705376,
+            "default_Jsc": 0.5010812829749813,
+            "default_PCE": 0.5720359340544265,
+            "default_Voc": 0.3640252667597585,
+            "end_of_experiment_PCE": 0.16436957490394252
+          },
+          {
+            "T80_hours": 0.6864339574074615,
+            "default_FF": -0.08467635028677964,
+            "default_Jsc": -0.1803769708197381,
+            "default_PCE": -0.12796388218421678,
+            "default_Voc": -0.06054780811223508,
+            "end_of_experiment_PCE": 0.6848807881719899
+          }
+        ],
+        "rule": "carried when the first two components hold at least 0.75 of its variance"
+      },
+      "screened_fit": {
+        "note": "the screen carries 1 of 6 columns, so there is no smaller table to fit"
+      }
+    },
+    "jv_twelve": {
+      "all_columns_fit": {
+        "association": {
+          "default_FF|default_PCE": 0.5985784882624425,
+          "default_FF|forward_FF": 0.4609022447325605,
+          "default_FF|forward_Jsc": -0.03788893447052769,
+          "default_FF|forward_PCE": 0.4402062681404864,
+          "default_FF|forward_Voc": 0.03255663806640288,
+          "default_FF|reverse_FF": 0.9999999999999999,
+          "default_FF|reverse_Jsc": -0.00931497567295123,
+          "default_FF|reverse_PCE": 0.668518492872265,
+          "default_FF|reverse_Voc": 0.05720645285207405,
+          "default_Jsc|default_FF": -0.009314975672951205,
+          "default_Jsc|default_PCE": 0.3241239308103723,
+          "default_Jsc|forward_FF": 0.04925105364220312,
+          "default_Jsc|forward_Jsc": 0.620491645542509,
+          "default_Jsc|forward_PCE": 0.1888025125741828,
+          "default_Jsc|forward_Voc": -0.5592217645573331,
+          "default_Jsc|reverse_FF": -0.009314975672951205,
+          "default_Jsc|reverse_Jsc": 0.9999999999999972,
+          "default_Jsc|reverse_PCE": 0.3351229815900492,
+          "default_Jsc|reverse_Voc": -0.839082786478003,
+          "default_PCE|forward_FF": 0.6008760791803429,
+          "default_PCE|forward_Jsc": 0.12579829981397134,
+          "default_PCE|forward_PCE": 0.6480916566719956,
+          "default_PCE|forward_Voc": -0.0732498344686906,
+          "default_PCE|reverse_FF": 0.5985784882624426,
+          "default_PCE|reverse_Jsc": 0.3241239308103725,
+          "default_PCE|reverse_PCE": 0.9045304411323173,
+          "default_PCE|reverse_Voc": -0.13460118516502814,
+          "default_Voc|default_FF": 0.05720645285207404,
+          "default_Voc|default_Jsc": -0.8390827864780032,
+          "default_Voc|default_PCE": -0.13460118516502814,
+          "default_Voc|forward_FF": 0.053465317379934076,
+          "default_Voc|forward_Jsc": -0.6393958933758994,
+          "default_Voc|forward_PCE": -0.06895018062813567,
+          "default_Voc|forward_Voc": 0.5739317953574563,
+          "default_Voc|reverse_FF": 0.05720645285207404,
+          "default_Voc|reverse_Jsc": -0.839082786478003,
+          "default_Voc|reverse_PCE": -0.1238037587742381,
+          "default_Voc|reverse_Voc": 1.0,
+          "forward_FF|forward_PCE": 0.8736394812861787,
+          "forward_Jsc|forward_FF": -0.3414727418632946,
+          "forward_Jsc|forward_PCE": 0.03780750597756667,
+          "forward_Voc|forward_FF": 0.2310593287788084,
+          "forward_Voc|forward_Jsc": -0.4390942276495117,
+          "forward_Voc|forward_PCE": 0.24441112307898416,
+          "reverse_FF|forward_FF": 0.4609022447325605,
+          "reverse_FF|forward_Jsc": -0.03788893447052769,
+          "reverse_FF|forward_PCE": 0.4402062681404864,
+          "reverse_FF|forward_Voc": 0.03255663806640288,
+          "reverse_FF|reverse_PCE": 0.668518492872265,
+          "reverse_Jsc|forward_FF": 0.04925105364220311,
+          "reverse_Jsc|forward_Jsc": 0.6204916455425077,
+          "reverse_Jsc|forward_PCE": 0.18880251257418287,
+          "reverse_Jsc|forward_Voc": -0.5592217645573305,
+          "reverse_Jsc|reverse_FF": -0.00931497567295123,
+          "reverse_Jsc|reverse_PCE": 0.3351229815900475,
+          "reverse_PCE|forward_FF": 0.6124095699550783,
+          "reverse_PCE|forward_Jsc": 0.11728136157741154,
+          "reverse_PCE|forward_PCE": 0.646317270991327,
+          "reverse_PCE|forward_Voc": -0.09958059474461511,
+          "reverse_Voc|forward_FF": 0.053465317379934076,
+          "reverse_Voc|forward_Jsc": -0.6393958933758994,
+          "reverse_Voc|forward_PCE": -0.06895018062813567,
+          "reverse_Voc|forward_Voc": 0.5739317953574563,
+          "reverse_Voc|reverse_FF": 0.05720645285207404,
+          "reverse_Voc|reverse_Jsc": -0.839082786478003,
+          "reverse_Voc|reverse_PCE": -0.1238037587742381
+        },
+        "band": 0.03404623544562931,
+        "contending_exponents": {
+          "default_Voc": 0.5196053677321675,
+          "forward_Jsc": 0.0005034496936577315,
+          "reverse_Jsc": 0.4798911825741748
+        },
+        "contending_set": [
+          "default_Voc",
+          "reverse_Jsc",
+          "forward_Jsc"
+        ],
+        "elasticities": {
+          "default_FF|default_Jsc": null,
+          "default_FF|default_PCE": null,
+          "default_FF|default_Voc": null,
+          "default_FF|forward_FF": null,
+          "default_FF|forward_Jsc": null,
+          "default_FF|forward_PCE": null,
+          "default_FF|forward_Voc": null,
+          "default_FF|reverse_FF": null,
+          "default_FF|reverse_Jsc": null,
+          "default_FF|reverse_PCE": null,
+          "default_FF|reverse_Voc": null,
+          "default_Jsc|default_FF": -0.0,
+          "default_Jsc|default_PCE": -0.0,
+          "default_Jsc|default_Voc": -7.177053978649052,
+          "default_Jsc|forward_FF": -0.0,
+          "default_Jsc|forward_Jsc": -1.8458035136444886,
+          "default_Jsc|forward_PCE": -1.2713463556916378e-15,
+          "default_Jsc|forward_Voc": -1.0604077832806136,
+          "default_Jsc|reverse_FF": -2.937104506215886e-17,
+          "default_Jsc|reverse_Jsc": -6.190639465598777,
+          "default_Jsc|reverse_PCE": -6.286245813039072e-16,
+          "default_Jsc|reverse_Voc": -0.5017717973176128,
+          "default_PCE|default_FF": null,
+          "default_PCE|default_Jsc": null,
+          "default_PCE|default_Voc": null,
+          "default_PCE|forward_FF": null,
+          "default_PCE|forward_Jsc": null,
+          "default_PCE|forward_PCE": null,
+          "default_PCE|forward_Voc": null,
+          "default_PCE|reverse_FF": null,
+          "default_PCE|reverse_Jsc": null,
+          "default_PCE|reverse_PCE": null,
+          "default_PCE|reverse_Voc": null,
+          "default_Voc|default_FF": -0.0,
+          "default_Voc|default_Jsc": -0.13933293562719332,
+          "default_Voc|default_PCE": -0.0,
+          "default_Voc|forward_FF": -0.0,
+          "default_Voc|forward_Jsc": -0.2571812221470748,
+          "default_Voc|forward_PCE": -1.771404199374498e-16,
+          "default_Voc|forward_Voc": -0.14774972940641248,
+          "default_Voc|reverse_FF": -4.0923539309491746e-18,
+          "default_Voc|reverse_Jsc": -0.8625599701514368,
+          "default_Voc|reverse_PCE": -8.758810832048865e-17,
+          "default_Voc|reverse_Voc": -0.06991333753519603,
+          "forward_FF|default_FF": null,
+          "forward_FF|default_Jsc": null,
+          "forward_FF|default_PCE": null,
+          "forward_FF|default_Voc": null,
+          "forward_FF|forward_Jsc": null,
+          "forward_FF|forward_PCE": null,
+          "forward_FF|forward_Voc": null,
+          "forward_FF|reverse_FF": null,
+          "forward_FF|reverse_Jsc": null,
+          "forward_FF|reverse_PCE": null,
+          "forward_FF|reverse_Voc": null,
+          "forward_Jsc|default_FF": -0.0,
+          "forward_Jsc|default_Jsc": -0.5417694747072658,
+          "forward_Jsc|default_PCE": -0.0,
+          "forward_Jsc|default_Voc": -3.8883087639583884,
+          "forward_Jsc|forward_FF": -0.0,
+          "forward_Jsc|forward_PCE": -6.887766472940553e-16,
+          "forward_Jsc|forward_Voc": -0.574496567723434,
+          "forward_Jsc|reverse_FF": -1.5912335654929236e-17,
+          "forward_Jsc|reverse_Jsc": -3.3538994913795177,
+          "forward_Jsc|reverse_PCE": -3.4056960920109266e-16,
+          "forward_Jsc|reverse_Voc": -0.2718446430556837,
+          "forward_PCE|default_FF": null,
+          "forward_PCE|default_Jsc": null,
+          "forward_PCE|default_PCE": null,
+          "forward_PCE|default_Voc": null,
+          "forward_PCE|forward_FF": null,
+          "forward_PCE|forward_Jsc": null,
+          "forward_PCE|forward_Voc": null,
+          "forward_PCE|reverse_FF": null,
+          "forward_PCE|reverse_Jsc": null,
+          "forward_PCE|reverse_PCE": null,
+          "forward_PCE|reverse_Voc": null,
+          "forward_Voc|default_FF": -0.0,
+          "forward_Voc|default_Jsc": -0.9430334403113033,
+          "forward_Voc|default_PCE": -0.0,
+          "forward_Voc|default_Voc": -6.768201904785343,
+          "forward_Voc|forward_FF": -0.0,
+          "forward_Voc|forward_Jsc": -1.740654437610854,
+          "forward_Voc|forward_PCE": -1.1989221276351232e-15,
+          "forward_Voc|reverse_FF": -2.7697877670505988e-17,
+          "forward_Voc|reverse_Jsc": -5.837980032970544,
+          "forward_Voc|reverse_PCE": -5.928140015712763e-16,
+          "forward_Voc|reverse_Voc": -0.47318758427561436,
+          "reverse_FF|default_FF": null,
+          "reverse_FF|default_Jsc": null,
+          "reverse_FF|default_PCE": null,
+          "reverse_FF|default_Voc": null,
+          "reverse_FF|forward_FF": null,
+          "reverse_FF|forward_Jsc": null,
+          "reverse_FF|forward_PCE": null,
+          "reverse_FF|forward_Voc": null,
+          "reverse_FF|reverse_Jsc": null,
+          "reverse_FF|reverse_PCE": null,
+          "reverse_FF|reverse_Voc": null,
+          "reverse_Jsc|default_FF": -0.0,
+          "reverse_Jsc|default_Jsc": -0.16153420103964608,
+          "reverse_Jsc|default_PCE": -0.0,
+          "reverse_Jsc|default_Voc": -1.1593396802594877,
+          "reverse_Jsc|forward_FF": -0.0,
+          "reverse_Jsc|forward_Jsc": -0.29816039585273396,
+          "reverse_Jsc|forward_PCE": -2.053659178113144e-16,
+          "reverse_Jsc|forward_Voc": -0.1712921240484561,
+          "reverse_Jsc|reverse_FF": -4.7444282978152735e-18,
+          "reverse_Jsc|reverse_PCE": -1.0154436949480869e-16,
+          "reverse_Jsc|reverse_Voc": -0.0810533063839278,
+          "reverse_PCE|default_FF": null,
+          "reverse_PCE|default_Jsc": null,
+          "reverse_PCE|default_PCE": null,
+          "reverse_PCE|default_Voc": null,
+          "reverse_PCE|forward_FF": null,
+          "reverse_PCE|forward_Jsc": null,
+          "reverse_PCE|forward_PCE": null,
+          "reverse_PCE|forward_Voc": null,
+          "reverse_PCE|reverse_FF": null,
+          "reverse_PCE|reverse_Jsc": null,
+          "reverse_PCE|reverse_Voc": null,
+          "reverse_Voc|default_FF": -0.0,
+          "reverse_Voc|default_Jsc": -1.9929378361753909,
+          "reverse_Voc|default_PCE": -0.0,
+          "reverse_Voc|default_Voc": -14.303422426322822,
+          "reverse_Voc|forward_FF": -0.0,
+          "reverse_Voc|forward_Jsc": -3.678571660487581,
+          "reverse_Voc|forward_PCE": -2.533714255141562e-15,
+          "reverse_Voc|forward_Voc": -2.1133267930748088,
+          "reverse_Voc|reverse_FF": -5.853466699238879e-17,
+          "reverse_Voc|reverse_Jsc": -12.337559621112405,
+          "reverse_Voc|reverse_PCE": -1.25280971283047e-15
+        },
+        "exponents": {
+          "default_FF": 0.0,
+          "default_Jsc": 0.05625664923833705,
+          "default_PCE": 0.0,
+          "default_Voc": 0.4037570082414711,
+          "forward_FF": 0.0,
+          "forward_Jsc": 0.10383872082998807,
+          "forward_PCE": 7.152168599258256e-17,
+          "forward_Voc": 0.05965498871362001,
+          "reverse_FF": 1.6523165798252625e-18,
+          "reverse_Jsc": 0.34826463297719673,
+          "reverse_PCE": 3.53643125730104e-17,
+          "reverse_Voc": 0.028227999999386893
+        },
+        "frac_above": 0.10252826832676916,
+        "k2": {
+          "contending_sets": [
+            [
+              "default_Voc",
+              "reverse_Jsc",
+              "forward_Voc"
+            ],
+            [
+              "default_FF",
+              "forward_FF"
+            ]
+          ],
+          "mean_slack": 0.33265441019743014,
+          "mean_slack_k1": 0.4260198618319694,
+          "second_term_exponents": {
+            "default_FF": 0.18999517635972177,
+            "default_Jsc": 3.1986204277348064e-18,
+            "default_PCE": 1.4050730582636104e-16,
+            "default_Voc": 7.423916407188751e-17,
+            "forward_FF": 0.8100048236402778,
+            "forward_Jsc": 2.3194026724234296e-17,
+            "forward_PCE": 1.0051963496542734e-16,
+            "forward_Voc": 2.2262555692330535e-17,
+            "reverse_FF": 0.0,
+            "reverse_Jsc": 4.655538808253606e-17,
+            "reverse_PCE": 0.0,
+            "reverse_Voc": 0.0
+          },
+          "second_term_index": 1,
+          "second_term_share": 0.134185303514377,
+          "shares": [
+            0.865814696485623,
+            0.134185303514377
+          ],
+          "status": "uncertified",
+          "terms": [
+            {
+              "default_FF": 1.523329076215305e-16,
+              "default_Jsc": 0.0008373451577419837,
+              "default_PCE": 2.108103409487543e-16,
+              "default_Voc": 0.45530001519670377,
+              "forward_FF": 0.0,
+              "forward_Jsc": 0.09216638036657585,
+              "forward_PCE": 9.342216339969919e-17,
+              "forward_Voc": 3.28844381794274e-17,
+              "reverse_FF": 0.0,
+              "reverse_Jsc": 0.4366037730381405,
+              "reverse_PCE": 0.0,
+              "reverse_Voc": 0.01509248624083756
+            },
+            {
+              "default_FF": 0.18999517635972177,
+              "default_Jsc": 3.1986204277348064e-18,
+              "default_PCE": 1.4050730582636104e-16,
+              "default_Voc": 7.423916407188751e-17,
+              "forward_FF": 0.8100048236402778,
+              "forward_Jsc": 2.3194026724234296e-17,
+              "forward_PCE": 1.0051963496542734e-16,
+              "forward_Voc": 2.2262555692330535e-17,
+              "reverse_FF": 0.0,
+              "reverse_Jsc": 4.655538808253606e-17,
+              "reverse_PCE": 0.0,
+              "reverse_Voc": 0.0
+            }
+          ]
+        },
+        "metrics": [
+          "default_Voc",
+          "default_Jsc",
+          "default_FF",
+          "default_PCE",
+          "reverse_Voc",
+          "reverse_Jsc",
+          "reverse_FF",
+          "reverse_PCE",
+          "forward_Voc",
+          "forward_Jsc",
+          "forward_FF",
+          "forward_PCE"
+        ],
+        "n_eff": 83.77682039264309,
+        "n_lemma": 3,
+        "n_near_frontier": 821,
+        "rows": 7871,
+        "spread_first_direction": {
+          "explained": 0.6093051724177448,
+          "loadings": {
+            "default_FF": -0.5810845488320157,
+            "default_Jsc": 0.2037875281315301,
+            "default_PCE": 0.08030975233008587,
+            "default_Voc": 0.1906540414260413,
+            "forward_FF": -0.25725935106393283,
+            "forward_Jsc": 0.22648587398446257,
+            "forward_PCE": 0.05630908277955605,
+            "forward_Voc": 0.1887840030260094,
+            "reverse_FF": -0.5810845488320157,
+            "reverse_Jsc": 0.2037875276301043,
+            "reverse_PCE": 0.07865659799413328,
+            "reverse_Voc": 0.1906540414260414
+          }
+        },
+        "tau": 29.371822961072045
+      },
+      "columns": [
+        "default_Voc",
+        "default_Jsc",
+        "default_FF",
+        "default_PCE",
+        "reverse_Voc",
+        "reverse_Jsc",
+        "reverse_FF",
+        "reverse_PCE",
+        "forward_Voc",
+        "forward_Jsc",
+        "forward_FF",
+        "forward_PCE"
+      ],
+      "ica_rewriting": {
+        "k2": {
+          "association": {
+            "ICA1|ICA2": -0.9500566641358629
+          },
+          "band": 0.038646847956357644,
+          "components": [
+            {
+              "default_FF": 0.3674433178962548,
+              "default_Jsc": 0.2480648380453416,
+              "default_PCE": 0.3657698531049343,
+              "default_Voc": -0.10039366014215219,
+              "forward_FF": 0.33807951479533865,
+              "forward_Jsc": 0.2520095729163945,
+              "forward_PCE": 0.37190193390590304,
+              "forward_Voc": -0.0629264561013441,
+              "reverse_FF": 0.3674433178962548,
+              "reverse_Jsc": 0.24806391591324617,
+              "reverse_PCE": 0.364521900705632,
+              "reverse_Voc": -0.10039366014215287
+            },
+            {
+              "default_FF": -0.20566646523731477,
+              "default_Jsc": 0.10141573833511462,
+              "default_PCE": -0.07112020209745001,
+              "default_Voc": 0.5503671086229528,
+              "forward_FF": -0.2095426474094957,
+              "forward_Jsc": 0.08387974560241539,
+              "forward_PCE": -0.08935990022550012,
+              "forward_Voc": 0.46950575655260446,
+              "reverse_FF": -0.20566646523731483,
+              "reverse_Jsc": 0.10141746518162034,
+              "reverse_PCE": -0.06783202977383933,
+              "reverse_Voc": 0.5503671086229571
+            }
+          ],
+          "contending_exponents": {
+            "ICA1": 0.5447961364192156,
+            "ICA2": 0.45520386358078435
+          },
+          "contending_set": [
+            "ICA1",
+            "ICA2"
+          ],
+          "elasticities": {
+            "ICA1|ICA2": -0.8987221034666031,
+            "ICA2|ICA1": -1.1126910044192102
+          },
+          "exponents": {
+            "ICA1": 0.5266700156775149,
+            "ICA2": 0.473329984322485
+          },
+          "frac_above": 0.09922500317621649,
+          "k2": {
+            "contending_sets": [
+              [
+                "ICA1",
+                "ICA2"
+              ],
+              [
+                "ICA1",
+                "ICA2"
+              ]
+            ],
+            "mean_slack": 0.3903149044525073,
+            "mean_slack_k1": 0.4250105932052808,
+            "second_term_exponents": {
+              "ICA1": 0.9381909540391303,
+              "ICA2": 0.061809045960869696
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.1534154535274356,
+            "shares": [
+              0.8465845464725644,
+              0.1534154535274356
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "ICA1": 0.5211806846875606,
+                "ICA2": 0.4788193153124394
+              },
+              {
+                "ICA1": 0.9381909540391303,
+                "ICA2": 0.061809045960869696
+              }
+            ]
+          },
+          "metrics": [
+            "ICA1",
+            "ICA2"
+          ],
+          "n_eff": 16.897625366939604,
+          "n_lemma": 2,
+          "n_near_frontier": 872,
+          "rows": 7871,
+          "rule": "first 2 ICA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 1.0,
+            "loadings": {
+              "ICA1": 0.7071067811865475,
+              "ICA2": -0.7071067811865475
+            }
+          },
+          "tau": 25.875331440464702
+        },
+        "k3": {
+          "association": {
+            "ICA1|ICA2": -0.5143515465619691,
+            "ICA1|ICA3": -0.6324982969522901,
+            "ICA2|ICA3": -0.2691459957767215
+          },
+          "band": 0.029993290767935412,
+          "components": [
+            {
+              "default_FF": 0.5427464633081139,
+              "default_Jsc": -0.23145120353634177,
+              "default_PCE": 0.07253296492237901,
+              "default_Voc": 0.046028459033889454,
+              "forward_FF": 0.48044729215397713,
+              "forward_Jsc": -0.21035703152648227,
+              "forward_PCE": 0.10564305378624077,
+              "forward_Voc": 0.05328739147171886,
+              "reverse_FF": 0.5427464633081142,
+              "reverse_Jsc": -0.23145249052642805,
+              "reverse_PCE": 0.07165672967276156,
+              "reverse_Voc": 0.046028459033889704
+            },
+            {
+              "default_FF": -0.09217147913205857,
+              "default_Jsc": 0.026238152305062306,
+              "default_PCE": -0.07885174673242651,
+              "default_Voc": 0.589213111743171,
+              "forward_FF": -0.11092381832423429,
+              "forward_Jsc": 0.013467459240262377,
+              "forward_PCE": -0.08927474823496305,
+              "forward_Voc": 0.504876012091588,
+              "reverse_FF": -0.09217147913205857,
+              "reverse_Jsc": 0.026239657878111777,
+              "reverse_PCE": -0.07559670850265142,
+              "reverse_Voc": 0.5892131117431755
+            },
+            {
+              "default_FF": -0.19877999741346028,
+              "default_Jsc": 0.45144496539071877,
+              "default_PCE": 0.2657206700245058,
+              "default_Voc": -0.1930430516593414,
+              "forward_FF": -0.16157431112281848,
+              "forward_Jsc": 0.43527132384628675,
+              "forward_PCE": 0.23935473373828167,
+              "forward_Voc": -0.15832054420650174,
+              "reverse_FF": -0.19877999741346036,
+              "reverse_Jsc": 0.45144526708739,
+              "reverse_PCE": 0.26515176518311806,
+              "reverse_Voc": -0.1930430516593427
+            }
+          ],
+          "contending_exponents": {
+            "ICA1": 0.17469926877194297,
+            "ICA2": 0.422578072797378,
+            "ICA3": 0.402722658430679
+          },
+          "contending_set": [
+            "ICA1",
+            "ICA2",
+            "ICA3"
+          ],
+          "elasticities": {
+            "ICA1|ICA2": -2.3142167622961582,
+            "ICA1|ICA3": -2.3038259643252155,
+            "ICA2|ICA1": -0.4321116397963531,
+            "ICA2|ICA3": -0.9955100152499834,
+            "ICA3|ICA1": -0.4340605651142999,
+            "ICA3|ICA2": -1.004510235639256
+          },
+          "exponents": {
+            "ICA1": 0.17799793427370184,
+            "ICA2": 0.41192580315029065,
+            "ICA3": 0.4100762625760075
+          },
+          "frac_above": 0.10773726337187142,
+          "k2": {
+            "contending_sets": [
+              [
+                "ICA1",
+                "ICA2",
+                "ICA3"
+              ],
+              [
+                "ICA1",
+                "ICA2",
+                "ICA3"
+              ]
+            ],
+            "mean_slack": 0.2925491242900345,
+            "mean_slack_k1": 0.3393520738300987,
+            "second_term_exponents": {
+              "ICA1": 0.6236617086633599,
+              "ICA2": 0.048260314672534624,
+              "ICA3": 0.32807797666410554
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.14620535714285715,
+            "shares": [
+              0.8537946428571429,
+              0.14620535714285715
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "ICA1": 0.17422418171064155,
+                "ICA2": 0.4210315309424583,
+                "ICA3": 0.4047442873469001
+              },
+              {
+                "ICA1": 0.6236617086633599,
+                "ICA2": 0.048260314672534624,
+                "ICA3": 0.32807797666410554
+              }
+            ]
+          },
+          "metrics": [
+            "ICA1",
+            "ICA2",
+            "ICA3"
+          ],
+          "n_eff": 94.40372274653481,
+          "n_lemma": 3,
+          "n_near_frontier": 862,
+          "rows": 7871,
+          "rule": "first 3 ICA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 0.8506597737676369,
+            "loadings": {
+              "ICA1": 0.8155280475890615,
+              "ICA2": -0.37333289403264003,
+              "ICA3": -0.44219515355642147
+            }
+          },
+          "tau": 33.34078970317784
+        }
+      },
+      "pca_changes_reading": {
+        "changed": true,
+        "rewritings_with_fewer_contending_scores_than_scores": [
+          "k3"
+        ],
+        "screen_drops_from_contending_set": [
+          "forward_Jsc"
+        ]
+      },
+      "pca_rewriting": {
+        "k2": {
+          "association": {
+            "PCA1|PCA2": -0.9173874741939883
+          },
+          "band": 0.04386913376508307,
+          "components": [
+            {
+              "default_FF": 0.27250140956105584,
+              "default_Jsc": 0.32147447800802914,
+              "default_PCE": 0.3477268982922121,
+              "default_Voc": 0.20836923941737714,
+              "forward_FF": 0.2391000760028768,
+              "forward_Jsc": 0.31562751277447565,
+              "forward_PCE": 0.3438000489168953,
+              "forward_Voc": 0.2018795686625829,
+              "reverse_FF": 0.27250140956105584,
+              "reverse_Jsc": 0.32147448704559395,
+              "reverse_PCE": 0.34828349807678877,
+              "reverse_Voc": 0.20836923941737776
+            },
+            {
+              "default_FF": -0.25718155060448106,
+              "default_Jsc": 0.04600688518569023,
+              "default_PCE": -0.13387320609742237,
+              "default_Voc": 0.5220093294493742,
+              "forward_FF": -0.255196871541081,
+              "forward_Jsc": 0.029234004394857217,
+              "forward_PCE": -0.15170115750135538,
+              "forward_Voc": 0.4410376531261734,
+              "reverse_FF": -0.257181550604481,
+              "reverse_Jsc": 0.046008637355148575,
+              "reverse_PCE": -0.1306324368860954,
+              "reverse_Voc": 0.5220093294493762
+            }
+          ],
+          "contending_exponents": {
+            "PCA1": 0.7178736877063627,
+            "PCA2": 0.2821263122936373
+          },
+          "contending_set": [
+            "PCA1",
+            "PCA2"
+          ],
+          "elasticities": {
+            "PCA1|PCA2": -0.4769229875140869,
+            "PCA2|PCA1": -2.09677458663169
+          },
+          "explained_variance_ratio": [
+            0.6124598762444157,
+            0.17342301190144901
+          ],
+          "exponents": {
+            "PCA1": 0.6770833743221577,
+            "PCA2": 0.32291662567784224
+          },
+          "frac_above": 0.09731927328166688,
+          "k2": {
+            "contending_sets": "term 1: only 5 near-frontier rows (|log V| < 0.0438691) but min_near_frontier = 10; use a larger band, band=0.087 (the smallest round band with 10 rows on this term), or fit at temperature=11.5 (the b",
+            "mean_slack": 0.40191271469192275,
+            "mean_slack_k1": 0.4428852453617049,
+            "second_term_exponents": {
+              "PCA1": 0.46853427609486825,
+              "PCA2": 0.5314657239051318
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.005252100840336135,
+            "shares": [
+              0.9947478991596639,
+              0.005252100840336135
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "PCA1": 0.6929030555071339,
+                "PCA2": 0.307096944492866
+              },
+              {
+                "PCA1": 0.46853427609486825,
+                "PCA2": 0.5314657239051318
+              }
+            ]
+          },
+          "metrics": [
+            "PCA1",
+            "PCA2"
+          ],
+          "n_eff": 6.851113148651474,
+          "n_lemma": 2,
+          "n_near_frontier": 936,
+          "rows": 7871,
+          "rule": "first 2 PCA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 1.0,
+            "loadings": {
+              "PCA1": 0.7071067811865475,
+              "PCA2": -0.7071067811865475
+            }
+          },
+          "tau": 22.795070569547782
+        },
+        "k3": {
+          "association": {
+            "PCA1|PCA2": -0.9173874741939883,
+            "PCA1|PCA3": 0.42177467723507533,
+            "PCA2|PCA3": -0.4169089189183789
+          },
+          "band": 0.04386913376508307,
+          "components": [
+            {
+              "default_FF": 0.27250140956105584,
+              "default_Jsc": 0.32147447800802914,
+              "default_PCE": 0.3477268982922121,
+              "default_Voc": 0.20836923941737714,
+              "forward_FF": 0.2391000760028768,
+              "forward_Jsc": 0.31562751277447565,
+              "forward_PCE": 0.3438000489168953,
+              "forward_Voc": 0.2018795686625829,
+              "reverse_FF": 0.27250140956105584,
+              "reverse_Jsc": 0.32147448704559395,
+              "reverse_PCE": 0.34828349807678877,
+              "reverse_Voc": 0.20836923941737776
+            },
+            {
+              "default_FF": -0.25718155060448106,
+              "default_Jsc": 0.04600688518569023,
+              "default_PCE": -0.13387320609742237,
+              "default_Voc": 0.5220093294493742,
+              "forward_FF": -0.255196871541081,
+              "forward_Jsc": 0.029234004394857217,
+              "forward_PCE": -0.15170115750135538,
+              "forward_Voc": 0.4410376531261734,
+              "reverse_FF": -0.257181550604481,
+              "reverse_Jsc": 0.046008637355148575,
+              "reverse_PCE": -0.1306324368860954,
+              "reverse_Voc": 0.5220093294493762
+            },
+            {
+              "default_FF": 0.4123539102117752,
+              "default_Jsc": -0.362547458120781,
+              "default_PCE": -0.10230313463903051,
+              "default_Voc": 0.21507037962415138,
+              "forward_FF": 0.35328582045068774,
+              "forward_Jsc": -0.343671610985942,
+              "forward_PCE": -0.070709405734932,
+              "forward_Voc": 0.18903992806943298,
+              "reverse_FF": 0.4123539102117753,
+              "reverse_Jsc": -0.3625481535282777,
+              "reverse_PCE": -0.10204534833160436,
+              "reverse_Voc": 0.21507037962415185
+            }
+          ],
+          "contending_exponents": {
+            "PCA1": 0.7178736877063627,
+            "PCA2": 0.28212631229363727
+          },
+          "contending_set": [
+            "PCA1",
+            "PCA2"
+          ],
+          "elasticities": {
+            "PCA1|PCA2": -0.4769229875140869,
+            "PCA1|PCA3": -0.0,
+            "PCA2|PCA1": -2.0967745866316894,
+            "PCA2|PCA3": -0.0,
+            "PCA3|PCA1": null,
+            "PCA3|PCA2": null
+          },
+          "explained_variance_ratio": [
+            0.6124598762444157,
+            0.17342301190144901,
+            0.1250470002271656
+          ],
+          "exponents": {
+            "PCA1": 0.6770833743221578,
+            "PCA2": 0.3229166256778423,
+            "PCA3": 0.0
+          },
+          "frac_above": 0.09731927328166688,
+          "k2": {
+            "contending_sets": [
+              [
+                "PCA1",
+                "PCA2"
+              ],
+              [
+                "PCA1",
+                "PCA2",
+                "PCA3"
+              ]
+            ],
+            "mean_slack": 0.3919309642230668,
+            "mean_slack_k1": 0.44288524536170504,
+            "second_term_exponents": {
+              "PCA1": 0.3383508172869945,
+              "PCA2": 0.5613861886514255,
+              "PCA3": 0.1002629940615799
+            },
+            "second_term_index": 1,
+            "second_term_share": 0.010460251046025104,
+            "shares": [
+              0.9895397489539749,
+              0.010460251046025104
+            ],
+            "status": "certified",
+            "terms": [
+              {
+                "PCA1": 0.689407993972533,
+                "PCA2": 0.31059200602746695,
+                "PCA3": 0.0
+              },
+              {
+                "PCA1": 0.3383508172869945,
+                "PCA2": 0.5613861886514255,
+                "PCA3": 0.1002629940615799
+              }
+            ]
+          },
+          "metrics": [
+            "PCA1",
+            "PCA2",
+            "PCA3"
+          ],
+          "n_eff": 6.851113148651462,
+          "n_lemma": 2,
+          "n_near_frontier": 936,
+          "rows": 7871,
+          "rule": "first 3 PCA scores of the conditioned log-metrics, centred, unit spread, exponentiated; each component signed so its largest loading is positive",
+          "spread_first_direction": {
+            "explained": 0.7854387273016576,
+            "loadings": {
+              "PCA1": -0.08590749760066527,
+              "PCA2": 0.7461357497019441,
+              "PCA3": -0.6602282521012788
+            }
+          },
+          "tau": 22.795070569547782
+        }
+      },
+      "rows": 7871,
+      "screen": {
+        "carried": [
+          "default_Voc",
+          "default_Jsc",
+          "default_PCE",
+          "reverse_Voc",
+          "reverse_Jsc",
+          "reverse_PCE",
+          "forward_PCE"
+        ],
+        "communality_first_two": {
+          "default_FF": 0.6834005967736155,
+          "default_Jsc": 0.7639470400463867,
+          "default_PCE": 0.9259567709327043,
+          "default_Voc": 0.8861797049796583,
+          "forward_FF": 0.5556945009130958,
+          "forward_Jsc": 0.7339429201238296,
+          "forward_PCE": 0.9165941776228497,
+          "forward_Voc": 0.70433115963121,
+          "reverse_FF": 0.6834005967736155,
+          "reverse_Jsc": 0.763947418277406,
+          "reverse_PCE": 0.9270200666963431,
+          "reverse_Voc": 0.8861797049796623
+        },
+        "explained_variance_ratio": [
+          0.6124598762444156,
+          0.17342301190144901
+        ],
+        "loadings": [
+          {
+            "default_FF": 0.2725014095610557,
+            "default_Jsc": 0.321474478008029,
+            "default_PCE": 0.3477268982922121,
+            "default_Voc": 0.20836923941737712,
+            "forward_FF": 0.23910007600287678,
+            "forward_Jsc": 0.3156275127744756,
+            "forward_PCE": 0.34380004891689525,
+            "forward_Voc": 0.20187956866258275,
+            "reverse_FF": 0.2725014095610557,
+            "reverse_Jsc": 0.32147448704559406,
+            "reverse_PCE": 0.34828349807678866,
+            "reverse_Voc": 0.20836923941737762
+          },
+          {
+            "default_FF": -0.2571815506044812,
+            "default_Jsc": 0.046006885185690294,
+            "default_PCE": -0.13387320609742243,
+            "default_Voc": 0.5220093294493745,
+            "forward_FF": -0.2551968715410812,
+            "forward_Jsc": 0.0292340043948576,
+            "forward_PCE": -0.15170115750135538,
+            "forward_Voc": 0.44103765312617343,
+            "reverse_FF": -0.2571815506044812,
+            "reverse_Jsc": 0.04600863735514873,
+            "reverse_PCE": -0.13063243688609538,
+            "reverse_Voc": 0.5220093294493757
+          }
+        ],
+        "rule": "carried when the first two components hold at least 0.75 of its variance"
+      },
+      "screened_fit": {
+        "association": {
+          "default_Jsc|default_PCE": 0.3761885646961419,
+          "default_Jsc|forward_PCE": 0.24197473197672634,
+          "default_Jsc|reverse_Jsc": 1.0,
+          "default_Jsc|reverse_PCE": 0.4042991394399178,
+          "default_Jsc|reverse_Voc": -0.8763658010375763,
+          "default_PCE|forward_PCE": 0.6630116098019512,
+          "default_PCE|reverse_Jsc": 0.3761885646961417,
+          "default_PCE|reverse_PCE": 0.8943192706481609,
+          "default_PCE|reverse_Voc": -0.23013916503040546,
+          "default_Voc|default_Jsc": -0.8763658010375762,
+          "default_Voc|default_PCE": -0.2301391650304055,
+          "default_Voc|forward_PCE": -0.10771794299307061,
+          "default_Voc|reverse_Jsc": -0.8763658010375764,
+          "default_Voc|reverse_PCE": -0.23793455107147635,
+          "default_Voc|reverse_Voc": 1.0,
+          "reverse_Jsc|forward_PCE": 0.2419747319767264,
+          "reverse_Jsc|reverse_PCE": 0.4042991394399175,
+          "reverse_PCE|forward_PCE": 0.6619602102739062,
+          "reverse_Voc|forward_PCE": -0.10771794299307061,
+          "reverse_Voc|reverse_Jsc": -0.8763658010375764,
+          "reverse_Voc|reverse_PCE": -0.23793455107147635
+        },
+        "band": 0.03404623544562931,
+        "contending_exponents": {
+          "default_Voc": 0.5200963167970133,
+          "reverse_Jsc": 0.4799036832029867
+        },
+        "contending_set": [
+          "default_Voc",
+          "reverse_Jsc"
+        ],
+        "elasticities": {
+          "default_Jsc|default_PCE": null,
+          "default_Jsc|default_Voc": null,
+          "default_Jsc|forward_PCE": null,
+          "default_Jsc|reverse_Jsc": null,
+          "default_Jsc|reverse_PCE": null,
+          "default_Jsc|reverse_Voc": null,
+          "default_PCE|default_Jsc": null,
+          "default_PCE|default_Voc": null,
+          "default_PCE|forward_PCE": null,
+          "default_PCE|reverse_Jsc": null,
+          "default_PCE|reverse_PCE": null,
+          "default_PCE|reverse_Voc": null,
+          "default_Voc|default_Jsc": -0.0002460839704248725,
+          "default_Voc|default_PCE": -0.0,
+          "default_Voc|forward_PCE": -1.9281816261653596e-16,
+          "default_Voc|reverse_Jsc": -0.9234565570951467,
+          "default_Voc|reverse_PCE": -2.138818361479418e-16,
+          "default_Voc|reverse_Voc": -4.1007537723292095e-08,
+          "forward_PCE|default_Jsc": null,
+          "forward_PCE|default_PCE": null,
+          "forward_PCE|default_Voc": null,
+          "forward_PCE|reverse_Jsc": null,
+          "forward_PCE|reverse_PCE": null,
+          "forward_PCE|reverse_Voc": null,
+          "reverse_Jsc|default_Jsc": -0.0002664813721166936,
+          "reverse_Jsc|default_PCE": -0.0,
+          "reverse_Jsc|default_Voc": -1.0828879737944908,
+          "reverse_Jsc|forward_PCE": -2.0880046942659727e-16,
+          "reverse_Jsc|reverse_PCE": -2.3161006817769e-16,
+          "reverse_Jsc|reverse_Voc": -4.440656943547692e-08,
+          "reverse_PCE|default_Jsc": null,
+          "reverse_PCE|default_PCE": null,
+          "reverse_PCE|default_Voc": null,
+          "reverse_PCE|forward_PCE": null,
+          "reverse_PCE|reverse_Jsc": null,
+          "reverse_PCE|reverse_Voc": null,
+          "reverse_Voc|default_Jsc": null,
+          "reverse_Voc|default_PCE": null,
+          "reverse_Voc|default_Voc": null,
+          "reverse_Voc|forward_PCE": null,
+          "reverse_Voc|reverse_Jsc": null,
+          "reverse_Voc|reverse_PCE": null
+        },
+        "exponents": {
+          "default_Jsc": 0.00012792203947008905,
+          "default_PCE": 0.0,
+          "default_Voc": 0.5198308498080034,
+          "forward_PCE": 1.0023282933137169e-16,
+          "reverse_Jsc": 0.4800412068355432,
+          "reverse_PCE": 1.1118237664328074e-16,
+          "reverse_Voc": 2.1316983183232688e-08
+        },
+        "frac_above": 0.09731927328166688,
+        "k2": {
+          "contending_sets": [
+            [
+              "default_Voc",
+              "reverse_Jsc"
+            ],
+            [
+              "default_Voc",
+              "reverse_Jsc",
+              "reverse_PCE"
+            ]
+          ],
+          "mean_slack": 0.3800933271944049,
+          "mean_slack_k1": 0.42868786232283607,
+          "second_term_exponents": {
+            "default_Jsc": 0.003387895450632787,
+            "default_PCE": 0.0,
+            "default_Voc": 0.14829581652324972,
+            "forward_PCE": 3.0696541002785007e-18,
+            "reverse_Jsc": 0.6477971600543634,
+            "reverse_PCE": 0.1858996836503098,
+            "reverse_Voc": 0.014619444321444389
+          },
+          "second_term_index": 1,
+          "second_term_share": 0.3726790450928382,
+          "shares": [
+            0.6273209549071618,
+            0.3726790450928382
+          ],
+          "status": "uncertified",
+          "terms": [
+            {
+              "default_Jsc": 1.7119123591006975e-17,
+              "default_PCE": 7.274284267339625e-17,
+              "default_Voc": 0.5962313009153397,
+              "forward_PCE": 6.201697891914224e-17,
+              "reverse_Jsc": 0.36492878801513234,
+              "reverse_PCE": 0.0,
+              "reverse_Voc": 0.03883991106952781
+            },
+            {
+              "default_Jsc": 0.003387895450632787,
+              "default_PCE": 0.0,
+              "default_Voc": 0.14829581652324972,
+              "forward_PCE": 3.0696541002785007e-18,
+              "reverse_Jsc": 0.6477971600543634,
+              "reverse_PCE": 0.1858996836503098,
+              "reverse_Voc": 0.014619444321444389
+            }
+          ]
+        },
+        "metrics": [
+          "default_Voc",
+          "default_Jsc",
+          "default_PCE",
+          "reverse_Voc",
+          "reverse_Jsc",
+          "reverse_PCE",
+          "forward_PCE"
+        ],
+        "n_eff": 81.8454021109331,
+        "n_lemma": 2,
+        "n_near_frontier": 813,
+        "rows": 7871,
+        "rule": "the carried columns of the screen, primary conditioning",
+        "spread_first_direction": {
+          "explained": 0.5627004106454496,
+          "loadings": {
+            "default_Jsc": -0.2860637183206734,
+            "default_PCE": -0.1824977927496868,
+            "default_Voc": 0.5923881611772006,
+            "forward_PCE": -0.2809057196326608,
+            "reverse_Jsc": -0.28606365244430515,
+            "reverse_PCE": -0.14924543920707575,
+            "reverse_Voc": 0.5923881611772013
+          }
+        },
+        "tau": 29.371822961072045
+      }
+    }
+  },
+  "ladder": {
+    "extremes_capped": {
+      "association": {
+        "Jsc|FF": -0.26625629933958556,
+        "Voc|FF": 0.23246809564898463,
+        "Voc|Jsc": -0.8183873616140342
+      },
+      "band": 0.038646847956357644,
+      "contending_exponents": {
+        "FF": 0.1660355904158881,
+        "Jsc": 0.6162074577200553,
+        "Voc": 0.21775695186405664
+      },
+      "contending_set": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "elasticities": {
+        "FF|Jsc": -47.90037444685075,
+        "FF|Voc": -15.385629609867216,
+        "Jsc|FF": -0.020876663523989338,
+        "Jsc|Voc": -0.32120061246992526,
+        "Voc|FF": -0.06499571518078619,
+        "Voc|Jsc": -3.1133190946005196
+      },
+      "exponents": {
+        "FF": 0.015555485438443562,
+        "Jsc": 0.7451135772039809,
+        "Voc": 0.23933093735757557
+      },
+      "frac_above": 0.10896603396603396,
+      "k2": {
+        "contending_sets": [
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ],
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ]
+        ],
+        "mean_slack": 0.4031693366755385,
+        "mean_slack_k1": 0.4914489519539748,
+        "second_term_exponents": {
+          "FF": 0.45211301852534996,
+          "Jsc": 0.18521158922226189,
+          "Voc": 0.36267539225238815
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.14765710134398838,
+        "shares": [
+          0.8523428986560116,
+          0.14765710134398838
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "FF": 0.0,
+            "Jsc": 0.7827407450000796,
+            "Voc": 0.2172592549999204
+          },
+          {
+            "FF": 0.45211301852534996,
+            "Jsc": 0.18521158922226189,
+            "Voc": 0.36267539225238815
+          }
+        ]
+      },
+      "metrics": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "n_eff": 32.37495204298669,
+      "n_lemma": 3,
+      "n_near_frontier": 5118,
+      "rows": 40040,
+      "rule": "Voc at most 2 V and Jsc at most 40 mA/cm2 (record's S1)",
+      "spread_first_direction": {
+        "explained": 0.8138917361375284,
+        "loadings": {
+          "FF": -0.814549035492433,
+          "Jsc": 0.4560843690445019,
+          "Voc": 0.35846466644793107
+        }
+      },
+      "tau": 25.875331440464702
+    },
+    "no_scaler": {
+      "association": {
+        "Jsc|FF": -0.02655885937200903,
+        "Voc|FF": -0.05352711690124929,
+        "Voc|Jsc": 0.293072686281685
+      },
+      "band": 0.029993290767935412,
+      "contending_exponents": {
+        "FF": 0.8250360809610764,
+        "Voc": 0.1749639190389236
+      },
+      "contending_set": [
+        "Voc",
+        "FF"
+      ],
+      "elasticities": {
+        "FF|Jsc": -0.0,
+        "FF|Voc": -0.006308536598657062,
+        "Jsc|FF": null,
+        "Jsc|Voc": null,
+        "Voc|FF": -158.51536792429425,
+        "Voc|Jsc": -0.0
+      },
+      "exponents": {
+        "FF": 0.9937310115444513,
+        "Jsc": 0.0,
+        "Voc": 0.006268988455548675
+      },
+      "frac_above": 0.0958921213634661,
+      "k2": {
+        "contending_sets": [
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ],
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ]
+        ],
+        "mean_slack": 0.1410832112703101,
+        "mean_slack_k1": 0.1970314243197664,
+        "second_term_exponents": {
+          "FF": 0.8792647444641719,
+          "Jsc": 1.6667611090306935e-18,
+          "Voc": 0.12073525553582816
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.25815187953634494,
+        "shares": [
+          0.7418481204636551,
+          0.25815187953634494
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "FF": 0.5727054294309171,
+            "Jsc": 0.22095040052895415,
+            "Voc": 0.20634417004012873
+          },
+          {
+            "FF": 0.8792647444641719,
+            "Jsc": 1.6667611090306935e-18,
+            "Voc": 0.12073525553582816
+          }
+        ]
+      },
+      "metrics": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "n_eff": 24.61331091824554,
+      "n_lemma": 2,
+      "n_near_frontier": 6880,
+      "rows": 40045,
+      "rule": "pure log, no scaler (metric = attribute in V, mA/cm2, fraction)",
+      "spread_first_direction": {
+        "explained": 0.7188745716822147,
+        "loadings": {
+          "FF": 0.37156031805873135,
+          "Jsc": -0.8154286304267565,
+          "Voc": 0.4438683123680252
+        }
+      },
+      "tau": 33.34078970317784
+    },
+    "pce_added": {
+      "association": {
+        "FF|PCE": 0.6193082914347022,
+        "Jsc|FF": -0.3415354180404379,
+        "Jsc|PCE": -0.2421768716338953,
+        "Voc|FF": -0.04982708714450062,
+        "Voc|Jsc": -0.69009221599474,
+        "Voc|PCE": 0.20225992881604501
+      },
+      "band": 0.04386913376508307,
+      "contending_exponents": {
+        "FF": 0.04604644483602304,
+        "Jsc": 0.3531701140784241,
+        "PCE": 0.47608446499476564,
+        "Voc": 0.1246989760907873
+      },
+      "contending_set": [
+        "Voc",
+        "Jsc",
+        "FF",
+        "PCE"
+      ],
+      "elasticities": {
+        "FF|Jsc": null,
+        "FF|PCE": null,
+        "FF|Voc": null,
+        "Jsc|FF": -6.654689138175095e-19,
+        "Jsc|PCE": -1.393551595922182,
+        "Jsc|Voc": -0.37769010954825466,
+        "PCE|FF": -4.775344635712148e-19,
+        "PCE|Jsc": -0.7175909402466369,
+        "PCE|Voc": -0.27102700083258735,
+        "Voc|FF": -1.7619442421022345e-18,
+        "Voc|Jsc": -2.6476732504223475,
+        "Voc|PCE": -3.6896692836065337
+      },
+      "exponents": {
+        "FF": 2.4013384054659415e-19,
+        "Jsc": 0.3608490728275336,
+        "PCE": 0.5028618013258491,
+        "Voc": 0.1362891258466173
+      },
+      "frac_above": 0.10560280140070034,
+      "k2": {
+        "contending_sets": [
+          [
+            "Voc",
+            "Jsc",
+            "PCE"
+          ],
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ]
+        ],
+        "mean_slack": 0.5168930535942492,
+        "mean_slack_k1": 0.5945156082775336,
+        "second_term_exponents": {
+          "FF": 0.7154955942935305,
+          "Jsc": 0.021281752914948673,
+          "PCE": 2.1602834165892055e-17,
+          "Voc": 0.26322265279152085
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.013961192617132039,
+        "shares": [
+          0.986038807382868,
+          0.013961192617132039
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "FF": 2.186869663221152e-17,
+            "Jsc": 0.36369640292937966,
+            "PCE": 0.5066355444389812,
+            "Voc": 0.1296680526316392
+          },
+          {
+            "FF": 0.7154955942935305,
+            "Jsc": 0.021281752914948673,
+            "PCE": 2.1602834165892055e-17,
+            "Voc": 0.26322265279152085
+          }
+        ]
+      },
+      "metrics": [
+        "Voc",
+        "Jsc",
+        "FF",
+        "PCE"
+      ],
+      "n_eff": 108.5859387325692,
+      "n_lemma": 4,
+      "n_near_frontier": 4167,
+      "rows": 39980,
+      "rule": "derived PCE added as a fourth metric (record's S6)",
+      "spread_first_direction": {
+        "explained": 0.6969832809915468,
+        "loadings": {
+          "FF": -0.849192905706131,
+          "Jsc": 0.32570777783879934,
+          "PCE": 0.12801240128411376,
+          "Voc": 0.39547272658321786
+        }
+      },
+      "tau": 22.795070569547782
+    },
+    "primary": {
+      "association": {
+        "Jsc|FF": -0.6274698572219451,
+        "Voc|FF": -0.38620342786579626,
+        "Voc|Jsc": -0.142553563053765
+      },
+      "band": 0.05305502573772887,
+      "contending_exponents": {
+        "FF": 0.427317476432078,
+        "Jsc": 0.4064432526678338,
+        "Voc": 0.16623927090008814
+      },
+      "contending_set": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "elasticities": {
+        "FF|Jsc": -0.9751319430418195,
+        "FF|Voc": -0.4138892341681383,
+        "Jsc|FF": -1.025502248322014,
+        "Jsc|Voc": -0.4244443401957024,
+        "Voc|FF": -2.4161053669585426,
+        "Voc|Jsc": -2.3560215210760522
+      },
+      "exponents": {
+        "FF": 0.41858147158321135,
+        "Jsc": 0.40817216370624104,
+        "Voc": 0.1732463647105477
+      },
+      "frac_above": 0.103059058559121,
+      "k2": {
+        "contending_sets": [
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ],
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ]
+        ],
+        "mean_slack": 0.5598306487825426,
+        "mean_slack_k1": 0.5942947685617991,
+        "second_term_exponents": {
+          "FF": 0.7308268119191124,
+          "Jsc": 0.0,
+          "Voc": 0.26917318808088764
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.024495058014611087,
+        "shares": [
+          0.975504941985389,
+          0.024495058014611087
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "FF": 0.4152303673547924,
+            "Jsc": 0.41266185712123876,
+            "Voc": 0.1721077755239689
+          },
+          {
+            "FF": 0.7308268119191124,
+            "Jsc": 0.0,
+            "Voc": 0.26917318808088764
+          }
+        ]
+      },
+      "metrics": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "n_eff": 36.909175861915806,
+      "n_lemma": 3,
+      "n_near_frontier": 4563,
+      "rows": 40045,
+      "rule": "record's rule: Voc, Jsc, FF of the default scan, log, standard scaler",
+      "spread_first_direction": {
+        "explained": 0.6308611776125638,
+        "loadings": {
+          "FF": -0.6418912215357686,
+          "Jsc": -0.11606897112440123,
+          "Voc": 0.7579601926601698
+        }
+      },
+      "tau": 18.848355760741303
+    },
+    "quantile": {
+      "association": {
+        "Jsc|FF": -0.3904044609693762,
+        "Voc|FF": -0.441738200698853,
+        "Voc|Jsc": -0.4987043028705991
+      },
+      "band": 0.03404623544562931,
+      "contending_exponents": {
+        "FF": 0.04516468696899528,
+        "Jsc": 0.1728460227383503,
+        "Voc": 0.7819892902926544
+      },
+      "contending_set": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "elasticities": {
+        "FF|Jsc": -1.0394643202040978,
+        "FF|Voc": -1.5241453512455667,
+        "Jsc|FF": -0.962033982853448,
+        "Jsc|Voc": -1.4662796227063402,
+        "Voc|FF": -0.6561054030593453,
+        "Voc|Jsc": -0.6819981567733179
+      },
+      "exponents": {
+        "FF": 0.2806143467427518,
+        "Jsc": 0.2916886011764715,
+        "Voc": 0.42769705208077674
+      },
+      "frac_above": 0.09803970533150207,
+      "k2": {
+        "contending_sets": [
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ],
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ]
+        ],
+        "mean_slack": 0.25934380063667356,
+        "mean_slack_k1": 0.3188831339817626,
+        "second_term_exponents": {
+          "FF": 0.22658774452140093,
+          "Jsc": 0.7723650093328653,
+          "Voc": 0.001047246145733868
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.496485473289597,
+        "shares": [
+          0.503514526710403,
+          0.496485473289597
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "FF": 0.023627633980662616,
+            "Jsc": 0.08330121699630183,
+            "Voc": 0.8930711490230354
+          },
+          {
+            "FF": 0.22658774452140093,
+            "Jsc": 0.7723650093328653,
+            "Voc": 0.001047246145733868
+          }
+        ]
+      },
+      "metrics": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "n_eff": 1453.0606076385889,
+      "n_lemma": 3,
+      "n_near_frontier": 2781,
+      "rows": 40045,
+      "rule": "QuantileTransformer uniform of each attribute, shifted into (0, 1]",
+      "spread_first_direction": {
+        "explained": 0.5837590600643195,
+        "loadings": {
+          "FF": -0.670128959387898,
+          "Jsc": 0.7390389632226366,
+          "Voc": -0.06891000383473865
+        }
+      },
+      "tau": 29.371822961072045
+    },
+    "robust_scaler": {
+      "association": {
+        "Jsc|FF": -0.6445956930330702,
+        "Voc|FF": -0.3920236706941221,
+        "Voc|Jsc": -0.12747023549241587
+      },
+      "band": 0.07283480813777511,
+      "contending_exponents": {
+        "FF": 0.6017405012111385,
+        "Jsc": 0.27902318578051116,
+        "Voc": 0.11923631300835033
+      },
+      "contending_set": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "elasticities": {
+        "FF|Jsc": -0.4458581798723214,
+        "FF|Voc": -0.18951415383051137,
+        "Jsc|FF": -2.2428656580582773,
+        "Jsc|Voc": -0.4250547873424275,
+        "Voc|FF": -5.276650739734893,
+        "Voc|Jsc": -2.3526378946401376
+      },
+      "exponents": {
+        "FF": 0.6114815442277821,
+        "Jsc": 0.27263404833491534,
+        "Voc": 0.11588440743730254
+      },
+      "frac_above": 0.09204644774628543,
+      "k2": {
+        "contending_sets": [
+          [
+            "Voc",
+            "Jsc",
+            "FF"
+          ],
+          [
+            "Voc",
+            "FF"
+          ]
+        ],
+        "mean_slack": 0.796917530221041,
+        "mean_slack_k1": 0.8855415832108655,
+        "second_term_exponents": {
+          "FF": 0.868556282794932,
+          "Jsc": 0.0,
+          "Voc": 0.131443717205068
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.042260098062106004,
+        "shares": [
+          0.957739901937894,
+          0.042260098062106004
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "FF": 0.6095024960622609,
+            "Jsc": 0.2757126929922165,
+            "Voc": 0.11478481094552266
+          },
+          {
+            "FF": 0.868556282794932,
+            "Jsc": 0.0,
+            "Voc": 0.131443717205068
+          }
+        ]
+      },
+      "metrics": [
+        "Voc",
+        "Jsc",
+        "FF"
+      ],
+      "n_eff": 37.329980571365944,
+      "n_lemma": 3,
+      "n_near_frontier": 4122,
+      "rows": 40045,
+      "rule": "robust scaler of the log (median and interquartile range)",
+      "spread_first_direction": {
+        "explained": 0.7067022846005667,
+        "loadings": {
+          "FF": -0.3472550234573178,
+          "Jsc": -0.4663415980827001,
+          "Voc": 0.8135966215400179
+        }
+      },
+      "tau": 13.72969910359878
+    }
+  },
+  "log_spread_of_attributes": {
+    "FF": 0.23504815756241929,
+    "Jsc": 0.6822019522679772,
+    "Voc": 0.35246298756510025
+  }
+}

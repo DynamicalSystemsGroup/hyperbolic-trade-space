@@ -1,0 +1,1383 @@
+{
+  "archive_checked": true,
+  "derived_sha256": "3d76fcf1aef829f32fe6c74dec267de83c7948210930b49af05abbac2a144bf7",
+  "rows": 3753,
+  "variants": {
+    "capped_1_99": {
+      "association": {
+        "grain|straw": -0.8820518157177243
+      },
+      "at_tau_bound": false,
+      "band": 0.12092578132210276,
+      "cap_high": {
+        "grain": 10.65,
+        "straw": 8.08
+      },
+      "cap_low": {
+        "grain": 0.53136,
+        "straw": 0.13520000000000004
+      },
+      "contending_exponents": [
+        0.39914288201380965,
+        0.6008571179861903
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -1.256800552895766,
+        "straw|grain": -0.7956711967510856
+      },
+      "exponents_k1": {
+        "grain": 0.4431051732581646,
+        "straw": 0.5568948267418354
+      },
+      "frac_above": 0.10844657607247535,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "straw",
+            "share": 0.5219047619047619
+          },
+          {
+            "metric": "grain",
+            "share": 0.4780952380952381
+          }
+        ],
+        "contending_sets": [
+          [
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 0.05166337656819556,
+            "straw": 0.9483366234318045
+          },
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          }
+        ],
+        "mean_slack": 0.7110491686080592,
+        "mean_slack_k1": 0.8665459495463329,
+        "status": "certified",
+        "term_share": [
+          0.5219047619047619,
+          0.4780952380952381
+        ]
+      },
+      "log_spread": [
+        0.9999999999999999,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3753,
+      "n_eff": 132.58805324390207,
+      "n_lemma": 2,
+      "n_near_frontier": 409,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "each yield capped at its 1st and 99th percentile before the primary conditioning",
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "modern_only": {
+      "association": {
+        "grain|straw": -0.8058641326603694
+      },
+      "at_tau_bound": false,
+      "band": 0.09384884699081768,
+      "contending_exponents": [
+        0.42328726184902227,
+        0.5767127381509778
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -0.6726003684462561,
+        "straw|grain": -1.4867669524327722
+      },
+      "exponents_k1": {
+        "grain": 0.5978714454839796,
+        "straw": 0.4021285545160205
+      },
+      "frac_above": 0.09094809094809095,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.6411290322580645
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain"
+          ],
+          [
+            "grain",
+            "straw"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          },
+          {
+            "grain": 3.8163916471489756e-17,
+            "straw": 1.0
+          }
+        ],
+        "mean_slack": 0.7649673470016051,
+        "mean_slack_k1": 0.8995452213009352,
+        "status": "certified",
+        "term_share": [
+          0.6411290322580645,
+          0.3588709677419355
+        ]
+      },
+      "log_spread": [
+        0.9999999999999999,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 2331,
+      "n_eff": 43.24308832755455,
+      "n_lemma": 2,
+      "n_near_frontier": 211,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 2331,
+      "rule": "primary rule on the subset: modern only",
+      "target_frac_above": 0.1,
+      "tau_selected": 10.655431921266349
+    },
+    "n_at_least_96": {
+      "association": {
+        "grain|straw": -0.8677792827613633
+      },
+      "at_tau_bound": false,
+      "band": 0.15581485609292317,
+      "contending_exponents": [
+        0.4167476517927548,
+        0.5832523482072451
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -0.9597877938816354,
+        "straw|grain": -1.0418969759510441
+      },
+      "exponents_k1": {
+        "grain": 0.510259326607683,
+        "straw": 0.48974067339231697
+      },
+      "frac_above": 0.10636784062611171,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.4920273348519362
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain",
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 0.21862884936019533,
+            "straw": 0.7813711506398046
+          },
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          }
+        ],
+        "mean_slack": 0.6769401374393915,
+        "mean_slack_k1": 0.8329139897013451,
+        "status": "certified",
+        "term_share": [
+          0.5079726651480638,
+          0.4920273348519362
+        ]
+      },
+      "log_spread": [
+        0.9999999999999998,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 2811,
+      "n_eff": 84.14115139218796,
+      "n_lemma": 2,
+      "n_near_frontier": 330,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 2811,
+      "rule": "primary rule on the subset: n at least 96",
+      "target_frac_above": 0.1,
+      "tau_selected": 6.417873270079143
+    },
+    "n_at_least_96_modern": {
+      "association": {
+        "grain|straw": -0.8153651693108018
+      },
+      "at_tau_bound": false,
+      "band": 0.12092578132210276,
+      "contending_exponents": [
+        0.4262998293341919,
+        0.573700170665808
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -0.3797279535550773,
+        "straw|grain": -2.633464275247136
+      },
+      "exponents_k1": {
+        "grain": 0.7247805608513976,
+        "straw": 0.2752194391486024
+      },
+      "frac_above": 0.09954751131221719,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.6933333333333334
+          },
+          {
+            "metric": "straw",
+            "share": 0.30666666666666664
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain"
+          ],
+          [
+            "straw"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          },
+          {
+            "grain": 0.0,
+            "straw": 1.0
+          }
+        ],
+        "mean_slack": 0.6887306115278529,
+        "mean_slack_k1": 0.8593010450420449,
+        "status": "certified",
+        "term_share": [
+          0.6933333333333334,
+          0.30666666666666664
+        ]
+      },
+      "log_spread": [
+        1.0000000000000002,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 1768,
+      "n_eff": 33.71011335515746,
+      "n_lemma": 2,
+      "n_near_frontier": 201,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 1768,
+      "rule": "primary rule on the subset: n at least 96 modern",
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "no_scaler": {
+      "association": {
+        "grain|straw": -0.7748911050460829
+      },
+      "at_tau_bound": false,
+      "band": 0.09384884699081768,
+      "contending_exponents": [
+        0.4807044121212002,
+        0.5192955878787998
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -2.4932299537571576,
+        "straw|grain": -0.40108614870965115
+      },
+      "exponents_k1": {
+        "grain": 0.28626801362574084,
+        "straw": 0.7137319863742592
+      },
+      "frac_above": 0.09618971489475087,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.5301204819277109
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain"
+          ],
+          [
+            "grain",
+            "straw"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          },
+          {
+            "grain": 0.2926983141882053,
+            "straw": 0.7073016858117948
+          }
+        ],
+        "mean_slack": 0.494478342254584,
+        "mean_slack_k1": 0.6727581231233535,
+        "status": "certified",
+        "term_share": [
+          0.5301204819277109,
+          0.46987951807228917
+        ]
+      },
+      "log_spread": [
+        0.6398198855335806,
+        0.8023875286977107
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3753,
+      "n_eff": 60.242578310951075,
+      "n_lemma": 2,
+      "n_near_frontier": 397,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "scaler None: the pure log of the raw yields (t per hectare)",
+      "target_frac_above": 0.1,
+      "tau_selected": 10.655431921266349
+    },
+    "pca_before_fit": {
+      "association": {
+        "pc1|pc2": -0.9509490029713586
+      },
+      "at_tau_bound": false,
+      "band": 0.09384884699081768,
+      "contending_exponents": [
+        0.38178474686927877,
+        0.6182152531307212
+      ],
+      "contending_set": [
+        "pc1",
+        "pc2"
+      ],
+      "elasticities": {
+        "pc1|pc2": -1.984214374285555,
+        "pc2|pc1": -0.5039778024791622
+      },
+      "explained_variance_ratio": [
+        0.8403267476846787,
+        0.1596732523153214
+      ],
+      "exponents_k1": {
+        "pc1": 0.33509656967569834,
+        "pc2": 0.6649034303243017
+      },
+      "frac_above": 0.10471622701838529,
+      "k2": {
+        "ceiling_terms": [],
+        "contending_sets": [
+          [
+            "pc1",
+            "pc2"
+          ],
+          [
+            "pc1",
+            "pc2"
+          ]
+        ],
+        "exponents": [
+          {
+            "pc1": 0.45437427793556057,
+            "pc2": 0.5456257220644395
+          },
+          {
+            "pc1": 0.2940305113552205,
+            "pc2": 0.7059694886447795
+          }
+        ],
+        "mean_slack": 0.5756572229923208,
+        "mean_slack_k1": 0.6086735781044693,
+        "status": "certified",
+        "term_share": [
+          0.575,
+          0.425
+        ]
+      },
+      "loadings": [
+        {
+          "grain": 0.7071067811865477,
+          "straw": 0.7071067811865474
+        },
+        {
+          "grain": 0.7071067811865474,
+          "straw": -0.7071067811865477
+        }
+      ],
+      "loadings_used": [
+        [
+          0.7071067811865477,
+          0.7071067811865474
+        ],
+        [
+          0.7071067811865474,
+          -0.7071067811865477
+        ]
+      ],
+      "log_spread": [
+        1.2964002064830742,
+        0.5651075159919956
+      ],
+      "metrics": [
+        "pc1",
+        "pc2"
+      ],
+      "n": 3753,
+      "n_eff": 88.2948819024327,
+      "n_lemma": 2,
+      "n_near_frontier": 416,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "pc1": 0.7071067811865475,
+            "pc2": -0.7071067811865475
+          }
+        ]
+      },
+      "pulled_back_exponents": {
+        "grain": 0.7071067811865475,
+        "straw": -0.2332086676464743
+      },
+      "rows": 3753,
+      "rule": "PCA of the primary standardized log-metrics; scores centred and exponentiated; each component's largest-magnitude loading made positive",
+      "target_frac_above": 0.1,
+      "tau_selected": 10.655431921266349
+    },
+    "pca_before_fit_pc2_flipped": {
+      "association": {
+        "pc1|pc2": -0.9687767411403155
+      },
+      "at_tau_bound": false,
+      "band": 0.10653048929082744,
+      "contending_exponents": [
+        0.4288280267044767,
+        0.5711719732955234
+      ],
+      "contending_set": [
+        "pc1",
+        "pc2"
+      ],
+      "elasticities": {
+        "pc1|pc2": -1.3884179440815376,
+        "pc2|pc1": -0.7202442205985153
+      },
+      "explained_variance_ratio": [
+        0.8403267476846787,
+        0.1596732523153214
+      ],
+      "exponents_k1": {
+        "pc1": 0.4186871910244957,
+        "pc2": 0.5813128089755043
+      },
+      "frac_above": 0.10178523847588596,
+      "k2": {
+        "ceiling_terms": [],
+        "contending_sets": [
+          [
+            "pc1",
+            "pc2"
+          ],
+          [
+            "pc1",
+            "pc2"
+          ]
+        ],
+        "exponents": [
+          {
+            "pc1": 0.5146780845736844,
+            "pc2": 0.48532191542631553
+          },
+          {
+            "pc1": 0.38094319231630996,
+            "pc2": 0.6190568076836901
+          }
+        ],
+        "mean_slack": 0.5940855194118818,
+        "mean_slack_k1": 0.6222717482182466,
+        "status": "certified",
+        "term_share": [
+          0.7062634989200864,
+          0.2937365010799136
+        ]
+      },
+      "loadings": [
+        {
+          "grain": 0.7071067811865477,
+          "straw": 0.7071067811865474
+        },
+        {
+          "grain": 0.7071067811865474,
+          "straw": -0.7071067811865477
+        }
+      ],
+      "loadings_used": [
+        [
+          0.7071067811865477,
+          0.7071067811865474
+        ],
+        [
+          -0.7071067811865474,
+          0.7071067811865477
+        ]
+      ],
+      "log_spread": [
+        1.2964002064830742,
+        0.5651075159919956
+      ],
+      "metrics": [
+        "pc1",
+        "pc2"
+      ],
+      "n": 3753,
+      "n_eff": 62.24594817532043,
+      "n_lemma": 2,
+      "n_near_frontier": 422,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "pc1": 0.7071067811865475,
+            "pc2": -0.7071067811865475
+          }
+        ]
+      },
+      "pulled_back_exponents": {
+        "grain": -0.11499367724781076,
+        "straw": 0.7071067811865476
+      },
+      "rows": 3753,
+      "rule": "as pca_before_fit with the second component's sign reversed",
+      "target_frac_above": 0.1,
+      "tau_selected": 9.3869840142197
+    },
+    "plus_biomass": {
+      "association": {
+        "grain|biomass": 0.6456508066524879,
+        "grain|straw": -0.866717901424697,
+        "straw|biomass": -0.2248898544957767
+      },
+      "at_tau_bound": false,
+      "band": 0.12092578132210276,
+      "contending_exponents": [
+        0.4246713939299687,
+        0.5753286060700313
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "biomass|grain": null,
+        "biomass|straw": null,
+        "grain|biomass": -3.1164171517987647e-17,
+        "grain|straw": -1.2428167911741634,
+        "straw|biomass": -2.507543488251795e-17,
+        "straw|grain": -0.8046238247676395
+      },
+      "exponents_k1": {
+        "biomass": 1.389510353258615e-17,
+        "grain": 0.44586789430824547,
+        "straw": 0.5541321056917546
+      },
+      "frac_above": 0.0980548894217959,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.42915811088295686
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain",
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "biomass": 4.2412131397924454e-17,
+            "grain": 0.1910764568959728,
+            "straw": 0.8089235431040271
+          },
+          {
+            "biomass": 0.0,
+            "grain": 1.0,
+            "straw": 0.0
+          }
+        ],
+        "mean_slack": 0.7479166031650556,
+        "mean_slack_k1": 0.8587336530505061,
+        "status": "certified",
+        "term_share": [
+          0.5708418891170431,
+          0.42915811088295686
+        ]
+      },
+      "log_spread": [
+        1.0000000000000004,
+        1.0,
+        0.9999999999999994
+      ],
+      "metrics": [
+        "grain",
+        "straw",
+        "biomass"
+      ],
+      "n": 3753,
+      "n_eff": 94.70472522363548,
+      "n_lemma": 2,
+      "n_near_frontier": 405,
+      "pca_after_fit": {
+        "explained": [
+          0.994091066140329,
+          0.005908933859670993
+        ],
+        "loadings": [
+          {
+            "biomass": 0.025767624827185916,
+            "grain": 0.6938707575278217,
+            "straw": -0.7196383823550075
+          },
+          {
+            "biomass": -0.816089882413348,
+            "grain": 0.43036035890220364,
+            "straw": 0.3857295235111444
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "primary rule with a third metric, biomass = grain + straw, larger is better; a function of the other two",
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "plus_harvest_index": {
+      "association": {
+        "grain|harvest_index": -0.4556634544947367,
+        "grain|straw": 0.5566685238046555,
+        "straw|harvest_index": -0.9869317605214614
+      },
+      "at_tau_bound": false,
+      "band": 0.056526099643883235,
+      "contending_exponents": [
+        0.42875204920430454,
+        0.5712479507956955
+      ],
+      "contending_set": [
+        "straw",
+        "harvest_index"
+      ],
+      "elasticities": {
+        "grain|harvest_index": null,
+        "grain|straw": null,
+        "harvest_index|grain": -0.0,
+        "harvest_index|straw": -0.862929217137251,
+        "straw|grain": -0.0,
+        "straw|harvest_index": -1.1588435993828998
+      },
+      "exponents_k1": {
+        "grain": 0.0,
+        "harvest_index": 0.5367890474854929,
+        "straw": 0.4632109525145071
+      },
+      "frac_above": 0.09112709832134293,
+      "k2": {
+        "ceiling_terms": [],
+        "contending_sets": [
+          [
+            "straw",
+            "harvest_index"
+          ],
+          [
+            "straw",
+            "harvest_index"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 2.56513477075381e-16,
+            "harvest_index": 0.6674857910294666,
+            "straw": 0.3325142089705332
+          },
+          {
+            "grain": 0.0,
+            "harvest_index": 0.26900665052448414,
+            "straw": 0.7309933494755158
+          }
+        ],
+        "mean_slack": 0.3654242807168563,
+        "mean_slack_k1": 0.49975485214255977,
+        "status": "certified",
+        "term_share": [
+          0.6406926406926406,
+          0.3593073593073593
+        ]
+      },
+      "log_spread": [
+        1.0000000000000004,
+        1.0,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw",
+        "harvest_index"
+      ],
+      "n": 3753,
+      "n_eff": 85.02909535738077,
+      "n_lemma": 2,
+      "n_near_frontier": 339,
+      "pca_after_fit": {
+        "explained": [
+          0.987595174060836,
+          0.012404825939164038
+        ],
+        "loadings": [
+          {
+            "grain": 0.03746985253957542,
+            "harvest_index": -0.725096736968099,
+            "straw": 0.6876268844285236
+          },
+          {
+            "grain": 0.8156363631038829,
+            "harvest_index": -0.3753683373766124,
+            "straw": -0.44026802572727053
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "primary rule with a third metric, harvest_index = grain / (grain + straw), larger is better; a function of the other two",
+      "target_frac_above": 0.1,
+      "tau_selected": 17.690942879484723
+    },
+    "primary": {
+      "association": {
+        "grain|straw": -0.866717901424697
+      },
+      "at_tau_bound": false,
+      "band": 0.12092578132210276,
+      "contending_exponents": [
+        0.4246713939299687,
+        0.5753286060700313
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -1.2428167911741625,
+        "straw|grain": -0.80462382476764
+      },
+      "exponents_k1": {
+        "grain": 0.4458678943082456,
+        "straw": 0.5541321056917544
+      },
+      "frac_above": 0.0980548894217959,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.42915811088295686
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain",
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 0.1910764568959788,
+            "straw": 0.8089235431040213
+          },
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          }
+        ],
+        "mean_slack": 0.7479166031650556,
+        "mean_slack_k1": 0.8587336530505058,
+        "status": "certified",
+        "term_share": [
+          0.5708418891170431,
+          0.42915811088295686
+        ]
+      },
+      "log_spread": [
+        1.0000000000000004,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3753,
+      "n_eff": 94.70472522363553,
+      "n_lemma": 2,
+      "n_near_frontier": 405,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "grain and straw, orientation +1, shift 0, standard scaler of the log; temperature at a tenth of rows above the surface",
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "quantile_uniform": {
+      "association": {
+        "grain|straw": -0.902784074006154
+      },
+      "at_tau_bound": false,
+      "band": 0.038646847956357644,
+      "contending_exponents": [
+        0.5472931123427622,
+        0.45270688765723777
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -1.095422219925295,
+        "straw|grain": -0.9128900088115771
+      },
+      "exponents_k1": {
+        "grain": 0.4772307893325916,
+        "straw": 0.5227692106674083
+      },
+      "frac_above": 0.10098587796429523,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "straw",
+            "share": 0.5042194092827004
+          },
+          {
+            "metric": "grain",
+            "share": 0.4957805907172996
+          }
+        ],
+        "contending_sets": [
+          [
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 0.046551956839378385,
+            "straw": 0.9534480431606217
+          },
+          {
+            "grain": 0.9983937720987799,
+            "straw": 0.0016062279012201517
+          }
+        ],
+        "mean_slack": 0.2668257321340326,
+        "mean_slack_k1": 0.33121396309434364,
+        "status": "certified",
+        "term_share": [
+          0.5042194092827004,
+          0.4957805907172996
+        ]
+      },
+      "log_spread": [
+        0.28867325698287016,
+        0.28866829282687134
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3753,
+      "n_eff": 164.00842576588732,
+      "n_lemma": 2,
+      "n_near_frontier": 266,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "QuantileTransformer uniform output u, shifted into (0, 1] as (1 + (n - 1) u) / n, then exp: m = exp(u') in (1, e]",
+      "target_frac_above": 0.1,
+      "tau_selected": 25.875331440464702
+    },
+    "robust": {
+      "association": {
+        "grain|straw": -0.851901304741175
+      },
+      "at_tau_bound": false,
+      "band": 0.12092578132210276,
+      "contending_exponents": [
+        0.4377517306143666,
+        0.5622482693856334
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -0.9760959238501155,
+        "straw|grain": -1.0244894744110775
+      },
+      "exponents_k1": {
+        "grain": 0.5060483086527782,
+        "straw": 0.4939516913472219
+      },
+      "frac_above": 0.10524913402611244,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.45454545454545453
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain",
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 0.20646921528138928,
+            "straw": 0.7935307847186107
+          },
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          }
+        ],
+        "mean_slack": 0.6791610509758012,
+        "mean_slack_k1": 0.7911438563872562,
+        "status": "certified",
+        "term_share": [
+          0.5454545454545454,
+          0.45454545454545453
+        ]
+      },
+      "log_spread": [
+        0.9170102007348596,
+        0.9672458424640927
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3753,
+      "n_eff": 105.92228239038312,
+      "n_lemma": 2,
+      "n_near_frontier": 441,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "robust scaler of the log (unit interquartile range)",
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "section_1_only": {
+      "association": {
+        "grain|straw": -0.6845232581609229
+      },
+      "at_tau_bound": false,
+      "band": 0.10653048929082744,
+      "contending_exponents": [
+        0.618096939336251,
+        0.381903060663749
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -0.3848895982719129,
+        "straw|grain": -2.598147636334745
+      },
+      "exponents_k1": {
+        "grain": 0.7220792193455824,
+        "straw": 0.27792078065441767
+      },
+      "frac_above": 0.10162991371045062,
+      "k2": {
+        "ceiling_terms": [],
+        "contending_sets": [
+          [
+            "grain",
+            "straw"
+          ],
+          [
+            "grain",
+            "straw"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 1.0,
+            "straw": 1.3877787807814457e-17
+          },
+          {
+            "grain": 0.37727392312594227,
+            "straw": 0.6227260768740577
+          }
+        ],
+        "mean_slack": 0.797234282563838,
+        "mean_slack_k1": 0.8626179569742984,
+        "status": "certified",
+        "term_share": [
+          0.717391304347826,
+          0.2826086956521739
+        ]
+      },
+      "log_spread": [
+        1.0000000000000002,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 1043,
+      "n_eff": 16.223361663543706,
+      "n_lemma": 2,
+      "n_near_frontier": 113,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 1043,
+      "rule": "primary rule on the subset: section 1 only",
+      "target_frac_above": 0.1,
+      "tau_selected": 9.3869840142197
+    },
+    "winter_wheat_only": {
+      "association": {
+        "grain|straw": -0.8728797275376754
+      },
+      "at_tau_bound": false,
+      "band": 0.12092578132210276,
+      "contending_exponents": [
+        0.42811408058031053,
+        0.5718859194196895
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -1.2405178767834335,
+        "straw|grain": -0.8061149449880741
+      },
+      "exponents_k1": {
+        "grain": 0.44632538323489535,
+        "straw": 0.5536746167651047
+      },
+      "frac_above": 0.09752747252747253,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.43248945147679324
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain",
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 0.1999781043065167,
+            "straw": 0.8000218956934834
+          },
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          }
+        ],
+        "mean_slack": 0.750480615869282,
+        "mean_slack_k1": 0.8584343000482064,
+        "status": "certified",
+        "term_share": [
+          0.5675105485232067,
+          0.43248945147679324
+        ]
+      },
+      "log_spread": [
+        1.0,
+        1.0
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3640,
+      "n_eff": 93.44964333495007,
+      "n_lemma": 2,
+      "n_near_frontier": 390,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 3640,
+      "rule": "primary rule on the subset: winter wheat only",
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "year_partialled": {
+      "association": {
+        "grain|straw": -0.6226741123734799
+      },
+      "at_tau_bound": false,
+      "band": 0.15581485609292317,
+      "contending_exponents": [
+        0.25261947718762245,
+        0.7473805228123775
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "elasticities": {
+        "grain|straw": -0.8879545593804343,
+        "straw|grain": -1.1261837550535747
+      },
+      "exponents_k1": {
+        "grain": 0.5296737652034208,
+        "straw": 0.47032623479657915
+      },
+      "frac_above": 0.10098587796429523,
+      "k2": {
+        "ceiling_terms": [
+          {
+            "metric": "grain",
+            "share": 0.6517857142857143
+          }
+        ],
+        "contending_sets": [
+          [
+            "grain"
+          ],
+          [
+            "grain",
+            "straw"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          },
+          {
+            "grain": 0.09750889289793727,
+            "straw": 0.9024911071020627
+          }
+        ],
+        "mean_slack": 0.7525936911229,
+        "mean_slack_k1": 0.9084515931417678,
+        "status": "certified",
+        "term_share": [
+          0.6517857142857143,
+          0.3482142857142857
+        ]
+      },
+      "log_spread": [
+        0.9999999999999976,
+        0.9999999999999993
+      ],
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3753,
+      "n_eff": 71.11929170614613,
+      "n_lemma": 2,
+      "n_near_frontier": 396,
+      "pca_after_fit": {
+        "explained": [
+          1.0
+        ],
+        "loadings": [
+          {
+            "grain": 0.7071067811865475,
+            "straw": -0.7071067811865475
+          }
+        ]
+      },
+      "rows": 3753,
+      "rule": "linear trend in year removed from each log-metric (least squares), then the standard scaler",
+      "target_frac_above": 0.1,
+      "tau_selected": 6.417873270079143,
+      "trend_per_year": {
+        "grain": 0.0001052776787135272,
+        "straw": -0.01464757799762825
+      },
+      "trend_share_of_variance": {
+        "grain": 8.19541239838184e-06,
+        "straw": 0.10087347394975288
+      }
+    }
+  }
+}
