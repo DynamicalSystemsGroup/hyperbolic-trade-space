@@ -2510,3 +2510,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   failure is gone with 30ba54d). Run 43690036922 on 62525f2 (three prose lines and the checker's pattern after
   415d889): four jobs green, docs-paper running. The full local run with the slow tests on dev is past 60 percent with
   no failure.
+- **The candidate is complete for his review (2026-11-15 04:02 EST).** Full local run on dev at 7ed29ef (the content of 415d889
+  plus the driver log): 2,571 passed, 17 skipped, 2 xfailed in 1 h 49 min with the slow tests; the lemma chain ALL
+  LEMMAS PASS; the proof map OK with 22 lemma files and 549 tagged steps. The three prose lines and the checker
+  pattern of a63d390 are the only content after it, covered by the site, register and docs tests and by CI run
+  43690036922 on 62525f2: all five jobs green on both platforms. Head for his review: a63d390 (content), 62525f2 the
+  guide naming it, records after. Served: 8797 the candidate (built from 62525f2), 8861 the figure branch wp51fig
+  (c02e0a4, waits on his word), 8791 the reader round's frozen stage. The first message in the morning carries the
+  head, the ports, the round-4 figure and the guide's four sittings.
