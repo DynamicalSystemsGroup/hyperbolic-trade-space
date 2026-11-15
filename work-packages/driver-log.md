@@ -2310,4 +2310,9 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   plain text with the Getting started pointer as words, and the test counts a repeated image as one figure (the
   comment carries his ask of 2026-11-14). The figure, budget and register tests pass locally; vocabulary clean; CI
   dispatched on the fix. The docshome branch's own checks had not included this test: the driver's miss.
+- **Clock correction.** The machine clock reads 2026-11-14 20:55 EST. The entries above labelled "2026-11-15, 05:05 EST" through
+  "2026-11-15, 12:30 EST" (and the matching labels in the WP25, WP48, WP50, WP51 and WP52 decision files of this stretch)
+  are sequence labels, not wall-clock times: they continue the drift noted after 19:05 on 2026-11-14 and overran the
+  date. Their order is right; their clock is not. From this entry on, every label is the machine clock. The supervisor's
+  words in the decision files are unaffected.
 
