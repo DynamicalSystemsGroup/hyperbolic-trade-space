@@ -2405,4 +2405,10 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   from the default branch, where `release.yml` does not exist until the merge; the rehearsal therefore follows the
   merge to `main` and the local dry run of its checks stands as tonight's evidence. The reworked figure (three terms
   at the median, temperature 10; the unit's gates clean, 2,035 passed; served on 8861) sent to him as a screenshot.
+- **Fifth unit's landing branch: two vocabulary hits fixed (2026-11-14 22:59 EST).** On the merged tree the vocabulary check found
+  two new "avoid" hits in Appendix B's markdown (the WP42 build's layered words: "fixed-weight objective bounds the
+  soft model", "a term minimize a convex objective"); both become "loss", the glossary's word for what the fit
+  minimizes, with the one register fragment re-pointed; the baseline's stale row for the docs home's "gaps" removed as
+  the checker asked. Vocabulary 0 new. The merged tree's tests rerun before landing. Figure round 2 (three terms at the
+  median, temperature 10) sent to him as a screenshot and served on 8861; the loop waits for his morning read.
 
