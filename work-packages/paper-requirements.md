@@ -131,7 +131,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   the ledger.
 - **State:** open (WP55).
 
-## Section 7, Case construction (Section 8 until WP54 renumbers)
+## Section 7, Case construction
 
 - **Holds:** the cubesat case narrated from the model as it is now (WP22 adopted; WP23's coupling table, measures of
   effectiveness, launch cost reading mass, settling time the one time metric; the data of record), to make the
@@ -175,7 +175,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   written fresh from its spike record (WP41, WP43, WP48, WP50, WP36, the formal direction), within the readouts'
   boundary; the search's surviving sentences from the old Section 7.
 - **Must not hold:** a separate search section; "final remark"; results.
-- **State:** open (WP54).
+- **State:** soft-confirmed by the driver on the rendered page and landed with WP54 (e435e4a); 233 words; not yet read by him.
 
 ## Section 11, AI acknowledgement and Reproducibility
 
@@ -184,7 +184,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   Under 200 words, informational.
 - **Must not hold:** "machine-checked" or "formally verified" (scripted checks); metanarration; a separate
   Reproducibility section.
-- **State:** open (WP54).
+- **State:** soft-confirmed by the driver on the rendered page and landed with WP54 (e435e4a); 150 words; not yet read by him.
 
 ## Works cited
 
