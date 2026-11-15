@@ -145,7 +145,7 @@ accepted package; a later instance may fold them once nothing cites them.
 
 ## Instance 5 (2026-11-11, 13:45; inventory eb43b21, 556 rows; the assistant's calls on the six open rows)
 
-1. The ten S-5 candidate files (`docs/superpowers/notes/figure-candidates/`): the chosen two-panel figure lives in
+1. The ten S-5 candidate files (`paper/figures/`): the chosen two-panel figure lives in
    `paper/figures/` and on the docs page; the candidates and their script are cited only by the figure review and the
    cold-read returns: delete (git keeps them; the review's rows name the commit that held them).
 2. The sixteen WP11 round-2 raw reader reports: the triage and the record are in the repository and round 3 is read;

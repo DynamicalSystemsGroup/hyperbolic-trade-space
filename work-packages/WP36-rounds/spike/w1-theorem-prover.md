@@ -246,4 +246,4 @@ be added lemma by lemma, never claimed for the SymPy scripts.
 - Bentkamp, A., Fernández Mir, R., Avigad, J., "Verified reductions for optimization". https://arxiv.org/abs/2301.09347 ; CvxLean https://github.com/verified-optimization/cvxlean ; ICCOPT 2025 slides https://homepages.inf.ed.ac.uk/pbj/papers/iccopt25.pdf (snippet only)
 - Lean Language Reference, floating-point numbers (v4.33.0). https://lean-lang.org/doc/reference/4.33.0/Basic-Types/Floating-Point-Numbers/
 - FloatLib, arXiv 2609.19352. https://arxiv.org/abs/2609.19352 ; FloatSpec https://reservoir.lean-lang.org/@Beneficial-AI-Foundation/FloatSpec ; Flean https://github.com/minusgix/flean
-- This repository: `derivation/proof_map_record.json`, `derivation/lemma_01_*.py` to `lemma_20_*.py`, `derivation/axioms.py`, `docs/superpowers/notes/proof-conventions.md`, `work-packages/WP36-decisions.md`.
+- This repository: `derivation/proof_map_record.json`, `derivation/lemma_01_*.py` to `lemma_20_*.py`, `derivation/axioms.py`, `notes/proof-conventions.md`, `work-packages/WP36-decisions.md`.

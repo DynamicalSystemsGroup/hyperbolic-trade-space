@@ -83,7 +83,7 @@ cruft and carries its weight in drift and gaps.
 
 ### Drift, found by the survey (each a row of D-3; the read of G2 adds to them)
 
-- **S-1.** `claims_register.toml` C001's `note` and `docs/superpowers/notes/claims-review.md` line 74 cite
+- **S-1.** `claims_register.toml` C001's `note` and `notes/claims-review.md` line 74 cite
   `spike-ternary/report.md`'s Correction for "the largest log V of any design is 0.071", a figure measured on the
   earlier (v1) table; `docs/examples.md` (C001's page) does not state the figure; C001's listed backing is two tests
   and `plot_ternary`. Resolved by OD1.

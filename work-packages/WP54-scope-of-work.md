@@ -29,7 +29,7 @@ closing section on AI use and reproducibility in place of two.
   and Reproducibility": what AI assistance did and did not do, how the work was gated and checked, how every figure,
   table and number is reproduced and how a reader adapts the pipeline to a table of their own. Informational, short,
   no sentence about the text itself. It does not call the derivations machine-checked or formally verified; they are
-  scripted checks (`docs/superpowers/notes/proof-conventions.md`).
+  scripted checks (`notes/proof-conventions.md`).
 - G4. Everything that pointed at the old sections follows: the roadmap paragraph of Section 1, the numbering, the
   labels (`sect-search`, `sect-reproducibility`, `sect-process`) in the paper, the docsite (`docs/bridge.md` points at
   the search of Section 7) and the tests; the register rows of the removed and rewritten text.

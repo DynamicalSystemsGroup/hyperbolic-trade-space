@@ -1,6 +1,6 @@
 """Shared pytest configuration.
 
-Verification in tiers (docs/superpowers/notes/verification-strategy.md):
+Verification in tiers (notes/verification-strategy.md):
 
 * ``slow`` marks a test that takes over about five seconds (``pytest --durations=60`` lists them).
   ``uv run pytest -m "not slow"`` is the fast suite (tier 1); ``uv run pytest`` is the full suite.

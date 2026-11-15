@@ -2,7 +2,7 @@
 
 Two kinds of checking, kept apart. A machine check says a statement holds on the committed inputs. A human validation
 says a person reading the thing found it right, clear or useful. Neither stands in for the other
-(`docs/superpowers/notes/presentation-framing.md`). Mathematics is checked by plain-SymPy scripts, which are a
+(`notes/presentation-framing.md`). Mathematics is checked by plain-SymPy scripts, which are a
 pencil-and-paper substitute and not formal verification.
 
 ## Machine verification
@@ -23,7 +23,7 @@ pencil-and-paper substitute and not formal verification.
 
 ### The residual pass's machinery (WP38)
 
-- The reader's brief: `docs/superpowers/notes/residual-review.md` (ten kinds).
+- The reader's brief: `notes/residual-review.md` (ten kinds).
 - The surface inventory: `scripts/prose_surfaces.py` (95 surfaces, 71,474 words at `c0fe11b`).
 - The checker: `scripts/check_residuals.py`, with its committed baseline `scripts/residuals_baseline.json`. Re-run it
   with `--compare scripts/residuals_baseline.json` to see that no count rose; `--strict` exits 1 if one did.
@@ -36,7 +36,7 @@ pencil-and-paper substitute and not formal verification.
 | Final reader round, core | 46 reads of the paper and docs at stage head `c23cf60`, depths A to D, against answer key version 5 (hash committed first, key held outside the repository) | `work-packages/WP11-final/`; `work-packages/WP11-decisions.md` ("The final reader round") |
 | Final reader round, held-out | 12 reads (waves 8 and 9, stage head `5ac44f7`): one wrong belief at depth A (the abstract's Pareto sentence read in reverse, which you kept as written), record defects found only at depth D and settled in the fifth paper unit; every wave-9 reader agrees with its wave-8 twin on the cell's job | `work-packages/WP11-final/triage/wave-8.md`, `wave-9.md` |
 | Figure loop | fresh cold reads of Figures 3, 6 and 7, each image alone and then with its caption | `work-packages/WP11-final/figure-review-paperfix3.md`; `work-packages/WP42-rounds/build-record/cold-read/` |
-| Earlier reader rounds and the reader grid | personas read the paper and docs at depths A to D | `work-packages/WP11-decisions.md`; `docs/superpowers/notes/reader-grid.md` |
+| Earlier reader rounds and the reader grid | personas read the paper and docs at depths A to D | `work-packages/WP11-decisions.md`; `notes/reader-grid.md` |
 | Package-user tests | four user tasks from the README, in three rounds, accepted | `work-packages/WP32-review.md`; `work-packages/WP32-decisions.md` |
 | Wayfinding rounds | root page and docs routing | `work-packages/WP33-review.md` |
 | Residual pass | 29 first-reader slots with 1,215 flag rows; 96 second-reader form rows (94 surfaces), 18 read clean and 78 still carry flags | `work-packages/WP38-flags/`; `work-packages/WP38-confirmations/`; `work-packages/WP38-review.md` |

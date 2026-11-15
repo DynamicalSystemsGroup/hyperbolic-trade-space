@@ -1159,7 +1159,7 @@ words_removed = 1
 no_longer_did = "the sentence said 'the requirements' for the four performance thresholds the constrained set applies, and repeated 'requirements' after the pointer; it now names the four performance thresholds and says 'them' (Appendix D.17 carries the reason the two cost limits are not among them)"
 authority = "the PM's brief for the design-sets block (the four performance thresholds named; the cost limits read after the fit)"
 
-# WP33 wayfinding, the paper's rows (work-packages/WP33-scope-of-work.md R-2, R-5; docs/superpowers/notes/user-journeys.md).
+# WP33 wayfinding, the paper's rows (work-packages/WP33-scope-of-work.md R-2, R-5; notes/user-journeys.md).
 # Each deletion states what the content no longer did; no row adds words.
 [[cut]]
 date = "2026-11-12"

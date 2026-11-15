@@ -19,7 +19,7 @@ analysis as if it were the model's structure, and the reader grid's "facet as cl
 follows from it. Figure 4 draws no model at all: coloured points on chart axes, least helpful for readers in both
 rounds.
 
-**Principle, added to the figure review** (`docs/superpowers/notes/figure-review.md`): a figure borrows no idiom
+**Principle, added to the figure review** (`notes/figure-review.md`): a figure borrows no idiom
 that carries a false analogy; colouring designs by facet is the cluster idiom and is not used; what a figure shows
 of the model (surface, band, lines) is drawn as the model, and what it shows of the analysis (assignment, shares) is
 named as analysis in the caption or not drawn. Every current figure, paper and docs, is checked against this once.

@@ -50,7 +50,7 @@ Written 2026-11-14, late, from the scopes, review files, decisions files and `dr
 
 **Against** (`WP38-scope-of-work.md`): D-1 to D-4 exist and pass R-1 to R-7; every inventory row read and confirmed (R-9); counts not rising (R-8); no claim lost (R-10, R-11); entry-surface changes listed (R-12); guide names the machinery (R-13); gates (R-14). Your direction of 2026-11-13 and the assistant's calls of 2026-11-14 (`WP38-decisions.md`).
 
-**Where.** `WP38-review.md` (the honest summary first); `WP38-flags/`, `WP38-confirmations/`, `WP38-landed/`; `docs/superpowers/notes/residual-review.md`; `scripts/check_residuals.py`, `scripts/residuals_baseline.json`, `tests/test_residuals.py`. The entry-surface rows are in `supervisor-review-list.md` "Entry surfaces".
+**Where.** `WP38-review.md` (the honest summary first); `WP38-flags/`, `WP38-confirmations/`, `WP38-landed/`; `notes/residual-review.md`; `scripts/check_residuals.py`, `scripts/residuals_baseline.json`, `tests/test_residuals.py`. The entry-surface rows are in `supervisor-review-list.md` "Entry surfaces".
 
 **Driver verified.** 1,211 flags, 537 edits landed; words 75,104 to 73,192; parentheticals 757 to 659; long sentences 274 to 188. Review head `c0fe11b`; `116c929` CI 43581901051 green, fast suite 1947.
 
@@ -90,7 +90,7 @@ Written 2026-11-14, late, from the scopes, review files, decisions files and `dr
 
 **What.** The final reader round's change requests 93 to 169 landed at `ca352f5`: record defects, figure loop, wording.
 
-**Against.** No scope file. Standards: `CLAUDE.md` (every claim backed, or narrowed or dropped, no caveats added), `docs/superpowers/notes/figure-review.md`, and the triage dispositions in `WP11-final/triage/wave-5.md` to `wave-7.md`. Your own text was not touched; the 20 items routed to you are in `supervisor-review-list.md` (final reader round).
+**Against.** No scope file. Standards: `CLAUDE.md` (every claim backed, or narrowed or dropped, no caveats added), `notes/figure-review.md`, and the triage dispositions in `WP11-final/triage/wave-5.md` to `wave-7.md`. Your own text was not touched; the 20 items routed to you are in `supervisor-review-list.md` (final reader round).
 
 **Where.** `/paper/` and `/paper/supporting-material/`: Theorem 10 (ii), Theorem 11, Corollary 1, Definition 6, D.13, D.19, Appendix E rows G-7, G-13, G-14, G-17, B.2; Figures 3, 6, 7. Records: `paperfix3-record-defects.md`, `figure-review-paperfix3.md`; screenshots `figure-loop/verify-ca352f5-fig6.jpg`, `-fig7.jpg`. Commits `4694ed2` to `ee7fa7b`.
 

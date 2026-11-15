@@ -1,4 +1,4 @@
-"""The claims register (WP10 Amendment 5, R-43; docs/superpowers/notes/claims-review.md).
+"""The claims register (WP10 Amendment 5, R-43; notes/claims-review.md).
 
 ``claims_register.toml`` at the repository root has one row per claim a reader can rely on. These
 tests keep it from going stale silently: a sentence that is edited no longer matches its fragment
@@ -199,7 +199,7 @@ def test_the_register_holds():
 def test_the_notes_table_rows_are_migrated():
     ids = {r["id"] for r in load_register()}
     assert len(ids) >= 23
-    note = (ROOT / "docs/superpowers/notes/claims-review.md").read_text(encoding="utf-8")
+    note = (ROOT / "notes/claims-review.md").read_text(encoding="utf-8")
     assert "claims_register.toml" in note
 
 

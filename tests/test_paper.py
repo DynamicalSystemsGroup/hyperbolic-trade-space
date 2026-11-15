@@ -4064,7 +4064,7 @@ def test_the_ternary_caption_counts_are_the_triple_search_record():
     differently; the count is read from the record of ``triple_search.py`` (56 triples, two
     regimes, K = 1, 2, 3), and both drawn triples are among those fits at K = 2."""
     record = json.loads(
-        (NOTES / "figure-candidates" / "triple_search_record.json").read_text(encoding="utf-8")
+        (ROOT / "paper" / "figures" / "triple_search_record.json").read_text(encoding="utf-8")
     )
     assert len(record) == 56 * 2 * 3
     made = [r for r in record if "terms" in r]

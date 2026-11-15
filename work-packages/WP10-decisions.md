@@ -646,7 +646,7 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   them to give contradictory feedback which you will then needs to triage to get clean, clear,
   robust results. it will help prevent metric gaming to reviewers persona or read depth"
 - Found: the six depths are recorded; no personas were defined anywhere. The driver drafted
-  `docs/superpowers/notes/reader-grid.md` (the grid, three roles that never share context, recall
+  `notes/reader-grid.md` (the grid, three roles that never share context, recall
   and friction instead of scores, an answer key, triage rules for contradictory findings, guards
   against tuning to the test) with six candidate personas drawn from his words.
 - **Driver's question (popup):** "Are these the personas for the paper's cold-read grid?" (P1 the
@@ -855,7 +855,7 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   that we have a documented review technique for jargon checking across our paper and documentation
   to ensure we're consistent with our glossary. we should avoid unecessary jargon but use the
   glossary defined terms to keep the prose clear and concise." **Disposition:** Amendment 4 of the
-  scope (R-33, R-35, R-36); the technique is `docs/superpowers/notes/vocabulary-review.md` (a tool in
+  scope (R-33, R-35, R-36); the technique is `notes/vocabulary-review.md` (a tool in
   the test suite and a reading by fresh-context reviewers, with a fixed triage); `CLAUDE.md` points
   to it. Sent to the PM.
 - On what is modelled. **Supervisor, verbatim:** "\"a model of the table, not the Pareto boundary,
@@ -942,7 +942,7 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   we just need to know we've not injected spurious details or unsupported claims. that should be
   addressed primarily in clarifying our requirements and include offering a mechanism for assessing
   the requirement." **Disposition:** the claim is narrowed to what L10 backs (R-42). The requirement
-  and its mechanism are R-43 and `docs/superpowers/notes/claims-review.md` (a register of claims
+  and its mechanism are R-43 and `notes/claims-review.md` (a register of claims
   outside the prose, a test that keeps it current, a sampled coverage check by the driver);
   `CLAUDE.md` points to it. Sent to the PM.
 - **The spike on soft weights, readout** (`docs/superpowers/notes/spike-soft-fit/report.md`).

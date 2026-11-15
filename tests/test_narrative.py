@@ -21,7 +21,7 @@ DOCS = ROOT / "docs"
 SOURCES = DOCS / "superpowers" / "notes" / "paper-sources"
 METHOD = SOURCES / "method.md"
 PAGES = [METHOD, SOURCES / "why-and-how.md", SOURCES / "limitations.md"]
-SPEC = ROOT / "docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md"
+SPEC = ROOT / "notes/2026-11-07-posynomial-invariant-form-design.md"
 LEMMAS = {f"L{n}": next((ROOT / "derivation").glob(f"lemma_{n:02d}_*.py")) for n in range(1, 15)}
 
 CITE_RE = re.compile(r"\[(@[^\]]+)\]")

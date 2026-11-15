@@ -27,7 +27,7 @@ surface; the journeys map is a builders' note. Head: `dev` (WP30 cascade landed;
 
 ## Goals
 
-- G1. **The journeys are known:** `docs/superpowers/notes/user-journeys.md`, a row per persona (P1 to P8, U1 to U4):
+- G1. **The journeys are known:** `notes/user-journeys.md`, a row per persona (P1 to P8, U1 to U4):
   arrival surface, first need, path, content on the path aimed at another user.
 - G2. **Every surface routes in the user's words.** First screen: a few lines (use the tool on your own table; read the
   paper; bring your own system model; check the mathematics; reproduce the results); top: one sentence on whom it is

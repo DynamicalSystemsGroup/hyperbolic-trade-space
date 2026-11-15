@@ -1,6 +1,6 @@
 """Figure 1: the three-pane schematic of a trade space (synthetic; matplotlib only).
 
-Regenerated from the design spike ``docs/superpowers/notes/spike-figure1/make_schematics.py`` (S4)
+Regenerated from the design spike ``spike-figure1/make_schematics.py`` (S4; INDEX.md, second table)
 as specified by the supervisor: the first pane is kinked (hyperbolic sheets with sharp corners),
 the second is piecewise linear (the same terms in log space with their normals and one design's
 energy differential), the third is the chart with the frontier as one horizontal line, the terms

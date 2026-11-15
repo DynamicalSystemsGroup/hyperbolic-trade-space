@@ -1,4 +1,4 @@
-"""scikit-learn conformance (spec section 7, docs/superpowers/notes/sklearn-conformance.md)."""
+"""scikit-learn conformance (spec section 7, notes/sklearn-conformance.md)."""
 
 import inspect
 

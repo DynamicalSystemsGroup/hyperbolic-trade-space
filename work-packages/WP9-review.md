@@ -78,7 +78,7 @@ Definition of good: the code reads as a loop around `solve_slsqp` (`_refit` call
 
 ## Outside the scope
 
-- **Out-of-scope changes (none harmful):** `tests/test_k_terms_case.py` (+52, not a listed test file: a test of `k_terms.py`); `docs/literature.md`, `docs/superpowers/notes/notation.md`, `docs/superpowers/notes/references-verified.md`, `docs/references.bib` (+31, `candes2008enhancing` and others; scope allowed new sources under the WP5 rule, and the Candès DOI was anticipated); the spec's section 6 (+/-4 lines; D-8 names the ledger, the spec section mirrors it); `derivation/axioms.py` gained a `SOLVER_LEVEL` mechanism and `derivation/run.py` a new audit heading (needed for I7 but not named in the scope).
+- **Out-of-scope changes (none harmful):** `tests/test_k_terms_case.py` (+52, not a listed test file: a test of `k_terms.py`); `docs/literature.md`, `docs/superpowers/notes/notation.md`, `notes/references-verified.md`, `docs/references.bib` (+31, `candes2008enhancing` and others; scope allowed new sources under the WP5 rule, and the Candès DOI was anticipated); the spec's section 6 (+/-4 lines; D-8 names the ledger, the spec section mirrors it); `derivation/axioms.py` gained a `SOLVER_LEVEL` mechanism and `derivation/run.py` a new audit heading (needed for I7 but not named in the scope).
 - **Non-goals touched:** none. No performance/scalability code (the solver is a plain loop), no kernels, K=1 results and notebook untouched (empty `git diff --stat`), no paper or site files, no push issue (the hold was lifted by the supervisor, recorded in `WP9-decisions.md`).
 
 ## Observations (not counted as failures)

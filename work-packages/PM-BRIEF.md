@@ -117,9 +117,9 @@ commit touches (the Appendix B test above for `derivation/`). A push whose ruff 
 1. `~/.claude/skills/CLAUDE.md` (the decision loop) and `~/.claude/skills/README.md`.
 2. `CLAUDE.md` in this repo (conventions).
 3. `work-packages/README.md` (roles, records, breakdown, status).
-4. `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md` (the design spec).
-5. The notes for the package at hand: `docs/superpowers/notes/{proof-conventions,
-   sklearn-conformance,presentation-framing,references-verified}.md` and `work-packages/build-notes/adcs-port.md`.
+4. `notes/2026-11-07-posynomial-invariant-form-design.md` (the design spec).
+5. The notes for the package at hand: `notes/{proof-conventions,
+   sklearn-conformance,presentation-framing,references-verified}.md` and `work-packages/build-notes/adcs-port.md` (`git show 4a76229:work-packages/build-notes/adcs-port.md`).
 6. The previous package's `WPn-review.md` and `WPn-decisions.md`.
 
 ## Then
@@ -174,7 +174,7 @@ runs tests there; a read-only or prose unit works in the shared checkout's envir
 
 The supervisor: "i think you should design a strategy to be employed by our PM that helps keep us
 unblocked while also not completely forgoing the checks". The strategy is
-`docs/superpowers/notes/verification-strategy.md`. For the PM: tier 0 before a commit (lint, format,
+`notes/verification-strategy.md`. For the PM: tier 0 before a commit (lint, format,
 the tests mapped to the changed paths, the appendix test for derivation changes) and tier 1 before a
 push (the fast suite, without `slow` tests) are the author's; tier 2 (the full suite on every new
 head of `dev`) runs in the driver's watcher and nobody waits for it; a red tier 2 verdict is routed
@@ -217,7 +217,7 @@ agents are doing. The outgoing PM finishes the agents it has running and starts 
 
 The supervisor is back. His directions of tonight are verbatim in `WP22-decisions.md` ("The model-realism loop" and the
 heatmap direction), `WP16-decisions.md` (hold time; one time metric, slew time leaves), `WP19-decisions.md` (no facet
-colouring; the figure principle in `docs/superpowers/notes/figure-review.md`), `WP10-decisions.md` (energy differential
+colouring; the figure principle in `notes/figure-review.md`), `WP10-decisions.md` (energy differential
 glossed; PCA distinct, complementary, composable). 0.1 waits for WP23.
 
 Agents of the third PM (each in `scratchpad/pm-worktrees/<name>`; all have stopped with their units pushed; a fresh
@@ -665,8 +665,8 @@ contract version 18 or 20 (check the head: WP31 took 17, WP25-4 18, WP8b 19; the
 re-run, answer key v5 (hash committed first), k_terms.py's ATTRS to eleven, `uv run python tests/test_case_model_howto.py
 --write`, coverage rerun, glossary entries, paper and docs numbers, figures, the behavioural view, the stakeholder layer,
 the changed baseline-regime conclusion; stage 6 the cascade review and the acceptance review that runs the thing. (5) WP25-5
-when due (a small instance at the next gate; the holds: `work-packages/outlines/paper-outline-v1-baseline.md`, WP28's 151 reader-run files,
-`work-packages/outlines/search-prior-art.md`, `P10-review.md`, the three S-5 candidate files, WP29/WP30 notes). (6) The reviewer's guide's inputs:
+when due (a small instance at the next gate; the holds: `work-packages/outlines/paper-outline-v1-baseline.md` (`git show 4a76229:work-packages/outlines/paper-outline-v1-baseline.md`), WP28's 151 reader-run files,
+`work-packages/outlines/search-prior-art.md` (`git show 4a76229:work-packages/outlines/search-prior-art.md`), `P10-review.md`, the three S-5 candidate files, WP29/WP30 notes). (6) The reviewer's guide's inputs:
 `driver-log.md` calls, the WP28 and WP25 decisions, the review files (WP28, WP25, WP8b, WP31), the closed-units evidence
 in `WP28-decisions.md` "Close units (eighth PM)", the board tables.
 
@@ -701,12 +701,12 @@ it and play around with it)." So: every change to the case model (the revision's
 fleet variable) enters the paper's body as the sentence or two the method's demonstration needs and no more; the
 detail goes to Appendix C; the full model stays in the repository and is pointed to. The marginal-value test on case
 content in the body is strict. The two new reader personas (P7 the new-space systems engineer, P8 the new-space
-executive; `docs/superpowers/notes/reader-grid.md`) are the review pair for every case-model change and judge the
+executive; `notes/reader-grid.md`) are the review pair for every case-model change and judge the
 hard requirement: realistic enough to keep a space-industry collaborator interested, and honest where it is a toy.
 
 ## Package-user tests (standing order, 2026-11-11, 10:20)
 
-The supervisor's words are in `docs/superpowers/notes/reader-grid.md`, "Axis 3: package users". Four personas (U1 to
+The supervisor's words are in `notes/reader-grid.md`, "Axis 3: package users". Four personas (U1 to
 U4: human or coding agent, with or without SysML v2 experience; the task's table measured or exported from a model)
 pull the package, read the docs and fit a table of their own, knowing nothing of satellites. An agent cell gets only
 what a user has: the README, the docs site, the installed package; never the repository's notes, records or tests. The
@@ -722,7 +722,7 @@ different user journeys and make sure we're not doing the thing were what offer 
 top level index page, the paper, the documentation, the api, the examples, the package itself, the repo organization
 all need to be fit for purpose and aligned to a user need. the body of content needs to be signposted well enough that
 the user can quickly find what they need, not get lost in content aimed at another user." So, before the handover, a
-journeys-and-signposting package: (1) a journeys map, `docs/superpowers/notes/user-journeys.md`, one row per persona
+journeys-and-signposting package: (1) a journeys map, `notes/user-journeys.md`, one row per persona
 of the grid (P1 to P8, U1 to U4): where they arrive (the repository page, the root page, the docs site, the paper, the
 API reference, the examples, the package itself), what they need first, the path they take, and which content on that
 path is aimed at someone else; (2) each surface's first screen routes by need, in the user's words (use the tool on
@@ -780,7 +780,7 @@ heading, reviewer's guide skeleton); the final reader round; both platforms and 
 
 ## Mathematical presentation, expert and novice (standing order, 2026-11-11, 10:40)
 
-The supervisor's words are in `docs/superpowers/notes/reader-grid.md` (P9, P10 and "the balance"). Two reviewers of the
+The supervisor's words are in `notes/reader-grid.md` (P9, P10 and "the balance"). Two reviewers of the
 mathematics as presented: the expert checks correctness and precision of definitions, theorems and proofs against the
 lemma scripts; the novice checks whether the thread can be followed and the formatting helps, never correctness. They
 are read and triaged as a pair: precision that costs the novice the thread moves to Appendix B or the script; clarity
@@ -848,7 +848,7 @@ Open, in the order to take them:
 3. WP40 build per its approved scope, after WP39 lands and before the final reader round (D-1 to D-9 in the scope's
    order; D-8 through the paper queue; the three PM-raised defaults as approved).
 4. The WP38 pass, on the assistant's word once WP39 and WP40 have landed: the reader's brief of
-   `docs/superpowers/notes/residual-review.md`, copy-editing only, the checker before and after.
+   `notes/residual-review.md`, copy-editing only, the checker before and after.
 5. The final reader round, depths A to D, P1 to P10, against key version 5 (the key is the assistant's; readers never
    see it); then the register, the grid and the review list refreshed.
 6. WP8b drafts: version 0.1.0, the changelog heading, the reviewer's guide (naming the WP38 machinery and the

@@ -134,5 +134,5 @@ the Beyond-markers; two search-section assertions of the C-1 test dropped with t
 - The rendered pages were not looked at in a browser by this unit; the checks above are builds and tests. The soft-confirm
   on screenshots of the two sections is the driver's.
 - The duplicate `fig-tension-matrix` identifier is older than this package and is left.
-- The internal note `docs/superpowers/notes/user-journeys.md` still cites old section numbers (8 to 11, "Reproducibility
+- The internal note `notes/user-journeys.md` still cites old section numbers (8 to 11, "Reproducibility
   and your own case"); it is a historical note and was not edited.

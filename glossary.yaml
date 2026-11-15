@@ -21,7 +21,7 @@
 #   aliases     optional list of strings: variants the prose may use for the term (plural,
 #               abbreviation); each resolves to this entry
 #   avoid       optional list of {phrase, reason}: variants that must not appear in prose, each
-#               with the reason (docs/superpowers/notes/vocabulary-review.md)
+#               with the reason (notes/vocabulary-review.md)
 #
 # File-level keys besides `entries`
 #   preamble    the three layers in full, shown at the top of the docs Glossary page

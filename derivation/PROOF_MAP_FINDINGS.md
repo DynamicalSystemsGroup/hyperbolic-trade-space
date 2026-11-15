@@ -260,7 +260,7 @@ Three points for the reader of the statement (none changes it):
 Ledger: I14 (Jensen's inequality; Boyd and Vandenberghe 3.1.8, two-point form 3.1.1) and I15
 (generalized posynomial, definition; Boyd, Kim, Vandenberghe and Hassibi 2007, section 5.3, with 5.4
 for the program) added; both section numbers read in the authors' PDFs
-(`docs/superpowers/notes/references-verified.md`). A side correction there: an earlier note listed
+(`notes/references-verified.md`). A side correction there: an earlier note listed
 "2.5 (generalized posynomials)"; section 2.5 is "How GPs are solved" and generalized posynomials
 are section 5.3.
 
@@ -300,7 +300,7 @@ Findings, none of which changes the statement:
 1. **The ledger entry.** I16 (Nocedal and Wright, Theorem 12.6, with the critical cone of (12.53) and
    the KKT conditions (12.34)) is the only new ledger entry; its theorem number, its hypotheses and
    the absence of a constraint qualification were read in the book's text (a course copy, not the
-   publisher's) and are recorded in `docs/superpowers/notes/references-verified.md`; the printed
+   publisher's) and are recorded in `notes/references-verified.md`; the printed
    page is marked "to be confirmed by the author".
 2. **Exact KKT versus a tolerance.** Theorem 12.6 is about an exact KKT point. The package's test is
    a gap within `EPS_KKT` and a curvature above `EPS_FEAS`; a point with a small gap is not exactly

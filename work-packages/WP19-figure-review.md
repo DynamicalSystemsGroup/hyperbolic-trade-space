@@ -1,6 +1,6 @@
 # WP19 D-5: the figure review record (per figure: recipe, reads, five tests, disposition)
 
-Method: `docs/superpowers/notes/figure-review.md`; personas and depths: `docs/superpowers/notes/reader-grid.md`;
+Method: `notes/figure-review.md`; personas and depths: `notes/reader-grid.md`;
 slots: `WP19-slots.md`. Order per figure (R-5): the recipe is committed before any read; the reads, tests and
 disposition follow in a later commit.
 
@@ -1193,7 +1193,7 @@ committed (087e783, e344908) differ in that and the legend position alone.
 
 ## S-5 alternative: a real 3-lemma from the data of record (WP28, the supervisor's loop)
 
-The candidate files this section and the next one name (`docs/superpowers/notes/figure-candidates/` trilemma and textured renders and their two scripts) were deleted at WP25-5 (fifth instance); they are in git at 8eda7e6. `triple_search.py` stays.
+The candidate files this section and the next one name (`paper/figures/` trilemma and textured renders and their two scripts) were deleted at WP25-5 (fifth instance); they are in git at 8eda7e6. `triple_search.py` stays.
 
 Origin, the supervisor's words, verbatim, said of the docs' planted ternary (Examples, Figure 6): "can we
 rebuild the figure from a trilemma using data from the ADCS model? i like this figure a lot and i lean
@@ -1296,8 +1296,8 @@ The 56 triples (support in bold when 3; exponents in the order of the triple):
 
 ### The candidate
 
-`docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-{light,dark}.png`, made by
-`uv run python docs/superpowers/notes/figure-candidates/ternary_cubesat_trilemma.py` (the same
+`paper/figures/ternary-cubesat-trilemma-{light,dark}.png`, made by
+`uv run python paper/figures/ternary_cubesat_trilemma.py` (the same
 `plot_ternary(..., lines=True)` as Figure 6, one neutral colour for designs, the docs' light and dark
 schemes from `scripts/build_figures.py`; it prints the contending set and `ternary_marker_values`: one
 marker, shares 0.29, 0.29, 0.43, V 1.0). It draws the K = 1 fit of the triple, the fit the rule reads.
@@ -1372,7 +1372,7 @@ Reader 2 (Opus):
 
 ### For the supervisor's choice
 
-The candidate beside the planted figure: `docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-light.png`
+The candidate beside the planted figure: `paper/figures/ternary-cubesat-trilemma-light.png`
 (the candidate) and `docs/generated/figures/ternary-planted-light.png` (Figure 6, from
 `uv run python scripts/build_figures.py --docs-only`). Reader 1 keeps the candidate alone; reader 2 keeps
 both, the planted first, and the planted if only one.
@@ -1397,8 +1397,8 @@ The supervisor's word (WP28-decisions, S-5): "ideally either find a real example
 constructured one or also keep the constructed one". The search: every one of the 56 triples of the eight
 metrics, on each regime (primary 706 designs, stock 780), at K = 1, 2, 3 (336 fits), each triple conditioned alone
 with the case's conditioning and the temperature selected by the case's rule at each K (`case.fit_study`).
-`docs/superpowers/notes/figure-candidates/triple_search.py` (run: `uv run python
-docs/superpowers/notes/figure-candidates/triple_search.py OUT.json`, 3 min 55 s on 8 processes).
+`paper/figures/triple_search.py` (run: `uv run python
+paper/figures/triple_search.py OUT.json`, 3 min 55 s on 8 processes).
 
 ### Criteria
 
@@ -1446,9 +1446,9 @@ control effort in one cell, against total mass in the other), 35 and 28 near-fro
 0.055, certified: the form of Figure 6's "metric 3 against metric 1" and "metric 3 against metric 2". The only
 texture-3 fit (row 1) meets the criteria at the guard (10, 12, 14) and its regions are a pair and two single metrics.
 
-### The candidates (light and dark in `docs/superpowers/notes/figure-candidates/`)
+### The candidates (light and dark in `paper/figures/`)
 
-Made by `uv run python docs/superpowers/notes/figure-candidates/ternary_cubesat_textured.py`: the three columns
+Made by `uv run python paper/figures/ternary_cubesat_textured.py`: the three columns
 conditioned alone, `case.fit_study`, `plot_ternary(..., lines=True)` as Figure 6 draws, one neutral colour for
 designs (no colouring by cell); region labels use the library's placement with its label sizes extended down to
 9.5 pt, because a region of a real fit can be small (the library's own sizes find no room for A and B).
@@ -1841,7 +1841,7 @@ The supervisor chooses.
 Decision: C (pointing error / energy balance / depth of discharge) is dropped, because each of its three regions is a single-metric term, so no region shows
 a trade-off. Its two images were kept while the cold-read returns above named them and were deleted at WP25-5; the script skips C.
 
-What changed (A and B redrawn, light and dark, `docs/superpowers/notes/figure-candidates/ternary-cubesat-textured-{A,B}-{light,dark}.png`):
+What changed (A and B redrawn, light and dark, `paper/figures/ternary-cubesat-textured-{A,B}-{light,dark}.png`):
 
 - Regions are a light tint with a drawn border (a dashed line where the leading term changes), not colour blocks.
 - A key under the triangle: thin lines = lines of equal V (0.3 to 0.97 of the peak); dashed line = where the leading term changes; dots = designs (larger =
@@ -1889,7 +1889,7 @@ as the driver bounded it to one.
 ### S-5 final iteration of A and B (ninth PM; the driver's bounded last round)
 
 Three points, from the fresh cold read (`WP19-cold-reads-s5b/reader3.md`); the hill reading, the tints and the dot sizes were left alone. Script and images only
-(`docs/superpowers/notes/figure-candidates/ternary_cubesat_textured.py`, `ternary-cubesat-textured-{A,B}-{light,dark}.png`); `plotting.py` untouched.
+(`paper/figures/ternary_cubesat_textured.py`, `ternary-cubesat-textured-{A,B}-{light,dark}.png`); `plotting.py` untouched.
 
 - The key says what the marks are, checked against `plot_ternary`: a design sits at its shares of the three metrics, each metric scaled by its typical size (`_ternary_shares`
   at s = 1); thin lines are equal invariant value V (the glossary's term) at a fixed total, 0.3 to 0.97 of the peak; the dashed line is where the leading term changes; the
@@ -1907,7 +1907,7 @@ A's open bands in the blue region, the dashed line exiting at the corner.
 ### S-5 round closed: the choice for the morning (ninth PM)
 
 Fresh cold read of the final images (reader 4, image first), verbatim in `work-packages/WP19-cold-reads-s5b/reader4.md`. The reader's rank for "regions with
-different leading trade-offs": A-light, A-dark, planted Figure 6, B-light, one-region figure. Files are under `docs/superpowers/notes/figure-candidates/`
+different leading trade-offs": A-light, A-dark, planted Figure 6, B-light, one-region figure. Files are under `paper/figures/`
 unless stated.
 
 | Figure | File | The reader's sentence | Main defects named |

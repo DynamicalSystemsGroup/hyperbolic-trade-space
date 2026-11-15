@@ -1,6 +1,6 @@
 """Check the prose a reader sees against ``glossary.yaml``.
 
-The rule: docs/superpowers/notes/vocabulary-review.md.
+The rule: notes/vocabulary-review.md.
 
     uv run python scripts/check_vocabulary.py                 # non-zero exit on a new violation
     uv run python scripts/check_vocabulary.py --no-baseline   # every violation, known ones included

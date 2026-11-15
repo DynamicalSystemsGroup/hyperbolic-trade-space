@@ -15,14 +15,14 @@ engineering `.github/`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, 
   `derivation/proof_map_record.json`.
 - [ ] Pick one lemma script (for example `derivation/lemma_01_homogeneity.py`, then `derivation/lemma_21_tension.py`)
   and read it as pencil-and-paper work. These scripts are business-casual checks, not a formal proof
-  (`docs/superpowers/notes/proof-conventions.md`).
+  (`notes/proof-conventions.md`).
 - [ ] Read the public estimator's docstring and the first call in `README.md`; does it run as shown? Then the renamed
   names of your ruling (`trade_off_report`, `spread_directions`, `spread_loadings`, `plot_association`, and the new
   `tension_matrix` and `design_tensions`) against `work-packages/WP42-decisions.md`, "Naming item 2".
-- [ ] Skim the scikit-learn conformance note (`docs/superpowers/notes/sklearn-conformance.md`) against the estimator:
+- [ ] Skim the scikit-learn conformance note (`notes/sklearn-conformance.md`) against the estimator:
   `fit`, `transform`, `inverse_transform`, `score_samples`; no `predict` on the transformer.
 - [ ] The claims register `claims_register.toml`: run `uv run pytest -q tests/test_claims_register.py`; every claim a
-  reader can rely on has a backing (`docs/superpowers/notes/claims-review.md`).
+  reader can rely on has a backing (`notes/claims-review.md`).
 - [ ] `uv run python scripts/check_vocabulary.py` against `glossary.yaml` (the glossary now has layers and the
   avoided words "hole" and "gap" for the chart's unoccupied region), and
   `uv run python scripts/check_residuals.py --compare scripts/residuals_baseline.json --strict`, which should exit 0.

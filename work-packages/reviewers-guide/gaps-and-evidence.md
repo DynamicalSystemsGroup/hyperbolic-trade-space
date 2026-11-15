@@ -57,7 +57,7 @@ Each is stated once, with where its record lives.
 | Changed numbers | `work-packages/swap-evidence.md`; `work-packages/WP30-rounds/data-gate/conclusions.md` | assistant |
 | Residual pass | `work-packages/WP38-review.md`; `work-packages/WP38-flags/`; `work-packages/WP38-confirmations/`; `work-packages/WP38-landed/`; `scripts/residuals_baseline.json` | assistant |
 | Container record | `paper/container/RECORD.md`; `paper/container/README.md` | assistant |
-| Reader rounds | `work-packages/WP11-decisions.md`; `work-packages/WP11-final/`; `docs/superpowers/notes/reader-grid.md` | assistant |
+| Reader rounds | `work-packages/WP11-decisions.md`; `work-packages/WP11-final/`; `notes/reader-grid.md` | assistant |
 | Research spikes | `work-packages/WP41-rounds/`, `WP43-rounds/`, `WP48-rounds/`, `WP50-rounds/`, `WP52-rounds/` | assistant |
 | Cleanup | `work-packages/WP25-rounds/instance-4/` | assistant |
 | Screenshots | commit `2a669de` (`git show 2a669de:<path>`; see `work-packages/README.md`) | PM |

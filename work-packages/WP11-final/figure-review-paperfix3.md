@@ -1,6 +1,6 @@
 # Figure review of the final reader round, third paper unit: Figures 3, 4, 5, 6 and 7
 
-The loop is `docs/superpowers/notes/figure-review.md`; the second unit's record for Figures 4 and 5 is
+The loop is `notes/figure-review.md`; the second unit's record for Figures 4 and 5 is
 `figure-review-paperfix2.md`. Images are in `figure-loop/` (`figN_before.png`, `figN_after.png`), as rendered by the
 committed code at this unit's head. Readers' words are quoted from the committed reports in `reports/` through the
 triage files.

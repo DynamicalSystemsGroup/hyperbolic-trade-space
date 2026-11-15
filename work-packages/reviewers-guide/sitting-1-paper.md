@@ -33,7 +33,7 @@ appendices). Sources: `paper/paper.ipynb`, `paper/supporting_material.ipynb`. St
 - [ ] Appendix H (HoroPCA beside this work) against the three boundaries in `work-packages/WP35-review.md`; Appendix E
   and Appendix B typeset at desktop width.
 - [ ] Every figure against its caption, and the page for a line of error text, a missing figure or a "Table ??"
-  (`docs/superpowers/notes/figure-review.md`; the cold reads of Figures 3, 6 and 7 are in
+  (`notes/figure-review.md`; the cold reads of Figures 3, 6 and 7 are in
   `work-packages/WP11-final/figure-review-paperfix3.md`). The record defects the held-out reads found at depth D
   (Section 8's row count, D.3's shares, Proof 7's Hessian, Figure 6's band, Table 2's caption) are fixed in the fifth
   paper unit: check them against `work-packages/WP11-final/paperfix3-record-defects.md`.

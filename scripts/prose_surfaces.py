@@ -1,6 +1,6 @@
 """List every prose surface a reader sees, with word counts, so each is assigned and none missed.
 
-The residual pass (docs/superpowers/notes/residual-review.md) reads each surface listed here once.
+The residual pass (notes/residual-review.md) reads each surface listed here once.
 The surfaces:
 
 ``paper``

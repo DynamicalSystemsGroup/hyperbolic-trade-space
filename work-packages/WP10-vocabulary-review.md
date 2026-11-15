@@ -1,7 +1,7 @@
 # WP10 Amendment 4, R-36: the vocabulary review (stream P3)
 
 Run on the pinned commit `78f5e1cf984d4589a9232717023f408358c25803` (`git cat-file -t` gives commit). Record of the one full reading of everything a reader can reach,
-under `docs/superpowers/notes/vocabulary-review.md` ("The reading", "Triage"). Nothing was edited: dispositions are recorded, not applied. The per-item dispositions are superseded by the section "Re-triage by stem (2026-11-09)".
+under `notes/vocabulary-review.md` ("The reading", "Triage"). Nothing was edited: dispositions are recorded, not applied. The per-item dispositions are superseded by the section "Re-triage by stem (2026-11-09)".
 
 ## How the reading was run
 

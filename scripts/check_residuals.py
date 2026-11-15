@@ -1,6 +1,6 @@
 """Report the mechanical patterns of machine-written prose, per surface. A report, never an edit.
 
-The reader's brief: docs/superpowers/notes/residual-review.md. The surfaces:
+The reader's brief: notes/residual-review.md. The surfaces:
 scripts/prose_surfaces.py. A count sends a reader to a sentence; the reader decides. Nothing here
 changes a file.
 

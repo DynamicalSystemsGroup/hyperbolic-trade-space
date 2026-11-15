@@ -15,7 +15,7 @@ LIT = (
 )  # moved off the docsite (WP8a Amendment 2)
 # WP10: keys added for the paper's prior-art section are cited in this source note, so the
 # bibliography stays free of uncited keys whether or not literature.md survives WP8a's restructure.
-SOURCES = DOCS / "superpowers" / "notes" / "paper-prior-art-sources.md"
+SOURCES = DOCS.parent / "notes" / "paper-prior-art-sources.md"
 
 KEY_RE = re.compile(r"^[a-z]+[0-9]{4}[a-z]+$")
 DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")

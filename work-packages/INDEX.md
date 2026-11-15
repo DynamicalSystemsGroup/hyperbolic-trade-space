@@ -20,16 +20,16 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 8 | Site and first release | superseded (split into WP8a and WP8b) | 5b1d087 | not landed | in history: read from the commit before its removal (recipe above) |
 | 8a | Site skeleton up | landed, accepted | 96086cc | 2d2a751 | in history: `git show 2d2a751:work-packages/<file>` |
 | 8b | Release preparation for 0.1.0 | in flight (release preparation) | d4db0e5 | not landed | in place (not landed or in flight) |
-| 9 | Posynomial solver for K > 1 | accepted | 3082200 | c4133c8 | in history: `git show c4133c8:work-packages/<file>`; `WP9-decisions.md` in place (read by docs/superpowers/notes/spike-facet-refit/README.md, docs/superpowers/notes/notation.md); `WP9-review.md` in place (read by paper/supporting_material.ipynb, docs/superpowers/notes/abstraction-gaps.md) |
-| 10 | The paper, working draft | landed, accepted | d3abf28 | 4ede5bd | in history: `git show 4ede5bd:work-packages/<file>`; `WP10-decisions.md` in place (read by paper/container/README.md, paper/myst.yml); `WP10-reading-pass.md` in place (read by paper/generate_reading_pass.py, paper/reading_pass.yaml); `WP10-scope-of-work.md` in place (read by docs/superpowers/notes/paper-sources/README.md); `WP10-vocabulary-review.md` in place (read by scripts/vocabulary_baseline.toml) |
+| 9 | Posynomial solver for K > 1 | accepted | 3082200 | c4133c8 | in history: `git show c4133c8:work-packages/<file>`; `WP9-review.md` in place (read by paper/supporting_material.ipynb, docs/superpowers/notes/abstraction-gaps.md) |
+| 10 | The paper, working draft | landed, accepted | d3abf28 | 4ede5bd | in history: `git show 4ede5bd:work-packages/<file>`; `WP10-decisions.md` in place (read by paper/container/README.md, paper/myst.yml); `WP10-reading-pass.md` in place (read by paper/generate_reading_pass.py, paper/reading_pass.yaml); `WP10-vocabulary-review.md` in place (read by scripts/vocabulary_baseline.toml) |
 | 11 | Readability and correctness loops over the reader grid | in flight (reader-grid loops; WP11-final and WP11-round-1 are read by tests and the paper) | 94ff559 | not landed | in place (not landed or in flight) |
 | 12 | Trade-off-aware search of the design space | scoped later (the search follows the release); decisions only, no scope | d3abf28 | not landed | in place (not landed or in flight) |
 | 13 | Response to the external review | accepted | 093e8d3 | 655d978 | in history: `git show 655d978:work-packages/<file>` |
 | 14 | Interface contract (technical ↔ presentation) | accepted | 4b559cb | 328371a | in history: `git show 328371a:work-packages/<file>` |
 | 15 | System model tidy-up (the cubesat example as a legible SysML v2 model with an experiment ledger) | landed, accepted | c1595e6 | 2d2a751 | in history: `git show 2d2a751:work-packages/<file>` |
 | 16 | The data swap (the paper's case on the generation of record) | landed | 4f0f307 | ea46637 | in history: `git show ea46637:work-packages/<file>`; `WP16-decisions.md` in place (read by paper/container/RECORD.md) |
-| 17 | The several-term fit with soft weights (the fit at the model's own sharpness) | landed | 480937e | 4425666 | `WP17-decisions.md` in place (read by docs/superpowers/notes/claims-review.md, claims_register.toml); `WP17-scope-of-work.md` in place (read by docs/superpowers/notes/claims-review.md, claims_register.toml) |
-| 18 | Ternary plots in the documentation's examples | landed | 829bce2 | 0a18b5b | in history: `git show 0a18b5b:work-packages/<file>`; `WP18-decisions.md` in place (read by docs/superpowers/notes/figure-review.md) |
+| 17 | The several-term fit with soft weights (the fit at the model's own sharpness) | landed | 480937e | 4425666 | `WP17-decisions.md` in place (read by notes/claims-review.md, claims_register.toml); `WP17-scope-of-work.md` in place (read by notes/claims-review.md, claims_register.toml) |
+| 18 | Ternary plots in the documentation's examples | landed | 829bce2 | 0a18b5b | in history: `git show 0a18b5b:work-packages/<file>` |
 | 19 | The paper's figures (slots, candidates, placement, by section) | landed | 548fb1d | 96aa493 | in history: `git show 96aa493:work-packages/<file>`; `WP19-decisions.md` in place (read by paper/figures/figure1.py, paper/figures/ternary_pair.py); `WP19-figure-review.md` in place (read by paper/length_ledger.toml, claims_register.toml) |
 | 20 | Verification in tiers | landed | 5084f99 | 5775220 | in history: `git show 5775220:work-packages/<file>`; `WP20-review.md` in place (read by tests/test_check_script.py) |
 | 21 | The response to the independent assessment | approved by the driver, no landing recorded | e699a54 | not landed | in place (not landed or in flight) |
@@ -49,12 +49,12 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 35 | HoroPCA acknowledged and distinguished, "hyperbolic" defined once, Table 1's "differs" column made uniform | accepted | 1d27f8c | 282b479 | in history: `git show 282b479:work-packages/<file>`; `WP35-amendment-1-scope.md` in place (read by paper/length_ledger.toml); `WP35-decisions.md` in place (read by paper/length_ledger.toml, claims_register.toml); `WP35-review.md` in place (read by paper/length_ledger.toml); `WP35-rounds` in place (read by tests/test_paper.py, paper/generate_repro.py) |
 | 36 | Future directions: formal results and Rust/WASM (decisions and rounds only) | landed, accepted | 200b31a | 9456caa | `WP36-decisions.md` in place (read by claims_register.toml); `WP36-rounds` in place (read by claims_register.toml) |
 | 37 | A history and acknowledgements page, linked from the root page | accepted | bf9dee8 | 282b479 | in history: `git show 282b479:work-packages/<file>`; `WP37-rounds` in place (read by scripts/history_record.py, tests/test_site.py) |
-| 38 | The residual pass (patterns that read as machine-written) | accepted | ff9c410 | 282b479 | in history: `git show 282b479:work-packages/<file>`; `WP38-confirmations` in place (read by docs/superpowers/notes/residual-review.md); `WP38-flags` in place (read by docs/superpowers/notes/residual-review.md); `WP38-scope-of-work.md` in place (read by docs/superpowers/notes/residual-review.md) |
+| 38 | The residual pass (patterns that read as machine-written) | accepted | ff9c410 | 282b479 | in history: `git show 282b479:work-packages/<file>` |
 | 39 | The case ends in a decision | accepted | 518b5ab | 282b479 | in history: `git show 282b479:work-packages/<file>`; `WP39-scope-of-work.md` in place (read by paper/length_ledger.toml) |
 | 40 | Release thinning and repository organization | accepted | dfc7c95 | 282b479 | in history: `git show 282b479:work-packages/<file>` |
 | 41 | The bridge to the search, part 1 (framing and docs page) | landed | 17ece6e | af54b3b | in history: `git show af54b3b:work-packages/<file>`; `WP41-rounds` in place (read by claims_register.toml) |
 | 42 | Tension, and the glossary's terms across decision analysis, optimization and learning | landed | 4d5c339 | a2a6ab2 | in history: `git show a2a6ab2:work-packages/<file>` |
-| 43 | Beyond the posynomial, the kernel direction tested (research spike) | landed | 02d8142 | d0a97cd | in history: `git show d0a97cd:work-packages/<file>`; `WP43-rounds` in place (read by docs/superpowers/notes/kernel-direction.md) |
+| 43 | Beyond the posynomial, the kernel direction tested (research spike) | landed | 02d8142 | d0a97cd | in history: `git show d0a97cd:work-packages/<file>` |
 | 44 | A second case study from a public dataset (research spike) | landed (research spike readout; accepted under the mandate) | d5c2576 | d16309e | in history: `git show d16309e:work-packages/<file>` |
 | 45 | Two public case studies and a two-metric example for the documentation | landed | d14158c | 6482f6d | in history: `git show 6482f6d:work-packages/<file>`; `WP45-rounds` in place (read by examples/perovskite/run.py, examples/amniote/run.py) |
 | 46 | The fit temperature as a path | landed | 80b6f13 | 415d889 | in history: `git show 415d889:work-packages/<file>`; `WP46-decisions.md` in place (read by claims_register.toml); `WP46-rounds` in place (read by claims_register.toml) |
@@ -73,3 +73,48 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 59 | Conditioning and feature engineering on the three public cases (spike) | landed, accepted by the driver, his read pending | a2533ca | a9cfb60 | in place until his read; `examples/*/variants.py` stay (code) |
 | 60 | The three example pages | landed, his read pending | 022c4d2 | 65b0683 | in place until his read; then in history |
 | 61 | The work-packages directory indexed and thinned | landed | 48d1e39 | a1a73ab | in place (the protocol) |
+
+## Notes, spike outputs and supporting content removed from the tree
+
+Written by WP62. Every row is a path that left the working tree; the commit named holds it (on `dev`), and `git show <commit>:<path>` reads it. A file brought back under `notes/` or elsewhere is listed with its new path after the table. Local copies go in `work-packages/archive/` (git-ignored). The protocol is in `README.md`, "Tracking".
+
+| Path | Commit | Purpose | Read it |
+|---|---|---|---|
+| `docs/superpowers/notes/kernel-direction.md` | 4a76229 | The definition of the kernel class and its two facts, for the glossary entry; the WP43 readout (now `notes/directions/wp43-kernel-direction.md`) carries the content | `git show 4a76229:docs/superpowers/notes/kernel-direction.md` |
+| `docs/superpowers/notes/spike-facet-refit/bench_cubesat.py` | 4a76229 | Facet-refit spike: benchmark of the refit on the cubesat data (WP9 gap G-1) | `git show 4a76229:docs/superpowers/notes/spike-facet-refit/bench_cubesat.py` |
+| `docs/superpowers/notes/spike-facet-refit/bench_planted.py` | 4a76229 | Facet-refit spike: benchmark on planted frontiers | `git show 4a76229:docs/superpowers/notes/spike-facet-refit/bench_planted.py` |
+| `docs/superpowers/notes/spike-facet-refit/bench_restarts.py` | 4a76229 | Facet-refit spike: restart-count benchmark | `git show 4a76229:docs/superpowers/notes/spike-facet-refit/bench_restarts.py` |
+| `docs/superpowers/notes/spike-figure1/README.md` | 4a76229 | Design spike of Figure 1 (schematics S1 to S4) | `git show 4a76229:docs/superpowers/notes/spike-figure1/README.md` |
+| `docs/superpowers/notes/spike-figure1/make_schematics.py` | 4a76229 | Generator of the Figure 1 design spike; paper/figures/figure1.py regenerates the figure | `git show 4a76229:docs/superpowers/notes/spike-figure1/make_schematics.py` |
+| `work-packages/build-notes/adcs-port.md` | 4a76229 | Build note: the simulation port, source files and baseline values (WP4) | `git show 4a76229:work-packages/build-notes/adcs-port.md` |
+| `work-packages/build-notes/opensysml-usage.md` | 4a76229 | Build note: how the SysML v2 tooling was used | `git show 4a76229:work-packages/build-notes/opensysml-usage.md` |
+| `work-packages/build-notes/system-model-tidy.md` | 4a76229 | Build note: the system model tidy-up (WP15) | `git show 4a76229:work-packages/build-notes/system-model-tidy.md` |
+| `work-packages/outlines/paper-outline-v1-baseline.md` | 4a76229 | The paper outline, first baseline (WP10) | `git show 4a76229:work-packages/outlines/paper-outline-v1-baseline.md` |
+| `work-packages/outlines/paper-outline-v2-search.md` | 4a76229 | The paper outline, second version with the search framing (WP10) | `git show 4a76229:work-packages/outlines/paper-outline-v2-search.md` |
+| `work-packages/outlines/search-prior-art.md` | 4a76229 | Record of the search for prior art behind the outline | `git show 4a76229:work-packages/outlines/search-prior-art.md` |
+| `work-packages/external-review-2026-11.md` | 4a76229 | The external review of 2026-11 with the supervisor's response per item (WP13) | `git show 4a76229:work-packages/external-review-2026-11.md` |
+| `work-packages/spikes/spike-container-platform/report.md` | 4a76229 | Spike report: the container platform choice (linux/arm64) | `git show 4a76229:work-packages/spikes/spike-container-platform/report.md` |
+| `work-packages/WP9-decisions.md` | 4a76229 | WP9 decisions: approval and the verbatim remarks on notation | `git show 4a76229:work-packages/WP9-decisions.md` |
+| `work-packages/WP10-scope-of-work.md` | 4a76229 | WP10 scope of work, the paper working draft (with amendments and the reader model) | `git show 4a76229:work-packages/WP10-scope-of-work.md` |
+| `work-packages/WP18-decisions.md` | 4a76229 | WP18 decisions: ternary plots and the figure principle | `git show 4a76229:work-packages/WP18-decisions.md` |
+| `work-packages/WP38-scope-of-work.md` | 4a76229 | WP38 scope of work: the residual pass | `git show 4a76229:work-packages/WP38-scope-of-work.md` |
+| `work-packages/WP38-flags/` | 4a76229 | WP38 first-reader flag tables, one per slot (30 files) | `git show 4a76229:work-packages/WP38-flags/` |
+| `work-packages/WP38-confirmations/` | 4a76229 | WP38 second-reader confirmation forms (29 files) | `git show 4a76229:work-packages/WP38-confirmations/` |
+| `work-packages/WP43-rounds/ (all but the readout)` | 4a76229 | WP43 kernel spike: protocol, scripts, results and figures; the readout moved to notes/directions/ | `git show 4a76229:work-packages/WP43-rounds/` |
+| `paper/BROWSER_NOTES.md` | 4a76229 | Notes from browser reviews of the rendered paper (heading anchors, narrow screens) | `git show 4a76229:paper/BROWSER_NOTES.md` |
+
+Moved, not removed (old path to new path; the old path is read at `4a76229`):
+
+| Old path | New path |
+|---|---|
+| `docs/superpowers/notes/{claims-review, figure-review, proof-conventions, sklearn-conformance, vocabulary-review, presentation-framing, user-journeys, residual-review, reader-grid, verification-strategy, references-verified, paper-prior-art-sources}.md` | `notes/<same name>.md` |
+| `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md` | `notes/2026-11-07-posynomial-invariant-form-design.md` |
+| `docs/superpowers/notes/figure-candidates/{triple_search.py, triple_search_record.json}` | `paper/figures/` |
+| `docs/superpowers/notes/spike-sysml-diagrams/project.py, render.sh` | `scripts/sysml_project.py, scripts/sysml_render.sh` |
+| `work-packages/WP43-rounds/spike/readout.md` | `notes/directions/wp43-kernel-direction.md` |
+
+Copied into `notes/directions/` (the originals stay where a register backing reads them): `WP36-decisions.md` to `wp36-formal-and-rust-wasm.md`; `WP41-rounds/spike/readout.md` to `wp41-bridge-to-the-search.md`. Restored from history as one file each: WP48 (`ba62c15:work-packages/WP48-rounds/spike/readout.md`) to `wp48-governance-control-checks.md`; WP50 (`5233126:work-packages/WP50-rounds/spike/readout.md`) to `wp50-persistent-homology.md`; WP52 (`03790a0:work-packages/WP52-rounds/spike/proposal.md`) to `wp52-governance-lineage.md`. Pending: the ternary spike's readout joins `notes/directions/` when WP56 lands (`cf4faca:work-packages/WP56-rounds/ternary/readout.md` on branch `wp56-ternary`).
+
+## Paths a notebook still reads under `docs/superpowers/`
+
+They stay until the package that re-executes the notebook retires them: `docs/superpowers/notes/notation.md`, `abstraction-gaps.md`, `adcs-tensions-probe.md` and `paper-sources/` (read by `paper/supporting_material.ipynb`; `tests/test_paper_sources.py` and `tests/test_narrative.py` guard the snapshots), `spike-facet-refit/{README.md, bench_oracle.py, methods.py}` (notebook), and `spike-horopca/` (read by the claims register). Under `work-packages/`: `external-assessment-2026-11-09/`, `spikes/spike-objective/`, `spikes/spike-certificates/`, `WP9-review.md`, `WP23-rounds/`, `WP35-rounds/` (notebook).

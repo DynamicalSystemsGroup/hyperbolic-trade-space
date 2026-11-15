@@ -810,7 +810,7 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
     readers = [
         *ADCS_DIR.glob("*.py"), *(ADCS_DIR / "experiments").glob("*.py"),
         ADCS_DIR / "model_v2" / "coverage.py",
-        root / "docs" / "superpowers" / "notes" / "spike-sysml-diagrams" / "project.py",
+        root / "scripts" / "sysml_project.py",
         root / "work-packages" / "interface-contract.toml",
         *(p for p in (ADCS_DIR / "data").rglob("*") if p.suffix in {".csv", ".json"}),
     ]  # fmt: skip

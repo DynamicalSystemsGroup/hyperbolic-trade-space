@@ -188,7 +188,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   what i want is to get this project into a state i can approve for a first release. you are left
   in charge while i am away from my computer." Standing while he is away: every rendered thing is
   judged from its image in the browser, never from code or text alone; the reader grid (six personas
-  by six depths, `docs/superpowers/notes/reader-grid.md`) is the instrument for assessments; the
+  by six depths, `notes/reader-grid.md`) is the instrument for assessments; the
   chain of report is subagents to the PM, the PM to the driver, the driver to him; decisions that are
   his accumulate under "Waiting for the supervisor" below with the driver's recommendation and the
   work routes around them; the progress updates continue in the chat.
@@ -2162,7 +2162,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   and informative. The supervisor: "this is pretty vacuous. doesn't seem to earn its place on the
   page, even in the documentation. make sure we also do visual loops for figures". Overruled: the
   figure is dropped. Lesson: tidy is not informative; a figure whose caption says all it shows fails.
-  The figure review (`docs/superpowers/notes/figure-review.md`) now applies to every figure, and the
+  The figure review (`notes/figure-review.md`) now applies to every figure, and the
   driver's own look is one reading in it, not the verdict.
 - 2026-11-09, how the run was being driven. The supervisor: "it seems like you are missing the
   opportunity to use tight scopes of work to parallelize efforts using the PM as an orchestrator."
@@ -2175,7 +2175,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 - 2026-11-09, waiting on checks. The supervisor: "are you regularly blocked waiting on ci (which
   takes a long time); i think you should design a strategy to be employed by our PM that helps keep
   us unblocked while also not completely forgoing the checks". The driver had spent 12 to 25
-  minutes waiting on each full run. Now: `docs/superpowers/notes/verification-strategy.md` (tiers;
+  minutes waiting on each full run. Now: `notes/verification-strategy.md` (tiers;
   the full suite runs on each new head in a watcher nobody waits for; Linux per batch; both
   platforms only at acceptances and merges), stream P11 for the tooling, and a separate worktree
   for the browser staging.

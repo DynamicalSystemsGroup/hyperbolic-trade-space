@@ -1,6 +1,6 @@
 # Figure review of the final reader round, second paper unit: Figure 4's lower panel and Figure 5
 
-The loop is `docs/superpowers/notes/figure-review.md`. Change requests 36 and 56 (wave 2 and wave 3 triage) ask for
+The loop is `notes/figure-review.md`. Change requests 36 and 56 (wave 2 and wave 3 triage) ask for
 the figure-review loop, not a caption. The readers' words below are quoted from the committed reports in
 `reports/` (the triage files cite them by cell). Images: `figure-loop/` (before and after, as rendered by the
 committed code at this unit's head).

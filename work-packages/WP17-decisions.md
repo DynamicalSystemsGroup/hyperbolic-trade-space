@@ -52,7 +52,7 @@ Delivered by the derivation implementer: `derivation/lemma_17_soft_fit_certifica
 tagged steps, appended to `CHAIN_NAMES`; the banner of `run.py` reads L1 -> L17), the ledger entry
 I16 (Nocedal and Wright, Theorem 12.6, the second-order sufficient conditions; the theorem number
 and hypotheses read in the book's text, a course copy, and marked "to be confirmed by the author"
-against the printed edition: `docs/superpowers/notes/references-verified.md`), the record
+against the printed edition: `notes/references-verified.md`), the record
 (`derivation/proof_map_record.json`, regenerated with `--update`), the tests in
 `tests/test_proof_map.py`, the corrected pins and the findings
 (`derivation/PROOF_MAP_FINDINGS.md`, "WP17 R-8"). The statement is the PM's, unchanged. The Hessian

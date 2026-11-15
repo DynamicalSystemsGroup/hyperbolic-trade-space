@@ -2,9 +2,8 @@
 
 This folder is the build's record, text for the reader who wants to see how the repository was made, and none of it is
 needed to use the method. It holds each package's scope of work, decisions and review, the round outputs and reader
-runs, the driver log, and the process documents below. Three folders hold material moved out of `docs/superpowers/notes/`:
-`build-notes/` (notes on the model and tools), `outlines/` (the paper's outline history and a search record) and `spikes/`
-(throwaway benchmark scripts). The screenshots the records cite are in git, not in the checkout (see "Screenshots of
+runs, the driver log, and the process documents below. Folders `build-notes/` (one note kept), `spikes/` (benchmark scripts a notebook still reads) and `review/` hold the
+rest of what the packages left. The screenshots the records cite are in git, not in the checkout (see "Screenshots of
 the records" below).
 
 This repository is built as supervisor-gated work packages, following the supervisor's skills in
@@ -23,6 +22,12 @@ This repository is built as supervisor-gated work packages, following the superv
   register read stays tracked and the row names the reader. Read a removed file with
   `git show <accepted>:work-packages/<file>`.
 - `work-packages/archive/` is git-ignored: a place for local copies of removed documents, never committed.
+- Notes and spike outputs follow the same protocol. The live guidance is in `notes/` at the repository root (the
+  checks and `CLAUDE.md` cite it); the readouts that define the future directions are in `notes/directions/`, one file
+  per spike. A note or spike output that stops being read by code, a test, the register or the guidance is removed at
+  the commit that retires its reader, and `INDEX.md`'s second table gets a row: path, the commit that holds it, its
+  purpose in one clause, and the `git show <commit>:<path>` command. Spike scripts stay in the tree only while a
+  notebook, a test or the register reads them; the row names the reader until then.
 
 ## Screenshots of the records
 
@@ -69,7 +74,7 @@ The reader-run directories `WP28-inventory/` and `WP28-retest/` stay.
   merging package's decisions file; the one-command local build-and-serve is part of the WP14
   interface contract and delivered by WP8a.
 - **Execution:** autonomous inside the approved scope; TDD per module; `uv run` for every command;
-  scikit-learn conformance per `docs/superpowers/notes/sklearn-conformance.md`.
+  scikit-learn conformance per `notes/sklearn-conformance.md`.
 
 **The 0.1 release candidate (mandate of 2026-11-08).** `release-candidate.md`: the driver loops
 on `dev` to a candidate and hands the supervisor one PR with a reviewer's guide in sittings; the
@@ -128,7 +133,7 @@ links to the other.
 
 Only WP0 was firm at approval; the rest is revisited at each acceptance gate. Each line: goal, and
 what it fixes for later packages. The design spec is
-`docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md` (sections cited below).
+`notes/2026-11-07-posynomial-invariant-form-design.md` (sections cited below).
 
 | WP | Goal | Fixes for later | Depends on |
 |---|---|---|---|
@@ -145,10 +150,10 @@ what it fixes for later packages. The design spec is
 | WP13 Response to the external review | Triage of `external-review-2026-11.md` item by item with the supervisor (accept / change in a named package / decline with reason), the changes it assigns (certificates and stopping declaration, simplex KKT statement, surface-versus-frontier terminology, identifiability and tolerances, the scope of statistical claims, the presentation lemmas), and the response letter | Hardened claims the paper states; the lemmas the Results section needs | WP9 (accepted) |
 | WP14 Interface contract (technical ↔ presentation) | A pinned contract between the technical work (package API and version, case module functions, data and figure paths, derivation ledger and generated pages, the executed notebooks) and the presentation layer (docsite build, paper build, release machinery): a document and a test that asserts it, so content and machinery iterate in parallel without breaking each other (the contract: [interface-contract.md](interface-contract.md)) | Stable paths, entry points and build commands for WP8a, WP10, WP12, WP8b | WP9; before WP8a and WP10 |
 | WP8a Site skeleton up | Root index (thin HTML after hc-marimo), MkDocs docsite under `/docs/`, a `/paper/` slot, the Pages workflow armed for the release tag and manual dispatch only (no deployment before the first release), a one-command localhost staging site for review, generated ledger and V&V pages; built against WP14 | A working draft of the docs visible early; the paper's deployment target | WP14 | `WP14-scope-of-work.md` (interface contract) | verbal, 2026-11-08 ("Approved", `WP14-decisions.md`) | `dev` df475b8..328371a | `WP14-review.md` (b7f81e0) | verbal, 2026-11-08 ("Accepted", `WP14-decisions.md`); merge to `main` with WP8a |
-| WP15 System model tidy-up | The cubesat example as one clean SysML v2 model (design variables, alternatives, accounting, feasibility as requirements, the experiment as analysis and verification), the toolkit's model checking and simulation machinery used where it supports them, a Python experiment runner with a ledger (cadCAD-like semantics) that makes every dataset traceable, a how-to for plugging in another SysML model; the committed CSVs stay frozen and a `v2` generation lands beside them under the ledger (supervisor: "do it in parallel to start but eventually i'd like to be able to swap over onto the new data"), the swap being a later recorded gate; breakout and parallel safety in `work-packages/build-notes/system-model-tidy.md` | A legible example; the oracle and runner WP12 uses | WP14 (the oracle signature); parallel with WP13, WP10, WP8a on disjoint files; before WP12 |
-| WP10 The paper, working draft | A mystmd article in which the notebook is the paper (story, notation, outline v2: `work-packages/outlines/paper-outline-v2-search.md`), the supporting-material notebook of computationally verifiable appendices, the case code as a tested module, the state-of-practice and multiobjective citations, built for the six reader drill-down levels and the reader model; the search section marked preliminary until WP12 lands; deployed under `/paper/` | The published artifact | WP13, WP14; parallel with WP12 (different files) |
+| WP15 System model tidy-up | The cubesat example as one clean SysML v2 model (design variables, alternatives, accounting, feasibility as requirements, the experiment as analysis and verification), the toolkit's model checking and simulation machinery used where it supports them, a Python experiment runner with a ledger (cadCAD-like semantics) that makes every dataset traceable, a how-to for plugging in another SysML model; the committed CSVs stay frozen and a `v2` generation lands beside them under the ledger (supervisor: "do it in parallel to start but eventually i'd like to be able to swap over onto the new data"), the swap being a later recorded gate; breakout and parallel safety in `work-packages/build-notes/system-model-tidy.md` (`git show 4a76229:work-packages/build-notes/system-model-tidy.md`) | A legible example; the oracle and runner WP12 uses | WP14 (the oracle signature); parallel with WP13, WP10, WP8a on disjoint files; before WP12 |
+| WP10 The paper, working draft | A mystmd article in which the notebook is the paper (story, notation, outline v2: `work-packages/outlines/paper-outline-v2-search.md` (`git show 4a76229:work-packages/outlines/paper-outline-v2-search.md`)), the supporting-material notebook of computationally verifiable appendices, the case code as a tested module, the state-of-practice and multiobjective citations, built for the six reader drill-down levels and the reader model; the search section marked preliminary until WP12 lands; deployed under `/paper/` | The published artifact | WP13, WP14; parallel with WP12 (different files) |
 | WP12 Trade-off-aware search of the design space | Ascent directions in configuration space from the facets, the outer loop against a noisy oracle, the lemmas and inherited convergence results, the cubesat simulator live, minimal code; its results feed WP10's search section | The search procedure and its theorem | WP9, WP13; parallel with WP10 |
-| WP11 Readability loops on the paper | Cold-read loops over the reader grid (six depths by six personas, `docs/superpowers/notes/reader-grid.md`): context-gapped readers on the rendered paper, triage of contradictory findings, then browser-in-the-loop loops with the supervisor | What a human reader sees | WP10, WP12 |
+| WP11 Readability loops on the paper | Cold-read loops over the reader grid (six depths by six personas, `notes/reader-grid.md`): context-gapped readers on the rendered paper, triage of contradictory findings, then browser-in-the-loop loops with the supervisor | What a human reader sees | WP10, WP12 |
 | WP8b Release | Version 0.1.0, changelog, license, tag, GitHub release; TestPyPI and PyPI deferred (supervisor: "pypi deferred for pending feedback from friends and collaborators") | The first release | WP11; the supervisor's publisher configuration |
 
 ## Status

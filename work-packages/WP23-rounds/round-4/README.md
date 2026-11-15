@@ -29,10 +29,10 @@ From the worktree of the round (branch `wp23r4` on `dev`), with the round-1 tabl
 scratch at `$R`:
 
 ```
-uv run python docs/superpowers/notes/spike-sysml-diagrams/project.py \
+uv run python scripts/sysml_project.py \
   examples/adcs/model_v2/cubesat_r2.sysml work-packages/WP23-rounds/round-4 --revision 5
 cd work-packages/WP23-rounds/round-4 && for f in assembly_view.puml behavioural_view.puml; do
-  sh ../../../docs/superpowers/notes/spike-sysml-diagrams/render.sh $f; done
+  sh ../../../scripts/sysml_render.sh $f; done
 uv run python examples/adcs/model_v2/diagnostic_pair.py \
   --dataset $R/adcs_designs_cubesat.csv --gains $R/adcs_designs_cubesat_gains.csv \
   --coverage examples/adcs/model_v2/views/coverage.csv --out work-packages/WP23-rounds/round-4

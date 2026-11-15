@@ -1,4 +1,4 @@
-# The claims register (docs/superpowers/notes/claims-review.md; WP10 Amendment 5, R-43).
+# The claims register (notes/claims-review.md; WP10 Amendment 5, R-43).
 # One [[claim]] per claim a reader can rely on. tests/test_claims_register.py checks every row.
 #
 # Fields
@@ -1166,7 +1166,7 @@ fragment = "The fit is a scikit-learn transformer of the decomposition family"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "file:docs/superpowers/notes/sklearn-conformance.md"]
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "file:notes/sklearn-conformance.md"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4283,7 +4283,7 @@ backing = [
   "func:derivation/run.py::run_chain",
   "test:tests/test_derivation.py::test_no_phantom_axioms",
   "test:tests/test_paper.py::test_appendix_b_lines_resolve_to_the_scripts_text",
-  "file:docs/superpowers/notes/proof-conventions.md",
+  "file:notes/proof-conventions.md",
 ]
 status = "backed"
 disposition = "keep"
@@ -4330,7 +4330,7 @@ kind = "S"
 backing = [
   "func:derivation/run.py::run_chain",
   "test:tests/test_derivation.py::test_no_phantom_axioms",
-  "file:docs/superpowers/notes/proof-conventions.md",
+  "file:notes/proof-conventions.md",
 ]
 status = "backed"
 disposition = "keep"
@@ -4690,7 +4690,7 @@ fragment = "or the hyperbolic graph measure of efficiency of Färe, Grosskopf an
 file = "glossary.yaml"
 anchor = ""
 kind = "L"
-backing = ["bib:fare1985measurement", "file:docs/superpowers/notes/references-verified.md"]
+backing = ["bib:fare1985measurement", "file:notes/references-verified.md"]
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (the sceptic's register); moved to the glossary by WP35 Q3 (a)"
@@ -5309,9 +5309,9 @@ file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "R"
 backing = [
-  "gen:docs/superpowers/notes/figure-candidates/triple_search.py::main",
+  "gen:paper/figures/triple_search.py::main",
   "test:tests/test_paper.py::test_the_ternary_caption_counts_are_the_triple_search_record",
-  "file:docs/superpowers/notes/figure-candidates/triple_search_record.json",
+  "file:paper/figures/triple_search_record.json",
   "file:work-packages/WP19-figure-review.md",
 ]
 status = "backed"
@@ -9944,7 +9944,7 @@ fragment = "Persistent homology on the chart's distances would name candidate ho
 file = "paper/paper.ipynb"
 anchor = "Future work"
 kind = "S"
-backing = ["file:work-packages/WP50-rounds/spike/readout.md"]
+backing = ["file:notes/directions/wp50-persistent-homology.md"]
 status = "backed"
 disposition = "keep"
 source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
@@ -9956,7 +9956,7 @@ fragment = "The next release builds the definition as code on planted tables, wi
 file = "paper/paper.ipynb"
 anchor = "Future work"
 kind = "S"
-backing = ["file:work-packages/WP50-rounds/spike/readout.md"]
+backing = ["file:notes/directions/wp50-persistent-homology.md"]
 status = "backed"
 disposition = "keep"
 source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
@@ -9992,7 +9992,7 @@ fragment = "Governance checks written as requirements with verification cases wo
 file = "paper/paper.ipynb"
 anchor = "Future work"
 kind = "S"
-backing = ["file:work-packages/WP48-rounds/spike/readout.md"]
+backing = ["file:notes/directions/wp48-governance-control-checks.md"]
 status = "backed"
 disposition = "keep"
 source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
@@ -10016,7 +10016,7 @@ fragment = "No claim enters without a lemma step, a generated value, a test or a
 file = "paper/paper.ipynb"
 anchor = "AI acknowledgement and Reproducibility"
 kind = "S"
-backing = ["file:docs/superpowers/notes/claims-review.md", "test:tests/test_claims_register.py::test_the_register_holds"]
+backing = ["file:notes/claims-review.md", "test:tests/test_claims_register.py::test_the_register_holds"]
 status = "backed"
 disposition = "keep"
 source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
@@ -10028,7 +10028,7 @@ fragment = "The derivations are plain SymPy scripts that the tests run, with a p
 file = "paper/paper.ipynb"
 anchor = "AI acknowledgement and Reproducibility"
 kind = "S"
-backing = ["test:tests/test_derivation.py::test_full_chain_runs", "test:tests/test_proof_map.py::test_checker_passes_on_the_committed_record", "file:docs/superpowers/notes/proof-conventions.md"]
+backing = ["test:tests/test_derivation.py::test_full_chain_runs", "test:tests/test_proof_map.py::test_checker_passes_on_the_committed_record", "file:notes/proof-conventions.md"]
 status = "backed"
 disposition = "keep"
 source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"

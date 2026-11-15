@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | Defined and approved by the driver under the mandate of 2026-11-08 (`release-candidate.md`); for the supervisor's review at the PR. Starts when WP10 is structurally accepted. |
 | **Supervisor (accountable)** | mzargham |
-| **Records** | `WP11-decisions.md`; the grid and protocol in `docs/superpowers/notes/reader-grid.md`; the driver's calls in `driver-log.md` |
+| **Records** | `WP11-decisions.md`; the grid and protocol in `notes/reader-grid.md`; the driver's calls in `driver-log.md` |
 
 ## Purpose
 

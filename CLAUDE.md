@@ -2,7 +2,8 @@
 
 Method and author: Michael Zargham (`mzargham`), who is the accountable supervisor. Read
 `work-packages/README.md` and `work-packages/PM-BRIEF.md` before doing anything substantial; the
-design spec is `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md`.
+design spec is `notes/2026-11-07-posynomial-invariant-form-design.md`. Live guidance lives in `notes/`; the
+readouts of the research spikes that define the future directions are in `notes/directions/`.
 
 ## Process
 
@@ -42,7 +43,7 @@ design spec is `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-desi
 
 ## scikit-learn conformance (requirement)
 
-Follow `docs/superpowers/notes/sklearn-conformance.md`: `scikit-learn>=1.8`; immutable-default
+Follow `notes/sklearn-conformance.md`: `scikit-learn>=1.8`; immutable-default
 params stored verbatim and validated in `fit`; `validate_data` (`reset=True` in fit, `reset=False`
 elsewhere after `check_is_fitted`); tags only via `__sklearn_tags__`; zeros tolerated and negatives
 rejected with "Negative values in data"; decomposition-family semantics (`transform`,
@@ -53,7 +54,7 @@ with doctests.
 ## Derivations and docs
 
 - Load-bearing results get plain-SymPy lemma scripts in `derivation/` (hc-marimo pattern,
-  symproof-compatible ledger; see `docs/superpowers/notes/proof-conventions.md`).
+  symproof-compatible ledger; see `notes/proof-conventions.md`).
 - Docs are Markdown + LaTeX, discursive, each claim citing its lemma; no reference enters
   `docs/references.bib` without a resolved DOI or stable URL.
 - **No metanarration (standing rule, the supervisor, 2026-11-14):** no sentence whose subject is the text, the
@@ -63,10 +64,10 @@ with doctests.
 - Vocabulary: `glossary.yaml` is the one source of terms. One object, one name; use the glossary's
   term, replace jargon that does no work with plain words. Check with
   `uv run python scripts/check_vocabulary.py` and the reading in
-  `docs/superpowers/notes/vocabulary-review.md`.
+  `notes/vocabulary-review.md`.
 - Claims: every claim a reader can rely on is backed (a lemma step, a generated value, a test, a
   verified source) or is narrowed or dropped; no caveats added to prove it. Register and mechanism:
-  `docs/superpowers/notes/claims-review.md`. Keep the model, the fit and the analysis apart in prose.
+  `notes/claims-review.md`. Keep the model, the fit and the analysis apart in prose.
 - Negative edits are welcome, even preferred: the marginal-value test (does this earn its place) applies to every
   piece of content, prose, figures, tables, code and notes, and it is applied to what is already there, not only to
   additions; asking it only of additions still grows without bound. A unit that deletes is a good unit; each
@@ -77,9 +78,9 @@ with doctests.
   what its caption says, a page that does not build: these are found by looking, not by reading.
 - Figures: every figure earns its place or goes; judged as rendered by a visual loop (cold read,
   the sentence test, ink as data, legibility, shows and does not show):
-  `docs/superpowers/notes/figure-review.md`.
+  `notes/figure-review.md`.
 - Bigger candidate edits (a new result, a model change, a figure from new data) run six stages, each named in the
   scope: research spike, decide, build, quality control, integrate, review the cascade to a clean merged state
   (`work-packages/PM-BRIEF.md`, "Bigger candidate edits run the full lifecycle").
 - Site framing: Tall's three worlds, glass-box seams, machine verification vs human validation
-  (`docs/superpowers/notes/presentation-framing.md`).
+  (`notes/presentation-framing.md`).

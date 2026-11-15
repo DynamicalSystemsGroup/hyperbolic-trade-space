@@ -380,7 +380,7 @@ REASONED = {"MomentumRequirement", "PowerRequirement", "BatteryPeakPowerRequirem
 def _project():
     spec = importlib.util.spec_from_file_location(
         "wp30_project",
-        MODEL_DIR.parents[2] / "docs/superpowers/notes/spike-sysml-diagrams/project.py",
+        MODEL_DIR.parents[2] / "scripts/sysml_project.py",
     )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

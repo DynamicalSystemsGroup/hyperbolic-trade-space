@@ -38,7 +38,7 @@ from test_system_model_v2 import (
 )
 
 # The views generator (WP22's spike, kept there as the record) and the committed views it writes.
-PROJECT = ADCS_DIR.parents[1] / "docs/superpowers/notes/spike-sysml-diagrams/project.py"
+PROJECT = ADCS_DIR.parents[1] / "scripts/sysml_project.py"
 VIEWS = ADCS_DIR / "model_v2" / "views"
 # The requirement definitions of the WP15 model (sha256 28dbeeb23cf4..., commit 2d13465), which
 # the swap replaced; WP22 added one per newly covered metric.

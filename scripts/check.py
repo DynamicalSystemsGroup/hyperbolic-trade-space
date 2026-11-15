@@ -1,4 +1,4 @@
-"""Tier 0 and tier 1 checks (docs/superpowers/notes/verification-strategy.md).
+"""Tier 0 and tier 1 checks (notes/verification-strategy.md).
 
     uv run python scripts/check.py --changed   # lint, format and the tests mapped to changed paths
     uv run python scripts/check.py --fast      # the fast suite: pytest -m "not slow" -n auto
@@ -57,7 +57,7 @@ PATH_TESTS: list[tuple[str, list[str]]] = [
     ),
     # the views generator writes the behavioural view and its caption (with the box's reasons)
     (
-        "docs/superpowers/notes/spike-sysml-diagrams/*",
+        "scripts/sysml_project.py",
         ["tests/test_system_model_v2_r1.py", "tests/test_model_coverage.py"],
     ),
     ("site/*", ["tests/test_site.py", "tests/test_narrative.py"]),

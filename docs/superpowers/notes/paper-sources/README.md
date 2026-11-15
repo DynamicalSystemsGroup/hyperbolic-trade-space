@@ -9,7 +9,7 @@ The rule behind the split: what a package user needs to run, read or trust a res
 docsite, rewritten short for use; what someone who wants the how and why underneath needs moves to the
 paper. The paper homes below are provisional; the paper's author owns the paper's structure and may
 rename them. Section names follow the WP10 draft (section numbers in
-`work-packages/WP10-scope-of-work.md`, "Where the moved material goes").
+`work-packages/WP10-scope-of-work.md` (`git show 4a76229:work-packages/WP10-scope-of-work.md`), "Where the moved material goes").
 
 ## `method.md` (about 11,900 words; leaves the docsite entirely)
 

@@ -271,7 +271,7 @@ an entry has the required fields `id`, `term`, `short`, `register`, `formal`, `n
 `reason`, variants that must not appear); the file has `entries` and the optional lists `assumed`
 (terms the reader is assumed to know, each with a reason) and `stems` (the stems that mark a term of
 art). The Glossary page renders term and short only; the new fields are for the paper's register and
-the vocabulary review (`docs/superpowers/notes/vocabulary-review.md`). Notes under `docs/superpowers/notes/` are
+the vocabulary review (`notes/vocabulary-review.md`). Notes under `docs/superpowers/notes/` are
 excluded from navigation. `docs/superpowers/notes/paper-sources/` holds verbatim snapshots of the
 pages that left the docsite (read-only; the paper's author reads them). Citations: `[@key]` (several
 as `[@key1; @key2]`) against `docs/references.bib`. References into the paper: `[text](paper:key)`, where

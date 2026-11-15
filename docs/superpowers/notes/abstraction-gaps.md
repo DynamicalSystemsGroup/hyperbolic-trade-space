@@ -9,7 +9,7 @@ the lemmas assume; this ledger records where the code and the data stand relativ
 assumptions.
 
 Ids G-1 to G-18 are fixed: other documents cite them. G-11 to G-14 are the reviewer's open questions
-Q2, Q3, Q4 and Q1 (`work-packages/external-review-2026-11.md`, item E-10); G-14 is marked not
+Q2, Q3, Q4 and Q1 (`work-packages/external-review-2026-11.md` (`git show 4a76229:work-packages/external-review-2026-11.md`), item E-10); G-14 is marked not
 pursued. Q4 is answered only where the boundary is planted (G-13), and a loss at its floor does
 not identify the boundary between the observations (G-18). A row has six columns. Cubesat numbers in the rows are on the data of record, the feasible designs of each regime (2,134 primary, 2,355 baseline of the 3,000 drawn), unless a row names another table.
 

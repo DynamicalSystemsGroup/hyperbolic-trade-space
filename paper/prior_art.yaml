@@ -2,7 +2,7 @@
 #
 # One entry per work or family. Compiled by paper/generate_prior_art.py; never typed into a table.
 # Restates what the verified sources say, at the depth recorded in each `verified` field of
-# docs/references.bib and in docs/superpowers/notes/paper-prior-art-sources.md. The "differs" cells
+# docs/references.bib and in notes/paper-prior-art-sources.md. The "differs" cells
 # are the project's own statements (spec, outline addenda), not statements of the sources.
 # The HoroPCA row is backed by the first spike docs/superpowers/notes/spike-horopca/ (the authors'
 # code, run on the paper's tables) and by the pre-registered experiment of Appendix H
