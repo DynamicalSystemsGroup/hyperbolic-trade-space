@@ -2,9 +2,11 @@
 
 ``history.yaml`` at the repository root is the record: one entry per dated reference and per
 person, with the schema described at the top of that file. ``site/history.html`` is hand-written
-prose, a view of the record for a human reader; at build time ``scripts/assemble_site.py`` inserts
-a dated reference list rendered from the record at the page's marker (``<!-- history-list -->``).
-This module holds the loader, the schema check, the list renderer, and the sentence trace::
+prose, an essay a human reads; the record stays in the background for fact-checking and nothing of
+it is rendered on the page (the supervisor, 2026-11-15: "i don't want the history records forced
+into the page you can keep them in the background for fact checking"). Tests tie every link, name
+and year of the prose to the record. This module holds the loader, the schema check, the sentence
+trace, and a list renderer kept for fact-checking at the command line::
 
     uv run python scripts/history_record.py            # validate the record
     uv run python scripts/history_record.py --trace    # write work-packages/WP37-rounds/trace.md
@@ -143,10 +145,10 @@ def render_list(entries):
 
 
 def build_page(page_html, entries):
-    """The page with the generated list inserted at its marker."""
-    if page_html.count(MARKER) != 1:
-        raise ValueError(f"the page must carry the marker {MARKER} exactly once")
-    return page_html.replace(MARKER, render_list(entries))
+    """The page as published: the prose alone. The record is not rendered on the page (the
+    supervisor, 2026-11-15); a marker left in the source is removed, and ``entries`` is unused."""
+    del entries
+    return page_html.replace(MARKER, "")
 
 
 def build_page_file(path=PAGE, record=RECORD):

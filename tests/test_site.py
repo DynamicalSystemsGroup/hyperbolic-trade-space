@@ -603,9 +603,12 @@ def test_history_record_credits_who_the_source_credits_and_lists_only_the_arc():
     assert entries["2018-cadcad-repo"]["url"] == "https://github.com/cadCAD-org/cadCAD"
     assert len(entries["2018-cadcad-repo"]["people"]) > 1
     assert "not of one person" in entries["2018-cadcad-repo"]["shows"]
-    # the arc starts in 2013; Roth 2002 is cited background the supervisor named (WP52, 2026-11-14)
+    # the arc starts in 2013; Roth 2002 and Olfati-Saber 2007 are cited background the supervisor
+    # named (WP52, 2026-11-14 and 2026-11-15)
     arc = (
-        e for e in entries.values() if e["kind"] != "role" and not e["id"].startswith("2002-roth")
+        e
+        for e in entries.values()
+        if e["kind"] != "role" and not e["id"].startswith(("2002-roth", "2007-consensus"))
     )
     assert min(e["date"] for e in arc) >= "2013"
     for gone in ("2007-gp-tutorial", "2026-flexo-rtm", "2026-toaster", "2026-view-editor"):
@@ -650,34 +653,15 @@ def test_history_record_validation_names_each_defect():
     assert any("duplicate url" in p for p in HISTORY_RECORD.validate([good, twin]))
 
 
-def test_history_list_is_generated_from_the_record_oldest_first():
-    """WP37 D-9: the list beneath the prose is rendered from the record at build time: listed
-    entries only, chronological, the year, the title as a link, the people; no special-case mark."""
+def test_history_page_renders_none_of_the_record():
+    """The record stays in the background for fact-checking (the supervisor, 2026-11-15: "i don't
+    want the history records forced into the page"); the published page is the prose alone."""
     entries = HISTORY_RECORD.load()
-    page = HISTORY_RECORD.build_page(HISTORY.read_text(encoding="utf-8"), entries)
-    assert HISTORY_RECORD.MARKER not in page and page.count('id="record"') == 1
-    listed = [e for e in entries if HISTORY_RECORD.is_listed(e)]
-    assert 40 <= len(listed) < len(entries)
-    assert not any(e["kind"] == "person" for e in listed)
-    items = re.findall(r'<li><span class="yr">(\d{4})</span> <a href="([^"]+)">', page)
-    assert [url for _, url in items] == [
-        e["url"] for e in sorted(listed, key=lambda e: (e["date"], e["id"]))
-    ]
-    assert [y for y, _ in items] == sorted(y for y, _ in items)
-    # the special-case flag stays in the record and the trace; the list carries no mark of it
-    # (the supervisor, 2026-11-14)
-    assert "a special case where the work was highly public" not in page
-    # a source whose title carries a banned word keeps it only as the link's title
-    block = page[page.index('<section class="record"') :]
-    assert "Blockchain" in block
-
-
-def test_history_page_source_carries_the_marker_once_and_stays_readable():
     raw = HISTORY.read_text(encoding="utf-8")
-    assert raw.count(HISTORY_RECORD.MARKER) == 1
-    assert "Dated references" not in raw  # the list is generated, not written into the source
-    with pytest.raises(ValueError):
-        HISTORY_RECORD.build_page("<p>no marker</p>", [])
+    assert HISTORY_RECORD.MARKER not in raw and "Dated references" not in raw
+    page = HISTORY_RECORD.build_page(raw, entries)
+    assert page == raw and 'id="record"' not in page
+    assert HISTORY_RECORD.build_page("<p>x</p>" + HISTORY_RECORD.MARKER, entries) == "<p>x</p>"
 
 
 class _Names(HTMLParser):
@@ -743,12 +727,12 @@ def _record_years(entries) -> set[str]:
 
 
 #: the page's own links inside the site: the method (root page), the paper, the generated list
-HISTORY_SITE_LINKS = ("./", "paper/", "#record")
+HISTORY_SITE_LINKS = ("./", "paper/")
 
 
 def test_history_every_link_on_the_page_is_a_record_entry():
-    """WP37 D-9: each link of the prose and of the generated list is the URL of a record entry,
-    so the prose cannot drift from the record."""
+    """WP37 D-9: each link of the prose is the URL of a record entry, so the prose cannot drift
+    from the record."""
     entries = HISTORY_RECORD.load()
     urls = {e["url"] for e in entries}
     prose = [
@@ -797,18 +781,6 @@ def _visible(raw: str) -> list[str]:
     parser = _VisibleText()
     parser.feed(raw)
     return parser.words
-
-
-def test_history_list_holds_no_banned_word_outside_link_titles():
-    """The generated list's own words (years, people, the special-case mark, its heading and note)
-    use no cryptocurrency or web3 vocabulary; a source's title may carry it, as the link's text."""
-    built = HISTORY_RECORD.build_page_file()
-    block = built[built.index('<section class="record"') : built.index("</section>")]
-    own = re.sub(r"<a [^>]*>.*?</a>", " ", block)
-    text = " ".join(_visible(own)).lower()
-    assert "dated references" in text and "special case" not in text
-    for banned in _BANNED:
-        assert not re.search(banned, text), banned
 
 
 def test_history_special_case_sentences_carry_no_mark_but_the_trace_does():
@@ -958,16 +930,19 @@ def test_history_page_links_resolve_over_the_network():
     assert not failed, failed
 
 
-#: the page's word ceiling. WP37 closing unit 2: 406 words before it, 397 after. On 2026-11-15 the
-#: supervisor set 1,000 words as guidance ("the length can be relaxed. 1000 words is okay with me";
-#: "the 1000 word is a guidance not a hard requirement"); the test's bound sits above it, and
-#: moved once more after his additions of 2026-11-15 took the page to 1,141 words, and again when his
-#: corrections of the same day (the debt-market arc; Alston and the paper with Nabben) took it past 1,200
-WORDS_CEILING = 1300
+#: the page's word bound. WP37 closing unit 2: 406 words before it, 397 after. On 2026-11-15 the
+#: supervisor set 1,000 words as guidance ("the 1000 word is a guidance not a hard requirement"),
+#: then made the page an essay in its own right ("we can treat this as an essay in its own right
+#: that stands in contrast to the academic work cited which cannot capture lived experience and
+#: grey literature"; "2000 is generous and once you have a full draft we can go back and carve it
+#: down to ensure everyone word and reference earns its place"). The bound catches an accidental
+#: doubling, no more.
+WORDS_CEILING = 2000
 
 
 def test_history_page_is_one_screen_in_the_root_page_register():
-    """WP37: a stand-alone page, light and dark like the root page, no script, about one screen."""
+    """WP37: a stand-alone page, light and dark like the root page, no script; since WP52 an essay,
+    bounded only against an accidental doubling."""
     raw = HISTORY.read_text(encoding="utf-8")
     assert "<script" not in raw.lower()
     assert "prefers-color-scheme: dark" in raw
@@ -1093,7 +1068,7 @@ def test_history_page_follows_the_scope_order_and_the_closing_unit_rulings():
     raw = HISTORY.read_text(encoding="utf-8")
     text = _history_text()
     main = raw[raw.index("<main>") :]
-    assert main.index('<a href="./">') < main.index("<h1>") < main.index("This page acknowledges")
+    assert main.index('<a href="./">') < main.index("<h1>") < main.index("This page is an essay")
     assert raw.count('<a href="./">') == 2  # top and footer
     assert "With computers, fast but with confidence" not in text
     order = (
@@ -1255,11 +1230,12 @@ def test_assembled_layout(assembled):
 
 
 def test_assembled_site_carries_the_history_page(assembled):
-    """The assembled page is the hand-written prose with the record's dated list at the marker."""
+    """The assembled page is the hand-written prose alone; the record is not rendered (the
+    supervisor, 2026-11-15)."""
     built = (assembled / "history.html").read_text(encoding="utf-8")
     assert built == HISTORY_RECORD.build_page_file()
-    assert built != HISTORY.read_text(encoding="utf-8")
-    assert HISTORY_RECORD.MARKER not in built and 'id="record"' in built
+    assert built == HISTORY.read_text(encoding="utf-8")
+    assert HISTORY_RECORD.MARKER not in built and 'id="record"' not in built
 
 
 def test_every_link_in_the_assembled_site_resolves(assembled):

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:,">
 <title>History and acknowledgements: hyperbolic-trade-space</title>
-<meta name="description" content="The people and the lineage of the posynomial invariant form: the engineering firm, its collaborators and the earlier work it rests on.">
+<meta name="description" content="An essay on the people and the lineage of the posynomial invariant form: what the paper’s citations cannot carry.">
 <style>
   :root {
     --bg: #faf9f6;
@@ -48,15 +48,6 @@
   p { margin: 0 0 0.5rem; }
   a { color: var(--accent); }
   .back { margin: 0 0 0.3rem; font-size: 0.9rem; }
-  .record { margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid var(--card-border); }
-  .record h2 { font-size: 1.1rem; margin: 0 0 0.3rem; }
-  .record .note { color: var(--muted); font-size: 0.9rem; }
-  .record ol { list-style: none; margin: 0; padding: 0; font-size: 0.9rem; line-height: 1.4; }
-  .record li { margin: 0 0 0.3rem; }
-  .record .yr { display: inline-block; min-width: 2.8rem; color: var(--muted); }
-  .record .who, .record .special { color: var(--muted); }
-  .record .special { font-style: italic; }
-  .record code { font-size: 0.85em; }
   footer {
     margin-top: 0.5rem;
     padding-top: 0.4rem;
@@ -74,22 +65,34 @@
   </header>
 
   <p>
-    This page acknowledges the people and the lineage of this work, which the paper&rsquo;s
-    citations cannot carry: it is the synthesis and publication of a
-    long-running endeavour with many contributors. This work came from a
-    contract research and engineering firm, <a href="https://michael.zargham.org">founded in
-    2017</a> as BlockScience and now the
+    This page is an essay on the people and the lineage of this work. It carries what the paper&rsquo;s
+    citations cannot: lived experience, and the grey literature in which most of it was first written down. We
+    have it because much of the substantive learning came not from academia but from designing and governing
+    production systems in highly automated, highly adversarial, highly politicized digital ecosystems. The story
+    runs through model-based systems engineering, simulation and measurement, decision analysis, economics and
+    governance, and its thread is the ideas: a design space mapped rather than an optimum presumed, trade-offs
+    made visible, and the choice among alternatives left to accountable people. Many people carried those ideas,
+    and they are named here. The firm they worked in is a contract research and engineering firm,
+    <a href="https://michael.zargham.org">founded in 2017</a> as BlockScience and now the
     <a href="https://www.dynamicalsystemsgroup.com">Dynamical Systems Group</a>. We perform
     requirements, architecture, design, simulation and analysis for clients, all software-defined,
     studying the spaces of feasible designs of their systems under uncertain, strategic and
     adversarial users.
   </p>
   <p>
-    Before the firm: <span class="n">Zargham</span>&rsquo;s convex optimization
-    (<a href="https://doi.org/10.1109/TAC.2013.2293221">2014</a>) and, with <span class="n">Victor Preciado</span>,
-    geometric programs, posynomial like <a href="paper/">this paper</a>&rsquo;s frontier, for
-    <a href="https://doi.org/10.1109/TCNS.2014.2310911">protecting
-    networks</a> (2014). With <span class="n">Preciado</span> and <span class="n">Zixuan Zhang</span> came the
+    Before the firm, the question was already allocation among many decision makers whose choices affected one another.
+    Zargham&rsquo;s dissertation, <a href="https://repository.upenn.edu/handle/20.500.14332/28334">Fast, distributed
+    optimization strategies for resource allocation in networks</a> (2014), advised by <span class="n">Ali Jadbabaie</span>
+    and <span class="n">Alejandro Ribeiro</span> at the University of Pennsylvania, took it up as distributed convex
+    optimization; <a href="https://doi.org/10.1109/TAC.2013.2293221">Accelerated dual descent</a> (2014), with Ribeiro,
+    <span class="n">Asuman Ozdaglar</span> and Jadbabaie, was its form for network flows, and with
+    <span class="n">Victor Preciado</span> came geometric programs, posynomial like <a href="paper/">this paper</a>&rsquo;s
+    frontier, for <a href="https://doi.org/10.1109/TCNS.2014.2310911">allocating protection to networks</a> (2014).
+    <span class="n">Reza Olfati-Saber</span>&rsquo;s
+    <a href="https://doi.org/10.1109/JPROC.2006.887293">consensus and sensor fusion</a> (2007) and a routing rule
+    of the same years, <a href="https://doi.org/10.1109/GLOCOM.2014.7037100">discounted integral priority</a> (2014),
+    are the foundations conviction voting later rests on. With <span class="n">Preciado</span> and
+    <span class="n">Zixuan Zhang</span> came the
     <a href="https://doi.org/10.1007/s41109-020-0254-9">2020 journal version</a> of the 2018
     state-space framework.
   </p>
@@ -101,32 +104,53 @@
     <span class="n">Matthew Barlin</span>, <span class="n">Danilo Bernardineli</span> and <span class="n">Emanuel Lima</span>, and it was introduced in a <a href="https://blog.block.science/introducing-complex-adaptive-dynamics-computer-aided-design-cadcad/">post</a> (2019).
   </p>
   <p>
-    <a href="https://blog.block.science/computer-aided-governance-a-revolution-in-automated-decision-support-systems/">Computer-aided
-    governance</a> (2019), written with <span class="n">Jeff Emmett</span>, named
+    Conviction voting began as
+    <a href="https://github.com/BlockScience/conviction/blob/main/social-sensorfusion.pdf">Sensor networks and
+    social choice</a> (2018), a proposal written at <span class="n">Frank Wang</span>&rsquo;s request, which turned
+    the routing rule into a continuous decision rule: a community&rsquo;s preferences fused over time as a sensor
+    network fuses its measurements. Prototyped in simulation, built into the Commons Stack with
+    <span class="n">Jeff Emmett</span> and <span class="n">Griff Green</span>
+    (<a href="https://blog.giveth.io/conviction-voting-a-novel-continuous-decision-making-alternative-to-governance-aa746cfb9475">2019</a>)
+    and <a href="https://github.com/1Hive/conviction-voting-cadcad">modelled in cadCAD</a> (2020), it has allocated
+    one community&rsquo;s funds since 2020 and three others&rsquo; after it;
+    <a href="https://medium.com/block-science/a-brief-history-of-conviction-voting-ad4ca4eb4aee">a brief
+    history</a> (2020) names the people and the ideas it drew on. It was the substance of
+    <a href="https://blog.block.science/computer-aided-governance-a-revolution-in-automated-decision-support-systems/">computer-aided
+    governance</a> (2019), by Jeff Emmett and Zargham, which named
     <a href="https://doi.org/10.1111/1468-0262.00335"><span class="n">Alvin Roth</span>&rsquo;s market design</a> and kept
-    humans in charge, informed by models. It is the start of a governance lineage that runs from presuming a unique
+    humans in charge, informed by models. That is the start of a governance lineage that runs from presuming a unique
     optimum to mapping a design space, where the choice among competing alternatives is politics, not optimization.
     <a href="https://web.archive.org/web/20260829051440/https://medium.com/sourcecred/exploring-subjectivity-in-algorithms-5d8bf1c91714">Exploring
     subjectivity in algorithms</a> (2019), written for SourceCred, showed the choices inside PageRank that make a
     ranking a judgement: the mixing model, the seed and the damping.
-    <a href="https://kelsienabben.substack.com/p/algorithms-as-policy">Algorithms as policy</a> (2020), with
+    <a href="https://kelsienabben.substack.com/p/algorithms-as-policy">Algorithms as policy</a> (2020), by Zargham and
     <span class="n">Kelsie Nabben</span>, took the rules that algorithms set on online platforms as policy-making,
-    with a duty to the public interest.
+    with a duty to the public interest. <span class="n">Eric Alston</span>, a longstanding member of the team,
+    argued in <a href="https://law.mit.edu/pub/governanceasconflict/release/1">Governance as conflict</a> (2022) that
+    disagreement among the members of any organisation is structural, so an institution must support conflict and
+    resolve it rather than model it away. <a href="https://doi.org/10.2139/ssrn.4077358">A paper on organisations
+    run partly by code</a> (2022), by Zargham and Nabben, read them as viable systems in Beer&rsquo;s sense, where the
+    set of rules people can change must be large enough to keep the purpose reachable and no larger, with the
+    community that first ran conviction voting as its case. The two met in
+    <a href="https://zenodo.org/records/10609125">What constitutes a constitution?</a> (2023), by Zargham, Alston,
+    Nabben and <span class="n">Ilan Ben-Meir</span>, and in <a href="https://hdl.handle.net/10535/11015">Path
+    dependence</a> (2024), by Alston, <span class="n">Amber Case</span> and Zargham, on the order in which an
+    institution can reach its ideal.
   </p>
   <p>
     The
     <a href="https://docs.balancer.fi/whitepaper.pdf">Balancer whitepaper</a> (2019), by
-    <span class="n">Fernando Martinelli</span> and <span class="n">Nikolai Mushegian</span>, built an automated market
-    maker on a weighted product of balances held constant, applying the invariant approach of the state-space
-    framework; Martinelli was a BlockScience team member at the time of his first proofs.
-    <a href="https://ideas.repec.org/p/wiw/wus051/7385.html">Configuration spaces</a> (2019), with
+    <span class="n">Fernando Martinelli</span> and <span class="n">Nikolai Mushegian</span>, built a market that sets
+    its prices by a rule, holding a weighted product of balances constant, applying the invariant approach of the
+    state-space framework; Martinelli was a BlockScience team member at the time of his first proofs.
+    <a href="https://ideas.repec.org/p/wiw/wus051/7385.html">Configuration spaces</a> (2019), by Zargham,
     <span class="n">Jamsheed Shorish</span> and <span class="n">Kris Paruch</span>, named the states a mechanism can
     reach by the invariants it conserves; <a href="https://doi.org/10.1007/978-3-030-53356-4_8">economic games as
     estimators</a> (2020) read such mechanisms as signal processors; and
     <a href="https://doi.org/10.57938/aa8858fc-8c01-4f2a-a858-96fd0abfc1b1">a practical theory of fungibility</a>
-    (2021), with Shorish and <span class="n">Matt Stephenson</span>, set the context for machine-learning methods and
-    markets without yet giving a coordinate system suited to automated market makers. What carried over is the practice
-    of reasoning with product invariants.
+    (2021), by Shorish, <span class="n">Matt Stephenson</span> and Zargham, set the context for machine-learning
+    methods and markets without yet giving a coordinate system suited to such markets. What carried over is the
+    practice of reasoning with product invariants.
   </p>
   <p>
     <span class="n">Jamsheed
@@ -159,7 +183,7 @@
     its safety requirements before it optimises for performance, and weighs qualitative goals against quantitative
     ones, drawing on Roth&rsquo;s market design.
     <a href="https://www.dynamicalsystemsgroup.com/blog/knowledge-networks-and-the-politics-of-protocols">Knowledge
-    networks and the politics of protocols</a> (2024), with Ben-Meir and <span class="n">Kelsie Nabben</span>, took
+    networks and the politics of protocols</a> (2024), by Zargham, Ben-Meir and <span class="n">Kelsie Nabben</span>, took
     tools that let people run and govern their own instances as a new commons whose design is never neutral, since it
     structures the action space. <span class="n">Ilan Ben-Meir</span>&rsquo;s
     <a href="https://www.dynamicalsystemsgroup.com/blog/an-algorithm-is-a-camera">An algorithm is a camera</a> (2023)
@@ -171,13 +195,14 @@
     <a href="https://blog.block.science/arbitrum-expert-service-provider-network-program-development/">position paper</a>
     (2024) for a client&rsquo;s governance on building an accountable, cost-conscious network of expert service
     providers, co-developed with the public and domain experts.
-    <a href="https://doi.org/10.2139/ssrn.4865894">Min-maxing complexity</a> (2024), with Bernardineli, Ben-Meir and
-    <span class="n">Jakob Hackel</span>, set three principles for choosing a mechanism, variety, legibility and safety,
-    as complex as the behaviour it must encode and as simple as its stakeholders can read, and applied them to the
-    trade study above. <a href="https://doi.org/10.5281/zenodo.15122312">Protocols and institutions</a> (2025), with Ben-Meir, defined
-    institutions by their stability in Lyapunov&rsquo;s sense and set protocols as the engineered part of them,
-    formalising an argument first made in <a href="https://blog.block.science/from-nash-to-lyapunov/">From Nash to
-    Lyapunov</a> (2018). <a href="https://mzargham.github.io/politics-of-progress/">The politics of progress</a> (2025)
+    <a href="https://doi.org/10.2139/ssrn.4865894">Min-maxing complexity</a> (2024), by Bernardineli, Ben-Meir, Zargham
+    and <span class="n">Jakob Hackel</span>, set three principles for choosing a mechanism, variety, legibility and
+    safety, as complex as the behaviour it must encode and as simple as its stakeholders can read, and applied them to
+    the trade study above. <a href="https://doi.org/10.5281/zenodo.15122312">Protocols and institutions</a> (2025), by
+    Zargham and Ben-Meir, defined institutions by their stability in Lyapunov&rsquo;s sense and set protocols as the
+    engineered part of them, formalising an argument first made in
+    <a href="https://blog.block.science/from-nash-to-lyapunov/">From Nash to Lyapunov</a> (2018).
+    <a href="https://mzargham.github.io/politics-of-progress/">The politics of progress</a> (2025)
     read two popular visions of technology and society and found that neither acknowledged trade-offs: abundance needs
     institutions that make them visible and negotiate shared constraints. With
     <span class="n">Kelsie Nabben</span> and <span class="n">Ellie Rennie</span>, whose
@@ -185,22 +210,21 @@
     paying its contributors by an algorithm&rsquo;s scores, that lineage continued in
     <a href="https://kelsienabben.substack.com/p/computer-aided-ethnography-cae">computer-aided ethnography</a> (2023)
     and <a href="https://doi.org/10.1111/epic.70009">Building the Loop</a> (2025), on artificial organisational
-    intelligence. This paper stays with what is possible and what trades against what; what is preferable is for
-    accountable people to settle.
+    intelligence.
   </p>
   <p>
     The <a href="https://github.com/DynamicalSystemsGroup/ADCS-lifecycle-demo">ADCS lifecycle demo</a> (2026) takes one
     geosynchronous satellite&rsquo;s attitude control and one requirement through evidence of several kinds, symbolic,
     simulated and model-checked, to a person&rsquo;s judgement on the record: a tool says pass, a person says satisfied.
-    <span class="n">Zargham</span> presented it at the <a href="https://youtu.be/r0H9ACUYNNQ">JAXA MBSE/MCE Workshop</a>
+    It was presented at the <a href="https://youtu.be/r0H9ACUYNNQ">JAXA MBSE/MCE Workshop</a>
     in June 2026 and to the <a href="https://dynamicalsystemsgroup.github.io/ADCS-lifecycle-demo/">Open Source Architects
-    community</a> in October 2026. His <a href="https://doi.org/10.1002/iis2.70203">INCOSE paper</a> (2026) set the
-    posture this project takes toward AI assistance: verification by machine against a specification, validation of
-    fitness by a named person, and assurance only where both close. His
-    <a href="https://doi.org/10.25080/wdyr6752">SciPy paper</a> (2026) showed derivations scripted in SymPy,
-    with the identities as test assertions run in continuous integration; the lemma scripts of this repository follow
-    that pattern. <a href="https://docs.dynamicalsystemsgroup.com/governed-compute/">Governed compute, end to end</a>
-    (2026), led by <span class="n">Sayer Tindall</span>, took algorithms as policy into the firm&rsquo;s
+    community</a> in October 2026. <a href="https://doi.org/10.1002/iis2.70203">Formalizing document assurance</a>
+    (INCOSE, 2026) set the posture this project takes toward AI assistance: verification by machine against a
+    specification, validation of fitness by a named person, and assurance only where both close.
+    <a href="https://doi.org/10.25080/wdyr6752">Derivations, not just simulations</a> (SciPy, 2026) showed derivations
+    scripted in SymPy, with the identities as test assertions run in continuous integration; the lemma scripts of this
+    repository follow that pattern. <a href="https://docs.dynamicalsystemsgroup.com/governed-compute/">Governed compute,
+    end to end</a> (2026), led by <span class="n">Sayer Tindall</span>, took algorithms as policy into the firm&rsquo;s
     infrastructure, with every decision surface explicit so that its governance is informed and accountable: a run
     opens on authorization, advances only when it conforms and is fit for its purpose, and its evidence is a byproduct
     of the work.
@@ -212,12 +236,13 @@
   </p>
   <p>
     <span class="n">Jakob Hackel</span> and <span class="n">Carolina Riascos-&Aacute;lvarez</span>
-    worked on client projects we cannot name, as did others we thank but cannot describe here. Some client work is public and used these methods: for an algorithmic debt market, the
+    worked on client projects we cannot name, as did others we thank but cannot describe here. Some client work is
+    public and used these methods: for an algorithmic debt market, the
     <a href="https://zenodo.org/records/10474385">design record</a> of its feedback controller,
     written with its developers before launch (2021), then <span class="n">Zargham</span>&rsquo;s talks on the same
-    system after years in production, at <a href="https://www.youtube.com/watch?v=vr6sIfjGmLQ">PyData NYC</a> (2023) and
-    at a workshop in Edinburgh (ICMS, October 2024), where models served the configuration management of the fielded
-    system; for
+    system after years in production, at <a href="https://www.youtube.com/watch?v=vr6sIfjGmLQ">PyData NYC</a> (2023)
+    and at a workshop in Edinburgh (ICMS), October 2024, where models served the configuration management of the
+    fielded system; for
     the governance of a file storage and retrieval network, an
     <a href="https://blog.block.science/reviewing-the-fip-0056-and-cdm-debate-on-filecoin/">independent review of two
     competing proposals</a> and a <a href="https://blog.block.science/understanding-the-filecoin-consensus-pledge/">study
@@ -225,8 +250,15 @@
     <a href="https://hackmd.io/@blockscience/Aztec_Sequencer_Selection">document-based trade study</a> of two candidate
     protocols against stated technical and economic criteria (2023).
   </p>
-
-  <!-- history-list -->
+  <p>
+    The learning came from systems that were running, automated, under attack and contested, where no single
+    objective exists and disagreement is structural. That is why this work maps
+    a frontier instead of solving for an optimum: it states what is possible and what trades against what, in a form a
+    machine can check, and leaves what is preferable to the people accountable for it. This work is critical for humans
+    to participate meaningfully in decision-making in an era when machines mediate more decisions, and faster ones:
+    <a href="https://www.dynamicalsystemsgroup.com/blog/meltdown">Meltdown</a> (2025) says why the bottleneck has moved
+    from generation to judgment.
+  </p>
 
   <footer>
     <a href="./">The method</a>

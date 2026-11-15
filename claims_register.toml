@@ -6038,79 +6038,6 @@ source = "WP35 build"
 note = "One convex program per term (the K = 1 fit at infinite temperature is a linear program, at finite temperature a smooth convex program) with a recorded termination status; the K > 1 assignment is local over assignments, each refit global (readout section 3)."
 
 [[claim]]
-id = "C547"
-fragment = "This page acknowledges the people and the lineage of this work, which the paper&rsquo;s citations cannot carry: it is the synthesis and publication of a ... long-running endeavour with many contributors"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "The page's purpose and the risk it offsets, the supervisor's statements (WP37-decisions.md); the page's own account of itself. 'long-running endeavour with many contributors' links to the generated dated list (#record), which holds the contributors and their dated work. Kind: page (trace.md)."
-
-[[claim]]
-id = "C548"
-fragment = "This work came from a contract research and engineering firm"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record ids 2017-founded (https://michael.zargham.org), 2017-dsg-site (https://www.dynamicalsystemsgroup.com), 2026-firm-description (https://www.dynamicalsystemsgroup.com/about, team-account). Founding year and the earlier name sourced; no rebrand date by decision; the firm's description is the supervisor's wording, marked."
-
-[[claim]]
-id = "C549"
-fragment = "We perform requirements, architecture, design, simulation and analysis for clients,"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record id 2026-firm-description, team-account: the supervisor's exact sentence in the firm's present tense (WP37-decisions.md)."
-
-[[claim]]
-id = "C550"
-fragment = "Before the firm: <span class=\"n\">Zargham</span>&rsquo;s convex optimization"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record ids 2014-dual-descent (https://doi.org/10.1109/TAC.2013.2293221, IEEE TAC, April 2014) and 2014-network-protection (https://doi.org/10.1109/TCNS.2014.2310911, March 2014, geometric programming in the abstract). Authors per Crossref. The clause 'posynomial like this paper\u2019s frontier' (link to the paper, paper/) rests on the paper, whose model is a posynomial frontier, and on the geometric-programming tutorial it cites (a geometric program has posynomial objective and constraints; section 2); the tutorial is a reference of the paper and not an entry of the record (the supervisor, 2026-11-13: the team had nothing to do with that work); the record has no entry for the paper, which is the page's host."
-
-[[claim]]
-id = "C551"
-fragment = "With <span class=\"n\">Preciado</span> and <span class=\"n\">Zixuan Zhang</span> came the ... 2020 journal version ... of the 2018 state-space framework"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record ids 2020-state-space-journal (https://doi.org/10.1007/s41109-020-0254-9, Zhang, Zargham, Preciado) and 2018-state-space (arXiv 1807.00955, in the record, not linked)."
-
-[[claim]]
 id = "C552"
 fragment = "cadCAD</a> is the work of ... 19 contributors"
 file = "site/history.html"
@@ -6123,20 +6050,6 @@ status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
 note = "Record ids 2018-cadcad-repo (https://github.com/cadCAD-org/cadCAD), 2018-cadcad-contributors (https://github.com/cadCAD-org/cadCAD/graphs/contributors: 19 contributors, counted through the API on 2026-11-12 and 2026-11-13), 2018-authors (AUTHORS.txt URL: the names the file credits; the sentence names six of them), 2019-cadcad-origin (https://blog.block.science/introducing-complex-adaptive-dynamics-computer-aided-design-cadcad/, 3 June 2019). The project is attributed to its contributors, not to one implementer (the supervisor, 2026-11-13)."
-
-[[claim]]
-id = "C553"
-fragment = "<span class=\"n\">Jamsheed Shorish</span> co-wrote ... Generalized ... Dynamical Systems"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record ids 2022-gds (WU record), 2022-gds-playlist (https://www.youtube.com/playlist?list=PLmWm8ksQq4YJrB72Na_JB-o8Xu2JLj7h9, the video series of the paper; Shorish presenting per the firm's post, which the record no longer holds as a duplicate pointer), 2021-psuu (https://blog.block.science/how-to-perform-parameter-selection-under-uncertainty/, byline Paruch and Shorish). The paper is not numbered, by ruling."
 
 [[claim]]
 id = "C554"
@@ -6165,48 +6078,6 @@ status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
 note = "Record ids 2026-gds-core, 2026-gds-axelrod, 2023-msml (URLs in history.yaml); gds-core's README credits Mehta as author and McOwen for architectural inspiration."
-
-[[claim]]
-id = "C556"
-fragment = "<span class=\"n\">Andrew Clark</span> wrote with ... Mihailov ... community-currency model ... (2023), developed with the Red Cross and Grassroots Economics, which applied related methods in modeling, simulation and analysis"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record id 2023-community-currency (https://doi.org/10.1007/s10614-023-10445-9); purpose and collaboration named, the implementation form not (default 7); the model repository's README gives the Red Cross and Grassroots Economics collaboration. The clause 'which applied related methods in modeling, simulation and analysis' is the team's account of the connection (the supervisor's wording, WP37-decisions.md, 2026-11-13 13:30), marked in trace.md."
-
-[[claim]]
-id = "C557"
-fragment = "<span class=\"n\">Jakob Hackel</span> and <span class=\"n\">Carolina Riascos-&Aacute;lvarez</span> worked on client projects we cannot name"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record ids person-hackel (team-account), person-riascos (team-account, not linked), 2023-client-projects: the supervisor's sentence on undisclosed client work, marked as the team's account; no client and no detail. The sentence on the team's backgrounds is dropped (the supervisor, 2026-11-13: awkward and forced) with its record entries."
-
-[[claim]]
-id = "C558"
-fragment = "Some client work is public and used these methods: the"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "Record ids 2021-rai-design, 2023-pydata-nyc, 2024-edinburgh, 2023-fip-0056, 2023-consensus-pledge, 2023-aztec-sequencer-selection; the page names the work in categorical terms (the supervisor, 2026-11-14); the arc from the design record before launch to the talks on the fielded system, and that models served its configuration management, is the supervisor's account (2026-11-15). Record ids 2021-rai-design (https://zenodo.org/records/10474385; only 'highly automated' is source-stated), 2024-edinburgh (https://michael.zargham.org/cv.pdf, the CV alone). 'Cleared for public release' is the team's account (marked 'in the same account'); the two sources are public. Both special_case. The Filecoin review (2023-fip-0056) is no longer cited in the prose (slimming); the record and the list keep it."
 
 [[claim]]
 id = "C569"
@@ -8393,96 +8264,6 @@ source = "WP45 D-3"
 note = "Crossref abstract of Austin et al. 1980, read 2026-11-14."
 
 [[claim]]
-id = "C706"
-fragment = "Computer-aided governance</a> (2019), written with <span class=\"n\">Jeff Emmett</span>, named"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record ids 2019-computer-aided-governance (the BlockScience post, 2019-08-07, co-authored by Zargham and Emmett; names market design 'pioneered by Alvin Roth'; humans stay in charge), 2002-roth-economist-as-engineer (https://doi.org/10.1111/1468-0262.00335)."
-
-[[claim]]
-id = "C707"
-fragment = "It is the start of a governance lineage that runs from presuming a unique"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Team account (the supervisor, 2026-11-14): the lineage from a unique optimum to a design space, the choice among alternatives as politics; no single source states it whole (WP52-rounds/spike/proposal.md)."
-
-[[claim]]
-id = "C708"
-fragment = "Configuration spaces</a> (2019), with <span class=\"n\">Jamsheed Shorish</span> and <span class=\"n\">Kris Paruch</span>, named the states a mechanism can reach"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record ids 2019-configuration-spaces (RePEc wiw:wus051:7385), the Springer chapter Economic Games as Estimators (https://doi.org/10.1007/978-3-030-53356-4_8, already in the record), 2021-fungibility (https://doi.org/10.57938/aa8858fc-8c01-4f2a-a858-96fd0abfc1b1; 'bridging this framework to applications in machine learning and market design'); 'without yet giving a coordinate system suited to automated market makers' and 'what this method keeps' are the supervisor's reading (2026-11-14)."
-
-[[claim]]
-id = "C709"
-fragment = "Market design lessons for safety-first institutional engineering</a> (2023), by"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record id 2023-market-design-lessons (https://blog.block.science/market-design-lessons-for-safety-first-institutional-engineering/, byline Shorish with Zargham and Ben-Meir, 2023-05-25): safety requirements before performance; qualitative against quantitative goals; Roth's market design."
-
-[[claim]]
-id = "C710"
-fragment = "With <span class=\"n\">Kelsie Nabben</span> and <span class=\"n\">Ellie Rennie</span>, whose"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record ids 2023-credsperiment (https://doi.org/10.2139/ssrn.4570035, Rennie 2023: a community paid by Cred scores), 2023-computer-aided-ethnography (https://kelsienabben.substack.com/p/computer-aided-ethnography-cae, Nabben, Zargham, Rennie), 2025-building-the-loop (https://doi.org/10.1111/epic.70009, EPIC 2025; subtitle 'Artificial Organisational Intelligence')."
-
-[[claim]]
-id = "C711"
-fragment = "This paper stays with what is possible and what trades against what"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Team account: the project's own line (the root page's why; WP51-decisions.md); not a claim about a source."
-
-[[claim]]
 id = "C712"
 fragment = "The <a href=\"https://github.com/DynamicalSystemsGroup/ADCS-lifecycle-demo\">ADCS lifecycle demo</a> (2026) takes one"
 file = "site/history.html"
@@ -8498,128 +8279,8 @@ source = "WP52 history page, 2026-11-14"
 note = "Record id 2026-adcs-lifecycle-demo (https://dynamicalsystemsgroup.github.io/ADCS-lifecycle-demo/; README: one geosynchronous satellite's ADCS, REQ-001, evidence symbolic, simulated and model-checked; 'A tool says pass. A person says satisfied.')."
 
 [[claim]]
-id = "C713"
-fragment = "<span class=\"n\">Zargham</span> presented it at the"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record ids 2026-jaxa-talk (https://youtu.be/r0H9ACUYNNQ; README dates it 12 June 2026), 2026-adcs-lifecycle-demo (README: Open Source Architects community, 15 October 2026)."
-
-[[claim]]
-id = "C714"
-fragment = "The <a href=\"https://docs.balancer.fi/whitepaper.pdf\">Balancer whitepaper</a> (2019), by"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record id 2019-balancer-whitepaper (https://docs.balancer.fi/whitepaper.pdf, v2019-09-19, Martinelli and Mushegian: the value function a product of balances raised to normalized weights, held constant; 'We applied an invariant-based modeling approach described by Zargham et al' citing arXiv 1807.00955), 2018-state-space; that Martinelli was a BlockScience team member at the time of his first proofs is the supervisor's account (2026-11-14), marked in the record."
-
-[[claim]]
-id = "C715"
-fragment = "What carried over is the practice of reasoning with product invariants."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Team account (the supervisor, 2026-11-14): the side road fed in without being the point; the weighted product of Balancer's invariant is the monomial of this method's Definition 2, which is the paper's and not a source's statement."
-
-[[claim]]
-id = "C716"
-fragment = "<a href=\"https://www.dynamicalsystemsgroup.com/blog/engineering-for-legitimacy\">Engineering legitimacy</a> (2024), by Ben-Meir and <span class=\"n\">Zargham</span>, took legitimacy"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record ids 2024-engineering-for-legitimacy (the firm's blog, Ben-Meir and Zargham, 19 March 2024: legitimacy as a sensed quality; liberty, equality and agency as trade-off curves between competing interpretations), 2024-arbitrum-position-paper (https://blog.block.science/arbitrum-expert-service-provider-network-program-development/, 2024-03-20: an accountable, cost-conscious network of expert service providers, co-developed with the public and domain experts). 'It stood beside' the client work is the supervisor's account (2026-11-14)."
-
-[[claim]]
-id = "C717"
-fragment = "<a href=\"https://kelsienabben.substack.com/p/algorithms-as-policy\">Algorithms as policy</a> (2020), with"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record id 2020-algorithms-as-policy (https://kelsienabben.substack.com/p/algorithms-as-policy, Zargham and Nabben, 2020-12-15: algorithms as the rules of governance on platforms; algorithm design as policy-making with responsibility to the public interest)."
-
-[[claim]]
-id = "C718"
-fragment = "<span class=\"n\">Ilan Ben-Meir</span>&rsquo;s <a href=\"https://www.dynamicalsystemsgroup.com/blog/an-algorithm-is-a-camera\">An algorithm is a camera</a> (2023) made the point"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record id 2023-algorithm-is-a-camera (the firm's blog, Ben-Meir, 2023-07-31: a model as a framed view, not a view from nowhere); a statement of what the post argued."
-
-[[claim]]
-id = "C719"
-fragment = "His <a href=\"https://doi.org/10.1002/iis2.70203\">INCOSE paper</a> (2026) set the posture"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record id 2026-incose-document-assurance (https://doi.org/10.1002/iis2.70203, INCOSE IS 36(1) 1501 to 1514, July 2026: verification automated against a specification, validation a named human's judgement, assurance where both close); 'the posture this project takes toward AI assistance' is the team's account (WP49-decisions.md, the contributing page)."
-
-[[claim]]
-id = "C720"
-fragment = "His <a href=\"https://doi.org/10.25080/wdyr6752\">SciPy paper</a> (2026) showed derivations scripted in SymPy"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-14"
-note = "Record id 2026-scipy-paper (https://doi.org/10.25080/wdyr6752, SciPy Proceedings 2026, published 29 October 2026, first page 303: derivations scripted in SymPy in the numerics' execution environment; the talk is 2026-scipy-talk); 'the lemma scripts of this repository follow that pattern' is the team's account (CLAUDE.md, the hc-marimo pattern; derivation/)."
-
-[[claim]]
-id = "C721"
-fragment = "<a href=\"https://doi.org/10.5281/zenodo.15122312\">Protocols and institutions</a> (2025), with Ben-Meir, defined"
+id = "C728"
+fragment = "This page is an essay on the people and"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8630,11 +8291,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
-note = "Record id 2025-protocols-and-institutions (https://doi.org/10.5281/zenodo.15122312, Zargham and Ben-Meir, 6 March 2025: institutions defined by correspondence to Lyapunov stability; protocols and institutions through control systems engineering); 'set protocols as the engineered part of them' is the abstract's framing in the page's words; that it formalises the argument of From Nash to Lyapunov (record id 2018-nash-lyapunov, the firm's blog, 1 October 2018; the Medium copy is dated 2 May 2019) is the supervisor's account (2026-11-15)."
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
 
 [[claim]]
-id = "C722"
-fragment = "<a href=\"https://doi.org/10.2139/ssrn.4865894\">Min-maxing complexity</a> (2024), with Bernardineli, Ben-Meir and"
+id = "C729"
+fragment = "It carries what the paper&rsquo;s citations cannot: lived experience,"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8645,11 +8306,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
-note = "Record id 2024-min-maxing-complexity (https://doi.org/10.2139/ssrn.4865894; Bernardineli, Ben-Meir, Zargham, Hackel, 2024: variety, legibility and safety as the principles for mechanism selection; the Aztec case study), 2023-aztec-sequencer-selection (the trade study the page names above)."
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
 
 [[claim]]
-id = "C723"
-fragment = "<a href=\"https://docs.dynamicalsystemsgroup.com/governed-compute/\">Governed compute, end to end</a> (2026), led by"
+id = "C730"
+fragment = "We have it because much of the substantive learning"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8660,11 +8321,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
-note = "Record id 2026-governed-compute (https://docs.dynamicalsystemsgroup.com/governed-compute/, September 2026: authorization opens a run; nothing advances until it conforms to its specification and is fit for its purpose; evidence a byproduct of the work); Sayer Tindall as lead is the supervisor's account (the page has no byline)."
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
 
 [[claim]]
-id = "C724"
-fragment = "That work on block diagrams and MSML was subsumed when the firm adopted the OMG standard"
+id = "C731"
+fragment = "The story runs through model-based systems engineering, simulation and"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8675,11 +8336,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
-note = "Team account (the supervisor, 2026-11-15): the block-diagram and MSML work subsumed by adopting SysML v2 and the OpenMBEE implementations; record ids 2025-omg-sysml-v2 (https://www.omg.org/spec/SysML/2.0), 2026-opensysml (https://github.com/Open-MBEE/OpenSysML); the cubesat model is examples/adcs/ in SysML v2."
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
 
 [[claim]]
-id = "C725"
-fragment = "<a href=\"https://www.dynamicalsystemsgroup.com/blog/knowledge-networks-and-the-politics-of-protocols\">Knowledge networks and the politics of protocols</a> (2024), with Ben-Meir and"
+id = "C732"
+fragment = "Many people carried those ideas, and they are named"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8690,11 +8351,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
-note = "Record id 2024-knowledge-networks (the firm's blog, 9 January 2024, Zargham, Ben-Meir, Nabben: self-governed instances as a new commons; design structures the action space, never neutral)."
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
 
 [[claim]]
-id = "C726"
-fragment = "<a href=\"https://mzargham.github.io/politics-of-progress/\">The politics of progress</a> (2025) read two popular visions"
+id = "C733"
+fragment = "The firm they worked in is a contract research"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8705,11 +8366,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
-note = "Record id 2025-politics-of-progress (Zargham 2025, CC0: comparative analysis of the Techno-Optimist Manifesto and Abundance; abundance requires institutions that make trade-offs visible and negotiate shared constraints); 'neither acknowledged trade-offs' is the author's summary of his own editorial (2026-11-15)."
+note = "Record ids 2017-founded (https://michael.zargham.org), 2017-dsg-site (https://www.dynamicalsystemsgroup.com); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
 
 [[claim]]
-id = "C727"
-fragment = "Exploring subjectivity in algorithms</a> (2019), written for SourceCred, showed the choices inside PageRank"
+id = "C734"
+fragment = "We perform requirements, architecture, design, simulation and analysis for"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8720,4 +8381,545 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
-note = "Record id 2019-exploring-subjectivity (Medium, SourceCred, 24 March 2019, Zargham; the Internet Archive capture: PageRank well defined only after a mixing model is imposed; the uniform heuristic, the seed vector and alpha as design choices)."
+note = "Record id 2026-firm-description, team-account: the supervisor's exact sentence in the firm's present tense (WP37-decisions.md). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C735"
+fragment = "Before the firm, the question was already allocation among many decision makers whose choices affected one another."
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
+
+[[claim]]
+id = "C736"
+fragment = "With <span class=\"n\">Preciado</span> and <span class=\"n\">Zixuan Zhang</span> came the <a href=\"https://doi.org/10.1007/s41109-020-0254-9\">2020 journal"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2020-state-space-journal (https://doi.org/10.1007/s41109-020-0254-9, Zhang, Zargham, Preciado) and 2018-state-space (arXiv 1807.00955, in the record, not linked). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C737"
+fragment = "Conviction voting began as <a href=\"https://github.com/BlockScience/conviction/blob/main/social-sensorfusion.pdf\">Sensor networks and social choice"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2018-sensor-networks-and-social-choice (https://github.com/BlockScience/conviction/blob/main/social-sensorfusion.pdf); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C738"
+fragment = "Prototyped in simulation, built into the Commons Stack with"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2019-conviction-voting-explainer (https://blog.giveth.io/conviction-voting-a-novel-continuous-decision-making-alternative-to-governance-aa746cfb9475), 2020-conviction-voting-cadcad (https://github.com/1Hive/conviction-voting-cadcad), 2020-brief-history-of-conviction-voting (https://medium.com/block-science/a-brief-history-of-conviction-voting-ad4ca4eb4aee); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C739"
+fragment = "It was the substance of <a href=\"https://blog.block.science/computer-aided-governance-a-revolution-in-automated-decision-support-systems/\">computer-aided governance</a> (2019), by"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2019-computer-aided-governance (https://blog.block.science/computer-aided-governance-a-revolution-in-automated-decision-support-systems/), 2002-roth-economist-as-engineer (https://doi.org/10.1111/1468-0262.00335); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C740"
+fragment = "That is the start of a governance lineage that"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
+
+[[claim]]
+id = "C741"
+fragment = "Exploring subjectivity in algorithms</a> (2019), written for SourceCred, showed"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2019-exploring-subjectivity (Medium, SourceCred, 24 March 2019, Zargham; the Internet Archive capture: PageRank well defined only after a mixing model is imposed; the uniform heuristic, the seed vector and alpha as design choices). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C742"
+fragment = "A paper on organisations run partly by code</a> (2022),"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2022-dao-precedents-in-cybernetics (https://doi.org/10.2139/ssrn.4077358); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C743"
+fragment = "The two met in <a href=\"https://zenodo.org/records/10609125\">What constitutes a constitution?</a> (2023),"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2023-what-constitutes-a-constitution (https://zenodo.org/records/10609125), 2024-path-dependence (https://hdl.handle.net/10535/11015); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C744"
+fragment = "The <a href=\"https://docs.balancer.fi/whitepaper.pdf\">Balancer whitepaper</a> (2019), by <span class=\"n\">Fernando Martinelli</span> and <span class=\"n\">Nikolai"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2019-balancer-whitepaper (https://docs.balancer.fi/whitepaper.pdf, v2019-09-19, Martinelli and Mushegian: the value function a product of balances raised to normalized weights, held constant; 'We applied an invariant-based modeling approach described by Zargham et al' citing arXiv 1807.00955), 2018-state-space; that Martinelli was a BlockScience team member at the time of his first proofs is the supervisor's account (2026-11-14), marked in the record. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C745"
+fragment = "Configuration spaces</a> (2019), by Zargham, <span class=\"n\">Jamsheed Shorish</span> and <span class=\"n\">Kris"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2019-configuration-spaces (RePEc wiw:wus051:7385), the Springer chapter Economic Games as Estimators (https://doi.org/10.1007/978-3-030-53356-4_8, already in the record), 2021-fungibility (https://doi.org/10.57938/aa8858fc-8c01-4f2a-a858-96fd0abfc1b1; 'bridging this framework to applications in machine learning and market design'); 'without yet giving a coordinate system suited to automated market makers' and 'what this method keeps' are the supervisor's reading (2026-11-14). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C746"
+fragment = "What carried over is the practice of reasoning with"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Team account (the supervisor, 2026-11-14): the side road fed in without being the point; the weighted product of Balancer's invariant is the monomial of this method's Definition 2, which is the paper's and not a source's statement. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C747"
+fragment = "Jamsheed Shorish</span> co-wrote <a href=\"https://research.wu.ac.at/de/publications/generalized-dynamical-systems-part-i-foundations/\">Generalized Dynamical Systems</a> (2022) and its"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2022-gds (WU record), 2022-gds-playlist (https://www.youtube.com/playlist?list=PLmWm8ksQq4YJrB72Na_JB-o8Xu2JLj7h9, the video series of the paper; Shorish presenting per the firm's post, which the record no longer holds as a duplicate pointer), 2021-psuu (https://blog.block.science/how-to-perform-parameter-selection-under-uncertainty/, byline Paruch and Shorish). The paper is not numbered, by ruling. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C748"
+fragment = "That work on block diagrams and MSML was subsumed"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Team account (the supervisor, 2026-11-15): the block-diagram and MSML work subsumed by adopting SysML v2 and the OpenMBEE implementations; record ids 2025-omg-sysml-v2 (https://www.omg.org/spec/SysML/2.0), 2026-opensysml (https://github.com/Open-MBEE/OpenSysML); the cubesat model is examples/adcs/ in SysML v2. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C749"
+fragment = "Andrew Clark</span> wrote with <span class=\"n\">Alexander Mihailov</span> and <span class=\"n\">Zargham</span> a"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2023-community-currency (https://doi.org/10.1007/s10614-023-10445-9); purpose and collaboration named, the implementation form not (default 7); the model repository's README gives the Red Cross and Grassroots Economics collaboration. The clause 'which applied related methods in modeling, simulation and analysis' is the team's account of the connection (the supervisor's wording, WP37-decisions.md, 2026-11-13 13:30), marked in trace.md. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C750"
+fragment = "Market design lessons for safety-first institutional engineering</a> (2023), by"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2023-market-design-lessons (https://blog.block.science/market-design-lessons-for-safety-first-institutional-engineering/, byline Shorish with Zargham and Ben-Meir, 2023-05-25): safety requirements before performance; qualitative against quantitative goals; Roth's market design. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C751"
+fragment = "Knowledge networks and the politics of protocols</a> (2024), by"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2024-knowledge-networks (the firm's blog, 9 January 2024, Zargham, Ben-Meir, Nabben: self-governed instances as a new commons; design structures the action space, never neutral). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C752"
+fragment = "Min-maxing complexity</a> (2024), by Bernardineli, Ben-Meir, Zargham and <span class=\"n\">Jakob"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2024-min-maxing-complexity (https://doi.org/10.2139/ssrn.4865894; Bernardineli, Ben-Meir, Zargham, Hackel, 2024: variety, legibility and safety as the principles for mechanism selection; the Aztec case study), 2023-aztec-sequencer-selection (the trade study the page names above). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C753"
+fragment = "Protocols and institutions</a> (2025), by Zargham and Ben-Meir, defined"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2025-protocols-and-institutions (https://doi.org/10.5281/zenodo.15122312, Zargham and Ben-Meir, 6 March 2025: institutions defined by correspondence to Lyapunov stability; protocols and institutions through control systems engineering); 'set protocols as the engineered part of them' is the abstract's framing in the page's words; that it formalises the argument of From Nash to Lyapunov (record id 2018-nash-lyapunov, the firm's blog, 1 October 2018; the Medium copy is dated 2 May 2019) is the supervisor's account (2026-11-15). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C754"
+fragment = "The politics of progress</a> (2025) read two popular visions"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2025-politics-of-progress (Zargham 2025, CC0: comparative analysis of the Techno-Optimist Manifesto and Abundance; abundance requires institutions that make trade-offs visible and negotiate shared constraints); 'neither acknowledged trade-offs' is the author's summary of his own editorial (2026-11-15). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C755"
+fragment = "It was presented at the <a href=\"https://youtu.be/r0H9ACUYNNQ\">JAXA MBSE/MCE Workshop</a> in"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2026-jaxa-talk (https://youtu.be/r0H9ACUYNNQ), 2026-osa-talk (https://dynamicalsystemsgroup.github.io/ADCS-lifecycle-demo/); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C756"
+fragment = "Formalizing document assurance</a> (INCOSE, 2026) set the posture this"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2026-incose (https://doi.org/10.1002/iis2.70203); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C757"
+fragment = "Derivations, not just simulations</a> (SciPy, 2026) showed derivations scripted"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2026-scipy-paper (https://doi.org/10.25080/wdyr6752); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C758"
+fragment = "Governed compute, end to end</a> (2026), led by <span class=\"n\">Sayer"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2026-governed-compute (https://docs.dynamicalsystemsgroup.com/governed-compute/, September 2026: authorization opens a run; nothing advances until it conforms to its specification and is fit for its purpose; evidence a byproduct of the work); Sayer Tindall as lead is the supervisor's account (the page has no byline). Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C759"
+fragment = "Jakob Hackel</span> and <span class=\"n\">Carolina Riascos-&Aacute;lvarez</span> worked on client projects"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids person-hackel (team-account), person-riascos (team-account, not linked), 2023-client-projects: the supervisor's sentence on undisclosed client work, marked as the team's account; no client and no detail. The sentence on the team's backgrounds is dropped (the supervisor, 2026-11-13: awkward and forced) with its record entries. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C760"
+fragment = "Some client work is public and used these methods:"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2021-rai-design, 2023-pydata-nyc, 2024-edinburgh, 2023-fip-0056, 2023-consensus-pledge, 2023-aztec-sequencer-selection; the page names the work in categorical terms (the supervisor, 2026-11-14); the arc from the design record before launch to the talks on the fielded system, and that models served its configuration management, is the supervisor's account (2026-11-15). Record ids 2021-rai-design (https://zenodo.org/records/10474385; only 'highly automated' is source-stated), 2024-edinburgh (https://michael.zargham.org/cv.pdf, the CV alone). 'Cleared for public release' is the team's account (marked 'in the same account'); the two sources are public. Both special_case. The Filecoin review (2023-fip-0056) is no longer cited in the prose (slimming); the record and the list keep it. Re-pointed in the WP52 essay pass (2026-11-15); the sentence as the supervisor ruled it."
+
+[[claim]]
+id = "C762"
+fragment = "The learning came from systems that were running, automated,"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
+
+[[claim]]
+id = "C763"
+fragment = "That is why this work maps a frontier instead"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
+
+[[claim]]
+id = "C764"
+fragment = "Zargham&rsquo;s dissertation, <a href=\"https://repository.upenn.edu/handle/20.500.14332/28334\">Fast, distributed ... optimization strategies for resource allocation in networks</a> (2014), advised by"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2014-dual-descent (https://doi.org/10.1109/TAC.2013.2293221), 2014-network-protection (https://doi.org/10.1109/TCNS.2014.2310911); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C765"
+fragment = "Reza Olfati-Saber</span>&rsquo;s <a href=\"https://doi.org/10.1109/JPROC.2006.887293\">consensus and sensor fusion</a> (2007"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2007-consensus-and-cooperation (https://doi.org/10.1109/JPROC.2006.887293), 2014-discounted-integral-priority (https://doi.org/10.1109/GLOCOM.2014.7037100); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C766"
+fragment = "Algorithms as policy</a> (2020), by Zargham and <span class=\"n\">Kelsie Nabben"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2020-algorithms-as-policy (https://kelsienabben.substack.com/p/algorithms-as-policy, Zargham and Nabben, 2020-12-15: algorithms as the rules of governance on platforms; algorithm design as policy-making with responsibility to the public interest). Re-pointed in the WP52 essay pass (2026-11-15)."
+
+[[claim]]
+id = "C767"
+fragment = "Eric Alston</span>, a longstanding member of the team, argued"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2022-governance-as-conflict (https://law.mit.edu/pub/governanceasconflict/release/1); the sentence as the supervisor ruled it (WP52-decisions.md, 2026-11-15)."
+
+[[claim]]
+id = "C768"
+fragment = "Ilan Ben-Meir</span>&rsquo;s <a href=\"https://www.dynamicalsystemsgroup.com/blog/an-algorithm-is-a-camera\">An algorithm is a camera"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2023-algorithm-is-a-camera (the firm's blog, Ben-Meir, 2023-07-31: a model as a framed view, not a view from nowhere); a statement of what the post argued. Re-pointed in the WP52 essay pass (2026-11-15)."
+
+[[claim]]
+id = "C769"
+fragment = "Engineering legitimacy</a> (2024), by Ben-Meir and <span class=\"n\">Zargham</span>, took"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2024-engineering-for-legitimacy (the firm's blog, Ben-Meir and Zargham, 19 March 2024: legitimacy as a sensed quality; liberty, equality and agency as trade-off curves between competing interpretations), 2024-arbitrum-position-paper (https://blog.block.science/arbitrum-expert-service-provider-network-program-development/, 2024-03-20: an accountable, cost-conscious network of expert service providers, co-developed with the public and domain experts). 'It stood beside' the client work is the supervisor's account (2026-11-14). Re-pointed in the WP52 essay pass (2026-11-15)."
+
+[[claim]]
+id = "C770"
+fragment = "With <span class=\"n\">Kelsie Nabben</span> and <span class=\"n\">Ellie Rennie</span>, whose <a href=\"https://doi.org/10.2139/ssrn.4570035\">ethnography of"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record ids 2023-credsperiment (https://doi.org/10.2139/ssrn.4570035, Rennie 2023: a community paid by Cred scores), 2023-computer-aided-ethnography (https://kelsienabben.substack.com/p/computer-aided-ethnography-cae, Nabben, Zargham, Rennie), 2025-building-the-loop (https://doi.org/10.1111/epic.70009, EPIC 2025; subtitle 'Artificial Organisational Intelligence'). Re-pointed in the WP52 essay pass (2026-11-15)."
+
+[[claim]]
+id = "C771"
+fragment = "This work is critical for humans ... to participate meaningfully in decision-making in an era when machines mediate"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2025-meltdown (https://www.dynamicalsystemsgroup.com/blog/meltdown): the closing sentence in the supervisor's words (WP52-decisions.md, 2026-11-15: 'critical for humans to participate meaningfully in decision-making in an era when machines are mediating more decisions faster decisions (see meltdown)'); the post read 2026-11-15."
+

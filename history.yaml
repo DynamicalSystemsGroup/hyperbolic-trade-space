@@ -1,9 +1,9 @@
 # The history record: the dated public references and the people behind the lineage of this work.
 #
-# The page site/history.html is a view of this record (WP37, D-9): hand-written prose with names and
-# pointers, and beneath it a dated reference list rendered from this file at build time
-# (scripts/history_record.py, scripts/assemble_site.py). The record may hold more than the page
-# shows; the page may show nothing the record does not hold. Tests tie every link, name and year on
+# The page site/history.html is an essay (WP52, 2026-11-15); this record stays in the background
+# for fact-checking and nothing of it is rendered on the page (the supervisor: "i don't want the
+# history records forced into the page you can keep them in the background for fact checking").
+# The record may hold more than the page shows; the page may show nothing the record does not hold. Tests tie every link, name and year on
 # the page to an entry here (tests/test_site.py). Public sources only; every URL answers an
 # unauthenticated request (scripts/check_history_links.py).
 #
@@ -26,8 +26,8 @@
 #   special_case  optional bool, true where the work was in a highly public setting and the rule
 #                 applies: the page names it only as "a special case where the work was highly
 #                 public", never as the firm's focus
-#   listed        optional bool (default true for every kind but person and role, which default to false): whether the
-#                 generated reference list shows the entry
+#   listed        optional bool (default true for every kind but person and role, which default to false): whether a
+#                 command-line listing of the record shows the entry; nothing is rendered on the page
 #   note          optional: where the entry came from, a spelling or a conflict between sources
 #
 # Spelling: Bernardineli (his GitHub profile name "Danilo Lessa Bernardineli", AUTHORS.txt);
@@ -68,6 +68,16 @@ entries:
     shows: "IEEE Transactions on Control of Network Systems 1(1), 99-108, March 2014 (Crossref authors); the abstract solves it in polynomial time using geometric programming. 354 citations on Google Scholar (the supervisor's profile) and 227 in Crossref, both read 2026-11-12."
     claim: sourced
     note: "arXiv 1309.6270. The two full texts say 'geometric program', not 'generalized'; the page says geometric programs."
+
+  - id: 2014-dissertation
+    date: "2014"
+    kind: paper
+    title: "Fast, Distributed Optimization Strategies for Resource Allocation in Networks"
+    people: [{name: "Michael Zargham", role: "author"}, {name: "Ali Jadbabaie", role: "advisor (the record)"}, {name: "Alejandro Ribeiro", role: "advisor (the record)"}]
+    url: https://repository.upenn.edu/handle/20.500.14332/28334
+    read_on: "2026-11-15"
+    shows: "Penn ScholarlyCommons record (its API): doctoral dissertation, issued 2014, advisors Jadbabaie and Ribeiro; the abstract: systems of many agents interacting over a network, the trade-off between information aggregation and decision accuracy, distributed optimization with locally available information. The supervisor (2026-11-15): resource allocation strategies are already economics and governance; the arc opens here."
+    claim: sourced
 
   # ------------------------------------------------------------------ the firm
   - id: 2017-founded
@@ -886,6 +896,123 @@ entries:
     shows: "The firm's hosted demonstrations (four at the day read), the first on bidirectional requirements traceability for a satellite attitude-determination and control system. That this project is part of a synthesis effort to make the learnings accessible is the team's account."
     claim: team-account
     listed: false
+
+  # ------------------------------------------------------------------ conviction voting and the constitution strand (WP52, 2026-11-15)
+  - id: 2007-consensus-and-cooperation
+    date: "2007-01"
+    kind: paper
+    title: "Consensus and Cooperation in Networked Multi-Agent Systems"
+    people: [{name: "Reza Olfati-Saber"}, {name: "J. Alexander Fax"}, {name: "Richard M. Murray"}]
+    url: https://doi.org/10.1109/JPROC.2006.887293
+    read_on: "2026-11-15"
+    shows: "Proceedings of the IEEE 95(1), January 2007 (Crossref). Cited background: the 2018 conviction-voting proposal acknowledges Olfati-Saber, the supervisor's undergraduate advisor, for decentralized sensor fusion and coordination and names this paper."
+    claim: sourced
+    note: "Background the lineage draws on, like Roth 2002; it predates the arc and the arc test exempts it."
+
+  - id: 2014-discounted-integral-priority
+    date: "2014-12"
+    kind: paper
+    title: "Discounted Integral Priority Routing for Data Networks"
+    people: [{name: "Michael Zargham"}, {name: "Alejandro Ribeiro"}, {name: "Ali Jadbabaie"}]
+    url: https://doi.org/10.1109/GLOCOM.2014.7037100
+    read_on: "2026-11-15"
+    shows: "IEEE GLOBECOM 2014 (Crossref: title, authors, December 2014). The 2018 proposal says conviction voting is 'a continuous voting process derived from the Discounted Integral Priority algorithm presented in' this paper."
+    claim: sourced
+
+  - id: 2018-sensor-networks-and-social-choice
+    date: "2018-07-30"
+    kind: paper
+    title: "Sensor Networks and Social Choice"
+    people: [{name: "Michael Zargham", role: "author"}, {name: "Frank Wang", role: "'Research Proposal at the request of Frank Wang of X-Order Research firm' (the title page)"}]
+    url: https://github.com/BlockScience/conviction/blob/main/social-sensorfusion.pdf
+    read_on: "2026-11-15"
+    shows: "The PDF (8 pages, dated 30 July 2018 on its first page), read whole: social choice as sensor fusion; conviction voting derived from discounted integral priority routing; a Stella Architect model and a Python agent-based simulation; the Artonomous design; acknowledges Jadbabaie, Preciado and Olfati-Saber."
+    claim: sourced
+    special_case: true
+    note: "The repository that holds the PDF was re-created on 15 May 2026 (its first commit); the 2020 brief history links the same file on a 'master' branch. The date is the document's own."
+
+  - id: 2019-conviction-voting-explainer
+    date: "2019-07-03"
+    kind: post
+    title: "Conviction Voting: A Novel Continuous Decision Making Alternative to Governance"
+    people: [{name: "Jeff Emmett", role: "author"}]
+    url: https://blog.giveth.io/conviction-voting-a-novel-continuous-decision-making-alternative-to-governance-aa746cfb9475
+    read_on: "2026-11-15"
+    shows: "Giveth's blog on Medium, 3 July 2019, a Commons Stack component explainer: conviction voting 'was derived from the paper on Social Sensor Fusion by Dr. Michael Zargham'; the module simulated and tested in cadCAD. Answers 403 to automated readers; read in a browser."
+    claim: sourced
+    special_case: true
+
+  - id: 2020-conviction-voting-cadcad
+    date: "2020-07-09"
+    kind: repository
+    title: "conviction-voting-cadcad"
+    url: https://github.com/1Hive/conviction-voting-cadcad
+    read_on: "2026-11-15"
+    shows: "The cadCAD model of conviction voting in the repository of the community that first ran it (GitHub API: created 9 July 2020); the 2020 brief history links its README as 'Algorithm Documentation & Simulations'."
+    claim: link
+    special_case: true
+
+  - id: 2020-brief-history-of-conviction-voting
+    date: "2020-12-26"
+    kind: post
+    title: "A Brief History of Conviction Voting"
+    people: [{name: "Michael Zargham", role: "author"}, {name: "Griff Green", role: "'founder of Giveth', met in Zug in July 2018 (the post)"}, {name: "Jeff Emmett", role: "introduced by Green in Prague; the Commons Stack (the post)"}, {name: "Markus Koch", role: "the Balancer proofs (the post)"}, {name: "Fernando Martinelli", role: "the Balancer proofs (the post)"}, {name: "Frank Wang", role: "'a partner at the research firm X-Order' who requested the proposal (the post)"}]
+    url: https://medium.com/block-science/a-brief-history-of-conviction-voting-ad4ca4eb4aee
+    read_on: "2026-11-15"
+    shows: "The firm's Medium publication, 26 December 2020: the Zug prototype of July 2018 as dynamic average consensus; the proposal at Frank Wang's request; the Commons Stack with Emmett; SourceCred; cadCAD modelling 'before and after the deployment of the algorithm by the 1hive DAO'. Answers 403 to automated readers; read in a browser. That three further communities adopted it is the supervisor's account (2026-11-15)."
+    claim: sourced
+    special_case: true
+
+  - id: 2022-governance-as-conflict
+    date: "2022-12-05"
+    kind: paper
+    title: "Governance as Conflict: Constitution of Shared Values Defining Future Margins of Disagreement"
+    people: [{name: "Eric Alston", role: "'Scholar in Residence in the Finance Division and the Faculty Director of the Hernando de Soto Capital Markets Program in the Leeds School of Business at the University of Colorado Boulder' (the author note)"}]
+    url: https://law.mit.edu/pub/governanceasconflict/release/1
+    read_on: "2026-11-15"
+    shows: "MIT Computational Law Report, published 5 December 2022, read whole in a browser (the host answers 403 to automated readers): shared values constitute an organization; collective action makes disagreement structural; institutions mitigate conflict ex ante and resolve it ex post; thanks the Metagov DAO for research support. That Alston is a longstanding member of the team is the supervisor's account (2026-11-15)."
+    claim: sourced
+
+  - id: 2022-dao-precedents-in-cybernetics
+    date: "2022-04-04"
+    kind: paper
+    title: "Aligning 'Decentralized Autonomous Organization' to Precedents in Cybernetics"
+    people: [{name: "Michael Zargham"}, {name: "Kelsie Nabben"}]
+    url: https://doi.org/10.2139/ssrn.4077358
+    read_on: "2026-11-15"
+    shows: "SSRN 4077358, 4 April 2022 (Crossref: the two authors, 2022); the MIT Computational Law Report version of 20 November 2023 read whole in a browser: Beer's viable system model, viability and purpose, the governance surface as a control surface, resilience against robustness, the constitutional archetype, the 1Hive case, the subjectivity of the governance designer."
+    claim: sourced
+    special_case: true
+
+  - id: 2023-what-constitutes-a-constitution
+    date: "2023-04-06"
+    kind: paper
+    title: "What Constitutes a Constitution?"
+    people: [{name: "Michael Zargham"}, {name: "Eric Alston"}, {name: "Kelsie Nabben"}, {name: "Ilan Ben-Meir"}]
+    url: https://zenodo.org/records/10609125
+    read_on: "2026-11-15"
+    shows: "Zenodo record (its API: the four creators in this order, publication date 6 April 2023, DOI 10.5281/zenodo.10609125). Listed on the supervisor's publications page under working papers."
+    claim: sourced
+
+  - id: 2024-path-dependence
+    date: "2024"
+    kind: paper
+    title: "Path Dependence: An Uncomfortable Institutional Design Axiom"
+    people: [{name: "Eric Alston"}, {name: "Amber Case"}, {name: "Michael Zargham"}]
+    url: https://hdl.handle.net/10535/11015
+    read_on: "2026-11-15"
+    shows: "Digital Library of the Commons (Indiana University), conference paper, 2024, authors Alston, Case, Zargham; the abstract: in governance systems the trajectory to an ideal configuration defines its attainability; most real systems start centralized and decentralize progressively. The supervisor's publications page lists it as a Workshop on the Ostrom Workshop abstract."
+    claim: sourced
+
+  - id: 2025-meltdown
+    date: "2025-09-22"
+    kind: post
+    title: "Meltdown"
+    people: [{name: "Michael Zargham"}, {name: "Ilan Ben-Meir"}]
+    url: https://www.dynamicalsystemsgroup.com/blog/meltdown
+    read_on: "2026-11-15"
+    shows: "The firm's blog, 22 September 2025, by Zargham and Ben-Meir (the byline): generative AI collapsed the attention cost of producing content, so 'the bottleneck has moved from generation to judgment' and 'judgment is rate-limiting'; what is needed is regulative AI, mechanisms of constraint and feedback, not more generative power."
+    claim: sourced
 
   # ------------------------------------------------------------------ the people
   - id: person-koch
