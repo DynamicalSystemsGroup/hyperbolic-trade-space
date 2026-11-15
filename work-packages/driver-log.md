@@ -2439,4 +2439,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   notebooks regenerated with a warm font cache (no stderr), vocabulary 0 new, and the paper, register, contract,
   generated and fast site tests 374 passed; the unit's own tree had the full fast suite at 2,034 and the lemma chain
   passing. Its rows are C801 to C806. CI dispatched on the head. wp41 next, then wp46.
+- **CI red at a573155 on lint, fixed (2026-11-15 00:31 EST).** Every job failed at the Lint step: one line over the limit in
+  tests/test_site.py from the driver's own history-test edit of 5507ee7, committed without a lint run. Formatted and
+  re-dispatched. The driver's rule from here: every commit to dev runs ruff check and format before the push, no
+  exceptions for one-line edits. The fifth unit's landing itself is unaffected.
 
