@@ -297,3 +297,15 @@ narrative for the index page which just needs to be intuitive"
 entry and the docs example page; the index's caption says only what a reader needs to follow the markers ("each term's
 characteristic point, where that term is strongest"), in plain words.
 
+**Supervisor (2026-11-14 23:37 EST):** "and in the ternary plot the way we colored the region, what was that? is based on which of the
+surfaces dominates? what does dominating mean? is there a better word? we had to calculate it so there must be a
+specific rule used to determine which color goes here"
+
+**The rule, from the code (`plotting._ternary_region_of`):** at a point of the triangle with shares c, each term's
+value is its offset plus its exponents times the log shares, a_k + s Σ_j w_kj log c_j; the region is coloured by the
+term with the largest value there, the code's word being "the binding term". At the exact-maximum fit V equals that
+term there; at finite temperature it is the term that contributes most to V. For designs the glossary calls this
+assignment the term's cell (the rows whose largest term it is); the coloured region is the same rule applied to every
+point of the triangle. Candidate words for the page: "the largest term", "the term that binds"; "dominates" and "leads"
+are the current words. His choice pending.
+
