@@ -2518,3 +2518,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   guide naming it, records after. Served: 8797 the candidate (built from 62525f2), 8861 the figure branch wp51fig
   (c02e0a4, waits on his word), 8791 the reader round's frozen stage. The first message in the morning carries the
   head, the ports, the round-4 figure and the guide's four sittings.
+- **His review, sitting 1, the abstract (2026-11-15 08:40 to 09:10 EST).** Three edits applied from his words (verbatim in
+  WP11-decisions.md): the level sentence ends on the surface; "implemented with a scikit-learn-compatible API";
+  the cubesat sentence without its qualification. Register fragments and two paper-test phrases follow; register
+  and paper tests 243 passed at b0bba19. Two commits (626a293, fc8b303) went in with a paper test red because the
+  chain committed on `;` after the test; corrected forward at b0bba19 within the same sitting. His open items: the
+  three-thrusts sentence (a draft put to him) and the same ruling on "scikit-learn estimator" for the docs home and
+  the package docstring (to be applied with the next commit unless he says otherwise). The staged site on 8797
+  rebuilding at b0bba19.
