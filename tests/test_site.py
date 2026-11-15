@@ -966,7 +966,8 @@ def test_history_page_links_resolve_over_the_network():
     automated requests (open it in a browser); none is dead. A dead link (a 4xx answer) fails;
     a host outage (a 5xx answer or a timeout, the UPenn repository on 2026-11-15) is reported and
     does not fail, since a release gate cannot depend on a third party's uptime; the dead-link
-    check runs on every CI run and the outage list is read by the driver. Run: pytest -m slow -k history."""
+    check runs on every CI run and the outage list is read by the driver.
+    Run: pytest -m slow -k history."""
     checker = _link_checker()
     rows = checker.check(checker.external_links(HISTORY))
     failed = [(u, c) for u, label, c in rows if label == "FAIL"]
