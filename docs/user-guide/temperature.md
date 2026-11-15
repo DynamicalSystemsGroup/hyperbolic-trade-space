@@ -1,8 +1,7 @@
 # The fit temperature
 
 The fit temperature tau sets how hard the maximum is ([definition](paper:def-temperature)). A table
-fitted at one tau is one point on a path. This page draws the path for your table, reads it three
-ways and names its two ends.
+fitted at one tau is one point on a path from tau near zero to infinite tau.
 
 ## Draw the path
 

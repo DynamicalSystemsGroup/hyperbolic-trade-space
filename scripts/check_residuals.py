@@ -98,7 +98,8 @@ _META = {
     # about the reader's experience or the figure's placement says nothing
     "reader-experience": (
         r"\b(you have (now )?(seen|read|met)|the reader (has|will) (now )?(seen|see|read)|"
-        r"the figure (further )?(down|below|above)|this page (names|shows|is|does|carries|gives)|"
+        r"the figure (further )?(down|below|above)|"
+        r"this page (names|shows|is|does|carries|gives|says|draws|tells|explains|covers|sets out)|"
         r"as (shown|seen|described) (in|on) (this|the) (page|figure|section))\b"
     ),
     "note-that": r"(^|[.;:]\s+)note that\b",

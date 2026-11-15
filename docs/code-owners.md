@@ -1,6 +1,6 @@
 # Code owners
 
-This page is for a code owner: who the code owners are, the repository settings that enforce the contributing page,
+For a code owner: who the code owners are, the repository settings that enforce the contributing page,
 how a candidate is reviewed, how a release is cut, and how a code owner is added. Contributors read
 `CONTRIBUTING.md` in the repository instead.
 

@@ -3,9 +3,9 @@
 For an analyst who has picked a point on the chart and wants a design under it.
 
 The way from a design to its chart point is a computation: evaluate the configuration, condition the
-attributes into metrics, read the chart. The way back loses invertibility, at one step only. This page says
-which route back exists for which point, what a design proposed for a point is worth, and how to find out.
-It is the bridge to [the search of Section 7](paper:sect-search), which is future work.
+attributes into metrics, read the chart. The way back loses invertibility, at one step only, so the route back
+depends on the point: a lookup where the point has a datum, a conjecture where it has none, worth what its check
+shows. It is the bridge to [the search of Section 7](paper:sect-search), which is future work.
 
 ## Where invertibility is lost
 
