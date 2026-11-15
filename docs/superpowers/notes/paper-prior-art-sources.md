@@ -135,3 +135,11 @@ continuum in mammals, amniote record). Each entry's `verified` field says what w
 
 The wheat record adds `austin1980genetic` [@austin1980genetic] (variety improvement and the yield potential of winter
 wheat) and `austin1993old` [@austin1993old] (old and modern cultivars on Broadbalk, the harvest-index reading).
+
+## 7. The configuration-management sentence of Section 1 (his review, 2026-11-15)
+
+`fulcoly2012evaluating` [@fulcoly2012evaluating] (Fulcoly, Ross and Rhodes, CSER 2012): tradespace analysis of when
+and how a system in service should change as its operating context and stakeholder needs shift. Cited for the practice
+the sentence names, decision analysis in the configuration management of a fielded system; the sentence's speed point
+is the paper's own, uncited. Chosen by the supervisor from three candidates (Jarratt et al. 2011 and Parnell et al.
+2021 declined as a review and a survey without the operational setting), `WP11-decisions.md`.

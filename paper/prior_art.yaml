@@ -28,8 +28,119 @@
 # absent from the fields; every cited key resolves in docs/references.bib.
 entries:
   # --- Optimization and efficiency analysis ---------------------------------------------------
+
+  - id: practice
+    group: Decision problems, trade studies and multi-criterion optimization
+    family: Trade studies in systems engineering practice
+    does: >-
+      Describes the trade study as a documented decision activity, with elicited criteria weights
+      and known susceptibility to human bias. It surveys the published state of trade-off analytics.
+    shares: >-
+      The setting, a decision for which an answer and a justification are required.
+    differs: >-
+      This work fits its weights from the table and reruns the analysis when the data change. The
+      study is a computation with a recorded environment, not a document.
+    cites: [hirshorn2017nasa, baker2012survey, chilli2026decision, smith2007ameliorating, parnell2021system]
+    section2: false
+
+  - id: decision-analysis
+    group: Decision problems, trade studies and multi-criterion optimization
+    family: Decision analysis and multiple-criteria methods
+    does: >-
+      Decision analysis with a normative versus descriptive distinction. Multiple-objective
+      preferences and value trade-offs. Weighted-criteria comparison methods (Pugh, the analytic
+      hierarchy process, Kepner-Tregoe), with weights elicited. A decision-management framework
+      based on decision theory and cost analysis.
+    shares: >-
+      The weights are trade-off rates.
+    differs: >-
+      This work fits its weights from the data's edge and elicits none.
+    cites: [howard1988decision, keeney1993decisions, baker2012survey, parnell2016trade]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "Decision analysis with a normative versus descriptive distinction"
+      shares: "The weights are trade-off rates"
+      differs: "This work fits its weights from the data's edge"
+
+  - id: mbse
+    group: Decision problems, trade studies and multi-criterion optimization
+    family: Model-based systems engineering
+    does: >-
+      MBSE centred on the system model as the sole source of truth; a systematic review of the
+      evidence for MBSE benefits, opening from document-based practice.
+    shares: >-
+      The trade space as a model rather than a document.
+    differs: >-
+      This work is a model-based trade analysis, not an MBSE methodology; the system model stays
+      behind its abstraction from configuration to attributes.
+    cites: [madni2018model, henderson2021value]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "MBSE centred on the system model as the sole source of truth"
+      shares: "The trade space as a model rather than a document"
+      differs: "This work is a model-based trade analysis, not an MBSE methodology"
+
+  - id: mdao
+    group: Decision problems, trade studies and multi-criterion optimization
+    family: Multidisciplinary design analysis and optimization (MDAO)
+    does: >-
+      Couples the disciplinary analyses of a design through shared coupling variables and solves
+      the coupled system inside an optimizer: a survey of the field by its conceptual components,
+      a classification of its architectures by problem formulation and decomposition strategy, a
+      diagram standard for them (which extends the design structure matrix with process
+      flow), a framework that solves the coupled models and computes their coupled derivatives,
+      and a textbook treatment. Each run returns an optimum of a stated objective under
+      constraints.
+    shares: >-
+      The setting of the case, a design loop in which a configuration is evaluated by coupled
+      disciplinary models into attributes and the design variables are chosen against several
+      objectives. The case's coupling table is a design structure matrix.
+    differs: >-
+      This work fits the table the evaluations leave behind and reports the trade-offs they
+      exercised. It gives one exponent vector per monomial term and a level for every design,
+      whatever produced the table. It does not search, couple disciplines or need derivatives; an MDAO run
+      is one way to fill the table.
+    cites: [sobieszczanski1997multidisciplinary, martins2013multidisciplinary, lambe2012extensions, gray2019openmdao, martins2021engineering]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "solves the coupled system inside an optimizer"
+      shares: "a configuration is evaluated by coupled disciplinary models into attributes"
+      differs: "This work fits the table the evaluations leave behind"
+
+  - id: tradespace
+    group: Decision problems, trade studies and multi-criterion optimization
+    family: Tradespace exploration
+    does: >-
+      Value-focused broad exploration of design alternatives, a design-by-shopping interface in
+      which the decision-maker forms a preference by viewing many good designs, user-guided
+      samplers and linked visualization with the Pareto frontier displayed, and tradespace
+      exploration for resilient systems.
+    shares: >-
+      The setting, a table of evaluated designs.
+    differs: >-
+      This work fits and reports a coordinate system and a score.
+    cites: [ross2004multi, ross2005tradespace, ross2010revisiting, stump2003design, simpson2008visual, stump2009visual, spero2014tradespace]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "Value-focused broad exploration of design alternatives"
+      shares: "The setting, a table of evaluated designs"
+      differs: "This work fits and reports a coordinate system and a score"
+    nearest: true
+    why_not_just: >-
+      This is not just tradespace exploration: exploration samples and shows the designs, while
+      this fits the table and returns the trade-offs and a score for each design in coordinates
+      that can be inverted.
+
   - id: pareto
-    group: Optimization and efficiency analysis
+    group: Decision problems, trade studies and multi-criterion optimization
     family: Pareto and multiobjective optimization
     does: >-
       Returns a nondominated set of designs, and finds Pareto-optimal solutions by scalarization, for
@@ -57,8 +168,106 @@ entries:
       while the fit returns a reference surface with coordinates, and for each term the exponents
       that give the elasticities between metrics.
 
+  - id: pca
+    group: Machine learning, dimensionality reduction and kernel methods
+    family: Principal component analysis (PCA)
+    does: >-
+      Finds uncorrelated components that successively maximize variance, reducing dimensionality
+      while keeping interpretability.
+    shares: >-
+      The question "what explains this table", answered by an unsupervised summary in a few
+      directions.
+    differs: >-
+      This work's criterion is a one-sided soft maximum, not variance, and its exponents live on the
+      simplex, so its components are trade-offs between metrics. The two chain. This work belongs
+      beside PCA in unsupervised learning and feature engineering and is not a PCA.
+    cites: [jolliffe2016principal]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "Finds uncorrelated components that successively maximize variance"
+      shares: "an unsupervised summary in a few directions"
+      differs: "This work's criterion is a one-sided soft maximum, not variance"
+    nearest: true
+    why_not_just: >-
+      This is not just PCA: PCA explains variance, which is analysis and says nothing about what
+      trades against what, while the fit explains the edge of the table by the trade-offs among
+      metrics.
+
+  - id: logratio
+    group: Machine learning, dimensionality reduction and kernel methods
+    family: Compositional and log-ratio PCA
+    does: >-
+      PCA of compositional data, and isometric logratio transformations for compositional data
+      analysis.
+    shares: >-
+      The chart Z = Bu is in the spirit of an isometric logratio chart.
+    differs: >-
+      This work's criterion is one-sided; its weights lie on the simplex, and its chart is paired
+      with the level log V and is reversible to the metrics and to attribute units.
+    cites: [aitchison1983principal, aitchison1986statistical, egozcue2003isometric]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "PCA of compositional data"
+      shares: "an isometric logratio chart"
+      differs: "This work's criterion is one-sided; its weights lie on the simplex"
+    nearest: true
+    why_not_just: >-
+      This is not just log-ratio analysis: the log-ratio chart is one half of the coordinate
+      system, and the other half is the level log V relative to a fitted one-sided surface, which
+      log-ratio analysis does not fit.
+
+  - id: kernel-pca
+    group: Machine learning, dimensionality reduction and kernel methods
+    family: Kernel PCA
+    does: >-
+      PCA in an implicit feature space, reached through kernel functions: principal components of
+      data in a feature space nonlinearly related to the input space.
+    shares: >-
+      Kernel PCA is the feature-engineering kin of the kernel direction that stays compatible with
+      geometric programming.
+    differs: >-
+      This work builds no kernel and maximizes no variance: it fits a one-sided posynomial edge,
+      and its kernel direction is documented, not built.
+    cites: [schoelkopf1998nonlinear]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "PCA in an implicit feature space"
+      shares: "the feature-engineering kin of the kernel direction"
+      differs: "This work builds no kernel and maximizes no variance"
+
+  - id: horopca
+    group: Machine learning, dimensionality reduction and kernel methods
+    family: HoroPCA (PCA in hyperbolic space)
+    does: >-
+      PCA components carried into hyperbolic space with horospherical projections (a
+      parameterization of subspaces, a projection and a variance objective), for data that lives on
+      a hyperbolic manifold such as an embedded tree; it maximizes a nonconvex variance over frames
+      by gradient ascent with restarts, and gives no certificate.
+    shares: >-
+      The closest existing analog in setting: unsupervised, a table in and coordinates out, with the
+      number of components chosen by the analyst, and PCA as a step that can follow.
+    differs: >-
+      This work estimates a one-sided edge, not a variance over frames, by convex programs on a
+      simplex with a certificate, and it uses no negative-curvature geometry; on the synthetic
+      tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only
+      where the generator made them the direction of largest spread.
+    cites: [chami2021horopca]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "PCA components carried into hyperbolic space"
+      shares: "The closest existing analog in setting"
+      differs: "This work estimates a one-sided edge, not a variance over frames"
+
   - id: dea
-    group: Optimization and efficiency analysis
+    group: Machine learning, dimensionality reduction and kernel methods
     family: Data envelopment analysis (DEA)
     does: >-
       Evaluates the relative efficiency of each decision-making unit by mathematical programming on
@@ -92,7 +301,7 @@ entries:
       design sits relative to its term and which metrics trade there.
 
   - id: multiplicative-dea
-    group: Optimization and efficiency analysis
+    group: Machine learning, dimensionality reduction and kernel methods
     family: Multiplicative DEA
     does: >-
       A multiplicative efficiency model whose envelopment is piecewise Cobb-Douglas (Charnes, Cooper,
@@ -113,7 +322,7 @@ entries:
     section2: false
 
   - id: hyperbolic-graph-measure
-    group: Optimization and efficiency analysis
+    group: Machine learning, dimensionality reduction and kernel methods
     family: The hyperbolic graph measure of efficiency
     does: >-
       Efficiency measures on the graph of a technology, inputs and outputs both freely variable, in
@@ -130,7 +339,7 @@ entries:
     section2: false
 
   - id: production-distance
-    group: Optimization and efficiency analysis
+    group: Machine learning, dimensionality reduction and kernel methods
     family: Production and distance functions
     does: >-
       The Cobb-Douglas production form, and the Shephard distance function with its duality.
@@ -155,7 +364,7 @@ entries:
       one-sided boundary of conditioned metrics.
 
   - id: frontier-estimation
-    group: Optimization and efficiency analysis
+    group: Machine learning, dimensionality reduction and kernel methods
     family: Deterministic and stochastic frontiers
     does: >-
       Estimates frontier production functions by programming, corrected ordinary least squares or
@@ -180,60 +389,9 @@ entries:
       simplex-constrained geometric mean, with a temperature, a band and K terms.
 
   # --- Dimension reduction and model fitting --------------------------------------------------
-  - id: pca
-    group: Dimension reduction and model fitting
-    family: Principal component analysis (PCA)
-    does: >-
-      Finds uncorrelated components that successively maximize variance, reducing dimensionality
-      while keeping interpretability.
-    shares: >-
-      The question "what explains this table", answered by an unsupervised summary in a few
-      directions.
-    differs: >-
-      This work's criterion is a one-sided soft maximum, not variance, and its exponents live on the
-      simplex, so its components are trade-offs between metrics. The two chain. This work belongs
-      beside PCA in unsupervised learning and feature engineering and is not a PCA.
-    cites: [jolliffe2016principal]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "Finds uncorrelated components that successively maximize variance"
-      shares: "an unsupervised summary in a few directions"
-      differs: "This work's criterion is a one-sided soft maximum, not variance"
-    nearest: true
-    why_not_just: >-
-      This is not just PCA: PCA explains variance, which is analysis and says nothing about what
-      trades against what, while the fit explains the edge of the table by the trade-offs among
-      metrics.
-
-  - id: logratio
-    group: Dimension reduction and model fitting
-    family: Compositional and log-ratio PCA
-    does: >-
-      PCA of compositional data, and isometric logratio transformations for compositional data
-      analysis.
-    shares: >-
-      The chart Z = Bu is in the spirit of an isometric logratio chart.
-    differs: >-
-      This work's criterion is one-sided; its weights lie on the simplex, and its chart is paired
-      with the level log V and is reversible to the metrics and to attribute units.
-    cites: [aitchison1983principal, aitchison1986statistical, egozcue2003isometric]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "PCA of compositional data"
-      shares: "an isometric logratio chart"
-      differs: "This work's criterion is one-sided; its weights lie on the simplex"
-    nearest: true
-    why_not_just: >-
-      This is not just log-ratio analysis: the log-ratio chart is one half of the coordinate
-      system, and the other half is the level log V relative to a fitted one-sided surface, which
-      log-ratio analysis does not fit.
 
   - id: gp-maxaffine
-    group: Dimension reduction and model fitting
+    group: Solvers, convex optimization and generalized geometric programs
     family: Geometric programming and max-affine fitting
     does: >-
       Geometric programming with generalized posynomials, aircraft design as geometric programs with
@@ -260,54 +418,8 @@ entries:
       the middle of the data by regression, while this fits the edge of the data and reports the
       terms as trade-offs.
 
-  - id: kernel-pca
-    group: Dimension reduction and model fitting
-    family: Kernel PCA
-    does: >-
-      PCA in an implicit feature space, reached through kernel functions: principal components of
-      data in a feature space nonlinearly related to the input space.
-    shares: >-
-      Kernel PCA is the feature-engineering kin of the kernel direction that stays compatible with
-      geometric programming.
-    differs: >-
-      This work builds no kernel and maximizes no variance: it fits a one-sided posynomial edge,
-      and its kernel direction is documented, not built.
-    cites: [schoelkopf1998nonlinear]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "PCA in an implicit feature space"
-      shares: "the feature-engineering kin of the kernel direction"
-      differs: "This work builds no kernel and maximizes no variance"
-
-  - id: horopca
-    group: Dimension reduction and model fitting
-    family: HoroPCA (PCA in hyperbolic space)
-    does: >-
-      PCA components carried into hyperbolic space with horospherical projections (a
-      parameterization of subspaces, a projection and a variance objective), for data that lives on
-      a hyperbolic manifold such as an embedded tree; it maximizes a nonconvex variance over frames
-      by gradient ascent with restarts, and gives no certificate.
-    shares: >-
-      The closest existing analog in setting: unsupervised, a table in and coordinates out, with the
-      number of components chosen by the analyst, and PCA as a step that can follow.
-    differs: >-
-      This work estimates a one-sided edge, not a variance over frames, by convex programs on a
-      simplex with a certificate, and it uses no negative-curvature geometry; on the synthetic
-      tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only
-      where the generator made them the direction of largest spread.
-    cites: [chami2021horopca]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "PCA components carried into hyperbolic space"
-      shares: "The closest existing analog in setting"
-      differs: "This work estimates a one-sided edge, not a variance over frames"
-
   - id: entropic-risk
-    group: Dimension reduction and model fitting
+    group: Solvers, convex optimization and generalized geometric programs
     family: Entropic risk
     does: >-
       The entropic risk measure and its limits (the mean and the essential supremum), and entropic
@@ -321,112 +433,3 @@ entries:
     section2: false
 
   # --- Systems engineering practice and decision analysis -------------------------------------
-  - id: mdao
-    group: Systems engineering practice and decision analysis
-    family: Multidisciplinary design analysis and optimization (MDAO)
-    does: >-
-      Couples the disciplinary analyses of a design through shared coupling variables and solves
-      the coupled system inside an optimizer: a survey of the field by its conceptual components,
-      a classification of its architectures by problem formulation and decomposition strategy, a
-      diagram standard for them (which extends the design structure matrix with process
-      flow), a framework that solves the coupled models and computes their coupled derivatives,
-      and a textbook treatment. Each run returns an optimum of a stated objective under
-      constraints.
-    shares: >-
-      The setting of the case, a design loop in which a configuration is evaluated by coupled
-      disciplinary models into attributes and the design variables are chosen against several
-      objectives. The case's coupling table is a design structure matrix.
-    differs: >-
-      This work fits the table the evaluations leave behind and reports the trade-offs they
-      exercised. It gives one exponent vector per monomial term and a level for every design,
-      whatever produced the table. It does not search, couple disciplines or need derivatives; an MDAO run
-      is one way to fill the table.
-    cites: [sobieszczanski1997multidisciplinary, martins2013multidisciplinary, lambe2012extensions, gray2019openmdao, martins2021engineering]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "solves the coupled system inside an optimizer"
-      shares: "a configuration is evaluated by coupled disciplinary models into attributes"
-      differs: "This work fits the table the evaluations leave behind"
-
-  - id: tradespace
-    group: Systems engineering practice and decision analysis
-    family: Tradespace exploration
-    does: >-
-      Value-focused broad exploration of design alternatives, a design-by-shopping interface in
-      which the decision-maker forms a preference by viewing many good designs, user-guided
-      samplers and linked visualization with the Pareto frontier displayed, and tradespace
-      exploration for resilient systems.
-    shares: >-
-      The setting, a table of evaluated designs.
-    differs: >-
-      This work fits and reports a coordinate system and a score.
-    cites: [ross2004multi, ross2005tradespace, ross2010revisiting, stump2003design, simpson2008visual, stump2009visual, spero2014tradespace]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "Value-focused broad exploration of design alternatives"
-      shares: "The setting, a table of evaluated designs"
-      differs: "This work fits and reports a coordinate system and a score"
-    nearest: true
-    why_not_just: >-
-      This is not just tradespace exploration: exploration samples and shows the designs, while
-      this fits the table and returns the trade-offs and a score for each design in coordinates
-      that can be inverted.
-
-  - id: decision-analysis
-    group: Systems engineering practice and decision analysis
-    family: Decision analysis and multiple-criteria methods
-    does: >-
-      Decision analysis with a normative versus descriptive distinction. Multiple-objective
-      preferences and value trade-offs. Weighted-criteria comparison methods (Pugh, the analytic
-      hierarchy process, Kepner-Tregoe), with weights elicited. A decision-management framework
-      based on decision theory and cost analysis.
-    shares: >-
-      The weights are trade-off rates.
-    differs: >-
-      This work fits its weights from the data's edge and elicits none.
-    cites: [howard1988decision, keeney1993decisions, baker2012survey, parnell2016trade]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "Decision analysis with a normative versus descriptive distinction"
-      shares: "The weights are trade-off rates"
-      differs: "This work fits its weights from the data's edge"
-
-  - id: practice
-    group: Systems engineering practice and decision analysis
-    family: Trade studies in systems engineering practice
-    does: >-
-      Describes the trade study as a documented decision activity, with elicited criteria weights
-      and known susceptibility to human bias. It surveys the published state of trade-off analytics.
-    shares: >-
-      The setting, a decision for which an answer and a justification are required.
-    differs: >-
-      This work fits its weights from the table and reruns the analysis when the data change. The
-      study is a computation with a recorded environment, not a document.
-    cites: [hirshorn2017nasa, baker2012survey, chilli2026decision, smith2007ameliorating, parnell2021system]
-    section2: false
-
-  - id: mbse
-    group: Systems engineering practice and decision analysis
-    family: Model-based systems engineering
-    does: >-
-      MBSE centred on the system model as the sole source of truth; a systematic review of the
-      evidence for MBSE benefits, opening from document-based practice.
-    shares: >-
-      The trade space as a model rather than a document.
-    differs: >-
-      This work is a model-based trade analysis, not an MBSE methodology; the system model stays
-      behind its abstraction from configuration to attributes.
-    cites: [madni2018model, henderson2021value]
-    section2: true
-    # Section 2's table prints these phrases; each is an extract of the field of the same name
-    # (a test checks it). Appendix G prints the full sentences.
-    short:
-      does: "MBSE centred on the system model as the sole source of truth"
-      shares: "The trade space as a model rather than a document"
-      differs: "This work is a model-based trade analysis, not an MBSE methodology"

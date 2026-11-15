@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" font-family="Helvetica, Arial, sans-serif">
+  <rect width="760" height="400" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#374151"/>
+    </marker>
+  </defs>
+  <!-- top: the decision problem -->
+  <rect x="60" y="30" width="640" height="90" rx="10" fill="#f3f4f6" stroke="#374151" stroke-width="1.5"/>
+  <text x="380" y="68" text-anchor="middle" font-size="19" font-weight="600" fill="#111827">Trade studies, decision analysis and multi-criterion optimization</text>
+  <text x="380" y="96" text-anchor="middle" font-size="14" fill="#374151">which objectives trade, and a choice that can be defended</text>
+  <!-- middle -->
+  <rect x="60" y="155" width="640" height="90" rx="10" fill="#e5e7eb" stroke="#374151" stroke-width="1.5"/>
+  <text x="380" y="193" text-anchor="middle" font-size="19" font-weight="600" fill="#111827">Machine learning: dimensionality reduction and kernel methods</text>
+  <text x="380" y="221" text-anchor="middle" font-size="14" fill="#374151">a recognized, rigorous and reproducible technique</text>
+  <!-- bottom -->
+  <rect x="60" y="280" width="640" height="90" rx="10" fill="#d1d5db" stroke="#374151" stroke-width="1.5"/>
+  <text x="380" y="318" text-anchor="middle" font-size="19" font-weight="600" fill="#111827">Convex optimization and generalized geometric programs</text>
+  <text x="380" y="346" text-anchor="middle" font-size="14" fill="#374151">convergence and performance of the underlying fit</text>
+  <!-- arrows: each layer rests on the one below -->
+  <line x1="380" y1="152" x2="380" y2="124" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="380" y1="277" x2="380" y2="249" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>
