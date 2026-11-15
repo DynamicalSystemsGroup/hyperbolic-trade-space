@@ -10,3 +10,25 @@ one unit writes `work-packages/WP57-rounds/map.md` from the supporting material 
 WP55 leaves it (branch `wp55`), reading only, no edit to either notebook. The map marks every subsection whose
 citing sentence sits in Sections 7 to 9 as "pending WP56", to be re-read at WP56's landing before the children's
 scopes are cut. The children WP57a to WP57e are approved one at a time after WP56 lands, as the scope says.
+
+## The map read and accepted by the driver as proxy (18:28 EST)
+
+`work-packages/WP57-rounds/map.md` (branch `wp57map`, 92f3434; counts by `map_counts.py`, rerun by the driver):
+121 cells and 4,440 words of typed prose in the supporting material, about 2,280 words of prose and 3,860 generated
+words leaving under the dispositions; every Job block is metanarration by the standing rule and three are stale;
+seven subsections uncited. The driver's calls on the six items the map left open:
+
+1. D.18 (the one measurement of Corollary 1) gets a one-line pointer at Corollary 1; the non-goal on main-text edits is
+   amended to allow the pointers the map lists (this one, and Section 2's pointer to Appendix G), nothing else.
+2. G.2 (the reading pass) moves to the repository as the map proposes, its YAML kept for our own checking; his words
+   of WP38 govern ("my intuition is we keep it in its yaml form for our own checking but we may want to drop it from
+   the supporting materials ... i want to keep traceability records and assessments without giving the feeling that
+   no human validated the citations"). The reviewer's guide's sitting 1 item on G.2 is rewritten by WP58.
+3. Appendix H kept, shortened to the three boundaries Section 2's HoroPCA paragraph needs (the map's call).
+4. Re-lettering by first mention of any subsection in reading order, computed by WP57e on the text as it then stands
+   (after WP56 and WP57a to d), since those packages move citing sentences; his rule is the order of first mention.
+5. Section 2 names Appendix G in one sentence beside Table 1 (WP57a); the register entry stands.
+6. The four glossary `defined_in` fields that name decision files are repointed in WP57a.
+
+Children: WP57a (front matter, A, F, G) and WP57b (B) are scoped now and run in sequence by one unit after WP55 lands;
+WP57c (C, D) after WP56; WP57d (E, H) after c; WP57e last.
