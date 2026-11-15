@@ -48,5 +48,5 @@ range is -0.62 to -0.90 over the rows named; FF's range is 0.02 to 0.61 with 0.0
 temperature sweeps are attributed to the WP45 records. Also: "exponent" throughout for the fitted quantity, "ceiling"
 replaced by "a second term whose contending set is grain alone", the elasticity written one way ("with respect to"),
 the after-fit chain given its check (`spread_loadings` across the ladder), the PCA scores named a change of
-representation, and the wheat file's doubled comma. The readout is under 1,500 words. The driver read the readout and
+representation, and the wheat file's doubled comma. The readout is 1496 words. The driver read the readout and
 the wheat file in full and sampled the perovskite and amniote files; accepted under the mandate.

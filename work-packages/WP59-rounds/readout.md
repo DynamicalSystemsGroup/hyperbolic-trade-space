@@ -28,13 +28,13 @@ A metric that is a function of the others absorbs them. Perovskite PCE added as 
 
 ### The covariate
 
-In the amniote table body mass is the covariate. It was kept, partialled out (the linear effect of log mass removed from each log metric) or dropped (six more species). Dropping it moved no exponent by more than 0.01. Partialling it out left the longevity-earliness association at -0.93 against -0.97 and added litters per year to the contending set, with the exponents at 0.48, 0.12, 0.06, 0.33. Where a covariate is a size or scale, compare the three treatments; if the set and the signs hold, keep the simplest.
+In the amniote table body mass is the covariate, kept, partialled out (the linear effect of log mass removed from each log metric) or dropped (six more species). Dropping it moved no exponent by more than 0.01. Partialling it out left the longevity-earliness association at -0.93 against -0.97 and added litters per year to the contending set, with the exponents at 0.48, 0.12, 0.06, 0.33. Compare the three treatments; if the set and the signs hold, keep the simplest.
 
 ### Chaining with PCA before the fit
 
 On the perovskite table, PCA on the standardized log-metrics was used two ways. As a screen, a column is carried when the first two components hold at least 0.75 of its variance. The screen dropped Jsc, which holds 0.65, and the fit then set Voc against FF and lost the pair the physics names. As a rewriting, the scores are centred, scaled, exponentiated to be positive and signed so each component's largest loading is positive. The first component loads the three metrics alike (0.57, 0.59, 0.57): the overall level of a device. Two scores put all the exponent on that level. The scores are a change of representation: a positive leading loading orients a score and says nothing about whether a stakeholder wants more of it; each component needs its own reading. On JV with stability the result depended on whether two or three scores were kept (stability in the set at two, out at three).
 
-At two metrics it is not a chain. In the wheat table PCA before the fit rotates two columns; the fit on the scores pulled back gives grain 0.71 and straw -0.23, or -0.11 and 0.71 with the second component reversed, a frontier that rewards less of one yield. Fit the metrics and the scores and compare the sets.
+At two metrics it is not a chain. In the wheat table the fit on the scores, pulled back, gives grain 0.71 and straw -0.23 (or -0.11 and 0.71 with the second component reversed): a frontier that rewards less of one yield.
 
 ### The chain the package runs after the fit
 
