@@ -2365,4 +2365,16 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   home's figure and quickstart. Verified: notebooks re-executed on the merged tree and committed, ruff, format, lock,
   vocabulary clean, the lemma chain passes, fast suite 1,992 passed, the contract tests pass. CI dispatched. wp46 and
   wp41 follow, each re-resolved against this head.
+- **Contract fixed forward; PM16 stopped; two deliveries in (2026-11-14 22:17 EST).** The WP42 build landed with the interface
+  contract's document still at version 24 against the manifest's 25 and the page list out of the manifest's order,
+  two contract tests red on dev for twenty minutes: the driver's miss (the landing chain read a tail line, not an
+  exit code); fixed at 01fabcd and caada27, the contract tests 95 passed; CI dispatched on caada27. PM16 reported at
+  last, delivered the fifth paper unit (paper5 at 3b24fdb: five record defects fixed with generated numbers, Proof 7
+  wording, Figure 6's band symmetric with two fresh reads; its rows C774 to C779 to renumber at landing; its full
+  suite not re-run on the final tree) and WP41's D-5 fresh read (wp41 at 09cd185; the read raises page requests: tau,
+  the feasibility conditions, the factor 2, "submartingale", a stale code comment, and "holes" on the page); wrote the
+  PM17 handover (e8ec193) and stopped. WP51's fan figure: the driver's run of its branch gives ruff, format, lock,
+  vocabulary and attribution clean and the fast suite 2,035 passed; read in the browser at desktop and phone width in
+  dark; served on 8851 for his close read. wp46 rebasing onto dev with its notebooks re-executing; wp41 and paper5
+  land after it, each with its rows renumbered.
 
