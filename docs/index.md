@@ -23,12 +23,16 @@ from hyperbolic_trade_space import (
     make_frontier_data,
     trade_off_report,
 )
+from hyperbolic_trade_space.plotting import plot_log_plane
 
 X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
 report = trade_off_report(ts, X)
 print(report.lemma_name, report.contending_set)
 print(report.exponents.round(2))
+X2 = X[:, :2]
+ts2 = HyperbolicTradeSpace(temperature=20.0).fit(X2)
+plot_log_plane(ts2, X2, band=0.5)
 ```
 
 <figure markdown>

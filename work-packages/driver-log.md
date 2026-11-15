@@ -2471,3 +2471,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   clean; paper, register, contract, generated, site and docs tests 436 passed. CI dispatched (run 43684406562).
   Rows C807 to C822; contract 26. wp46 follows once its chain on 8542352 finishes: rebase onto af54b3b (register
   tail, contract to 27, budgets), notebooks again, then land.
+- **docs-paper CI red at dfc3fd2, fixed on dev (2026-11-15 02:03 EST).** The slow figure test failed in CI and, rerun locally,
+  on dev: the docs home's quickstart block (landed with the docs home, 5507ee7's cascade) printed and drew nothing, so
+  the builder saved an empty figure under the shared image name `first-fit`, light and dark fully transparent; every
+  other docs figure sound. The block now draws the figure it shows (two lines: the two-metric fit and `plot_log_plane`,
+  the same call as Getting started's, so the two pages' images are one picture by construction). Fast site tests 54,
+  lint clean, the slow figure test 1 passed in 8.5 minutes locally. The slow and fast jobs at dfc3fd2 are green on
+  both platforms; af54b3b's run still in flight. The driver's lesson: the docs home landed with the fast selection
+  only; the slow figure test joins the landing selection for any change to a page with a figure.
