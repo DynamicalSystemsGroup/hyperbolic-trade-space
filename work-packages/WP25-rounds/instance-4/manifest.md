@@ -137,3 +137,22 @@ Each delivery branch below was squashed onto dev as one commit, so its tip is no
 | paper5-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
 | wp42 (spike) | 19c6b5a | its records are on dev under WP42-rounds (27 files on dev against 22 on the branch) | removed (clean) | deleted; tip in refs/backup/landed-wp42 and the bundle |
 | wp27model | 05f8a2a | ancestral; the directory was no longer a registered worktree after the prune, its untracked handover file absent | directory left for the next tidiness instance | branch kept |
+
+## Batch 3 (2026-11-15, after the last content landing, 415d889)
+
+| Branch or directory | Tip | Landed as | Worktree | Branch |
+|---|---|---|---|---|
+| wp41 (delivery) | 09cd185 | af54b3b | removed (clean) | deleted; tip in refs/backup/landed-wp41 |
+| wp46 (delivery) | 7b61429 | 415d889 | removed (clean) | deleted; tip in refs/backup/landed-wp46 |
+| wp41-land | af54b3b | fast-forwarded | removed | deleted (ancestor of dev) |
+| wp46-land | 819384a | superseded by wp46-land2 (re-resolved against dev) | removed (clean) | deleted; tip in refs/backup/landed-wp46-land |
+| wp46-land2 | 415d889 | fast-forwarded | removed | deleted (ancestor of dev) |
+| guide-refresh | c390056 | fast-forwarded | removed | deleted (ancestor of dev) |
+| pm13main | 809b8b8 | ancestral | removed (clean) | deleted (ancestor of dev) |
+| wp8b-version | c23cf60 | ancestral, empty | removed (clean) | deleted (ancestor of dev) |
+| wp27model | 05f8a2a | ancestral | directory removed | deleted (ancestor of dev) |
+
+Left for the next instance: `wp51fig` (waits on the supervisor's word), `wp8b-drafts` (468b27a, not an ancestor;
+its content to be checked against dev before deletion), `wp30b-notebooks` and `preview/site` (not ancestors; origin
+and content to be read before any deletion), the `stage` and `verify` trees (kept until the PR), and the backup
+refs (15) with the bundle. Worktrees 12 to 5; local branches 14 to 6.

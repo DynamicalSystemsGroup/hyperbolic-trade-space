@@ -2487,3 +2487,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   landing selection 341 passed before the last rebase and the site, contract and register tests 170 after it; the full
   fast suite on the pre-rebase tree 2,063 passed. CI dispatched (run 43688871149). This is the candidate's last content
   landing tonight; the reviewer's guide names this head and follows it as a record.
+- **Reviewer's guide landed; cleanup batch 3 (2026-11-15 02:14 EST).** c390056: the guide names the candidate's head, 415d889
+  (commits after it are records), lists the landings since the first reader round with their commits, states the
+  version per his ruling (0.0.1 on dev; 0.1.0 set in the merge workflow on his word) and the counts to compare against;
+  no placeholder left. Cleanup batch 3 per the instance-4 manifest: the wp41 and wp46 delivery branches and the
+  superseded wp46-land tip backed up as refs/backup/landed-*, seven worktrees and eight branches removed (all
+  ancestors of dev or backed up), the wp27model directory removed. Left: wp51fig, wp8b-drafts, wp30b-notebooks,
+  preview/site, stage and verify. The full suite with the slow tests, the lemma chain and the proof-map checker are
+  running on dev's head; CI run 43688871149 on 415d889 in flight.
