@@ -78,3 +78,14 @@ it doesn't raise an alarm but disincentivizes bloating it"
 
 The test's bound becomes 350 with his words.
 
+## The three-pane figure still the paper's; the fan figure dispatched (2026-11-14 21:45 EST)
+
+**Supervisor, verbatim:** "index is still this image. i assume this is as intended and new figures have not landed or
+been integrated yet"
+
+**Applied as:** confirmed. The root page's second figure is the paper's Figure 1, unchanged; the planted ternary above
+it is the whole-view figure. WP51's G2 figure (three rows of metric pairs, three columns of metric space, log space and
+the chart's slice, the third metric as the fan) was never dispatched to a unit. It is dispatched now, on branch
+`wp51fig`, with G3's caption, G1b's prose revisions and G4's loop, for his close read in the morning; it merges only on
+his word, as the scope's good-enough says.
+
