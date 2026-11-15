@@ -2553,3 +2553,19 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   reports.
 - **Standing rule (2026-11-15 12:45 EST), verbatim:** "when in doubt refer to the engineering papers." Added to the rules for every section in `paper-requirements.md`.
 - **Standing rule (2026-11-15 12:55 EST), verbatim:** "avoid spurious details, don't repeat caveats unnecessarily". Added to the rules for every section.
+- **His-style spike delivered (2026-11-15 13:05 EST).** wp55spike at bbec3bc, `WP55-rounds/spike-his-style.md`: eight of his
+  papers resolved with DOIs (TAC 2014, TCNS 2014, CDC 2009 to 2014, ACC 2012), three read in full on arXiv. The
+  conventions most different from the paper now: an introduction that runs problem, limit of existing methods,
+  insight, contribution, with section pointers and no audience sentence; the problem as a numbered template naming
+  the optimal value, then a change of variables, assumptions stated where used; results as "Let ... Assume ... Then",
+  proof, then an interpretation paragraph; a fixed simulation protocol with findings in the captions and a
+  one-paragraph conclusion. Feeds WP55's scope with the notation spike.
+- **Clock note (12:27 EST by the machine).** The entries of this afternoon labelled 12:40 to 13:05 were written from
+  the driver's estimate and run ahead of the machine clock by about 40 minutes; from here each entry takes its time from
+  `date`.
+- **OpenMDAO and Salado spike delivered (12:27 EST).** wp56spike at 6cbf936, `WP56-rounds/spike-lineage.md`: Gray et
+  al. 2019, the OpenMDAO docs examples and Martins and Lambe 2013 read in full; five of Salado's papers by abstract
+  (publishers refuse the full texts). Recommendations for WP56: open Case construction with the problem as objective,
+  design variables, constraints; captions say what is drawn and limits are stated once at the end; close the analysis
+  with the decision and a replication paragraph naming the table and the fit call. The OpenMDAO paper's CADRE cubesat
+  is a precedent to cite in the case.
