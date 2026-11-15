@@ -73,3 +73,8 @@ content is one.
 The docs home lands on dev: the quickstart block (run by the driver before his read), the first-fit figure, the PCA
 sentence, "white space" for "gaps" (his ruling of 2026-11-14), budget 250 raised for the figure and the block.
 
+**Supervisor (09:45 EST), on the docs home's word budget (348 against the driver's 250):** "call it 350 going forward so
+it doesn't raise an alarm but disincentivizes bloating it"
+
+The test's bound becomes 350 with his words.
+
