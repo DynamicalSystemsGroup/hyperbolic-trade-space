@@ -58,3 +58,26 @@ otherwise indicate which object we're talking about unambiguously"
 **Applied as:** the aggregate's definition, assumptions and the comparison across definitions live in the SysML v2
 model and the WP56 record; the paper states the definition in a sentence and refers to the record. "Model" is used
 in the paper only where the object is obvious; otherwise the object is named (the register's rules).
+
+## The ternary spike's readout, read by the driver (13:45 EST)
+
+Branch wp56-ternary at cf4faca (`WP56-rounds/ternary/readout.md`, three figures, `examples/adcs/spikes/fleet_performance.py`).
+Three candidate aggregates (coverage probability, a capacity with a ceiling, a refresh rate after Wertz), each fitted
+with unit cost and fleet cost on the primary regime's 2,134 designs. The finding that decides the question is
+structural, checked by the driver on the data of record: fleet cost equals unit cost times fleet size exactly (the
+ratio is 1.000 on every row), so log fleet cost is log unit cost plus log fleet size and the three objectives have
+two degrees of freedom plus the pointing error inside performance. The fits say the same: unit cost's exponent is
+0.006, 0.053 and 0.000 under the three definitions, and every term trades fleet cost against performance. The pick is
+not stable across definitions or across a factor of two in any constant (the sponsor's rule picks fleets of 3 to 11,
+the operator's 18 to 28, under every fit). The spike recommends coverage probability as the operator's quantity if an
+aggregate is carried into the SysML v2 model.
+
+**Waiting for the supervisor (a problem-level choice, his):** with fleet cost the model's product of unit cost and
+fleet size, the stakeholder triple cannot show three independent tensions. Options, plain: (1) keep the triple and
+read the ternary as what it is, a dilemma between the sponsor's fleet cost and the operator's performance with the
+manufacturer's unit cost nearly flat, said in one sentence; (2) replace the sponsor's axis by one not tied by the
+accounting identity (the model would need a cost the sponsor bears that is not n times unit cost, such as launch or
+operations cost, a model change); (3) drop the three-stakeholder ternary and keep Section 9's decision table as the
+stakeholders' view. The driver's reading: (1) if the point of the figure is the stakeholder mapping, (3) if the point
+is a figure that carries the argument on a skim; (2) is the only route to a genuine three-way picture and is a model
+change beyond "just enough detail". No build until his word.
