@@ -108,3 +108,10 @@ and the changelog's dated `## [0.1.0]` entry are steps of the release workflow, 
 `main` is being done, before the tag; the release workflow's version and changelog gates then pass by construction. The
 reviewer's guide says so.
 
+**Supervisor (2026-11-14 22:46 EST):** "you can increase in 0.0.x if you need to"
+
+**Applied as:** the driver may step the patch version within 0.0.x on dev where a candidate head needs a version of its
+own (for instance the TestPyPI dry run of the release workflow, which publishes from dev and needs a version that is not
+already on TestPyPI); 0.1.0 remains the first release's number, set in the merge workflow. Not used tonight unless a dry
+run calls for it; the record will say when it is.
+
