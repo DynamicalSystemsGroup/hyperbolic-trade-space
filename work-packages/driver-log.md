@@ -2259,4 +2259,12 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   0 failures, 8 hosts blocked. Four test runs were stopped by his edits arriving mid-run; the fifth runs now. PM16
   silent on fix4, WP46, WP43 and the fifth unit since 04:50: chased once for a status line each. CI 43657206539 on
   d0d6196 still running its slow and docs-paper jobs.
+- **Docs home landed on his word (2026-11-15, 09:50 EST).** He read it in the browser (port 8794, branch `docshome` at
+  67e9741 after "gaps" became "white space") and said "Land it"; merged into dev at 74a8cd0 (docs/index.md, the
+  register rows C167 and C168, the budget table). The quickstart block run by the driver before his read (a trilemma
+  over the three synthetic metrics). Short checks on the merged head: ruff, format, lock and vocabulary clean, the
+  register test 21 passed, the budget test passing with his bound of 350 ("call it 350 going forward so it doesn't
+  raise an alarm but disincentivizes bloating it", `WP51-decisions.md`). CI dispatched on the push. Open: the figure
+  is drawn by the docs build; the docshome worktree once produced a blank first-fit PNG and the cause was not found,
+  so the docs-paper job's artifact is to be looked at when this run finishes.
 
