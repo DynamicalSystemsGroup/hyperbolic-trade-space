@@ -1,1 +1,0 @@
-Baseline wayfinding reads, WP33 round 1: stage head 60f92d9, rendered pages only, fresh Sonnet readers (two persona passes per reader, separate passes). Returns verbatim. U1 to U4 steps come from WP32-cells returns.

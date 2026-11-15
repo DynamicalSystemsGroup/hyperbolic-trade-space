@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT, for the assistant's approval. Approved only by the recorded act below; nothing is built before then. |
+| **Status** | see INDEX.md |
 | **Amends** | `WP35-scope-of-work.md` (approved at 1d27f8c): it adds Appendix H, replaces D-2 and the Appendix G part of G1, and lifts one non-goal. Everything not named under "What it lifts" and "What it replaces" stays as approved. |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; work on `dev` |

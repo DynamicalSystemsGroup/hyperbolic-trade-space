@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT, for the assistant's approval. Approved only by the recorded act below; nothing is built before then. |
+| **Status** | see INDEX.md |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; work on `dev` |
 | **Approval record** | The assistant's approval, quoted verbatim in `work-packages/WP39-decisions.md` |

@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT (revision 2). Approved only by the recorded act below. Nothing in this package is executed before then. |
+| **Status** | see INDEX.md |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space` (local: `/Users/z/Documents/GitHub/posynomial-invariant-form`) |
 | **Approval record** | Verbal approval in chat, quoted verbatim in `work-packages/WP10-decisions.md` |

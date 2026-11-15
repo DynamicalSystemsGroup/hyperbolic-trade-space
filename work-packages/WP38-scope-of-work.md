@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT, for the chief engineer's approval. Approved only by the recorded act below; nothing is executed before then. |
+| **Status** | see INDEX.md |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; work on `dev` |
 | **Approval record** | The chief engineer's approval, quoted verbatim in `work-packages/WP38-decisions.md` |
