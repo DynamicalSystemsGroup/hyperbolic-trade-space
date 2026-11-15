@@ -2428,4 +2428,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   the outputs regenerate on the merged tree. The stderr failure was Matplotlib building a font cache in a fresh
   configuration directory, gone on the second execution. The two paper cells both sides edited (the assumptions list
   with A11; Proof 7's sketch) hold both sides' lines, checked line by line. Tests rerun before landing.
+- **Tick (2026-11-15 00:13 EST); he has gone to bed.** Since the last tick: the no-metanarration standing rule in CLAUDE.md and the
+  residual checker, the history essay's opening fixed under it (tests green at 5507ee7); his rulings on the figure
+  recorded (characteristic point, binds with the finite-temperature reading, the legend by term, the footer, the
+  doors, narrative captions, the term mapping checked from the fit). CI at 9749eb8: Linux slow green, Windows slow and
+  docs-paper still running. The fifth unit's corrected tree still executing its notebooks; the figure unit on round 4
+  with four files in progress. Overnight plan unchanged: land the fifth unit, wp41, wp46; the guide with the head;
+  CI on the final head; the figure served, not merged.
 
