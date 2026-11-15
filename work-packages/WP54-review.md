@@ -115,3 +115,24 @@ the Beyond-markers; two search-section assertions of the C-1 test dropped with t
 (`sec-search` to `sec-case-construction`).
 
 ## Checks
+
+| Check | Result (last line) |
+|---|---|
+| `uv run --frozen python paper/execute_notebooks.py` | exit 0 (30 min); committed outputs of both notebooks regenerated |
+| `uv run --frozen mkdocs build -q` | exit 0 |
+| `cd paper && BASE_URL=/paper myst build --html` | exit 0; no warning about a missing label or figure; one warning, `Duplicate identifier in file "fig-tension-matrix"`, present on `dev` as well (eight occurrences of the id before and after) |
+| `scripts/check_residuals.py` | exit 0 |
+| `scripts/check_vocabulary.py` | `0 new violation(s), 67 known` |
+| `ruff check .` / `ruff format --check .` | `All checks passed!` / `1034 files already formatted` |
+| `uv lock --check` | `Resolved 194 packages` |
+| fast suite, `-m "not slow"` | `2085 passed, 17 skipped, 505 deselected, 2 xfailed` |
+| slow paper tests, `-m slow tests/test_paper.py` | `27 passed, 207 deselected` |
+| `grep sect-search, sect-reproducibility` in paper, docs, tests | no match left except retired-label mentions in this file and the ledger text |
+
+## Red, or not done
+
+- The rendered pages were not looked at in a browser by this unit; the checks above are builds and tests. The soft-confirm
+  on screenshots of the two sections is the driver's.
+- The duplicate `fig-tension-matrix` identifier is older than this package and is left.
+- The internal note `docs/superpowers/notes/user-journeys.md` still cites old section numbers (8 to 11, "Reproducibility
+  and your own case"); it is a historical note and was not edited.
