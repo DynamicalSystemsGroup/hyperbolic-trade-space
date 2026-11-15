@@ -405,3 +405,13 @@ sourced from metagov.org/people (Board; Research Director) and placed beside the
 **Applied as:** the opening sentence's link to the dated-references anchor is removed; the list keeps its own heading and
 anchor; the test that pinned the link is turned round.
 
+**Supervisor (05:15 EST):** "the full paper is in downloads" (the CredSperiment, SSRN 4570035, Ellie Rennie, 49 pages, posted 14
+September 2023, revised 30 November 2023, per the screenshot he sent); "use this source for algorithms as policy
+https://kelsienabben.substack.com/p/algorithms-as-policy (2020)"; "which also cites our sourcecred work
+https://medium.com/sourcecred/exploring-subjectivity-in-algorithms-5d8bf1c91714 and there is additionally ellie's post on
+the credsperiment"
+
+**Applied as (pending the reads):** Algorithms as Policy re-sourced to Kelsie Nabben's Substack with its 2020 date; the
+SourceCred work (Exploring Subjectivity in Algorithms) and Rennie's ethnography of the CredSperiment read and placed at
+their dates as the strand from algorithms as policy to computer-aided ethnography, in neutral words.
+
