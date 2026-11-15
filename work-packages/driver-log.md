@@ -2271,4 +2271,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   him with the direction, the reader's reversal and three options; "Keep as is". Recorded in the WP11 decisions; the
   triage's request 172 keeps its other abstract phrases for his hand. Docs home figure confirmed a real plot in the
   dev build (36 KB light and dark); CI 43662748825 running on 233eab5.
+- **History essay landed (2026-11-15, 10:30 EST).** His word at 09:25 ("passable for now"), with the carving pass held for
+  his later read. Branch `history` at d71dd4a merged into dev at 3700a64 (seven files; no conflicts). On the branch:
+  register and history tests 23 passed after one register row's fragment was repaired (a regex had kept the tail of
+  the old fragment; caught by the parse); the full history selection 40 passed before that fix with the three failures
+  all the parse. On dev after the merge: ruff, format, lock and vocabulary clean, register 21 passed, the trace current.
+  The record's links: 0 failures, 8 blocked. The page read in the browser at each step (port 8796). Register ids on
+  dev now end at C771; PM16 told. The full history selection reruns on dev in the background; CI dispatched.
 
