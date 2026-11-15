@@ -81,3 +81,20 @@ operations cost, a model change); (3) drop the three-stakeholder ternary and kee
 stakeholders' view. The driver's reading: (1) if the point of the figure is the stakeholder mapping, (3) if the point
 is a figure that carries the argument on a skim; (2) is the only route to a genuine three-way picture and is a model
 change beyond "just enough detail". No build until his word.
+
+## His choice on the ternary (14:03 EST)
+
+**Supervisor, verbatim:** "keep the ternary and explain what is shows. i would note that there are almost certaintly
+modeling assumptions that could pull it towards the middle, but that would involve more complex assumptions about how
+manufacturing costs scale. i don't think we need to force a more complex model. i think we need to say that this was
+not guaranteed to collapse to the 2d trade off, and what we got was a traceable thread that says it does and why. and
+if we revise modeling assumptions we can check to see if the result holds easily"
+
+**Applied as (WP56 build item):** the three-stakeholder ternary stays, with coverage probability as the operator's
+performance (the spike's recommendation), defined in the SysML v2 system model as a derived attribute of the fleet and
+recorded with the comparison in the analysis record; the paper's sentences say: the three objectives were not
+guaranteed to collapse to one trade-off; on this model they do, because fleet cost is unit cost times fleet size, so
+the sponsor's objective rides on the manufacturer's and the fleet size, and the fit names the dilemma between fleet
+cost and performance with unit cost nearly flat; a different cost scaling in manufacturing could pull designs toward
+the middle, and the pipeline refits to check it. The thread is traceable: the SysML v2 model's definition, the data
+of record, the fit, the figure. No new model complexity.
