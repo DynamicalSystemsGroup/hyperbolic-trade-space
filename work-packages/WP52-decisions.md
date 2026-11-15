@@ -429,3 +429,15 @@ ex post (resolved) among heterogeneous governance preferences, applied to DAO de
 same journal: Beer's viable system model, DAOs read by viability and purpose, the 1Hive case, the subjectivity of the
 governance designer. The assessment he asked for is given in chat and recorded here once he has answered it.
 
+**Supervisor (05:55 EST):** "i opened both in your browser so you can see them. Alston is a longstanding team member whose work
+has direct bearing on ours so i would like to get him a credit in this history. but i want you to look at the article before
+i make a judgement"
+
+**Read (the driver, in the browser pane, both pages whole):** Eric Alston, "Governance as Conflict: Constitution of Shared
+Values Defining Future Margins of Disagreement", MIT Computational Law Report, published 5 December 2022; author note: Scholar
+in Residence, Leeds School of Business, University of Colorado Boulder; thanks the Metagov DAO for research support. No DOI
+on the page; the law.mit.edu host answers 403 to automated readers. Zargham and Nabben, "Aligning 'Decentralized Autonomous
+Organization' to Precedents in Cybernetics", same journal, published 20 November 2023; SSRN preprint 4 April 2022
+(DOI 10.2139/ssrn.4077358, resolved through Crossref). The assessment is in chat; his judgement to follow. Alston's standing
+as a team member rests on the supervisor's word.
+
