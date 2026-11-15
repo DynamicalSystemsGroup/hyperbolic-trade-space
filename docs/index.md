@@ -12,7 +12,7 @@ For an analyst with a table of evaluated designs. The [paper](paper:sect-problem
 table of designs, each scored on several metrics where larger is better, and it fits a frontier
 model in the posynomial invariant form: a sum of terms, where a term (a product of
 powers of the metrics) is one trade-off. It then tells you which metrics contend, with what
-elasticity, where each design sits relative to the fitted reference surface, and where the table has gaps.
+elasticity, where each design sits relative to the fitted reference surface, and where the table has white space.
 
 A first fit, on a synthetic table of 300 designs scored on 3 metrics:
 
