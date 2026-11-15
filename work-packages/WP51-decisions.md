@@ -126,3 +126,11 @@ one contrast at most, told in a single pane or the caption); no stars: the one d
 black dot with its distance to the surface, or not at all; the chart column drawn as Figure 1's third pane draws it (the
 flat surface in the three colours, the designs below), not as stacked bars.
 
+**Supervisor (2026-11-14 22:34 EST):** "my gut is that you are trying to do too much. keeping just term 1, term 2 and term 3, dropping
+the percentile lines is a good place to start and the stars may also need to go since i don't think they add much given
+we already have data point dots for designs"
+
+**Applied as:** the rework narrows to one candidate first: the three-by-three with the fan dropped (the third metric at
+its median), the three terms only, no stars and no marked design; the caption and the prose follow; the other
+candidates only if that one fails its cold reads.
+
