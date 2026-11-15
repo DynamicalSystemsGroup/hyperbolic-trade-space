@@ -113,3 +113,5 @@ hint: Disable this message with "git config set advice.force) |
 | wp29 | d96db86d3c516a74835e855b04fd2cbcdfc28dba | 3 equivalent, 0 unmatched | 0 | retired (git push origin --delete, 2026-11-15) |
 | wp30a | 79ca1d86835c33ea96fab52c7e417ed415cc7363 | 3 equivalent, 1 unmatched | 0 | retired (git push origin --delete, 2026-11-15) |
 | wp30b | 4040f088064fa9013240808fde6bc8ed1c78e4c7 | 6 equivalent, 3 unmatched | 0 | retired (git push origin --delete, 2026-11-15) |
+
+The three retired tips are held locally as `refs/backup/retired-wp29`, `refs/backup/retired-wp30a` and `refs/backup/retired-wp30b` and in the bundle under `refs/remotes/origin/`; wp30a carries one commit and wp30b three that are not patch-equivalent to dev (listed by `git log dev..refs/backup/retired-wp30b`), superseded at the WP30 gate by the data of record; the backup refs stay until the PR is merged.

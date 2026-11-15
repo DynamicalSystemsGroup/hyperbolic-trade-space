@@ -2288,4 +2288,16 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   W1 leaves the supervisor's list; the holistic review is the PR. Before that he asked for a review of a Codex cleanup
   guide of the branches and worktrees; read, checked against the live repository and recorded under WP25; his call on
   timing pending.
+- **WP25 instance 4, batch 1 done (2026-11-15, 12:00 EST).** On his word ("i do want to do clean up work. it impacts
+  auditability"; "be careful not to clean up anything we still need but i think our principled approach covers that").
+  Bundle of all refs at `/Users/z/Documents/GitHub/hts-backups/hts-before-cleanup-2026-11-15.bundle` (117 MB,
+  "records a complete history"); the three detached heads ancestral to dev, so no unique commit needed a backup ref;
+  97 local branches integrated into dev and owning no worktree deleted one by one after an ancestry re-check (96 by the
+  non-forcing delete, one forced after the check when Git compared against its upstream), dev's tip and the worktree
+  list unchanged after; the driver's merged worktrees (docshome, history, rootpage) and the cold reader's tree removed
+  (its one modified file a regenerated inventory report); the two preview servers stopped; branches 119 to 22,
+  worktrees 22 to 18. Remote branches wp29, wp30a and wp30b retired on his authorization, no open pull request on any,
+  tips in the manifest, the bundle and local backup refs (wp30a one and wp30b three commits not patch-equivalent to dev,
+  superseded at the WP30 gate). Owner map and manifest in `work-packages/WP25-rounds/instance-4/`. Batch 2 follows the
+  deliveries as they land.
 
