@@ -2569,3 +2569,4 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   design variables, constraints; captions say what is drawn and limits are stated once at the end; close the analysis
   with the decision and a replication paragraph naming the table and the fit call. The OpenMDAO paper's CADRE cubesat
   is a precedent to cite in the case.
+- **Standing rule (12:37 EST), verbatim:** "plotting plays a key role in the paper since many peoples first read is a skim over the plots". Added to the rules for every section: the figures and captions in sequence carry the argument on their own; the figure loop runs before a section is soft-confirmed and the whole sequence is read at WP58.

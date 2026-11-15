@@ -21,7 +21,10 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - Every claim backed (a lemma step, a generated value, a test, a verified source) or narrowed; prose that states a
   number cites its generator; the model, the fit and the analysis kept apart (CLAUDE.md).
 - The glossary's words; "dataset" is his word on the root page, "table" stays the paper's unless he rules otherwise.
-- Figures earn their place, drawn by code (Section 11's claim), judged as rendered.
+- Figures earn their place, drawn by code (Section 11's claim), judged as rendered. Many readers' first read is a
+  skim over the plots (his ruling, 2026-11-15 12:40 EST by the machine clock): the figures in sequence, with their
+  captions, carry the paper's argument on their own; each is judged by the figure loop (cold read, the sentence
+  test, ink as data, legibility) before its section is soft-confirmed, and the sequence is read as a whole at WP58.
 - Notation and presentation in the conventions of the Boyd and Vandenberghe lineage: the problem statement as
   "minimize ... subject to ..., with variable ...", theorems as "Suppose ... Then ...", proofs in the appendix
   (`WP55-rounds/spike-notation.md`).
