@@ -342,3 +342,12 @@ words against his ceiling of 1,000, so the sentence was tightened and the page's
 same split between machine verification and human validation" was cut as redundant now that the INCOSE paper and the
 governed-compute sentence say it; the page stands under the ceiling.
 
+**Supervisor, verbatim (03:55 EST):** "the 1000 word is a guidance not a hard requirement. the governed compute needs to be
+tied back to the idea of algorithms as policy. and making the decision surfaces explicit so governance is informed and
+accountable. there are at least a few words you can carve back, eg "a firm post" is just a "post""
+
+**Applied as:** the governed-compute sentence now reads "took algorithms as policy into the firm's own infrastructure,
+with every decision surface explicit so that its governance is informed and accountable: a run opens on authorization,
+advances only when it conforms and is fit for its purpose, and its evidence is a byproduct of the work"; "a firm post"
+is "a post"; the test's word bound sits above his guidance of 1,000 (1,100) with his words in the comment.
+
