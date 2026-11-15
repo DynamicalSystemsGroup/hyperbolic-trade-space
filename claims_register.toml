@@ -2077,7 +2077,7 @@ note = "score_samples/log V is the design's level relative to the fitted surface
 
 [[claim]]
 id = "C166"
-fragment = "and where the table has gaps"
+fragment = "and where the table has white space"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
@@ -2089,7 +2089,7 @@ note = "Planted holes in the chart are located; gaps are gaps in ratio profiles 
 
 [[claim]]
 id = "C167"
-fragment = "It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in the"
+fragment = "It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
@@ -2101,7 +2101,7 @@ note = "Methods exist and behave as a transformer; parametrize_with_checks passe
 
 [[claim]]
 id = "C168"
-fragment = "unsupervised and feature-engineering family, beside PCA"
+fragment = "unsupervised learning, beside PCA: PCA finds where the data spread, this finds where they stop, and"
 file = "docs/index.md"
 anchor = ""
 kind = "S"

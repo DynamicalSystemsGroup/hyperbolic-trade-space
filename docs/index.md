@@ -12,8 +12,30 @@ For an analyst with a table of evaluated designs. The [paper](paper:sect-problem
 table of designs, each scored on several metrics where larger is better, and it fits a frontier
 model in the posynomial invariant form: a sum of terms, where a term (a product of
 powers of the metrics) is one trade-off. It then tells you which metrics contend, with what
-elasticity, where each design sits relative to the fitted reference surface, and where the table has gaps.
+elasticity, where each design sits relative to the fitted reference surface, and where the table has white space.
 
-It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in the
-unsupervised and feature-engineering family, beside PCA: PCA finds where the data spread, this finds
-where they stop, and the two chain.
+A first fit, on a synthetic table of 300 designs scored on 3 metrics:
+
+```python {.runnable}
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    make_frontier_data,
+    tension_report,
+)
+
+X, info = make_frontier_data(300, 3, random_state=0)
+ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
+report = tension_report(ts, X)
+print(report.lemma_name, report.contending_set)
+print(report.exponents.round(2))
+```
+
+<figure markdown>
+![Designs in the log plane of two metrics: the frontier is a straight line, and the designs scatter below it, a few just beyond it, and the nearest ones lie in a grey band under the line.](generated/figures/first-fit-light.png#only-light)
+![Designs in the log plane of two metrics: the frontier is a straight line, and the designs scatter below it, a few just beyond it, and the nearest ones lie in a grey band under the line.](generated/figures/first-fit-dark.png#only-dark)
+<figcaption>The same fit on two of the metrics: the line is the fitted frontier, the designs fall below it or just beyond it, and the grey band holds those nearest to it. <a href="getting-started/">Getting started</a> walks through the output.</figcaption>
+</figure>
+
+It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in
+unsupervised learning, beside PCA: PCA finds where the data spread, this finds where they stop, and
+the two chain.
