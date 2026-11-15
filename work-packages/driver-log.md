@@ -2267,4 +2267,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   raise an alarm but disincentivizes bloating it", `WP51-decisions.md`). CI dispatched on the push. Open: the figure
   is drawn by the docs build; the docshome worktree once produced a blank first-fit PNG and the cause was not found,
   so the docs-paper job's artifact is to be looked at when this run finishes.
+- **The abstract's Pareto sentence kept (2026-11-15, 10:05 EST).** The held-out round's one wrong belief (F15) put to
+  him with the direction, the reader's reversal and three options; "Keep as is". Recorded in the WP11 decisions; the
+  triage's request 172 keeps its other abstract phrases for his hand. Docs home figure confirmed a real plot in the
+  dev build (36 KB light and dark); CI 43662748825 running on 233eab5.
 

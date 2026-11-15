@@ -210,3 +210,11 @@ captured in a relevant workpackage. broadly its a good sign that we didn't cause
 `WP11-final/abstract/entry-surfaces-consistency.md` are entered in WP42's scope (G3, the surfaces brought into line
 with the glossary), as its build's first list; the root page's summary paragraph and "bespoke or opaque" stay on the
 supervisor's review list as his hand.
+
+**Supervisor (2026-11-15, 10:05 EST), on the abstract's sentence "Pareto improvements increase energy, and a design that
+maximizes energy is weakly Pareto-efficient", after the held-out round's one wrong belief (F15 reversed it) and three
+options (keep; "though not the reverse"; "since energy rises with every metric"):** "Keep as is"
+
+Request 172's Pareto item is closed with no change; the sentence stands as written. The other abstract phrases of
+request 172 remain his list.
+
