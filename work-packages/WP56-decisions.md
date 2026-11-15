@@ -115,3 +115,25 @@ any notebook edit until WP55 lands. The spike inputs are taken from the branches
 `work-packages/WP56-rounds/ternary/`, `examples/adcs/spikes/fleet_performance.py`) and `wp56spike` (6cbf936:
 `work-packages/WP56-rounds/spike-lineage.md`). Open decisions for him: none; the triangle and row order of Figure 7
 are the driver's call on the figure loop's screenshots.
+
+## Unit 1 read by the driver; the figure calls (18:39 EST)
+
+Branch `wp56` at 2377ea3 (spike inputs 627dc24; the coverage attribute, case code and tests a652958; the figure loop
+2377ea3). Coverage probability lives in `examples/adcs/model_v2/stakeholders.sysml` as a measure of effectiveness
+with its formula, constants and readings (p0 = 0.2 at zero pointing error; e0 the pointing error limit), checked
+against the pipeline's function by a test; the data of record, the derivations and the paper are untouched. The
+driver's calls on the loop's screenshots, as the scope leaves them to him as proxy:
+
+- **Figure 7:** the upper triangle in tension order (rows and columns from the metric a unit of which is worth most
+  on the term to the least), so every drawn value is at or below minus one with no exception; the earlier claim
+  that every value is at least one in exponent order was false (five cells below one) and is withdrawn for good.
+  Phase two drops the empty last row and the empty first column (the strict upper triangle), keeps the exponent on
+  each row label, and cuts the caption to three sentences with the value ranges.
+- **The ternary:** one term over the 2,134 feasible designs of the primary regime; both cold readers read one
+  trade-off between the sponsor's fleet cost and the operator's coverage probability with the manufacturer's corner
+  idle, which is his sentence; at two terms both terms sit on the same edge and the readers took the two markers as
+  disagreement, so the two-term fit is reported in the prose as the refit check, not drawn. Phase two reconsiders
+  the corner labels ("favours fleet cost" reads as favouring a high cost; the conditioned objectives are low fleet
+  cost, low unit cost, high coverage) in the figure loop, and keeps the title as the measure's name.
+- The collapse holds exactly on the data of record: fleet cost over unit cost times fleet size lies within
+  1e-8 of one on every row (a test now checks it).
