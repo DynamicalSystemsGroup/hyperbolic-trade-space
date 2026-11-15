@@ -248,3 +248,11 @@ the docs example page that reproduces the synthetic case, and the index links to
 unit for that page becomes part of the same work, not a later package; until it exists, the caption's detail is held
 in the loop record, not on the page.
 
+**Supervisor (2026-11-14 23:27 EST), on the root page's footer (image in chat):** "this should also have a placeholder link for pypi.
+and probably a link to the documentation. the github repo can just say source code"
+
+**Applied as:** the footer reads "Source code · Documentation · PyPI · Release notes · History and acknowledgements":
+the repository link's text is "Source code"; a Documentation link to the docs home; a PyPI link to the project's page
+(a placeholder until the first publish; the site tests allow it as the punch list names it). Applied by the figure unit
+in its page edit, since it holds the file tonight.
+
