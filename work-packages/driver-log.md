@@ -2448,4 +2448,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   bundle, branches deleted, clean worktrees removed; the five landing branches (ancestors of dev) deleted with their
   worktrees. Worktrees 18 to 12; branches 22 to 14. Left for the next instance: the wp27model directory (no longer a
   registered worktree), pm13main, the stage and verify trees (kept until the PR). Manifest extended.
+- **Tick (2026-11-15 00:43 EST).** The fifth unit landed (a573155); dev's lint miss fixed (dfc3fd2), CI there fast green on both
+  platforms, slow and docs-paper running. wp41's merged tree executing its notebooks after six conflicts were resolved
+  (the two notebook cells both sides edited merged three-way, the ledger's rows both kept, dev's budgets with the
+  bridge page at 815 and the total at 8,340, the contract at 26 with the page lists unioned) and the D-5 reader's fixes
+  applied to the bridge page. Cleanup batch 2 done. The figure unit finished its last commit (one table for the terms'
+  number, colour and marker, with a test) and stopped without a report; the driver reads the loop record and runs the
+  branch's checks.
 
