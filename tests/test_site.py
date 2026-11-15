@@ -81,7 +81,7 @@ BUDGETS = {
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7430  # 7237 until WP42 (the routes page, the tension matrix); 7472 until WP33
+TOTAL_BUDGET = 7480  # 7430 until the docs home took its figure and quickstart (his 350, 2026-11-15); 7237 until WP42; 7472 until WP33
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
