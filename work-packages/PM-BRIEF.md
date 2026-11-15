@@ -965,3 +965,47 @@ Branches, none merged (a PM lands by rebase and fast-forward after the assistant
 | wp8b-version | c23cf60 | Held: 0.1.0 in pyproject.toml, uv.lock, __init__.py plus CHANGELOG heading; lands only with the assistant's word, after wp47 |
 Not dispatched: WP50 (research unit, web access, files only under WP50-rounds/; read WP50-scope-of-work.md and all WP50-decisions.md entries including 22:20, 22:25, 22:27, 23:15, 23:20), WP42 build (above). Register and grid refresh after the last prose unit: not started. Worktrees to remove as units land: all under scratchpad/pm-worktrees/ named above; rootpage, stage, verify, docshome, hts-reader-EF are not mine.
 Rules learnt: spawn long units in the background; commit each wave's reports at once (the assistant committed some for me); a unit that is told "do not merge" ends with a head, and landing is rebase plus `git merge --ff-only` in the main checkout; implementers tend to skip the full group once, say so in the brief.
+
+
+## Handover (sixteenth PM to seventeenth, 2026-11-14, night; Sonnet; written at the driver's request)
+
+Landed or delivered this PM (heads as reported; the driver pushes and lands):
+- On dev: wave 8 and 9 reports (729f120, 309b191), triage forms `triage/wave-8.md` and `wave-9.md`, README section, slices manifest
+  at 5ac44f7 (d0d6196); WP45 by fast-forward (fb80fe7, claims C695 to C705). The driver renumbered the held-out requests 172 to 194.
+- Delivered to the driver, landing on the driver's own `*-land` branches: WP42 build (f6514a8), WP46 (7b61429, Appendix B regenerated under
+  the amended R-4), WP41 (09cd185, bridge sentence plus the D-5 fresh read), fix4 (a114e1c, cold reads of Figures 3 and 6 committed),
+  WP43 (c56892a, lint returned), WP47 (afee328: pins, SBOM, CONTRIBUTING and the three admissibility files, five workflows, link test),
+  WP50 readout (5027d92; his calls: the abstract sentence, GUDHI against Rips with scipy, existing uses of "hole"), fifth paper unit
+  paper5 (3b24fdb: six record defects of waves 8 and 9, claims C774 to C779, Figure 6 band symmetric with two fresh cold reads).
+- Round result: all twelve held-out cells read; one wrong belief (F15 reads the abstract's Pareto sentence reversed; the abstract is his);
+  record defects found only at depth D, now settled in paper5; every wave-9 reader agrees with its wave-8 twin on the cell's job.
+
+In flight or open for the seventeenth PM:
+| Item | State |
+|---|---|
+| Register and grid refresh | Not started; after the last prose unit lands |
+| WP48 readout (879d1ad) | With the driver; gained verification cases for the CONTRIBUTING clauses and the eight conformance candidates |
+| wp8b-drafts (468b27a), wp8b-version (c23cf60) | Not landed; need a refresh at the final head and the 46 plus 12 read numbers; the version unit lands only with the driver's word, after WP47 |
+| WP41 page requests from the D-5 read | tau, feasibility conditions, the factor 2, "submartingale", the "log V = 0" comment, "holes" in one sentence; for the driver to weigh |
+| paper5 not run | full non-slow group on the final tree and a myst render build |
+| wp47 | workflows never run on GitHub; changelog gate fails until `[Unreleased]` is renamed `[0.1.0]`; labels `draft` and `small-fix` to create |
+
+Worktrees under `scratchpad/pm-worktrees/` that are mine: wp41, paper5, wp47, wp50, wp48, wp8b-drafts, wp8b-version, wp45 (landed; remove),
+wp42 (spike branch, record travelled to wp42build; remove when wp42build has landed), older pm13main and wp27model. The driver owns fix4, fix4-land,
+wp43, wp46, wp42build and the `*-land` worktrees, stage, verify, docshome, rootpage, wp51fig, hts-reader-EF: do not touch them.
+Slice capture, briefs and reports for the round: `scratchpad/final-round/` (capture, briefs-w89, work), aliases `scratchpad/material` and `scratchpad/returns`.
+
+Register-id rule at landing: a unit never fixes claims ids early. At the moment of the final rebase it renumbers its rows after the register's
+maximum on dev (several branches land in order: wp46 and wp41 take their ranges after the WP42 build's, which ended past C816), runs
+`tests/test_claims_register.py`, and the row kind matches its backing (a caption statement backed by notebook text is kind S, not R); a
+re-pointed fragment follows any caption edit. The same holds for the contract version.
+
+Lessons of tonight:
+- Never spawn a subagent in the foreground: a batch of spawns in one message blocks the PM until the slowest finishes (one block ran over two hours
+  and left three driver messages unanswered). Spawn with `run_in_background`, keep working, and answer the driver at once; if the spawn call
+  returns only when the unit finishes, treat that as a failure of the background flag and tell the driver.
+- Readers may not write their report files (a Haiku reader's Write was refused); the brief should ask for the report as the final message too.
+- The extraction script's hidden-clone trick returned an empty innerText under `visibility:hidden`; use opacity 0. Pass the tabId on every
+  browser call: one call ran on another tab before I noticed.
+- Headless Chrome with `--blink-settings=preferredColorScheme=1` gives the light scheme for the abstract screenshot.
+- A unit told "do not merge" ends with a head; a unit asked to push by a PM message may refuse (it did): the PM lands by fast-forward in the main checkout.
