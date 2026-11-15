@@ -541,3 +541,7 @@ for fact checking."
 The generated "Dated references" list leaves the page. The record (`history.yaml`), the trace and the tests that tie
 every link, name and year of the prose to the record stay as the fact-checking apparatus.
 
+**Supervisor (08:50 EST):** "\"The thesis is the one this page opened with.\" this is obnoxious LLM metanarration"
+
+The sentence is cut; the closing paragraph opens on the learning itself.
+
