@@ -2377,4 +2377,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   vocabulary and attribution clean and the fast suite 2,035 passed; read in the browser at desktop and phone width in
   dark; served on 8851 for his close read. wp46 rebasing onto dev with its notebooks re-executing; wp41 and paper5
   land after it, each with its rows renumbered.
+- **Decided by the driver (2026-11-14 22:22 EST): WP46's lemma is L22.** WP46 and the WP42 build both numbered a new lemma 21; the
+  build landed first with the tension lemma as L21 (the paper's Theorem L21). WP46's small-temperature lemma is
+  renumbered to 22 on its landing branch: the script, every step id, the proof-map record (rewritten with
+  `--update`, 21 lemma files, 531 steps), the register rows, the temperature page and Appendix B; the lemma chain
+  passes. Noted in `WP46-review.md`. Landing order tonight: the fifth paper unit, then wp41, then wp46, each
+  re-executing the notebooks on the merged tree; then the version and the reviewer's guide (a unit refreshing it
+  against the records, the head to be named last).
 
