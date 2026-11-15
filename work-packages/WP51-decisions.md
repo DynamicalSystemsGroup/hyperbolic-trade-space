@@ -190,3 +190,11 @@ three; the unit need not plant the example so that every slice carries every ter
 
 **Applied as:** the constraint relaxed further: a row may show one term; the figure as a whole shows all three.
 
+**Supervisor (2026-11-14 23:04 EST), with the ternary attached:** "optionally you can plot the diamond, the star and the square which
+as i recall are specific designs. this become landmarks to help the reader navigate the coordinate transforms. this is
+an optional add on if its confusing rather than helpful, drop it"
+
+**Applied as:** an optional add-on for round 3, after the main change: the three designs the ternary marks (star,
+diamond, square) drawn with the same markers in the slices' panes as landmarks across the three views, judged by the
+cold reads and dropped if they confuse; what the three markers are is read from the ternary's code and kept the same.
+
