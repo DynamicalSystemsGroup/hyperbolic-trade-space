@@ -2421,4 +2421,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   reads of rounds 2 and 3 recorded, the landmarks' name settled as "characteristic point" (his word) with the precise
   sense kept for the glossary and the docs example; round 4 (landmarks on all three columns, the footer, the doors, the
   captions cut to narrative) in progress on `wp51fig`.
+- **Fifth unit's merge corrected (2026-11-14 23:47 EST).** The first merged tree failed five tests and errored eleven: the site
+  assembly errors were the pre-fix base (rebased onto the fixed dev); the register, Appendix B and Appendix H failures
+  came from the supporting-material notebook, which the squash had taken from the unit's older base and which the
+  unit had not changed in any source cell, so the WP42 build's appendix text was missing; dev's notebook is restored and
+  the outputs regenerate on the merged tree. The stderr failure was Matplotlib building a font cache in a fresh
+  configuration directory, gone on the second execution. The two paper cells both sides edited (the assumptions list
+  with A11; Proof 7's sketch) hold both sides' lines, checked line by line. Tests rerun before landing.
 
