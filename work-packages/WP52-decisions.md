@@ -379,3 +379,11 @@ surface the assumptions behind the Overton window on progress. **The driver's vi
 rests on (a protocol structures an action space, so its design is politics); the second is a reading of other people's
 books and would read as editorial on a page about this work's lineage; his call.
 
+**Supervisor, verbatim (04:25 EST; popup):** "also add my role as research director and board member of metagov.org,Add
+Knowledge Networks,Add The Politics of Progress"
+
+**Applied as (pending the role's source):** Knowledge Networks (2024) as a clause before the legitimacy work; The Politics
+of Progress (2025) as a clause after Protocols and Institutions, with the citation its page gives; his role as research
+director and board member of the Metagovernance Project beside the NumFOCUS sentence, sourced from metagov.org if a
+page states it, else on his authority and marked so.
+
