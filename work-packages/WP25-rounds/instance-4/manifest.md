@@ -115,3 +115,23 @@ hint: Disable this message with "git config set advice.force) |
 | wp30b | 4040f088064fa9013240808fde6bc8ed1c78e4c7 | 6 equivalent, 3 unmatched | 0 | retired (git push origin --delete, 2026-11-15) |
 
 The three retired tips are held locally as `refs/backup/retired-wp29`, `refs/backup/retired-wp30a` and `refs/backup/retired-wp30b` and in the bundle under `refs/remotes/origin/`; wp30a carries one commit and wp30b three that are not patch-equivalent to dev (listed by `git log dev..refs/backup/retired-wp30b`), superseded at the WP30 gate by the data of record; the backup refs stay until the PR is merged.
+
+## Batch 2 (2026-11-15, after the night's landings): delivery and landing worktrees whose content is on dev
+
+Each delivery branch below was squashed onto dev as one commit, so its tip is not an ancestor of dev; the tip is kept as a backup ref (`refs/backup/landed-<branch>`) and in the bundle of 2026-11-14, and the landing branch (an ancestor of dev) is deleted outright.
+
+| Branch | Tip | Landed on dev as | Worktree | Result |
+|---|---|---|---|---|
+| fix4 | a114e1c | 3ef3a5c | removed (clean) | deleted; tip in refs/backup/landed-fix4 and the bundle |
+| wp42build | f6514a8 | df28a89 | removed (clean) | deleted; tip in refs/backup/landed-wp42build and the bundle |
+| wp43 | c56892a | d0a97cd | removed (clean) | deleted; tip in refs/backup/landed-wp43 and the bundle |
+| wp47 | afee328 | 1cd23db | removed (clean) | deleted; tip in refs/backup/landed-wp47 and the bundle |
+| wp48 | 879d1ad | ba62c15 | removed (clean) | deleted; tip in refs/backup/landed-wp48 and the bundle |
+| wp50 | 5027d92 | 5233126 | removed (clean) | deleted; tip in refs/backup/landed-wp50 and the bundle |
+| paper5 | 3b24fdb | a573155 | removed (clean) | deleted; tip in refs/backup/landed-paper5 and the bundle |
+| wp45 | fb80fe7 | fb80fe7 | removed (clean) | deleted (ancestor of dev) |
+| fix4-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
+| wp42build-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
+| wp43-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
+| wp47-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
+| paper5-land | (landing branch) | fast-forwarded | removed | deleted (ancestor of dev) |
