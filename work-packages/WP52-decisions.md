@@ -481,3 +481,14 @@ Alston found there: "What Constitutes a Constitution?" (Zargham, Alston, Nabben,
 6 April 2023) and "Path Dependence: An Uncomfortable Institutional Design Axiom" (Alston, Case, Zargham; Ostrom Workshop
 abstract 2024, hdl:10535/11015). The communities he names are described on the page in categorical terms, per his rule.
 
+**Supervisor (06:55 EST):** "honestly open question:" with three sources, the conviction-voting paper
+(github.com/BlockScience/conviction, social-sensorfusion.pdf), Giveth's post "Conviction voting: a novel continuous
+decision-making alternative to governance" and the firm's "A brief history of conviction voting": "this work was part of the
+substance of the computer aided governance push and as you can see its built on systems that existed in production"
+
+**Supervisor (07:00 EST):** "the story covers: model based systems engineering, simulations and measurements, decision
+analysis, economics and governance."
+
+The five strands replace the driver's four-field reading as the page's frame. The conviction-voting question is assessed
+in chat after the three sources are read (the two posts answer 403 to curl; read in the browser pane).
+
