@@ -24,7 +24,8 @@ Each is stated once, with where its record lives.
   and the issue-event ones need their files there; the labels `draft` and `small-fix` do not exist yet; the changelog
   check refuses until `[Unreleased]` becomes `[0.1.0]`. Record: `work-packages/WP47-rounds/checks.md`;
   `docs/code-owners.md`.
-- **Version and changelog.** The version reads 0.0.1 and `CHANGELOG.md` reads "Unreleased"; both change last.
+- **Version and changelog.** The version reads 0.0.1 and `CHANGELOG.md` reads "Unreleased"; both change in the
+  merge workflow, on the supervisor's word (`work-packages/WP8b-decisions.md`, "The version and the candidate").
   Record: `work-packages/WP8b-release-checklist.md`, A1 to A3.
 - **Checks that exist only after the tag and the merge.** The releases-widget 404 and the GitHub links on a private
   repository. Record: `work-packages/WP8b-release-checklist.md`, G1 and G2.

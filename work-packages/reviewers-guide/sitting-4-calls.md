@@ -34,8 +34,9 @@ two hours" to the last one, and in the decision files of the same packages.
   required approver on `pypi`; branch protection on `main` and `dev`; the labels `draft` and `small-fix`; the
   repository's visibility and Pages; the TestPyPI dry run from `dev`; the release. None is done; no token is created at
   any step. Release checklist rows G1 and G2 apply after the tag and the merge.
-- [ ] The version unit: 0.1.0 and the changelog's `[0.1.0]` heading land last, with your word on timing; the
-  changelog check in the release workflow refuses until then (`work-packages/WP8b-release-checklist.md`, A1 to A3).
+- [ ] The version: `dev` stays at 0.0.1 through your review; 0.1.0 and the changelog's `[0.1.0]` heading are set in
+  the merge workflow, on your word, before the tag; the changelog check in the release workflow refuses until then
+  (`work-packages/WP8b-decisions.md`, "The version and the candidate"; `work-packages/WP8b-release-checklist.md`, A1 to A3).
 - [ ] The merge to `main`, the tag and the release notes are yours alone (`work-packages/release-candidate.md`).
 
 Evidence: `work-packages/driver-log.md`, `work-packages/WP8b-release-checklist.md`,

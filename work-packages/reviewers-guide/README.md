@@ -8,8 +8,9 @@ mandate"). Nothing is tagged, published or merged.
 The candidate is the `dev` branch at the head `HEAD-TO-BE-NAMED`. It holds the Python package
 `hyperbolic_trade_space`, the paper with its supporting material, the docsite, the root page with the history page, the
 derivations, the cubesat case study, and the release engineering for the first publication (workflows, code owners,
-contributing page, covenant, templates). The package is at version 0.0.1 until the version unit, which lands last
-(`work-packages/WP8b-release-checklist.md`, rows A1 to A3).
+contributing page, covenant, templates). The package is at version 0.0.1 on `dev`: a candidate for 0.1, not 0.1 until the
+merge to `main` is being done; 0.1.0 is the first release's version and is set in that workflow, on your word, before
+the tag (`work-packages/WP8b-decisions.md`, "The version and the candidate"; the release checklist's rows A1 to A3).
 
 Landed on `dev` since the first reader round: your acceptances of WP33, WP35, WP37, WP38, WP39 and WP40; the root page
 recast to your prose; the history page as an essay; the docs home with its quickstart block and figure; the three
