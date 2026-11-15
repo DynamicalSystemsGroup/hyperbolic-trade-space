@@ -455,3 +455,12 @@ than to model them away"
 The point of the Alston sentence is fixed by this; the draft in chat carries it, with the paper with Nabben described in
 plain words. Placement, the word bound and the two remaining "automated market maker" phrasings await his word.
 
+**Supervisor (06:30 EST):** "\"the design record of a feedback controller for an algorithmic debt market, written with its
+developers before launch (2021)\" this is the same example as the pydata talk but the pydata talk (and then later the ICMS
+talk) cover that system after it had been in production for years and models were used for configuration management of
+the fielded system"
+
+The client sentence is to carry the arc: the design record before launch (2021), then the PyData talk and the ICMS talk
+(October 2024) on the same system after years in production, where models served the configuration management of the
+fielded system.
+
