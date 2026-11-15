@@ -2043,7 +2043,9 @@ BLOCK = re.compile(
     r":::\{prf:(theorem|lemma|proposition|corollary)\} ([^\n]*)\n:label: (\S+)\n(.*?)\n:::\n", re.S
 )
 BADGES = ("Derived", "Numerical", "Open")
-HEDGES = re.compile(r"caveat|note that|however", re.I)
+# "however" left the pattern on 2026-11-15: his Section 1 sentence opens on it as a contrast, not a hedge
+# (WP11-decisions.md, the PCA paragraph); the hedges the readers flagged were "caveat" and "note that".
+HEDGES = re.compile(r"caveat|note that", re.I)
 
 
 def _section(name: str) -> str:
@@ -3280,18 +3282,15 @@ def test_cr12_every_hypothesis_label_is_worded_or_explained():
 
 
 def test_cr13_the_first_generated_range_says_what_varies():
-    """(13) The first range of the text is in the sentence of section 1, and it says what varies."""
+    """(13) The generated nondominated sentence says what varies and where the digits hold."""
     first = _cell_out(PAPER_NB, "num-nondominated")
     # WP23 data gate (D-9 item 5): on the nine-metric data no nondominated count moves, so the
     # sentence prints no range and says what a range would be; a count that moves is a range.
     assert re.search(r"\d+ to \d+", first) or "is printed as a range" in first
     assert "five regenerations of the data under rounding-level perturbation" in first
     assert "Appendix D.11" in first
-    for cell in _code_cells(_nb(PAPER_NB)):
-        if cell.id.startswith("num-") and cell.id != "num-nondominated":
-            ids = [c.id for c in _nb(PAPER_NB).cells]
-            if ids.index(cell.id) < ids.index("num-nondominated"):
-                assert not re.search(r"\d to \d", _out_text(cell)), cell.id
+    # The sentence left Section 1 for Case analysis on his word (2026-11-15, WP11-decisions.md), so it is
+    # no longer the text's first range; what it says about a range still holds.
 
 
 def test_cr15_appendix_b_says_where_two_statements_share_a_script():
