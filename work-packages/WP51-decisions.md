@@ -180,3 +180,9 @@ whole surface, mostly inside the band, so each slice's data reach its surface), 
 dots' shade by closeness to the slice), each cold-read; the fit's convention (the share of designs beyond the surface)
 is not changed for the figure without his word, since it is the paper's.
 
+**Supervisor (2026-11-14 23:01 EST):** "its fine if not every color appears on every row as long as all 3 colors appear in at least
+1 row"
+
+**Applied as:** a constraint relaxed for round 3: a row may show two of the three terms; the figure as a whole shows all
+three; the unit need not plant the example so that every slice carries every term.
+
