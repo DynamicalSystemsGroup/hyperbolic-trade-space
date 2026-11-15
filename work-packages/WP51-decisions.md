@@ -328,3 +328,11 @@ and the driver's note that "dominates" is Pareto's word in the paper:** "okay bi
 **Applied as:** one word at every temperature: the term that binds. The glossary entry carries the exact-maximum sense
 and the finite-temperature reading; "dominates" is not used of terms anywhere.
 
+**Supervisor (2026-11-14 23:42 EST):** "we say binds based on the infinite temperature interpretation but clarify in the glossary (and
+elsewhere if necessary) that the term “carries the largest weight” at a finite temperature"
+
+**Applied as:** the glossary entry for the binding term: the term whose piece the surface follows at the exact maximum
+(τ = ∞), the sense the word is used in; at a finite temperature it is the term that carries the largest weight. The
+same clarification goes wherever the docs explain the regions or the cells (the docs example page, the tensions and
+chart pages if they say "binds"); the index says "binds" alone.
+
