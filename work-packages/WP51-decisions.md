@@ -167,3 +167,16 @@ the same code as the root page's figures, each step runnable), linked from the r
 so the index itself stays lean. Scoped as its own unit once the figure passes his loop; its budget set then; it joins the
 Examples page's journey ("See the worked case").
 
+**Supervisor (2026-11-14 23:00 EST), on round 2 (the three terms at the median, temperature 10; image in chat):** "drawings look much
+easier to interpret now. i would take this one as a baseline and still try to improve it. for me the most obvious
+improvement would be if the fit frontier was pushed closer the the visible extent of the data. i am not expecting 100%
+inside the envelope but right now it seems like the envelope is pretty conservative"
+
+**Applied as:** round 2 is the baseline (kept in the loop record as such). Round 3 works on the gap between the surface
+and the visible data in the slices, which has two sources: the planted table leaves parts of the surface unpopulated in
+a median slice (the flat pieces sit above empty space), and the dots shown in a pane are designs within a band of the
+held value, so they scatter below a slice that is exact. The unit tries the example first (designs planted along the
+whole surface, mostly inside the band, so each slice's data reach its surface), then the display band (narrower, the
+dots' shade by closeness to the slice), each cold-read; the fit's convention (the share of designs beyond the surface)
+is not changed for the figure without his word, since it is the paper's.
+
