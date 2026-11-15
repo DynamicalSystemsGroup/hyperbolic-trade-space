@@ -2535,3 +2535,13 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   landing on wp51-land (86ded0e, rows C842 to C848), notebooks re-executing. His summary request answered in chat with
   the table of packages in flight and queued; the path to the release is every package landed and read, the guide's
   four sittings on the final head, then the merge workflow with 0.1.0 on his word.
+- **Autonomous mode with the driver as his proxy (2026-11-15 12:20 EST).** Supervisor, verbatim: "i need you to run in
+  autonomous mode. so you need to be able to do a soft confirm on each section as my proxy so you bring me a fresh
+  candidate. i will still do a section by section read and edit but those should be light edits not full content or
+  style revisions. that is what you are doing now to match my requirements. it will be helpful if you improve your
+  tracking of the specific requirements by section as you go so as to stopping blurring the sections style and
+  contents which have genuine differences. it will also make it easier for you to review and for me to review and
+  revise later. this advice extends to the appendices". Applied: `work-packages/paper-requirements.md` opened, one
+  entry per section and per appendix (what it holds, what it must not, its style, its state: open, soft-confirmed,
+  read by him); every paper package works against it and the driver soft-confirms each section on the rendered page
+  before it is offered to him.
