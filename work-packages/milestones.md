@@ -10,7 +10,27 @@ to `main` that he alone merges. **v0.2, the secondary:** a tooling and documenta
 examples, drawn from the research that lands in v0.1's record; the breadth those examples should show, in his words, is
 `examples-coverage.md` (an intent record, not a requirement list).
 
-## Current state (2026-11-14 22:56 EST; dev at 79d1c72; rewritten whole, the earlier table replaced)
+## Current state (2026-11-15 13:28 EST; dev at 022c4d2; the section of 2026-11-14 22:56 kept below as history)
+
+The candidate he reviewed on the morning of 2026-11-15 (content head a63d390, fully green) is being reworked under his
+rulings of that review (`paper-requirements.md` is the register; `driver-log.md` 12:20, autonomous mode with the
+driver as his proxy). The stopping condition: one coherent rendered paper at one named head, the figure sequence
+carrying the argument, his remaining edits small. Paper packages run one at a time on the notebook; docs packages run
+beside them.
+
+| Package | What it delivers | State |
+|---|---|---|
+| wp51 (root page) | the fan figure, the cards, dataset, the docs example | landed 01ad083 |
+| WP53 | his review batch of the abstract and Sections 1 to 3; two figure generators; register and tests | in verification on its branch (rebased on dev) |
+| WP54 | the skeleton: Section 7 into Future work; Future work from the spike records; AI acknowledgement and Reproducibility | approved; after WP53 |
+| WP55 | Section 3's fitting problem in the lineage's template; Sections 4 to 6 rebuilt; open questions to the ledger | scoped from two spikes; after WP54 |
+| WP56 | Sections 7 to 9 from the current model and records; the discussion to the value proposition; Figure 7 as one triangle; the decision-maker's ternary (a spike first) | directed; its lineage spike delivered |
+| WP57 | the appendices: a planning package spawning one package per appendix; the assumptions, limitations and open questions section; re-lettering last | directed |
+| WP59 | conditioning and feature engineering on the three public cases; the readout | landed a9cfb60, accepted |
+| WP60 | the three example pages from the readout | scoped; runs beside the paper packages |
+| WP58 | the docsite, root page and README swept; the reviewer's guide at the new head; full suite and CI; his sittings 2 to 4 | last |
+
+## State at (2026-11-14 22:56 EST; dev at 79d1c72; rewritten whole, the earlier table replaced)
 
 One head, one remaining-work list, as the external review of 22:48 asked. Evidence for every row is a driver-log
 entry of the same day; the reviewer's guide (`work-packages/reviewers-guide/`) names the candidate's head when the last
