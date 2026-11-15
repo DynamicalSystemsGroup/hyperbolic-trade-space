@@ -51,6 +51,10 @@ with doctests.
   symproof-compatible ledger; see `docs/superpowers/notes/proof-conventions.md`).
 - Docs are Markdown + LaTeX, discursive, each claim citing its lemma; no reference enters
   `docs/references.bib` without a resolved DOI or stable URL.
+- **No metanarration (standing rule, the supervisor, 2026-11-14):** no sentence whose subject is the text, the
+  page, the figure's placement or the reader's experience ("You have now seen the same table three ways", "this
+  page names", "the figure further down", "as shown above", "in our own account"). Say the thing. The residual
+  checker (`scripts/check_residuals.py`, kind `metanarration`) flags the openers; a reviewer strikes the rest.
 - Vocabulary: `glossary.yaml` is the one source of terms. One object, one name; use the glossary's
   term, replace jargon that does no work with plain words. Check with
   `uv run python scripts/check_vocabulary.py` and the reading in

@@ -342,3 +342,12 @@ chart pages if they say "binds"); the index says "binds" alone.
 **Applied as:** a two-row legend: row one the three term lines in order 1, 2, 3; row two the three characteristic
 points in the same order under their term's colour; three columns, one per term.
 
+**Supervisor (2026-11-14 23:57 EST), on the redrafted call to action's lead sentence:** "please avoid obnoxious LLM metanarration
+\"You have now seen the same table three ways.\" qualifies. i need a standing rule against this kind of thing, you do it
+all the time and i really don't want to spend all my review effort playing whack a mole"
+
+**Applied as:** a standing rule in `CLAUDE.md` (Derivations and docs): no sentence whose subject is the text, the page,
+the figure's placement or the reader's experience; the residual checker's metanarration patterns extended to the
+reader-experience openers; the unit redrafts the lead and re-reads its captions under the rule; the driver re-reads
+the root page, the docs home and the history essay for the same fault before the morning.
+
