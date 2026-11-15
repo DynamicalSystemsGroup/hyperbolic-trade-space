@@ -33,7 +33,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 DEFAULT_OUT = DOCS / "generated" / "figures"
 
-MAX_FIGURES = 8
+# 8 until WP60: one figure on each of the three example pages (the driver, 2026-11-15)
+MAX_FIGURES = 10
 BLOCK = re.compile(r"^```python \{\.runnable\}\n(.*?)^```", re.M | re.S)
 IMAGE = re.compile(r"!\[[^\]]*\]\(([^)\s#]*?)([\w-]+)-light\.png#only-light\)")
 ALT = re.compile(r"!\[([^\]]*)\]\([^)\s#]*?([\w-]+)-light\.png#only-light\)")

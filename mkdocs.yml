@@ -78,7 +78,11 @@ nav:
       - Termination: user-guide/termination.md
       - Limitations: user-guide/limitations.md
   - API: api-reference.md
-  - Examples: examples.md
+  - Examples:
+      - examples.md
+      - Perovskite solar cells: examples/perovskite.md
+      - Amniote life histories: examples/amniote.md
+      - Broadbalk wheat: examples/wheat.md
   - From the chart back to a design: bridge.md
   - Theory in brief: theory.md
   - Glossary: generated/glossary.md

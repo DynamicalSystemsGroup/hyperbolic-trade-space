@@ -263,6 +263,14 @@ bsf.build_slices("build/site-figures")
 
 The last two calls write the root page's images.
 
+## Three public datasets
+
+Each page states the dataset and its licence, the conditioning rule with every orientation and its reason, the fits at
+K = 1 and 2, and the reading against the trade-off the field names, with the exponents as ranges across the
+conditioning choices: [perovskite solar cells](examples/perovskite.md) (40,045 devices, three metrics),
+[amniote life histories](examples/amniote.md) (2,770 species, four metrics, the orientation of a time cost decides
+what trades) and [Broadbalk wheat](examples/wheat.md) (3,753 plot-years, two metrics).
+
 ## Proposing a design for a point with no datum
 
 The case also proposes designs for gaps in the chart, then builds and measures them: [From the chart back to a design](bridge.md).
