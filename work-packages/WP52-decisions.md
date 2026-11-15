@@ -396,3 +396,7 @@ record quotes the page's own sentence on deliberative institutions and marks "ne
 summary of his editorial. Knowledge Networks (2024) placed before the camera and legitimacy sentences. His Metagov role
 sourced from metagov.org/people (Board; Research Director) and placed beside the NumFOCUS sentence.
 
+**Supervisor (04:45 EST):** ""at the JAXA MBSE/MCE Workshop in June" June 2026 so it its not inaccurate once the year changes"
+
+**Applied as:** "in June 2026 and to the Open Source Architects community in October 2026".
+
