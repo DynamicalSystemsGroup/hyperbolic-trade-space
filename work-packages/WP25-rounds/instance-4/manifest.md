@@ -156,3 +156,12 @@ Left for the next instance: `wp51fig` (waits on the supervisor's word), `wp8b-dr
 its content to be checked against dev before deletion), `wp30b-notebooks` and `preview/site` (not ancestors; origin
 and content to be read before any deletion), the `stage` and `verify` trees (kept until the PR), and the backup
 refs (15) with the bundle. Worktrees 12 to 5; local branches 14 to 6.
+
+## Batch 4 (2026-11-15 afternoon, after WP53, WP59 and WP60 landed)
+
+The landing and unit branches of WP51 (wp51-land), WP53 (wp53), WP59 (wp59-wide, wp59-wheat, wp59, wp59-land) and
+WP60 (wp60-perovskite, wp60-amniote, wp60-wheat, wp60-land, wp60-land2) removed with their worktrees; tips that are
+not ancestors of dev (the unit branches, squashed at landing) kept as `refs/backup/landed-<branch>`. Left: wp51fig
+(retire with the next batch; its content landed at 01ad083, tip in the backup refs), wp54 (running), wp55spike and
+wp56spike (their notes land with WP55 and WP56), wp56-ternary (its spike lands with WP56), wp8b-drafts,
+wp30b-notebooks, preview/site, stage and verify.
