@@ -223,3 +223,18 @@ is not the held median) and read as stray points. The unit dropped them; the pag
 (`wp51fig` 3bc5510, temperature 50 after the re-planting). The render was sent to him; his call stands over the
 readers'.
 
+**Supervisor (2026-11-14 23:23 EST):** "is there an alternative to using median that would make this work better. its okay if there is
+not but i think its worth exploring a bit." and, with the chart column attached: "the third col where they fall on the
+log V = 0 line looks quite good so i suppose another option would be to only plot them on that col; though for
+consistency sake it would be great if we could address the question of how to make it look good on all 3 cols. we
+still retain baseline option to not include the landmarks"
+
+**The driver's reading:** the chart column works because the chart flattens the whole surface onto log V = 0 (a
+projection), while the metric and log columns show a plane section at one value of the third metric, and three surface
+points at three different values of that metric cannot lie on one section curve. The alternatives that keep few lines:
+(a) the landmarks on the chart column only; (b) the surface drawn in the metric and log columns as a projection too, a
+shaded band between its sections at the third metric's 20th and 80th percentiles with the median section on top, the
+landmarks inside the band as surface points; (c) each row's section taken through one landmark's value instead of the
+median (one marker exactly on each curve, the others off it). Round 4 tries (a) and (b), cold-read, and keeps the
+baseline without landmarks as the fallback; (c) is held unless (b) fails.
+
