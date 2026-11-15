@@ -23,3 +23,9 @@ what was done and why); the pages follow from its readout. WP57 becomes a planni
 per appendix or group from what it reads.
 
 **Supervisor, verbatim (approval of the spike as described in chat, 2026-11-15 ~13:20 EST):** "ok"
+
+## Amendment from the metamanager's feedback (2026-11-15 afternoon)
+
+PCA scores made positive and oriented are a change of representation, reported with an explicit interpretation of
+each component; a positive leading loading does not make a larger score preferable to a stakeholder. The readout
+says so where it reports the chain, and keeps every conditioning result that weakens the preferred reading.

@@ -54,7 +54,7 @@ closing section on AI use and reproducibility in place of two.
 
 | ID | Requirement | Check |
 |---|---|---|
-| R-1 | No section in the paper is a preliminary or a remark: the section list is Sections 1 to 12 as the roadmap names them | the roadmap paragraph and the rendered table of contents agree |
+| R-1 | No section in the paper is a preliminary or a remark: eleven numbered sections (the decision problem through AI acknowledgement and Reproducibility) and Works cited, as the roadmap and `paper-requirements.md` name them | the roadmap paragraph and the rendered table of contents agree |
 | R-2 | No label is dangling | the MyST build log has no warning about a missing label; `grep -rn "sect-search\|sect-process\|sect-reproducibility" paper docs tests` returns only live targets |
 | R-3 | Future work names the three thrusts of the abstract in its order and no direction without a record | the review file's table |
 | R-4 | Words: Future work under 250, the closing section under 200 | `wc -w` on the cells' prose in the review file |

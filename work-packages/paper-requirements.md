@@ -8,6 +8,14 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 
 ## Rules for every section
 
+- Each section's soft-confirm names its central claim, the evidence that carries it, and the hand-off to the next
+  section; a change of notation or presentation preserves the mathematical objects and hypotheses (β, the loss, a
+  constraint mean what they meant), and a qualification a claim needs stays attached to that claim even when other
+  caveats move to the appendix (the metamanager's points 1 and 6, 2026-11-15 afternoon, `driver-log.md`).
+- The stopping condition for the candidate: one coherent rendered paper at one named head, the figure sequence
+  carrying the argument, and his remaining edits plausibly small; persona reads support that judgement and do not
+  stand in for it. The green suite is regression evidence, not editorial readiness.
+- Paper packages run one at a time on the notebook (one writer); the appendices are re-lettered once, last.
 - No metanarration: no sentence whose subject is the text, the page, a figure's placement or the reader; the one
   exception is the roadmap paragraph closing Section 1 (CLAUDE.md; WP11-decisions.md, "Main results").
 - No forward reference to a definition or a result not yet given; Section 1's roadmap is the only place for forward
@@ -133,7 +141,12 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   one objective per stakeholder: the sponsor to total cost, the manufacturer to unit cost, the operator to
   performance; the decision section uses the same mapping (WP56-decisions.md).
 - **Figure 7, the tension matrix:** one triangle in the paper (the plotting routine keeps both as an option); the
-  reader is not left to work out the reciprocal (WP56-decisions.md, the tension matrix figure).
+  reader is not left to work out the reciprocal; which triangle and the row order are settled by the figure loop
+  on the actual values, and any statement about the values' range is derived and checked numerically first; the
+  sign and reciprocal convention is one across matrix, caption and prose (WP56-decisions.md).
+- **The performance aggregate (if built):** a modelling choice: its formula, units and monotonicity stated, two or
+  three plausible definitions compared, and the decision's stability across them part of acceptance; the ternary
+  is not chosen for its looks (WP56-decisions.md).
 - **State:** open (WP56).
 
 ## Section 9, Discussion

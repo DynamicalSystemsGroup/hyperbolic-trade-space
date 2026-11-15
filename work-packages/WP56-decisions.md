@@ -37,3 +37,13 @@ total cost, manufacture = unit cost, operator = performance. that way we map our
 **Recorded for the WP56 spike and build:** the decision-maker's ternary maps each objective to one stakeholder: the
 sponsor to total (fleet) cost, the manufacturer to unit cost, the operator to performance (how well the fleet does
 its job). Section 9's decision and its table use the same mapping, one stakeholder per objective.
+
+## Amendments from the metamanager's feedback (2026-11-15 afternoon)
+
+- The driver's default for the tension matrix (the upper triangle with rows by exponent, "all values at least one")
+  is withdrawn: the entries are elasticities at the term's balanced point in conditioned units, not bare exponent
+  ratios, so the range claim is not established. The figure loop settles the triangle and the row order on the
+  actual values; any statement about the range is derived and checked numerically before it enters a caption.
+- The performance aggregate is accepted as a modelling choice: formula, units, monotonicity in fleet size and
+  pointing error, two or three plausible definitions compared, and the decision's stability across them reported;
+  the definition is not chosen for the ternary's looks.
