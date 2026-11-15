@@ -535,3 +535,9 @@ with Preciado.
 
 Both 2014 papers stay in the "Before the firm" paragraph, the TAC paper first.
 
+**Supervisor (08:35 EST):** "i don't want the history records forced into the page you can keep them in the background
+for fact checking."
+
+The generated "Dated references" list leaves the page. The record (`history.yaml`), the trace and the tests that tie
+every link, name and year of the prose to the record stay as the fact-checking apparatus.
+
