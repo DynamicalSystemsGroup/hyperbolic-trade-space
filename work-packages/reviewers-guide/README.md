@@ -5,7 +5,7 @@ mandate"). Nothing is tagged, published or merged.
 
 ## What the package is
 
-The candidate is the `dev` branch at the head `415d889` (commits after it on `dev` are records: this guide, the
+The candidate is the `dev` branch at the head `a63d390` (commits after it on `dev` are records: this guide, the
 driver log and the cleanup manifest). It holds the Python package
 `hyperbolic_trade_space`, the paper with its supporting material, the docsite, the root page with the history page, the
 derivations, the cubesat case study, and the release engineering for the first publication (workflows, code owners,
@@ -22,7 +22,7 @@ the abstract with its three thrusts.
 
 Landed after those, in order: the fifth paper unit (the record defects of the held-out reads, a573155), the bridge
 page of WP41 (af54b3b), the docs home's quickstart block drawing the figure it shows (30ba54d) and the temperature
-page of WP46 (415d889); each landing is recorded with its checks in `work-packages/driver-log.md`.
+page of WP46 (a63d390); each landing is recorded with its checks in `work-packages/driver-log.md`.
 
 Waiting on your word: the fan figure of WP51 (branch `wp51fig`, served apart from the staged site), the abstract
 phrases the readers flagged (change request 172), the dependency and the first package that WP50 leaves for after 0.1,

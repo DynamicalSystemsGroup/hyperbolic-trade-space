@@ -2495,3 +2495,13 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   ancestors of dev or backed up), the wp27model directory removed. Left: wp51fig, wp8b-drafts, wp30b-notebooks,
   preview/site, stage and verify. The full suite with the slow tests, the lemma chain and the proof-map checker are
   running on dev's head; CI run 43688871149 on 415d889 in flight.
+- **Final head: a63d390 (2026-11-15 02:27 EST).** The browser pass of the candidate's staged site (port 8797, built from 32c7118)
+  found three page-subject openers the residual checker's pattern did not cover ("This page draws the path...",
+  "This page says which route back...", "This page is for a code owner"): each replaced by its content (the
+  temperature page's opener now ends at the path's two ends; the bridge's opener names the two routes; the
+  code-owners page opens "For a code owner:"), the checker's pattern widened to those verbs; the temperature page
+  back inside its 564-word budget. Residuals exit 0, vocabulary 0 new, lint and format clean, site, register and docs
+  tests green. The docs home's figure renders on the staged site (the first-fit image no longer blank). The guide
+  names a63d390 as the candidate's head in place of 415d889; the records after it are the guide's own commit, the driver
+  log and the cleanup manifest. CI dispatched on a63d390; the full local run on 7ed29ef continues and is re-run on a63d390
+  only if it finds a failure that the three prose lines could affect (none can: no code, data or test changed).

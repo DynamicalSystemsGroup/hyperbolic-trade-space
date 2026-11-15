@@ -6,9 +6,9 @@ engineering `.github/`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, 
 `uv run ...`.
 
 - [ ] Run `uv run pytest -q` (doctests included), `uv run ruff check .`, `uv run ruff format --check .` and
-  `uv lock --check` on your machine at `415d889`. Compare with the counts recorded by branch in
+  `uv lock --check` on your machine at `a63d390`. Compare with the counts recorded by branch in
   `work-packages/driver-log.md` (the WP42 build's merged tree: 1,992 passed; the fan figure's branch: 2,038 passed;
-  wp46's merged tree before its last rebase: 2,063 passed fast; the full run at 415d889 under "Final head") and
+  wp46's merged tree before its last rebase: 2,063 passed fast; the full run at a63d390 under "Final head") and
   with release checklist row B1 (`work-packages/WP8b-release-checklist.md`).
 - [ ] Run `uv run python -m derivation.proofmap`. It reports the lemma chain and its tagged steps; the chain now holds
   Lemma 21 (tension) and Lemma 22 (the small-temperature step, WP46): 22 lemmas. Count against
