@@ -545,3 +545,9 @@ every link, name and year of the prose to the record stay as the fact-checking a
 
 The sentence is cut; the closing paragraph opens on the learning itself.
 
+**Supervisor (08:55 EST):** "we can end on saying this work is critical for humans to participate in decision-making in an
+era when machines are mediating more decisions faster decisions (see meltdown).
+https://www.dynamicalsystemsgroup.com/blog/meltdown"
+
+The closing paragraph ends on that sentence, with Meltdown linked; the post read before the sentence is written.
+
