@@ -243,3 +243,14 @@ since its said later. putting that qualification twice in the abstract feels lik
 
 **Applied as:** the sentence reads "The worked example is a cubesat design optimization problem."; the register
 fragment follows.
+
+**Supervisor, verbatim (the same sitting, on "weakly Pareto-efficient" and the driver's note that "increase energy"
+is strictly "do not decrease"):** "i think that the level of the abstract "weakly" and "nondecreasing" in place of
+increasing is overly specific. technically correct but its essentially pre caveating. we have the precise results
+with their conditions in the body"
+
+**Applied as:** the abstract reads "Pareto improvements increase energy, and a design that maximizes energy is
+Pareto-efficient."; the precise statement with its conditions stays in the body (Lemma 11, Theorem thm-pareto:
+weakly Pareto-efficient, V nondecreasing in each metric). The paper test's phrase and the register fragment follow.
+The "scikit-learn estimator" ruling applied to the docs home ("It has a scikit-learn-compatible API") and the
+package docstring ("A scikit-learn-compatible estimator").
