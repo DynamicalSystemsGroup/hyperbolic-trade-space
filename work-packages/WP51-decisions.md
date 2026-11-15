@@ -309,3 +309,16 @@ assignment the term's cell (the rows whose largest term it is); the coloured reg
 point of the triangle. Candidate words for the page: "the largest term", "the term that binds"; "dominates" and "leads"
 are the current words. His choice pending.
 
+**Supervisor (2026-11-14 23:38 EST):** "i like the phrase which term \"binds\" if its technically accurate"
+
+**The driver on accuracy:** at the exact-maximum fit the surface in log space is the upper envelope of the terms'
+linear pieces, log V = max_k (a_k + w_k · log m), and the piece the surface follows at a point is the active one, which
+is what "binds" means of a constraint that holds with equality; so the word is exact there. At a finite temperature V
+is the log-mean-exp, a soft maximum, and no term binds strictly: the region's term is the one with the largest value and
+the largest weight, and the soft surface lies within 1/τ of the binding piece. The page's figures are drawn at a
+finite temperature, so the glossary entry says "binds" is the exact-maximum word and names the finite-temperature
+reading; the captions use "binds".
+
+**Applied as:** "each region is where one term binds" on the ternary's caption; the docs page and the glossary carry the
+rule and the qualification; "dominates" leaves the plotting module's docstring in the same unit.
+
