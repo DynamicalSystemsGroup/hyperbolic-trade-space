@@ -25,6 +25,9 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - Notation and presentation in the conventions of the Boyd and Vandenberghe lineage: the problem statement as
   "minimize ... subject to ..., with variable ...", theorems as "Suppose ... Then ...", proofs in the appendix
   (`WP55-rounds/spike-notation.md`).
+- When in doubt about notation, layout or register, refer to the engineering papers (his standing rule, 2026-11-15
+  12:45 EST): the lineage's texts and the design-optimization and decision-analysis literature the spikes read, not
+  a guess.
 
 ## Abstract
 
