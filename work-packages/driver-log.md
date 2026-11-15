@@ -2411,4 +2411,14 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   minimizes, with the one register fragment re-pointed; the baseline's stale row for the docs home's "gaps" removed as
   the checker asked. Vocabulary 0 new. The merged tree's tests rerun before landing. Figure round 2 (three terms at the
   median, temperature 10) sent to him as a screenshot and served on 8861; the loop waits for his morning read.
+- **CI red on caada27 fixed forward; the site assembles again (2026-11-14 23:34 EST).** The slow and docs-paper jobs on caada27 failed
+  on both platforms on one cause: the docs home's quickstart and `examples/fitkit.py` still imported `tension_report`,
+  which the WP42 build renamed `trade_off_report`; the figure build that the site assembly runs imports the docs
+  home's block, so every assembled-site test errored. Fixed at 9749eb8 (the quickstart runs, 14 docs figures build),
+  CI dispatched, and the whole site assembled locally from dev's head with exit 0 (`scratchpad/site-dev2`). The
+  driver's miss: the build's branch verification ran the fast suite, not the slow site tests, and the docs home was
+  landed before the rename. The final head gets the slow jobs on both platforms before it is named. Figure loop: his
+  reads of rounds 2 and 3 recorded, the landmarks' name settled as "characteristic point" (his word) with the precise
+  sense kept for the glossary and the docs example; round 4 (landmarks on all three columns, the footer, the doors, the
+  captions cut to narrative) in progress on `wp51fig`.
 
