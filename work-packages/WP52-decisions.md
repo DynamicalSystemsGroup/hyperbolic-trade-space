@@ -511,3 +511,10 @@ production systems in highly automation, highly adversarial, highly politicized 
 The page's shape: a bottom-line paragraph first, the story, a closing paragraph restating the thesis and tying it to this
 work's motivation. His sentence is the thesis; the drafts are in chat in his words.
 
+**Supervisor (07:35 EST):** "we can treat this as an essay in its own right that stands in contrast to the academic work
+cited which cannot capture lived experience and grey literature"
+
+The page is an essay, not a one-screen acknowledgements list: the WP37 "one screen" word test no longer states the page's
+intent, and the bound is to be reset with his words once the shape lands. The opening sentence is to say what the essay
+carries that the citations cannot: lived experience and the grey literature.
+
