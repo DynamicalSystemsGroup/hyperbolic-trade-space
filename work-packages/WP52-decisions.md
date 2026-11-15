@@ -518,3 +518,9 @@ The page is an essay, not a one-screen acknowledgements list: the WP37 "one scre
 intent, and the bound is to be reset with his words once the shape lands. The opening sentence is to say what the essay
 carries that the citations cannot: lived experience and the grey literature.
 
+**Supervisor (07:40 EST):** "2000 is generous and once you have a full draft we can go back and carve it down to ensure
+everyone word and reference earns its place"
+
+Taken as the go for the full draft in one edit pass on the history branch, bound 2,000, with a carving pass to follow his
+read.
+
