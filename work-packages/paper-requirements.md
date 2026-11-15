@@ -33,6 +33,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   scikit-learn documentation and API in style; the optimization layer leans on Boyd. His own style is his IEEE TAC,
   CDC and Transactions on Control of Network Systems papers. Build structure, define requirements, define terms,
   define notation; nothing made up; a document internally compatible and grounded in the literature.
+- No spurious detail; a caveat stated once where it belongs and not repeated (his ruling, 2026-11-15 12:55 EST).
 
 ## Abstract
 

@@ -2552,3 +2552,4 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   15 variants, so it is read as conditional, not as a result. Verification by the spike's reviewer once the wide unit
   reports.
 - **Standing rule (2026-11-15 12:45 EST), verbatim:** "when in doubt refer to the engineering papers." Added to the rules for every section in `paper-requirements.md`.
+- **Standing rule (2026-11-15 12:55 EST), verbatim:** "avoid spurious details, don't repeat caveats unnecessarily". Added to the rules for every section.
