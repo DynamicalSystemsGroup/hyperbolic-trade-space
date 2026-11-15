@@ -531,3 +531,7 @@ paper with Preciado."
 Applied in the pass: the "Before the firm" paragraph opens with the TAC paper (2014) and its four authors, then the paper
 with Preciado.
 
+**Supervisor (07:58 EST):** "still before founding the firm."
+
+Both 2014 papers stay in the "Before the firm" paragraph, the TAC paper first.
+
