@@ -65,7 +65,7 @@ import opensysml
 
 warnings.simplefilter("ignore")
 
-REPO = pathlib.Path(__file__).resolve().parents[4]
+REPO = pathlib.Path(__file__).resolve().parents[1]
 
 # ---- layout parameters (PlantUML / Graphviz controls; no model content) ------------------------
 COLUMN_WIDTH = 700  # px, the paper's column; PlantUML `scale N width`
