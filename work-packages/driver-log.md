@@ -2304,4 +2304,10 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   after the Olfati-Saber edits: 22 passed in test_site.py (register 21 passed separately). Four Tests dispatches were
   running on superseded heads from the morning's landings; the three older ones (233eab5, 459f806, 29101b6) cancelled,
   43663572799 on a45ff23 (the abstract's three thrusts, every landing beneath it) kept as the run of record.
+- **CI red on a45ff23, fixed (2026-11-15, 12:30 EST).** The run of record failed its fast jobs on both platforms on one
+  test, the docs figure rule: the docs home's new caption lacked the "Figure N." prefix and carried a link inside the
+  caption. The docs home repeats Getting started's Figure 1 as its preview, so its caption is now "Figure 1. ..." in
+  plain text with the Getting started pointer as words, and the test counts a repeated image as one figure (the
+  comment carries his ask of 2026-11-14). The figure, budget and register tests pass locally; vocabulary clean; CI
+  dispatched on the fix. The docshome branch's own checks had not included this test: the driver's miss.
 

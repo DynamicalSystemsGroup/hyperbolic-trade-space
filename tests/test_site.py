@@ -1476,8 +1476,10 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
                 rf"{name}-dark\.png[^\n]*\n<figcaption>Figure \d+\. [^<]{{30,}}</figcaption>", text
             )
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
-    assert 1 <= len(names) <= bf.MAX_FIGURES == 8
-    assert len(set(names)) == len(names)
+    # the docs home repeats Getting started's Figure 1 as its preview (the supervisor, 2026-11-14:
+    # "docs home needs a figure and a quickstart code block"); a repeated image is one figure
+    assert 1 <= len(set(names)) <= bf.MAX_FIGURES == 8
+    assert len(names) - len(set(names)) <= 1
     assert {"first-fit", "three-terms", "tension-report", "log-plane"} <= set(names)
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
 

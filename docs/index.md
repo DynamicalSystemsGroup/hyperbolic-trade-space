@@ -33,7 +33,7 @@ print(report.exponents.round(2))
 <figure markdown>
 ![Designs in the log plane of two metrics: the frontier is a straight line, and the designs scatter below it, a few just beyond it, and the nearest ones lie in a grey band under the line.](generated/figures/first-fit-light.png#only-light)
 ![Designs in the log plane of two metrics: the frontier is a straight line, and the designs scatter below it, a few just beyond it, and the nearest ones lie in a grey band under the line.](generated/figures/first-fit-dark.png#only-dark)
-<figcaption>The same fit on two of the metrics: the line is the fitted frontier, the designs fall below it or just beyond it, and the grey band holds those nearest to it. <a href="getting-started/">Getting started</a> walks through the output.</figcaption>
+<figcaption>Figure 1. The same fit on two of the metrics: the line is the fitted frontier, the designs fall below it or just beyond it, and the grey band holds those nearest to it; Getting started walks through the output.</figcaption>
 </figure>
 
 It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in
