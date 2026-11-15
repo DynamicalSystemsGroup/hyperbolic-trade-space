@@ -94,3 +94,10 @@ first package would be). His inclination is to name it, to plant a flag for futu
 tolerated for it (the ledger's tolerance of 25 already allows this; no ledger change). The decision is his after the
 readout.
 
+**Supervisor (2026-11-15, 10:50 EST), on the abstract's closing sentence after the readout's boundary (fruitful as a
+direction, not as a result) and its two drafts:** "Three thrusts, draft A"
+
+Draft A goes into the abstract as the readout wrote it (44 words; the abstract to about 506 against the test's bound of
+525): "(2) identifying and filling holes by topological data analysis" second, the formal-verification clause third and
+unchanged. The dependency choice and the first package of the later release remain his calls, after v0.1.
+
