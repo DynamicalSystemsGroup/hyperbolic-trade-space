@@ -1894,3 +1894,10 @@ section = "Case analysis"
 words_added = 60
 job = "the generated nondominated-set sentence, moved from Section 1 to open Case analysis, where its numbers are read"
 reader = "the reader of the case who wants the dominance count before the fit's reading"
+
+[[raise]]
+date = "2026-11-15"
+section = "Prior art"
+words_added = 8
+job = "Table 1 referenced from the three-layer paragraph (every table is referenced from the text)"
+reader = "the reader who reaches the table from the paragraph that places the families in their layers"
