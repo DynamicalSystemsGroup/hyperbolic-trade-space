@@ -441,3 +441,11 @@ Organization' to Precedents in Cybernetics", same journal, published 20 November
 (DOI 10.2139/ssrn.4077358, resolved through Crossref). The assessment is in chat; his judgement to follow. Alston's standing
 as a team member rests on the supervisor's word.
 
+**Supervisor (06:05 EST):** "part of the goal of this history and acknowledgements page is to retell this story of design
+optimization, legitemacy, economics and governance of highly automated (and often adversarial) systems in plain language
+without the web3 stylings"
+
+Recorded as the page's intent, beside the earlier rulings (categorical descriptions, no brand names, the lineage fed in
+without being the point). Applied to the pending sentence: the paper with Nabben is described by what it argues, not by
+the acronym in its title; Alston's organisations are described as organisations whose rules are partly code.
+
