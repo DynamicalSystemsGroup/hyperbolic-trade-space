@@ -387,3 +387,12 @@ of Progress (2025) as a clause after Protocols and Institutions, with the citati
 director and board member of the Metagovernance Project beside the NumFOCUS sentence, sourced from metagov.org if a
 page states it, else on his authority and marked so.
 
+**Supervisor, verbatim (04:30 EST):** "the politics of progress should be cited as an example of the role of constraints and
+tradeoffs" and "the point i was making in the editorial is that neither acknowledged tradeoffs"
+
+**Applied as:** "The politics of progress (2025) read two popular visions of technology and society and found that neither
+acknowledged trade-offs: abundance needs institutions that make them visible and negotiate shared constraints"; the
+record quotes the page's own sentence on deliberative institutions and marks "neither acknowledged trade-offs" as his
+summary of his editorial. Knowledge Networks (2024) placed before the camera and legitimacy sentences. His Metagov role
+sourced from metagov.org/people (Board; Research Director) and placed beside the NumFOCUS sentence.
+
