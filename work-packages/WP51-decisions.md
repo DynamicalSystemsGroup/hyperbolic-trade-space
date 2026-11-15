@@ -290,3 +290,10 @@ with the same total of the metrics, a term's monomial is largest where the share
 the term's piece of the surface the characteristic point is the point with the smallest total. The caption may say the
 first; the glossary entry carries both.
 
+**Supervisor (2026-11-14 23:34 EST):** "this will be more important for documenting the example and the plotting methods than the
+narrative for the index page which just needs to be intuitive"
+
+**Applied as:** the precise sense (largest for a given total; smallest total on the term's piece) goes to the glossary
+entry and the docs example page; the index's caption says only what a reader needs to follow the markers ("each term's
+characteristic point, where that term is strongest"), in plain words.
+
