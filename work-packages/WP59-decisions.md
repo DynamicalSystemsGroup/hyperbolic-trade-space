@@ -33,3 +33,7 @@ says so where it reports the chain, and keeps every conditioning result that wea
 ## Acceptance (13:02 EST)
 
 Accepted by the driver under the mandate after its own read: the reviewer's reruns from a clean cache matched byte for byte, the primary rows reproduce the WP45 records, the four readout defects the review found were fixed by the driver, and the readout reads as guidance an analyst can act on. Landed on dev at a9cfb60. His read remains; the pages (WP60) are scoped from the readout.
+
+**Supervisor, verbatim (on the readout, 13:18 EST):** "seems like a fine plan. my main takeaway is that "bigger is better" is a normative judgement which is why the feature engineering and conditioning have to be part of using the method, rather than predefined by the method itself"
+
+**Recorded as the thesis of the WP60 pages and of the conditioning guidance:** the orientation of each metric is a normative judgement the analyst makes and states; the method takes it as given and tests whether it mattered. The readout's orientation section and the amniote page open on it.
