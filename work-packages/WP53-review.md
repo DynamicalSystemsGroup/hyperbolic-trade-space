@@ -46,3 +46,9 @@ Branch `wp53`, built on `e91fc35` (his review batch as applied in place).
 1. `test_no_hedging_phrases_in_the_body`: "However" in Section 1 ("However, identifying how linearly independent vectors explain variance ...").
 2. `test_every_figure_and_table_is_referenced_from_the_text`: `tab-families-1` has no `numref` since his rewrite removed "Table 1 lists the families ..." from Section 2.
 3. `test_cr13_the_first_generated_range_says_what_varies`: the `num-participation` output reads "K = 1 to 3"; the same output is committed at `2875c11`, so the failure is not from this batch.
+
+## Slow paper tests
+
+`pytest -q -m slow tests/test_paper.py tests/test_paper_static_figures.py`: 1 failed, 27 passed (39 minutes). The failure, `test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16`, pinned the cut Section 1 pointer to Appendix D.16; it now pins Section 2's pointer and passes alone.
+
+The non-slow suite after the last edits: 3 failed (the three above), 2065 passed, 17 skipped, 2 xfailed.

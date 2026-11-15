@@ -3245,10 +3245,11 @@ def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not(
 
 @pytest.mark.slow
 def test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16():
-    """(11) One worked result, in D.16, with a pointer from section 1."""
+    """(11) One worked result, in D.16, with a pointer from the text (Section 1's main-results item
+    was cut at his review of 2026-11-15; Section 2's HoroPCA paragraph points to it)."""
     import generate_results
 
-    assert "Appendix D.16" in _section("The decision problem")
+    assert "Appendix D.16" in _section("Prior art")
     cell = _cell_out(SUPPORT_NB, "tab-D-pca_chain")
     _current(cell, str(generate_results.pca_chain()), "pca_chain")
     assert "Share of the spread" in cell
