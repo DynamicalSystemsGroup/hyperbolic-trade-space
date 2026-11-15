@@ -101,3 +101,11 @@ the fast suite 2,034 passed with one failure, the paper test that pinned the ass
 last commit and not re-run in full. The driver reruns the suite and does the browser pass at phone width and in dark;
 the page is served on port 8851 for his close read; it merges only on his word.
 
+## His read of the fan figure (2026-11-14 22:30 EST)
+
+**Supervisor, verbatim:** "the visuals are confusing. the example or the figures may need work"
+
+The figure loop's verdict from the one reader who matters: not kept as drawn. The fan figure stays on `wp51fig` and
+off dev; the root page keeps the ternary and the paper's Figure 1 unless he says otherwise. The next step (rework the
+planted example, redraw, or park the figure for after 0.1) is his call, asked in chat.
+
