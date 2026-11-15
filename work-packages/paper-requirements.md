@@ -66,7 +66,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   verification and performance), the Pareto sentence without "weakly", "implemented with a scikit-learn-compatible
   API", the cubesat sentence without its qualification. About 500 words, under the test's 525.
 - **Style:** his register; no conditions or qualifiers that belong in the body.
-- **State:** read by him (WP11-decisions.md, 2026-11-15 08:40 onward); lands with WP53.
+- **State:** read by him (WP11-decisions.md, 2026-11-15 08:40 onward); landed with WP53 (da8d57a).
 
 ## Section 1, The decision problem
 
@@ -77,7 +77,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   appendix mentions.
 - **Must not hold:** who the paper is for; a main-results list; the Organization paragraph; the novelty sentence; a
   generated sentence from the case (moved to Case analysis).
-- **State:** read by him; lands with WP53.
+- **State:** read by him; landed with WP53 (da8d57a), soft-confirmed on screenshots of the rendered page.
 
 ## Section 2, Prior art
 
@@ -88,7 +88,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   fitted surface, a weight vector, a softened maximum) and without the Open sentence or the closing lineage
   sentences.
 - **Style:** plain prose; no "by family" in the title.
-- **State:** read by him; lands with WP53.
+- **State:** read by him; landed with WP53 (da8d57a), soft-confirmed on screenshots of the rendered page.
 
 ## Section 3, Preliminaries and notation
 
@@ -101,8 +101,9 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - **Must not hold:** the assumptions list (moved to Methods), Map and territory, Layers, Words, implementation or
   the case. Only A1 to A3 may return here if WP55 follows the spike's recommendation.
 - **Style:** a quick start for reading the mathematics; nothing fancy or novel; the minimum kit so Section 4 reads.
-- **State:** read by him once; the build-up written after his last comment and *not yet read*; WP55 may still
-  reshape it to the lineage's template (minimize ... subject to ..., β the optimal value).
+- **State:** read by him once; the build-up written after his last comment, soft-confirmed by the driver on the
+  rendered page and landed with WP53 (da8d57a), *not yet read by him*; WP55 reshapes its fitting problem to the
+  lineage's template.
 
 ## Section 4, Definitions
 
