@@ -163,3 +163,21 @@ the keep-by-decision rows untouched). **Assistant, verbatim:** "WP25-5 executes 
 From `dev` 8eda7e6, in the executor's worktree `wp255run`: the contract grep first (every path, basename and the folder names over `src tests scripts paper docs derivation examples`, `glossary.yaml`, `claims_register.toml`, `interface-contract.md`/`.toml`, `mkdocs.yml`; the only basename hit, `fig-nlemma.png`, is `paper/figures/fig-nlemma.png`, a different file), then one deletion commit, **1a20557, "WP25: 50 files deleted (fifth instance)"**, 2,134,994 bytes: the ten S-5 candidate files (call 1), the sixteen WP11 round-2 files (call 2; twelve in `round2-reads/`, four in `round2-docs-reads/`, the READMEs counted), the fourteen WP31 readout outputs (call 3; the two generators and `cubesat-stock.csv` stay), `WP29-build-notes.md`, the WP19 cold-read images (six files) with the two cold-read returns merged verbatim into `WP19-figure-review.md` (call 5), and `streams/P10-review.md` (call 6, with one line in `WP10-decisions.md` naming `WP10-review-2.md`). Records that named deleted files now say so and point to git at 8eda7e6 (`PM-BRIEF.md`, `WP19-figure-review.md`, `WP11-round-1/triage.md`).
 
 **Held (13 rows, call 4's own rule):** `WP29-review/reads2/shots/p10-page-01.png` to `-13.png`; reader: `WP29-review.md` line 54 and `WP29-review/reads2/README.md` line 7 cite the range by name as the review's evidence. A later instance may delete them with those two lines changed. Kept-by-decision rows: untouched. Inventory: `WP25-5-inventory.md` marks the 50 and the 13.
+
+## The supervisor's cleanup guide (2026-11-15, 11:20 EST)
+
+**Supervisor, verbatim:** "while we're doing these i think you should review this clean up guide
+file:///Users/z/Documents/Codex/2026-11-09/https-github-com-dynamicalsystemsgroup-hyperbolic-trade/outputs/hts-branch-inventory/cleanup-guide.html"
+
+**Read by the driver:** a Codex-produced guide of 14 November (2,077 words; `INVENTORY.md`, `inventory.json`,
+`RECHECK.json` beside it), an inventory against dev 7a33eb4: 119 local branches, 106 ancestral to dev, 22 worktrees;
+the recheck notes dev moving during the scan and corrects itself on `paper5` (ancestral but dirty, to be protected). Its
+order: bundle and owner map first; then clean, unused, integrated local branches and their worktrees; then the local-only
+deliveries through dev in package order; then the older non-ancestral branches one by one by `git cherry` and the
+three-dot diff; remote branches only by the maintainer; tracked-file thinning kept separate. Checked against the live
+repository at 11:20: 119 local branches, 12 not merged into dev (the eleven delivery branches and `preview/site`;
+`wp30b-notebooks`), 22 worktrees, the dirty trees as the guide names them (`paper5` with the fifth unit's work,
+`wp27model` with an untracked handover, `docshome` with the driver's preview copy, `hts-reader-EF` with a modified
+comparison report), `.git` at 191 MB. The driver's assessment is in chat; it becomes the scope of the next tidiness
+instance on his word.
+
