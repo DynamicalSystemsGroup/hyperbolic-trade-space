@@ -28,6 +28,11 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - When in doubt about notation, layout or register, refer to the engineering papers (his standing rule, 2026-11-15
   12:45 EST): the lineage's texts and the design-optimization and decision-analysis literature the spikes read, not
   a guess.
+- The three lineages, by layer, never blended (his ruling, 2026-11-15 12:50 EST): the decision-analysis and
+  design-optimization layer follows OpenMDAO's and Alejandro Salado's work; the machine-learning layer matches the
+  scikit-learn documentation and API in style; the optimization layer leans on Boyd. His own style is his IEEE TAC,
+  CDC and Transactions on Control of Network Systems papers. Build structure, define requirements, define terms,
+  define notation; nothing made up; a document internally compatible and grounded in the literature.
 
 ## Abstract
 
