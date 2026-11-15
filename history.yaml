@@ -436,6 +436,7 @@ entries:
     read_on: "2026-11-12"
     shows: "PyData channel, uploaded 29 November 2023 (28 min): a robust-control workflow to select the parameters of a pricing algorithm. The description names neither RAI nor any system."
     claim: sourced
+    note: "On the supervisor's account (2026-11-15): the same system as the 2021 design record, after years in production; the talk and the Edinburgh talk of 2024 cover models used for the configuration management of the fielded system."
 
   - id: 2023-juliacon
     date: "2023-07-28"

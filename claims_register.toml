@@ -6206,7 +6206,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2021-rai-design, 2024-edinburgh, 2023-fip-0056, 2023-consensus-pledge, 2023-aztec-sequencer-selection; the page names the work in categorical terms (the supervisor, 2026-11-14). Record ids 2021-rai-design (https://zenodo.org/records/10474385; only 'highly automated' is source-stated), 2024-edinburgh (https://michael.zargham.org/cv.pdf, the CV alone). 'Cleared for public release' is the team's account (marked 'in the same account'); the two sources are public. Both special_case. The Filecoin review (2023-fip-0056) is no longer cited in the prose (slimming); the record and the list keep it."
+note = "Record ids 2021-rai-design, 2023-pydata-nyc, 2024-edinburgh, 2023-fip-0056, 2023-consensus-pledge, 2023-aztec-sequencer-selection; the page names the work in categorical terms (the supervisor, 2026-11-14); the arc from the design record before launch to the talks on the fielded system, and that models served its configuration management, is the supervisor's account (2026-11-15). Record ids 2021-rai-design (https://zenodo.org/records/10474385; only 'highly automated' is source-stated), 2024-edinburgh (https://michael.zargham.org/cv.pdf, the CV alone). 'Cleared for public release' is the team's account (marked 'in the same account'); the two sources are public. Both special_case. The Filecoin review (2023-fip-0056) is no longer cited in the prose (slimming); the record and the list keep it."
 
 [[claim]]
 id = "C569"

@@ -961,8 +961,9 @@ def test_history_page_links_resolve_over_the_network():
 #: the page's word ceiling. WP37 closing unit 2: 406 words before it, 397 after. On 2026-11-15 the
 #: supervisor set 1,000 words as guidance ("the length can be relaxed. 1000 words is okay with me";
 #: "the 1000 word is a guidance not a hard requirement"); the test's bound sits above it, and
-#: moved once more after his additions of 2026-11-15 took the page to 1,141 words
-WORDS_CEILING = 1200
+#: moved once more after his additions of 2026-11-15 took the page to 1,141 words, and again when his
+#: corrections of the same day (the debt-market arc; Alston and the paper with Nabben) took it past 1,200
+WORDS_CEILING = 1300
 
 
 def test_history_page_is_one_screen_in_the_root_page_register():
