@@ -134,3 +134,9 @@ we already have data point dots for designs"
 its median), the three terms only, no stars and no marked design; the caption and the prose follow; the other
 candidates only if that one fails its cold reads.
 
+**Supervisor (2026-11-14 22:36 EST):** "the square root of 2 also comes a bit out of no where"
+
+**Applied as:** the chart column's axis label loses the formula: it reads as Figure 1's third pane reads, the position
+along the pair's axis (Z); if the construction needs stating, the caption says the axis is the difference of the two
+log-metrics, scaled to unit length, and the square root of two appears nowhere on the figure.
+
