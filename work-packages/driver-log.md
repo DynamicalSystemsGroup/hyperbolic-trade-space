@@ -2391,4 +2391,12 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   (49fa4ae; read: true to the records; the head to be named). The fifth paper unit's own tree: 2,034 passed, lemma chain
   passing; its landing branch still executing the notebooks. CI at caada27: fast jobs green on both platforms, slow and
   docs-paper still running. Nothing needs him beyond the figure loop he is in.
+- **External reviewer's read of dev through a597250 (2026-11-14 22:55 EST), pasted by the supervisor.** Verbatim in
+  `work-packages/WP8b-rounds/external-review-2026-11-14.md`. Findings the driver acts on tonight: the milestones board
+  describes landed work as pending (rewritten to the current state, one head, one remaining-work list); the reviewer's
+  guide to reconcile into one head, one remaining-work list and explicit evidence (the refreshed guide names the head
+  last; a remaining-work section added); a release rehearsal is separate evidence (the Release workflow's dry-run
+  dispatched on dev tonight; the TestPyPI publish waits on his environments); the combined candidate verified as a
+  whole, not branch by branch (the final head's CI on both platforms, slow and docs-paper included, and a local slow
+  run). The reviewer did not run the suite or the workflow; the driver's runs are the evidence.
 
