@@ -563,3 +563,10 @@ convex optimization with many decision makers whose choices impacted each other"
 Applied: the paragraph opens on distributed convex optimization, many decision makers whose choices affected one
 another; the TAC paper is its network-flow form.
 
+**Supervisor (09:15 EST):** "note that my dissertation was on \"resource allocation strategies\" if that's not economics
+and governance i am not sure what is lol! framing matters here. we're not frakensteining this stuff in we're laying into
+the narrative arc"
+
+The "Before the firm" paragraph is to open the arc: resource allocation among many decision makers was already
+economics and governance; the dissertation (Penn, 2014) is to be on the record and in the text.
+
