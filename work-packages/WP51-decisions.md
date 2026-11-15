@@ -283,3 +283,10 @@ are the term's exponents, where the term's monomial is largest for a given total
 legend and both captions (the ternary's too) and "peak" in the driver's draft; it enters the glossary as one entry so
 the docs example page and the captions use one word; the register rows follow.
 
+**Supervisor (2026-11-14 23:34 EST):** "and its characteristic point is a peak?"
+
+**The driver's answer (given in chat):** yes, in a precise sense, by the weighted inequality of the means: among points
+with the same total of the metrics, a term's monomial is largest where the shares equal its exponents; equivalently, on
+the term's piece of the surface the characteristic point is the point with the smallest total. The caption may say the
+first; the glossary entry carries both.
+
