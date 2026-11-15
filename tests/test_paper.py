@@ -367,14 +367,11 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
 def test_the_case_is_described_as_power_mass_and_attitude_control():
     """The case couples power, mass and attitude control (cubesat.sysml), not attitude alone, in
     the body. The abstract is the supervisor's text of 2026-11-14 (WP11-decisions.md): its case
-    sentence says a cubesat design optimization problem with competing objectives in performance
-    and cost, scored on thirteen metrics by a simulation study, one sentence for the case."""
+    sentence says a cubesat design optimization problem (its qualification cut at his review of
+    2026-11-15), scored on thirteen metrics by a simulation study, one sentence for the case."""
     nb = _nb(PAPER_NB)
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
-    assert (
-        "The worked example is a cubesat design optimization problem with competing objectives "
-        "in performance and cost" in fm
-    )
+    assert "The worked example is a cubesat design optimization problem." in fm
     assert "a simulation study scores each design on thirteen metrics" in fm
     assert len(re.findall(r"cubesat", fm)) == 1  # one sentence: the case
     for count in ("ten attributes", "controller-gain"):  # PM-BRIEF ruling 1: terms may be counted
