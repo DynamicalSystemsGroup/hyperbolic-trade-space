@@ -1,0 +1,2553 @@
+{
+ "pointing_requirement_deg": 0.008495,
+ "regime": "primary",
+ "candidates": {
+  "coverage": {
+   "label": "coverage probability",
+   "constants": {
+    "p0": 0.2,
+    "e0": 0.008495
+   },
+   "fit": {
+    "band": 0.02874347518143474,
+    "K=1": {
+     "tau": 34.79050440796716,
+     "terms": [
+      {
+       "term": 1,
+       "exponents": {
+        "fleet cost": 0.3855,
+        "unit cost": 0.0064,
+        "fleet performance": 0.6081
+       },
+       "contending set": [
+        "fleet performance",
+        "fleet cost",
+        "unit cost"
+       ],
+       "n_lemma": 3,
+       "near-frontier": 176,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.017,
+        "fleet cost wrt fleet performance": -1.577,
+        "unit cost wrt fleet cost": -60.273,
+        "unit cost wrt fleet performance": -95.06,
+        "fleet performance wrt fleet cost": -0.634,
+        "fleet performance wrt unit cost": -0.011
+       },
+       "association": {
+        "fleet cost / unit cost": -0.367,
+        "fleet cost / fleet performance": -0.995,
+        "unit cost / fleet performance": 0.358
+       },
+       "share": 1.0,
+       "rows": 2134
+      }
+     ]
+    },
+    "K=2": {
+     "tau": 113.21930132219946,
+     "terms": [
+      {
+       "term": 1,
+       "exponents": {
+        "fleet cost": 0.1403,
+        "unit cost": 0.0,
+        "fleet performance": 0.8597
+       },
+       "contending set": [
+        "fleet performance",
+        "fleet cost"
+       ],
+       "n_lemma": 2,
+       "near-frontier": 461,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.0,
+        "fleet cost wrt fleet performance": -6.129,
+        "fleet performance wrt fleet cost": -0.163,
+        "fleet performance wrt unit cost": -0.0
+       },
+       "association": {
+        "fleet cost / unit cost": 0.108,
+        "fleet cost / fleet performance": -0.936,
+        "unit cost / fleet performance": 0.012
+       },
+       "share": 0.9318181818181818,
+       "rows": 1367
+      },
+      {
+       "term": 2,
+       "exponents": {
+        "fleet cost": 0.537,
+        "unit cost": 0.0,
+        "fleet performance": 0.463
+       },
+       "contending set": [
+        "fleet cost",
+        "fleet performance"
+       ],
+       "n_lemma": 2,
+       "near-frontier": 43,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.0,
+        "fleet cost wrt fleet performance": -0.862,
+        "fleet performance wrt fleet cost": -1.16,
+        "fleet performance wrt unit cost": -0.0
+       },
+       "association": {
+        "fleet cost / unit cost": -0.468,
+        "fleet cost / fleet performance": -0.998,
+        "unit cost / fleet performance": 0.467
+       },
+       "share": 0.06818181818181818,
+       "rows": 767
+      }
+     ]
+    },
+    "near-frontier at the K=1 band, K=1 fit": 176
+   },
+   "decision": {
+    "n_feasible": 2134,
+    "n_six_pass": 548,
+    "n_shortlist": 41,
+    "shortlist_ids": [
+     766,
+     1447,
+     588,
+     2904,
+     1618,
+     1590,
+     791,
+     1568,
+     1247,
+     2263,
+     462,
+     2016,
+     2186,
+     364,
+     280,
+     2191,
+     2866,
+     125,
+     1341,
+     60,
+     807,
+     2623,
+     530,
+     702,
+     2599,
+     1154,
+     2164,
+     2670,
+     428,
+     1323,
+     647,
+     1191,
+     434,
+     1138,
+     303,
+     1474,
+     299,
+     867,
+     254,
+     2466,
+     2826
+    ],
+    "picks": {
+     "sponsor": 766,
+     "manufacturer": 702,
+     "operator": 299,
+     "between": 1590,
+     "balanced": 1590
+    },
+    "top5_by_level": [
+     434,
+     2164,
+     299,
+     2466,
+     254
+    ]
+   },
+   "picks": {
+    "sponsor": {
+     "design_id": 766,
+     "fleet_size": 6,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00282041296,
+     "unit_cost_usd": 266193.288,
+     "fleet_cost_usd": 1597159.73
+    },
+    "manufacturer": {
+     "design_id": 702,
+     "fleet_size": 20,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00308294709,
+     "unit_cost_usd": 218588.814,
+     "fleet_cost_usd": 4371776.27
+    },
+    "operator": {
+     "design_id": 299,
+     "fleet_size": 21,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00280896127,
+     "unit_cost_usd": 221337.223,
+     "fleet_cost_usd": 4648081.68
+    },
+    "between": {
+     "design_id": 1590,
+     "fleet_size": 16,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00281421531,
+     "unit_cost_usd": 245613.257,
+     "fleet_cost_usd": 3929812.11
+    },
+    "balanced": {
+     "design_id": 1590,
+     "fleet_size": 16,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00281421531,
+     "unit_cost_usd": 245613.257,
+     "fleet_cost_usd": 3929812.11
+    }
+   },
+   "top5": [
+    {
+     "design_id": 434,
+     "fleet_size": 16,
+     "wheel": "medium",
+     "tracker": "fine",
+     "pointing_error_deg": 0.000777226968,
+     "unit_cost_usd": 286613.109,
+     "fleet_cost_usd": 4585809.75
+    },
+    {
+     "design_id": 2164,
+     "fleet_size": 20,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00280403477,
+     "unit_cost_usd": 219092.892,
+     "fleet_cost_usd": 4381857.84
+    },
+    {
+     "design_id": 299,
+     "fleet_size": 21,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00280896127,
+     "unit_cost_usd": 221337.223,
+     "fleet_cost_usd": 4648081.68
+    },
+    {
+     "design_id": 2466,
+     "fleet_size": 16,
+     "wheel": "small",
+     "tracker": "fine",
+     "pointing_error_deg": 0.000719537152,
+     "unit_cost_usd": 293012.988,
+     "fleet_cost_usd": 4688207.8
+    },
+    {
+     "design_id": 254,
+     "fleet_size": 21,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00291171986,
+     "unit_cost_usd": 222316.915,
+     "fleet_cost_usd": 4668655.21
+    }
+   ],
+   "perf_range": [
+    0.07251479318023202,
+    0.9979293321787612
+   ],
+   "within_section9_shortlist": {
+    "operator": {
+     "design_id": 2356,
+     "fleet_size": 25,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.0028012382,
+     "unit_cost_usd": 233852.013,
+     "fleet_cost_usd": 5846300.33
+    },
+    "between": {
+     "design_id": 893,
+     "fleet_size": 10,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00342775455,
+     "unit_cost_usd": 288208.852,
+     "fleet_cost_usd": 2882088.52
+    }
+   },
+   "figure": "work-packages/WP56-rounds/ternary/coverage.png",
+   "variations": [
+    {
+     "constant": "p0",
+     "value": 0.1,
+     "factor": 0.5,
+     "picks": {
+      "sponsor": 588,
+      "manufacturer": 807,
+      "operator": 2241,
+      "between": 1590,
+      "balanced": 1590
+     },
+     "top5": [
+      2241,
+      203,
+      2826,
+      2904,
+      867
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 588,
+       "fleet_size": 6,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00290068901,
+       "unit_cost_usd": 274576.353,
+       "fleet_cost_usd": 1647458.12
+      },
+      "manufacturer": {
+       "design_id": 807,
+       "fleet_size": 19,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00309359315,
+       "unit_cost_usd": 228388.909,
+       "fleet_cost_usd": 4339389.27
+      },
+      "operator": {
+       "design_id": 2241,
+       "fleet_size": 18,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00107126599,
+       "unit_cost_usd": 283567.143,
+       "fleet_cost_usd": 5104208.57
+      },
+      "between": {
+       "design_id": 1590,
+       "fleet_size": 16,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00281421531,
+       "unit_cost_usd": 245613.257,
+       "fleet_cost_usd": 3929812.11
+      },
+      "balanced": {
+       "design_id": 1590,
+       "fleet_size": 16,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00281421531,
+       "unit_cost_usd": 245613.257,
+       "fleet_cost_usd": 3929812.11
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 1282,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00317830461,
+       "unit_cost_usd": 265736.084,
+       "fleet_cost_usd": 3188833.0
+      }
+     },
+     "n_shortlist": 37,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": true,
+      "balanced": true
+     },
+     "top5 overlap": 0
+    },
+    {
+     "constant": "p0",
+     "value": 0.4,
+     "factor": 2.0,
+     "picks": {
+      "sponsor": 214,
+      "manufacturer": 702,
+      "operator": 299,
+      "between": 1201,
+      "balanced": 458
+     },
+     "top5": [
+      2888,
+      1449,
+      66,
+      2164,
+      364
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 214,
+       "fleet_size": 11,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00114417845,
+       "unit_cost_usd": 327908.244,
+       "fleet_cost_usd": 3606990.68
+      },
+      "manufacturer": {
+       "design_id": 702,
+       "fleet_size": 20,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00308294709,
+       "unit_cost_usd": 218588.814,
+       "fleet_cost_usd": 4371776.27
+      },
+      "operator": {
+       "design_id": 299,
+       "fleet_size": 21,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00280896127,
+       "unit_cost_usd": 221337.223,
+       "fleet_cost_usd": 4648081.68
+      },
+      "between": {
+       "design_id": 1201,
+       "fleet_size": 14,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00133755461,
+       "unit_cost_usd": 276606.944,
+       "fleet_cost_usd": 3872497.21
+      },
+      "balanced": {
+       "design_id": 458,
+       "fleet_size": 14,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00315959296,
+       "unit_cost_usd": 257751.875,
+       "fleet_cost_usd": 3608526.25
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 2950,
+       "fleet_size": 6,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000740585275,
+       "unit_cost_usd": 343960.754,
+       "fleet_cost_usd": 2063764.52
+      }
+     },
+     "n_shortlist": 51,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": true,
+      "operator": true,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 1
+    },
+    {
+     "constant": "e0",
+     "value": 0.0042475,
+     "factor": 0.5,
+     "picks": {
+      "sponsor": 999,
+      "manufacturer": 2238,
+      "operator": 273,
+      "between": 2477,
+      "balanced": 1542
+     },
+     "top5": [
+      2497,
+      1449,
+      434,
+      2466,
+      273
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 999,
+       "fleet_size": 4,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00295434906,
+       "unit_cost_usd": 281866.19,
+       "fleet_cost_usd": 1127464.76
+      },
+      "manufacturer": {
+       "design_id": 2238,
+       "fleet_size": 28,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00286500269,
+       "unit_cost_usd": 212615.073,
+       "fleet_cost_usd": 5953222.03
+      },
+      "operator": {
+       "design_id": 273,
+       "fleet_size": 19,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00111063156,
+       "unit_cost_usd": 269465.439,
+       "fleet_cost_usd": 5119843.33
+      },
+      "between": {
+       "design_id": 2477,
+       "fleet_size": 12,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00108782815,
+       "unit_cost_usd": 307443.804,
+       "fleet_cost_usd": 3689325.65
+      },
+      "balanced": {
+       "design_id": 1542,
+       "fleet_size": 22,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00287066734,
+       "unit_cost_usd": 225310.243,
+       "fleet_cost_usd": 4956825.35
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2826,
+       "fleet_size": 16,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000781709708,
+       "unit_cost_usd": 295735.701,
+       "fleet_cost_usd": 4731771.22
+      },
+      "between": {
+       "design_id": 2950,
+       "fleet_size": 6,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000740585275,
+       "unit_cost_usd": 343960.754,
+       "fleet_cost_usd": 2063764.52
+      }
+     },
+     "n_shortlist": 31,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 2
+    },
+    {
+     "constant": "e0",
+     "value": 0.01699,
+     "factor": 2.0,
+     "picks": {
+      "sponsor": 1447,
+      "manufacturer": 702,
+      "operator": 867,
+      "between": 2016,
+      "balanced": 2016
+     },
+     "top5": [
+      702,
+      1447,
+      867,
+      807,
+      303
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 1447,
+       "fleet_size": 6,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00280909235,
+       "unit_cost_usd": 270643.895,
+       "fleet_cost_usd": 1623863.37
+      },
+      "manufacturer": {
+       "design_id": 702,
+       "fleet_size": 20,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00308294709,
+       "unit_cost_usd": 218588.814,
+       "fleet_cost_usd": 4371776.27
+      },
+      "operator": {
+       "design_id": 867,
+       "fleet_size": 20,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0027883868,
+       "unit_cost_usd": 232768.743,
+       "fleet_cost_usd": 4655374.85
+      },
+      "between": {
+       "design_id": 2016,
+       "fleet_size": 15,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00183170613,
+       "unit_cost_usd": 273851.313,
+       "fleet_cost_usd": 4107769.7
+      },
+      "balanced": {
+       "design_id": 2016,
+       "fleet_size": 15,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00183170613,
+       "unit_cost_usd": 273851.313,
+       "fleet_cost_usd": 4107769.7
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 893,
+       "fleet_size": 10,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00342775455,
+       "unit_cost_usd": 288208.852,
+       "fleet_cost_usd": 2882088.52
+      }
+     },
+     "n_shortlist": 36,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": true,
+      "operator": false,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 0
+    }
+   ],
+   "stock": {
+    "picks": {
+     "sponsor": {
+      "design_id": 2863,
+      "fleet_size": 4,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00313360229,
+      "unit_cost_usd": 289948.803,
+      "fleet_cost_usd": 1159795.21
+     },
+     "manufacturer": {
+      "design_id": 2697,
+      "fleet_size": 24,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00310972539,
+      "unit_cost_usd": 221024.559,
+      "fleet_cost_usd": 5304589.41
+     },
+     "operator": {
+      "design_id": 84,
+      "fleet_size": 24,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00310866293,
+      "unit_cost_usd": 224769.353,
+      "fleet_cost_usd": 5394464.48
+     },
+     "between": {
+      "design_id": 658,
+      "fleet_size": 14,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00289768964,
+      "unit_cost_usd": 281586.921,
+      "fleet_cost_usd": 3942216.9
+     },
+     "balanced": {
+      "design_id": 658,
+      "fleet_size": 14,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00289768964,
+      "unit_cost_usd": 281586.921,
+      "fleet_cost_usd": 3942216.9
+     }
+    },
+    "n_shortlist": 57,
+    "K1 contending": [
+     "fleet performance",
+     "fleet cost",
+     "unit cost"
+    ]
+   }
+  },
+  "capacity": {
+   "label": "observation capacity",
+   "constants": {
+    "n0": 10.0,
+    "e0": 0.008495
+   },
+   "fit": {
+    "band": 0.03773976710739987,
+    "K=1": {
+     "tau": 26.49724883447741,
+     "terms": [
+      {
+       "term": 1,
+       "exponents": {
+        "fleet cost": 0.4515,
+        "unit cost": 0.0533,
+        "fleet performance": 0.4952
+       },
+       "contending set": [
+        "fleet performance",
+        "fleet cost",
+        "unit cost"
+       ],
+       "n_lemma": 3,
+       "near-frontier": 190,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.118,
+        "fleet cost wrt fleet performance": -1.097,
+        "unit cost wrt fleet cost": -8.469,
+        "unit cost wrt fleet performance": -9.289,
+        "fleet performance wrt fleet cost": -0.912,
+        "fleet performance wrt unit cost": -0.108
+       },
+       "association": {
+        "fleet cost / unit cost": -0.421,
+        "fleet cost / fleet performance": -0.99,
+        "unit cost / fleet performance": 0.311
+       },
+       "share": 1.0,
+       "rows": 2134
+      }
+     ]
+    },
+    "K=2": {
+     "tau": 45.67942900494162,
+     "terms": [
+      {
+       "term": 1,
+       "exponents": {
+        "fleet cost": 0.3676,
+        "unit cost": 0.0939,
+        "fleet performance": 0.5386
+       },
+       "contending set": [
+        "fleet performance",
+        "fleet cost",
+        "unit cost"
+       ],
+       "n_lemma": 3,
+       "near-frontier": 165,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.255,
+        "fleet cost wrt fleet performance": -1.465,
+        "unit cost wrt fleet cost": -3.916,
+        "unit cost wrt fleet performance": -5.739,
+        "fleet performance wrt fleet cost": -0.682,
+        "fleet performance wrt unit cost": -0.174
+       },
+       "association": {
+        "fleet cost / unit cost": -0.143,
+        "fleet cost / fleet performance": -0.942,
+        "unit cost / fleet performance": -0.17
+       },
+       "share": 0.7251908396946565,
+       "rows": 1414
+      },
+      {
+       "term": 2,
+       "exponents": {
+        "fleet cost": 0.5437,
+        "unit cost": 0.0,
+        "fleet performance": 0.4563
+       },
+       "contending set": [
+        "fleet cost",
+        "fleet performance"
+       ],
+       "n_lemma": 2,
+       "near-frontier": 72,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.0,
+        "fleet cost wrt fleet performance": -0.839,
+        "fleet performance wrt fleet cost": -1.192,
+        "fleet performance wrt unit cost": -0.0
+       },
+       "association": {
+        "fleet cost / unit cost": -0.413,
+        "fleet cost / fleet performance": -0.997,
+        "unit cost / fleet performance": 0.435
+       },
+       "share": 0.2748091603053435,
+       "rows": 720
+      }
+     ]
+    },
+    "near-frontier at the K=1 band, K=1 fit": 190
+   },
+   "decision": {
+    "n_feasible": 2134,
+    "n_six_pass": 548,
+    "n_shortlist": 53,
+    "shortlist_ids": [
+     913,
+     296,
+     411,
+     2676,
+     190,
+     2287,
+     906,
+     1524,
+     1136,
+     1225,
+     1581,
+     1452,
+     2111,
+     2477,
+     499,
+     2820,
+     2823,
+     70,
+     988,
+     1590,
+     1568,
+     2263,
+     462,
+     2016,
+     280,
+     2191,
+     2866,
+     125,
+     1341,
+     807,
+     2623,
+     1154,
+     2670,
+     428,
+     1323,
+     647,
+     1191,
+     303,
+     1474,
+     867,
+     2826,
+     928,
+     1542,
+     2441,
+     1661,
+     2970,
+     203,
+     2241,
+     435,
+     373,
+     2697,
+     84,
+     1274
+    ],
+    "picks": {
+     "sponsor": 913,
+     "manufacturer": 2697,
+     "operator": 1274,
+     "between": 1225,
+     "balanced": 2477
+    },
+    "top5_by_level": [
+     2697,
+     296,
+     2970,
+     913,
+     1542
+    ]
+   },
+   "picks": {
+    "sponsor": {
+     "design_id": 913,
+     "fleet_size": 4,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00335646376,
+     "unit_cost_usd": 285780.957,
+     "fleet_cost_usd": 1143123.83
+    },
+    "manufacturer": {
+     "design_id": 2697,
+     "fleet_size": 24,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.0028183824,
+     "unit_cost_usd": 221024.559,
+     "fleet_cost_usd": 5304589.41
+    },
+    "operator": {
+     "design_id": 1274,
+     "fleet_size": 20,
+     "wheel": "small",
+     "tracker": "fine",
+     "pointing_error_deg": 0.000936905852,
+     "unit_cost_usd": 283226.93,
+     "fleet_cost_usd": 5664538.6
+    },
+    "between": {
+     "design_id": 1225,
+     "fleet_size": 13,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.0029781735,
+     "unit_cost_usd": 252049.792,
+     "fleet_cost_usd": 3276647.29
+    },
+    "balanced": {
+     "design_id": 2477,
+     "fleet_size": 12,
+     "wheel": "medium",
+     "tracker": "fine",
+     "pointing_error_deg": 0.00108782815,
+     "unit_cost_usd": 307443.804,
+     "fleet_cost_usd": 3689325.65
+    }
+   },
+   "top5": [
+    {
+     "design_id": 2697,
+     "fleet_size": 24,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.0028183824,
+     "unit_cost_usd": 221024.559,
+     "fleet_cost_usd": 5304589.41
+    },
+    {
+     "design_id": 296,
+     "fleet_size": 4,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00295211023,
+     "unit_cost_usd": 296873.12,
+     "fleet_cost_usd": 1187492.48
+    },
+    {
+     "design_id": 2970,
+     "fleet_size": 18,
+     "wheel": "medium",
+     "tracker": "fine",
+     "pointing_error_deg": 0.000913597222,
+     "unit_cost_usd": 281810.765,
+     "fleet_cost_usd": 5072593.78
+    },
+    {
+     "design_id": 913,
+     "fleet_size": 4,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00335646376,
+     "unit_cost_usd": 285780.957,
+     "fleet_cost_usd": 1143123.83
+    },
+    {
+     "design_id": 1542,
+     "fleet_size": 22,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00287066734,
+     "unit_cost_usd": 225310.243,
+     "fleet_cost_usd": 4956825.35
+    }
+   ],
+   "perf_range": [
+    0.4512677207262141,
+    6.9982888636991225
+   ],
+   "within_section9_shortlist": {
+    "operator": {
+     "design_id": 2826,
+     "fleet_size": 16,
+     "wheel": "medium",
+     "tracker": "fine",
+     "pointing_error_deg": 0.000781709708,
+     "unit_cost_usd": 295735.701,
+     "fleet_cost_usd": 4731771.22
+    },
+    "between": {
+     "design_id": 1282,
+     "fleet_size": 12,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00317830461,
+     "unit_cost_usd": 265736.084,
+     "fleet_cost_usd": 3188833.0
+    }
+   },
+   "figure": "work-packages/WP56-rounds/ternary/capacity.png",
+   "variations": [
+    {
+     "constant": "n0",
+     "value": 5.0,
+     "factor": 0.5,
+     "picks": {
+      "sponsor": 913,
+      "manufacturer": 84,
+      "operator": 655,
+      "between": 1225,
+      "balanced": 2477
+     },
+     "top5": [
+      1542,
+      296,
+      2497,
+      807,
+      913
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 913,
+       "fleet_size": 4,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00335646376,
+       "unit_cost_usd": 285780.957,
+       "fleet_cost_usd": 1143123.83
+      },
+      "manufacturer": {
+       "design_id": 84,
+       "fleet_size": 24,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00281829307,
+       "unit_cost_usd": 224769.353,
+       "fleet_cost_usd": 5394464.48
+      },
+      "operator": {
+       "design_id": 655,
+       "fleet_size": 20,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000652258992,
+       "unit_cost_usd": 282869.308,
+       "fleet_cost_usd": 5657386.15
+      },
+      "between": {
+       "design_id": 1225,
+       "fleet_size": 13,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0029781735,
+       "unit_cost_usd": 252049.792,
+       "fleet_cost_usd": 3276647.29
+      },
+      "balanced": {
+       "design_id": 2477,
+       "fleet_size": 12,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00108782815,
+       "unit_cost_usd": 307443.804,
+       "fleet_cost_usd": 3689325.65
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2826,
+       "fleet_size": 16,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000781709708,
+       "unit_cost_usd": 295735.701,
+       "fleet_cost_usd": 4731771.22
+      },
+      "between": {
+       "design_id": 1282,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00317830461,
+       "unit_cost_usd": 265736.084,
+       "fleet_cost_usd": 3188833.0
+      }
+     },
+     "n_shortlist": 54,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": true,
+      "manufacturer": false,
+      "operator": false,
+      "between": true,
+      "balanced": true
+     },
+     "top5 overlap": 3
+    },
+    {
+     "constant": "n0",
+     "value": 20.0,
+     "factor": 2.0,
+     "picks": {
+      "sponsor": 913,
+      "manufacturer": 437,
+      "operator": 1274,
+      "between": 2937,
+      "balanced": 1225
+     },
+     "top5": [
+      913,
+      437,
+      296,
+      1828,
+      2697
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 913,
+       "fleet_size": 4,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00335646376,
+       "unit_cost_usd": 285780.957,
+       "fleet_cost_usd": 1143123.83
+      },
+      "manufacturer": {
+       "design_id": 437,
+       "fleet_size": 25,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00279403438,
+       "unit_cost_usd": 217927.429,
+       "fleet_cost_usd": 5448185.72
+      },
+      "operator": {
+       "design_id": 1274,
+       "fleet_size": 20,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000936905852,
+       "unit_cost_usd": 283226.93,
+       "fleet_cost_usd": 5664538.6
+      },
+      "between": {
+       "design_id": 2937,
+       "fleet_size": 13,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00283257224,
+       "unit_cost_usd": 250807.888,
+       "fleet_cost_usd": 3260502.55
+      },
+      "balanced": {
+       "design_id": 1225,
+       "fleet_size": 13,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0029781735,
+       "unit_cost_usd": 252049.792,
+       "fleet_cost_usd": 3276647.29
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 1282,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00317830461,
+       "unit_cost_usd": 265736.084,
+       "fleet_cost_usd": 3188833.0
+      }
+     },
+     "n_shortlist": 48,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": true,
+      "manufacturer": false,
+      "operator": true,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 3
+    },
+    {
+     "constant": "e0",
+     "value": 0.0042475,
+     "factor": 0.5,
+     "picks": {
+      "sponsor": 2082,
+      "manufacturer": 84,
+      "operator": 655,
+      "between": 1550,
+      "balanced": 1550
+     },
+     "top5": [
+      807,
+      84,
+      867,
+      2823,
+      655
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 2082,
+       "fleet_size": 3,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00280508567,
+       "unit_cost_usd": 316549.235,
+       "fleet_cost_usd": 949647.704
+      },
+      "manufacturer": {
+       "design_id": 84,
+       "fleet_size": 24,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00281829307,
+       "unit_cost_usd": 224769.353,
+       "fleet_cost_usd": 5394464.48
+      },
+      "operator": {
+       "design_id": 655,
+       "fleet_size": 20,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000652258992,
+       "unit_cost_usd": 282869.308,
+       "fleet_cost_usd": 5657386.15
+      },
+      "between": {
+       "design_id": 1550,
+       "fleet_size": 9,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000722829036,
+       "unit_cost_usd": 327839.697,
+       "fleet_cost_usd": 2950557.28
+      },
+      "balanced": {
+       "design_id": 1550,
+       "fleet_size": 9,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000722829036,
+       "unit_cost_usd": 327839.697,
+       "fleet_cost_usd": 2950557.28
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2826,
+       "fleet_size": 16,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000781709708,
+       "unit_cost_usd": 295735.701,
+       "fleet_cost_usd": 4731771.22
+      },
+      "between": {
+       "design_id": 2950,
+       "fleet_size": 6,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000740585275,
+       "unit_cost_usd": 343960.754,
+       "fleet_cost_usd": 2063764.52
+      }
+     },
+     "n_shortlist": 53,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 0
+    },
+    {
+     "constant": "e0",
+     "value": 0.01699,
+     "factor": 2.0,
+     "picks": {
+      "sponsor": 2904,
+      "manufacturer": 437,
+      "operator": 437,
+      "between": 2738,
+      "balanced": 2738
+     },
+     "top5": [
+      254,
+      1474,
+      2623,
+      2904,
+      647
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 2904,
+       "fleet_size": 5,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000956872661,
+       "unit_cost_usd": 339423.913,
+       "fleet_cost_usd": 1697119.56
+      },
+      "manufacturer": {
+       "design_id": 437,
+       "fleet_size": 25,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00279403438,
+       "unit_cost_usd": 217927.429,
+       "fleet_cost_usd": 5448185.72
+      },
+      "operator": {
+       "design_id": 437,
+       "fleet_size": 25,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00279403438,
+       "unit_cost_usd": 217927.429,
+       "fleet_cost_usd": 5448185.72
+      },
+      "between": {
+       "design_id": 2738,
+       "fleet_size": 12,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00128797928,
+       "unit_cost_usd": 304809.651,
+       "fleet_cost_usd": 3657715.81
+      },
+      "balanced": {
+       "design_id": 2738,
+       "fleet_size": 12,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00128797928,
+       "unit_cost_usd": 304809.651,
+       "fleet_cost_usd": 3657715.81
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 1282,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00317830461,
+       "unit_cost_usd": 265736.084,
+       "fleet_cost_usd": 3188833.0
+      }
+     },
+     "n_shortlist": 48,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 0
+    }
+   ],
+   "stock": {
+    "picks": {
+     "sponsor": {
+      "design_id": 2195,
+      "fleet_size": 3,
+      "wheel": "medium",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00305566167,
+      "unit_cost_usd": 349264.472,
+      "fleet_cost_usd": 1047793.42
+     },
+     "manufacturer": {
+      "design_id": 2238,
+      "fleet_size": 28,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00374931824,
+      "unit_cost_usd": 212615.073,
+      "fleet_cost_usd": 5953222.03
+     },
+     "operator": {
+      "design_id": 1938,
+      "fleet_size": 20,
+      "wheel": "small",
+      "tracker": "fine",
+      "pointing_error_deg": 0.000949238605,
+      "unit_cost_usd": 298083.583,
+      "fleet_cost_usd": 5961671.67
+     },
+     "between": {
+      "design_id": 2683,
+      "fleet_size": 11,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00283590288,
+      "unit_cost_usd": 286093.708,
+      "fleet_cost_usd": 3147030.79
+     },
+     "balanced": {
+      "design_id": 1517,
+      "fleet_size": 11,
+      "wheel": "medium",
+      "tracker": "fine",
+      "pointing_error_deg": 0.00172354381,
+      "unit_cost_usd": 319411.739,
+      "fleet_cost_usd": 3513529.13
+     }
+    },
+    "n_shortlist": 75,
+    "K1 contending": [
+     "fleet performance",
+     "fleet cost",
+     "unit cost"
+    ]
+   }
+  },
+  "revisit": {
+   "label": "refresh rate",
+   "constants": {
+    "n0": 10.0,
+    "ew": 0.008495
+   },
+   "fit": {
+    "band": 0.026249394761095234,
+    "K=1": {
+     "tau": 38.096116466735474,
+     "terms": [
+      {
+       "term": 1,
+       "exponents": {
+        "fleet cost": 0.4183,
+        "unit cost": 0.0,
+        "fleet performance": 0.5817
+       },
+       "contending set": [
+        "fleet performance",
+        "fleet cost"
+       ],
+       "n_lemma": 2,
+       "near-frontier": 195,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.0,
+        "fleet cost wrt fleet performance": -1.39,
+        "fleet performance wrt fleet cost": -0.719,
+        "fleet performance wrt unit cost": -0.0
+       },
+       "association": {
+        "fleet cost / unit cost": -0.669,
+        "fleet cost / fleet performance": -0.997,
+        "unit cost / fleet performance": 0.681
+       },
+       "share": 1.0,
+       "rows": 2134
+      }
+     ]
+    },
+    "K=2": {
+     "tau": 71.91517945980878,
+     "terms": [
+      {
+       "term": 1,
+       "exponents": {
+        "fleet cost": 0.3174,
+        "unit cost": 0.0,
+        "fleet performance": 0.6826
+       },
+       "contending set": [
+        "fleet performance",
+        "fleet cost"
+       ],
+       "n_lemma": 2,
+       "near-frontier": 251,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.0,
+        "fleet cost wrt fleet performance": -2.151,
+        "fleet performance wrt fleet cost": -0.465,
+        "fleet performance wrt unit cost": -0.0
+       },
+       "association": {
+        "fleet cost / unit cost": -0.064,
+        "fleet cost / fleet performance": -0.992,
+        "unit cost / fleet performance": 0.134
+       },
+       "share": 0.874251497005988,
+       "rows": 1360
+      },
+      {
+       "term": 2,
+       "exponents": {
+        "fleet cost": 0.4951,
+        "unit cost": 0.0,
+        "fleet performance": 0.5049
+       },
+       "contending set": [
+        "fleet performance",
+        "fleet cost"
+       ],
+       "n_lemma": 2,
+       "near-frontier": 43,
+       "elasticities": {
+        "fleet cost wrt unit cost": -0.0,
+        "fleet cost wrt fleet performance": -1.02,
+        "fleet performance wrt fleet cost": -0.981,
+        "fleet performance wrt unit cost": -0.0
+       },
+       "association": {
+        "fleet cost / unit cost": -0.584,
+        "fleet cost / fleet performance": -0.999,
+        "unit cost / fleet performance": 0.601
+       },
+       "share": 0.12574850299401197,
+       "rows": 774
+      }
+     ]
+    },
+    "near-frontier at the K=1 band, K=1 fit": 195
+   },
+   "decision": {
+    "n_feasible": 2134,
+    "n_six_pass": 548,
+    "n_shortlist": 61,
+    "shortlist_ids": [
+     190,
+     2584,
+     271,
+     1858,
+     2904,
+     860,
+     2779,
+     2347,
+     1011,
+     1001,
+     2811,
+     1568,
+     2016,
+     364,
+     1449,
+     2191,
+     125,
+     66,
+     2623,
+     530,
+     2599,
+     2670,
+     428,
+     1323,
+     647,
+     1191,
+     989,
+     49,
+     434,
+     1138,
+     1474,
+     2958,
+     611,
+     2466,
+     1168,
+     2826,
+     1475,
+     2177,
+     1325,
+     864,
+     623,
+     2497,
+     2288,
+     2293,
+     613,
+     2307,
+     297,
+     683,
+     2970,
+     1221,
+     203,
+     2241,
+     273,
+     2414,
+     940,
+     2167,
+     1238,
+     851,
+     142,
+     1965,
+     982
+    ],
+    "picks": {
+     "sponsor": 190,
+     "manufacturer": 982,
+     "operator": 982,
+     "between": 1001,
+     "balanced": 1001
+    },
+    "top5_by_level": [
+     2293,
+     1238,
+     273,
+     851,
+     2414
+    ]
+   },
+   "picks": {
+    "sponsor": {
+     "design_id": 190,
+     "fleet_size": 5,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00295336114,
+     "unit_cost_usd": 303019.655,
+     "fleet_cost_usd": 1515098.28
+    },
+    "manufacturer": {
+     "design_id": 982,
+     "fleet_size": 23,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00330167138,
+     "unit_cost_usd": 236577.655,
+     "fleet_cost_usd": 5441286.07
+    },
+    "operator": {
+     "design_id": 982,
+     "fleet_size": 23,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00330167138,
+     "unit_cost_usd": 236577.655,
+     "fleet_cost_usd": 5441286.07
+    },
+    "between": {
+     "design_id": 1001,
+     "fleet_size": 15,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00312662498,
+     "unit_cost_usd": 256262.226,
+     "fleet_cost_usd": 3843933.39
+    },
+    "balanced": {
+     "design_id": 1001,
+     "fleet_size": 15,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00312662498,
+     "unit_cost_usd": 256262.226,
+     "fleet_cost_usd": 3843933.39
+    }
+   },
+   "top5": [
+    {
+     "design_id": 2293,
+     "fleet_size": 18,
+     "wheel": "small",
+     "tracker": "fine",
+     "pointing_error_deg": 0.00068857822,
+     "unit_cost_usd": 272941.717,
+     "fleet_cost_usd": 4912950.9
+    },
+    {
+     "design_id": 1238,
+     "fleet_size": 22,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00297581774,
+     "unit_cost_usd": 241086.698,
+     "fleet_cost_usd": 5303907.36
+    },
+    {
+     "design_id": 273,
+     "fleet_size": 19,
+     "wheel": "small",
+     "tracker": "fine",
+     "pointing_error_deg": 0.00111063156,
+     "unit_cost_usd": 269465.439,
+     "fleet_cost_usd": 5119843.33
+    },
+    {
+     "design_id": 851,
+     "fleet_size": 22,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.0029861414,
+     "unit_cost_usd": 241639.987,
+     "fleet_cost_usd": 5316079.72
+    },
+    {
+     "design_id": 2414,
+     "fleet_size": 21,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00287521507,
+     "unit_cost_usd": 245029.152,
+     "fleet_cost_usd": 5145612.2
+    }
+   ],
+   "perf_range": [
+    0.034494574059337396,
+    0.7490350996936169
+   ],
+   "within_section9_shortlist": {
+    "operator": {
+     "design_id": 2356,
+     "fleet_size": 25,
+     "wheel": "medium",
+     "tracker": "medium",
+     "pointing_error_deg": 0.0028012382,
+     "unit_cost_usd": 233852.013,
+     "fleet_cost_usd": 5846300.33
+    },
+    "between": {
+     "design_id": 68,
+     "fleet_size": 12,
+     "wheel": "small",
+     "tracker": "medium",
+     "pointing_error_deg": 0.00358833352,
+     "unit_cost_usd": 258948.646,
+     "fleet_cost_usd": 3107383.76
+    }
+   },
+   "figure": "work-packages/WP56-rounds/ternary/revisit.png",
+   "variations": [
+    {
+     "constant": "n0",
+     "value": 5.0,
+     "factor": 0.5,
+     "picks": {
+      "sponsor": 1650,
+      "manufacturer": 2167,
+      "operator": 1238,
+      "between": 1904,
+      "balanced": 2533
+     },
+     "top5": [
+      1323,
+      2293,
+      530,
+      428,
+      611
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 1650,
+       "fleet_size": 5,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00281040008,
+       "unit_cost_usd": 276392.915,
+       "fleet_cost_usd": 1381964.58
+      },
+      "manufacturer": {
+       "design_id": 2167,
+       "fleet_size": 22,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00306394684,
+       "unit_cost_usd": 240899.451,
+       "fleet_cost_usd": 5299787.92
+      },
+      "operator": {
+       "design_id": 1238,
+       "fleet_size": 22,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00297581774,
+       "unit_cost_usd": 241086.698,
+       "fleet_cost_usd": 5303907.36
+      },
+      "between": {
+       "design_id": 1904,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00121467159,
+       "unit_cost_usd": 298985.219,
+       "fleet_cost_usd": 3587822.62
+      },
+      "balanced": {
+       "design_id": 2533,
+       "fleet_size": 5,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00293808668,
+       "unit_cost_usd": 283386.45,
+       "fleet_cost_usd": 1416932.25
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 68,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00358833352,
+       "unit_cost_usd": 258948.646,
+       "fleet_cost_usd": 3107383.76
+      }
+     },
+     "n_shortlist": 64,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 1
+    },
+    {
+     "constant": "n0",
+     "value": 20.0,
+     "factor": 2.0,
+     "picks": {
+      "sponsor": 411,
+      "manufacturer": 2049,
+      "operator": 2049,
+      "between": 1001,
+      "balanced": 1001
+     },
+     "top5": [
+      2577,
+      17,
+      1238,
+      2293,
+      273
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 411,
+       "fleet_size": 4,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00282159705,
+       "unit_cost_usd": 307649.456,
+       "fleet_cost_usd": 1230597.82
+      },
+      "manufacturer": {
+       "design_id": 2049,
+       "fleet_size": 26,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00340529484,
+       "unit_cost_usd": 229725.314,
+       "fleet_cost_usd": 5972858.17
+      },
+      "operator": {
+       "design_id": 2049,
+       "fleet_size": 26,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00340529484,
+       "unit_cost_usd": 229725.314,
+       "fleet_cost_usd": 5972858.17
+      },
+      "between": {
+       "design_id": 1001,
+       "fleet_size": 15,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00312662498,
+       "unit_cost_usd": 256262.226,
+       "fleet_cost_usd": 3843933.39
+      },
+      "balanced": {
+       "design_id": 1001,
+       "fleet_size": 15,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00312662498,
+       "unit_cost_usd": 256262.226,
+       "fleet_cost_usd": 3843933.39
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 1282,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00317830461,
+       "unit_cost_usd": 265736.084,
+       "fleet_cost_usd": 3188833.0
+      }
+     },
+     "n_shortlist": 73,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": true,
+      "balanced": true
+     },
+     "top5 overlap": 3
+    },
+    {
+     "constant": "ew",
+     "value": 0.0042475,
+     "factor": 0.5,
+     "picks": {
+      "sponsor": 1096,
+      "manufacturer": 2238,
+      "operator": 2238,
+      "between": 2226,
+      "balanced": 2238
+     },
+     "top5": [
+      2226,
+      647,
+      280,
+      462,
+      1341
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 1096,
+       "fleet_size": 7,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00201465658,
+       "unit_cost_usd": 323865.259,
+       "fleet_cost_usd": 2267056.82
+      },
+      "manufacturer": {
+       "design_id": 2238,
+       "fleet_size": 28,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00286500269,
+       "unit_cost_usd": 212615.073,
+       "fleet_cost_usd": 5953222.03
+      },
+      "operator": {
+       "design_id": 2238,
+       "fleet_size": 28,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00286500269,
+       "unit_cost_usd": 212615.073,
+       "fleet_cost_usd": 5953222.03
+      },
+      "between": {
+       "design_id": 2226,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000978150296,
+       "unit_cost_usd": 316122.19,
+       "fleet_cost_usd": 3793466.29
+      },
+      "balanced": {
+       "design_id": 2238,
+       "fleet_size": 28,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00286500269,
+       "unit_cost_usd": 212615.073,
+       "fleet_cost_usd": 5953222.03
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 2950,
+       "fleet_size": 6,
+       "wheel": "medium",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000740585275,
+       "unit_cost_usd": 343960.754,
+       "fleet_cost_usd": 2063764.52
+      }
+     },
+     "n_shortlist": 38,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost",
+      "unit cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 0
+    },
+    {
+     "constant": "ew",
+     "value": 0.01699,
+     "factor": 2.0,
+     "picks": {
+      "sponsor": 500,
+      "manufacturer": 2930,
+      "operator": 1432,
+      "between": 1201,
+      "balanced": 1201
+     },
+     "top5": [
+      1432,
+      1168,
+      1475,
+      1467,
+      940
+     ],
+     "picks_described": {
+      "sponsor": {
+       "design_id": 500,
+       "fleet_size": 6,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.000973002367,
+       "unit_cost_usd": 306820.931,
+       "fleet_cost_usd": 1840925.59
+      },
+      "manufacturer": {
+       "design_id": 2930,
+       "fleet_size": 24,
+       "wheel": "small",
+       "tracker": "coarse",
+       "pointing_error_deg": 0.00843156432,
+       "unit_cost_usd": 207835.34,
+       "fleet_cost_usd": 4988048.16
+      },
+      "operator": {
+       "design_id": 1432,
+       "fleet_size": 23,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00280423887,
+       "unit_cost_usd": 245243.183,
+       "fleet_cost_usd": 5640593.21
+      },
+      "between": {
+       "design_id": 1201,
+       "fleet_size": 14,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00133755461,
+       "unit_cost_usd": 276606.944,
+       "fleet_cost_usd": 3872497.21
+      },
+      "balanced": {
+       "design_id": 1201,
+       "fleet_size": 14,
+       "wheel": "small",
+       "tracker": "fine",
+       "pointing_error_deg": 0.00133755461,
+       "unit_cost_usd": 276606.944,
+       "fleet_cost_usd": 3872497.21
+      }
+     },
+     "within_section9_shortlist": {
+      "operator": {
+       "design_id": 2356,
+       "fleet_size": 25,
+       "wheel": "medium",
+       "tracker": "medium",
+       "pointing_error_deg": 0.0028012382,
+       "unit_cost_usd": 233852.013,
+       "fleet_cost_usd": 5846300.33
+      },
+      "between": {
+       "design_id": 68,
+       "fleet_size": 12,
+       "wheel": "small",
+       "tracker": "medium",
+       "pointing_error_deg": 0.00358833352,
+       "unit_cost_usd": 258948.646,
+       "fleet_cost_usd": 3107383.76
+      }
+     },
+     "n_shortlist": 49,
+     "K1 contending": [
+      "fleet performance",
+      "fleet cost"
+     ],
+     "same as base": {
+      "sponsor": false,
+      "manufacturer": false,
+      "operator": false,
+      "between": false,
+      "balanced": false
+     },
+     "top5 overlap": 0
+    }
+   ],
+   "stock": {
+    "picks": {
+     "sponsor": {
+      "design_id": 1667,
+      "fleet_size": 3,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00371057036,
+      "unit_cost_usd": 293377.391,
+      "fleet_cost_usd": 880132.173
+     },
+     "manufacturer": {
+      "design_id": 2238,
+      "fleet_size": 28,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00374931824,
+      "unit_cost_usd": 212615.073,
+      "fleet_cost_usd": 5953222.03
+     },
+     "operator": {
+      "design_id": 63,
+      "fleet_size": 28,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00294668161,
+      "unit_cost_usd": 213923.021,
+      "fleet_cost_usd": 5989844.6
+     },
+     "between": {
+      "design_id": 1673,
+      "fleet_size": 11,
+      "wheel": "medium",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00368261004,
+      "unit_cost_usd": 285075.883,
+      "fleet_cost_usd": 3135834.71
+     },
+     "balanced": {
+      "design_id": 1667,
+      "fleet_size": 3,
+      "wheel": "small",
+      "tracker": "medium",
+      "pointing_error_deg": 0.00371057036,
+      "unit_cost_usd": 293377.391,
+      "fleet_cost_usd": 880132.173
+     }
+    },
+    "n_shortlist": 92,
+    "K1 contending": [
+     "fleet performance",
+     "fleet cost"
+    ]
+   }
+  }
+ },
+ "section9_picks": {
+  "sponsor": {
+   "design_id": 999,
+   "fleet_size": 4,
+   "wheel": "small",
+   "tracker": "medium",
+   "pointing_error_deg": 0.00295434906,
+   "unit_cost_usd": 281866.19,
+   "fleet_cost_usd": 1127464.76
+  },
+  "cheapest unit": {
+   "design_id": 2356,
+   "fleet_size": 25,
+   "wheel": "medium",
+   "tracker": "medium",
+   "pointing_error_deg": 0.0028012382,
+   "unit_cost_usd": 233852.013,
+   "fleet_cost_usd": 5846300.33
+  },
+  "operator": {
+   "design_id": 2950,
+   "fleet_size": 6,
+   "wheel": "medium",
+   "tracker": "fine",
+   "pointing_error_deg": 0.000740585275,
+   "unit_cost_usd": 343960.754,
+   "fleet_cost_usd": 2063764.52
+  },
+  "between": {
+   "design_id": 1858,
+   "fleet_size": 5,
+   "wheel": "medium",
+   "tracker": "fine",
+   "pointing_error_deg": 0.000796868858,
+   "unit_cost_usd": 337228.474,
+   "fleet_cost_usd": 1686142.37
+  },
+  "balanced": {
+   "design_id": 766,
+   "fleet_size": 6,
+   "wheel": "medium",
+   "tracker": "medium",
+   "pointing_error_deg": 0.00282041296,
+   "unit_cost_usd": 266193.288,
+   "fleet_cost_usd": 1597159.73
+  },
+  "fine": {
+   "design_id": 1858,
+   "fleet_size": 5,
+   "wheel": "medium",
+   "tracker": "fine",
+   "pointing_error_deg": 0.000796868858,
+   "unit_cost_usd": 337228.474,
+   "fleet_cost_usd": 1686142.37
+  }
+ },
+ "across": {
+  "picks": {
+   "sponsor": {
+    "coverage": 766,
+    "capacity": 913,
+    "revisit": 190
+   },
+   "manufacturer": {
+    "coverage": 702,
+    "capacity": 2697,
+    "revisit": 982
+   },
+   "operator": {
+    "coverage": 299,
+    "capacity": 1274,
+    "revisit": 982
+   },
+   "between": {
+    "coverage": 1590,
+    "capacity": 1225,
+    "revisit": 1001
+   },
+   "balanced": {
+    "coverage": 1590,
+    "capacity": 2477,
+    "revisit": 1001
+   }
+  },
+  "same pick across the three": {
+   "sponsor": false,
+   "manufacturer": false,
+   "operator": false,
+   "between": false,
+   "balanced": false
+  },
+  "same configuration (wheel, tracker, fleet size) across the three": {
+   "sponsor": false,
+   "manufacturer": false,
+   "operator": false,
+   "between": false,
+   "balanced": false
+  },
+  "shortlist overlap": {
+   "coverage/capacity": [
+    22,
+    72
+   ],
+   "coverage/revisit": [
+    19,
+    83
+   ],
+   "capacity/revisit": [
+    16,
+    98
+   ]
+  },
+  "top5 overlap": {
+   "coverage/capacity": 0,
+   "coverage/revisit": 0,
+   "capacity/revisit": 0
+  },
+  "spearman of the aggregates over the feasible designs": {
+   "coverage/capacity": 0.9844,
+   "coverage/revisit": 0.9947,
+   "capacity/revisit": 0.9803
+  },
+  "spearman of each aggregate with the fleet size": {
+   "coverage": 0.8473,
+   "capacity": 0.7594,
+   "revisit": 0.8273
+  },
+  "spearman of each aggregate with the pointing error": {
+   "coverage": -0.453,
+   "capacity": -0.5503,
+   "revisit": -0.4556
+  },
+  "constants varied: variations (of the variations) where the pick changes": {
+   "coverage": {
+    "sponsor": 4,
+    "manufacturer": 2,
+    "operator": 3,
+    "between": 3,
+    "balanced": 3,
+    "variations": 4
+   },
+   "capacity": {
+    "sponsor": 2,
+    "manufacturer": 4,
+    "operator": 3,
+    "between": 3,
+    "balanced": 3,
+    "variations": 4
+   },
+   "revisit": {
+    "sponsor": 4,
+    "manufacturer": 4,
+    "operator": 4,
+    "between": 3,
+    "balanced": 3,
+    "variations": 4
+   }
+  },
+  "coarse: each rule over the three definitions and every variation": {
+   "sponsor": {
+    "fleet size": [
+     3,
+     11
+    ],
+    "trackers": [
+     "fine",
+     "medium"
+    ],
+    "wheels": [
+     "medium",
+     "small"
+    ],
+    "distinct designs": 13,
+    "fits": 15
+   },
+   "manufacturer": {
+    "fleet size": [
+     19,
+     28
+    ],
+    "trackers": [
+     "coarse",
+     "medium"
+    ],
+    "wheels": [
+     "medium",
+     "small"
+    ],
+    "distinct designs": 10,
+    "fits": 15
+   },
+   "operator": {
+    "fleet size": [
+     18,
+     28
+    ],
+    "trackers": [
+     "fine",
+     "medium"
+    ],
+    "wheels": [
+     "medium",
+     "small"
+    ],
+    "distinct designs": 12,
+    "fits": 15
+   },
+   "between": {
+    "fleet size": [
+     9,
+     16
+    ],
+    "trackers": [
+     "fine",
+     "medium"
+    ],
+    "wheels": [
+     "medium",
+     "small"
+    ],
+    "distinct designs": 11,
+    "fits": 15
+   },
+   "balanced": {
+    "fleet size": [
+     5,
+     28
+    ],
+    "trackers": [
+     "fine",
+     "medium"
+    ],
+    "wheels": [
+     "medium",
+     "small"
+    ],
+    "distinct designs": 12,
+    "fits": 15
+   }
+  },
+  "within Section 9's shortlist (the operator's and the in-between pick)": {
+   "operator": {
+    "fleet size": [
+     16,
+     25
+    ],
+    "trackers": [
+     "fine",
+     "medium"
+    ],
+    "distinct designs": 2,
+    "design ids": [
+     2356,
+     2826
+    ],
+    "evaluations": 15,
+    "at base": {
+     "coverage": 2356,
+     "capacity": 2826,
+     "revisit": 2356
+    }
+   },
+   "between": {
+    "fleet size": [
+     6,
+     12
+    ],
+    "trackers": [
+     "fine",
+     "medium"
+    ],
+    "distinct designs": 4,
+    "design ids": [
+     68,
+     893,
+     1282,
+     2950
+    ],
+    "evaluations": 15,
+    "at base": {
+     "coverage": 893,
+     "capacity": 1282,
+     "revisit": 68
+    }
+   }
+  },
+  "Section 9's own operator and in-between picks, pointing error as the measure": {
+   "operator": 2950,
+   "between": 1858
+  }
+ }
+}
