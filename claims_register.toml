@@ -8237,22 +8237,7 @@ note = "Record id 2026-adcs-lifecycle-demo (https://dynamicalsystemsgroup.github
 
 [[claim]]
 id = "C728"
-fragment = "This page is an essay on the people and"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:history.yaml",
-  "file:work-packages/WP37-rounds/trace.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP52 history page, 2026-11-15"
-note = "No link: the page's own words, the supervisor's framing of the essay (WP52-decisions.md, 2026-11-15: the bottom line up front, the thesis, the conclusion) or a sentence read from a linked source in the same paragraph."
-
-[[claim]]
-id = "C729"
-fragment = "It carries what the paper&rsquo;s citations cannot: lived experience,"
+fragment = "The people and the lineage of this work are what the paper&rsquo;s citations cannot carry: lived experience, and"
 file = "site/history.html"
 anchor = ""
 kind = "S"
