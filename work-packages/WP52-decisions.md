@@ -524,3 +524,10 @@ everyone word and reference earns its place"
 Taken as the go for the full draft in one edit pass on the history branch, bound 2,000, with a carving pass to follow his
 read.
 
+**Supervisor (07:55 EST):** "i also think we probably want to make my distributed convex optimization work slightly more
+explicit so that Jadbabaie, Ribeiro and Ozdaglar are named in the text. this is for my TAC paper which came before the
+paper with Preciado."
+
+Applied in the pass: the "Before the firm" paragraph opens with the TAC paper (2014) and its four authors, then the paper
+with Preciado.
+
