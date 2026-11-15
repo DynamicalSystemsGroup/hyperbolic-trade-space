@@ -401,10 +401,3 @@ file = "src/hyperbolic_trade_space/tuning.py"
 phrase = "return temperature"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc Returns entry of a docstring (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/index.md"
-phrase = "table has gaps"
-owner = "docshome branch (the driver)"
-reason = "WP42 makes white space the one word for an unoccupied region of the chart (gap stays with the term gap and the gaps ledger); docs/index.md is held by the docshome branch and not edited by the WP42 build, which adds this row; the docshome branch rewrites the clause and removes the row"

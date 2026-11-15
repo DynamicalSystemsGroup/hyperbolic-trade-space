@@ -7273,7 +7273,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "final round, second paper unit, change requests 32 to 92"
-note = "L16 (ii): the fixed-weight objective bounds the soft slack from above with equality at the weights' own model."
+note = "L16 (ii): the fixed-weight loss bounds the soft slack from above with equality at the weights' own model."
 
 [[claim]]
 id = "C642"
