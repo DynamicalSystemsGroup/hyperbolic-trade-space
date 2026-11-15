@@ -1077,7 +1077,7 @@ def test_history_page_follows_the_scope_order_and_the_closing_unit_rulings():
     raw = HISTORY.read_text(encoding="utf-8")
     text = _history_text()
     main = raw[raw.index("<main>") :]
-    assert main.index('<a href="./">') < main.index("<h1>") < main.index("This page is an essay")
+    assert main.index('<a href="./">') < main.index("<h1>") < main.index("The people and the lineage of this work")
     assert raw.count('<a href="./">') == 2  # top and footer
     assert "With computers, fast but with confidence" not in text
     order = (

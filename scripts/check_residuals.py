@@ -94,6 +94,13 @@ _META = {
     # the supervisor, 2026-11-14 (WP52-decisions.md): what a page of ours says is our account by
     # definition, so the hedge names nothing
     "own-account": r"\bin (our|the same) own account\b|\bin the same account\b",
+    # the supervisor, 2026-11-14 night (WP51-decisions.md, CLAUDE.md "No metanarration"): a sentence
+    # about the reader's experience or the figure's placement says nothing
+    "reader-experience": (
+        r"\b(you have (now )?(seen|read|met)|the reader (has|will) (now )?(seen|see|read)|"
+        r"the figure (further )?(down|below|above)|this page (names|shows|is|does|carries|gives)|"
+        r"as (shown|seen|described) (in|on) (this|the) (page|figure|section))\b"
+    ),
     "note-that": r"(^|[.;:]\s+)note that\b",
     "recall-that": r"(^|[.;:]\s+)recall that\b",
     "summary": (
