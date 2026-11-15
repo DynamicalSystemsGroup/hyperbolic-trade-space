@@ -14,3 +14,19 @@ default for interactive use); the paper's figure draws one triangle. The driver'
 upper triangle with the rows ordered by exponent, largest first, so every drawn cell is the cost of a gain in a
 heavier metric paid in a lighter one and all values are at least one; the caption says the other triangle is the
 reciprocal. Judged as rendered in WP56's figure loop before it reaches him.
+
+## A decision-maker's ternary: unit cost, fleet cost, performance (2026-11-15, 12:35 EST by the machine clock)
+
+**Supervisor, verbatim:** "i also think it may be worth trying to build a ternary plot that is unit cost, fleet cost
+and performance. where performance is some aggregated that is interpretable as "how well can the fleet do its job" i
+would expect it to improve in a larger fleet but with diminishing returns, and to be impacted by the pointing error.
+we're assuming the fleet is trying to achieve some sort of coverage problem. i don't want to add a lot of model
+detail. just enough to get to something obviously relevant to a top level decision maker that fits on a ternary."
+
+**Recorded as a WP56 candidate edit (the six-stage lifecycle):** a research spike first: a fleet-performance
+aggregate from the model's existing outputs (fleet size and pointing error at least), improving with fleet size
+with diminishing returns and falling with pointing error, read as coverage; two or three candidate definitions with
+their formula, their reading for an executive and the model detail each needs (as little as possible); each fitted
+with unit cost and fleet cost as a three-metric table and drawn as a ternary; the candidates brought to him with the
+figures before any build. The WP59 finding that a derived metric can absorb the metrics it is made of applies and is
+stated once in the spike.
