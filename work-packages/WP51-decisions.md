@@ -117,3 +117,12 @@ separate), each cold-read by two fresh readers against the one-sentence test, th
 prose, the three candidates kept in the loop record for his morning read. In every candidate the envelope at a fan value
 is one connected line. Merges only on his word.
 
+**Supervisor (2026-11-14 22:31 EST), on the fan figure as drawn (image attached in chat):** "for starters there are a lot of lines and
+we've lost the story of the 3 curves and the stars are not inuitive"
+
+**Applied as:** three constraints handed to the rework unit: one surface per pane, its three pieces in the three term
+colours as one connected curve, so the story is the three curves; far fewer lines (the fan reduced to the median, or
+one contrast at most, told in a single pane or the caption); no stars: the one design marked as Figure 1 marks it, a
+black dot with its distance to the surface, or not at all; the chart column drawn as Figure 1's third pane draws it (the
+flat surface in the three colours, the designs below), not as stacked bars.
+
