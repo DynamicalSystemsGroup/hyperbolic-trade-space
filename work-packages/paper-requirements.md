@@ -29,6 +29,13 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - Every claim backed (a lemma step, a generated value, a test, a verified source) or narrowed; prose that states a
   number cites its generator; the model, the fit and the analysis kept apart (CLAUDE.md).
 - The glossary's words; "dataset" is his word on the root page, "table" stays the paper's unless he rules otherwise.
+- "Model" is a pronoun (his rule, 2026-11-15 afternoon): used only where the object is immediately obvious from
+  context; otherwise the object is named: the SysML v2 model of the cubesat ("the model" of the case, which lives
+  in the repository), the fitted posynomial (the fit), the evaluation model behind an attribute, the model class
+  of the method.
+- The paper is a view of the case; the SysML v2 model in the repository is the model. Modelling assumptions and how
+  they are made live in that model and its record; the paper refers to them and does not explicate them at length
+  (his rule, same day, on the performance aggregate).
 - Figures earn their place, drawn by code (Section 11's claim), judged as rendered. Many readers' first read is a
   skim over the plots (his ruling, 2026-11-15 12:40 EST by the machine clock): the figures in sequence, with their
   captions, carry the paper's argument on their own; each is judged by the figure loop (cold read, the sentence
@@ -144,9 +151,10 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   reader is not left to work out the reciprocal; which triangle and the row order are settled by the figure loop
   on the actual values, and any statement about the values' range is derived and checked numerically first; the
   sign and reciprocal convention is one across matrix, caption and prose (WP56-decisions.md).
-- **The performance aggregate (if built):** a modelling choice: its formula, units and monotonicity stated, two or
-  three plausible definitions compared, and the decision's stability across them part of acceptance; the ternary
-  is not chosen for its looks (WP56-decisions.md).
+- **The performance aggregate (if built):** a modelling choice made in the SysML v2 model and its record (formula,
+  units, monotonicity, two or three definitions compared, the decision's stability across them part of
+  acceptance); the paper states the definition in a sentence and refers to the record; the ternary is not chosen
+  for its looks (WP56-decisions.md).
 - **State:** open (WP56).
 
 ## Section 9, Discussion

@@ -47,3 +47,14 @@ its job). Section 9's decision and its table use the same mapping, one stakehold
 - The performance aggregate is accepted as a modelling choice: formula, units, monotonicity in fleet size and
   pointing error, two or three plausible definitions compared, and the decision's stability across them reported;
   the definition is not chosen for the ternary's looks.
+
+**Supervisor, verbatim (on the aggregate's place, 2026-11-15 afternoon):** "on this one i want to make sure you don't
+overcomplicate the paper the details of the modeling assumptions and how they are made go in the model itself. they
+can referred to but not explicated at length. the paper is a view, the sysmlv2 model in the repo is "the model".
+i'd also recommend thinking about the word "model" as a pronoun. there are so many kinds of models in this work
+that this word can only be used if it is immediately obvious from context which model we're talking about.
+otherwise indicate which object we're talking about unambiguously"
+
+**Applied as:** the aggregate's definition, assumptions and the comparison across definitions live in the SysML v2
+model and the WP56 record; the paper states the definition in a sentence and refers to the record. "Model" is used
+in the paper only where the object is obvious; otherwise the object is named (the register's rules).
