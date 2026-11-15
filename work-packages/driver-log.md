@@ -2384,4 +2384,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   passes. Noted in `WP46-review.md`. Landing order tonight: the fifth paper unit, then wp41, then wp46, each
   re-executing the notebooks on the merged tree; then the version and the reviewer's guide (a unit refreshing it
   against the records, the head to be named last).
+- **Tick (2026-11-14 22:43 EST).** His read of the fan figure ("the visuals are confusing"; "a lot of lines", "the story of the 3
+  curves" lost, the stars, the square root of two) and his method ("screenshots and user feedback loops") recorded in
+  WP51-decisions; the rework narrowed on his word to the three terms alone at the median, no stars, the temperature
+  free and reported; a unit redrawing it now. The reviewer's guide refreshed against the records on `guide-refresh`
+  (49fa4ae; read: true to the records; the head to be named). The fifth paper unit's own tree: 2,034 passed, lemma chain
+  passing; its landing branch still executing the notebooks. CI at caada27: fast jobs green on both platforms, slow and
+  docs-paper still running. Nothing needs him beyond the figure loop he is in.
 
