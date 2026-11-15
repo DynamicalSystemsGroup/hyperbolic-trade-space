@@ -359,3 +359,10 @@ adopted the OMG standard SysML v2 and the OpenMBEE implementations of it, in whi
 written; the claim of subsumption is the team's account; the links are the OMG specification and OpenSysML (the
 record's existing entry).
 
+**Supervisor, verbatim (04:15 EST):** "protocols and institutions formalizes an argument first made in a 2019 blog: from nash
+to lyupunov"
+
+**Applied as:** the sentence gains "formalising an argument first made in From Nash to Lyapunov (2018)", linked to the
+record's existing entry; the record dates the firm's blog copy 1 October 2018 and the Medium copy 2 May 2019, so the
+page says 2018; the tie is his account, noted on the row.
+
