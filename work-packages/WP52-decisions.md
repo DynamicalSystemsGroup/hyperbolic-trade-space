@@ -502,3 +502,12 @@ average consensus, Griff Green, Emmett and the Commons Stack, SourceCred, deploy
 hosts answer 403 to automated readers. The assessment, the focus read and the compatibility check against his site are in
 chat; his calls to follow.
 
+**Supervisor (07:25 EST):** "it might be good to get a \"bottom line up front paragraph\" before then recounting the whole
+story. then closing with a conclusion that resumarizes the thesis and connects it directly to the motivation for this work.
+
+we have this page because a lot of the substantive learning came not from academia but from designing and governing
+production systems in highly automation, highly adversarial, highly politicized digital ecosystems."
+
+The page's shape: a bottom-line paragraph first, the story, a closing paragraph restating the thesis and tying it to this
+work's motivation. His sentence is the thesis; the drafts are in chat in his words.
+
