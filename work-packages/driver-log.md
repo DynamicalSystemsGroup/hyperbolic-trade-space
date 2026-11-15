@@ -2227,4 +2227,13 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   paper resolves through Crossref at DOI 10.2139/ssrn.4077358 (SSRN, 2022). He asked for an assessment of how they fit a
   story spanning mathematics, engineering, economics and political science; given in chat, his answer to be recorded in
   `WP52-decisions.md`. Nothing on the history branch changes until he answers.
+- **Tick (2026-11-15, 06:20 EST).** History page: he gave the page's intent (plain language, no web3 stylings) and what
+  Alston is cited for (conflict and disagreement as essential, supported rather than modelled away); both verbatim in
+  `WP52-decisions.md`; the one-sentence draft placing Alston (2022) and the paper with Nabben (2022) in the governance
+  paragraph is with him, as is the word bound (the page is at 1,186 by the test against 1,200) and the two
+  "automated market maker" phrasings. fix4 returned to PM16 for three register rows. WP46 redelivered at 7b61429 but its
+  ids C695 to C714 collide with wp45's landing: sent back for a rebase and renumbering. WP43 (c56892a) and WP48 (879d1ad),
+  both research-spike readouts, under the driver's standard checks and fast suites now, their readouts to be read next.
+  CI 43657206539 on d0d6196: fast jobs green on both platforms, slow and docs-paper still running. PM16 running (fifth
+  paper unit briefed); no reply yet to the fix4 return.
 
