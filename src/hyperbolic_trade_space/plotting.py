@@ -19,6 +19,9 @@ Visual vocabulary (module constants, shared by every function)
 * **Ternary plot** (``plot_ternary``): the shares of a total among three metrics (or three groups
   of metrics) as a triangle; a term's exponent vector is a marker (its own shape, numbered), the
   regions are tinted by the term that dominates, and the terms use the palette's colours.
+* **Temperature path** (``plot_temperature_path``): the fit against the fit temperature in three
+  panels; the fit temperature is a black vertical line, a ring marks it on each exponent line, and
+  the target fraction is a dashed black line. <!-- vocab-exempt: plot temperature -->
 * **Association** (``plot_association``): a diverging map (``TENSION_CMAP``), negative association
   (traded) to positive (aligned); the contending set is outlined in black.
 
@@ -57,8 +60,10 @@ __all__ = [
     "plot_frontier_coordinates",
     "plot_frontier_surface_3d",
     "plot_log_plane",
+    "plot_temperature_path",
     "plot_ternary",
     "plot_v_by_variable",
+    "temperature_path",
     "ternary_marker_values",
 ]
 
@@ -1127,3 +1132,184 @@ def plot_ternary(
     ax.text(-0.03, -0.03, f"favours\n{names[1]}", ha="left", va="top", **corner)
     ax.text(1.03, -0.03, f"favours\n{names[2]}", ha="right", va="top", **corner)
     return ax
+
+
+TEMPERATURE_GRID = (3.0, 1e3, 12)  # the sweep's default: twelve log-spaced temperatures, then inf
+PATH_FIT_TOLERANCE = 0.02  # a fit temperature this close (relative) to a grid point is that point
+
+
+def temperature_path(estimator, X, temperatures=None):
+    """The one-term fit at each temperature of a sweep: the numbers behind the path figure.
+
+    Each temperature refits a clone of ``estimator`` (its other parameters and ``random_state``
+    kept) on ``X``. The fit temperature of ``estimator`` is one of the sweep's points: it is
+    added when no grid point lies within 2 percent of it. ``numpy.inf`` is the last point.
+
+    Parameters
+    ----------
+    estimator : HyperbolicTradeSpace
+        Fitted, with ``n_terms=1``; its ``temperature`` is the fit temperature.
+    X : array-like of shape (n_samples, n_features)
+        The conditioned metrics the estimator was fitted on.
+    temperatures : array-like of float, default=None
+        Finite fit temperatures; default twelve log-spaced values from 3 to 1000.
+
+    Returns
+    -------
+    path : dict
+        <!-- vocab-exempt: dict temperature -->
+        ``temperature`` (the sweep, increasing, ending in ``inf``), ``frac_above``, ``n_eff``
+        (one value per temperature), ``exponents`` (shape ``(n_temperatures, n_features)``),
+        ``fit_index`` (the position of the fit temperature in the sweep).
+
+    Raises
+    ------
+    ValueError
+        If the estimator has more than one term, or the temperatures are not positive and finite.
+
+    Examples
+    --------
+    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    >>> from hyperbolic_trade_space.plotting import temperature_path
+    >>> X, _ = make_frontier_data(150, 3, noise=0.05, random_state=0)
+    >>> est = HyperbolicTradeSpace(temperature=20.0, random_state=0).fit(X)
+    >>> path = temperature_path(est, X, temperatures=[5.0, 20.0, 80.0])
+    >>> path["temperature"].tolist()
+    [5.0, 20.0, 80.0, inf]
+    >>> bool(np.allclose(path["exponents"].sum(axis=1), 1.0))
+    True
+    """
+    from sklearn.base import clone
+
+    check_is_fitted(estimator)
+    if estimator.n_terms != 1:
+        raise ValueError("the temperature path is drawn at n_terms=1 (a monomial frontier)")
+    taus = np.geomspace(*TEMPERATURE_GRID) if temperatures is None else np.asarray(temperatures)
+    taus = np.sort(taus.astype(float))
+    if not (np.isfinite(taus).all() and (taus > 0).all()):
+        raise ValueError("temperatures must be positive and finite; infinity is added last")
+    fit_tau = float(estimator.temperature)
+    if np.isfinite(fit_tau) and np.abs(taus - fit_tau).min() > PATH_FIT_TOLERANCE * fit_tau:
+        taus = np.sort([*taus, fit_tau])
+    fit_index = int(np.abs(taus - fit_tau).argmin()) if np.isfinite(fit_tau) else len(taus)
+    taus = np.append(taus, np.inf)
+    fits = [clone(estimator).set_params(temperature=t).fit(X) for t in taus]
+    return {
+        "temperature": taus,
+        "frac_above": np.array([f.frac_above_ for f in fits]),
+        "n_eff": np.array([f.n_eff_ for f in fits]),
+        "exponents": np.array([f.exponents_[0] for f in fits]),
+        "fit_index": fit_index,
+    }
+
+
+def plot_temperature_path(
+    estimator, X, temperatures=None, names=None, axes=None, target_frac_above=0.10, floor=1e-3
+):
+    """The one-term fit against the fit temperature: three panels, the path of the exponents last.
+
+    The panels, from the numbers of :func:`temperature_path`: the fraction of designs above
+    V = 1 against the temperature, with the target as a dashed line; the effective sample size;
+    and the exponent of each metric as a line, the last position the ``tau = infinity`` limit,
+    each named at its right end, a ring where the fit temperature crosses it. The exponents sum
+    to one at every temperature. A metric whose exponent never exceeds ``floor`` is not drawn.
+    A line that ends at zero is a metric that leaves the fit's support at that temperature.
+
+    Parameters
+    ----------
+    estimator : HyperbolicTradeSpace
+        Fitted, ``n_terms=1``; its ``temperature`` is the fit temperature (the black line).
+    X : array-like of shape (n_samples, n_features)
+        The conditioned metrics the estimator was fitted on.
+    temperatures : array-like of float, default=None
+        See :func:`temperature_path`.
+    names : sequence of str, default=None
+        Metric names; default the estimator's ``feature_names_in_`` when it has them, else
+        ``m0, m1, ...``.
+    axes : sequence of three matplotlib Axes, default=None
+        The three panels in the order above; default a new figure.
+    target_frac_above : float or None, default=0.10
+        The dashed line in the first panel (the convention of ``select_temperature``); ``None``
+        draws no line. <!-- vocab-exempt: select temperature -->
+    floor : float, default=1e-3
+        The exponent above which a metric counts as drawn (the tension report's participation).
+
+    Returns
+    -------
+    axes : list of matplotlib.axes.Axes
+        The three panels.
+
+    Examples
+    --------
+    >>> import matplotlib
+    >>> matplotlib.use("Agg")
+    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    >>> from hyperbolic_trade_space.plotting import plot_temperature_path
+    >>> X, _ = make_frontier_data(150, 3, noise=0.05, random_state=0)
+    >>> est = HyperbolicTradeSpace(temperature=20.0, random_state=0).fit(X)
+    >>> axs = plot_temperature_path(est, X, temperatures=[5.0, 20.0, 80.0])
+    >>> axs[2].get_ylabel()
+    'exponent w (the exponents sum to one)'
+    """
+    path = temperature_path(estimator, X, temperatures)
+    taus, W, sel = path["temperature"], path["exponents"], path["fit_index"]
+    finite = taus[:-1]
+    d = W.shape[1]
+    if names is None:
+        fn = getattr(estimator, "feature_names_in_", None)
+        names = [str(v) for v in fn] if fn is not None else [f"m{j}" for j in range(d)]
+    fig = None
+    if axes is None:
+        plt = _plt()
+        fig = plt.figure(figsize=(8.0, 7.0))
+        grid = fig.add_gridspec(2, 2, height_ratios=[1, 1.45])
+        axes = [
+            fig.add_subplot(grid[0, 0]),
+            fig.add_subplot(grid[0, 1]),
+            fig.add_subplot(grid[1, :]),
+        ]
+    ax0, ax1, ax2 = axes
+    ax0.semilogx(finite, path["frac_above"][:-1], "o-", color=DATA_COLOR, ms=4)
+    if target_frac_above is not None:
+        ax0.axhline(target_frac_above, color=FRONTIER_COLOR, lw=0.8, ls="--")
+    ax0.set(xlabel="fit temperature tau", ylabel="fraction of designs above V = 1")
+    ax1.semilogx(finite, path["n_eff"][:-1], "o-", color=DATA_COLOR, ms=4)
+    ax1.set(xlabel="fit temperature tau", ylabel="effective sample size")
+    if sel < len(finite):
+        for ax in (ax0, ax1):
+            ax.axvline(taus[sel], color=FRONTIER_COLOR, lw=1.5)
+
+    xs = np.append(finite, finite[-1] * 2.4)  # the limit, drawn one step beyond the last
+    drawn = [
+        j for j in np.argsort(-W[min(sel, len(W) - 1)], kind="stable") if W[:, j].max() > floor
+    ]
+    for j in drawn:
+        ax2.plot(xs, W[:, j], "-o", ms=3, lw=1.4, color=DATA_COLOR, zorder=2)
+        if sel < len(finite):
+            ax2.plot([xs[sel]], [W[sel, j]], "o", ms=9, mfc="none", mec=FRONTIER_COLOR, mew=1.5)
+    if sel < len(finite):
+        ax2.axvline(xs[sel], color=FRONTIER_COLOR, lw=1.5, zorder=1)
+    gap = 0.04 * max(W.max(), 0.1)
+    ends = np.array([W[-1, j] for j in drawn], dtype=float)
+    spread = ends.copy()
+    for a, b in zip(np.argsort(ends)[:-1], np.argsort(ends)[1:], strict=True):
+        spread[b] = max(spread[b], spread[a] + gap)
+    for j, y in zip(drawn, spread, strict=True):
+        ax2.annotate(names[j], (xs[-1], y), xytext=(8, 0), textcoords="offset points",
+                     va="center", annotation_clip=False)  # fmt: skip
+    ax2.set_xscale("log")
+    labels = [f"{t:.0f}" if t >= 10 else f"{t:.1f}" for t in finite] + ["∞ (limit)"]
+    for k, t in enumerate(finite):  # a neighbour of the fit temperature's label is left blank
+        if k != sel and sel < len(finite) and abs(np.log(t / taus[sel])) < 0.25:
+            labels[k] = ""
+    ax2.set_xticks(xs, labels, rotation=60)
+    ax2.minorticks_off()
+    if sel < len(finite):
+        ax2.get_xticklabels()[sel].set_fontweight("bold")
+    ax2.set_xlim(xs[0] / 1.15, xs[-1] * 1.15)
+    ax2.margins(y=0.05)
+    ax2.spines[["top", "right"]].set_visible(False)
+    ax2.set(xlabel="fit temperature tau", ylabel="exponent w (the exponents sum to one)")
+    if fig is not None:
+        fig.tight_layout()
+    return [ax0, ax1, ax2]

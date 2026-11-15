@@ -69,6 +69,7 @@ nav:
       - "User guide: start here": user-guide/overview.md
       - Conditioning: user-guide/conditioning.md
       - Fitting: user-guide/fitting.md
+      - The fit temperature: user-guide/temperature.md
       - Choosing K: user-guide/choosing-k.md
       - Trade-offs and tensions: user-guide/tensions.md
       - Routes back from a tension: user-guide/tension-routes.md

@@ -40,6 +40,7 @@ NAV_PAGES = [
     "user-guide/overview.md",
     "user-guide/conditioning.md",
     "user-guide/fitting.md",
+    "user-guide/temperature.md",
     "user-guide/choosing-k.md",
     "user-guide/tensions.md",
     "user-guide/tension-routes.md",
@@ -70,6 +71,7 @@ BUDGETS = {
     "user-guide/overview.md": 399,
     "user-guide/conditioning.md": 610,
     "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
+    "user-guide/temperature.md": 564,  # WP46: the fit temperature as a path
     "user-guide/choosing-k.md": 573,  # 707 until WP33 (the cubesat block moved to Examples)
     "user-guide/tensions.md": 730,  # 700 until WP42 (the tension matrix)
     "user-guide/tension-routes.md": 220,  # WP42
@@ -77,16 +79,19 @@ BUDGETS = {
     "user-guide/prediction.md": 350,
     "user-guide/termination.md": 743,  # 600 until WP28 S-10
     "user-guide/limitations.md": 491,
-    "api-reference.md": 291,  # api.md (300) merged in; the ::: are not prose; 287 until WP42
+    # api.md (300) merged in; the ::: are not prose; 287 until WP42; 291 until WP46 (two links
+    # to the temperature page)
+    "api-reference.md": 298,
     "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
     # 805 until the D-5 fresh read named tau, the level and the submartingale (2026-11-15)
     "bridge.md": 815,
     "theory.md": 700,
     "further-reading.md": 300,
 }
-# 7480 until WP41 (the bridge page, 815); 7430 until the docs home took its figure and quickstart
-# (his 350); 7237 until WP42; 7472 until WP33
-TOTAL_BUDGET = 8340
+# 8340 until WP46 (+571, the temperature page and two links to it); 7480 until WP41 (the bridge
+# page, 815); 7430 until the docs home took its figure and quickstart (his 350); 7237 until WP42;
+# 7472 until WP33
+TOTAL_BUDGET = 8916
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",

@@ -38,7 +38,7 @@ plot_log_plane(ts2, X2)
 <figure markdown>
 ![Designs in the log plane of two metrics, a straight frontier line, and a grey band of near-frontier designs below it.](../generated/figures/log-plane-light.png#only-light)
 ![Designs in the log plane of two metrics, a straight frontier line, and a grey band of near-frontier designs below it.](../generated/figures/log-plane-dark.png#only-dark)
-<figcaption>Figure 4. One term in the log plane: the line is V = 1; the grey strip below it is log V from -1/tau to 0.</figcaption>
+<figcaption>Figure 5. One term in the log plane: the line is V = 1; the grey strip below it is log V from -1/tau to 0.</figcaption>
 </figure>
 
 ## Reading log V

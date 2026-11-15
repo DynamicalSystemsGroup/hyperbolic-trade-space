@@ -9329,3 +9329,231 @@ disposition = "keep"
 source = "WP41 D-3"
 note = "The supervisor's ruling of 2026-11-14, 13:10 (WP11-decisions.md): the predicted-against-measured distinction; D.10 is the one run of the check."
 
+[[claim]]
+id = "C823"
+fragment = "The fit temperature tau sets how hard the maximum is"
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:temperature", "lemma:L5.23", "lemma:L5.24"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "definition in the glossary; the exact maximum at tau infinite (L5.24)."
+
+[[claim]]
+id = "C824"
+fragment = "`temperature_path` refits at each temperature of a sweep, twelve log-spaced values from 3 to 1000 with the fit temperature among them, then infinity."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_the_default_sweep_is_twelve_log_spaced_temperatures_and_the_limit", "test:tests/test_temperature_path.py::test_the_fit_temperature_is_inserted_unless_a_grid_point_is_within_two_percent", "func:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "The default grid, the insertion of the fit temperature unless a grid point lies within 2 percent, and infinity last."
+
+[[claim]]
+id = "C825"
+fragment = "`temperature_path` refits at each temperature of a sweep ... `plot_temperature_path` draws it. Use tau of 3 and above."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_the_figure_draws_one_line_per_participating_metric_and_marks_the_fit", "test:tests/test_temperature_path.py::test_the_helper_reproduces_the_case_figure_lines_to_the_printed_exponents", "func:src/hyperbolic_trade_space/plotting.py::plot_temperature_path"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Three panels; one line per metric above the floor; the helper reproduces the lines of the case's Figure 4 to 5e-4 on a 300-design sample of the data of record (R-1)."
+
+[[claim]]
+id = "C826"
+fragment = "An exponent is non-negative, so it can rest at zero."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_path_exponents_are_on_the_simplex_and_the_limit_is_last", "glossary:numerically-zero"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Exponents on the simplex, with exact zeros at the boundary."
+
+[[claim]]
+id = "C827"
+fragment = "The fifth metric has a small exponent at low tau and falls to numerically zero between tau of 83 and 88, and stays there up to infinity."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "R"
+backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "On the page's planted table (300 designs, five metrics, planted exponent zero for the fifth): participates at the fit temperature, at most 1e-12 at 88 and above, above 1e-12 at 83."
+
+[[claim]]
+id = "C828"
+fragment = "That is a change of support: one metric leaves the set of metrics the fit uses."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "The support is the metrics above the participation threshold; the test pins the leave."
+
+[[claim]]
+id = "C829"
+fragment = "The same shape is the kink of a lasso regularization path, where a coefficient reaches zero at a penalty weight. It is an analogy: tau is how soft a maximum is, not a penalty weight on the exponents."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:temperature"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Named as an analogy; the second sentence states the difference (the glossary: tau is how hard the maximum is, not a penalty)."
+
+[[claim]]
+id = "C830"
+fragment = "The change is sometimes called a \"phase transition\"; here it means only this change of support."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88", "file:work-packages/WP46-decisions.md"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "The supervisor's phrase in quotation (WP46-decisions.md) with the change of support as its meaning; no physical claim."
+
+[[claim]]
+id = "C831"
+fragment = "The contending set is the support at infinite tau"
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "M"
+backing = ["glossary:contending-set"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "The glossary's formal definition: the support of the exponent vector at infinite temperature."
+
+[[claim]]
+id = "C832"
+fragment = "Their exponents move by less than 0.09 across the whole sweep, with the largest move in the third."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "R"
+backing = ["test:tests/test_temperature_path.py::test_page_the_contending_set_and_how_far_its_exponents_move", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Range of each of the first four exponents over the sweep including infinity; the third moves 0.084."
+
+[[claim]]
+id = "C833"
+fragment = "The fifth metric participates at the fit temperature (its exponent is above the participation threshold of 0.001) but is outside the contending set: the softness of the maximum holds it in."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "R"
+backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88", "test:tests/test_temperature_path.py::test_page_the_contending_set_and_how_far_its_exponents_move", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path", "glossary:participation-threshold"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Exponent 0.003 at the fit temperature, at most 1e-12 at infinity; the softness explanation is the reading of the path (the exponent falls to zero as tau rises)."
+
+[[claim]]
+id = "C834"
+fragment = "Raising tau leaves fewer designs carrying the fit."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_path_exponents_are_on_the_simplex_and_the_limit_is_last", "glossary:effective-sample-size"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "n_eff is nonincreasing across the sweep on the planted table (test)."
+
+[[claim]]
+id = "C835"
+fragment = "`n_eff_` is 162 at tau = 3 of 300 designs, 5.3 at the convention's fit temperature and 1.3 at infinity."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "R"
+backing = ["test:tests/test_temperature_path.py::test_page_the_price_in_effective_sample_size", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Values 161.6, 5.3 and 1.34 on the page's planted table."
+
+[[claim]]
+id = "C836"
+fragment = "The convention, 10 percent of designs above V = 1, is one point on that trade."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_page_a_higher_target_gives_a_lower_temperature_and_more_designs_in_the_fit", "func:src/hyperbolic_trade_space/tuning.py::select_temperature"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "select_temperature's default target 0.10; the other targets give other points."
+
+[[claim]]
+id = "C837"
+fragment = "A higher target gives a lower tau, a softer maximum, more designs beyond the fitted reference surface and more designs carrying the fit."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "R"
+backing = ["test:tests/test_temperature_path.py::test_page_a_higher_target_gives_a_lower_temperature_and_more_designs_in_the_fit", "gen:src/hyperbolic_trade_space/tuning.py::select_temperature"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Targets 0.05 to 0.30 give tau 81, 48.8, 25.9, 13.7, fractions 0.047 to 0.30, n_eff 2.5 to 67 on the page's planted table; monotone."
+
+[[claim]]
+id = "C838"
+fragment = "The maximum is exact, no design lies above the surface, and the fit is the supporting envelope"
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5.24", "test:tests/test_temperature_path.py::test_path_exponents_are_on_the_simplex_and_the_limit_is_last", "glossary:supporting-envelope"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "LME tends to the maximum (L5.24); frac_above_ is 0 at infinity (test)."
+
+[[claim]]
+id = "C839"
+fragment = "The small-tau end is a regularity the sweep shows, not a derived limit."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_temperature_path.py::test_page_the_support_weights_become_uniform_as_tau_falls_to_zero", "file:work-packages/WP46-rounds/small-tau-check.md"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "The scope's fallback: the numeric check (small-tau-check.md) did not agree to the printed digits (largest gap 0.0021 at tau = 3), so the limit is not claimed."
+
+[[claim]]
+id = "C840"
+fragment = "What is derived is that the soft maximum tends to the mean of the scores, so the weights become uniform and `n_eff_` tends to the number of designs, and that on centred log-metrics, whose mean score is zero, the first term that depends on the exponents is tau over two times the variance of the score"
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5.22", "lemma:L22.17", "lemma:L22.18", "lemma:L22.21", "lemma:L22.22", "test:tests/test_temperature_path.py::test_page_the_support_weights_become_uniform_as_tau_falls_to_zero"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "L5.22 the mean; L22.18 the second derivative is the variance; L22.21 and L22.22 the centred case; the uniform weights at tau 0.01 give n_eff above 0.99 n."
+
+[[claim]]
+id = "C841"
+fragment = "Whether the exponents tend to the combination of least variance on the simplex is not proved: the lemma does not bound the remainder over the simplex."
+file = "docs/user-guide/temperature.md"
+anchor = ""
+kind = "M"
+backing = ["file:derivation/lemma_22_small_temperature.py"]
+status = "backed"
+disposition = "keep"
+source = "WP46 D-4"
+note = "Stated in the lemma's does-not-prove paragraph."
+

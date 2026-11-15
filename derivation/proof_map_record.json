@@ -6899,6 +6899,321 @@
      "result": "Tension: dm_j/dm_i = -(w_i/w_j)(m_j/m_i) along a term, and in attribute units"
     }
    ]
+  },
+  "lemma_22_small_temperature.py": {
+   "number": 22,
+   "axioms_used": [
+    "A1",
+    "A3"
+   ],
+   "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
+   "imports": [
+    "A1",
+    "A3"
+   ],
+   "results": [
+    {
+     "name": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics",
+     "steps": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+     ]
+    }
+   ],
+   "steps": [
+    {
+     "tag": "L22.1",
+     "kind": "axiom",
+     "applies": [
+      "A3"
+     ],
+     "results": [],
+     "prose": "A3: the temperature tau is positive",
+     "code": "tau = A3.positive(S.tau)",
+     "fingerprint": "976b3f2636559a25d90e5782d206b18ca654a522eb9f748b2aa26a0b63125435",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.2",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the log-metrics are real",
+     "code": "u = A1.real_base('u')",
+     "fingerprint": "72d1ef59b54b0e9d4a9bc98d6745dd9b76537ac954c6d64277faab80a0e60652",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.3",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the scores s_i = w.u_i of real log-metrics are real",
+     "code": "s = A1.real_base('s')",
+     "fingerprint": "78cb70f40228e4525c42c781eb4aafa7e93f4ab0ab1efdc9a6e1e6d984b9deb5",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.4",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "N(0) = log((1/n) n) = 0",
+     "code": "N0 = sp.simplify(N.subs(tau, 0).doit())",
+     "fingerprint": "74f72d978ce41f63966af42463f097fc2ebd243608a7455d5535a5904eade3b1",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.5",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the first derivative of N at zero (differentiating the Sum termwise)",
+     "code": "N1 = sp.simplify(sp.diff(N, tau).subs(tau, 0).doit())",
+     "fingerprint": "9463d2ec00b0a72c74ab228f3314f9c0eb2bc31c4f4af48a652173451707059d",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.6",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the second derivative of N at zero",
+     "code": "N2 = sp.simplify(sp.diff(N, tau, 2).subs(tau, 0).doit())",
+     "fingerprint": "9c10a5c0e67e1c43bef8be85a3ddc610ecaf06267b9ea887cd101e48397fa37f",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.7",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the third derivative of N at zero",
+     "code": "N3 = sp.simplify(sp.diff(N, tau, 3).subs(tau, 0).doit())",
+     "fingerprint": "be7a0c50b3feb5065ff1a32b02ec57ca6290e7a03c620475406c2ff41b2066c8",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.8",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the variance expanded by linearity of the finite sum: (1/n) Sum s^2 - mean^2",
+     "code": "var_moment = linear(sp.Sum(sp.expand((s[i] - mean) ** 2), lim) / n)",
+     "fingerprint": "181d61d74a3182df5951135505f8fa0e3abfbd02f024536235af91ecc341bddc",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.9",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the third central moment expanded by linearity",
+     "code": "mu3_moment = linear(sp.Sum(sp.expand((s[i] - mean) ** 3), lim) / n)",
+     "fingerprint": "9ed5c1b41aa5165832ea40e7cdff9d6c0ff047f4c413b0642eeeec3c0f177174",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.10",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the mean score is Sum_j w_j (Sum_i u_ij) / n: the order of the two finite sums swaps",
+     "code": "rows_first = fuse(sp.Sum(row, lim)).reorder((0, 1))",
+     "fingerprint": "ab2b32909c1e1c4a833343d6ef78d65f5d35a82da59f6448c92889bb66642993",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.11",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the centring hypothesis: every column sum Sum_i u_ij is zero",
+     "code": "centred = mean_score.replace(lambda x: x == column, lambda x: sp.Integer(0)).doit()",
+     "fingerprint": "3a6e08964cdbae722a84c699e3bac0d0de471010a8df1770fd0405544704f669",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.12",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the variance of the row scores: the score family replaced by the row score, and the",
+     "code": "mean_rows = replace_indexed(mean, s, lambda k: row.subs(i, k))",
+     "fingerprint": "b1066c379b18a0175ff4481cefdd869153e55c80f101c98ddad306bf70bd3f23",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.13",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the squared score as a double sum over j and l: the factor free of the summed",
+     "code": "other = sp.Symbol('other')",
+     "fingerprint": "1517ed35bdeb6d6539d56e82a6a9a1e0692abc290ba2076e23a6a34a5b14fe36",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.14",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the second moment of the scores over the rows, the sum over the rows innermost",
+     "code": "second = pull_constants(sp.Sum(score_sq.function, lim, (ell, 1, d), (j, 1, d)))",
+     "fingerprint": "0d11308eb7502e84e4568787279f54ad3a4ff915ee7e98a6d45973f237d1824f",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.15",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the mean of squares of real scores is nonnegative (n > 0)",
+     "code": "nonneg = (sp.Sum(s[i] ** 2, lim) / n).is_nonnegative",
+     "fingerprint": "fa175f23e75972271de7e431b0e33a94240021479c5ac257efdf15fd5ed214b2",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.16",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "N(0) = 0, so LME = N(tau)/tau has the Taylor coefficients of N shifted by one",
+     "code": "assert r['N0'] == 0, 'L22 FAIL: N(0) != 0'",
+     "fingerprint": "53f7475cffe5fb36373e750f98009785afe8f1bbfba8e80b425ba086d1e17c06",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.17",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "N'(0) is the mean of the scores: lim_{tau->0} LME = mean (L5.22)",
+     "code": "assert sp.simplify(r['N1'] - mean) == 0, \"L22 FAIL: N'(0) != mean\"",
+     "fingerprint": "842881e0e96f3bfad2f276da91a87afde4c352b0abfb167f3f776a31babeb435",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.18",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "N''(0) is the variance of the scores, (1/n) Sum (s_i - mean)^2",
+     "code": "assert sp.simplify(r['N2'] - r['var_moment']) == 0, \"L22 FAIL: N''(0) != variance\"",
+     "fingerprint": "729dae364eaaf0e8c0337474f1fd219f04aeb9f6f3ea50f9bb029f0f4f4a28bf",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.19",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the variance is the mean of squares minus the squared mean",
+     "code": "assert sp.simplify(r['var_moment'] - (sp.Sum(s[i] ** 2, lim) / n - mean ** 2)) == 0, 'L22 FAIL: variance != mean of squares - mean^2'",
+     "fingerprint": "995c587da959cf9e209308ed5dec109d988db3a6fb440ff40e9e68781e4cd207",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.20",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "N'''(0) is the third central moment, (1/n) Sum (s_i - mean)^3",
+     "code": "assert sp.simplify(r['N3'] - r['mu3_moment']) == 0, \"L22 FAIL: N'''(0) != third central moment\"",
+     "fingerprint": "745249ddf8d282a5b01dae91d72f9adf2c493613758e23af5086157a6a3cbd28",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.21",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the centring hypothesis gives a zero mean score for every exponent vector",
+     "code": "assert r['centred'] == 0, 'L22 FAIL: the mean score is not zero on centred metrics'",
+     "fingerprint": "970e6b70aabf8c86ef1727ffb9ddb2edb6c5a3256b8342409b6f6170b0bd8844",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.22",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "on centred metrics the variance of the scores is (1/n) Sum_i (row score)^2",
+     "code": "assert sp.simplify(r['var_centred'] - sp.Sum(r['row'] ** 2, lim) / n) == 0, 'L22 FAIL: the centred variance is not the mean of squared row scores'",
+     "fingerprint": "4e6413f438de6601d00afdcdf2dbafb82da80fb06a2761b72660ca9d45e97b62",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.23",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "renaming the bound index j to l and back returns the row score: the copy is faithful",
+     "code": "assert sp.Sum(r['other_row'].function.subs(ell, j), (j, 1, d)) == r['row'], 'L22 FAIL: the renamed copy differs'",
+     "fingerprint": "cec6330567c4e1ab8ef1813cc0d188d1197fa8b1f522655101f510c10bb6f237",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.24",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the squared score is the double sum over j and l of w_j w_l u_ij u_il, one row",
+     "code": "assert r['score_sq'].function == w[j] * w[ell] * u[i, j] * u[i, ell] and set(r['score_sq'].limits) == {(j, 1, d), (ell, 1, d)}, 'L22 FAIL: the squared score is not the double sum'",
+     "fingerprint": "1470b2ebbf7830310b42097c079b749724cb69dea355dc8b730030c35e7500b9",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.25",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "summed over the rows the squares make n w'Cw, Sum_jl w_j w_l (Sum_i u_ij u_il), C_jl",
+     "code": "assert r['second'] == quad, \"L22 FAIL: the second moment of the scores is not w'Cw\"",
+     "fingerprint": "f6bee7943a0a934b5050f836e1bb9202f2344f78ad5b07889b2a59ecc5d2751a",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    },
+    {
+     "tag": "L22.26",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "a square of a real score is nonnegative, so the variance is nonnegative",
+     "code": "assert r['nonneg'] is True, 'L22 FAIL: a squared real score is not nonnegative'",
+     "fingerprint": "5e0be79916df876deb21d426777c3222da5bbb5730899030239e61d2275f700f",
+     "result": "Small-temperature expansion of the log-mean-exp; the variance on centred metrics"
+    }
+   ]
   }
  },
  "ledger": {

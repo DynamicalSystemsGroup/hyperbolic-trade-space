@@ -13,7 +13,7 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
   `cell_`, `coefficients_`, `term_share_`, `loss_` (what the solver minimized) and
   `mean_slack_`, to compare fits across numbers of terms.
 - [`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target
-  fraction above V = 1.
+  fraction above V = 1 ([the path against tau](user-guide/temperature.md)).
 - [`make_frontier_data`](user-guide/fitting.md), a function: seeded synthetic data with a planted
   frontier.
 - [`make_configured_frontier_data`](user-guide/prediction.md), a function: the same with
@@ -32,7 +32,7 @@ Submodules are used by import path:
 - `hyperbolic_trade_space.tensions`: `TradeOffReport`, `DesignTensions`: what the functions return.
 - `hyperbolic_trade_space.plotting`: `plot_association`, `plot_log_plane`, `plot_frontier_surface_3d`,
   `plot_frontier_coordinates`, `plot_v_by_variable`, `plot_ternary`, `ternary_marker_values`,
-  `cell_labels`.
+  `cell_labels`, `plot_temperature_path`, `temperature_path` ([the fit temperature](user-guide/temperature.md)).
 - `hyperbolic_trade_space.estimator`: `EPS_ZERO_EXPONENT` (`1e-12`). An exponent at or below it is
   numerically zero, so `score_samples` reads a zero metric there as `0 log 0 := 0`.
   `PARTICIPATION_THRESHOLD` (`1e-3`). An exponent above it participates. It is the threshold of

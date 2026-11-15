@@ -27,7 +27,7 @@ comparable across K, and `loss_` is not. The package has no held-out criterion f
 ## The temperature
 
 For your table `M` of conditioned metrics, the fit temperature is selected at K = 1 and held for
-every K ([Fitting](fitting.md#choosing-the-temperature)):
+every K ([Fitting](fitting.md#choosing-the-temperature); [the path against tau](temperature.md)):
 
 <!-- vocab-exempt: select temperature -->
 ```python {.runnable}

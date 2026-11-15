@@ -29,7 +29,7 @@ plot_association(report, names=["m0", "m1", "m2"])
 <figure markdown>
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-light.png#only-light)
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-dark.png#only-dark)
-<figcaption>Figure 3. The trade-off report of the three-metric table. Association is the correlation of the log-metrics near the frontier. Negative (orange) marks metrics that are traded, diagonal outlines mark the contending set, and w under a name is its exponent.</figcaption>
+<figcaption>Figure 4. The trade-off report of the three-metric table. Association is the correlation of the log-metrics near the frontier. Negative (orange) marks metrics that are traded, diagonal outlines mark the contending set, and w under a name is its exponent.</figcaption>
 </figure>
 
 ## The contending set and the n-lemma

@@ -33,7 +33,7 @@ case.association_figure(study, fit)
 <figure markdown>
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
-<figcaption>Figure 5. The trade-off report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, below the participation threshold.</figcaption>
+<figcaption>Figure 6. The trade-off report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, below the participation threshold.</figcaption>
 </figure>
 
 ## Choosing K on the case
@@ -162,7 +162,7 @@ case.ternary_pair_figure(fits)
 <figure markdown>
 <a href="../generated/figures/ternary-cubesat-light.png" markdown="span">![Two triangles side by side, each with three metrics at its corners, tinted in two regions, with designs as points, a numbered marker for each term's exponent vector, lines of equal V and a dashed line where the leading term changes; one key below both. A: pointing error, total mass, control effort. B: settling time, control effort, depth of discharge.](generated/figures/ternary-cubesat-light.png#only-light)</a>
 <a href="../generated/figures/ternary-cubesat-dark.png" markdown="span">![Two triangles side by side, each with three metrics at its corners, tinted in two regions, with designs as points, a numbered marker for each term's exponent vector, lines of equal V and a dashed line where the leading term changes; one key below both. A: pointing error, total mass, control effort. B: settling time, control effort, depth of discharge.](generated/figures/ternary-cubesat-dark.png#only-dark)</a>
-<figcaption>Figure 6. A: one region trades pointing error against control effort, the other total mass against pointing error. B: one region trades settling time against control effort; the other region is depth of discharge alone. Shows: where each term leads and where its V peaks. Does not show: groups of designs, the values of V on the lines, a cause.</figcaption>
+<figcaption>Figure 7. A: one region trades pointing error against control effort, the other total mass against pointing error. B: one region trades settling time against control effort; the other region is depth of discharge alone. Shows: where each term leads and where its V peaks. Does not show: groups of designs, the values of V on the lines, a cause.</figcaption>
 </figure>
 
 Reading it:

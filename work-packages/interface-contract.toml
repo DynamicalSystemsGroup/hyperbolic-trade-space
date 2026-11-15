@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 26
+contract_version = 27
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -248,7 +248,7 @@ generated_consumer = "the paper's build (appendices); not the docsite"
 dir = "docs/"
 pages = [
   "index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md",
-  "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/tension-routes.md", "user-guide/chart.md",
+  "user-guide/fitting.md", "user-guide/temperature.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/tension-routes.md", "user-guide/chart.md",
   "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md",
   "examples.md", "bridge.md", "theory.md", "further-reading.md", "code-owners.md",
 ]
@@ -276,7 +276,7 @@ api_reference_page = "docs/api-reference.md"
 api_reference_source = "numpydoc docstrings of the public names, rendered by the docsite"
 presentation_pages = [
   "docs/index.md", "docs/getting-started.md", "docs/user-guide/index.md", "docs/user-guide/overview.md",
-  "docs/user-guide/conditioning.md", "docs/user-guide/fitting.md", "docs/user-guide/choosing-k.md", "docs/user-guide/tensions.md", "docs/user-guide/tension-routes.md",
+  "docs/user-guide/conditioning.md", "docs/user-guide/fitting.md", "docs/user-guide/temperature.md", "docs/user-guide/choosing-k.md", "docs/user-guide/tensions.md", "docs/user-guide/tension-routes.md",
   "docs/user-guide/chart.md", "docs/user-guide/prediction.md", "docs/user-guide/termination.md",
   "docs/user-guide/limitations.md", "docs/examples.md", "docs/bridge.md", "docs/theory.md", "docs/further-reading.md", "docs/code-owners.md", "docs/api-reference.md",
 ]

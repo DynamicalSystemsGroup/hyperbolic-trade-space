@@ -41,6 +41,7 @@ CHAIN_NAMES = [
     "lemma_19_noise_shift_bound",
     "lemma_20_noise_ridge",
     "lemma_21_tension",
+    "lemma_22_small_temperature",
 ]
 
 

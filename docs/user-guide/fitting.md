@@ -54,7 +54,7 @@ print(round(tau, 1))
 
 This table has 30 percent of its rows on the planted frontier, hence the target 0.35;
 for real data start at the default 0.10 with `bounds=(3, 1e4)`. If that raises "not bracketed", raise the target or the upper bound, as the message says. The result is a tau within `tol`, the accepted error in `frac_above_`, of the target, so on an exact-relation table it moves with the bounds. Use tau of 3 and above; below it
-`frac_above_` is not monotone.
+`frac_above_` is not monotone. [The fit temperature](temperature.md) draws the fit against tau.
 
 ## Several terms
 
