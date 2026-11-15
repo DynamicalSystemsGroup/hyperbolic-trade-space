@@ -1,0 +1,17 @@
+name: Question
+description: You are not sure how to use the package or how to read a result.
+labels: [question]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What you are trying to do
+      description: Say what the data is (configurations, attributes, metrics) and what you want to learn from the fit.
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you tried, and which pages you read
+    validations:
+      required: false

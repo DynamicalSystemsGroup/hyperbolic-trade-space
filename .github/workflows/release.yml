@@ -1,0 +1,184 @@
+name: Release
+
+# Publishing is by trusted publishing (OpenID Connect): no token or password is stored anywhere.
+# Two ways in, both started by a code owner:
+#   * a manual dispatch on the dev branch publishes the candidate to TestPyPI (environment testpypi);
+#     the default target, dry-run, builds and checks everything and publishes nothing;
+#   * a tag v<version> pushed on a commit of main publishes to PyPI (environment pypi).
+# A release is refused before anything is built unless: the tag equals the package version, the
+# changelog has its entry, the lock is current, every action is pinned to a commit, and the suite passes;
+# and after the build unless the software bill of materials names every package in uv.lock
+# (.github/RELEASE_ADMISSIBILITY.md, row by row).
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "dry-run builds and checks only; testpypi also publishes (from dev)"
+        type: choice
+        options: [dry-run, testpypi]
+        default: dry-run
+      tag:
+        description: "Tag to check the version against (a dry run of the tag rule); blank on a real dispatch"
+        type: string
+        default: ""
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: check version and branch
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Version matches the tag
+        id: version
+        env:
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+        run: |
+          if [ -n "$TAG" ]; then
+            version=$(uv run --no-project python scripts/check_release_version.py --tag "$TAG")
+          else
+            version=$(uv run --no-project python scripts/check_release_version.py)
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: The changelog has an entry for this version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+        run: |
+          if [ -n "$TAG" ]; then final=--final; else final=; fi
+          uv run --no-project python scripts/release_checks.py changelog --version "$VERSION" $final
+      - name: The lock matches the declaration
+        run: uv lock --check
+      - name: Every action is pinned to a commit
+        run: uv run --no-project python scripts/release_checks.py pins
+      - name: A tag release comes from main
+        if: github.ref_type == 'tag'
+        run: |
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main \
+            || { echo "::error::tag $GITHUB_REF_NAME is not on main; releases are cut from main."; exit 1; }
+      - name: A TestPyPI publish comes from dev
+        if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
+        run: |
+          [ "$GITHUB_REF" = "refs/heads/dev" ] \
+            || { echo "::error::TestPyPI publishes run from the dev branch; this ref is $GITHUB_REF."; exit 1; }
+
+  test:
+    name: test suite
+    needs: check
+    if: ${{ github.ref_type == 'tag' || inputs.target == 'testpypi' }}
+    uses: ./.github/workflows/test.yml
+    with:
+      windows: false
+
+  build:
+    name: build and check
+    needs: check
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      # The export below is a uv preview feature; the version is fixed so its format does not move.
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: "0.9.18"
+      - name: Build the wheel and the sdist
+        run: uv build
+      - name: Metadata check
+        run: uv run --locked --only-group dev python -m twine check dist/*
+      - name: The wheel holds the package and the licence and nothing else
+        run: |
+          unzip -Z1 dist/*.whl | grep -vE '^hyperbolic_trade_space(-[^/]*\.dist-info)?/' \
+            && { echo "::error::unexpected file in the wheel"; exit 1; } || true
+          unzip -Z1 dist/*.whl | grep -q 'licenses/LICENSE'
+      - name: The built version is the checked version
+        env:
+          VERSION: ${{ needs.check.outputs.version }}
+        run: ls dist/hyperbolic_trade_space-"$VERSION"-py3-none-any.whl dist/hyperbolic_trade_space-"$VERSION".tar.gz
+      - name: Software bill of materials from the locked resolution (CycloneDX)
+        run: |
+          mkdir sbom
+          uv export --locked --format cyclonedx1.5 --all-groups --preview-features sbom-export \
+            -o sbom/sbom.cdx.json > /dev/null
+      - name: The bill names every package the lock names
+        run: uv run --no-project python scripts/release_checks.py sbom --sbom sbom/sbom.cdx.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sbom
+          path: sbom/
+          if-no-files-found: error
+
+  publish-testpypi:
+    name: publish to TestPyPI
+    needs: [build, test]
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi' }}
+    runs-on: ubuntu-24.04
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/hyperbolic-trade-space
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  publish-pypi:
+    name: publish to PyPI
+    needs: [build, test]
+    if: ${{ github.ref_type == 'tag' }}
+    runs-on: ubuntu-24.04
+    environment:
+      name: pypi
+      url: https://pypi.org/p/hyperbolic-trade-space
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+
+  github-release:
+    name: GitHub release with the bill of materials
+    needs: [check, publish-pypi]
+    if: ${{ github.ref_type == 'tag' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: sbom
+          path: sbom/
+      - name: Create the release with the wheel, the sdist and the bill of materials
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.check.outputs.version }}
+        run: |
+          uv run --no-project python scripts/release_checks.py changelog --version "${VERSION}" --final --notes notes.md
+          gh release create "$GITHUB_REF_NAME" dist/* sbom/sbom.cdx.json \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --title "$GITHUB_REF_NAME" --notes-file notes.md

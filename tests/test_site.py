@@ -51,6 +51,7 @@ NAV_PAGES = [
     "theory.md",
     "generated/glossary.md",
     "further-reading.md",
+    "code-owners.md",
 ]
 # Pages on disk and in the contract that are not navigation entries: the router of the typed
 # address /docs/user-guide/ (contract version 22), one line, no content.

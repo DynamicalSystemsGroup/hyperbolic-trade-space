@@ -10,9 +10,9 @@ JOB = WF["jobs"]["test"]
 RUN = next(s["run"] for s in JOB["steps"] if "pytest" in s.get("run", ""))
 
 
-def test_workflow_is_manual_dispatch_only():
+def test_workflow_runs_only_on_dispatch_or_when_the_release_calls_it():
     triggers = WF.get("on", WF.get(True))
-    assert set(triggers) == {"workflow_dispatch"}
+    assert set(triggers) == {"workflow_dispatch", "workflow_call"}
 
 
 def test_three_shards_cover_every_test():

@@ -80,3 +80,5 @@ nav:
   - Theory in brief: theory.md
   - Glossary: generated/glossary.md
   - Further reading: further-reading.md
+  - Project:
+      - Code owners: code-owners.md

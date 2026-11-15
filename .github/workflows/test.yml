@@ -2,7 +2,14 @@ name: Tests
 
 # Manual dispatch only (the driver dispatches once per batch of pushes, at the gates; verification in
 # tiers). A dispatch runs the Linux matrix and the Windows fast and slow shards; pushes run nothing.
+# release.yml calls this workflow (Linux only) before it publishes.
 on:
+  workflow_call:
+    inputs:
+      windows:
+        description: "Also run the Windows fast and slow shards"
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       windows:
@@ -26,7 +33,7 @@ jobs:
     # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0
       - name: No AI attribution lines in commit messages (project rule)
@@ -38,7 +45,7 @@ jobs:
             exit 1
           fi
       # uv reads .python-version itself; setup-uv has no python-version-file input.
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
       - name: Check the lockfile is current
         run: uv lock --check
       - name: Install (locked)
@@ -53,7 +60,7 @@ jobs:
           v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
           echo "version=$v" >> "$GITHUB_OUTPUT"
       - name: Cache the opensysml runtime (downloaded on first use)
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.opensysml
           key: opensysml-${{ runner.os }}-${{ steps.opensysml.outputs.version }}
@@ -64,7 +71,7 @@ jobs:
       # job, so a failing test run does not leave every later run downloading again.
       - name: Restore the pinned sysml-toolkit
         id: toolkit-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.cache/hyperbolic-trade-space
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
@@ -81,7 +88,7 @@ jobs:
           PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch --archive "$RUNNER_TEMP/$asset"
       - name: Save the pinned sysml-toolkit
         if: steps.toolkit-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.cache/hyperbolic-trade-space
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
@@ -116,10 +123,10 @@ jobs:
         shell: bash
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
           python-version: "3.12"
       - name: Versions (OS, uv, python, node)

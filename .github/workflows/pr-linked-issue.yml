@@ -1,0 +1,27 @@
+name: Pull request names its issue
+
+# VC-3. Trigger: a pull request opened, edited, labeled or unlabeled. pull_request_target gives a token that
+# can comment on a fork's pull request; the checkout is the base branch and nothing from the pull request runs.
+on:
+  pull_request_target:
+    types: [opened, edited, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  linked:
+    name: linked issue or small-fix label
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Check the description and the labels
+        run: uv run --no-project python scripts/admissibility.py linked-issue --event "$GITHUB_EVENT_PATH" --report "$RUNNER_TEMP/report.md"
+      - name: Say what is missing
+        if: ${{ failure() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/report.md"

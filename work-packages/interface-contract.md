@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 23. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 24. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 23
+contract_version = 24
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -53,7 +53,7 @@ derivation.chain_length = 14
 derivation.generated_dir = "build/generated/"
 derivation.generated_pages = ["derivations.md", "verification.md"]
 derivation.generated_by = "scripts/build_generated.py"
-docs.pages = ["index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "theory.md", "further-reading.md"]
+docs.pages = ["index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "theory.md", "further-reading.md", "code-owners.md"]
 docs.generated_dir = "docs/generated/"
 docs.generated_pages = ["glossary.md"]
 docs.glossary_source = "glossary.yaml"
@@ -354,6 +354,7 @@ the last row of the change log.
 | 21 | 2026-11-12 | One API page (WP33 "D-2 rulings" item 5, Q3 "merge where the map shows a page serves no path"): `docs/api.md` is removed and `docs/api-reference.md` (nav title "API") opens with its overview of the public names, then the generated reference. `docs.pages` loses `api.md`; `api_overview_page` leaves the manifest; `presentation_pages` loses `docs/api.md` and `ownership.wp8a.paths` loses `docs/api.md`; `api_reference_page` is unchanged. What `api.md` no longer does: it was a second entry in the navigation that only linked to the reference page. No number changes | presentation (the docs pages; `mkdocs.yml`; `tests/test_site.py`, `tests/test_docs.py`; `claims_register.toml` file paths) | `WP33-decisions.md`, "D-2 rulings, items 5 and 6" (the assistant's rulings) |
 | 22 | 2026-11-12 | A router page (WP33 "D-2 rulings" item 6, the typed address `/docs/user-guide/`): `docs/user-guide/index.md` is added to `docs.pages` and `presentation_pages`, so that the address of the user guide's directory lands on one line pointing to the Overview instead of a directory listing. The page is a router and carries no content; it is not a navigation entry (`mkdocs.yml` `nav` unchanged). No number changes | presentation (the docs pages; `tests/test_site.py`, `tests/test_docs.py`) | `WP33-decisions.md`, "D-2 rulings, items 5 and 6" (the assistant's rulings) |
 | 23 | 2026-11-12 | The known gap on the package docstring is closed (WP33 review F-5, the task of the closing round): the docstring of `src/hyperbolic_trade_space/__init__.py` now says in one sentence what the package is and names the documentation site; the gaps row leaves section 17 and `gaps.init_docstring` leaves the manifest. No number changes | technical (`src/hyperbolic_trade_space/__init__.py`, docstring only) | `WP33-review.md`, F-5 |
+| 24 | 2026-11-14 | The code owners' page (WP47 D-4): `docs/code-owners.md` is added to `docs.pages` and `presentation_pages` and to the navigation under a "Project" heading (`mkdocs.yml` `nav`). No number changes | presentation (the docs pages; `tests/test_site.py`) | `WP47-scope-of-work.md`, D-4 |
 
 ## 15. Consumers: may assume, must not touch
 
@@ -391,7 +392,7 @@ Sides are pairwise disjoint; the manifest carries the explicit paths and the tes
 | technical | `src/`, `derivation/`, `tests/` (except carve-outs), `docs/superpowers/` (except the carve-out below), the case modules, notebook, `data/`, `figures/`, `model_v2/`, `experiments/` and `case-model.md` under `examples/adcs/`, `.github/workflows/test.yml`, `README.md`, `.python-version` |
 | process | `work-packages/` (except carve-outs), `CLAUDE.md` |
 | WP14 | `work-packages/interface-contract.md`, `work-packages/interface-contract.toml`, `tests/test_interface_contract.py` |
-| WP8a | `mkdocs.yml`, `glossary.yaml`, `site/`, `scripts/`, `.github/workflows/pages.yml`, `tests/test_site.py`, `docs/index.md`, `docs/getting-started.md`, `docs/user-guide/`, `docs/api-reference.md`, `docs/examples.md`, `docs/theory.md`, `docs/further-reading.md`, `docs/generated/`, `docs/superpowers/notes/paper-sources/` (carve-out inside the technical `docs/superpowers/`) |
+| WP8a | `mkdocs.yml`, `glossary.yaml`, `site/`, `scripts/`, `.github/workflows/pages.yml`, `tests/test_site.py`, `docs/index.md`, `docs/getting-started.md`, `docs/user-guide/`, `docs/api-reference.md`, `docs/examples.md`, `docs/theory.md`, `docs/further-reading.md`, `docs/code-owners.md`, `docs/generated/`, `docs/superpowers/notes/paper-sources/` (carve-out inside the technical `docs/superpowers/`) |
 | WP10 | `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`, `tests/test_case.py`, `docs/references.bib` |
 | WP12 | none yet; declared by an additive amendment when its scope is approved |
 | WP8b | `CHANGELOG.md`, `LICENSE`, `.github/workflows/release.yml` |

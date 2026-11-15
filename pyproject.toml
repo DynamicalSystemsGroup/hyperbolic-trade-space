@@ -5,7 +5,19 @@ description = "Learn the shape of a design trade space: a scikit-learn-compatibl
 readme = "README.md"
 authors = [{ name = "Michael Zargham" }]
 requires-python = ">=3.12,<3.13"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["trade space", "posynomial", "geometric programming", "Pareto frontier", "scikit-learn", "systems engineering"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
 dependencies = [
     "numpy>=1.26",
     "scipy>=1.12",
@@ -15,12 +27,21 @@ dependencies = [
     "matplotlib>=3.8",
 ]
 
+[project.urls]
+Homepage = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
+Documentation = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/"
+Repository = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
+Issues = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/issues"
+Changelog = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/CHANGELOG.md"
+
 [dependency-groups]
 dev = [
     "pytest>=8",
     "pytest-cov>=5",
     "pytest-xdist>=3.8.0",
     "ruff>=0.6",
+    "build>=1.2",
+    "twine>=5",
 ]
 docs = ["mkdocs-material>=9.5", "mkdocs-jupyter>=0.24", "mkdocstrings[python]>=0.26", "mkdocs-bibtex>=2.16"]
 notebooks = ["jupyter>=1.0", "nbconvert>=7"]
@@ -36,6 +57,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hyperbolic_trade_space"]
+
+# The sdist carries the package, the tests, the licence, the readme and the changelog, and nothing else.
+[tool.hatch.build.targets.sdist]
+include = ["/src/hyperbolic_trade_space", "/tests", "/LICENSE", "/README.md", "/CHANGELOG.md", "/pyproject.toml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src"]
