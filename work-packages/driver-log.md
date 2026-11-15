@@ -2245,4 +2245,9 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   record entries, the prose at 1,636 words, the register re-pointed (thirty stale rows removed, rows C728 to C770
   added with the old notes carried where a sentence survived), the trace regenerated; register and history tests
   running; browser read next; the merge waits on his read and the carving pass.
+- **WP48 accepted under the mandate (2026-11-15, 08:30 EST).** Readout read whole; three repository reads repeated
+  and confirmed (default token `write`, no ruleset on `main`, vulnerability alerts on); checks clean, fast suite
+  1,972 passed. Its three questions join "Waiting for the supervisor", after v0.1. History branch: the network link
+  check on the record passes (0 failures, 8 hosts blocked to automation, among them the two Medium posts, the MIT
+  Computational Law Report page and the SSRN DOI); register and history tests still running.
 
