@@ -181,3 +181,16 @@ repository at 11:20: 119 local branches, 12 not merged into dev (the eleven deli
 comparison report), `.git` at 191 MB. The driver's assessment is in chat; it becomes the scope of the next tidiness
 instance on his word.
 
+**Supervisor (11:35 EST), on the guide and the driver's additions:** "you can add your proposed additions. i do want to do
+clean up work. it impacts auditability and comprehenisive review and sign off falls to me"
+
+**Instance 4 opened on his word.** Scope: the guide's order with the driver's additions. Batch 1, now and reference-only:
+temporary backup refs for the detached heads, a bundle of all refs to a backup directory outside the repository, the
+owner map of every worktree, deletion (non-forcing) of branches integrated into dev that own no worktree, a manifest of
+name, old SHA and reason, and verification that the dev tree and the worktrees are unchanged. Batch 2, as each delivery
+lands: its worktree and branch removed, the manifest extended; the driver's own merged trees (docshome, history,
+rootpage) removed now that their pages are on dev, the reader tree's modified report diffed before any discard. The
+remote branches wp29, wp30a and wp30b are his to retire (added to his keyboard list). No tracked-file thinning in this
+instance. Non-goals: no force deletes, no loop over candidates without the per-branch check, no removal of a tree a
+unit still owns.
+
