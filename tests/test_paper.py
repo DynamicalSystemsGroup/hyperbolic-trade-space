@@ -281,7 +281,7 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
         "the posynomial case is compatible with generalized geometric programming",
         "Like PCA, HTS is an unsupervised learning method",
         "a monomial term in n metrics characterizes an n-lemma",
-        "HTS is implemented as a scikit-learn estimator",
+        "HTS is implemented with a scikit-learn-compatible API",
         "Trade-offs trace piecewise hyperbolic frontiers",
         "Pareto improvements increase energy",
         "a design that maximizes energy is weakly Pareto-efficient",

@@ -236,3 +236,10 @@ integrates naturally with existing pipelines and tools.""
 integrates with existing pipelines and tools." ("naturally" dropped as a word doing no work; hyphenation per the
 glossary). The two other surfaces that say "scikit-learn estimator" (the docs home's quickstart line and the
 package docstring) are put to him as one question before any sweep.
+
+**Supervisor, verbatim (the same sitting):** (quoting "The worked example is a cubesat design optimization problem
+with competing objectives in performance and cost.") "cut the "with competing objectives in performance and cost."
+since its said later. putting that qualification twice in the abstract feels like space waste"
+
+**Applied as:** the sentence reads "The worked example is a cubesat design optimization problem."; the register
+fragment follows.

@@ -7963,7 +7963,7 @@ note = "Framing, not a checkable claim: the supervisor's description of the pape
 
 [[claim]]
 id = "C688"
-fragment = "Our proofs are scripted with SymPy, and HTS is implemented as a scikit-learn estimator, so it works with existing pipelines and tools."
+fragment = "Our proofs are scripted with SymPy, and HTS is implemented with a scikit-learn-compatible API, so it integrates with existing pipelines and tools."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -7979,7 +7979,7 @@ note = "The lemma scripts are plain SymPy run as a chain (never called formally 
 
 [[claim]]
 id = "C689"
-fragment = "The worked example is a cubesat design optimization problem with competing objectives in performance and cost."
+fragment = "The worked example is a cubesat design optimization problem."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
