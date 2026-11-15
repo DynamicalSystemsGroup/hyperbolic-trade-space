@@ -67,3 +67,9 @@ reason. in this case i asked for more content"
 the rule stands as he states it: a budget is the driver's instrument, revised with a stated reason, and his request for
 content is one.
 
+**Supervisor (2026-11-15, 09:40 EST), the docs home read in the browser (branch `docshome`, served on port 8794):**
+"Land it"
+
+The docs home lands on dev: the quickstart block (run by the driver before his read), the first-fit figure, the PCA
+sentence, "white space" for "gaps" (his ruling of 2026-11-14), budget 250 raised for the figure and the block.
+
