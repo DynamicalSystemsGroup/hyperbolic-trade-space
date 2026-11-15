@@ -157,3 +157,13 @@ used"
 temperature that makes the three pieces read, and the caption states the temperature used (as the paper's figures state
 theirs); the fit stays the one `fit_why()` fit at that temperature (R-1).
 
+**Supervisor (2026-11-14 22:48 EST):** "i will add that once you do the work get the example plots in the top level index you should
+also build an example in the documentation that explicates the synthetic case so anyone who sees the index and wants to
+see how it was made can reproduce it with out us bloating the index"
+
+**Applied as:** a follow-on to WP51, after the root page's figures settle: a docs example page for the planted
+three-metric case (the table's construction, the fit at its stated temperature, the ternary and the slices drawn by
+the same code as the root page's figures, each step runnable), linked from the root page's captions in one short clause
+so the index itself stays lean. Scoped as its own unit once the figure passes his loop; its budget set then; it joins the
+Examples page's journey ("See the worked case").
+

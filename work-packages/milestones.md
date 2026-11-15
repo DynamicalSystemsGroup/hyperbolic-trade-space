@@ -36,3 +36,5 @@ examples, drawn from the research that lands in v0.1's record; the breadth those
 
 What needs the supervisor is kept apart in `supervisor-tasks.md`: the things only he can do, and the things done together
 at a keyboard. Everything else runs in the autonomous phase under `release-candidate.md`'s standing orders.
+
+- Follow-on to WP51 (his ask, 2026-11-14 night): a docs example that explicates the synthetic three-metric case behind the root page's figures, reproducible step by step, linked from the index without bloating it; scoped after the figure passes his loop.
