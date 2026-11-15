@@ -2300,4 +2300,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   tips in the manifest, the bundle and local backup refs (wp30a one and wp30b three commits not patch-equivalent to dev,
   superseded at the WP30 gate). Owner map and manifest in `work-packages/WP25-rounds/instance-4/`. Batch 2 follows the
   deliveries as they land.
+- **History tests green on dev; CI consolidated (2026-11-15, 12:10 EST).** The full history selection on dev's head
+  after the Olfati-Saber edits: 22 passed in test_site.py (register 21 passed separately). Four Tests dispatches were
+  running on superseded heads from the morning's landings; the three older ones (233eab5, 459f806, 29101b6) cancelled,
+  43663572799 on a45ff23 (the abstract's three thrusts, every landing beneath it) kept as the run of record.
 
