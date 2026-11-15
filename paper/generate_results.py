@@ -91,7 +91,7 @@ def temperature_selection() -> Md:
         "Each row is the K = 1 fit at the temperature tau. The columns give the fraction of "
         "designs above V = 1, the effective sample size, the number of metrics with an exponent "
         "above 0.001, and the largest exponent with its metric. The fit temperature is chosen "
-        f"so that the fraction above V = 1 reaches the target {target:.2f} (Section 8)."
+        f"so that the fraction above V = 1 reaches the target {target:.2f} (Section 7)."
     )
     parts = [
         f"{_cite(r)}:\n\n" + _t(case.tau_sweep(s), f"D tau_sweep | {r}") for r, s in studies.items()

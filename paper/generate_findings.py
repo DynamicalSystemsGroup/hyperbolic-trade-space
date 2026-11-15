@@ -486,7 +486,7 @@ def margin_sentence(study, fits) -> Md:
         else f"whether the contending sets hold under rounding-level jitter is read in {_D11}"
     )
     return Md(
-        f"On the cubesat case of Section 8 ({r} regime, {thousands(N)} feasible designs), "
+        f"On the cubesat case of Section 7 ({r} regime, {thousands(N)} feasible designs), "
         f"at K = {K} "
         f"the margin, a gap between term scores, is "
         f"{stable(f'certificate | {r} | {K} | gamma', four)}, against a band 1/tau "
@@ -751,11 +751,11 @@ def planted_sentence() -> Md:
     return Md(
         f"The fit recovers all {_NUMBER_WORDS[gr.RECOVERY_TERMS]} terms on {good} of {len(exact)} "
         f"planted tables of {gr.RECOVERY_ROWS} rows, {gr.RECOVERY_METRICS} metrics and "
-        f"{gr.RECOVERY_TERMS} terms each ({_D14}, Section 9)."
+        f"{gr.RECOVERY_TERMS} terms each ({_D14}, Section 8)."
     )
 
 
-# ---- the decision (WP39): the closing subsection of Section 9 and Appendix D's table -------------
+# ---- the decision (WP39): the closing subsection of Section 8 and Appendix D's table -------------
 # One function, ``decision``, computes every number from the study and its fits; the paragraph, the
 # six-row table and the 28-design table are formatted from its result and nothing else is typed.
 
@@ -808,7 +808,7 @@ def decision(study=None, fits=None) -> Decision:
     """The shortlist and the named designs of the case, computed from the data of record.
 
     The shortlist is the feasible designs that pass all six requirements and lie within the
-    near-frontier band (the K = 1 band, at every K, as in Section 9) of both the K = 1 and the
+    near-frontier band (the K = 1 band, at every K, as in Section 8) of both the K = 1 and the
     case's K fit. Every named design is asserted to lie in the shortlist and to pass the six
     requirements.
 
@@ -918,7 +918,7 @@ def _tracker_cost(d: Decision) -> float:
 
 
 def decision_sentence(d: Decision) -> Md:
-    """The closing paragraph of Section 9: the question the method hands the two executives.
+    """The closing paragraph of Section 8: the question the method hands the two executives.
 
     Narrated dollars are to the nearest 1,000 or 0.01 M USD; the tables give them exactly.
     """
@@ -967,7 +967,7 @@ _ARCSEC_PER_DEG = 3600.0
 
 
 def tension_sentence(study, fits, d: Decision) -> Md:
-    """Section 9's sentence on the pick's tension: the design that balances the operator's pointing
+    """Section 8's sentence on the pick's tension: the design that balances the operator's pointing
     error and the sponsor's fleet cost, read in the attributes' own units on the K = 2 fit.
 
     The tension is ``design_tensions`` at that design (from the data), in USD per arcsecond; the
@@ -1038,7 +1038,7 @@ def decision_baseline_sentence() -> Md:
 
 
 def decision_table(d: Decision) -> Md:
-    """The six-row table of Section 9: the rule, the configuration, the three measures and the
+    """The six-row table of Section 8: the rule, the configuration, the three measures and the
     level (log V at the case's K), exact."""
     p = d.picks
     rows = [("baseline configuration", None, d.baseline)]

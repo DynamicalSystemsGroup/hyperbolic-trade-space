@@ -32,6 +32,8 @@ total = 5900
 "Reproducibility and your own case" = 60
 "Future work and final remark" = 170
 "Acknowledgments and process" = 73
+"Future work" = 0
+"AI acknowledgement and Reproducibility" = 0
 "Works cited" = 3
 # The supporting material is outside the count (words_by_section reads the paper only); the entry
 # below admits rows that record what is added to Appendix B and why.
@@ -1908,3 +1910,48 @@ section = "Definitions"
 words_added = 2
 job = "the n-lemma figure referenced from the definition it illustrates (every figure is referenced from the text)"
 reader = "the reader who reaches Figure 3 from the n-lemma definition"
+
+# WP54: the paper's skeleton. Four sections leave, two enter; each old ceiling goes to zero and each new section's
+# ceiling is its measured count.
+
+[[cut]]
+date = "2026-11-15"
+section = "Search of the design space (preliminary)"
+words_removed = 304
+no_longer_did = "the section as a section: the proposal, the selection rule, the check, the nested loops and the ascent direction survive in three sentences of Future work; the framing paragraph, the sampling-strategy sentence, the submartingale conjecture and the open convergence point leave the paper (the conjecture and the point to work-packages/review/open-questions.md)"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Reproducibility and your own case"
+words_removed = 182
+no_longer_did = "the section as a section: its content (every figure, table and number comes from a call into a tested module, Appendix F, adapting the pipeline to a table of one's own) moves into AI acknowledgement and Reproducibility"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Future work and final remark"
+words_removed = 190
+no_longer_did = "the list of Beyond-sentences (one per assumption) and the final remark on a forecast V; Future work is rewritten from the spike records around the abstract's three thrusts"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Acknowledgments and process"
+words_removed = 73
+no_longer_did = "the section as a section: gated packages, the inherited harness and the author's responsibility survive in AI acknowledgement and Reproducibility; the sentence calling the derivations machine-checked is gone"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Future work"
+words_added = 233
+job = "says what the release accomplished and names the abstract's three directions, each from its spike record (WP41, WP50, WP36 and WP48), written fresh in place of the Beyond-list"
+reader = "the reader who has finished the case and asks what comes next"
+
+[[raise]]
+date = "2026-11-15"
+section = "AI acknowledgement and Reproducibility"
+words_added = 150
+job = "states what AI assistance did and did not do, how the derivations are checked, and how every figure, table and number is reproduced and the pipeline adapted to a table of one's own"
+reader = "the reader who wants to rerun the work or judge how it was made"

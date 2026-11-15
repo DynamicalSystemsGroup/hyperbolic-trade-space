@@ -22,8 +22,8 @@ table among them, were checked by their DOM measurements, not by eye.
   552 px, `overflow-x: auto`); the family table likewise (351 and 480 px). The document is 375 px
   wide on the paper's page. Every generated table of the appendices is wrapped the same way.
 - **Acknowledgments.** The site lifts a heading named exactly "Acknowledgments" out of the flow and
-  prints it after the bibliography. The heading is now "Acknowledgments and process": section 13,
-  before 14 "Works cited". (The test list of section headings carries the new name.)
+  prints it after the bibliography. The heading is now "AI acknowledgement and Reproducibility": section 11,
+  before "Works cited". (The test list of section headings carries the new name.)
 - **Cross-references.** Every "Section n", "Table 1" and "Appendix X" of the main text is a link
   (MyST `numref` and `ref` roles); section numbers are printed by the site from the heading labels
   `(sect-...)=`, the appendix targets are `(appendix-a)=` to `(appendix-g)=`. The proof pointers

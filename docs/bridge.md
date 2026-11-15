@@ -5,7 +5,7 @@ For an analyst who has picked a point on the chart and wants a design under it.
 The way from a design to its chart point is a computation: evaluate the configuration, condition the
 attributes into metrics, read the chart. The way back loses invertibility, at one step only, so the route back
 depends on the point: a lookup where the point has a datum, a conjecture where it has none, worth what its check
-shows. It is the bridge to [the search of Section 7](paper:sect-search), which is future work.
+shows. It is the bridge to [the search direction of Future work](paper:sect-future).
 
 ## Where invertibility is lost
 
@@ -98,7 +98,7 @@ white-space points had one pooled configuration nearest.
 
 ## The outer loop, and what is open
 
-Propose, evaluate, append the row, refit, and repeat: the outer loop of the paper's Section 7 is the refit. It
+Propose, evaluate, append the row, refit, and repeat: the outer loop of the search named in the paper's [Future work](paper:sect-future) is the refit. It
 need not move outward at every step. The conjecture is that it is a
 submartingale, a process that rises in expectation: outward in expectation, with a convergence result when the expected progress ceases. This is
 future work, and no conditions under which it holds are derived.

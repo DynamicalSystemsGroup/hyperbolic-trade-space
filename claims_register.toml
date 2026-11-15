@@ -1245,18 +1245,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa"
 
 [[claim]]
-id = "C108"
-fragment = "On each term the normal is an ascent direction in log space"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L1.7", "lemma:L10"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L1.7: log V = w.u - beta so gradient in log space is w, the term's normal; L10 for one normal per term"
-
-[[claim]]
 id = "C109"
 fragment = "Our case is a cubesat model coupling power, mass and attitude control."
 file = "paper/paper.ipynb"
@@ -1440,78 +1428,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "V(km)=kV(m) and V(m/V(m))=1 give m = V(m) * (m/V(m)) with m/V on the frontier"
-
-[[claim]]
-id = "C124"
-fragment = "supply configurations, attributes and a conditioning rule, and use the same calls"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "S"
-backing = ["file:work-packages/interface-contract.md", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "test:tests/test_docs.py::test_runnable_blocks_execute"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Contract states the source of attributes is a black box (simulator, test, human) behind the same table/signature; conditioning rule is the analyst's LogAffinePreconditioner/pipeline, tested; configurations enter the predictive fit (predictive.py, docs prediction.md). Instruction-like."
-
-[[claim]]
-id = "C125"
-fragment = "The docsite's Getting started page is where to begin"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "S"
-backing = ["file:docs/getting-started.md", "file:docs/user-guide/overview.md", "test:tests/test_docs.py::test_runnable_blocks_exist_where_the_guide_promises_them"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Docs has a user-guide section (mkdocs nav User guide, docs/user-guide/*.md) with executed runnable blocks; the sentence names where to look (pointer/intent)."
-
-[[claim]]
-id = "C126"
-fragment = "Beyond one term, K > 1 is built"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_estimator.py::test_n_terms_above_one_is_implemented", "test:tests/test_estimator.py::test_k_terms_recovers_planted_terms"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "n_terms=2 fits exponents_ of shape (2,3); K=3 recovers planted terms"
-
-[[claim]]
-id = "C127"
-fragment = "kernels that keep the model a generalized geometric program (GGP) in the metrics"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L16.31"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "scope/intent; L16.31 shows the fixed-weight objective is a generalized posynomial (I15); 'kernels' are a stated direction"
-
-[[claim]]
-id = "C129"
-fragment = "Work was done in supervisor-gated work packages: a written scope the author approved before execution, and a review afterwards."
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "P"
-backing = ["reading"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "The author's own account of how the work was run (scope, approval, review), worded as process; work-packages/README.md records it; mark as reading in the register."
-
-[[claim]]
-id = "C130"
-fragment = "AI coding assistance (Claude Code, Anthropic) drafted code, derivation scripts and text inside those packages"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "P"
-backing = ["reading"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "The author's own account of tool use; worded as his experience; mark as reading."
 
 [[claim]]
 id = "C131"
@@ -5920,50 +5836,6 @@ source = "WP37 D-9"
 note = "Record id 2022-numfocus-council (https://numfocus.org/community/people). The sponsor, PyData NYC 2023 and SciPy 2026 clauses are cut (slimming); 2026-numfocus-sponsor, 2023-pydata-nyc and 2026-scipy-talk stay in the record and the list."
 
 [[claim]]
-id = "C564"
-fragment = "Beyond pencil-and-paper checks, the Lean theorem prover, starting with the log-mean-exp bounds and the convexity of the fit's loss"
-file = "paper/paper.ipynb"
-anchor = "Future work and final remark"
-kind = "L"
-backing = [
-  "file:work-packages/WP36-rounds/spike/readout.md",
-  "file:work-packages/WP36-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP36 decision entry 441cdcb (placement (a), the supervisor's direction of 2026-11-12)"
-note = "A statement of direction, not a result: the readout's section 1 ranks the log-mean-exp bounds and the convexity of the fit objective as the results to state in Lean first; nothing is formalized and the lemma scripts stay a pencil-and-paper substitute"
-
-[[claim]]
-id = "C565"
-fragment = "A proof over the reals backs the mathematics, not the floating-point computation, which the certificates check"
-file = "paper/paper.ipynb"
-anchor = "Future work and final remark"
-kind = "L"
-backing = [
-  "file:work-packages/WP36-rounds/spike/readout.md",
-  "func:src/hyperbolic_trade_space/solvers.py::soft_certificate",
-]
-status = "backed"
-disposition = "keep"
-source = "WP36 decision entry 441cdcb"
-note = "Readout section 2: a Lean theorem about Real says nothing about code on IEEE 754 doubles, and the estimator's certificates accept any point that passes a tolerance, so they check the float result"
-
-[[claim]]
-id = "C566"
-fragment = "a Rust core compiled to WebAssembly, whose verification tools address crashes and overflow, not numerical accuracy"
-file = "paper/paper.ipynb"
-anchor = "Future work and final remark"
-kind = "L"
-backing = [
-  "file:work-packages/WP36-rounds/spike/readout.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP36 decision entry 441cdcb"
-note = "Readout section 3: Creusot and Prusti prove absence of panics and overflow, Kani's own documentation calls it unsuitable for properties such as precision; no page read gives an error bound for exp, ln or a solver's iterates"
-
-[[claim]]
 id = "C567"
 fragment = "A proof in a theorem prover would fix each lemma's statement over the real numbers"
 file = "docs/user-guide/limitations.md"
@@ -7564,18 +7436,6 @@ source = "final round, third paper unit, change request 166"
 note = "BatteryPeakPowerRequirement (ratio at least 1), PowerMarginRequirement and EnergyBalanceRequirement (not negative) are stated in cubesat.sysml; the case's flags are settled, power_ok, momentum_ok and dod_ok; on the feasible designs the ratio's minimum is 1.46, the margin's 6.5 W and the balance's 0.95 W h in both regimes."
 
 [[claim]]
-id = "C675"
-fragment = "The loop may move inward on a step. The conjecture is a submartingale property, outward in expectation, with a convergence result when the expected progress ceases; it is future work, and no conditions are derived."
-file = "paper/paper.ipynb"
-anchor = "Search of the design space (preliminary)"
-kind = "P"
-backing = ["file:work-packages/WP36-decisions.md"]
-status = "backed"
-disposition = "keep"
-source = "final round, third paper unit, change request 169 (the supervisor's ruling of 2026-11-14, 12:20, WP36-decisions.md)"
-note = "Stated as future work as the supervisor expects it; no lemma, no conditions."
-
-[[claim]]
 id = "C676"
 fragment = "Our method, hyperbolic trade space (HTS), explains trade-offs in a dataset of designs and measurements of their performance on real-valued attributes."
 file = "paper/paper.ipynb"
@@ -8843,7 +8703,6 @@ disposition = "keep"
 source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
 note = "Request 173: the 16 of 20 are on twenty tables of 400 rows, 4 metrics and 3 terms (D.14); the sentence no longer names C.7's 900-row example, which the count is not on. Sizes come from RECOVERY_ROWS, RECOVERY_METRICS and RECOVERY_TERMS."
 
-
 [[claim]]
 id = "C802"
 fragment = "A11: the noise that a row's weighted metrics carry is independent across rows and $N(0,v^2)$ with $v>0$"
@@ -8859,7 +8718,6 @@ disposition = "keep"
 source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
 note = "Request 174: A11 is declared in derivation/axioms.py and used by L19 only; Section 3's list now carries it."
 
-
 [[claim]]
 id = "C803"
 fragment = "the ridge adds $\\tau\\Sigma$ to the Hessian, so $J^R$ has Hessian $\\tau(C+\\Sigma)$"
@@ -8873,7 +8731,6 @@ status = "backed"
 disposition = "keep"
 source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
 note = "Request 177: L20.24 (J_tau mixed derivative tau v'C delta) and L20.35 (ridge derivative at the shifted point, tau v'Sigma w + tau v'Sigma delta, the second term set aside); the Hessian of the ridge (tau/2) w'Sigma w is tau Sigma, checked in SymPy."
-
 
 [[claim]]
 id = "C804"
@@ -8890,7 +8747,6 @@ disposition = "keep"
 source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
 note = "Request 175: 437 of 2,134 designs lie in |log V| < 0.0240 at K = 2 (279 below the line, 158 above), D.3's 318 + 119; the figure shaded the lower half only."
 
-
 [[claim]]
 id = "C805"
 fragment = "The near-frontier column counts the designs within the K = 1 band"
@@ -8905,7 +8761,6 @@ status = "backed"
 disposition = "keep"
 source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
 note = "Request 176: counts 318 and 119 are at the K = 1 band 0.0240 (437 designs); the shares 0.7384 and 0.2616 are 127 and 45 of 172 designs in the K = 2 fit's own band 0.0088."
-
 
 [[claim]]
 id = "C806"
@@ -8933,7 +8788,6 @@ disposition = "keep"
 source = "WP41 D-2"
 note = "The chart is a bijection (L8) and the conditioning is invertible (L9); the evaluation from configuration to attributes is not part of either."
 
-
 [[claim]]
 id = "C808"
 fragment = "many configurations can give one outcome, so a point's preimage is not one configuration"
@@ -8945,7 +8799,6 @@ status = "backed"
 disposition = "keep"
 source = "WP41 D-2"
 note = "The three ways the evaluation fails to invert are the supervisor's framing (WP41-decisions.md, 12:05) and the spike note's section 1; the case's evaluation is a deterministic simulator, so the third way (noise) is injected there (noise_injection.py), not observed."
-
 
 [[claim]]
 id = "C809"
@@ -8959,7 +8812,6 @@ disposition = "keep"
 source = "WP41 D-2"
 note = "The regressor is fitted on rows of configuration and metrics: a row's metrics give its chart point by transform and its configuration is the row's."
 
-
 [[claim]]
 id = "C810"
 fragment = "`TradeSpaceRegressor` is the prediction half. It maps a configuration to the chart point, and the regression ... error carries into the position and the level, not into raw metrics."
@@ -8971,7 +8823,6 @@ status = "backed"
 disposition = "keep"
 source = "WP41 D-2"
 note = "Module docstring: the regression error is in coordinates; predict_coordinates returns (Z, log V)."
-
 
 [[claim]]
 id = "C811"
@@ -8985,7 +8836,6 @@ disposition = "keep"
 source = "WP41 D-2"
 note = "Proposer.draw: seeded pool of 100,000 configurations, the one with the nearest predicted [Z | 2 log V] to the hole."
 
-
 [[claim]]
 id = "C812"
 fragment = "The tolerance is the band $1/\\tau$ of the fit by default"
@@ -8997,7 +8847,6 @@ status = "backed"
 disposition = "keep"
 source = "WP41 D-2"
 note = "case.predict_check compares ||dZ|| and |dlog V| with the band 1/tau."
-
 
 [[claim]]
 id = "C813"
@@ -9011,7 +8860,6 @@ disposition = "keep"
 source = "WP41 D-2"
 note = "The paper's D.10 table (log V and Z within band for all three) and the committed check designs (dod_ok false for the three proposals)."
 
-
 [[claim]]
 id = "C814"
 fragment = "Two of the three are the same configuration, since two white-space points had one pooled configuration nearest."
@@ -9023,7 +8871,6 @@ status = "backed"
 disposition = "keep"
 source = "WP41 D-2"
 note = "The committed v2 predictions: proposals 1 and 3 have identical configurations; the spike's run recomputes this (work-packages/WP41-rounds/spike/run-record.txt)."
-
 
 [[claim]]
 id = "C815"
@@ -9037,7 +8884,6 @@ disposition = "keep"
 source = "WP41 D-2"
 note = "The supervisor's ruling of 2026-11-14, 12:20, quoted verbatim in WP36-decisions.md; stated as future work with no conditions derived."
 
-
 [[claim]]
 id = "C816"
 fragment = "Shipped as case code, not as package functions: the pooled proposal and the check of the cubesat case"
@@ -9049,7 +8895,6 @@ status = "backed"
 disposition = "keep"
 source = "WP41 D-2"
 note = "The two case functions; the package has no propose or check function (git grep finds none under src/)."
-
 
 [[claim]]
 id = "C817"
@@ -9063,7 +8908,6 @@ disposition = "keep"
 source = "WP41 D-4"
 note = "The entry states the term of the WP41 note (section 1 of the spike readout); a definition, registered with the note it comes from."
 
-
 [[claim]]
 id = "C818"
 fragment = "How one configuration is picked for a chart point when many are predicted near it, because the way back from the chart to the design space is not unique."
@@ -9076,7 +8920,6 @@ disposition = "keep"
 source = "WP41 D-4"
 note = "The entry states the term of the WP41 note (section 1 of the spike readout); a definition, registered with the note it comes from."
 
-
 [[claim]]
 id = "C819"
 fragment = "Evaluating a proposal once and comparing the measured chart point with the predicted one. Three outcomes: confirmed, refuted (a row the table lacked, so the fit is rerun) or infeasible."
@@ -9088,45 +8931,6 @@ status = "backed"
 disposition = "keep"
 source = "WP41 D-4"
 note = "The entry states the term of the WP41 note (section 1 of the spike readout); a definition, registered with the note it comes from."
-
-
-[[claim]]
-id = "C820"
-fragment = "A configuration chosen for a chart point is a **proposal**: the configuration, its predicted point and a tolerance."
-file = "paper/paper.ipynb"
-anchor = "Search of the design space (preliminary)"
-kind = "S"
-backing = ["glossary:proposal", "func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor"]
-status = "backed"
-disposition = "keep"
-source = "WP41 D-3"
-note = "The glossary's definition; the regressor supplies the predicted point."
-
-
-[[claim]]
-id = "C821"
-fragment = "A **selection rule** picks one of the many configurations predicted near a point."
-file = "paper/paper.ipynb"
-anchor = "Search of the design space (preliminary)"
-kind = "S"
-backing = ["glossary:selection-rule", "func:examples/adcs/experiments/check_designs.py::Proposer"]
-status = "backed"
-disposition = "keep"
-source = "WP41 D-3"
-note = "The case's rule is nearest in a seeded pool; two others are prototyped in work-packages/WP41-rounds/spike/readout.md."
-
-
-[[claim]]
-id = "C822"
-fragment = "A move along the ascent direction is a Pareto improvement of the prediction; a design built to reach it need not follow; the **check** finds out"
-file = "paper/paper.ipynb"
-anchor = "Search of the design space (preliminary)"
-kind = "P"
-backing = ["reading", "file:work-packages/WP11-decisions.md"]
-status = "backed"
-disposition = "keep"
-source = "WP41 D-3"
-note = "The supervisor's ruling of 2026-11-14, 13:10 (WP11-decisions.md): the predicted-against-measured distinction; D.10 is the one run of the check."
 
 [[claim]]
 id = "C823"
@@ -10085,3 +9889,159 @@ status = "backed"
 disposition = "keep"
 source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
 note = "variants.json primary and maturity_not_inverted: contending_set and association longevity|earliness."
+
+[[claim]]
+id = "C909"
+fragment = "This release delivers the method as a scikit-learn-compatible estimator, the theory of the one-term fit with scripted proofs, the several-term fit with its guarantees, the cubesat case carried to a decision, and the method's record on three public datasets."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_derivation.py::test_full_chain_runs", "test:tests/test_wp45_examples.py::test_manifest_names_source_doi_licence", "file:docs/examples/perovskite.md", "file:docs/examples/amniote.md", "file:docs/examples/wheat.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "The estimator passes scikit-learn's checks; the lemma scripts run in the chain test; the cubesat case is Sections 7 and 8; the three example pages are the records on the public datasets (WP60)."
+
+[[claim]]
+id = "C910"
+fragment = "A chart point without a datum pulls back to a proposal: a configuration chosen by a selection rule, a conjecture until it is built and measured."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "S"
+backing = ["glossary:proposal", "glossary:selection-rule", "file:work-packages/WP41-rounds/spike/readout.md", "func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP41 readout, section 1: the sampled route and the conjecture route, the selection rule, the check."
+
+[[claim]]
+id = "C911"
+fragment = "Ascent directions chained back through the conditioning and the evaluation steer the proposals, and an outer loop evaluates them, appends the rows and refits."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "S"
+backing = ["file:work-packages/WP41-rounds/spike/readout.md", "file:docs/bridge.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP41 readout, section 1: the outer loop is the refit; the chain back through the conditioning is the retired Section 7's middle loop, kept in docs/bridge.md."
+
+[[claim]]
+id = "C912"
+fragment = "The next release scopes the proposal and its check as functions of the regressor."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "S"
+backing = ["file:work-packages/WP41-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP41 readout, section 4: the shape of the interface, to be scoped."
+
+[[claim]]
+id = "C913"
+fragment = "Persistent homology on the chart's distances would name candidate holes, regions the sample encloses and no design occupies, each a hypothesis until a design is sampled there; a spike located and settled a planted one."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "S"
+backing = ["file:work-packages/WP50-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP50 readout, 'The boundary': the planted instance locates and settles a known hole at the cost of one recomputed diagram; the suggested sentence names candidates as hypotheses; no result on the case."
+
+[[claim]]
+id = "C914"
+fragment = "The next release builds the definition as code on planted tables, with the choice of topology library left open."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "S"
+backing = ["file:work-packages/WP50-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP50 readout, 'What the next release builds' (stage 1) and the dependency choice (alpha complex under GPL v3 or Rips complex under MIT), his."
+
+[[claim]]
+id = "C915"
+fragment = "The Lean theorem prover would prove the log-mean-exp bounds and the convexity of the loss over the reals, which backs the mathematics and not the floating-point computation."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "L"
+backing = ["file:work-packages/WP36-rounds/spike/readout.md", "file:work-packages/WP36-decisions.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP36 decision (placement (a)): the Lean direction with the two lemmas named first and the reals-versus-floating-point line."
+
+[[claim]]
+id = "C916"
+fragment = "A Rust core compiled to WebAssembly would serve performance, its verification tools addressing crashes and overflow, not numerical accuracy."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "L"
+backing = ["file:work-packages/WP36-rounds/spike/readout.md", "file:work-packages/WP36-decisions.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP36 decision: one clause for the Rust core compiled to WebAssembly; the supervisor's pairing of Lean with Rust for performance and guarantees."
+
+[[claim]]
+id = "C917"
+fragment = "Governance checks written as requirements with verification cases would gate each release."
+file = "paper/paper.ipynb"
+anchor = "Future work"
+kind = "S"
+backing = ["file:work-packages/WP48-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "WP48 readout, section 5: the release process is intended to carry governance checks expressed as SysML v2 requirements and verification definitions; none runs yet."
+
+[[claim]]
+id = "C918"
+fragment = "Claude Code (Anthropic) drafted code, derivation scripts and text in supervisor-gated work packages: a written scope the author approved before execution, and a review afterwards"
+file = "paper/paper.ipynb"
+anchor = "AI acknowledgement and Reproducibility"
+kind = "P"
+backing = ["reading", "file:work-packages/README.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "The author's own account of how the work was run; work-packages/README.md records the gates."
+
+[[claim]]
+id = "C919"
+fragment = "No claim enters without a lemma step, a generated value, a test or a verified source."
+file = "paper/paper.ipynb"
+anchor = "AI acknowledgement and Reproducibility"
+kind = "S"
+backing = ["file:docs/superpowers/notes/claims-review.md", "test:tests/test_claims_register.py::test_the_register_holds"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "The claims register's rule: every claim a reader can rely on is backed or narrowed."
+
+[[claim]]
+id = "C920"
+fragment = "The derivations are plain SymPy scripts that the tests run, with a proof map from each result to its steps; they are scripted checks in place of pencil and paper."
+file = "paper/paper.ipynb"
+anchor = "AI acknowledgement and Reproducibility"
+kind = "S"
+backing = ["test:tests/test_derivation.py::test_full_chain_runs", "test:tests/test_proof_map.py::test_checker_passes_on_the_committed_record", "file:docs/superpowers/notes/proof-conventions.md"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "The lemma scripts are scripted checks, never machine-checked or formally verified."
+
+[[claim]]
+id = "C921"
+fragment = "To run your own table, supply the configurations, the attributes and a conditioning rule, and make the same calls; the docsite's Getting started page is where to begin."
+file = "paper/paper.ipynb"
+anchor = "AI acknowledgement and Reproducibility"
+kind = "S"
+backing = ["file:work-packages/interface-contract.md", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "file:docs/getting-started.md", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+note = "As the retired C124 and C125, one sentence."

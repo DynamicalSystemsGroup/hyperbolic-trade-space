@@ -67,15 +67,13 @@ SECTIONS = [
     "Definitions",
     "Methods",
     "Results",
-    "Search of the design space (preliminary)",
     "Case construction",
     "Case analysis",
     "Discussion",
-    "Reproducibility and your own case",
-    "Future work and final remark",
+    "Future work",
     # Not plain "Acknowledgments": the site lifts a heading of that name out of the flow and prints
     # it after the bibliography; this heading keeps it before the references (BROWSER_NOTES).
-    "Acknowledgments and process",
+    "AI acknowledgement and Reproducibility",
     "Works cited",
 ]
 APPENDICES = {
@@ -455,21 +453,12 @@ def test_front_matter_has_title_and_abstract():
     assert fm["abstract"].strip()
 
 
-def test_search_section_is_labelled_preliminary():
-    """R-15: section 7 is labelled preliminary and carries no result numbers."""
-    nb = _nb(PAPER_NB)
-    heading = next(h for h in _headings(nb) if h.startswith("Search of the design space"))
-    assert "(preliminary)" in heading
-    cells, grab = [], False
-    for c in nb.cells:
-        if c.cell_type != "markdown":
-            continue
-        text = _unlabel(_src(c))
-        if text.startswith("## "):
-            grab = text.startswith("## Search of the design space")
-        if grab:
-            cells.append(text)
-    assert not re.search(r"\d+\.\d+|\d+\s*%", "\n".join(cells))
+def test_no_section_is_preliminary_or_a_remark():
+    """WP54 R-1: eleven numbered sections and Works cited; none preliminary, none a remark."""
+    heads = [h for h in _headings(_nb(PAPER_NB)) if h in SECTIONS or h.startswith("Search")]
+    assert heads == SECTIONS
+    assert len(SECTIONS) == 12 and SECTIONS[-1] == "Works cited"
+    assert not any(re.search(r"preliminary|remark", h, re.I) for h in SECTIONS)
 
 
 def test_separation_of_concerns_no_user_guide_headers():
@@ -2072,14 +2061,30 @@ def test_no_shell_marker_remains_in_the_paper():
     assert SHELL not in _markdown(_nb(PAPER_NB))
 
 
-def test_search_section_is_short_future_work_without_numbers():
-    """R-15: about 150 to 320 words (250 until WP41 D-3 added its naming paragraph, 300 until
-    request 169's restatement of the open item), says it is future work, carries no digits."""
-    text = _section("Search of the design space")
-    words = len(re.sub(r"[#>*`:{}\[\]@|-]", " ", _rendered(text)).split())
-    assert 150 <= words <= 320
-    assert "future work" in text and "no results" in text
-    assert not re.search(r"\d", text)
+def _prose_words(text: str) -> int:
+    return len(re.sub(r"[#>*`:{}\[\]@|-]", " ", _rendered(text)).split())
+
+
+def test_future_work_is_short_and_names_the_three_thrusts_in_the_abstracts_order():
+    """WP54 R-3, R-4: under 250 words; what the release did, then the abstract's three directions
+    in its order; no separate search section and no final remark."""
+    text = _section("Future work")
+    assert _prose_words(text) < 250
+    assert "Final remark" not in text and "preliminary" not in text
+    heads = re.findall(r"^\*\*([^*]+)\.\*\*", text, re.M)
+    assert heads == ["Searching the design space", "Holes", "Formal verification and performance"]
+    assert text.index("This release delivers") < text.index("**Searching")
+    assert "submartingale" not in text  # the open point is in review/open-questions.md
+
+
+def test_closing_section_is_short_and_calls_the_derivations_scripted_checks():
+    """WP54 R-4: under 200 words; the lemma scripts are scripted checks, never machine-checked
+    or formally verified (proof-conventions.md)."""
+    text = _section("AI acknowledgement and Reproducibility")
+    assert _prose_words(text) < 200
+    assert "@zargham2026incose" in text and "supervisor-gated" in text and "appendix-f" in text
+    assert not re.search(r"machine-checked|formally verified", text, re.I)
+    assert "Reproducibility and your own case" not in _markdown(_nb(PAPER_NB))
 
 
 def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
@@ -2170,7 +2175,7 @@ def test_register_phrases_are_used_in_the_main_text_itself():
 
 
 def test_disclosure_cites_the_incose_paper_and_the_search_and_stage_one_stay_abstract():
-    ack = _section("Acknowledgments")
+    ack = _section("AI acknowledgement")
     assert "@zargham2026incose" in ack and "supervisor-gated" in ack
     # the body only: the abstract (the supervisor's text of 2026-11-14) names the SysML v2 model
     body = "\n".join(_src(c) for c in _nb(PAPER_NB).cells[1:] if c.cell_type == "markdown")
@@ -2353,17 +2358,17 @@ def test_reader_depth_anchors_are_all_present():
     intro = _section("The decision problem")
     assert "The paper proceeds as follows." in intro  # L-B: the roadmap routes by section
     roadmap = intro.split("The paper proceeds as follows.", 1)[1]
-    for label in ("prior-art", "notation", "definitions", "methods", "results", "search",
-                  "case-construction", "case-analysis", "discussion", "reproducibility",
-                  "future"):  # fmt: skip
+    for label in ("prior-art", "notation", "definitions", "methods", "results",
+                  "case-construction", "case-analysis", "discussion", "future",
+                  "process"):  # fmt: skip
         assert f"<sect-{label}>`" in roadmap, label  # every section after the first
     companion = _src(_nb(SUPPORT_NB).cells[0])
     assert "for readers who check the proofs" in companion and "case model" in companion
 
 
-def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_work():
-    """R-6: the named assumptions of the supervisor's rule appear in Methods and in Section 12."""
-    methods, future = _section("Methods"), _section("Future work and final remark")
+def test_simplifying_assumptions_are_named_where_made():
+    """R-6: the named assumptions of the supervisor's rule appear in Methods."""
+    methods = _section("Methods")
     for marker in (
         "One term",
         "Sharp weights",
@@ -2373,10 +2378,6 @@ def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_wor
         "which is what log-convex means here",
     ):
         assert marker.lower() in methods.lower(), marker
-    later = ("beyond one term", "sharp weights", "analyst's k", "small k", "log-affine")
-    later += ("log-convex surface", "continuous variables", "illustrative hardware")
-    for marker in later:
-        assert marker in future.lower(), marker
 
 
 # ---- gated checks (slow or networked) ----------------------------------------------------------
@@ -2618,7 +2619,7 @@ def test_the_paper_claims_no_external_review():
     text = _all_rendered_text().lower()
     assert "external reviewer" not in text
     assert "audited the mathematics" not in text
-    assert "The derivations are machine-checked." in _section("Acknowledgments")
+    assert "machine-checked" not in _section("AI acknowledgement").lower()
 
 
 def test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give():
@@ -2717,12 +2718,6 @@ def test_the_claims_of_c1_have_their_true_basis():
     methods = _section("Methods")
     assert "by construction" in methods and "leaves the terms unchanged" in methods
     assert not re.search(r"unchanged \(\{prf:ref\}`thm-extension`\)", methods)
-    search = _section("Search of the design space")
-    assert "**Open.** The loop may move inward on a step" in search
-    assert (
-        "submartingale property, outward in expectation" in search
-        and "no conditions are derived" in search
-    )
     results = _section("Results")
     assert (
         "recovered none of the 60 planted terms (three on each of twenty tables of 400 rows)"
@@ -3211,7 +3206,8 @@ def test_cr9_the_margin_and_the_radius_are_read_against_the_band_and_the_median_
     cell = _cell_out(SUPPORT_NB, "tab-D-margin_reading")
     _current(cell, str(generate_results.margin_reading()), "margin_reading")
     ids = [c.id for c in _nb(PAPER_NB).cells]
-    assert ids.index("num-certificates") < ids.index("num-margin") < ids.index("sec-search")
+    last = ids.index("sec-case-construction")
+    assert ids.index("num-certificates") < ids.index("num-margin") < last
 
 
 def test_the_proposers_radius_is_the_stated_rule_of_the_check_designs():
@@ -3511,8 +3507,6 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
     n = definitions.SAMPLE_PER_REGIME
     cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-datasets")
     assert f"{n:,} per regime: a design choice of the case" in _out_text(cell)
-    search = _section("Search of the design space")
-    assert "assumes nothing about how a table's designs were drawn" in search
 
 
 def _norm_ws(text: str) -> str:
