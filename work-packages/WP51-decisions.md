@@ -238,3 +238,13 @@ landmarks inside the band as surface points; (c) each row's section taken throug
 median (one marker exactly on each curve, the others off it). Round 4 tries (a) and (b), cold-read, and keeps the
 baseline without landmarks as the fallback; (c) is held unless (b) fails.
 
+**Supervisor (2026-11-14 23:23 EST):** "one more thing to remember, don't bloat the index with lots of detail about how the plots were
+made. document and ensure reproducibility of the synthetic example in the documentation cite. provide a more minimal
+narrative oriented caption and text in the index and link out to the example in the documentation"
+
+**Applied as:** the index's captions and the how-section prose are cut to the narrative (what the picture shows and what
+it means), with no construction detail (temperature, percentiles, band widths, the planted table's recipe); those go to
+the docs example page that reproduces the synthetic case, and the index links to it in one short clause. The follow-on
+unit for that page becomes part of the same work, not a later package; until it exists, the caption's detail is held
+in the loop record, not on the page.
+
