@@ -138,7 +138,7 @@ def main():
     jobs = jobs[:sel] if sel else jobs
     with Pool(8) as p:
         out = [x for rows in p.imap(one, jobs) for x in rows]
-    Path(sys.argv[1]).write_text(json.dumps(out, indent=1))
+    Path(sys.argv[1]).write_text(encoding="utf-8", data=json.dumps(out, indent=1))
 
 
 if __name__ == "__main__":

@@ -71,9 +71,7 @@ REPO = pathlib.Path(__file__).resolve().parents[1]
 COLUMN_WIDTH = 700  # px, the paper's column; PlantUML `scale N width`
 ASSEMBLY_DIRECTION = "top to bottom direction"
 BEHAVIOUR_DIRECTION = "left to right direction"
-ASSEMBLY_LINETYPE = (
-    "polyline"  # skinparam linetype: ortho | polyline (default splines)
-)
+ASSEMBLY_LINETYPE = "polyline"  # skinparam linetype: ortho | polyline (default splines)
 BEHAVIOUR_LINETYPE = "polyline"
 # layout control: blank lines in the analysis box, so that it is tall enough to meet every metric it feeds
 # with its own, separate line (round 3: two lines met at one point; the long diagonals shorten)
@@ -138,18 +136,11 @@ MARKS = ("MoE", "MoP")
 
 def mark_of(byid, element_id: str) -> str | None:
     """``MoE`` or ``MoP`` when the element's own doc begins with it (the model's mark)."""
-    word = (
-        doc_text(byid, element_id)
-        .removeprefix("doc ")
-        .split(":")[0]
-        .strip()
-    )
+    word = doc_text(byid, element_id).removeprefix("doc ").split(":")[0].strip()
     return word if word in MARKS else None
 
 
-ANALYSIS_COLOUR = (
-    "#E1D8F0"  # the analysis def: its own colour, shared with no metric
-)
+ANALYSIS_COLOUR = "#E1D8F0"  # the analysis def: its own colour, shared with no metric
 MEASURE_COLOUR = "#E4E4E4"
 RELATION_COLOUR = "#B5541C"
 SOURCE_COLOUR = "#6B6B6B"
@@ -158,7 +149,7 @@ SOURCE_COLOUR = "#6B6B6B"
 # ---- model access ---------------------------------------------------------------------------------
 def load(path: pathlib.Path):
     conn = opensysml.connect()
-    m = conn.load_from_content(path.read_text(), strict=False)
+    m = conn.load_from_content(path.read_text(encoding="utf-8"), strict=False)
     assert m.ok, m.diagnostics
     els = json.loads(m.to_api_json().content)
     return m, {e["@id"]: e for e in els}
@@ -196,12 +187,7 @@ def doc_text(byid, prefix_id: str) -> str:
             and "__" not in i[len(prefix_id) + 2 :]
         ):
             out.append(
-                " ".join(
-                    e.get("sysx:sourceText", "")
-                    .replace("/*", " ")
-                    .replace("*/", " ")
-                    .split()
-                )
+                " ".join(e.get("sysx:sourceText", "").replace("/*", " ").replace("*/", " ").split())
             )
     return " ".join(out)
 
@@ -226,14 +212,10 @@ def regime_of_gain_box() -> dict:
 def constraint_text(byid, req_id: str) -> str:
     """The requirement's ``require constraint { ... }`` in the model's own words (the braces' content)."""
     for i, e in byid.items():
-        if e["@type"] == "ConstraintUsage" and i.startswith(
-            req_id + "__"
-        ):
+        if e["@type"] == "ConstraintUsage" and i.startswith(req_id + "__"):
             text = " ".join(e.get("sysx:sourceText", "").split())
             if "{" in text and "}" in text:
-                return text[
-                    text.index("{") + 1 : text.rindex("}")
-                ].strip()
+                return text[text.index("{") + 1 : text.rindex("}")].strip()
     return ""
 
 
@@ -241,12 +223,8 @@ def constraint_text(byid, req_id: str) -> str:
 # View 1: the assembly
 # =================================================================================================
 def assembly(m, byid, P, revision=6, caption=None):
-    rows = {
-        r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)
-    }
-    kids = lambda owner: [
-        p for p in rows.values() if p.get("owner") == owner
-    ]  # noqa: E731
+    rows = {r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)}
+    kids = lambda owner: [p for p in rows.values() if p.get("owner") == owner]  # noqa: E731
     cub = f"{P}::Cubesat"
     default_attrs = {
         ref(e["featureWithValue"])
@@ -257,15 +235,11 @@ def assembly(m, byid, P, revision=6, caption=None):
     abstract = {
         p["@id"]
         for p in rows.values()
-        if p["@type"] == "PartDefinition"
-        and p.get("isAbstract") == "true"
+        if p["@type"] == "PartDefinition" and p.get("isAbstract") == "true"
     }
     alts: dict = {}
     for p in rows.values():
-        if (
-            p["@type"] == "PartDefinition"
-            and p.get("general") in abstract
-        ):
+        if p["@type"] == "PartDefinition" and p.get("general") in abstract:
             alts.setdefault(p["general"], []).append(p["name"])
     enum_lits: dict = {}
     for p in rows.values():
@@ -275,10 +249,7 @@ def assembly(m, byid, P, revision=6, caption=None):
     selector_attr = {}  # revision 6: the swap tag names the attribute, as the tune tags do
     for d in abstract:
         for a in kids(d):
-            if (
-                a["@type"] == "AttributeUsage"
-                and a.get("type") in enum_lits
-            ):
+            if a["@type"] == "AttributeUsage" and a.get("type") in enum_lits:
                 selector[d] = a["type"]
                 selector_attr[d] = a["name"]
 
@@ -288,10 +259,7 @@ def assembly(m, byid, P, revision=6, caption=None):
     var_at: dict = {}  # part def qualified name -> [variable names]
     bound_names: dict = {}  # part def -> redefined feature names (span, capacity)
     root_vars = [
-        p
-        for p in kids(cub)
-        if p["@type"] == "AttributeUsage"
-        and jid(p["@id"]) in default_attrs
+        p for p in kids(cub) if p["@type"] == "AttributeUsage" and jid(p["@id"]) in default_attrs
     ]
     for v in root_vars:
         vid = jid(v["@id"])
@@ -311,13 +279,11 @@ def assembly(m, byid, P, revision=6, caption=None):
                         (p for p in parts if p["name"] == parts_of[2]),
                         None,
                     )
-                    if usage and v["name"] not in var_at.setdefault(
-                        usage["type"], []
-                    ):
+                    if usage and v["name"] not in var_at.setdefault(usage["type"], []):
                         var_at[usage["type"]].append(v["name"])
-                        bound_names.setdefault(
-                            usage["type"], set()
-                        ).add(parts_of[3].split("_pvalue")[0])
+                        bound_names.setdefault(usage["type"], set()).add(
+                            parts_of[3].split("_pvalue")[0]
+                        )
     for d in {p["type"] for p in parts}:
         for a in kids(d):
             if (
@@ -336,17 +302,14 @@ def assembly(m, byid, P, revision=6, caption=None):
         def box_rows(t):
             n = 1 + (1 if any(p["type"] == t for p in parts) else 0)
             n += 1 if t in abstract else 0
-            return (
-                n + (1 if t in selector else 0) + len(var_at.get(t, []))
-            )
+            return n + (1 if t in selector else 0) + len(var_at.get(t, []))
 
         kinds_in_order = list(dict.fromkeys(p["type"] for p in parts))
         tallest = max(box_rows(t) for t in kinds_in_order)
         tall = [t for t in kinds_in_order if box_rows(t) == tallest]
         short_ = [t for t in kinds_in_order if box_rows(t) != tallest]
         slots = [
-            round(k * (len(kinds_in_order) - 1) / max(len(tall) - 1, 1))
-            for k in range(len(tall))
+            round(k * (len(kinds_in_order) - 1) / max(len(tall) - 1, 1)) for k in range(len(tall))
         ]
         row = [None] * len(kinds_in_order)
         for slot, t in zip(slots, tall):
@@ -381,9 +344,7 @@ def assembly(m, byid, P, revision=6, caption=None):
             body.append(
                 tag(
                     TAG_CATEGORICAL,
-                    selector_attr[defqn]
-                    if revision >= 6
-                    else short(selector[defqn]),
+                    selector_attr[defqn] if revision >= 6 else short(selector[defqn]),
                 )
             )
         for v in var_at.get(defqn, []):
@@ -407,9 +368,7 @@ def assembly(m, byid, P, revision=6, caption=None):
         lits = [short(x) for x in enum_lits.get(selector.get(t), [])]
         pre_alt = f"{P}::{alt}".replace("::", "__") + "__"
         for i, e in byid.items():
-            if i.startswith(pre_alt) and i.endswith(
-                "_pvalue_preferent"
-            ):
+            if i.startswith(pre_alt) and i.endswith("_pvalue_preferent"):
                 lit = short(ref(e["memberElement"]))
                 if lit in lits:
                     return lits.index(lit)
@@ -435,9 +394,7 @@ def assembly(m, byid, P, revision=6, caption=None):
     gb = lambda inst, n: fmt(m.eval(f"{P}::{inst}.{n}"))  # noqa: E731
     out.append("")
     out.append("legend bottom")
-    out.append(
-        "  **Configuration variables** (each marked once, in the part it belongs to)"
-    )
+    out.append("  **Configuration variables** (each marked once, in the part it belongs to)")
     out.append(
         tag(
             TAG_CATEGORICAL,
@@ -456,11 +413,7 @@ def assembly(m, byid, P, revision=6, caption=None):
             for d in dict.fromkeys(p["type"] for p in parts)
             if d not in selector and not var_at.get(d)
         ]
-        untagged = (
-            "untagged: fixed"
-            if revision >= 5
-            else "no tag: a fixed part"
-        )
+        untagged = "untagged: fixed" if revision >= 5 else "no tag: a fixed part"
         out.append(f"  {untagged} ({', '.join(fixed)})")
     # revision 5: the levels and ranges are the caption's; the legend keeps the tag keys
     legend_end = len(out) if revision >= 5 else None
@@ -469,18 +422,10 @@ def assembly(m, byid, P, revision=6, caption=None):
     for d, en in sorted(selector.items()):
         # revision 6: the swap is named by its attribute, as in its tag; the enum is the type of that
         # attribute and the coverage table's name for the decision element
-        name = (
-            f"{selector_attr[d]} (enum {short(en)})"
-            if revision >= 6
-            else short(en)
-        )
+        name = f"{selector_attr[d]} (enum {short(en)})" if revision >= 6 else short(en)
         out.append(f"  {name}: {' | '.join(enum_lits[en])}")
-    out.append(
-        f"  panelSpan: {pr('panelSpanMin')} .. {pr('panelSpanMax')}"
-    )
-    out.append(
-        f"  batteryCapacity: {pr('batteryCapacityMin')} .. {pr('batteryCapacityMax')}"
-    )
+    out.append(f"  panelSpan: {pr('panelSpanMin')} .. {pr('panelSpanMax')}")
+    out.append(f"  batteryCapacity: {pr('batteryCapacityMin')} .. {pr('batteryCapacityMax')}")
     boxes = [
         short(p["@id"])
         for p in rows.values()
@@ -491,31 +436,20 @@ def assembly(m, byid, P, revision=6, caption=None):
     if revision >= 4:
         regime = regime_of_gain_box()
         label = lambda b: (
-            f"{regime.get(b.removesuffix('Gains'), b)} regime"
-            + (f", {b}" if revision >= 6 else "")
+            f"{regime.get(b.removesuffix('Gains'), b)} regime" + (f", {b}" if revision >= 6 else "")
         )  # noqa: E731
         out.append("  Gains Kp and Kd: one range per regime")
         both = "both regimes"
     else:
         label = lambda b: f"{b.removesuffix('Gains')} gains"  # noqa: E731
-        out.append(
-            "  Gains Kp and Kd: one range per dataset (baseline, aggressive)"
-        )
+        out.append("  Gains Kp and Kd: one range per dataset (baseline, aggressive)")
         both = "both datasets"
     for g in ("Kp", "Kd"):
-        spans = {
-            b: f"{gb(b, g + 'Min')} .. {gb(b, g + 'Max')}"
-            for b in boxes
-        }
+        spans = {b: f"{gb(b, g + 'Min')} .. {gb(b, g + 'Max')}" for b in boxes}
         if len(set(spans.values())) == 1:
             out.append(f"  {g}: {next(iter(spans.values()))} ({both})")
         else:
-            out.append(
-                f"  {g}: "
-                + "; ".join(
-                    f"{v} ({label(b)})" for b, v in spans.items()
-                )
-            )
+            out.append(f"  {g}: " + "; ".join(f"{v} ({label(b)})" for b, v in spans.items()))
     if legend_end is not None:
         ranges = [line.strip() for line in out[legend_end + 2 :]]
         if caption is not None:
@@ -536,11 +470,7 @@ class Reads:
     def __init__(self, byid, P):
         self.byid, self.P = byid, P
         self.pre = P.replace("::", "__") + "__"
-        self.calcs = {
-            i
-            for i, e in byid.items()
-            if e["@type"] == "CalculationDefinition"
-        }
+        self.calcs = {i for i, e in byid.items() if e["@type"] == "CalculationDefinition"}
         self.cub_attrs = {
             short(i): i
             for i, e in byid.items()
@@ -552,9 +482,7 @@ class Reads:
 
     def inside(self, root_id):
         return [
-            e
-            for i, e in self.byid.items()
-            if i.startswith((root_id + "__", root_id + "_pvalue"))
+            e for i, e in self.byid.items() if i.startswith((root_id + "__", root_id + "_pvalue"))
         ]
 
     def direct(self, root_id) -> set:
@@ -570,9 +498,7 @@ class Reads:
             ):
                 found.add(ref(e["function"]))
             elif e["@type"] == "FeatureChainExpression":
-                last = (
-                    e.get("sysx:sourceText", "").split(".")[-1].strip()
-                )
+                last = e.get("sysx:sourceText", "").split(".")[-1].strip()
                 if last in self.cub_attrs:
                     found |= self.direct(self.cub_attrs[last])
         self._direct[root_id] = found
@@ -609,14 +535,11 @@ def box_reasons(path) -> dict:
         REPO / "examples" / "adcs" / "model_v2" / "coverage.py",
     )
     module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = (
-        module  # dataclasses resolve annotations through sys.modules
-    )
+    sys.modules[spec.name] = module  # dataclasses resolve annotations through sys.modules
     spec.loader.exec_module(module)
-    graph = module.ModelGraph(pathlib.Path(path).read_text())
+    graph = module.ModelGraph(pathlib.Path(path).read_text(encoding="utf-8"))
     return {
-        r["requirement"]: r["sentence"]
-        for r in module.requirement_reasons(graph, graph.metrics())
+        r["requirement"]: r["sentence"] for r in module.requirement_reasons(graph, graph.metrics())
     }
 
 
@@ -625,9 +548,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
     spec = case.CUBESAT
-    metrics = [
-        (spec.short[a], spec.subsystems[a]) for a in spec.attributes
-    ]
+    metrics = [(spec.short[a], spec.subsystems[a]) for a in spec.attributes]
     order = list(spec.subsystem_order)
     pre = P.replace("::", "__") + "__"
     rd = Reads(byid, P)
@@ -636,25 +557,22 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     reqs = sorted(
         i
         for i, e in byid.items()
-        if e["@type"] == "RequirementDefinition"
-        and ref(e["owner"]) == pre[:-2]
+        if e["@type"] == "RequirementDefinition" and ref(e["owner"]) == pre[:-2]
     )
     typing = {}
     for t in byid.values():
         if t["@type"] == "FeatureTyping":
             typing[ref(t["typedFeature"])] = ref(t["type"])
     satisfied_by = {r: set() for r in reqs}
-    fails_by = {
-        r: set() for r in reqs
-    }  # revision 9: the negated satisfy statements
+    fails_by = {r: set() for r in reqs}  # revision 9: the negated satisfy statements
     for e in byid.values():
         if e["@type"] == "SatisfyRequirementUsage":
             req_usage = ref(e["subsets"])
             if typing.get(req_usage) in satisfied_by:
                 negated = revision >= 9 and e.get("isNegated")
-                (fails_by if negated else satisfied_by)[
-                    typing[req_usage]
-                ].add(short(ref(e["subject"])))
+                (fails_by if negated else satisfied_by)[typing[req_usage]].add(
+                    short(ref(e["subject"]))
+                )
     verified_by = {r: set() for r in reqs}
     for vid, v in byid.items():
         if v["@type"] == "VerificationCaseDefinition":
@@ -669,9 +587,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     # configuration alone (the unit cost and the fleet cost: a result refuses equal entries)
     analysis = pre + "SlewExperiment"
     others = [
-        i
-        for i, e in byid.items()
-        if e["@type"] == "AnalysisCaseDefinition" and i != analysis
+        i for i, e in byid.items() if e["@type"] == "AnalysisCaseDefinition" and i != analysis
     ]
     a_inv = {
         ref(e["function"])
@@ -693,17 +609,13 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     a_refs = {
         short(ref(e["referent"]))
         for e in rd.inside(analysis)
-        if e["@type"] == "FeatureReferenceExpression"
-        and e.get("referent")
+        if e["@type"] == "FeatureReferenceExpression" and e.get("referent")
     }
-    a_text = doc_text(byid, pre[:-2]).replace(
-        "-", " "
-    )  # the package-level prose of section 6
+    a_text = doc_text(byid, pre[:-2]).replace("-", " ")  # the package-level prose of section 6
     meas_attrs = {
         short(i)
         for i, e in byid.items()
-        if e["@type"] == "AttributeUsage"
-        and i.startswith(pre + "SlewMeasurement__")
+        if e["@type"] == "AttributeUsage" and i.startswith(pre + "SlewMeasurement__")
     }
 
     # --- where each metric comes from: the element of the model that carries the metric's name ------
@@ -732,11 +644,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             metrics = [m for m in metrics if m[0] != name]
             continue
         METRIC_ELEMENT[name] = (kind, ident)
-        mark[name] = (
-            mark_of(byid, element_of[name])
-            if element_of[name] in byid
-            else None
-        )
+        mark[name] = mark_of(byid, element_of[name]) if element_of[name] in byid else None
     assert metrics, "the model carries none of the CaseSpec's metrics"
     idx = {n: k for k, (n, _) in enumerate(metrics)}
 
@@ -757,22 +665,14 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     def entry_of(name):
         kind, ident = METRIC_ELEMENT[name]
         for i, e in byid.items():
-            if not (
-                i.startswith(entry_root)
-                and i[len(entry_root) :].isdigit()
-            ):
+            if not (i.startswith(entry_root) and i[len(entry_root) :].isdigit()):
                 continue
-            if (
-                kind == "calc"
-                and e.get("function")
-                and ref(e["function"]) == mcalc[name]
-            ):
+            if kind == "calc" and e.get("function") and ref(e["function"]) == mcalc[name]:
                 return i
             if (
                 kind == "attr"
                 and e["@type"] == "FeatureChainExpression"
-                and e.get("sysx:sourceText", "").split(".")[-1].strip()
-                == ident
+                and e.get("sysx:sourceText", "").split(".")[-1].strip() == ident
             ):
                 return i
         return None
@@ -783,11 +683,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             return True
         entry = entry_of(name)
         reads = (  # the entry's nested expressions have ids beginning with its own
-            [
-                e
-                for i, e in byid.items()
-                if i == entry or i.startswith(entry + "_p")
-            ]
+            [e for i, e in byid.items() if i == entry or i.startswith(entry + "_p")]
             if entry
             else []
         )
@@ -813,21 +709,9 @@ def behavioural(m, byid, P, revision=10, reasons=None):
         if origin[n] == "analysis" and n not in own_analysis and not needs_slew(n)
     ]
     # returned = computed by the analysis, or an `in` of the analysis returned unchanged
-    passed = [
-        n
-        for n, _ in metrics
-        if origin[n] == "measurement" and camel(n, False) in a_refs
-    ]
-    returned = [
-        n
-        for n, _ in metrics
-        if origin[n] == "analysis" and n not in own_analysis
-    ] + passed
-    read_only = [
-        n
-        for n, _ in metrics
-        if origin[n] == "measurement" and n not in passed
-    ]
+    passed = [n for n, _ in metrics if origin[n] == "measurement" and camel(n, False) in a_refs]
+    returned = [n for n, _ in metrics if origin[n] == "analysis" and n not in own_analysis] + passed
+    read_only = [n for n, _ in metrics if origin[n] == "measurement" and n not in passed]
     # calcs the model marks MoE that are not traded themselves: an MoE computed from a traded metric
     # (the launch cost from the total mass), drawn between the requirement that reads it and the
     # metric it reads
@@ -841,17 +725,10 @@ def behavioural(m, byid, P, revision=10, reasons=None):
                     k == "attr"
                     and rd.cub_attrs[ident]
                     in {
-                        rd.cub_attrs[
-                            e.get("sysx:sourceText", "")
-                            .split(".")[-1]
-                            .strip()
-                        ]
+                        rd.cub_attrs[e.get("sysx:sourceText", "").split(".")[-1].strip()]
                         for e in rd.inside(c)
                         if e["@type"] == "FeatureChainExpression"
-                        and e.get("sysx:sourceText", "")
-                        .split(".")[-1]
-                        .strip()
-                        in rd.cub_attrs
+                        and e.get("sysx:sourceText", "").split(".")[-1].strip() in rd.cub_attrs
                     }
                 )
                 or (k == "calc" and mcalc[n] in rd.direct(c))
@@ -921,20 +798,14 @@ def behavioural(m, byid, P, revision=10, reasons=None):
 
     def req_subsystem(r):
         votes = [dict(metrics)[n] for rr, n, _, _ in rel if rr == r]
-        return (
-            max(order, key=lambda s: votes.count(s)) if votes else None
-        )
+        return max(order, key=lambda s: votes.count(s)) if votes else None
 
     band = {r: req_subsystem(r) for r in reqs}
-    no_line = sorted(
-        r for r in reqs if band[r] is None
-    )  # the requirements no traded metric reads
+    no_line = sorted(r for r in reqs if band[r] is None)  # the requirements no traded metric reads
     related = {n for _, n, _, _ in rel}
     # a metric with no requirement is open: the model says so itself, in a verification case's doc
     ver_docs = " ".join(
-        doc_text(byid, vid)
-        for vid, v in byid.items()
-        if v["@type"] == "VerificationCaseDefinition"
+        doc_text(byid, vid) for vid, v in byid.items() if v["@type"] == "VerificationCaseDefinition"
     )
     ver_docs = " ".join(ver_docs.replace("-", " ").split())
     for name, _ in metrics:
@@ -955,11 +826,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             (
                 short(o)
                 for o in reqs
-                if o != r
-                and " ".join(
-                    re.findall(r"[A-Z][a-z]*", short(o))
-                ).lower()
-                in tail
+                if o != r and " ".join(re.findall(r"[A-Z][a-z]*", short(o))).lower() in tail
             ),
             None,
         )
@@ -967,9 +834,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
         return first, twin
 
     # --- PlantUML ------------------------------------------------------------------------------
-    nid = lambda s: (
-        "x" + "".join(ch for ch in s.title() if ch.isalnum())
-    )  # noqa: E731
+    nid = lambda s: "x" + "".join(ch for ch in s.title() if ch.isalnum())  # noqa: E731
     out = [
         "@startuml",
         BEHAVIOUR_DIRECTION,
@@ -977,9 +842,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
         # revision 5: nodesep is the gap between boxes at one rank (the launch cost and the
         # total mass): 16 gives their line room for its label; height, not width, pays for it
         SKIN.format(
-            nodesep=(24 if revision >= 7 else 16)
-            if revision >= 5
-            else 8,
+            nodesep=(24 if revision >= 7 else 16) if revision >= 5 else 8,
             ranksep=36 if revision < 4 else 12,
         ),
         f"scale {COLUMN_WIDTH} width",
@@ -991,29 +854,12 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     last_stack_head = None
     bands = sorted(
         bands,
-        key=lambda s: (
-            -sum(
-                origin[n] == "measurement"
-                for n, sub in metrics
-                if sub == s
-            )
-        ),
+        key=lambda s: -sum(origin[n] == "measurement" for n, sub in metrics if sub == s),
     )
     # revision 4: what every requirement box shares is said once in the caption; a box carries only
     # what differs between the requirements (the verification case, the satisfying configuration)
-    sat_differs = (
-        len(
-            {
-                tuple(sorted(v))
-                for r, v in satisfied_by.items()
-                if not fails_by[r]
-            }
-        )
-        > 1
-    )
-    ver_differs = (
-        len({tuple(sorted(v)) for v in verified_by.values()}) > 1
-    )
+    sat_differs = len({tuple(sorted(v)) for r, v in satisfied_by.items() if not fails_by[r]}) > 1
+    ver_differs = len({tuple(sorted(v)) for v in verified_by.values()}) > 1
 
     def req_box_r4(r, with_constraint=False):
         lines = [f"**{short(r)}**"]
@@ -1022,36 +868,22 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             if revision >= 7:
                 # revision 7: the statement breaks before its comparison, so a box is no wider than
                 # its name and the three boxes of the group stand side by side in the column
-                c_text = re.sub(
-                    r" (<=|>=|==|<|>) ", r"\\n\1 ", c_text, count=1
-                )
+                c_text = re.sub(r" (<=|>=|==|<|>) ", r"\\n\1 ", c_text, count=1)
             lines.append(c_text)
         if ver_differs:
-            lines.append(
-                ", ".join(sorted(verified_by[r]))
-                or "verified: none in the model"
-            )
+            lines.append(", ".join(sorted(verified_by[r])) or "verified: none in the model")
         if sat_differs:
-            lines.append(
-                "satisfied by "
-                + (", ".join(sorted(satisfied_by[r])) or "none")
-            )
+            lines.append("satisfied by " + (", ".join(sorted(satisfied_by[r])) or "none"))
         if fails_by[r]:
             # revision 9: the model states that this configuration fails the requirement
-            lines.append(
-                "not satisfied by " + ", ".join(sorted(fails_by[r]))
-            )
+            lines.append("not satisfied by " + ", ".join(sorted(fails_by[r])))
         sa = same_as(r)
         if sa:
             lines += [f"{sa[0]};", f"same statement as {sa[1]}"]
         body = "\\n".join(lines)
         return f'rectangle "{body}" as {nid(short(r))} {REQ_COLOUR}'
 
-    lane = (
-        (lambda s: f"{s} (the analyst's grouping)")
-        if revision >= 4
-        else (lambda s: s)
-    )  # noqa: E731
+    lane = (lambda s: f"{s} (the analyst's grouping)") if revision >= 4 else (lambda s: s)  # noqa: E731
     for s in bands:
         out.append(f'package "{lane(s)}" {{')
         smets = sorted(
@@ -1063,37 +895,24 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             ),
         )
         first = lambda r: min(
-            (
-                smets.index(n)
-                for rr, n, _, _ in rel
-                if rr == r and n in smets
-            ),
+            (smets.index(n) for rr, n, _, _ in rel if rr == r and n in smets),
             default=99,
         )  # noqa: E731
         sreqs = sorted((r for r in reqs if band[r] == s), key=first)
         with_line = [r for r in sreqs]
 
         def req_box(r):
-            sat = (
-                ", ".join(sorted(satisfied_by[r]))
-                or "none in the model"
-            )
-            ver = (
-                ", ".join(sorted(verified_by[r])) or "none in the model"
-            )
+            sat = ", ".join(sorted(satisfied_by[r])) or "none in the model"
+            ver = ", ".join(sorted(verified_by[r])) or "none in the model"
             sa = same_as(r)
-            extra = (
-                f"\\n{sa[0]};\\nsame statement as {sa[1]}" if sa else ""
-            )
+            extra = f"\\n{sa[0]};\\nsame statement as {sa[1]}" if sa else ""
             return (
                 f'rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}{extra}" '
                 f"as {nid(short(r))} {REQ_COLOUR}"
             )
 
         for r in with_line:
-            out.append(
-                "  " + (req_box_r4(r) if revision >= 4 else req_box(r))
-            )
+            out.append("  " + (req_box_r4(r) if revision >= 4 else req_box(r)))
         if not sreqs:
             out.append(
                 f'  rectangle "no requirement def\\nlands on this subsystem" as {nid("none" + s)} #FFFFFF;line:gray;line.dashed;text:gray'
@@ -1110,32 +929,20 @@ def behavioural(m, byid, P, revision=10, reasons=None):
                 # the element the requirement reads (the metric's calc or measured attribute), in
                 # the box; the line then carries no label and the ranks sit closer
                 read = sorted(
-                    {
-                        ev
-                        for rr, nn, st, ev in rel
-                        if nn == n and st == "strong"
-                    }
-                    | {
-                        METRIC_ELEMENT[n][1]
-                        for rr, nn, st, ev in rel
-                        if nn == n and st == "moe"
-                    }
+                    {ev for rr, nn, st, ev in rel if nn == n and st == "strong"}
+                    | {METRIC_ELEMENT[n][1] for rr, nn, st, ev in rel if nn == n and st == "moe"}
                 )
                 if read:
                     label += "\\n" + ", ".join(read)
             if n in related:
-                out.append(
-                    f'  rectangle "{label}" as {nid(n)} {COVERED_COLOUR}'
-                )
+                out.append(f'  rectangle "{label}" as {nid(n)} {COVERED_COLOUR}')
             else:
                 out.append(
                     f'  rectangle "{label}\\n(no requirement)" as {nid(n)} #FFFFFF;line:black;line.dashed'
                 )
         out.append("}")
         # order inside the subsystem: the requirements with a line above those without; metrics top to bottom
-        stack = [nid(short(r)) for r in with_line] + (
-            [nid("none" + s)] if not sreqs else []
-        )
+        stack = [nid(short(r)) for r in with_line] + ([nid("none" + s)] if not sreqs else [])
         for u, v in zip(stack, stack[1:]):
             out.append(f"{u} -[hidden]right-> {v}")
         smets_last = smets[-1] if smets else None
@@ -1144,7 +951,9 @@ def behavioural(m, byid, P, revision=10, reasons=None):
         if stack and smets:
             out.append(f"{stack[0]} -[hidden]-> {nid(smets[0])}")
         last_stack_head = stack[0] if stack else last_stack_head
-    if no_line:  # WP30: every requirement reads a traded metric, so the committed model draws no box
+    if (
+        no_line
+    ):  # WP30: every requirement reads a traded metric, so the committed model draws no box
         if revision >= 5:
             group_title = "requirements that read no traded metric"
             group_text = ""  # the body's black: the title is read with the lane titles
@@ -1186,8 +995,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
         # lines short enough that the box does not set the width of the view (G3-P2-6, P3-3)
         said = ",\\n".join(cfg_only)
         from_meas = " and\\n".join(
-            [f"{n}\\n(passed on)" for n in passed]
-            + [f"{n}\\n(not returned)" for n in read_only]
+            [f"{n}\\n(passed on)" for n in passed] + [f"{n}\\n(not returned)" for n in read_only]
         )
         box = (
             f"**SlewExperiment**\\n<<analysis def>>\\nreturns {len(returned)} of {len(metrics)}"
@@ -1202,9 +1010,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             )
             if own_analysis:  # WP30: the metrics that have an analysis of their own
                 box += "\\nAn analysis each,\\nno slew:\\n" + " and\\n".join(own_analysis) + "."
-        out.append(
-            f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}'
-        )
+        out.append(f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}')
     elif revision >= 6:
         # the analysis returns the computed entries and the `in` it passes on; what needs no slew
         # is named in the box (the picture implied every entry needs the measured slew)
@@ -1215,9 +1021,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             f"\\nmetrics. Computed with\\nno slew, from the\\nconfiguration alone:\\n{said}."
             f"\\nPassed on as\\nmeasured:\\n{passes}."
         )
-        out.append(
-            f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}'
-        )
+        out.append(f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}')
     else:
         out.append(
             f'rectangle "**SlewExperiment**\\n<<analysis def>>\\ncomputes {n_analysis} of the {len(metrics)}\\nmetrics from the\\nconfiguration and the\\nmeasured inputs{pad}" as xAnalysis {ANALYSIS_COLOUR}'
@@ -1228,9 +1032,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     out.append("xMeasure -[hidden]right-> xAnalysis")
     out.append("")
     drawn_moe = set()
-    head = (
-        "-" if revision >= 4 else "->"
-    )  # a shared quantity has no direction; a source does
+    head = "-" if revision >= 4 else "->"  # a shared quantity has no direction; a source does
     tag = (lambda ev: "") if revision >= 4 else (lambda ev: f" : {ev}")  # noqa: E731
     # revision 5: the MoE box and the metric it reads sit at one rank, joined by a short line that
     # was missed cold; it carries the element the two share (totalMass). The requirement's line to
@@ -1265,9 +1067,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
                 )
                 drawn_moe.add((ev, n))
         else:
-            raise AssertionError(
-                "only strong and moe relations are drawn"
-            )
+            raise AssertionError("only strong and moe relations are drawn")
     for name, _ in metrics:
         src = "xAnalysis" if origin[name] == "analysis" else "xMeasure"
         out.append(f"{nid(name)} <-[#{SOURCE_COLOUR[1:]}]- {src}")
@@ -1290,9 +1090,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
                 f"   <color:{SOURCE_COLOUR}>──▶</color> value comes from"
             )
         else:
-            out.append(
-                "  orange: requirement; green: traded metric; yellow: derived, not traded"
-            )
+            out.append("  orange: requirement; green: traded metric; yellow: derived, not traded")
         out.append("end legend")
         out.append("@enduml")
         cap = []
@@ -1301,13 +1099,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
         ]
         if revision >= 6:
             ver_of = lambda names: sorted(  # noqa: E731
-                {
-                    c
-                    for n in names
-                    for r, nn, st, ev in rel
-                    if nn == n
-                    for c in verified_by[r]
-                }
+                {c for n in names for r, nn, st, ev in rel if nn == n for c in verified_by[r]}
             )
             own = (
                 [
@@ -1339,8 +1131,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
                     "computed from the model and the data of record (`coverage.md`)."
                 ),
                 *[
-                    (reasons or {}).get(short(r))
-                    or f"`{short(r)}`: no reason stated."
+                    (reasons or {}).get(short(r)) or f"`{short(r)}`: no reason stated."
                     for r in no_line
                 ],
                 *[
@@ -1352,14 +1143,10 @@ def behavioural(m, byid, P, revision=10, reasons=None):
                 "analysis takes. They are the cells of the coupling table of `coverage.md`.",
             ]
             if revision >= 9 and any(fails_by.values()):
-                failing = sorted(
-                    {x for v in fails_by.values() for x in v}
-                )
+                failing = sorted({x for v in fails_by.values() for x in v})
                 cap.append(
                     f"`{', '.join(failing)}` satisfies every requirement but "
-                    + " and ".join(
-                        f"`{short(r)}`" for r in reqs if fails_by[r]
-                    )
+                    + " and ".join(f"`{short(r)}`" for r in reqs if fails_by[r])
                     + ", which the model states it fails (`not satisfy`)."
                 )
             if revision >= 7:
@@ -1407,9 +1194,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
         else "  green: a requirement reads the metric (every traded metric has one)"
     )
     if unrelated:
-        out.append(
-            "  (the model names each of those as open in its verification cases)"
-        )
+        out.append("  (the model names each of those as open in its verification cases)")
     out.append(
         "  **Source** (grey line): from the analysis def (lilac) or from the measurement of the slew (grey)"
     )
@@ -1457,12 +1242,13 @@ if __name__ == "__main__":
     od.mkdir(parents=True, exist_ok=True)
     caption: list = []
     (od / "assembly_view.puml").write_text(
-        assembly(m, byid, a.package, a.revision, caption)
+        encoding="utf-8", data=assembly(m, byid, a.package, a.revision, caption)
     )
     if a.revision >= 5:
         (od / "assembly_caption.md").write_text(
-            "Levels and ranges (read from the model by the views generator):\n\n"
-            + "".join(f"- {line}\n" for line in caption)
+            encoding="utf-8",
+            data="Levels and ranges (read from the model by the views generator):\n\n"
+            + "".join(f"- {line}\n" for line in caption),
         )
     text, facts = behavioural(
         m,
@@ -1471,11 +1257,12 @@ if __name__ == "__main__":
         a.revision,
         reasons=box_reasons(a.model) if a.revision >= 9 else None,
     )
-    (od / "behavioural_view.puml").write_text(text)
+    (od / "behavioural_view.puml").write_text(encoding="utf-8", data=text)
     if a.revision >= 6:
         (od / "behavioural_caption.md").write_text(
-            "Sources, verification and groups (read from the model by the views generator):\n\n"
-            + "".join(f"- {line}\n" for line in facts["caption"])
+            encoding="utf-8",
+            data="Sources, verification and groups (read from the model by the views generator):\n\n"
+            + "".join(f"- {line}\n" for line in facts["caption"]),
         )
     if a.facts:
         for r, n, s, ev in facts["rel"]:
