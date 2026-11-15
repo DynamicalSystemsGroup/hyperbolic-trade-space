@@ -62,7 +62,7 @@ STALE = "re-run `uv run python paper/execute_notebooks.py` to refresh the commit
 
 SECTIONS = [
     "The decision problem",
-    "Prior art, by family",
+    "Prior art",
     "Preliminaries and notation",
     "Definitions",
     "Methods",
@@ -284,7 +284,7 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
         "HTS is implemented with a scikit-learn-compatible API",
         "Trade-offs trace piecewise hyperbolic frontiers",
         "Pareto improvements increase energy",
-        "a design that maximizes energy is weakly Pareto-efficient",
+        "a design that maximizes energy is Pareto-efficient",
     ):
         assert phrase in flat, phrase  # fmt: skip
     for gone in (  # cut from the abstract at the supervisor's direction (the body keeps them)
@@ -343,7 +343,7 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
     assert "a posynomial, a sum of monomials" in text
     assert "{prf:ref}`thm-extension`" in text and "is the $1/\\kappa$ power of a posynomial" in text
     assert "generalized" not in text
-    assert "where the posynomial equals one" in " ".join(_markdown(nb).split())  # the surface
+    assert "is the level set $V=1$ of the fit" in " ".join(_markdown(nb).split())  # the surface
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
     assert "the level sets of a posynomial function of the metrics" in fm
     assert "a dataset of designs and measurements of their performance" in fm
@@ -380,9 +380,6 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
     assert "attitude determination and control system" not in prose
     assert "cubesat model coupling power, mass and attitude control" in _section(
         "Case construction"
-    )
-    assert "cubesat model coupling power, mass and attitude control" in _section(
-        "The decision problem"
     )
     assert "cubesat model coupling power, mass and attitude control" in _src(
         next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-job")
@@ -1660,7 +1657,7 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
     estimated; it borrows setting, interface and PCA as a downstream step; it does not call this
     work a PCA, nor HoroPCA a kernel method. The body defines "hyperbolic" once, in Definitions;
     elsewhere the word is a pointer."""
-    s2 = _section("Prior art, by family")
+    s2 = _section("Prior art")
     paras = [p for p in s2.split("\n\n") if "HoroPCA" in p]
     assert len(paras) == 1 and paras[0].startswith("**HoroPCA.**")
     p = paras[0]
@@ -1672,12 +1669,11 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
     ):
         assert phrase in p, phrase
     # WP35 amendment 1: the paragraph points at Appendix H and says what it tests
-    assert "recovered planted exponents only where they were the direction of largest spread" in p
+    assert "recovered the planted trade-offs only where they were the direction of largest spread" in p
     assert "{ref}`Appendix H <appendix-h>`" in p and "Appendix G" not in p
     assert "kernel" not in p.lower()
     assert "unrelated" not in s2 and "Färe" not in s2  # the two caveats are pointers or gone
-    assert s2.count("hyperbolic") == 2  # the pointer to the glossary, and HoroPCA's own space
-    assert "Appendix A" in s2.split("The title's", 1)[1].split("**HoroPCA.**")[0]
+    assert s2.count("hyperbolic") == 1  # HoroPCA's own space; the word is defined in Definitions
     body = _markdown(_nb(PAPER_NB))
     assert body.count("rectangular hyperbola") == 1 and "level curves" in body
     yml = yaml.safe_load((PAPER / "myst.yml").read_text(encoding="utf-8"))
@@ -1994,7 +1990,7 @@ def test_appendix_h_wording_unit_defines_its_terms_and_states_counts():
     assert "H1 to H4 are listed in H.1; HoroPCA cells read R = 0.25, R = 1" in _src(
         caption
     )  # FW-12
-    section2 = _section("Prior art, by family")
+    section2 = _section("Prior art")
     assert "prospectively specified test" in section2 and "pre-registered" not in section2  # FW-1
     prior = next(r for r in generate_prior_art.entries() if r["id"] == "horopca")
     assert (
@@ -2018,7 +2014,7 @@ def test_no_sentence_says_horopca_is_worse_or_calls_this_work_a_pca():
     """WP35 RA-6 (default phrase list): Section 2's HoroPCA paragraph, and Appendix H once it is in
     the notebook, say what each method estimates and never rank them nor call this work a PCA or
     HoroPCA a kernel method."""
-    paragraph = next(p for p in _section("Prior art, by family").split("\n\n") if "HoroPCA" in p)
+    paragraph = next(p for p in _section("Prior art").split("\n\n") if "HoroPCA" in p)
     assert _forbidden_in(paragraph) == []
     assert _forbidden_in("HoroPCA is worse at it; this work is a PCA; HoroPCA is PCA with a kernel")
     assert _forbidden_in(_appendix_h_prose()) == []
@@ -2157,16 +2153,6 @@ def test_badges_are_present_and_the_open_questions_are_marked():
     assert all(f"G-{g}" in open_text for g in (11, 12, 13, 14))
 
 
-def test_policy_paragraph_appears_once_in_preliminaries_and_points_to_appendix_e():
-    body = _markdown(_nb(PAPER_NB))
-    assert body.count("Map and territory") == 1 and body.lower().count("all models are wrong") == 1
-    prelim = _section("Preliminaries and notation")
-    assert "All models are wrong" in prelim and "Appendix E" in prelim
-    for part in ("specific purpose in a specific situation", "improving trade studies",
-                 "cannot certify", "gaps ledger"):  # fmt: skip
-        assert part in prelim, part
-
-
 def test_no_hedging_phrases_in_the_body():
     assert not HEDGES.search(_markdown(_nb(PAPER_NB)))
 
@@ -2184,6 +2170,8 @@ def test_disclosure_cites_the_incose_paper_and_the_search_and_stage_one_stay_abs
     # the body only: the abstract (the supervisor's text of 2026-11-14) names the SysML v2 model
     body = "\n".join(_src(c) for c in _nb(PAPER_NB).cells[1:] if c.cell_type == "markdown")
     assert "black box to the method" in body  # the register's wording for a
+    # the roadmap of Section 1 (his text, 2026-11-15) names the SysML v2 model, as the abstract does
+    body = body.replace("from its SysML v2 model", "")
     assert not re.search(r"SysML|OpenSysML|Modelica|Simulink|pip install", body, re.I)
 
 
@@ -2321,7 +2309,7 @@ def test_appendix_and_section_references_resolve():
 
 def test_section2_has_the_family_table_and_both_contrast_paragraphs_with_generated_counts():
     """R-8: the Pareto and DEA paragraphs, the table; the counts come from case.py, never typed."""
-    s2 = _section("Prior art, by family")
+    s2 = _section("Prior art")
     assert (
         "**Pareto methods.**" in s2
         and "**Data envelopment analysis.**" in s2
@@ -2349,39 +2337,21 @@ def test_generated_sentence_cells_have_outputs_and_the_case_numbers_are_not_type
 
 def test_reader_depth_anchors_are_all_present():
     """R-13: L-A title and abstract on the first page (the three-pane figure left the body: it is
-    on the index page); L-B headings, the main-results list and the statements; L-D pointers."""
+    on the index page); L-B headings and the roadmap of Section 1 (his review of 2026-11-15 replaced the main-results
+    list and the organization paragraph); L-D pointers."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])
     assert fm["title"] and len(fm["abstract"].split()) <= abstract_cap()
     first = " ".join(_src(c) for c in nb.cells[: [c.id for c in nb.cells].index("sec-prior-art")])
     for phrase in ("chart", "reversible", "position along the surface"):  # in words, no picture
         assert phrase in first, phrase
-    assert "**Main results**" in _section("The decision problem")
-    results = (
-        _section("The decision problem")
-        .split("**Main results**", 1)[1]
-        .split("**Organization", 1)[0]
-    )
-    labels = ("thm-invariant", "thm-kkt", "thm-convex", "thm-elasticity", "thm-chart")
-    labels += (
-        "thm-extension",
-        "thm-pareto",
-        "thm-soft",
-        "thm-descent",
-        "lem-gap",
-        "lem-margin",
-        "prop-local",
-    )
-    for label in labels:
-        assert f"`{label}`" in results, label
-    assert "numerical result" in results and "Open" in results  # O-6: the findings not derived
     intro = _section("The decision problem")
-    assert all(f"<appendix-{k.lower()}>`" in intro for k in "ABG")  # the appendices it routes to
-    organization = intro.split("**Organization.**", 1)[1]
-    for route in ("abstract and", "headers and Main results", "whole text", "appendices",
-                  "repository and container"):  # fmt: skip
-        assert route in organization, route  # the five depths, in order
-    assert "multivariate calculus, linear algebra and convex optimization" in organization
+    assert "The paper proceeds as follows." in intro  # L-B: the roadmap routes by section
+    roadmap = intro.split("The paper proceeds as follows.", 1)[1]
+    for label in ("prior-art", "notation", "definitions", "methods", "results", "search",
+                  "case-construction", "case-analysis", "discussion", "reproducibility",
+                  "future"):  # fmt: skip
+        assert f"<sect-{label}>`" in roadmap, label  # every section after the first
     companion = _src(_nb(SUPPORT_NB).cells[0])
     assert "for readers who check the proofs" in companion and "case model" in companion
 
@@ -2690,7 +2660,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 10, floats  # eight figures (the K = 2 planes left) and two tables
+    assert len(floats) == 12, floats  # ten figures (the prior-art layers and the pipeline joined) and two tables
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -2746,9 +2716,6 @@ def test_the_claims_of_c1_have_their_true_basis():
         "submartingale property, outward in expectation" in search
         and "no conditions are derived" in search
     )
-    assert "may move inward on a step" in _section("The decision problem")
-    intro = _section("The decision problem")
-    assert "a reading and not a result" in intro
     results = _section("Results")
     assert (
         "recovered none of the 60 planted terms (three on each of twenty tables of 400 rows)"
@@ -2862,15 +2829,16 @@ def test_section_8_says_the_conditioning_centres_each_log_metric_and_on_the_data
     assert case.conditioner_for.__defaults__[-1] == "standard"
 
 
-def test_the_main_results_list_ends_with_what_the_method_does_not_claim():
-    """WP28 (S8's second item, the driver's option (a)): the list closes with the clause, and the
-    combination sentence of Section 2 that backs it is present."""
-    text = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "sec-decision-3"))
-    clause = "The method claims nothing as novel and does not replace PCA or Pareto analysis."
-    assert clause in text and text.index(clause) > text.index("7. On a cubesat model")
-    assert "We did not find the combination in the sources reviewed" in _section(
-        "Prior art, by family"
-    )
+def test_the_paper_claims_nothing_as_novel():
+    """WP28 (S8's second item), as it stands after his review of 2026-11-15: the Main results list
+    and its closing clause, and the combination sentence, were cut from Sections 1 and 2. What the
+    clause protected holds on the text that is left: neither section says the combination was
+    absent from the literature, and Section 2 does not call the method new, first or novel."""
+    for heading in ("The decision problem", "Prior art"):
+        section = _section(heading)
+        assert "We did not find the combination" not in section, heading
+        assert "The sources establish the pieces, not the combination" not in section, heading
+    assert not WORDS_BANNED_IN_PRIOR_ART.search(_section("Prior art"))
 
 
 def test_section_9_prints_the_strongest_pair_to_the_digits_appendix_d4_prints():
@@ -3009,15 +2977,6 @@ def test_reading_pass_table_is_in_appendix_g_and_current():
     assert "was read, the verdict" not in g2
 
 
-def test_the_combination_sentence_says_what_was_looked_at():
-    """C-2: no assertion of absence in the literature; it names the sources reviewed."""
-    s2 = _section("Prior art, by family")
-    assert "The sources establish the pieces, not the combination" not in s2
-    assert "We did not find the combination in the sources reviewed" in s2
-    assert "appendix-g" in s2.split("We did not find the combination", 1)[1]
-    assert not WORDS_BANNED_IN_PRIOR_ART.search(s2)
-
-
 # ---- the driver's change requests of WP10, round 2 (the cold reads of 2026-11-09) ----------------
 
 
@@ -3139,16 +3098,16 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     """(7) the nondominated counts are in section 1; (16) the unit level set is not the boundary."""
     nb = _nb(PAPER_NB)
     ids = [c.id for c in nb.cells]
-    assert ids.index("num-nondominated") < ids.index("sec-prior-art")
-    assert "number of designs and of metrics" in _section("The decision problem")
+    assert ids.index("num-nondominated") > ids.index("sec-case-analysis")  # moved at his review
     front = _src(nb.cells[0])
     assert "level sets of a posynomial function of the metrics" in " ".join(front.split())
-    # R-38 (c): the abstract no longer carries the scaling sentence; section 1 keeps it
+    # R-38 (c): the abstract does not carry the scaling sentence
     assert "scales where" not in front
-    assert "dominance stops shortlisting" in _section("The decision problem")
-    results = _section("The decision problem").split("**Main results**", 1)[1]
-    first = results.split("2.", 1)[0]
-    assert "not the Pareto boundary" in first and "fitted reference surface" in first
+    # the three objects stay apart, one definition each (his review of 2026-11-15)
+    definitions = _section("Definitions")
+    assert "The Pareto boundary is the nondominated set" in definitions
+    assert "not of the table or of the fit" in definitions
+    assert "The fitted reference surface is the level set" in definitions
     sentence = _cell_out(PAPER_NB, "num-nondominated")
     assert "236 on 4 attributes" in sentence and "2,134 on all 13" in sentence
     assert "regenerations of the data under rounding-level" in sentence
@@ -4130,20 +4089,6 @@ def _cell_src(cell_id: str, path=PAPER_NB) -> str:
     return _src(next(c for c in _nb(path).cells if c.id == cell_id))
 
 
-def test_the_main_results_cite_the_statement_that_states_each_claim_and_gloss_their_words():
-    """32, 33, 34, 66, 67, 80: each pointer resolves to the statement that carries the claim, the
-    Numerical tag is a sentence, the stopping declaration is named as a paragraph."""
-    cell = _cell_src("sec-decision-3")
-    assert "the posynomial extension is the monomial ({prf:ref}`thm-extension`), and a " in cell
-    assert "weakly Pareto-efficient ({prf:ref}`thm-pareto`)" in cell
-    assert "through the chart ({prf:ref}`def-chart`)" in cell and "{prf:ref}`def-exchange`" in cell
-    assert "a geometric program in the exponents ($x=e^{w}$), convex in $w$" in cell
-    assert "second-order certificate of a strict local minimizer is for a soft fit" in cell
-    assert "a paragraph of {numref}`Section %s <sect-results>` and not a numbered result" in cell
-    assert "; Numerical)" not in cell and "a numerical result, observed and not proved" in cell
-    assert "A soft fit has a second-order certificate" not in cell
-
-
 def test_works_cited_says_what_it_holds_and_each_entry_is_cited_in_the_register():
     """44: the shared bibliography holds the main text's sources and Appendix G's; the seven
     entries a reader asked about are each cited by a register row of prior_art.yaml."""
@@ -4331,8 +4276,9 @@ def test_reach_is_the_word_for_beta_and_the_package_is_named():
     text = " ".join(_src(c) for c in nb.cells if c.cell_type == "markdown")
     text = text.replace("level offset", "").replace("the offset enters only through", "")
     assert not re.search(r"\boffsets?\b", text)  # the conditioning's offset b is the one exception
-    first = min(i for i, c in enumerate(nb.cells) if "package" in _src(c))
-    assert "The package is the scikit-learn estimator of" in _src(nb.cells[first])
+    # the sentence "The package is the scikit-learn estimator of ..." left Section 3 at his review;
+    # the estimator is still named in the body
+    assert "scikit-learn transformer of the decomposition family" in text
 
 
 @pytest.mark.slow

@@ -20,7 +20,7 @@ total = 5900
 
 [baseline.sections]
 "The decision problem" = 547
-"Prior art, by family" = 585
+"Prior art" = 585
 "Preliminaries and notation" = 454
 "Definitions" = 314
 "Methods" = 515
@@ -846,7 +846,7 @@ reader = "the reader who follows the sentence to the figure"
 
 [[raise]]
 date = "2026-11-10"
-section = "Prior art, by family"
+section = "Prior art"
 words_added = 40
 job = "the DEA paragraph says what the title's word means here (the level curve of V, Section 4) and that it is not Färe, Grosskopf and Lovell's hyperbolic graph measure; Table 1's DEA cell carries both differences (global exponents, not per-unit weights; a band, not extreme units; CR-26)"
 reader = "the sceptic who knows the DEA literature and reads the title as the hyperbolic measure"
@@ -1168,7 +1168,7 @@ authority = "WP33 journeys note, placement 8 (P4 cells; the item is P5's and Sec
 
 [[cut]]
 date = "2026-11-12"
-section = "Prior art, by family"
+section = "Prior art"
 words_removed = 60
 no_longer_did = "the DEA paragraph listed the super-efficiency variant, Malmquist indices and the weights restrictions and protocols of practice, which Table 1 and Appendix G's DEA entry already carry and which a sceptical reader skimmed past on the way to how this work differs; the Lineage paragraph's tradespace sentence repeated Table 1's tradespace row and Appendix G's entry. The citations stay in Appendix G and the nocite list"
 authority = "WP33 baseline wayfinding read, P6 (the DEA and Lineage citation walls), offsetting the stochastic-frontier line added to Appendix G"
@@ -1221,28 +1221,28 @@ reader = "the executive reading the case for the decision it supports"
 # detail that Table 1 and Appendix G already carry.
 [[raise]]
 date = "2026-11-12"
-section = "Prior art, by family"
+section = "Prior art"
 words_added = 119
 job = "one paragraph names HoroPCA as the closest existing analog in setting and the farthest in what is estimated, says what this work borrows from PCA and from scikit-learn, and reports that the authors' code recovered the planted exponents only where the generator made them the direction of largest spread; and a one-sentence pointer says where the title's word is defined"
 reader = "the reader who knows hyperbolic PCA and asks whether this work is a PCA or a hyperbolic method"
 
 [[cut]]
 date = "2026-11-12"
-section = "Prior art, by family"
+section = "Prior art"
 words_removed = 51
 no_longer_did = "two caveats against the title's word (the Färe, Grosskopf and Lovell graph measure after the DEA paragraph, and 'unrelated to hyperbolic PCA' in the Lineage paragraph), each a definition by negation in a different place; the glossary entry, Appendix A and the Definitions sentence now say the word once"
 authority = "WP35 Q3 (a), the supervisor's request to limit the places that caveat the word"
 
 [[cut]]
 date = "2026-11-12"
-section = "Prior art, by family"
+section = "Prior art"
 words_removed = 48
 no_longer_did = "the DEA paragraph's last three sentences (larger-is-better metrics with homogeneity, one convex program and K refits with coordinates and a pull-back, and the connecting sentence) repeated the DEA row of Table 1 and the DEA entry of Appendix G, which print the same distinctions word for word"
 authority = "WP35 build, offsetting the HoroPCA paragraph (length is a regularizer)"
 
 [[cut]]
 date = "2026-11-12"
-section = "Prior art, by family"
+section = "Prior art"
 words_removed = 20
 no_longer_did = "the Pareto paragraph's clause on what the fit returns (an exponent vector per term, a band, an effective sample size) repeated the Pareto row of Table 1 and Appendix G's entry"
 authority = "WP35 build, offsetting the HoroPCA paragraph (length is a regularizer)"
@@ -1439,7 +1439,7 @@ authority = "WP38 residual pass, landing of the paper flag tables paper-01 to pa
 
 [[cut]]
 date = "2026-11-13"
-section = "Prior art, by family"
+section = "Prior art"
 words_removed = 24
 no_longer_did = "'says what each family produces, what we share, how we differ and where to read it' (the table's column heads say it); '; it is not exhaustive and ... what this work does differently, extends or adds' (said as 'how this work differs'); '(Section 1 counts it)' (the reader has just read the count); 'a band and an effective sample size' in the DEA sentence (defined in Definition 4 and the methods); net of the splits of the HoroPCA and Lineage sentences"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
@@ -1670,7 +1670,7 @@ reader = "the evaluator and the mathematician reading the main results as the pa
 
 [[raise]]
 date = "2026-11-14"
-section = "Prior art, by family"
+section = "Prior art"
 words_added = 23
 job = "the HoroPCA sentence carries the reviewer's boundaries in one clause (a mechanism demonstration on clean tables, the authors' code at its defaults, one direction at a time)"
 reader = "the reader weighing Appendix H's result as a recovery rate"

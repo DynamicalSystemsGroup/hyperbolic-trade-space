@@ -23,6 +23,26 @@ def test_the_nlemma_figure_is_committed_beside_its_generator():
     assert (ROOT / "paper" / "figures" / "fig-nlemma.png").stat().st_size > 10_000
 
 
+@pytest.mark.parametrize(
+    "module, svg",
+    [
+        ("prior_art_layers", "fig-prior-art-layers.svg"),
+        ("pipeline", "fig-pipeline.svg"),
+    ],
+)
+def test_each_drawn_svg_equals_its_generators_output(module, svg):
+    """The two drawings are produced by code: the committed SVG is the generator's text."""
+    import importlib
+
+    assert module in build_figures.PAPER_FIGURES
+    sys.path.insert(0, str(ROOT / "paper"))
+    try:
+        generator = importlib.import_module(f"figures.{module}")
+    finally:
+        sys.path.remove(str(ROOT / "paper"))
+    assert (ROOT / "paper" / "figures" / svg).read_text() == generator.svg()
+
+
 def test_the_two_panel_ternary_is_committed_beside_its_generator():
     """Figure 9: the module draws ``case.ternary_pair_figure``; its PNG is committed."""
     assert (ROOT / "paper" / "figures" / "ternary_pair.py").is_file()

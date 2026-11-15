@@ -45,8 +45,16 @@ RESIZE: dict[str, float] = {}
 # beside the module (WP19's candidates: the n-lemma, Figure 3 and Figure 4 redrawn without term
 # colouring; the last two read the case's committed data and are regenerated with WP23's). The
 # index page's three-pane figure has its own command (``uv run python paper/figures/figure1.py``)
-# and is not rebuilt here: its SVG's ids vary from run to run.
-PAPER_FIGURES = ("nlemma", "planes", "chart_level", "ternary_pair")
+# and is not rebuilt here: its SVG's ids vary from run to run. The two SVG drawings
+# (``prior_art_layers``, ``pipeline``) are written from string constants.
+PAPER_FIGURES = (
+    "nlemma",
+    "planes",
+    "chart_level",
+    "ternary_pair",
+    "prior_art_layers",
+    "pipeline",
+)
 # The model's two views, drawn by the model's own projection (PlantUML, a system tool) and committed
 # beside the model; the paper takes byte-identical copies (published path in paper/figures: source).
 MODEL_VIEWS = {
