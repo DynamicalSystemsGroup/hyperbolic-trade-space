@@ -18,7 +18,7 @@ Visual vocabulary (module constants, shared by every function)
   that scores each highest, its cell (``cell_labels``): an analysis of the fit, not its structure.
 * **Ternary plot** (``plot_ternary``): the shares of a total among three metrics (or three groups
   of metrics) as a triangle; a term's exponent vector is a marker (its own shape, numbered), the
-  regions are tinted by the term that dominates, and the terms use the palette's colours.
+  regions are tinted by the term that binds, and the terms use the palette's colours.
 * **Temperature path** (``plot_temperature_path``): the fit against the fit temperature in three
   panels; the fit temperature is a black vertical line, a ring marks it on each exponent line, and
   the target fraction is a dashed black line. <!-- vocab-exempt: plot temperature -->

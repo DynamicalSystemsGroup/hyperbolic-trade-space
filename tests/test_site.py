@@ -82,16 +82,19 @@ BUDGETS = {
     # api.md (300) merged in; the ::: are not prose; 287 until WP42; 291 until WP46 (two links
     # to the temperature page)
     "api-reference.md": 298,
-    "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
+    # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33; 671 until WP51 (+251,
+    # the synthetic three-metric case, the root page's construction)
+    "examples.md": 922,
     # 805 until the D-5 fresh read named tau, the level and the submartingale (2026-11-15)
     "bridge.md": 815,
     "theory.md": 700,
     "further-reading.md": 300,
 }
-# 8340 until WP46 (+571, the temperature page and two links to it); 7480 until WP41 (the bridge
+# 8916 until WP51 (+251, examples.md); 8340 until WP46 (+571, the temperature page and two links
+# to it); 7480 until WP41 (the bridge
 # page, 815); 7430 until the docs home took its figure and quickstart (his 350); 7237 until WP42;
 # 7472 until WP33
-TOTAL_BUDGET = 8916
+TOTAL_BUDGET = 9167
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
@@ -437,10 +440,11 @@ def _site_file_for(path_in_site: str, site_root: Path) -> Path | None:
     return candidate if candidate.is_file() else None
 
 
-# Images the assembled root page gets at build time (the paper's Figure 1, copied; the Why image,
+# Images the assembled root page gets at build time (the story figure and the slices figure,
 # generated); they are not in site/ and are checked on the assembled site.
 BUILT_IMAGES = {
-    "figure1.png",
+    "site-slices-light.png",
+    "site-slices-dark.png",
     "ternary-planted-light.png",
     "ternary-planted-dark.png",
 }
@@ -472,16 +476,19 @@ def test_root_index_is_thin_and_routes_by_need():
     """WP33 G2, R-3, and the supervisor's recast of 2026-11-14 (WP33-decisions.md): after the title,
     the plain summary, then three sections without headers in depth order (why: the line between
     what is possible and what is preferable; what: trade studies and the three conditions; how: PCA
-    and the n-lemma); the page closes on a lead sentence and two doors (paper, tool), each a link;
-    no cards, subtitle or adoption line."""
+    and the n-lemma); the page closes on a lead paragraph that routes to the documentation's example
+    and two doors (paper, tool), each a card that is one link (his ruling of 2026-11-15,
+    WP51-decisions.md: cards, not a bullet list); no subtitle or adoption line."""
     text = (SITE / "index.html").read_text(encoding="utf-8")
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
-    assert 'class="cards"' not in text
-    needs = re.search(r'<ul class="needs">(.*?)</ul>', text, re.S).group(1)
-    items = re.findall(r"<li>(.*?)</li>", needs, re.S)
-    assert len(items) == 2
-    assert all(re.fullmatch(r'<a href="[^"]+">[^<]+</a>', i) for i in items), items
+    doors = re.search(r'<div class="doors">(.*?)</div>', text, re.S).group(1)
+    items = re.findall(r'<a class="card" href="([^"]+)">(.*?)</a>', doors, re.S)
+    assert [href for href, _ in items] == ["paper/", "docs/getting-started/"], items
+    assert all(
+        re.fullmatch(r"<strong>[^<]+</strong><span>[^<]+</span>", body) for _, body in items
+    ), items
+    assert "<ul" not in text.split('class="lead"')[1], "the doors are cards, not a list"
     assert text.count('class="lead"') == 1 and 'class="subtitle"' not in text
     assert 'class="adopt"' not in text
     low = " ".join(text.lower().split())
@@ -495,10 +502,10 @@ def test_root_index_is_thin_and_routes_by_need():
             "trade studies are usually decided",
             "explains variance; this explains trade-offs",
             'class="lead"',
-            'class="needs"',
+            'class="doors"',
         )
     ]
-    assert order == sorted(order), "order: summary, why, what, how, lead, needs"
+    assert order == sorted(order), "order: summary, why, what, how, lead, doors"
     # "feature engineering" left the page with the abstract's ruling of 2026-11-14 (three readers
     # read it as frontier estimation); the page says unsupervised learning, beside PCA
     for needle in ("scikit-learn", "unsupervised", "pca"):
@@ -509,6 +516,11 @@ def test_root_index_is_thin_and_routes_by_need():
     for href in ("paper/", "docs/getting-started/"):
         assert href in hrefs
     assert any(h.endswith("hyperbolic-trade-space") for h in hrefs), "repository link"
+    footer = re.search(r"<footer>(.*?)</footer>", text, re.S).group(1)
+    assert re.findall(r">([^<]+)</a>", footer) == [
+        "Source code", "Documentation", "PyPI", "Release notes", "History and acknowledgements",
+    ]  # fmt: skip
+    assert "github.com/" not in re.sub(r"<[^>]+>", "", footer), "the URL is not shown as text"
     assert '<link rel="icon" href="data:,">' in text  # D6: no /favicon.ico request, no 404
     assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "index.html").read_text(
         encoding="utf-8"
@@ -519,7 +531,9 @@ def test_root_index_is_thin_and_routes_by_need():
     # R3: the wording matches the thinned docsite
     for stale in ("page by page", "its mathematics", "in full"):
         assert stale not in text.lower(), stale
-    assert "pypi.org" not in text.lower()
+    # the supervisor, 2026-11-14 night: "this should also have a placeholder link for pypi"; the
+    # project page answers 404 until the first publish (the punch list marks it expected-at-release)
+    assert "https://pypi.org/project/hyperbolic-trade-space/" in html_links(SITE / "index.html")
     paper = (SITE / "paper" / "index.html").read_text(encoding="utf-8")
     assert "The paper is in preparation" in paper
     assert "../docs/" in html_links(SITE / "paper" / "index.html")
@@ -1242,9 +1256,7 @@ def test_assembled_layout(assembled):
     ).read_text(encoding="utf-8")
     for name in sorted(BUILT_IMAGES):
         assert (assembled / name).stat().st_size > 10_000, name
-    assert (assembled / "figure1.png").read_bytes() == (
-        ROOT / "paper" / "figures" / "figure1.png"
-    ).read_bytes(), "the What image is the paper's Figure 1, copied, not regenerated"
+    assert not (assembled / "figure1.png").exists(), "the paper's Figure 1 left the root page"
     assert (assembled / "paper" / "index.html").read_text(encoding="utf-8") == (
         SITE / "paper" / "index.html"
     ).read_text(encoding="utf-8")
@@ -1569,7 +1581,11 @@ class _Figures(HTMLParser):
         d = dict(attrs)
         if tag == "figure":
             self._open = True
-            self.figures.append({"class": d.get("class", ""), "a": [], "img": [], "cap": ""})
+            self.figures.append(
+                {"class": d.get("class", ""), "a": [], "img": [], "cap": "", "cap_links": []}
+            )
+        elif self._open and tag == "a" and self._cap:
+            self.figures[-1]["cap_links"].append(d.get("href"))
         elif self._open and tag == "a":
             self.figures[-1]["a"].append(d.get("href"))
         elif self._open and tag == "img":
@@ -1599,11 +1615,14 @@ def test_index_has_a_figure_in_the_what_and_how_sections_in_that_order():
     figures = _index_figures()
     # the supervisor's choice (WP28-decisions): the planted ternary is the story figure, and the
     # plain Why image is gone; after the recast of 2026-11-14 the ternary sits in the second
-    # section (what) and the paper's Figure 1 in the third (how); the first section carries none
+    # section (what) and, from WP51, the slices figure (three metric pairs by three views) in the
+    # third
+    # (how), where the paper's Figure 1 used to be; the first section carries none
     assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide"]
-    assert "story" in figures[0]["class"].split()
+    assert "story" in figures[0]["class"].split() and "slices" in figures[1]["class"].split()
     srcs = [f["img"][0][0] for f in figures]
-    assert srcs == ["ternary-planted-light.png", "figure1.png"]
+    assert srcs == ["ternary-planted-light.png", "site-slices-light.png"]
+    assert "figure1.png" not in text, "the paper's Figure 1 is no longer on the root page"
     sections = [m.start() for m in re.finditer("<section>", text)]
     assert len(sections) == 3
     ends = [*sections[2:], len(text)]
@@ -1618,24 +1637,53 @@ def test_index_has_a_figure_in_the_what_and_how_sections_in_that_order():
 
 def test_index_images_have_alt_text_captions_and_full_size_links():
     figures = _index_figures()
-    story, what = figures
+    story, slices = figures
     assert [a for a in story["a"]] == ["ternary-planted-light.png", "ternary-planted-dark.png"]
     assert [i[0] for i in story["img"]] == ["ternary-planted-light.png", "ternary-planted-dark.png"]
-    assert "constructed table" in story["cap"] and "three terms" in story["cap"]
-    assert "larger when nearer the frontier" in story["cap"] and "full size" in story["cap"]
-    assert story["cap"].count(". ") == 1  # one sentence, then the link note
+    assert "constructed dataset" in story["cap"] and "three terms" in story["cap"]
+    assert "numbered marker" in story["cap"]
+    assert "each shaded region is where one term binds" in story["cap"]
+    assert "characteristic point, where that term is strongest" in story["cap"]
+    # G3: the ternary is the one view of the whole position space, of the table the slices cut
+    assert "whole position space" in story["cap"]
+    for meta in ("below", "above", "further down", "you "):  # no sentence about the page itself
+        assert meta not in (story["cap"] + slices["cap"]).lower(), meta
+    assert (
+        story["cap"].count(". ") == 0
+    )  # one sentence; the full-size line left on his ruling of 2026-11-15
     assert not any("why-regions" in i[0] for f in figures for i in f["img"])
-    assert what["a"] == ["figure1.png"]
+    assert slices["a"] == ["site-slices-light.png", "site-slices-dark.png"]
+    assert [i[0] for i in slices["img"]] == ["site-slices-light.png", "site-slices-dark.png"]
     for f in figures:
         assert all(alt and len(alt) > 60 for _, alt in f["img"]), "alt text names what is shown"
         assert len(f["cap"].strip()) > 40
-    assert "black arrow" in what["img"][0][1] and "black arrow" in what["cap"]
+    # the slices figure: the pairs, the three views, the held third metric and the three pieces
+    for _, alt in slices["img"]:
+        assert "three rows" in alt.lower() and "third metric" in alt and "median" in alt
+    for word in ("at its median", "metric space", "log space", "chart"):
+        assert word in slices["cap"], word
+    # the pieces' colours and the characteristic points are explained in the prose above the figure,
+    # not in the caption (his ruling of 2026-11-15: the caption was overloaded)
+    page = (SITE / "index.html").read_text(encoding="utf-8")
+    assert (
+        "one curve whose" in page and "characteristic point" in page.split('class="wide slices"')[0]
+    )
+    # the construction lives in the documentation: no temperature, percentile or band on the page
+    for word in ("temperature", "percentile", "band", "\u221a"):
+        assert word not in slices["cap"], word
+    assert slices["cap_links"] == [] and story["cap_links"] == []
+    # the route to the construction is the lead paragraph before the doors
+    lead = page.split('class="lead"')[1].split("</p>")[0]
+    assert 'href="docs/examples/#the-synthetic-three-metric-case"' in lead
+    assert "same dataset" in slices["cap"] and "full size" not in slices["cap"]
     for f in figures:  # plain links: each figure's link is the file the image shows
         assert [i[0] for i in f["img"]] == f["a"]
     # in the dark scheme the light twin is hidden (and the dark one shown), by CSS alone
     css = (SITE / "index.html").read_text(encoding="utf-8")
     assert "figure.why .only-dark { display: none; }" in css
     assert "figure.why .only-light { display: none; }" in css
+    assert "figure.slices .only-dark { display: none; }" in css
+    assert "figure.slices .only-light { display: none; }" in css
 
 
 def test_assembled_index_images_exist_and_links_resolve(assembled):
@@ -1833,3 +1881,177 @@ def test_site_does_not_import_a_ternary_package():
     text = (ROOT / "scripts" / "build_site_figures.py").read_text(encoding="utf-8")
     assert "import mpltern" not in text and "projection=" not in text
     assert "mpltern" not in (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+
+
+# ---- the slices figure (WP51) -----------------------------------------------------------------
+
+
+def test_slices_figure_is_drawn_from_the_one_fit_of_fit_why(monkeypatch, tmp_path):
+    """R-1: the root page's images come from one call of ``fit_why``; the figure never fits."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_site_figures as bsf
+
+    import hyperbolic_trade_space as hts
+
+    fit = bsf.fit_why()
+
+    def no_fit(*a, **k):
+        raise AssertionError("the slices figure must not fit a second model")
+
+    with monkeypatch.context() as m:
+        m.setattr(hts.HyperbolicTradeSpace, "fit", no_fit)
+        paths = bsf.build_slices(tmp_path, fit=fit)  # drawn from the given fit, without fitting
+    assert {p.name for p in paths.values()} == {"site-slices-light.png", "site-slices-dark.png"}
+    # build_all fits once and hands that fit to both figures
+    calls, seen = [], []
+
+    def counted():
+        calls.append(1)
+        return fit
+
+    monkeypatch.setattr(bsf, "fit_why", counted)
+    monkeypatch.setattr(bsf, "build_story", lambda out, fit=None: seen.append(fit) or {})
+    monkeypatch.setattr(bsf, "build_slices", lambda out, fit=None: seen.append(fit) or {})
+    bsf.build_all(tmp_path)
+    assert len(calls) == 1 and seen[0] is fit and seen[1] is fit
+
+
+def _pieces_at(bsf, fit, i, j, percentile):
+    import numpy as np
+
+    U = fit["U"]
+    span = np.percentile(U, bsf.SLICE_SPAN, axis=0)
+    (third,) = [m for m in range(3) if m not in (i, j)]
+    hold = bsf.held_at(fit, third, np.percentile(U[:, third], percentile))
+    return hold, bsf.slice_pieces(fit, i, j, hold, (span[:, i], span[:, j]))
+
+
+def test_slices_are_the_fitted_surface_with_the_third_metric_at_its_median(why_fit):
+    """Each drawn piece lies on the fitted surface (log V = 0) with the third metric at its
+    median, led by its own term; the three panes of the figure show all three terms; and holding
+    the third metric elsewhere changes which terms are drawn (a term enters or leaves)."""
+    import numpy as np
+
+    bsf, fit = why_fit
+    assert bsf.SLICE_PAIRS == ((0, 1), (1, 2), (0, 2))
+    W, beta = fit["W"], fit["beta"]
+    shown = set()
+    for i, j in bsf.SLICE_PAIRS:
+        hold, pieces = _pieces_at(bsf, fit, i, j, 50)
+        assert pieces, "the surface crosses the plane in view"
+        for k, xy in pieces:
+            xy = xy[~np.isnan(xy).any(axis=1)]
+            u = np.tile(hold, (len(xy), 1))
+            u[:, i], u[:, j] = xy[:, 0], xy[:, 1]
+            phi = u @ W.T - beta
+            assert np.abs(phi.max(axis=1)).max() < 1e-6, "on the surface, log V = 0"
+            assert (phi.argmax(axis=1) == k).all(), "coloured by the term that leads there"
+            shown.add(k)
+    assert shown == {0, 1, 2}
+    for i, j in bsf.SLICE_PAIRS:
+        at = {p: {k for k, _ in _pieces_at(bsf, fit, i, j, p)[1]} for p in (20, 50, 80)}
+        assert len({frozenset(v) for v in at.values()}) > 1, "the terms drawn change as it moves"
+
+
+def test_the_planted_table_reaches_its_surface_with_about_a_tenth_beyond(why_fit):
+    """Round 3: most designs lie on or just below the surface and about a tenth beyond it."""
+    import numpy as np
+
+    bsf, fit = why_fit
+    assert bsf.PLANT == {"frontier_fraction": 0.7, "interior_scale": 0.25, "noise": 0.07}
+    assert 0.05 < float((fit["logv"] > 0).mean()) < 0.15
+    assert float(np.median(fit["logv"])) > -0.4, "the data lie close to the surface"
+
+
+def test_slices_draw_nine_panes_with_one_surface_each_and_no_formula(why_fit):
+    import matplotlib.pyplot as plt
+
+    bsf, fit = why_fit
+    assert fit["estimator"].temperature == bsf.TEMPERATURE == 50.0
+    for scheme in ("light", "dark"):
+        fig = bsf.draw_slices(fit, scheme)
+        axes = [a for a in fig.axes if a.get_label() != "<legend>"]
+        assert len(axes) == 9
+        for ax in axes:
+            assert ax.collections, "the designs near the held value are drawn"
+            assert len(ax.lines) >= 1, "the surface is drawn in the term colours"
+            assert "\u221a" not in ax.get_xlabel() + ax.get_ylabel()
+        for ax in axes[2::3]:
+            assert ax.get_ylabel() == "log V" and ax.get_xlabel().startswith("position along")
+        plt.close(fig)
+
+
+def test_the_terms_own_points_lie_on_the_surface_at_their_exponent_shares(why_fit):
+    """The triangle's markers, taken to the surface along their rays: log V is 0 there, and the
+    shares of the point (each metric in units of its typical size) are the term's exponents."""
+    import numpy as np
+
+    bsf, fit = why_fit
+    pts = bsf.marker_points(fit)
+    assert pts.shape == (3, 3)
+    assert np.allclose(bsf._hard_logv(fit, pts), 0.0, atol=1e-9)
+    shares = np.exp(pts - fit["colmean"])
+    assert np.allclose(shares / shares.sum(axis=1, keepdims=True), fit["W"], atol=1e-9)
+
+
+def test_ternary_and_slices_draw_each_term_with_the_same_number_colour_and_marker(why_fit):
+    """The supervisor: the two figures' terms are numbered and coloured the same. Built from the
+    one fit; the artists are inspected (the ternary's marker collections and number labels, the
+    slices' legend handles and chart markers), not the pixels."""
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import to_rgba
+    from matplotlib.markers import MarkerStyle
+
+    bsf, fit = why_fit
+    styles = bsf.term_styles(fit)
+    assert [s[0] for s in styles] == [1, 2, 3]
+
+    def shape_vertices(shape):
+        m = MarkerStyle(shape)
+        return m.get_path().transformed(m.get_transform()).vertices
+
+    for scheme in ("light", "dark"):
+        tern = bsf.draw(fit, scheme, lines=True)
+        by_gid = {c.get_gid(): c for c in tern.axes[0].collections if c.get_gid()}
+        labels = {t.get_gid(): t for t in tern.axes[0].texts if t.get_gid()}
+        sl = bsf.draw_slices(fit, scheme)
+        handles = sl.legends[0].legend_handles
+        lines, points = handles[0::2], handles[1::2]
+        chart = [a for a in sl.axes if a.get_label() != "<legend>"][2]
+        chart_marks = [
+            c for c in chart.collections if c.get_sizes().size and len(c.get_offsets()) == 1
+        ]
+        assert len(lines) == len(points) == len(styles) == len(chart_marks)
+        for k, (number, colour, shape, _) in enumerate(styles):
+            star = by_gid[f"ternary-star-{k}"]
+            assert labels[f"ternary-star-label-{k}"].get_text() == str(number)
+            assert (star.get_facecolor()[0] == to_rgba(colour)).all(), "ternary colour"
+            assert (star.get_paths()[0].vertices == shape_vertices(shape)).all(), "ternary marker"
+            assert lines[k].get_label() == f"term {number}"
+            assert to_rgba(lines[k].get_color()) == to_rgba(colour), "slices line colour"
+            assert points[k].get_marker() == shape, "slices legend marker"
+            assert to_rgba(points[k].get_markerfacecolor()) == to_rgba(colour)
+            assert (chart_marks[k].get_facecolor()[0] == to_rgba(colour)).all()
+            assert (chart_marks[k].get_paths()[0].vertices == shape_vertices(shape)).all()
+        plt.close(tern)
+        plt.close(sl)
+
+
+def test_the_held_metric_quantile_is_an_option_not_a_constant(why_fit):
+    """His ruling of 2026-11-15 (WP51-decisions.md): the metric left out of a pair is held at a
+    quantile the caller chooses, the median by default, and the row's title says which."""
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    bsf, fit = why_fit
+    assert bsf.held_label(0.5) == "its median"
+    assert bsf.held_label(0.2) == "its 20th percentile"
+    assert bsf.held_label(0.91) == "its 91st percentile"
+    third = 2
+    assert bsf.held_at(fit, third, 0.0, 0.2)[0] == np.quantile(fit["U"][:, 0], 0.2)
+    titles = {}
+    for q in (0.5, 0.2):
+        fig = bsf.draw_slices(fit, "light", pairs=[(0, 1)], quantile=q)
+        titles[q] = next(t.get_text() for t in fig.texts if "against" in t.get_text())
+        plt.close(fig)
+    assert titles[0.5].endswith("at its median") and titles[0.2].endswith("at its 20th percentile")

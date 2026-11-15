@@ -11,13 +11,14 @@ through with the decision that moved it, or labelled post-release.
 The root and paper pages are checked live under "Post-release live checks".
 
 - https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases (release notes; linked from the package card on the root page)
+- https://pypi.org/project/hyperbolic-trade-space/ (PyPI project page; a placeholder link in the root page's footer until the first publish, 404 before it: "this should also have a placeholder link for pypi", 2026-11-14 night)
 - https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/ (root; the public URL and `site_url` base)
 - https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/ (paper page; `scripts/assemble_site.py` stages the real paper, built by `myst build --html` in `paper/` for the route `/hyperbolic-trade-space/paper`, and falls back to the placeholder page when the paper does not build)
 
 ## Not linked yet
 
-- PyPI project page: no link on any page (PyPI is deferred). Add the link to the package card
-  and this list when the package is published.
+- PyPI: deferred; the root page's footer carries the project-page link as a placeholder (listed above as
+  expected-at-release), live once the package is published.
 
 ## Post-release live checks
 

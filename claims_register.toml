@@ -4241,7 +4241,7 @@ note = "Practice claim (usually decided from documents and tables); reading, aut
 
 [[claim]]
 id = "C358"
-fragment = "A constructed table of three metrics, fitted with three terms: each shaded region is led by a different trade-off"
+fragment = "each shaded region is where one term binds"
 file = "site/index.html"
 anchor = ""
 kind = "M"
@@ -4249,7 +4249,7 @@ backing = ["lemma:L7", "lemma:L10", "test:tests/test_site.py::test_why_labels_co
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Each term has its own exponents (L7 elasticities along a term, L10 sum of terms); the why-figure test pins that regions and labels follow the fitted exponents; the root page keeps the planted figure (the plain Why image left the page)"
+note = "Each term has its own exponents (L7 elasticities along a term, L10 sum of terms); the why-figure test pins that regions and labels follow the fitted exponents; the root page keeps the planted figure (the plain Why image left the page); the fragment narrowed at WP51 when the caption gained its whole-view and same-table sentences (rows C774, C775) and reworded to the supervisor's word, binds (glossary entry binding-term: the term the surface follows at the exact maximum)"
 
 [[claim]]
 id = "C359"
@@ -9557,3 +9557,86 @@ disposition = "keep"
 source = "WP46 D-4"
 note = "Stated in the lemma's does-not-prove paragraph."
 
+[[claim]]
+id = "C842"
+fragment = "Seed 11. Most designs lie on or below the surface: 70 percent on it"
+file = "docs/examples.md"
+anchor = "The synthetic three-metric case"
+kind = "S"
+backing = ["test:tests/test_site.py::test_the_planted_table_reaches_its_surface_with_about_a_tenth_beyond", "func:scripts/build_site_figures.py::fit_why"]
+status = "backed"
+disposition = "keep"
+source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+note = "Seed, fraction on the surface and the scatter are PLANT and DATA_SEED in the script."
+
+[[claim]]
+id = "C843"
+fragment = "Three terms, temperature 50, seed 0."
+file = "docs/examples.md"
+anchor = "The synthetic three-metric case"
+kind = "S"
+backing = ["test:tests/test_site.py::test_slices_figure_is_drawn_from_the_one_fit_of_fit_why", "func:scripts/build_site_figures.py::fit_why"]
+status = "backed"
+disposition = "keep"
+source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+note = "TEMPERATURE and FIT_SEED, one fit shared by both figures."
+
+[[claim]]
+id = "C844"
+fragment = "at 50, 11 percent of them lie beyond it."
+file = "docs/examples.md"
+anchor = "The synthetic three-metric case"
+kind = "S"
+backing = ["test:tests/test_site.py::test_the_planted_table_reaches_its_surface_with_about_a_tenth_beyond", "func:scripts/build_site_figures.py::fit_why"]
+status = "backed"
+disposition = "keep"
+source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+note = "The measured share beyond the surface at temperature 50 (the block prints 0.11)."
+
+[[claim]]
+id = "C845"
+fragment = "A region is where one term binds, the term whose piece the surface follows there; at the temperature used, that term carries the largest weight."
+file = "docs/examples.md"
+anchor = "The synthetic three-metric case"
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "glossary:binding-term"]
+status = "backed"
+disposition = "keep"
+source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+note = "The region rule is plotting._ternary_region_of."
+
+[[claim]]
+id = "C846"
+fragment = "the shares there equal the term's exponents, and for a given total the term is largest there."
+file = "docs/examples.md"
+anchor = "The synthetic three-metric case"
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak", "glossary:characteristic-point"]
+status = "backed"
+disposition = "keep"
+source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+note = "The weighted inequality of the means; the markers sit at the exponent vectors."
+
+[[claim]]
+id = "C847"
+fragment = "the position along the pair being the difference of the two log metrics over the square root of two"
+file = "docs/examples.md"
+anchor = "The synthetic three-metric case"
+kind = "S"
+backing = ["test:tests/test_site.py::test_slices_draw_nine_panes_with_one_surface_each_and_no_formula", "func:scripts/build_site_figures.py::draw_slices"]
+status = "backed"
+disposition = "keep"
+source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+note = "The chart column's horizontal coordinate, (log m_i - log m_j)/sqrt(2)."
+
+[[claim]]
+id = "C848"
+fragment = "One pair of metrics per row, the third held at its median"
+file = "docs/examples.md"
+anchor = "The synthetic three-metric case"
+kind = "S"
+backing = ["test:tests/test_site.py::test_slices_are_the_fitted_surface_with_the_third_metric_at_its_median", "func:scripts/build_site_figures.py::held_at"]
+status = "backed"
+disposition = "keep"
+source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+note = "Rows are the three pairs; the third metric is held at its median over the table."

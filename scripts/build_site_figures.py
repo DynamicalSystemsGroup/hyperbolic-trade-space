@@ -42,6 +42,11 @@ FILES = {"light": "why-regions-light.png", "dark": "why-regions-dark.png"}
 STORY_FILES = {"light": "ternary-planted-light.png", "dark": "ternary-planted-dark.png"}
 
 N_ROWS, N_METRICS, N_TERMS, DATA_SEED = 900, 3, 3, 11
+# the planted table's construction beyond the package's defaults: most designs on or just below
+# the surface (70% on it, the rest 0.25 below on average), the surface rows scattered by 0.07, so
+# the data reach the surface at every position and about a tenth lie beyond it
+PLANT = {"frontier_fraction": 0.7, "interior_scale": 0.25, "noise": 0.07}
+# the temperature is the figure's to tune (the supervisor, 2026-11-14); 50 with the table below
 TEMPERATURE, FIT_SEED = 50.0, 0
 FIGSIZE, DPI = (7.4, 7.0), 170  # the axes span 1.08 by 1.07 plane units, so the triangle fills it
 BLUE, AMBER, GREEN = "#0072B2", "#E69F00", "#009E73"
@@ -58,11 +63,22 @@ def says(w):
     return _tern._ternary_says(np.asarray(w, float), NAMES)
 
 
-def fit_why():
-    """The planted table and its three-term fit: the data, exponents, offsets, cells, log V."""
+def fit_why(exponents=None, **plant):
+    """The planted table and its three-term fit: the data, exponents, offsets, cells, log V.
+
+    ``exponents`` (default: the package's seeded draw) sets the planted exponent vectors; ``plant``
+    passes ``frontier_fraction``, ``interior_scale``, ``noise`` and the like to the generator.
+    """
     from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
 
-    X, _ = make_frontier_data(N_ROWS, N_METRICS, n_terms=N_TERMS, random_state=DATA_SEED)
+    X, _ = make_frontier_data(
+        N_ROWS,
+        N_METRICS,
+        n_terms=N_TERMS,
+        random_state=DATA_SEED,
+        exponents=exponents,
+        **{**PLANT, **plant},
+    )
     ts = HyperbolicTradeSpace(n_terms=N_TERMS, temperature=TEMPERATURE, random_state=FIT_SEED)
     ts.fit(X)
     return {
@@ -114,9 +130,227 @@ def build_story(out=DEFAULT_OUT, fit=None):
     return build(out, lines=True, fit=fit, files=STORY_FILES)
 
 
+# ---------------------------------------------------------------------------------------------
+# The slices figure: the three metric pairs by three views, the third metric held at its median.
+# ---------------------------------------------------------------------------------------------
+SLICE_SPAN = (1, 99)  # the percentiles of each metric that the axes span
+SLICE_PAIRS = ((0, 1), (1, 2), (0, 2))  # metric pairs (rows); the metric left out is held
+SLICE_DPI = 150
+
+
+def held_at(fit, third, value, quantile=0.5):
+    """The log metrics held for a slice: the third at ``value``, the others at ``quantile``."""
+    hold = np.quantile(fit["U"], quantile, axis=0)
+    hold[third] = value
+    return hold
+
+
+def held_label(quantile):
+    """How a row names the held value: ``its median`` or ``its 20th percentile``."""
+    if abs(quantile - 0.5) < 1e-9:
+        return "its median"
+    n = round(100 * quantile)
+    suffix = "th" if 10 <= n % 100 <= 20 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"its {n}{suffix} percentile"
+
+
+def slice_pieces(fit, i, j, hold, box, n=4000):
+    """The fitted surface ``log V = 0`` in the plane of metrics ``i`` and ``j``, by term.
+
+    The other log metrics are held at ``hold``. Each term's piece is the line
+    ``w_i u_i + w_j u_j = beta - w_rest . hold`` where that term attains the maximum, an exact
+    envelope (no grid). Returns ``[(k, xy)]`` with ``xy`` of shape ``(m, 2)`` in log metrics
+    ``(i, j)``, runs separated by a row of ``nan``.
+    """
+    W, beta = fit["W"], fit["beta"]
+    rest = [r for r in range(W.shape[1]) if r not in (i, j)]
+    const = beta - W[:, rest] @ hold[rest]
+    (lo_x, hi_x), (lo_y, hi_y), out = box[0], box[1], []
+    lo, hi = np.array([lo_x, lo_y]), np.array([hi_x, hi_y])
+    for k in range(len(W)):
+        a = W[k, [i, j]]
+        if np.linalg.norm(a) < 1e-9:
+            continue
+        p0, t = const[k] * a / (a @ a), np.array([-a[1], a[0]]) / np.linalg.norm(a)
+        reach = 2 * float((hi - lo).max())
+        s = np.linspace(-reach, reach, n)
+        xy = p0 + s[:, None] * t
+        inside = ((xy >= lo) & (xy <= hi)).all(axis=1)
+        phi = xy @ W[:, [i, j]].T - const
+        on = inside & (phi[:, k] >= phi.max(axis=1) - 1e-9)
+        if not on.any():
+            continue
+        runs = np.split(np.flatnonzero(on), np.flatnonzero(np.diff(np.flatnonzero(on)) > 1) + 1)
+        xy_k = np.vstack([np.vstack([xy[r], [np.nan, np.nan]]) for r in runs])
+        out.append((k, xy_k))
+    return out
+
+
+# ---------------------------------------------------------------------------------------------
+# The slices figure (WP51 rework, candidate A): the third metric held at its median only. One
+# surface per pane as one connected curve in the three term colours (the paper's Figure 1 drawn
+# three ways), the chart as Figure 1 draws it (the surface laid flat, the designs below it), the
+# designs within a band of the median as dots; nothing else.
+# ---------------------------------------------------------------------------------------------
+SLICE_FILES = {"light": "site-slices-light.png", "dark": "site-slices-dark.png"}
+SLICE_BAND = 0.15  # half-width, in log metric, of the designs drawn with the held median
+
+
+def _hard_logv(fit, u):
+    """The surface's value ``max_k (w_k . u - beta_k)`` at log positions ``u`` (rows)."""
+    return (np.atleast_2d(u) @ fit["W"].T - fit["beta"]).max(axis=1)
+
+
+def term_styles(fit):
+    """The one table of how a term is drawn: ``[(number, colour, marker shape, marker size)]`` by
+    term index. The slices' lines, markers and legend read from it; the triangle's markers are
+    drawn by ``plot_ternary`` from the same two sources (``_ternary_colours`` of the fit's
+    exponents, ``_TERN_MARKERS`` by index, the number the index plus one), and a test compares
+    the two figures' artists."""
+    col = colours(fit["W"])
+    marks = _tern._TERN_MARKERS
+    return [(k + 1, col[k], *marks[k % len(marks)]) for k in range(len(fit["W"]))]
+
+
+def marker_points(fit):
+    """The triangle's markers as points of the surface, in log metrics, one row per term.
+
+    A marker sits at a term's exponent vector read as shares ``c = w_k``; the ray ``m = t c``
+    (each metric in units of its typical size) meets the surface once, at ``t = 1 / V(c)``,
+    because V is homogeneous of degree one: ``u = log c + colmean - max_k' (w_k' . (log c +
+    colmean) - beta_k')``.
+    """
+    base = np.log(np.clip(fit["W"], 1e-300, None)) + fit["colmean"]
+    return base - _hard_logv(fit, base)[:, None]
+
+
+def draw_slices(fit, scheme="light", pairs=SLICE_PAIRS, markers=True, quantile=0.5):
+    """Rows the metric pairs; columns the metric space, the log space and the chart (the surface
+    laid flat along the pair's axis ``(e_i - e_j) / sqrt(2)``, the designs below it). The metric
+    left out of a pair is held at the ``quantile`` of its values over the planted table (the median
+    by default; the supervisor's ruling of 2026-11-15 that the held value is an option, not a
+    constant). ``markers`` adds the three
+    terms' characteristic points on the surface (the triangle's markers) on the chart column,
+    where the surface is laid flat and they lie exactly on its line; the other two columns are a
+    section at one value of the third metric, which three such points cannot share."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import to_rgb
+    from matplotlib.lines import Line2D
+
+    sch = _tern._TERN_SCHEMES[scheme]
+    ink = sch["ink"]
+    styles = term_styles(fit)
+    tcol = {k: st[1] for k, st in enumerate(styles)}
+    U, lv, d = fit["U"], fit["logv"], fit["U"].shape[1]
+    span = np.percentile(U, SLICE_SPAN, axis=0)
+    fig, axes = plt.subplots(len(pairs), 3, figsize=(11.6, 3.5 * len(pairs) + 0.9), squeeze=False)
+    fig.patch.set_alpha(0.0)
+    heads = ("Metric space: the fitted reference surface", "Log space: the surface as an envelope",
+             "Chart: the surface laid flat")  # fmt: skip
+    for r, (i, j) in enumerate(pairs):
+        (third,) = [m for m in range(d) if m not in (i, j)]
+        q = float(np.quantile(U[:, third], quantile))
+        hold = held_at(fit, third, q, quantile)
+        near = np.abs(U[:, third] - q) <= SLICE_BAND
+        zs = (U[:, i] - U[:, j]) / np.sqrt(2)
+        for c, ax in enumerate(axes[r]):
+            ax.set_facecolor("none")
+            for sp in ("top", "right"):
+                ax.spines[sp].set_visible(False)
+            for sp in ax.spines.values():
+                sp.set_color(ink)
+            ax.tick_params(colors=ink, labelsize=9)
+            ax.xaxis.label.set_color(ink)
+            ax.yaxis.label.set_color(ink)
+            if r == 0:
+                ax.set_title(heads[c], color=ink, fontsize=10.5, loc="left", pad=30)
+            xs, ys = (U[near, i], U[near, j]) if c < 2 else (zs[near], lv[near])
+            if c == 0:
+                xs, ys = np.exp(xs), np.exp(ys)
+            # darker the nearer a design is to the slice, faint at the edge of the band
+            dist = np.abs(U[near, third] - q) / SLICE_BAND
+            rgba = np.zeros((len(xs), 4))
+            rgba[:, :3] = to_rgb(sch["dots"])
+            rgba[:, 3] = 0.95 - 0.8 * dist
+            far_first = np.argsort(-dist)
+            ax.scatter(xs[far_first], ys[far_first], s=9, c=rgba[far_first], linewidth=0, zorder=2)
+        for k, xy in slice_pieces(fit, i, j, hold, (span[:, i], span[:, j])):
+            for c in (0, 1):
+                x, y = xy[:, 0], xy[:, 1]
+                axes[r, c].plot(np.exp(x) if c == 0 else x, np.exp(y) if c == 0 else y,
+                                color=tcol[k], lw=2.8, zorder=4,
+                                solid_capstyle="round")  # fmt: skip
+            zk = (xy[:, 0] - xy[:, 1]) / np.sqrt(2)
+            axes[r, 2].plot([np.nanmin(zk), np.nanmax(zk)], [0, 0], color=tcol[k], lw=4,
+                            zorder=4, solid_capstyle="butt")  # fmt: skip
+        if (
+            markers
+        ):  # the terms' characteristic points on the surface (the triangle's three markers)
+            for k, u in enumerate(marker_points(fit)):
+                _, colour, shape, size = styles[k]
+                axes[r, 2].scatter([(u[i] - u[j]) / np.sqrt(2)], [0], marker=shape,
+                                   s=size * 0.45, color=colour, edgecolors=ink,
+                                   linewidths=1.2, zorder=9)  # fmt: skip
+        for c in (0, 1):
+            ax = axes[r, c]
+            ax.set_xlabel(f"{'log ' if c else ''}{NAMES[i]}", fontsize=10)
+            ax.set_ylabel(f"{'log ' if c else ''}{NAMES[j]}", fontsize=10)
+        axes[r, 0].set_xlim(0, np.exp(span[1, i]))
+        axes[r, 0].set_ylim(0, np.exp(span[1, j]))
+        axes[r, 1].set_xlim(span[0, i] - 0.2, span[1, i] + 0.2)
+        axes[r, 1].set_ylim(span[0, j] - 0.2, span[1, j] + 0.2)
+        ax = axes[r, 2]
+        zspan = (span[0, i] - span[1, j], span[1, i] - span[0, j])
+        ax.set_xlim(zspan[0] / np.sqrt(2), zspan[1] / np.sqrt(2))
+        ax.set_xlabel(f"position along the {NAMES[i]} against {NAMES[j]} axis", fontsize=10)
+        ax.set_ylabel("log V", fontsize=10)
+        ax.set_ylim(max(np.percentile(lv, 2), -3.5), 0.6)
+    lines = [Line2D([], [], color=colour, lw=3.5, label=f"term {number}")
+             for number, colour, _, _ in styles]  # fmt: skip
+    legend = lines
+    if markers:  # one column per term: the line over its characteristic point
+        points = [Line2D([], [], marker=shape, ls="", markerfacecolor=colour,
+                         markeredgecolor=ink, markersize=8, label="characteristic point")
+                  for _, colour, shape, _ in styles]  # fmt: skip
+        legend = [h for pair in zip(lines, points, strict=True) for h in pair]
+    fig.legend(handles=legend, loc="lower center", ncol=len(lines), frameon=False,
+               labelcolor=ink, fontsize=9.5, columnspacing=3.0,
+               bbox_to_anchor=(0.5, 0.0))  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07 if markers else 0.04, 1, 1), h_pad=3.2)
+    for r, (i, j) in enumerate(pairs):
+        (third,) = [m for m in range(d) if m not in (i, j)]
+        y = axes[r, 0].get_position().y1 + 0.008
+        label = held_label(quantile)
+        fig.text(0.01, y, f"{NAMES[i]} against {NAMES[j]}, with {NAMES[third]} at {label}",
+                 color=ink, fontsize=11, fontweight="bold", va="bottom")  # fmt: skip
+    return fig
+
+
+def build_slices(out=DEFAULT_OUT, fit=None, quantile=0.5):
+    """The slices figure from the planted fit (``fit_why()`` unless given), both schemes; the
+    metric left out of each pair held at ``quantile`` (the median by default)."""
+    import matplotlib.pyplot as plt
+
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    fit = fit or fit_why()
+    paths = {}
+    with plt.rc_context({"font.family": "DejaVu Sans", "font.size": 10}):
+        for scheme, name in SLICE_FILES.items():
+            fig = draw_slices(fit, scheme, quantile=quantile)
+            paths[scheme] = out / name
+            fig.savefig(paths[scheme], dpi=SLICE_DPI, transparent=True)
+            plt.close(fig)
+    return paths
+
+
 def build_all(out=DEFAULT_OUT):
-    """The root page's images: the story figure (the Why image no longer sits on the page)."""
-    return {"story": build_story(out)}
+    """The root page's images: the story figure and the slices figure, from one fit."""
+    fit = fit_why()
+    return {"story": build_story(out, fit=fit), "slices": build_slices(out, fit=fit)}
 
 
 def main(argv=None):
@@ -134,6 +368,8 @@ def main(argv=None):
         print(f"{scheme}: {path}")
     for scheme, path in build_story(args.out, fit=fit).items():
         print(f"story {scheme}: {path}")
+    for scheme, path in build_slices(args.out, fit=fit).items():
+        print(f"slices {scheme}: {path}")
     print("exponents", np.round(fit["W"], 2).tolist())
     print("labels", [says(w).replace("\n", " ") for w in fit["W"]])
     return 0

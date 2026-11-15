@@ -160,6 +160,22 @@ entries:
     aliases:
       - 'cells'
 
+  - id: 'binding-term'
+    term: 'binding term'
+    short: 'The term whose piece the surface follows at a point (the supervisor: "binds" in the infinite-temperature sense); at a finite temperature the term carries the largest weight.'
+    register: 'binding term'
+    formal: 'at a point, the term k with the largest value a_k + s * sum_j w_kj log c_j (plotting._ternary_region_of); exact at the exact maximum (infinite temperature), where the surface follows that term''s piece, an active constraint; at a finite temperature the term carries the largest weight, and the surface lies within 1/tau of the binding piece. The designs so assigned are the term''s cell'
+    not: 'a cluster of designs'
+    defined_in: 'WP51-decisions.md (the supervisor, 2026-11-14 night)'
+
+  - id: 'characteristic-point'
+    term: 'characteristic point'
+    short: 'A term''s characteristic point is the point of the surface whose shares of the metrics are the term''s exponents, where the term is largest for a given total.'
+    register: 'characteristic point'
+    formal: 'by the weighted inequality of the means, among points with the same total of the metrics (each in units of its typical size) a term''s monomial is largest where the shares equal its exponents; equivalently, on the term''s piece of the surface it is the point with the smallest total. The ternary''s numbered markers sit at these shares (star, diamond, square for terms 1, 2, 3)'
+    not: 'a design of the table; a balanced point (the dual-weighted mean)'
+    defined_in: 'WP51-decisions.md (the supervisor, 2026-11-14 night)'
+
   - id: 'term'
     term: 'monomial term'
     short: 'One monomial of the posynomial: the model object, one trade-off; in log space one flat piece of the fitted reference surface.'

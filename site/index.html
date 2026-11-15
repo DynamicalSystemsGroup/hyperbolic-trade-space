@@ -78,8 +78,12 @@
     figure.why .only-light { display: none; }
     figure.why .only-dark { display: block; }
   }
-  /* The paper's Figure 1 is drawn on white; it keeps its white ground in both schemes. */
-  figure.what img { background: #ffffff; }
+  /* The slices figure comes in two colour schemes too (transparent backgrounds), shown the same way. */
+  figure.slices .only-dark { display: none; }
+  @media (prefers-color-scheme: dark) {
+    figure.slices .only-light { display: none; }
+    figure.slices .only-dark { display: block; }
+  }
   @media (min-width: 52rem) {
     figure.wide {
       position: relative;
@@ -89,8 +93,11 @@
     }
   }
   .lead { margin: 0 0 0.5rem; }
-  .needs { margin: 0 0 1rem; padding-left: 1.2rem; font-family: system-ui, sans-serif; }
-  .needs li { margin: 0.3rem 0; }
+  .doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; margin: 0 0 1.5rem; font-family: system-ui, sans-serif; }
+  .card { display: block; padding: 1rem 1.2rem; border: 1px solid var(--muted); border-radius: 0.6rem; text-decoration: none; color: inherit; }
+  .card:hover { border-color: var(--accent, currentColor); }
+  .card strong { display: block; font-size: 1.05rem; margin-bottom: 0.25rem; }
+  .card span { color: var(--muted); font-size: 0.95rem; }
   code, pre {
     font: 0.85rem/1.4 ui-monospace, Menlo, monospace;
     background: var(--accent-soft);
@@ -140,34 +147,41 @@
     <figure class="why story">
       <a class="only-light" href="ternary-planted-light.png"><img src="ternary-planted-light.png" width="1258" height="1190" alt="A triangle of three metrics tinted in three regions, with designs as points, a numbered marker at each term's exponent vector and lines of equal value closing around each marker; each region is labelled by the trade-off that leads there."></a>
       <a class="only-dark" href="ternary-planted-dark.png"><img src="ternary-planted-dark.png" width="1258" height="1190" alt="A triangle of three metrics tinted in three regions, with designs as points, a numbered marker at each term's exponent vector and lines of equal value closing around each marker; each region is labelled by the trade-off that leads there."></a>
-      <figcaption>A constructed table of three metrics, fitted with three terms: each shaded region is led by a different trade-off, each dot is a design, larger when nearer the frontier, and each numbered marker is a term's exponent vector. Select the figure to open it at full size.</figcaption>
+      <figcaption>A constructed dataset of three metrics, fitted with three terms, in the one view of its whole position space: each design sits by its shares of the three metrics, each shaded region is where one term binds, and each numbered marker is a term’s characteristic point, where that term is strongest.</figcaption>
     </figure>
   </section>
 
   <section>
     <p>
       Principal component analysis (PCA) explains variance; this explains trade-offs. Its unit is the n-lemma, a combination
-      of the metrics that names which of them contend on one part of the trade space. The
+      of the metrics that names which of them contend on one part of the trade space. With three metrics, the surface between any two
+      changes with the third, and terms enter and leave it: in each pane below the fitted reference surface is one curve whose
+      pieces, one for each term, carry the term’s colour, and on the chart a marker sits at each term’s characteristic point,
+      where that term is strongest. The
       method belongs in unsupervised learning, beside PCA. It is related to PCA, not a replacement for it, and the two chain: the tension report
       already runs PCA on the near-frontier chart coordinates. It ships as a scikit-learn-compatible
       estimator (<code>fit</code>, <code>transform</code>, <code>inverse_transform</code>,
       <code>score_samples</code>). The conformance checks pass.
     </p>
-    <figure class="wide what">
-      <a href="figure1.png"><img class="hero" src="figure1.png" width="1640" height="720" alt="Three panes: the fitted reference surface in metric space, its terms as a supporting envelope in log space, and the chart in which the frontier is one line with the terms laid end to end along it. The designs are grey points; a black arrow in each pane marks one design's distance from the surface."></a>
-      <figcaption>One table of designs seen three ways. The coloured pieces are the three terms of the fitted reference surface, the same three in each pane; the black arrow marks one design's distance from that surface.</figcaption>
+    <figure class="wide slices">
+      <a class="only-light" href="site-slices-light.png"><img class="hero" src="site-slices-light.png" width="1740" height="1710" alt="Three rows, one for each pair of the three metrics, and three panes in each: the fitted reference surface in metric space, as an envelope in log space, and laid flat in the chart. In every pane the third metric is held at its median and the surface is one curve whose pieces, one for each term, are drawn in the three term colours; grey dots are designs, and a star, a diamond and a square mark the terms’ characteristic points on the flat surface."></a>
+      <a class="only-dark" href="site-slices-dark.png"><img class="hero" src="site-slices-dark.png" width="1740" height="1710" alt="Three rows, one for each pair of the three metrics, and three panes in each: the fitted reference surface in metric space, as an envelope in log space, and laid flat in the chart. In every pane the third metric is held at its median and the surface is one curve whose pieces, one for each term, are drawn in the three term colours; grey dots are designs, and a star, a diamond and a square mark the terms’ characteristic points on the flat surface."></a>
+      <figcaption>The same dataset in slices: one row for each pair of metrics, the third held at its median; the columns are the metric space, the log space and the chart, where the surface is laid flat.</figcaption>
     </figure>
   </section>
 
-  <p class="lead">Choose the line that is yours: the documentation serves those who run the tool, the paper those who read it, check it or decide on it.</p>
-  <ul class="needs">
-    <li><a href="paper/">Read the paper</a></li>
-    <li><a href="docs/getting-started/">Use the tool</a></li>
-  </ul>
+  <p class="lead">
+    The dataset behind both figures is constructed, with three planted terms, and both are rebuilt step by step in
+    <a href="docs/examples/#the-synthetic-three-metric-case">the documentation’s example</a>.
+    The paper makes the argument and gives the proofs; the documentation gets the method running on a dataset of your own.
+  </p>
+  <div class="doors">
+    <a class="card" href="paper/"><strong>Read the paper</strong><span>the argument and the proofs</span></a>
+    <a class="card" href="docs/getting-started/"><strong>Use the code</strong><span>the method on a dataset of your own</span></a>
+  </div>
 
   <footer>
-    Source:
-    <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">github.com/DynamicalSystemsGroup/hyperbolic-trade-space</a> · <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases">Release notes</a> · <a href="history.html">History and acknowledgements</a>
+    <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">Source code</a> · <a href="docs/">Documentation</a> · <a href="https://pypi.org/project/hyperbolic-trade-space/">PyPI</a> · <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases">Release notes</a> · <a href="history.html">History and acknowledgements</a>
   </footer>
 </main>
 </body>

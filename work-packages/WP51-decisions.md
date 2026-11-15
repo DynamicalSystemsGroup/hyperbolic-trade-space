@@ -367,3 +367,37 @@ in both"
 trades against metric 1"; term 3 (0, 0.17, 0.83) green, "metric 3 trades against metric 2"; one colour function serves
 both figures, so the mapping is the same in both; the test making it a guarantee is still being added.
 
+
+## His review of the root page before the merge (2026-11-15, ~12:30 EST)
+
+**Supervisor, verbatim (on the slices caption, screenshot in chat):** "this caption is overloaded. simplify it and
+put some of the explanation in prose. drop "select the figure to open at full size"). direct the reader to the
+example in the documentation in the prose. that serves as a transition sentence into the 2 door call to action. use
+"cards" for the paper and the code rather than. bullet list."
+
+**Applied as:** the slices caption is one sentence (the rows, the held metric, the three columns); the colouring of
+the pieces and the characteristic points moved into the preceding paragraph; "Select the figure to open it at full
+size" dropped from both captions; a lead paragraph before the doors says the table is constructed with three planted
+terms and both figures are rebuilt step by step in the documentation's example, then the paper-and-documentation
+sentence; the two doors are cards (`.doors` grid, `.card` links with a title and a line), the bullet list gone; the
+root-page test follows.
+
+**Supervisor, verbatim (the root page):** "table -> dataset"
+
+**Applied as:** on the root page, the five uses of "table" for the data (both captions, the lead paragraph, the
+paper-and-documentation sentence, the code card) read "dataset"; "the options on the table" and "documents and
+tables" in his own paragraphs keep their words. The paper and docs keep "table" (the glossary's word) unless he rules
+on them.
+
+**Supervisor, verbatim (the held metric):** "okay, then is the median the right value to take. i wonder if the
+quantile should slide with temperature choice." then "okay. we'll accept the top page as it is but make sure the
+plotting methods have an option to use a different quantile value, rather than hardcoded as median"
+
+**Applied as:** the root page accepted as it stands (the median, stated); `scripts/build_site_figures.py` takes a
+`quantile` on `held_at`, `draw_slices` and `build_slices` (0.5 by default), the row title following it
+(`held_label`), with a test; the docs example names the option. The band-conditioned section (the held value as
+the median of the near-frontier designs, which moves with tau) is carried to WP56 as a question for the case figures.
+
+**Supervisor, verbatim (an idea, by his word not a suggestion):** "i wonder if imputing at the value of the relevant characteristic point would have landed the characteristic points on the curves in an intuitive way" ... "that could be too big a stretch though. it was an idea not a suggestion"
+
+**Recorded as:** an option for WP56's case figures (hold the third metric at one term's characteristic value, which puts that term's point on the section; one point per pane, or three sections); not applied.

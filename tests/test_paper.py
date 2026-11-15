@@ -1396,17 +1396,18 @@ def test_figure1_has_three_panes_with_the_registers_words_and_writes_nothing(tmp
     assert list(tmp_path.iterdir()) == []
 
 
-def test_figure1_is_not_in_the_paper_and_stays_the_index_pages_one_consumer():
+def test_figure1_is_not_in_the_paper_and_the_index_page_no_longer_shows_it():
     """The supervisor's ticket (WP10, 2026-11-09): the three-pane figure leaves the paper's body
     and stays on the index page as the high-level story arc; its generator and files stay, and the
-    site assembler copies the file."""
+    site assembler copied the file. WP51: the index page's how section shows the slices
+    figure instead, so the assembler no longer copies it; the file and its generator stay."""
     nb = _nb(PAPER_NB)
     assert not [c for c in nb.cells if c.id.startswith("fig-schematic")]
     assert "figure1" not in _markdown(nb) + " ".join(_src(c) for c in _code_cells(nb))
     assert "fig-trade-space" not in _markdown(nb)
     assert (PAPER / "figures" / "figure1.png").is_file()
     assembler = (ROOT / "scripts" / "assemble_site.py").read_text(encoding="utf-8")
-    assert 'PAPER_DIR / "figures" / "figure1.png"' in assembler
+    assert "figure1" not in assembler.replace("Figure 1", "")  # no consumer on the page
 
 
 # -- C and D: the completions

@@ -186,6 +186,83 @@ for name, (study, est) in fits.items():
 
 The triples show how to read the figure; they are not findings.
 
+## The synthetic three-metric case
+
+The [root page](index.md)'s two figures are drawn from one constructed table and one fit, so the planted terms are known. Three terms are planted in 900 designs, three metrics each.
+
+**The table.** Seed 11. Most designs lie on or below the surface: 70 percent on it, the rest below it
+by an exponential depth of mean 0.25 in log V, and the surface rows scatter by 0.07 in log V.
+
+```python {.runnable}
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    make_frontier_data,
+)
+
+X, info = make_frontier_data(
+    900,
+    3,
+    n_terms=3,
+    random_state=11,
+    frontier_fraction=0.7,
+    interior_scale=0.25,
+    noise=0.07,
+)
+print(info["exponents"].round(2))
+```
+
+**The fit.** Three terms, temperature 50, seed 0. The temperature sets how closely the surface is pulled to the
+designs: at 50, 11 percent of them lie beyond it.
+
+```python {.runnable}
+ts = HyperbolicTradeSpace(
+    n_terms=3, temperature=50.0, random_state=0
+).fit(X)
+print(ts.exponents_.round(2))
+print(
+    ts.term_share_.round(2), (ts.score_samples(X) > 0).mean().round(2)
+)
+```
+
+**The triangle.** A design sits at its shares of the three metrics, each in units of its typical size. A region is
+where one term binds, the term whose piece the surface follows there; at the temperature used, that term carries the
+largest weight. A numbered marker is a term's characteristic point: the shares there equal the term's exponents,
+and for a given total the term is largest there.
+
+```python {.runnable}
+from hyperbolic_trade_space.plotting import ternary_marker_values
+
+print(ternary_marker_values(ts, X).round(2).to_string(index=False))
+```
+
+**The slices.** One pair of metrics per row, the third held at its median; `build_slices(out, quantile=0.2)` holds it at another quantile instead. The first column is the exact section of
+the surface, the second its log, the third the chart: the surface laid flat as a line at log V = 0, the position
+along the pair being the difference of the two log metrics over the square root of two. The helpers are in
+`scripts/build_site_figures.py`.
+
+```python {.runnable}
+import sys
+
+import numpy as np
+
+sys.path.insert(0, "scripts")
+import build_site_figures as bsf
+
+fit = bsf.fit_why()
+U = fit["U"]
+box = [(np.percentile(u, 1), np.percentile(u, 99)) for u in U.T]
+for i, j in bsf.SLICE_PAIRS:
+    third = ({0, 1, 2} - {i, j}).pop()
+    hold = bsf.held_at(fit, third, np.median(U[:, third]))
+    pieces = bsf.slice_pieces(fit, i, j, hold, [box[i], box[j]])
+    print((i, j), "terms drawn:", sorted(k + 1 for k, _ in pieces))
+print(bsf.marker_points(fit).round(2))
+bsf.build_story("build/site-figures")
+bsf.build_slices("build/site-figures")
+```
+
+The last two calls write the root page's images.
+
 ## Proposing a design for a point with no datum
 
 The case also proposes designs for gaps in the chart, then builds and measures them: [From the chart back to a design](bridge.md).
