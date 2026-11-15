@@ -464,3 +464,10 @@ The client sentence is to carry the arc: the design record before launch (2021),
 (October 2024) on the same system after years in production, where models served the configuration management of the
 fielded system.
 
+**Supervisor (06:40 EST):** "the main difference is we have less focus on me, and the common thread is the ideas and lots of
+other people given explicit acknowledgements for their ideas and contributions"
+
+Recorded as the page's second statement of intent: the ideas are the thread; the people are acknowledged by name for
+their ideas and contributions; the page is not about Zargham. The driver's read of where the page still centres him, and
+the proposed edits, are in chat.
+
