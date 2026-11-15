@@ -98,3 +98,7 @@ the sponsor's objective rides on the manufacturer's and the fleet size, and the 
 cost and performance with unit cost nearly flat; a different cost scaling in manufacturing could pull designs toward
 the middle, and the pipeline refits to check it. The thread is traceable: the SysML v2 model's definition, the data
 of record, the fit, the figure. No new model complexity.
+
+**Supervisor, verbatim (14:03 EST):** "also don't force the equation into the figure"
+
+**Applied as:** the ternary's title carries the name of the performance measure (coverage probability), not its formula; the formula lives in the SysML v2 model and the record, named once in the prose.

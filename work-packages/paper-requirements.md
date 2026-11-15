@@ -148,8 +148,8 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - **The decision-maker's ternary (his choice, WP56 build):** unit cost, fleet cost and coverage probability, one
   objective per stakeholder (sponsor, manufacturer, operator); the prose says the three were not guaranteed to
   collapse to one trade-off, that on this model they do because fleet cost is unit cost times fleet size, why, and
-  that a revised cost scaling is checked by refitting; the decision section uses the same mapping
-  (WP56-decisions.md, his choice).
+  that a revised cost scaling is checked by refitting; no equation in the figure, the measure named by its name;
+  the decision section uses the same mapping (WP56-decisions.md, his choice).
 - **Figure 7, the tension matrix:** one triangle in the paper (the plotting routine keeps both as an option); the
   reader is not left to work out the reciprocal; which triangle and the row order are settled by the figure loop
   on the actual values, and any statement about the values' range is derived and checked numerically first; the
