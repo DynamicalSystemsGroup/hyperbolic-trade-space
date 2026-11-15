@@ -557,3 +557,9 @@ Meltdown read (the firm's blog, Zargham and Ben-Meir, 22 September 2025: the bot
 judgment; judgment is rate-limiting; regulative against generative AI). The closing sentence in his words, with
 "meaningfully".
 
+**Supervisor (09:05 EST):** "\"Before the firm, the mathematics was networks.\" this should be framed as distributed
+convex optimization with many decision makers whose choices impacted each other"
+
+Applied: the paragraph opens on distributed convex optimization, many decision makers whose choices affected one
+another; the TAC paper is its network-flow form.
+
