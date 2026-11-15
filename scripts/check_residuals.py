@@ -91,6 +91,9 @@ _META = {
         r"(noting|mentioning|emphasi[sz]ing|note|recogni[sz]e|remember)\b"
     ),
     "should-be-noted": r"\bit should be (noted|emphasi[sz]ed|stressed)\b",
+    # the supervisor, 2026-11-14 (WP52-decisions.md): what a page of ours says is our account by
+    # definition, so the hedge names nothing
+    "own-account": r"\bin (our|the same) own account\b|\bin the same account\b",
     "note-that": r"(^|[.;:]\s+)note that\b",
     "recall-that": r"(^|[.;:]\s+)recall that\b",
     "summary": (

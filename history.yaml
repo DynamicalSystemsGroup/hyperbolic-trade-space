@@ -1,9 +1,9 @@
 # The history record: the dated public references and the people behind the lineage of this work.
 #
-# The page site/history.html is a view of this record (WP37, D-9): hand-written prose with names and
-# pointers, and beneath it a dated reference list rendered from this file at build time
-# (scripts/history_record.py, scripts/assemble_site.py). The record may hold more than the page
-# shows; the page may show nothing the record does not hold. Tests tie every link, name and year on
+# The page site/history.html is an essay (WP52, 2026-11-15); this record stays in the background
+# for fact-checking and nothing of it is rendered on the page (the supervisor: "i don't want the
+# history records forced into the page you can keep them in the background for fact checking").
+# The record may hold more than the page shows; the page may show nothing the record does not hold. Tests tie every link, name and year on
 # the page to an entry here (tests/test_site.py). Public sources only; every URL answers an
 # unauthenticated request (scripts/check_history_links.py).
 #
@@ -26,8 +26,8 @@
 #   special_case  optional bool, true where the work was in a highly public setting and the rule
 #                 applies: the page names it only as "a special case where the work was highly
 #                 public", never as the firm's focus
-#   listed        optional bool (default true for every kind but person and role, which default to false): whether the
-#                 generated reference list shows the entry
+#   listed        optional bool (default true for every kind but person and role, which default to false): whether a
+#                 command-line listing of the record shows the entry; nothing is rendered on the page
 #   note          optional: where the entry came from, a spelling or a conflict between sources
 #
 # Spelling: Bernardineli (his GitHub profile name "Danilo Lessa Bernardineli", AUTHORS.txt);
@@ -68,6 +68,16 @@ entries:
     shows: "IEEE Transactions on Control of Network Systems 1(1), 99-108, March 2014 (Crossref authors); the abstract solves it in polynomial time using geometric programming. 354 citations on Google Scholar (the supervisor's profile) and 227 in Crossref, both read 2026-11-12."
     claim: sourced
     note: "arXiv 1309.6270. The two full texts say 'geometric program', not 'generalized'; the page says geometric programs."
+
+  - id: 2014-dissertation
+    date: "2014"
+    kind: paper
+    title: "Fast, Distributed Optimization Strategies for Resource Allocation in Networks"
+    people: [{name: "Michael Zargham", role: "author"}, {name: "Ali Jadbabaie", role: "advisor (the record)"}, {name: "Alejandro Ribeiro", role: "advisor (the record)"}]
+    url: https://repository.upenn.edu/handle/20.500.14332/28334
+    read_on: "2026-11-15"
+    shows: "Penn ScholarlyCommons record (its API): doctoral dissertation, issued 2014, advisors Jadbabaie and Ribeiro; the abstract: systems of many agents interacting over a network, the trade-off between information aggregation and decision accuracy, distributed optimization with locally available information. The supervisor (2026-11-15): resource allocation strategies are already economics and governance; the arc opens here."
+    claim: sourced
 
   # ------------------------------------------------------------------ the firm
   - id: 2017-founded
@@ -436,6 +446,7 @@ entries:
     read_on: "2026-11-12"
     shows: "PyData channel, uploaded 29 November 2023 (28 min): a robust-control workflow to select the parameters of a pricing algorithm. The description names neither RAI nor any system."
     claim: sourced
+    note: "On the supervisor's account (2026-11-15): the same system as the 2021 design record, after years in production; the talk and the Edinburgh talk of 2024 cover models used for the configuration management of the fielded system."
 
   - id: 2023-juliacon
     date: "2023-07-28"
@@ -451,7 +462,7 @@ entries:
     date: "2024-07-26"
     kind: repository
     title: "Block diagrams of dynamical systems"
-    people: [{name: "Zeke Medley", role: "author of the write-up (its LaTeX source); 11 commits as 0xekez; summer internship on block diagrams as a compositional algebra and the formal methods associated with them (the supervisor's account)"}, {name: "Danilo Bernardineli", role: "1 commit"}]
+    people: [{name: "Zeke Medley", role: "author of the write-up (its LaTeX source) and of the Julia executor; 11 of 12 commits as 0xekez, July to August 2024; summer internship on block diagrams as a compositional algebra and the formal methods associated with them"}, {name: "Carolina Riascos-Álvarez", role: "her consensus-network work is credited in the write-up (the README links Network-Games.pdf), not in the git history; the supervisor's account, 2026-11-14"}, {name: "Danilo Bernardineli", role: "reviewed it; one commit as danlessa, 15 May 2026 (aesthetic changes)"}]
     url: https://github.com/DynamicalSystemsGroup/dynamical-block-diagrams
     read_on: "2026-11-13"
     shows: "Created 26 July 2024: formal analysis of the execution and initialization of block diagrams of dynamical systems, with a Julia implementation. The contributors page lists two accounts, 0xekez (11 commits) and danlessa (1 commit); the write-up's LaTeX source names Zeke Medley as its author."
@@ -489,7 +500,7 @@ entries:
     shows: "The CV's Selected Talks: 'Crafting Reliable Rules: RAI Case Study. Mathematics for Governance Design Workshop, Edinburgh, Oct 2024.' Also: NumFOCUS Advisory Council Member 2022 to present; Corporate Stewardship Award, NumFOCUS, 2023; program committee, PyData NYC, 2023. No video or slides found."
     claim: sourced
     special_case: true
-    note: "Rests on the CV alone; the host is ICMS in Edinburgh, not named 'University of Edinburgh' by any page read. The event page (listed below) does not name Zargham."
+    note: "Rests on the CV alone; the host is ICMS in Edinburgh, not named 'University of Edinburgh' by any page read. The event page (listed below) does not name Zargham. The page no longer links the CV (the supervisor, 2026-11-14: a bare claim is fine); the entry stays as the record of where the talk is listed."
 
   - id: 2024-icms-event
     date: "2024-10-07"
@@ -543,7 +554,278 @@ entries:
     shows: "The programme page: 17 July 2026; the speaker bio gives 'Chief Engineer at BlockScience'. The proceedings paper is listed as forthcoming on his publications page."
     claim: sourced
 
+  # ------------------------------------------------------------------ the product-invariant side road, 2019 to 2021
+  - id: 2019-balancer-whitepaper
+    date: "2019-09-19"
+    kind: paper
+    title: "Balancer whitepaper: a non-custodial portfolio manager, liquidity provider, and price sensor"
+    people: [{name: "Fernando Martinelli", role: "author; a BlockScience team member at the time of his first proofs (the supervisor's account, 2026-11-14)"}, {name: "Nikolai Mushegian", role: "author"}]
+    url: https://docs.balancer.fi/whitepaper.pdf
+    read_on: "2026-11-14"
+    shows: "v2019-09-19, by Fernando Martinelli and Nikolai Mushegian: the value function is a product of the pool's token balances raised to their normalized weights, held constant; 'We applied an invariant-based modeling approach described by Zargham et al' (citing arXiv 1807.00955, the state-space framework) 'to construct this solution.' The affiliation of Martinelli is not stated in the paper."
+    claim: sourced
+    special_case: true
+
+  - id: 2019-configuration-spaces
+    date: "2019-12-19"
+    kind: paper
+    title: "From Curved Bonding to Configuration Spaces"
+    people: [{name: "Michael Zargham"}, {name: "Jamsheed Shorish"}, {name: "Krzysztof Paruch"}]
+    url: https://ideas.repec.org/p/wiw/wus051/7385.html
+    read_on: "2026-11-14"
+    shows: "WU Vienna, Institute for Cryptoeconomics working paper series, 2019-12-19: configuration spaces as the subsets of the global state reachable under the designed mechanisms, from the invariant properties of conservation functions; applied to the augmented bonding curve. The WU PDF link answers 403; the IDEAS (RePEc) page is the stable record."
+    claim: sourced
+
+  - id: 2021-fungibility
+    date: "2021-05-27"
+    kind: paper
+    title: "A Practical Theory of Fungibility"
+    people: [{name: "Jamsheed Shorish"}, {name: "Matt Stephenson"}, {name: "Michael Zargham"}]
+    url: https://doi.org/10.57938/aa8858fc-8c01-4f2a-a858-96fd0abfc1b1
+    read_on: "2026-11-14"
+    shows: "WU Vienna working paper, 27 May 2021: degrees of fungibility from goods' attributes and their value to an assessor; 'We close by bridging this framework to applications in machine learning and market design.' That it gave no coordinate system suited to automated market makers is the supervisor's reading."
+    claim: sourced
+
+  - id: 2023-market-design-lessons
+    date: "2023-05-25"
+    kind: post
+    title: "Market Design Lessons for 'Safety First' Institutional Engineering"
+    people: [{name: "Jamsheed Shorish", role: "author"}, {name: "Michael Zargham", role: "contributions"}, {name: "Ilan Ben-Meir", role: "contributions"}, {name: "Jessica Zartler", role: "editing and publication"}]
+    url: https://blog.block.science/market-design-lessons-for-safety-first-institutional-engineering/
+    read_on: "2026-11-14"
+    shows: "BlockScience blog, 25 May 2023, byline as listed: institutions adopting disruptive technologies should secure safety requirements before optimising for performance, weighing qualitative goals (do no harm, fairness) against quantitative measures; draws on Alvin Roth's market design (residency matching, organ exchange)."
+    claim: sourced
+
+  - id: 2023-algorithm-is-a-camera
+    date: "2023-07-31"
+    kind: post
+    title: "An Algorithm Is a Camera"
+    people: [{name: "Ilan Ben-Meir"}]
+    url: https://www.dynamicalsystemsgroup.com/blog/an-algorithm-is-a-camera
+    read_on: "2026-11-14"
+    shows: "The firm's blog, 31 July 2023, by Ilan Ben-Meir: photographs were wrongly taken for unmediated copies of reality when framing, lens and exposure shape them; algorithms and mathematical models repeat the mistake by presenting their simplifications as neutral truth; like cameras they offer views from nowhere only in appearance, and are limited perspectives on a reality that exceeds any representation."
+    claim: sourced
+
+  - id: 2025-protocols-and-institutions
+    date: "2025-03-06"
+    kind: paper
+    title: "Protocols and Institutions"
+    people: [{name: "Michael Zargham"}, {name: "Ilan Ben-Meir"}]
+    url: https://doi.org/10.5281/zenodo.15122312
+    read_on: "2026-11-15"
+    shows: "Zenodo preprint of a book chapter, 6 March 2025 (the record's metadata): the relationship between protocols and institutions through control systems engineering, cross-referencing institutional economics, cybernetics, control theory and market design; institutions defined mathematically through correspondence to stability in the sense of Lyapunov. Abstract read; the full text not."
+    claim: sourced
+
+  - id: 2024-min-maxing-complexity
+    date: "2024"
+    kind: paper
+    title: "Min-Maxing Complexity on Digital Infrastructure Mechanisms through Occam's Razor and Ashby's Law of Requisite Variety"
+    people: [{name: "Danilo Bernardineli", role: "author (Danilo Lessa Bernardineli)"}, {name: "Ilan Ben-Meir"}, {name: "Michael Zargham"}, {name: "Jakob Hackel"}]
+    url: https://doi.org/10.2139/ssrn.4865894
+    read_on: "2026-11-15"
+    shows: "SSRN 4865894 (Crossref: the four authors, 2024; the PDF read in full from the supervisor's copy): mechanisms for multi-stakeholder digital infrastructure are to be as complex as needed to encode the variety of behaviour and as simple as possible to stay legible to the stakeholders they affect; with the precautionary principle, three decision principles for mechanism selection, variety, legibility and safety; case studies: the Aztec sequencer selection and Neural Quorum Governance on the Stellar Community Fund. SSRN answers 403 to automated requests (blocked, not failed). A presentation of it by Bernardineli is Zenodo 10.5281/zenodo.12170072 (19 June 2024)."
+    claim: sourced
+    special_case: true
+
+  - id: 2024-knowledge-networks
+    date: "2024-01-09"
+    kind: post
+    title: "Knowledge Networks and the Politics of Protocols"
+    people: [{name: "Michael Zargham"}, {name: "Ilan Ben-Meir"}, {name: "Kelsie Nabben"}]
+    url: https://www.dynamicalsystemsgroup.com/blog/knowledge-networks-and-the-politics-of-protocols
+    read_on: "2026-11-15"
+    shows: "The firm's blog, 9 January 2024 (marked updated), by Zargham, Ben-Meir and Nabben: tools that let users provision, operate, maintain and govern their own instances create a new commons; such tools are never politically neutral, since developers' decisions structure the action space ('design is governance', after Amber Case)."
+    claim: sourced
+
+  - id: 2025-politics-of-progress
+    date: "2025"
+    kind: post
+    title: "The Politics of Progress"
+    people: [{name: "Michael Zargham"}]
+    url: https://mzargham.github.io/politics-of-progress/
+    read_on: "2026-11-15"
+    shows: "A GitHub Pages site (recommended citation: Zargham, M. (2025). The Politics of Progress. Comparative and meta-analysis of techno-political ideologies. CC0 1.0): a comparative analysis of Andreessen's Techno-Optimist Manifesto and Klein and Thompson's Abundance; abundance 'requires deliberative institutions capable of managing competing priorities, making trade-offs visible, and ensuring shared constraints are negotiated fairly'. That neither book acknowledged trade-offs is the author's own summary of his editorial (2026-11-15)."
+    claim: sourced
+
+  - id: 2026-metagov
+    date: "2026"
+    kind: role
+    title: "The Metagovernance Project: board member and research director"
+    people: [{name: "Michael Zargham", role: "Board; Research Director (the people page)"}]
+    url: https://metagov.org/people
+    read_on: "2026-11-15"
+    shows: "metagov.org/people lists Michael Zargham, Dynamical Systems Group, under Board and as Research Director."
+    claim: sourced
+
+  - id: 2024-engineering-for-legitimacy
+    date: "2024-03-19"
+    kind: post
+    title: "Engineering Legitimacy"
+    people: [{name: "Ilan Ben-Meir"}, {name: "Michael Zargham"}]
+    url: https://www.dynamicalsystemsgroup.com/blog/engineering-for-legitimacy
+    read_on: "2026-11-14"
+    shows: "The firm's blog, 19 March 2024 (marked updated; credits say edited after first publication with figures redrawn), by Ilan Ben-Meir and Michael Zargham: legitimacy in participatory governance is a sensed quality, so design turns on the controllable features that shape how an institution is perceived; liberty, equality and agency modelled as trade-off curves between competing interpretations of each, so an institution can be tuned to remain legitimate to its stakeholders. The Medium original (medium.com/block-science/engineering-for-legitimacy-23103a4d4f85) answers 410, deleted by its author; the firm's version is the one cited (the supervisor, 2026-11-14). That it emerged to support the client project is the supervisor's account."
+    claim: sourced
+    special_case: true
+
+  - id: 2020-algorithms-as-policy
+    date: "2020-12-15"
+    kind: post
+    title: "Algorithms as Policy"
+    people: [{name: "Michael Zargham"}, {name: "Kelsie Nabben"}]
+    url: https://kelsienabben.substack.com/p/algorithms-as-policy
+    read_on: "2026-11-15"
+    shows: "Kelsie Nabben's Substack, published 15 December 2020 (the page's metadata; byline Michael Zargham and Kelsie Nabben, December 2020): algorithms fulfil the function of policies as the rules of governance on online platforms; algorithm design should be treated as policy-making with responsibility to the public interest. The BlockScience blog carries a copy dated 31 March 2021 (https://blog.block.science/algorithms-as-policy/); the supervisor named the Substack as the source (2026-11-15). It cites Exploring Subjectivity in Algorithms (Zargham, 2019)."
+    claim: sourced
+
+  - id: 2019-exploring-subjectivity
+    date: "2019-03-24"
+    kind: post
+    title: "Exploring Subjectivity in Algorithms"
+    people: [{name: "Michael Zargham"}]
+    url: https://web.archive.org/web/20260829051440/https://medium.com/sourcecred/exploring-subjectivity-in-algorithms-5d8bf1c91714
+    read_on: "2026-11-15"
+    shows: "Medium, the SourceCred publication, 24 March 2019, by Michael Zargham: PageRank is well defined only after a model of a mixing process is imposed on the network; the uniform-traversal heuristic, the seed vector and the coefficient alpha are design choices, so the ranking carries judgement. Medium answers 403 to automated readers; the link is the Internet Archive's capture of 29 August 2026 (no copy on the firm's blogs)."
+    claim: sourced
+
+  - id: 2023-credsperiment
+    date: "2023-09-14"
+    kind: paper
+    title: "The CredSperiment: An Ethnography of a Contributions System"
+    people: [{name: "Ellie Rennie"}]
+    url: https://doi.org/10.2139/ssrn.4570035
+    read_on: "2026-11-15"
+    shows: "SSRN 4570035 (Crossref: Rennie, 2023; posted 14 September 2023, revised 30 November 2023; read from the supervisor's copy, draft 2 of 13 September 2023): participants compensated by SourceCred's Cred scores in a permissionless organisation; contribution goods; terraforming against environmentality; names Zargham as an early contributor to SourceCred through whom the author met the group, and cites the governance surface (Zargham and Nabben 2022). SSRN answers 403 to automated requests (blocked, not failed)."
+    claim: sourced
+
+  - id: 2024-arbitrum-position-paper
+    date: "2024-03-20"
+    kind: post
+    title: "Arbitrum Expert Service Provider Network Program Development"
+    people: [{name: "BlockScience", role: "a position paper by the firm; no individual authors named"}]
+    url: https://blog.block.science/arbitrum-expert-service-provider-network-program-development/
+    read_on: "2026-11-14"
+    shows: "BlockScience blog, 20 March 2024: a position paper, sponsored by a programme the client's governance funds, on building an Expert Service Provider Network with accountable, cost-conscious access to specialist services; a co-design process with the public and domain experts, 'to ensure legitimacy of large expenditures'."
+    claim: sourced
+    special_case: true
+
+  - id: 2023-aztec-sequencer-selection
+    date: "2023-08"
+    kind: post
+    title: "Aztec Sequencer Selection: a trade study of two proposals"
+    people: [{name: "BlockScience", role: "the report's author; prepared for the Aztec Labs team"}]
+    url: https://hackmd.io/@blockscience/Aztec_Sequencer_Selection
+    read_on: "2026-11-14"
+    shows: "HackMD, August 2023, prepared for the Aztec Labs team: two sequencer-selection proposals (Fernet and B52) compared against technical and economic requirements, desired properties and vulnerabilities on each side, with a recommendation; a document-based trade study before this method."
+    claim: sourced
+    special_case: true
+
+  # ------------------------------------------------------------------ the governance lineage
+
+  - id: 2019-computer-aided-governance
+    date: "2019-08-07"
+    kind: post
+    title: "Computer-Aided Governance — A Revolution in Automated Decision-Support Systems"
+    people: [{name: "Jeff Emmett"}, {name: "Michael Zargham"}]
+    url: https://blog.block.science/computer-aided-governance-a-revolution-in-automated-decision-support-systems/
+    read_on: "2026-11-14"
+    shows: "The firm's blog post of 7 August 2019, 'co-authored by Michael Zargham & Jeff Emmett': computer-aided governance is not governance by computers, humans stay in charge and are better informed by simulation of policy outcomes; it names market design as pioneered by Alvin Roth."
+    claim: sourced
+    note: "Replaces the Medium link (HTTP 403): medium.com/block-science/computer-aided-governance-cag-a-revolution-in-automated-decision-support-systems-9faa009e57a2. The lineage sentence (unique optimum to design space) is the team's account, not the post's."
+
+  - id: 2002-roth-economist-as-engineer
+    date: "2002-07"
+    kind: paper
+    title: "The Economist as Engineer: Game Theory, Experimentation, and Computation as Tools for Design Economics"
+    people: [{name: "Alvin Roth"}]
+    url: https://doi.org/10.1111/1468-0262.00335
+    read_on: "2026-11-14"
+    shows: "Econometrica 70(4), 1341-1378, July 2002 (Crossref); market design as engineering; 'the adoption of a design is at least partly a political process'."
+    claim: sourced
+    note: "The DOI answers 403 to automated requests (blocked, not failed); Crossref confirms it. Landing page, from the supervisor (2026-11-15): https://onlinelibrary.wiley.com/doi/abs/10.1111/1468-0262.00335."
+
+  - id: 2023-computer-aided-ethnography
+    date: "2023-02-20"
+    kind: post
+    title: "'Computer Aided Ethnography' (CAE)"
+    people: [{name: "Kelsie Nabben"}, {name: "Michael Zargham"}, {name: "Ellie Rennie"}]
+    url: https://kelsienabben.substack.com/p/computer-aided-ethnography-cae
+    read_on: "2026-11-14"
+    shows: "Nabben's Substack, 20 February 2023, authors as listed; builds on computer-aided governance (Zargham and Emmett)."
+    claim: sourced
+
+  - id: 2025-building-the-loop
+    date: "2025-11"
+    kind: paper
+    title: "Building the Loop: The Role of Ethnography in Artificial Organisational Intelligence"
+    people: [{name: "Ellie Rennie"}, {name: "Kelsie Nabben"}, {name: "Michael Zargham"}, {name: "Jason Potts"}, {name: "Brooke Ann Coco"}, {name: "Luke Miller"}, {name: "Matthew Green"}]
+    url: https://doi.org/10.1111/epic.70009
+    read_on: "2026-11-14"
+    shows: "EPIC Proceedings 2025(1), 223-235 (Crossref issued 2025-11; the EPIC page lists 19 January 2026): the question is how the loop is built, not whether a human is in it."
+    claim: sourced
+    note: "The page says 2025, the proceedings volume's year."
+
+  # ------------------------------------------------------------------ 2026: the ADCS lifecycle demo and its talks
+  - id: 2026-adcs-lifecycle-demo
+    date: "2026-04-08"
+    kind: repository
+    title: "ADCS Lifecycle Demo"
+    people: [{name: "Michael Zargham", role: "author (230 commits as mzargham)"}]
+    url: https://github.com/DynamicalSystemsGroup/ADCS-lifecycle-demo
+    read_on: "2026-11-14"
+    shows: "The repository and its GitHub Pages site (https://dynamicalsystemsgroup.github.io/ADCS-lifecycle-demo/) (DynamicalSystemsGroup/ADCS-lifecycle-demo, public, created 8 April 2026): one geosynchronous communications satellite's attitude determination and control system, one requirement (pointing error settles within 0.1 degree within 120 s of a slew), evidence from a symbolic estimate, a torque-limited simulation and model checking, and a human attestation on the record ('A tool says pass. A person says satisfied.'); four presentations listed with dates: OpenMBEE community call 22 May 2026, JAXA MBSE/MCE Workshop 12 June 2026, INCOSE IS 2026 18 June 2026 (the document-assurance paper, a companion), Open Source Architects community 15 October 2026. That this project keeps the same split between machine verification and human validation is the team's account."
+    claim: sourced
+
+  - id: 2026-scipy-paper
+    date: "2026-10-29"
+    kind: paper
+    title: "Derivations, Not Just Simulations"
+    people: [{name: "Michael Zargham"}]
+    url: https://doi.org/10.25080/wdyr6752
+    read_on: "2026-11-15"
+    shows: "SciPy Proceedings 2026, published 29 October 2026, first page 303 (the proceedings page's metadata; https://proceedings.scipy.org/articles/wdyr6752): derivations scripted in SymPy in the same execution environment as the numerics; the talk of 17 July 2026 is the entry 2026-scipy-talk. The supervisor gave the proceedings link on 2026-11-15."
+    claim: sourced
+
+  - id: 2026-governed-compute
+    date: "2026-09"
+    kind: post
+    title: "Governed Compute, End to End"
+    people: [{name: "Sayer Tindall", role: "lead on the work (the supervisor's account, 2026-11-15; the page carries no byline)"}]
+    url: https://docs.dynamicalsystemsgroup.com/governed-compute/
+    read_on: "2026-11-15"
+    shows: "The firm's documentation site, September 2026, no byline: one run from a person's request to a proven teardown; the organization's operating principle that authorization opens a run, that nothing advances until it conforms to its specification and is fit for its purpose, and that the evidence of both is a byproduct of doing the work; four machines (a laptop holding a signing seed, a kernel as the system of record, a plane that builds and proves teardown, signed registries) and two laws (the organization's policy, the infrastructure rules). The lifecycle demo's README cites it as the Realization layer."
+    claim: sourced
+
+  - id: 2026-osa-talk
+    date: "2026-10-15"
+    kind: talk
+    title: "Requirements, Evidence and Attestation Traceability (Open Source Architects community)"
+    people: [{name: "Michael Zargham"}]
+    url: https://dynamicalsystemsgroup.github.io/ADCS-lifecycle-demo/
+    read_on: "2026-11-14"
+    shows: "The demo's README dates the talk 15 October 2026, Open Source Architects (OSA) Community, slides and live demo in one marimo app; the site is the talk's slides per his research page. The README: the OSA invitation came from the JAXA talk and the OpenMBEE work, so the public abstract kept the JAXA title."
+    claim: sourced
+
+  - id: 2026-jaxa-talk
+    date: "2026-06-12"
+    kind: talk
+    title: "Requirements, Evidence and Attestation Traceability with Python and Flexo MMS (JAXA MBSE/MCE Workshop)"
+    people: [{name: "Michael Zargham"}]
+    url: https://youtu.be/r0H9ACUYNNQ
+    read_on: "2026-11-14"
+    shows: "The talk's video, linked from his research page; the demo's README dates it 12 June 2026, Presentations from Industry, Tsukuba."
+    claim: sourced
+
   # ------------------------------------------------------------------ OpenMBEE, OpenSysML and the synthesis
+  - id: 2025-omg-sysml-v2
+    date: "2025"
+    kind: repository
+    title: "OMG Systems Modeling Language (SysML) version 2.0"
+    url: https://www.omg.org/spec/SysML/2.0
+    read_on: "2026-11-15"
+    shows: "The Object Management Group's specification page for SysML v2 (resolves). The sentence that the firm's block-diagram and MSML work was subsumed by adopting the standard and the OpenMBEE implementations is the supervisor's account (2026-11-15); the cubesat model of this paper is a SysML v2 model (examples/adcs/)."
+    claim: link
+
   - id: 2026-openmbee
     date: "2026"
     kind: role
@@ -557,8 +839,8 @@ entries:
   - id: 2026-maintainer
     date: "2026"
     kind: role
-    title: "OpenMBEE maintainer across OpenSysML and Flexo MMS"
-    people: [{name: "Michael Zargham", role: "maintainer since 2026, working across the OpenSysML and Flexo MMS tool ecosystem (his research page)"}]
+    title: "OpenMBEE maintainer"
+    people: [{name: "Michael Zargham", role: "maintainer at OpenMBEE since 2026 (his research page); the role covers the organization, its ecosystem, OpenSysML and Flexo"}]
     url: https://michael.zargham.org/research
     read_on: "2026-11-12"
     shows: "His research page lists the maintainer role."
@@ -603,6 +885,7 @@ entries:
     read_on: "2026-11-12"
     shows: "INCOSE International Symposium 36 (Crossref), July 2026, single author, affiliation Dynamical Systems Group."
     claim: sourced
+    note: "Landing page, from the supervisor (2026-11-15): https://incose.onlinelibrary.wiley.com/doi/abs/10.1002/iis2.70203; the DOI resolves to it and answers 403 to automated requests (blocked, not failed)."
 
   - id: 2026-synthesis
     date: "2026"
@@ -613,6 +896,123 @@ entries:
     shows: "The firm's hosted demonstrations (four at the day read), the first on bidirectional requirements traceability for a satellite attitude-determination and control system. That this project is part of a synthesis effort to make the learnings accessible is the team's account."
     claim: team-account
     listed: false
+
+  # ------------------------------------------------------------------ conviction voting and the constitution strand (WP52, 2026-11-15)
+  - id: 2007-consensus-and-cooperation
+    date: "2007-01"
+    kind: paper
+    title: "Consensus and Cooperation in Networked Multi-Agent Systems"
+    people: [{name: "Reza Olfati-Saber"}, {name: "J. Alexander Fax"}, {name: "Richard M. Murray"}]
+    url: https://doi.org/10.1109/JPROC.2006.887293
+    read_on: "2026-11-15"
+    shows: "Proceedings of the IEEE 95(1), January 2007 (Crossref). Cited background: the 2018 conviction-voting proposal acknowledges Olfati-Saber, the supervisor's undergraduate advisor, for decentralized sensor fusion and coordination and names this paper."
+    claim: sourced
+    note: "Background the lineage draws on, like Roth 2002; it predates the arc and the arc test exempts it."
+
+  - id: 2014-discounted-integral-priority
+    date: "2014-12"
+    kind: paper
+    title: "Discounted Integral Priority Routing for Data Networks"
+    people: [{name: "Michael Zargham"}, {name: "Alejandro Ribeiro"}, {name: "Ali Jadbabaie"}]
+    url: https://doi.org/10.1109/GLOCOM.2014.7037100
+    read_on: "2026-11-15"
+    shows: "IEEE GLOBECOM 2014 (Crossref: title, authors, December 2014). The 2018 proposal says conviction voting is 'a continuous voting process derived from the Discounted Integral Priority algorithm presented in' this paper."
+    claim: sourced
+
+  - id: 2018-sensor-networks-and-social-choice
+    date: "2018-07-30"
+    kind: paper
+    title: "Sensor Networks and Social Choice"
+    people: [{name: "Michael Zargham", role: "author"}, {name: "Frank Wang", role: "'Research Proposal at the request of Frank Wang of X-Order Research firm' (the title page)"}]
+    url: https://github.com/BlockScience/conviction/blob/main/social-sensorfusion.pdf
+    read_on: "2026-11-15"
+    shows: "The PDF (8 pages, dated 30 July 2018 on its first page), read whole: social choice as sensor fusion; conviction voting derived from discounted integral priority routing; a Stella Architect model and a Python agent-based simulation; the Artonomous design; acknowledges Jadbabaie, Preciado and Olfati-Saber."
+    claim: sourced
+    special_case: true
+    note: "The repository that holds the PDF was re-created on 15 May 2026 (its first commit); the 2020 brief history links the same file on a 'master' branch. The date is the document's own."
+
+  - id: 2019-conviction-voting-explainer
+    date: "2019-07-03"
+    kind: post
+    title: "Conviction Voting: A Novel Continuous Decision Making Alternative to Governance"
+    people: [{name: "Jeff Emmett", role: "author"}]
+    url: https://blog.giveth.io/conviction-voting-a-novel-continuous-decision-making-alternative-to-governance-aa746cfb9475
+    read_on: "2026-11-15"
+    shows: "Giveth's blog on Medium, 3 July 2019, a Commons Stack component explainer: conviction voting 'was derived from the paper on Social Sensor Fusion by Dr. Michael Zargham'; the module simulated and tested in cadCAD. Answers 403 to automated readers; read in a browser."
+    claim: sourced
+    special_case: true
+
+  - id: 2020-conviction-voting-cadcad
+    date: "2020-07-09"
+    kind: repository
+    title: "conviction-voting-cadcad"
+    url: https://github.com/1Hive/conviction-voting-cadcad
+    read_on: "2026-11-15"
+    shows: "The cadCAD model of conviction voting in the repository of the community that first ran it (GitHub API: created 9 July 2020); the 2020 brief history links its README as 'Algorithm Documentation & Simulations'."
+    claim: link
+    special_case: true
+
+  - id: 2020-brief-history-of-conviction-voting
+    date: "2020-12-26"
+    kind: post
+    title: "A Brief History of Conviction Voting"
+    people: [{name: "Michael Zargham", role: "author"}, {name: "Griff Green", role: "'founder of Giveth', met in Zug in July 2018 (the post)"}, {name: "Jeff Emmett", role: "introduced by Green in Prague; the Commons Stack (the post)"}, {name: "Markus Koch", role: "the Balancer proofs (the post)"}, {name: "Fernando Martinelli", role: "the Balancer proofs (the post)"}, {name: "Frank Wang", role: "'a partner at the research firm X-Order' who requested the proposal (the post)"}]
+    url: https://medium.com/block-science/a-brief-history-of-conviction-voting-ad4ca4eb4aee
+    read_on: "2026-11-15"
+    shows: "The firm's Medium publication, 26 December 2020: the Zug prototype of July 2018 as dynamic average consensus; the proposal at Frank Wang's request; the Commons Stack with Emmett; SourceCred; cadCAD modelling 'before and after the deployment of the algorithm by the 1hive DAO'. Answers 403 to automated readers; read in a browser. That three further communities adopted it is the supervisor's account (2026-11-15)."
+    claim: sourced
+    special_case: true
+
+  - id: 2022-governance-as-conflict
+    date: "2022-12-05"
+    kind: paper
+    title: "Governance as Conflict: Constitution of Shared Values Defining Future Margins of Disagreement"
+    people: [{name: "Eric Alston", role: "'Scholar in Residence in the Finance Division and the Faculty Director of the Hernando de Soto Capital Markets Program in the Leeds School of Business at the University of Colorado Boulder' (the author note)"}]
+    url: https://law.mit.edu/pub/governanceasconflict/release/1
+    read_on: "2026-11-15"
+    shows: "MIT Computational Law Report, published 5 December 2022, read whole in a browser (the host answers 403 to automated readers): shared values constitute an organization; collective action makes disagreement structural; institutions mitigate conflict ex ante and resolve it ex post; thanks the Metagov DAO for research support. That Alston is a longstanding member of the team is the supervisor's account (2026-11-15)."
+    claim: sourced
+
+  - id: 2022-dao-precedents-in-cybernetics
+    date: "2022-04-04"
+    kind: paper
+    title: "Aligning 'Decentralized Autonomous Organization' to Precedents in Cybernetics"
+    people: [{name: "Michael Zargham"}, {name: "Kelsie Nabben"}]
+    url: https://doi.org/10.2139/ssrn.4077358
+    read_on: "2026-11-15"
+    shows: "SSRN 4077358, 4 April 2022 (Crossref: the two authors, 2022); the MIT Computational Law Report version of 20 November 2023 read whole in a browser: Beer's viable system model, viability and purpose, the governance surface as a control surface, resilience against robustness, the constitutional archetype, the 1Hive case, the subjectivity of the governance designer."
+    claim: sourced
+    special_case: true
+
+  - id: 2023-what-constitutes-a-constitution
+    date: "2023-04-06"
+    kind: paper
+    title: "What Constitutes a Constitution?"
+    people: [{name: "Michael Zargham"}, {name: "Eric Alston"}, {name: "Kelsie Nabben"}, {name: "Ilan Ben-Meir"}]
+    url: https://zenodo.org/records/10609125
+    read_on: "2026-11-15"
+    shows: "Zenodo record (its API: the four creators in this order, publication date 6 April 2023, DOI 10.5281/zenodo.10609125). Listed on the supervisor's publications page under working papers."
+    claim: sourced
+
+  - id: 2024-path-dependence
+    date: "2024"
+    kind: paper
+    title: "Path Dependence: An Uncomfortable Institutional Design Axiom"
+    people: [{name: "Eric Alston"}, {name: "Amber Case"}, {name: "Michael Zargham"}]
+    url: https://hdl.handle.net/10535/11015
+    read_on: "2026-11-15"
+    shows: "Digital Library of the Commons (Indiana University), conference paper, 2024, authors Alston, Case, Zargham; the abstract: in governance systems the trajectory to an ideal configuration defines its attainability; most real systems start centralized and decentralize progressively. The supervisor's publications page lists it as a Workshop on the Ostrom Workshop abstract."
+    claim: sourced
+
+  - id: 2025-meltdown
+    date: "2025-09-22"
+    kind: post
+    title: "Meltdown"
+    people: [{name: "Michael Zargham"}, {name: "Ilan Ben-Meir"}]
+    url: https://www.dynamicalsystemsgroup.com/blog/meltdown
+    read_on: "2026-11-15"
+    shows: "The firm's blog, 22 September 2025, by Zargham and Ben-Meir (the byline): generative AI collapsed the attention cost of producing content, so 'the bottleneck has moved from generation to judgment' and 'judgment is rate-limiting'; what is needed is regulative AI, mechanisms of constraint and feedback, not more generative power."
+    claim: sourced
 
   # ------------------------------------------------------------------ the people
   - id: person-koch
