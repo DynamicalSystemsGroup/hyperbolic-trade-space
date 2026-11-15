@@ -150,3 +150,10 @@ recorded, and the next iteration follows; the same loop then runs over the index
 the doors). The fresh-reader cold reads stay as the screen before his, not instead of it. WP51's good-enough is his word
 on the whole page, not a unit's gates.
 
+**Supervisor (2026-11-14 22:42 EST):** "remember you can tune on temperature to get a nice visual and just report the temperature you
+used"
+
+**Applied as:** the planted example's fit temperature is a free parameter of the figure: the unit may choose the
+temperature that makes the three pieces read, and the caption states the temperature used (as the paper's figures state
+theirs); the fit stays the one `fit_why()` fit at that temperature (R-1).
+
