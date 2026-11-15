@@ -2545,3 +2545,10 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   entry per section and per appendix (what it holds, what it must not, its style, its state: open, soft-confirmed,
   read by him); every paper package works against it and the driver soft-confirms each section on the rendered page
   before it is offered to him.
+- **WP59 wheat unit delivered (2026-11-15 12:40 EST).** Branch wp59-wheat at d3b0b47: 15 variants, the primary row equal
+  to the record (R-2), gates clean. Its two findings for the page: a function of the yields as a third metric changes
+  the contending set (the harvest index displaces grain; biomass changes nothing), and PCA before the fit is not a
+  usable chain at d = 2 (a negative weight on one yield when pulled back); the K = 2 grain ceiling is present in 7 of
+  15 variants, so it is read as conditional, not as a result. Verification by the spike's reviewer once the wide unit
+  reports.
+- **Standing rule (2026-11-15 12:45 EST), verbatim:** "when in doubt refer to the engineering papers." Added to the rules for every section in `paper-requirements.md`.
