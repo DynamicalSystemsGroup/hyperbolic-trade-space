@@ -183,7 +183,7 @@ if __name__ == "__main__":
 # that carries mathematics therefore writes each span as MathML, which the browser typesets itself.
 
 _TEX_GREEK = {
-    "tau": "τ", "gamma": "γ", "beta": "β", "sigma": "σ", "kappa": "κ",
+    "tau": "τ", "gamma": "γ", "beta": "β", "sigma": "σ", "kappa": "κ", "alpha": "α",
     "varepsilon": "ε", "epsilon": "ϵ", "nu": "ν",
 }  # fmt: skip
 _TEX_UPRIGHT = {"Phi": "Φ", "Sigma": "Σ", "infty": "∞", "top": "⊤"}

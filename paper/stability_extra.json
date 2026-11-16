@@ -9,6 +9,12 @@
   ]
  },
  "quantities": {
+  "decision | primary | balanced | coverage_probability": {
+   "committed": 0.6052013427529652,
+   "identical": true,
+   "max": 0.6052013427529652,
+   "min": 0.6052013427529652
+  },
   "decision | primary | balanced | design": {
    "committed": "766",
    "identical": true
@@ -31,6 +37,12 @@
    "max": 266193.288,
    "min": 266193.288
   },
+  "decision | primary | between | coverage_probability": {
+   "committed": 0.6339656303256576,
+   "identical": true,
+   "max": 0.6339656303256576,
+   "min": 0.6339656303256576
+  },
   "decision | primary | between | design": {
    "committed": "1858",
    "identical": true
@@ -52,6 +64,12 @@
    "identical": true,
    "max": 337228.474,
    "min": 337228.474
+  },
+  "decision | primary | cheapest unit | coverage_probability": {
+   "committed": 0.9793879736388299,
+   "identical": true,
+   "max": 0.9793879736388299,
+   "min": 0.9793879736388299
   },
   "decision | primary | cheapest unit | design": {
    "committed": "2356",
@@ -87,6 +105,12 @@
    "max": 11,
    "min": 11
   },
+  "decision | primary | count | nondominated_coverage": {
+   "committed": 17,
+   "identical": true,
+   "max": 17,
+   "min": 17
+  },
   "decision | primary | count | nondominated_in_band": {
    "committed": 1,
    "identical": true,
@@ -111,11 +135,45 @@
    "max": 28,
    "min": 28
   },
+  "decision | primary | coverage | coverage_probability": {
+   "committed": 0.9793879736388299,
+   "identical": true,
+   "max": 0.9793879736388299,
+   "min": 0.9793879736388299
+  },
+  "decision | primary | coverage | design": {
+   "committed": "2356",
+   "identical": true
+  },
+  "decision | primary | coverage | fleet_cost_usd": {
+   "committed": 5846300.33,
+   "identical": true,
+   "max": 5846300.33,
+   "min": 5846300.33
+  },
+  "decision | primary | coverage | pointing_error_deg": {
+   "committed": 0.0028012382,
+   "identical": true,
+   "max": 0.0028012382,
+   "min": 0.0028012382
+  },
+  "decision | primary | coverage | unit_cost_usd": {
+   "committed": 233852.013,
+   "identical": true,
+   "max": 233852.013,
+   "min": 233852.013
+  },
   "decision | primary | fine tracker | extra fleet cost": {
    "committed": 558677.6100000001,
    "identical": true,
    "max": 558677.6100000001,
    "min": 558677.6100000001
+  },
+  "decision | primary | fine | coverage_probability": {
+   "committed": 0.6339656303256576,
+   "identical": true,
+   "max": 0.6339656303256576,
+   "min": 0.6339656303256576
   },
   "decision | primary | fine | design": {
    "committed": "1858",
@@ -139,6 +197,40 @@
    "max": 337228.474,
    "min": 337228.474
   },
+  "decision | primary | fleet and coverage | coverage_probability": {
+   "committed": 0.7616538160476877,
+   "identical": true,
+   "max": 0.7616538160476877,
+   "min": 0.7616538160476877
+  },
+  "decision | primary | fleet and coverage | design": {
+   "committed": "893",
+   "identical": true
+  },
+  "decision | primary | fleet and coverage | fleet_cost_usd": {
+   "committed": 2882088.52,
+   "identical": true,
+   "max": 2882088.52,
+   "min": 2882088.52
+  },
+  "decision | primary | fleet and coverage | pointing_error_deg": {
+   "committed": 0.00342775455,
+   "identical": true,
+   "max": 0.00342775455,
+   "min": 0.00342775455
+  },
+  "decision | primary | fleet and coverage | unit_cost_usd": {
+   "committed": 288208.852,
+   "identical": true,
+   "max": 288208.852,
+   "min": 288208.852
+  },
+  "decision | primary | operator | coverage_probability": {
+   "committed": 0.703266213005522,
+   "identical": true,
+   "max": 0.703266213005522,
+   "min": 0.703266213005522
+  },
   "decision | primary | operator | design": {
    "committed": "2950",
    "identical": true
@@ -160,6 +252,12 @@
    "identical": true,
    "max": 343960.754,
    "min": 343960.754
+  },
+  "decision | primary | sponsor | coverage_probability": {
+   "committed": 0.45616910928623744,
+   "identical": true,
+   "max": 0.45616910928623744,
+   "min": 0.45616910928623744
   },
   "decision | primary | sponsor | design": {
    "committed": "999",
@@ -290,6 +388,54 @@
    "identical": false,
    "max": 0.17912991982112667,
    "min": 0.17912979761898054
+  },
+  "requirement | primary | all jointly | excluded": {
+   "committed": 178,
+   "identical": true,
+   "max": 178,
+   "min": 178
+  },
+  "requirement | primary | control effort | excluded": {
+   "committed": 95,
+   "identical": true,
+   "max": 95,
+   "min": 95
+  },
+  "requirement | primary | fleet cost | excluded": {
+   "committed": 57,
+   "identical": true,
+   "max": 57,
+   "min": 57
+  },
+  "requirement | primary | near-frontier": {
+   "committed": 238,
+   "identical": true,
+   "max": 238,
+   "min": 238
+  },
+  "requirement | primary | peak slew power | excluded": {
+   "committed": 108,
+   "identical": true,
+   "max": 108,
+   "min": 108
+  },
+  "requirement | primary | pointing error | excluded": {
+   "committed": 8,
+   "identical": true,
+   "max": 8,
+   "min": 8
+  },
+  "requirement | primary | total mass | excluded": {
+   "committed": 12,
+   "identical": true,
+   "max": 12,
+   "min": 12
+  },
+  "requirement | primary | unit cost | excluded": {
+   "committed": 64,
+   "identical": true,
+   "max": 64,
+   "min": 64
   }
  },
  "seeds": [

@@ -266,16 +266,16 @@ note = "Appendix F.2; RECORD.md: Pins: Node.js v24.22.2 linux-arm64 tarball, sha
 
 [[claim]]
 id = "C031"
-fragment = "In this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
+fragment = "and so would a revised SysML v2 model or attributes measured on a fielded system, because the evaluation is a black box to the method"
 file = "paper/paper.ipynb"
-anchor = "Case construction"
+anchor = "Discussion"
 kind = "M"
 backing = [
   "file:paper/paper.ipynb",
 ]
 status = "backed"
 disposition = "keep"
-source = "WP10, supervisor words of 2026-11-09 (WP10-decisions.md)"
+source = "WP10, supervisor words of 2026-11-09; re-anchored at WP56 second unit (the prose of Sections 7 to 9): the black-box point moved from Section 7 to the Discussion's answer on reuse"
 note = "Section 3 defines the evaluation as a black box to the method (a simulator, a physical test or a human assessment), so the table and the fit do not depend on where the attributes came from."
 
 [[claim]]
@@ -324,24 +324,8 @@ source = "WP11 round 1, CR-1 and CR-3"
 note = "A term of the posynomial is a flat piece of the surface in log space; designs are labelled to it (L16), and are not its members."
 
 [[claim]]
-id = "C039"
-fragment = "The certificate covers this: for a sharp fit, a local minimizer with the cells held fixed ... for a soft fit, a strict local minimizer at a point where the first-order conditions hold exactly"
-file = "paper/paper.ipynb"
-anchor = "Discussion"
-kind = "M"
-backing = [
-  "lemma:L14",
-  "lemma:L17",
-  "glossary:termination-status",
-]
-status = "backed"
-disposition = "keep"
-source = "WP21 D-6, finding A1; WP11 round 2, CR-14"
-note = "The sentence now cites the result for each kind of fit. L14 (Proposition 3 and Corollary 1): for a sharp fit with a positive margin the fixed assignment is a local minimizer of the mean slack. L17: where the first-order conditions hold and the Hessian is positive definite on the tangent space, the point is a strict local minimizer of the soft objective; nothing in it speaks to designs outside the table."
-
-[[claim]]
 id = "C040"
-fragment = "That the fit holds for designs outside the table, or supports a decision, is a third claim the certificate does not make"
+fragment = "that the fit holds for designs outside the table, or supports a decision, is a further claim that needs its own validation"
 file = "paper/paper.ipynb"
 anchor = "Discussion"
 kind = "M"
@@ -351,22 +335,8 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP21 D-6, finding A1"
+source = "WP21 D-6, finding A1; re-anchored at WP56 second unit (the prose of Sections 7 to 9) (the Three claims paragraph left for WP57d; its third claim stays in the limits passage)"
 note = "The certificate is a statement about the objective at the returned point (L17); prediction outside the sample is open question Q3 and the gaps ledger."
-
-[[claim]]
-id = "C041"
-fragment = "a prediction outside the quantity's admissible range is reported as invalid, never clipped"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "P"
-backing = [
-  "reading",
-]
-status = "backed"
-disposition = "keep"
-source = "WP21 D-6, finding A6"
-note = "A rule for the reading, not a measured result: inverting a level into a bounded outcome is the analyst's task; clipping would hide that the model left the quantity's range. The author's practice, from the external assessment's observation of impossible breach fractions."
 
 [[claim]]
 id = "C043"
@@ -978,18 +948,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa"
 
 [[claim]]
-id = "C109"
-fragment = "Our case is a cubesat model coupling power, mass and attitude control."
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "R"
-backing = ["gen:examples/adcs/cubesat_model.py::measure", "test:tests/test_cubesat_model.py::test_measure_returns_attributes_and_flags", "test:tests/test_paper.py::test_the_case_is_described_as_power_mass_and_attitude_control"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Model (cubesat_tradespace.sysml via cubesat_model.measure) has power, mass and attitude attributes and flags; the paper test pins the phrase"
-
-[[claim]]
 id = "C110"
 fragment = "Conditioning orients each attribute, shifts and scales it to unit log-spread and keeps the map invertible and the count: thirteen attributes make thirteen metrics."
 file = "paper/paper.ipynb"
@@ -1008,7 +966,7 @@ note = "default standard scaler gives unit log standard deviation, orientation a
 
 [[claim]]
 id = "C111"
-fragment = "A regressor from configuration to chart coordinates predicts where proposals fall"
+fragment = "A regressor from configuration to chart coordinates predicts where proposals in the white space of the four-metric chart fall"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1020,7 +978,7 @@ note = "a regressor to chart coordinates (case.fit_regressor) predicts positions
 
 [[claim]]
 id = "C112"
-fragment = "The exponents and elasticities are features of the conditioned empirical model"
+fragment = "The exponents and elasticities are features of the conditioned table"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1032,7 +990,7 @@ note = "Elasticity is the derivative along the fitted term (L7.5); glossary not-
 
 [[claim]]
 id = "C113"
-fragment = "they describe how the sampled designs trade, and not a causal exchange that changing a variable would reproduce"
+fragment = "describe how the sampled designs trade and not a causal exchange that changing a variable would reproduce"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1041,18 +999,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Statement of what the quantities do not mean (glossary not-clause), a scope statement; no stronger claim made"
-
-[[claim]]
-id = "C114"
-fragment = "Novelty $V-1$ says how far beyond the fitted reference surface a design lies, not whether anyone wants it."
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L1.6", "lemma:L7.9", "glossary:novelty"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "V-1 as how far beyond the reference surface (V(m/V)=1, uniform improvement 1/V); 'not whether anyone wants it' is the glossary not-clause (not a measure of attainability), scope"
 
 [[claim]]
 id = "C115"
@@ -1067,44 +1013,8 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "The checker ties each tagged step's prose and code to the record and the ledger of hypotheses; that is what 'verification' means here"
 
 [[claim]]
-id = "C116"
-fragment = "gives one line of code to read each proof step against"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_paper.py::test_appendix_b_shows_every_result_of_the_record_with_derived_counts", "test:tests/test_proof_map.py::test_record_holds_every_step_with_tag_prose_and_code"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Appendix B is generated from the record (every step is one tagged line of code, counts derived); tests pin both"
-
-[[claim]]
-id = "C117"
-fragment = "How the attributes were produced is a black box to the method, so the same functions serve a simulator"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "S"
-backing = ["file:work-packages/interface-contract.md", "test:tests/test_case.py::test_a_second_table_runs_without_cubesat_edits"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Contract 'Black box' paragraph: simulator, physical test or human assessment satisfy the same contract and the method depends on the table and signature only"
-
-[[claim]]
-id = "C118"
-fragment = "so the same functions serve a simulator, a physical test campaign or a human assessment"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_case.py::test_a_second_table_runs_without_cubesat_edits"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Test runs a planted second table through load_study, fit_study, tables and k_sweep without cubesat edits; 'same calls' = the case API, not every function"
-
-[[claim]]
 id = "C119"
-fragment = "The fitted reference surface is log-convex."
+fragment = "The fitted reference surface is log-convex"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1116,7 +1026,7 @@ note = "L10.7: exp(kappa Phi_K) is a posynomial in m, so Phi_K is convex in u by
 
 [[claim]]
 id = "C120"
-fragment = "The exponents depend on the conditioning."
+fragment = "they depend on the conditioning, describe how the sampled designs trade"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1125,42 +1035,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Raw-attribute exponents are w_j alpha_j and the offset changes: exponents are tied to the conditioning (L9.5, L9.6 invertible)"
-
-[[claim]]
-id = "C121"
-fragment = "K = 1 finds one trade-off; several regional trade-offs need K > 1."
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L10.9"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "K=1 is one monomial term (L10.9); 'several regional tensions need K>1' follows from K being the number of terms (Definition 3), scope"
-
-[[claim]]
-id = "C122"
-fragment = "as PCA extracts components, is a research question"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "L"
-backing = ["bib:jolliffe2016principal", "file:paper/reading_pass.yaml"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Reading pass row 33 (verdict supported): PCA gives components that successively maximize variance; prior_art id pca. 'is a research question' is the author's scope"
-
-[[claim]]
-id = "C123"
-fragment = "a design with $V=v$ is a design on the fitted reference surface scaled by $v$"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L1.5", "lemma:L1.6"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "V(km)=kV(m) and V(m/V(m))=1 give m = V(m) * (m/V(m)) with m/V on the frontier"
 
 [[claim]]
 id = "C137"
@@ -3873,21 +3747,6 @@ source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
 note = "the docs' one sentence on the position, pointing to Appendix B of the paper (C387)"
 
 [[claim]]
-id = "C391"
-fragment = "within a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest predicted distances to the 300 most isolated points of white space"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "S"
-backing = [
-  "func:examples/adcs/experiments/check_designs.py::Proposer",
-  "test:tests/test_paper.py::test_the_proposers_radius_is_the_stated_rule_of_the_check_designs",
-]
-status = "backed"
-disposition = "keep"
-source = "swap-evidence part 6, finding 4 (the paper's fix-forward)"
-note = "Proposer.draw computes the reach as the REACH_QUANTILE (0.02) quantile of the nearest predicted distances of the HOLES (300) most isolated holes, at run time; the test pins both constants and the sentence, and that no value is typed in it. The values (0.6222 here, 0.351 on the slew-time view) are not printed: no committed record holds them (CR-3 of change-register.md states them)."
-
-[[claim]]
 id = "C393"
 fragment = "too few near-frontier designs for an association reading: {int(n_near)} of ten"
 file = "examples/adcs/case.py"
@@ -4048,7 +3907,7 @@ note = "mean_slack_ is comparable across n_terms at a fixed temperature (estimat
 
 [[claim]]
 id = "C403"
-fragment = "The baseline configuration fails the pointing-error requirement ({base:.4f} against ... which {100 * share:.1f} % of the baseline regime's feasible"
+fragment = "so it fails the pointing-error requirement ... and the unit-cost requirement ... % of ... the baseline regime's feasible designs pass"
 file = "paper/generate_findings.py"
 anchor = "def baseline_requirement_sentence"
 kind = "R"
@@ -4062,7 +3921,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP23 close-out, D-18 (the supervisor: \"Keep 0.0085 deg\"); final round wave 1, change request 8"
+source = "WP23 close-out, D-18; final round wave 1, change request 8; the unit-cost requirement and the configuration added at WP56 second unit (the prose of Sections 7 to 9) (the one configuration carried through the case)"
 note = "the model's PointingError of cubesatBaseline is 0.015535 degree, the limit 0.008495 (budgets.pointingErrorLimit), and the engine verifies `not satisfy`; the baseline regime's pass fraction is read by the generator from case.requirement_mask on the stock regime's feasible designs (0.656 on the data of record, D.17's pass column); the typed 63.7 % was the figure of an earlier record"
 
 [[claim]]
@@ -4097,7 +3956,7 @@ note = "a statement of scope: Proposer fits the regressor on the four-metric vie
 id = "C406"
 fragment = "Fitting first and reading the requirements after is the unconstrained-then-constrained reading of a trade study"
 file = "paper/paper.ipynb"
-anchor = "Discussion"
+anchor = "Case analysis"
 kind = "S"
 backing = [
   "func:examples/adcs/case.py::requirements_table",
@@ -4105,7 +3964,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP23 close-out, D-18: CANDIDATE sentence 1 of 2 for the supervisor's review (the supervisor, 2026-11-10 08:50)"
+source = "WP23 close-out, D-18; moved from the Discussion to Section 8's requirements paragraph at WP56 second unit (the prose of Sections 7 to 9)"
 note = "candidate, pending the supervisor's review; Appendix D.17 prices each requirement at the K = 1 frontier and counts the near-frontier designs it excludes"
 
 [[claim]]
@@ -4142,21 +4001,6 @@ status = "backed"
 disposition = "keep"
 source = "WP11 round 2, CR-14"
 note = "The stopping declaration defines certified for the sharp kind in the termination record's words (Appendix D.8, C148): assignment fixed, residuals and gaps within tolerance, no empty cell, positive margin; the test pins the status with max_gap <= EPS_KKT and zero assignment changes."
-
-[[claim]]
-id = "C409"
-fragment = "For two metrics with identical columns the loss is flat along their swap"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "M"
-backing = [
-  "lemma:L4.12",
-  "lemma:L4",
-]
-status = "backed"
-disposition = "keep"
-source = "WP11 round 2, CR-12"
-note = "L4's second derivative of J_tau along a direction v is (tau/2) sum_i sum_l p_i p_l (s_i - s_l)^2 with s_i = v . u_i (the double sum of L4.10 to L4.12). Along the swap v = e_j - e_j' of two identical columns every s_i is zero, so the curvature is zero: a one-line consequence of the formula, not a tagged step of its own."
 
 [[claim]]
 id = "C410"
@@ -4732,21 +4576,6 @@ source = "WP30 cascade (the launch cost, an MoE that is no longer traded, left t
 note = "The marks of the thirteen traded metrics are read from the model's coverage table (second table of coverage.csv); the launch cost is the derived MoE on the total mass and is not traded."
 
 [[claim]]
-id = "C493"
-fragment = "so each is a lower bound on a full costing. The launch slot (a 50 kg minimum) is not costed ... The fleet cost requirement holds that covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
-file = "paper/paper.ipynb"
-anchor = "Case construction"
-kind = "P"
-backing = [
-  "test:tests/test_paper.py::test_the_body_states_the_marks_the_coverage_and_the_draw",
-  "file:examples/adcs/model_v2/cubesat.sysml",
-]
-status = "backed"
-disposition = "keep"
-source = "WP30-decisions.md, 'Fleet cost limit, final' (the supervisor, 2026-11-11, 10:30) and 'on what the base prices exclude' (10:35)"
-note = "The coverage statement of the model's cost calcs and of FleetCostRequirement (included: bus, attitude-control parts, assembly and test, wholesale launch; excluded: payload and instruments, communications, flight software, testing beyond the line, licensing, ground segment, launch slot minimum, broker fees); fleetCostLimit is 6.0e6 and the doc names the sponsor's full budget of 8,000,000 USD. The test reads both from the model file."
-
-[[claim]]
 id = "C494"
 fragment = "The designs are drawn at random, {thousands(n)} per"
 file = "paper/generate_findings.py"
@@ -4764,7 +4593,7 @@ note = "Section 8: the count is len(study.raw), the experiments' SAMPLE_PER_REGI
 
 [[claim]]
 id = "C495"
-fragment = "the fleet size, a count that is no part, so ... does not draw it. The fleet size is drawn from 1 to 30"
+fragment = "It also sets the fleet size n, a count that is no part, so ... does not draw it. The fleet size is drawn from 1 to 30"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "S"
@@ -4810,20 +4639,20 @@ note = "What the model file contains and does not: no schedule, qualification, f
 
 [[claim]]
 id = "C498"
-fragment = "The model states thirteen requirements, one for each traded metric. Four are the feasibility conditions, which remove designs that do not settle, saturate the momentum budget, run short of power or discharge the battery too deeply. Six are read after the fit: four thresholds (peak slew power, pointing error, control effort and the launch budget, read as a limit on total mass at 7,000 USD per kilogram) ... and two limits (unit cost, fleet cost)"
+fragment = "The SysML v2 model states thirteen requirements, one for each traded metric, and the case applies them in the order of ... Four feasibility conditions remove the designs that do not settle, saturate the momentum budget, run short of power or discharge the battery too deeply; six requirements are read after the fit; three filter nothing"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "R"
 backing = [
   "test:tests/test_case.py::test_requirements_are_the_models_budgets",
-  "test:tests/test_case.py::test_requirements_table_prices_each_requirement_as_spike_b",
-  "gen:paper/generate_results.py::requirements_at_the_frontier",
+  "gen:paper/generate_findings.py::requirement_order_table",
   "file:examples/adcs/model_v2/cubesat.sysml",
   "test:tests/test_paper.py::test_the_model_states_thirteen_requirements_four_of_them_the_feasibility_conditions",
+  "test:tests/test_paper.py::test_the_requirement_order_table_is_the_models_marks_in_the_cases_order",
 ]
 status = "backed"
 disposition = "narrow"
-source = "WP30-decisions.md, 'No floating requirements' (the supervisor, 2026-11-11, 12:00), applied to the two cost requirements"
+source = "WP30 'No floating requirements'; rewritten at WP56 second unit (the prose of Sections 7 to 9) around the requirement-order table (Table 2)"
 note = "narrowed from 'four threshold requirements': the unit cost limit (350,000 USD) and the fleet cost limit (6,000,000 USD) are budgets in the model and are now read after the fit with the four (D.17); the body no longer leaves them out"
 
 [[claim]]
@@ -4842,27 +4671,10 @@ source = "WP30-decisions.md, 'No floating requirements'; the supervisor's 'no si
 note = "on both datasets' feasible designs, the fleet-size-one rows all exceed 350,000 USD per satellite; the pass fractions 0.762 and 0.758 (unit cost), 0.714 and 0.710 (fleet cost) are the table's"
 
 [[claim]]
-id = "C500"
-fragment = "whose limits are illustrative values chosen from a ladder of candidates by the share of designs each admits, not a mission's"
-file = "paper/paper.ipynb"
-anchor = "Case construction"
-kind = "S"
-backing = [
-  "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
-  "test:tests/test_case.py::test_requirements_are_the_models_budgets",
-  "file:examples/adcs/model_v2/cubesat.sysml",
-  "file:work-packages/WP23-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "P7 final read N-F5; the triage of 2026-11-12 (WP30-rounds/persona-final/triage.md)"
-note = "The model's Budgets docs give the four thresholds as rungs of the data's ladder of pass fractions; C.8 says none is flowed down from a mission. The two cost limits are budgets and are named separately in the same sentence."
-
-[[claim]]
 id = "C501"
 fragment = "the case has no schedule, no payload and a flat launch price"
 file = "paper/paper.ipynb"
-anchor = "Case construction"
+anchor = "Discussion"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
@@ -4870,7 +4682,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "P8 final read F7; the triage of 2026-11-12"
+source = "P8 final read F7; moved to the limits passage of the Discussion at WP56 second unit (the prose of Sections 7 to 9)"
 note = "No attribute, calc or requirement of the model is a schedule or a payload (the C.8 test asserts none is named in the file); the launch cost is 7,000 USD per kilogram with the slot minimum noted and not modelled."
 
 [[claim]]
@@ -5550,253 +5362,6 @@ source = "WP35 wording unit"
 note = "The four conditions are printed as counts of the six tables of a cell, from RATES and the record's n (a share of 0.9 of six tables is 6 of 6, 0.1 is 0 of 6, 0.2 is 1 of 6); fix FW-6 and FW-7."
 
 [[claim]]
-id = "C596"
-fragment = "The requirements and the fits ... cut {thousands(_count(d, 'feasible'))} feasible designs to"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 2,134: the feasible designs of the primary regime (the 3,000 evaluated less the infeasible)."
-
-[[claim]]
-id = "C597"
-fragment = "feasible designs to {_count(d, 'working')} that ... pass all six requirements and lie in the near-frontier band of both fits, the simpler"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 28: the feasible designs that pass the six requirements (D.17's joint pass) and lie within the K = 1 band at both the K = 1 and the K = 2 fit (the paper's convention, the K = 1 band at every K)."
-
-[[claim]]
-id = "C598"
-fragment = "which brings the pointing error from ... about {held('sponsor', 'pointing_error_deg', one)} to"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. About 0.003 degree, one significant digit: the sponsor-alone design's pointing error is 0.00295 degree; the medium tracker grade spans 0.0028 to 0.0036 on the shortlist."
-
-[[claim]]
-id = "C599"
-fragment = "{held('fine', 'pointing_error_deg', one)} degree, is worth about"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 0.0008 degree, one significant digit: the cheapest fine-tracker design's pointing error is 0.00080 degree; the fine grade spans 0.00074 to 0.00080 on the shortlist."
-
-[[claim]]
-id = "C600"
-fragment = "{_held('fine tracker | extra fleet cost', _tracker_cost(d), lambda v: f'{v / 1e6:.2f}')}"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. About 0.56 M USD: the fleet cost of the cheapest fine-tracker design (1,686,142 USD) less that of the cheapest design of the shortlist (1,127,465 USD), 558,677 USD, to 0.01 M USD."
-
-[[claim]]
-id = "C601"
-fragment = "M USD of a {d.fleet_budget / 1e6:g} M USD fleet cost limit."
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "6 M USD: the fleet cost limit of the six requirements, read from the specification (spec.cost_requirements), not typed."
-
-[[claim]]
-id = "C602"
-fragment = "the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "5: the fleet size of the minimax-regret design between the sponsor alone and the operator alone (design 1858, medium wheel, fine tracker); the generator asserts that it takes the fine tracker and the sponsor's design does not."
-
-[[claim]]
-id = "C603"
-fragment = "satellites at ... {held('between', 'fleet_cost_usd', _musd)} M USD"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 1.69 M USD: 1,686,142 USD, the fleet cost of that design, to 0.01 M USD."
-
-[[claim]]
-id = "C604"
-fragment = "{held('between', 'fleet_cost_usd', _musd)} M USD ... ({held('between', 'unit_cost_usd', _thousand_usd)} USD each)"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 337,000 USD: 337,228 USD, its unit cost, to the nearest 1,000 USD."
-
-[[claim]]
-id = "C605"
-fragment = "is the one whose larger shortfall on the two measures, each scaled from its best to its ... worst of the {_count(d, 'working')}, is smallest, among the ... {_count(d, 'nondominated_working')} that no other beats on both"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 5: the designs of the shortlist that no other design of it beats on both pointing error and fleet cost (190, 766, 999, 1858, 2950); the test pins the set."
-
-[[claim]]
-id = "C606"
-fragment = "if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at"
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "4: the fleet size of the sponsor-alone design (999, small wheel, medium tracker), the smallest fleet cost on the shortlist."
-
-[[claim]]
-id = "C607"
-fragment = "{held('sponsor', 'fleet_cost_usd', _musd)} M USD is the cheapest fleet."
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 1.13 M USD: 1,127,465 USD, the smallest fleet cost on the shortlist, to 0.01 M USD."
-
-[[claim]]
-id = "C608"
-fragment = "question and does not answer it; the numbers are nominal ({_C8})."
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The case's numbers are illustrative: Appendix C.8 states that the model is a demonstration, its part prices are listings and the fleet pricing curve's shares and slopes are choices; the generator's link goes to sub-c-8 (test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values)."
-
-[[claim]]
 id = "C609"
 fragment = "all {_count(d, 'six_pass')} designs that pass"
 file = "paper/generate_findings.py"
@@ -5902,25 +5467,6 @@ source = "WP39 notebook unit"
 note = "Exact on the data of record (the baseline regime's counts are not among the stability entries; the committed output equals the generator's, checked by the test). 19 of those lie within the K = 1 band at both fits."
 
 [[claim]]
-id = "C615"
-fragment = "held(k, \"pointing_error_deg\", r, lambda v: f\"{v:.5f}\"), held(k, \"unit_cost_usd\", r, lambda v: f\"{v:,.0f}\"), held(k, \"fleet_cost_usd\", r, lambda v: f\"{v:,.0f}\"), f\"{r['log V K=2']:+.3f}\""
-file = "paper/generate_findings.py"
-anchor = "def decision_table"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_table",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "Section 9's six-row table: every cell is the generator's value for the named design (exact: pointing error to five decimals, costs in USD, level log V at K = 2 to three); the baseline row is the model's baseline configuration, scored by the K = 2 fit; the test pins the 1,686,142, 337,228 and 0.00080 of the between-them row and the six row names."
-
-[[claim]]
 id = "C616"
 fragment = "int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.6f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r['log V K=2']:+.4f}\", f\"{r['log V K=1']:+.4f}\", f\"{r['term 1 level']:+.4f}\", f\"{r['term 2 level']:+.4f}\", _marks(r))"
 file = "paper/generate_findings.py"
@@ -5952,20 +5498,6 @@ status = "backed"
 disposition = "keep"
 source = "WP39 notebook unit"
 note = "The model's baseline configuration has a pointing error of 0.0155 degree against the 0.008495 limit and a unit cost of 461,360 USD against the 350,000 limit (the test)."
-
-[[claim]]
-id = "C618"
-fragment = "The method does not tell the schedule or the risk, what to buy beyond the modelled parts, or what a larger fleet is worth."
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "P"
-backing = [
-  "reading",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "Scope of the case, from Appendix C.8: the model has no schedule or qualification, no fault tolerance and a cost that is a lower bound on a full costing, and it prices the fleet size (the unit cost falls and the fleet cost rises with it) without valuing it; the sentence is the author's statement of what the method leaves to the executives."
 
 [[claim]]
 id = "C619"
@@ -6014,7 +5546,7 @@ note = "The generator scales each measure to 0 to 1 over the shortlist and takes
 
 [[claim]]
 id = "C624"
-fragment = "conditioned metrics (their logs after the standard scaler); Theorem 7 gives the rates in ... the attributes' own units, where the rate between two metrics is multiplied by ... alpha_i/alpha_j, the ratio of their conditioning exponents."
+fragment = "In the attributes' own units {THEOREM_PULL_BACK} multiplies each rate by"
 file = "paper/generate_findings.py"
 anchor = "def elasticity_sentence"
 kind = "M"
@@ -6023,21 +5555,6 @@ status = "backed"
 disposition = "keep"
 source = "final round wave 1, change request 29"
 note = "L7: the elasticity of the conditioned metrics along a term is -w_i/w_j; L9: V = e^(w.b - beta) prod_j (a_j + s_j)^(w_j alpha_j), so the exponents on the raw attributes are w_j alpha_j and the rates in raw units follow."
-
-[[claim]]
-id = "C625"
-fragment = "The fleets differ in {_and(differs)}, so that cost is theirs, not the tracker's."
-file = "paper/generate_findings.py"
-anchor = "def decision_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_sentence",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-]
-status = "backed"
-disposition = "keep"
-source = "final round wave 1, change request 30"
-note = "The generator lists the columns in which the sponsor's cheapest fleet and the cheapest fine-tracker fleet differ (wheel class, tracker grade, fleet size) and asserts that the tracker grade is one; the 0.56 M USD is the difference of their fleet costs."
 
 [[claim]]
 id = "C626"
@@ -6197,18 +5714,19 @@ note = "leading_direction reads case._reports(study, fit1)[0], the tension repor
 
 [[claim]]
 id = "C637"
-fragment = "the levels of the five designs they pick, all inside the near-frontier band that the shortlist uses, do not rank them; the baseline's level is outside it"
+fragment = "The picks' levels lie inside the near-frontier band that the shortlist uses and do not rank them; the baseline's level is outside it"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::decision",
   "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_executive_table_caption_band_claim_holds_of_the_picks_and_not_the_baseline",
 ]
 status = "backed"
 disposition = "keep"
 source = "final round, second paper unit, change requests 32 to 92"
-note = "Every named design is asserted to lie in the shortlist, which is inside the K = 1 band of both fits (D.19)."
+note = "Every named design is asserted to lie in the shortlist, which is inside the K = 1 band of both fits (D.19); the test checks the four picks of Table 3 and the baseline."
 
 [[claim]]
 id = "C638"
@@ -6476,18 +5994,19 @@ note = "L13: the stable radius r = gamma / (2 max_i ||(u_i, -1)||) is the parame
 
 [[claim]]
 id = "C674"
-fragment = "The model states three more, the battery peak power ratio, the power margin and the energy balance, which the case neither filters on nor prices: every feasible design of both regimes meets them."
-file = "paper/paper.ipynb"
-anchor = "Case construction"
+fragment = "order, stage = 2, \"3. met by every feasible design\""
+file = "paper/generate_findings.py"
+anchor = "def requirement_order_table"
 kind = "R"
 backing = [
   "file:examples/adcs/model_v2/cubesat.sysml",
-  "gen:paper/generate_results.py::requirements_at_the_frontier",
+  "gen:paper/generate_findings.py::requirement_order_table",
   "test:tests/test_paper.py::test_the_three_requirements_neither_filtered_nor_priced_hold_for_every_feasible_design",
+  "test:tests/test_paper.py::test_the_requirement_order_table_is_the_models_marks_in_the_cases_order",
 ]
 status = "backed"
 disposition = "keep"
-source = "final round, third paper unit, change request 166"
+source = "final round, third paper unit, change request 166; the sentence became Table 2's third stage at WP56 second unit (the prose of Sections 7 to 9) (the generator asserts the three bounds on both regimes)"
 note = "BatteryPeakPowerRequirement (ratio at least 1), PowerMarginRequirement and EnergyBalanceRequirement (not negative) are stated in cubesat.sysml; the case's flags are settled, power_ok, momentum_ok and dod_ok; on the feasible designs the ratio's minimum is 1.46, the margin's 6.5 W and the balance's 0.95 W h in both regimes."
 
 [[claim]]
@@ -9630,3 +9149,254 @@ status = "backed"
 disposition = "keep"
 source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
 note = "The K = 1 fit of case.fleet_ternary_study (fleet cost, unit cost, coverage probability; coverage probability defined in examples/adcs/model_v2/stakeholders.sysml, CoverageProbability)."
+
+[[claim]]
+id = "C972"
+fragment = "Its precedent is the CubeSat design problem among the applications of OpenMDAO [@gray2019openmdao], which couples attitude, solar power, energy storage and communication to maximize the data downloaded"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "L"
+backing = [
+  "bib:gray2019openmdao",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "Read in the MDO Lab preprint of Gray et al. (2019), Section 7 'Applications' and Table 13: 'a satellite MDO problem that maximized the data downloaded', disciplines orbit dynamics, attitude dynamics, cell illumination, temperature, solar power, energy storage and communication; its code is github.com/OpenMDAO/CADRE (Section 8). The read is recorded in work-packages/WP56-review.md (the WP10 reading pass is a closed record)."
+
+[[claim]]
+id = "C973"
+fragment = "The case is a fleet of identical 12U-class cubesats whose power, mass and attitude control are coupled, described by a SysML v2 system model in the repository"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/cubesat.sysml",
+  "test:tests/test_fleet_coverage.py::test_coverage_column_on_the_data_of_record",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "cubesat.sysml's header: the illustrative 12U-class cubesat, the coupling check of WP23 round 2 (the pack mass, inertia and usable torque exchanged among power, mass and the slew), the cost model of a fleet of identical satellites."
+
+[[claim]]
+id = "C974"
+fragment = "A fourth MoE, the fleet's coverage probability, is derived from the fleet size and the pointing error and is not traded"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/stakeholders.sysml",
+  "test:tests/test_fleet_coverage.py::test_coverage_column_on_the_data_of_record",
+  "test:tests/test_paper.py::test_the_body_states_the_marks_the_coverage_and_the_draw",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "CoverageProbability (stakeholders.sysml, section 5) is marked MoE in its doc and reads fleetSize and PointingError; the column is not in the data of record (the test asserts it) and not among the thirteen traded metrics."
+
+[[claim]]
+id = "C975"
+fragment = "Each configuration is evaluated by the case's oracle: the slew is integrated in Python, and every other attribute and the four feasibility verdicts are computed by the SysML v2 model's calcs and requirements"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "func:examples/adcs/experiments/cubesat_oracle.py::CubesatOracle",
+  "test:tests/test_cubesat_oracle.py::test_the_flags_come_from_the_requirements_not_from_python",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "The oracle's docstring: measure (adcs_sim integrates the slew), account (the model's SlewExperiment, UnitCostExperiment and FleetCostExperiment), feasibility (the four flags are the model's requirements' verdicts)."
+
+[[claim]]
+id = "C976"
+fragment = "A metric's unit is worth most on a term where its exponent over its conditioned value at the balanced point is largest, which orders the rows of"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "func:examples/adcs/case.py::tension_order",
+  "test:tests/test_fleet_coverage.py::test_tension_order_puts_every_upper_cell_at_one_or_more",
+  "lemma:L21",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "tension_order sorts by s_i = w_i / m_i at the balanced point (|T[i, j]| = s_i / s_j, L21); the figure is drawn with order='tension'."
+
+[[claim]]
+id = "C977"
+fragment = "fleet cost is unit cost times fleet size, so the sponsor's objective rides on the manufacturer's and the fleet size, and the fit names the dilemma between fleet cost and coverage probability, with unit cost nearly flat"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::fleet_refit_sentence",
+  "test:tests/test_fleet_coverage.py::test_coverage_column_on_the_data_of_record",
+  "test:tests/test_paper.py::test_the_fleet_refit_sentence_reads_the_identity_and_both_fits",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "UnitCost(c) = FleetCost(c) / fleetSize in cubesat.sysml; on the 2,134 feasible rows the ratio is one to 6e-9; the one-term exponents 0.39, 0.006, 0.61 (the caption's), the two-term fit puts 0.000 on unit cost in both terms."
+
+[[claim]]
+id = "C978"
+fragment = "on unit cost in both, so both terms lie ... on the one-term fit's edge."
+file = "paper/generate_findings.py"
+anchor = "def fleet_refit_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::fleet_refit_sentence",
+  "test:tests/test_paper.py::test_the_fleet_refit_sentence_reads_the_identity_and_both_fits",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "The generator asserts the identity on every row and unit cost's exponent below 0.01 in every term before it prints; values as in WP56-rounds/figures/ternary-values.txt."
+
+[[claim]]
+id = "C979"
+fragment = "On it the manufacturer and the operator pick the same fleet:"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "Design 2356 (25 satellites) is both the least unit cost and the largest coverage probability of the 28-design shortlist; the generator asserts it (premise) and the perturbation test shows it raising when a fleet-cost cap parts them; values through the stability entries (none moved)."
+
+[[claim]]
+id = "C980"
+fragment = "has the smallest larger ... shortfall on the two, each scaled from its best to its worst on the shortlist."
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "Minimax regret on fleet cost and coverage probability, each scaled by its range on the shortlist: design 893 (10 satellites, 2.88 M USD, 0.76), one of the 17 nondominated on the two."
+
+[[claim]]
+id = "C981"
+fragment = "(\"operator: largest coverage probability\", \"coverage\", p[\"coverage\"]),"
+file = "paper/generate_findings.py"
+anchor = "def decision_table"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_table",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "Table 3: the baseline and the four rules of the three-stakeholder mapping, each cell the generator's value (costs in USD, coverage to three decimals, level log V at K = 2)."
+
+[[claim]]
+id = "C982"
+fragment = "f\"Applied after the K = 1 fit as constraints on the solution space, the six requirements \""
+file = "paper/generate_findings.py"
+anchor = "def requirements_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::requirements_sentence",
+  "func:examples/adcs/case.py::requirements_table",
+  "test:tests/test_paper.py::test_the_requirements_sentence_is_d17s_exclusions",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "The near-frontier exclusions of D.17's table (178 of 238 jointly; 108, 95, 64, 57, 12, 8 one at a time), printed through the stability entries 'requirement | primary | ...' (none moved)."
+
+[[claim]]
+id = "C983"
+fragment = "so it is drawn \" ... f\"in that term's tension matrix without being in its contending set."
+file = "paper/generate_findings.py"
+anchor = "def terms_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::terms_sentence",
+  "test:tests/test_paper.py::test_the_terms_and_elasticity_sentences_agree_with_the_tension_figure",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "Term 2: total mass carries 0.006 above the participation threshold and is not in the exact-maximum support (7 metrics), so the figure's panel draws 8."
+
+[[claim]]
+id = "C984"
+fragment = "The tension matrix states the same trade per unit of the conditioned metrics at \" ... f\"the term's balanced point, not per percent, so its cell for the pair reads"
+file = "paper/generate_findings.py"
+anchor = "def elasticity_sentence"
+kind = "M"
+backing = [
+  "lemma:L21",
+  "lemma:L7",
+  "test:tests/test_paper.py::test_the_terms_and_elasticity_sentences_agree_with_the_tension_figure",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "L7: the elasticity of conditioned metrics along a term is -w_i/w_j (per percent); L21: the tension is -(w_i/m_i)/(w_j/m_j) at the balanced point (per unit). Unit cost and available power on term 2: -0.9 and -2.8."
+
+[[claim]]
+id = "C985"
+fragment = "it was traced to the SysML v2 model's definition of the fleet cost and checked on every row of the data"
+file = "paper/paper.ipynb"
+anchor = "Discussion"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::fleet_refit_sentence",
+  "test:tests/test_fleet_coverage.py::test_coverage_column_on_the_data_of_record",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "UnitCost = FleetCost / fleetSize in the model; the test and the generator check the ratio on every feasible row."
+
+[[claim]]
+id = "C986"
+fragment = "the coverage probability's two constants are mission assumptions the operator supplies"
+file = "paper/paper.ipynb"
+anchor = "Discussion"
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/stakeholders.sysml",
+  "test:tests/test_fleet_coverage.py::test_coverage_probability_reads_as_its_definition",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "CoverageAssumptions' doc: 'mission assumptions the data of record do not carry; the operator supplies them for a real mission'."
+
+[[claim]]
+id = "C987"
+fragment = "outside the environment of record values differ in the last digits"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "file:paper/container/README.md",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 second unit (the prose of Sections 7 to 9)"
+note = "Appendix F.2's container paragraph: byte for byte inside the pinned image, last digits elsewhere; the decision's test compares exactly only in the environment of record."

@@ -12,7 +12,7 @@ import dataclasses
 import case
 import numpy as np
 import pandas as pd
-from paper_common import Md, appendix_link, md_table, thousands
+from paper_common import Md, MdMath, appendix_link, md_table, thousands
 from paper_stability import cell, entry, stable, summary
 
 from hyperbolic_trade_space.estimator import PARTICIPATION_THRESHOLD
@@ -142,24 +142,169 @@ def datasets_sentence(primary, stock) -> Md:
 
 
 def baseline_requirement_sentence(stock) -> Md:
-    """The baseline configuration against the pointing-error requirement, and the share of the
-    baseline regime's feasible designs that pass it.
+    """The baseline configuration of the SysML v2 model, the one configuration Sections 7 and 8
+    carry from the evaluation to the decision's table: its design variables, the two attributes it
+    fails a requirement on, and the share of the baseline regime's feasible designs that pass each
+    of the two.
 
-    The limit and the baseline's pointing error are the case specification's; the share is
-    ``case.requirement_mask`` on the stock regime's feasible designs, the same mask that
-    ``case.requirements_table`` reads (Appendix D.17's pass column).
+    The configuration and its attributes are the case specification's
+    (``case.CUBESAT.baseline_configuration``, the model's ``cubesatBaseline`` as the oracle
+    measures it); the limits are the requirements'; the shares are ``case.requirement_mask`` on
+    the stock regime's feasible designs, the mask ``case.requirements_table`` reads (Appendix
+    D.17's pass column).
     """
     spec = stock.spec
-    limit = spec.requirements["pointing_error_deg"][0]
-    base = float(spec.baseline_configuration["pointing_error_deg"])
-    assert base > limit, "premise of the sentence: the baseline fails the requirement"
-    share = float(
-        case.requirement_mask(stock.feasible, spec, only="pointing_error_deg", costs=True).mean()
-    )
+    b = spec.baseline_configuration
+    pe_limit = spec.requirements["pointing_error_deg"][0]
+    uc_limit = spec.cost_requirements["unit_cost_usd"][0]
+    assert b["pointing_error_deg"] > pe_limit and b["unit_cost_usd"] > uc_limit, "premise"
+    assert int(b["fleet_size"]) == 1, "premise of 'a fleet of one'"
+    share = {
+        a: float(case.requirement_mask(stock.feasible, spec, only=a, costs=True).mean())
+        for a in ("pointing_error_deg", "unit_cost_usd")
+    }
     return Md(
-        f"The baseline configuration fails the pointing-error requirement ({base:.4f} against "
-        f"{limit:.4f} degree), which {100 * share:.1f} % of the baseline regime's feasible "
-        f"designs pass."
+        f"The SysML v2 model's baseline configuration, the first row of the decision's table, is "
+        f"a fleet of one with a {b['wheel_class']} wheel, a "
+        f"{b['st_grade']} tracker, a panel span of {b['panel_span_m']:g} m, "
+        f"{_a(int(b['battery_wh']))} {b['battery_wh']:g} Wh battery and gains "
+        f"Kp = {b['Kp']:g} and Kd = {b['Kd']:g}. "
+        f"Evaluated, its pointing error is {b['pointing_error_deg']:.4f} degree and its unit cost "
+        f"{b['unit_cost_usd']:,.0f} USD, so it fails the pointing-error requirement "
+        f"({pe_limit:.4f} degree) and the unit-cost requirement ({uc_limit:,.0f} USD), which "
+        f"{100 * share['pointing_error_deg']:.1f} % and {100 * share['unit_cost_usd']:.1f} % of "
+        f"the baseline regime's feasible designs pass."
+    )
+
+
+FEASIBILITY_REQUIREMENTS = {
+    "settled": "SettledRequirement",
+    "momentum_ok": "MomentumRequirement",
+    "power_ok": "PowerRequirement",
+    "dod_ok": "DepthOfDischargeRequirement",
+}
+"""The feasibility flags of the data (``case.CUBESAT.flags``) and the requirement of the SysML v2
+model each one is the verdict of (``cubesat.sysml``, section 5; the oracle sets each flag from its
+requirement, ``tests/test_cubesat_oracle.py``)."""
+
+HOLDS_EVERYWHERE = {
+    "power_margin_w": 0.0,
+    "energy_balance_wh": 0.0,
+    "battery_peak_power_ratio": 1.0,
+}
+"""The three requirements that filter nothing, as attribute >= bound (``cubesat.sysml``:
+PowerMarginRequirement, EnergyBalanceRequirement, BatteryPeakPowerRequirement)."""
+
+
+def _model_marks() -> list[tuple[str, str, str]]:
+    """(metric, MoE or MoP, requirement) per traded metric, in the model's order, read from the
+    coverage table the model generates (``examples/adcs/model_v2/views/coverage.csv``)."""
+    import csv
+
+    from paper_paths import ROOT
+
+    path = ROOT / "examples" / "adcs" / "model_v2" / "views" / "coverage.csv"
+    with path.open(encoding="utf-8") as f:
+        return [(r[1], r[2], r[5]) for r in csv.reader(f) if r and r[0] == "metrics"]
+
+
+def requirement_order_table(primary, stock) -> Md:
+    """Section 7's one table: each traded metric of the SysML v2 model with its mark (MoE or MoP),
+    the requirement that reads it and where the case applies that requirement, and the operator's
+    coverage probability, the derived measure of the decision.
+
+    The stage is read from the case specification: a feasibility flag removes designs before the
+    fit; the four thresholds and the two cost limits are read after it; the other three filter
+    nothing, which is asserted on the feasible designs of both regimes.
+    """
+    spec = primary.spec
+    by_req = {v: k for k, v in FEASIBILITY_REQUIREMENTS.items()}
+    after = spec.requirements | spec.cost_requirements
+    for st in (primary, stock):
+        for a, bound in HOLDS_EVERYWHERE.items():
+            assert (st.feasible[a] >= bound).all(), (st.regime, a)
+    column = {spec.short[a]: a for a in spec.attributes}
+    rows = []
+    for metric, mark, req in _model_marks():
+        a = column[metric]
+        if req in by_req:
+            order, stage = 0, "1. feasibility condition, before the fit"
+        elif a in after:
+            limit, unit = after[a]
+            shown = f"{limit:,.0f} {unit}" if limit >= 1e5 else f"{limit:.4g} {unit}"
+            shown = f"at most {shown}"
+            if a == "total_mass_kg":
+                shown = (f"launch cost at most {limit * case.LAUNCH_USD_PER_KG:,.0f} USD "
+                         f"({case.LAUNCH_USD_PER_KG:,.0f} USD per kg of total mass)")  # fmt: skip
+            order, stage = 1, f"2. after the fit: {shown}"
+        else:
+            order, stage = 2, "3. met by every feasible design"
+        rows.append((order, (metric, mark, req.removesuffix("Requirement"), stage)))
+    rows = [r for _, r in sorted(rows, key=lambda x: x[0])]
+    rows.append(("coverage probability (derived)", "MoE", "none",
+                 "the operator's objective in the decision"))  # fmt: skip
+    return Md(md_table(["metric", "measure", "requirement", "applied"], rows))
+
+
+def requirements_sentence(study, fit) -> Md:
+    """The six requirements read after the K = 1 fit as constraints: how many of its near-frontier
+    designs each excludes, and all six jointly (``case.requirements_table``, Appendix D.17).
+
+    The counts are printed through the stability entries ``requirement | primary | ...``
+    (``stability_extra.py``).
+    """
+    t = case.requirements_table(study, fit)
+    one = t[t["requirement"] != "all jointly"].copy()
+    one["n"] = [int(x.split(" of ")[0]) for x in one["near-frontier excluded"]]
+    one = one.sort_values("n", ascending=False, kind="stable")
+    joint = t[t["requirement"] == "all jointly"].iloc[0]
+    n_near = int(joint["near-frontier excluded"].split(" of ")[1])
+    n_joint = int(joint["near-frontier excluded"].split(" of ")[0])
+    count = lambda name, v: _held_q(f"requirement | primary | {name} | excluded", v)  # noqa: E731
+    parts = _and(f"{r.requirement} {count(r.requirement, r.n)}" for r in one.itertuples())
+    return Md(
+        f"Applied after the K = 1 fit as constraints on the solution space, the six requirements "
+        f"exclude "
+        f"{count('all jointly', n_joint)} of its "
+        f"{_held_q('requirement | primary | near-frontier', n_near)} near-frontier designs "
+        f"jointly; one at a time: {parts} ({_D17})."
+    )
+
+
+def _held_q(name: str, value: int) -> str:
+    """A count printed through its stability entry (``stability_extra.json``): exact where it held
+    over the five regenerations, else the range that held."""
+    e = entry(name)
+    if e is None:
+        raise KeyError(f"{name!r} is not in the stability results")
+    shown = cell(name, value, lambda v: str(round(v)))
+    return shown if isinstance(shown, str) else str(value)
+
+
+def fleet_refit_sentence() -> Md:
+    """The fleet ternary's three objectives: the accounting identity and the refit at two terms
+    (``case.fleet_ternary_study``, the fit of ``case.fit_study``), printed beside the call; the
+    one-term exponents are the figure caption's and are asserted here, not printed again.
+
+    The identity is checked on every feasible row (``tests/test_fleet_coverage.py``).
+    """
+    st = case.fleet_ternary_study()
+    f = st.feasible
+    ratio = (f["fleet_cost_usd"] / (f["unit_cost_usd"] * f["fleet_size"])).to_numpy()
+    dev = float(np.max(np.abs(ratio - 1.0)))
+    assert dev < 1e-7, "premise: fleet cost is unit cost times fleet size on every row"
+    w1 = np.atleast_2d(case.fit_study(st, 1).estimator.exponents_)[0]
+    w2 = np.atleast_2d(case.fit_study(st, 2).estimator.exponents_)
+    names = list(st.names)
+    fc, uc, cp = (names.index(n) for n in ("fleet cost", "unit cost", "coverage probability"))
+    assert max(w1[uc], *w2[:, uc]) < 0.01, "premise: unit cost nearly flat in every term"
+    assert w1[cp] > w1[fc] > w1[uc], "premise: the one-term fit on the fleet cost to coverage edge"
+    terms = _and(f"{w[fc]:.2f} and {w[cp]:.2f} in term {k + 1}" for k, w in enumerate(w2))
+    return Md(
+        f"On all {thousands(len(f))} feasible designs fleet cost over unit cost times fleet size "
+        f"is one to within {dev:.0e}. The two-term refit puts on fleet cost and coverage "
+        f"probability {terms}, and {max(w2[:, uc]):.3f} on unit cost in both, so both terms lie "
+        f"on the one-term fit's edge."
     )
 
 
@@ -295,7 +440,6 @@ def temperature_sentence(study, fit) -> Md:
         if _target_variants_keep_the_set(study)
         else "changes with the target fraction halved or doubled"
     )
-    scaler = _scaler_variant_sentence(study)
     return Md(
         f"The fit temperature is tau = {fit.tau:.1f}: a fraction {frac} of "
         f"designs lies above V = 1 (the target is {study.spec.target_frac:.2f}), the band "
@@ -304,7 +448,19 @@ def temperature_sentence(study, fit) -> Md:
         f"of the designs in the fit: the designs the soft maximum weighs as if equally, so the "
         f"exponents at the fit temperature rest on about that many of the "
         f"{thousands(len(study.M))} "
-        f"designs. The contending set {holds} ({_D5}).{scaler} The exponents' stability under "
+        f"designs. The contending set {holds} ({_D5})."
+    )
+
+
+def temperature_variants_sentence(study) -> Md:
+    """What the robust scaler does to the K = 1 contending set, and what is not assessed at K = 1
+    (Appendix D.5's scaler row; the movement of an exponent vector is D.15's, at K = 2).
+
+    Left Section 7 at WP56 (``work-packages/WP56-rounds/moved-to-appendix.md``, target D.5).
+    """
+    scaler = _scaler_variant_sentence(study).strip()
+    return Md(
+        f"{scaler} The exponents' stability under "
         f"resampling of the rows is not assessed at K = 1: the movement of an exponent vector is "
         f"read from K = 2 ({_D15})."
     )
@@ -394,11 +550,13 @@ def terms_sentence(study, fits) -> Md:
     new = sorted(union - k1)
     leads = [x.split(", ")[0].rsplit(" ", 1)[0] for x in ft["largest exponents"]]
     led = [m for m in new if m in leads]
-    verb = (
-        f"leads term {int(ft['term'].iloc[leads.index(led[0])])}"
-        if len(led) == 1
-        else "each lead a term of their own"
-    )
+
+    def lead(m):  # "carries term k's largest exponent (w)", the exponent at the digits that held
+        k = int(ft["term"].iloc[leads.index(m)])
+        w = stable(f"D exponents K={K} | {study.regime} | {m} | term {k}", lambda v: f"{v:.2f}")
+        return f"carries the largest exponent of term {k} ({w})"
+
+    verb = lead(led[0]) if len(led) == 1 else "each lead a term of their own"
     if not new:
         absent = "none is absent from the K = 1 set"
     elif led == new:
@@ -414,9 +572,22 @@ def terms_sentence(study, fits) -> Md:
     ]  # ``_5`` is the near-frontier count (pandas names the columns with spaces by position)
     shares = _and(f"{v:.2f}" for v in ft["share"])
     terms = _and(int(k) for k in ft["term"])
+    W = np.atleast_2d(fits[K].estimator.exponents_)
+    extra = ""
+    for k, members in zip(ft["term"], sets, strict=True):
+        for j in np.flatnonzero(W[int(k) - 1] > PARTICIPATION_THRESHOLD):
+            m = study.names[j]
+            if m in members:
+                continue
+            w = stable(f"D exponents K={K} | {study.regime} | {m} | term {int(k)}",
+                       lambda v: f"{v:.2g}")  # fmt: skip
+            extra += (
+                f" At the fit temperature {m} also carries {w} on term {int(k)}, so it is drawn "
+                f"in that term's tension matrix without being in its contending set."
+            )
     return Md(
         f"The K = {K} terms have contending sets (exact-maximum supports) of "
-        f"{_and(ft['n_lemma'])} metrics; {absent}. "
+        f"{_and(ft['n_lemma'])} metrics; {absent}.{extra} "
         + (f"{thin[0].capitalize()}; the term shares" if thin else "The term shares")
         + f" are {shares} for terms {terms} ({_D3})."
     )
@@ -694,6 +865,25 @@ of the planes figure: columns and bands; Appendix C.2): a term led by two of the
 across the swapped parts' alternatives rather than along one continuous trade."""
 
 
+def _theorem_number(label: str) -> str:
+    """The printed name of a theorem of the paper ("Theorem 8"): MyST numbers ``prf:theorem``
+    directives in the order they occur, and a generated sentence cannot carry a cross-reference
+    role, so the number is counted from the notebook's Markdown."""
+    import re
+
+    import nbformat
+    from paper_paths import PAPER
+
+    nb = nbformat.read(PAPER / "paper.ipynb", as_version=4)
+    text = "\n".join(c.source for c in nb.cells if c.cell_type == "markdown")
+    labels = re.findall(r"^:{3,}\{prf:theorem\}.*\n:label: ([\w-]+)", text, re.M)
+    return f"Theorem {labels.index(label) + 1}"
+
+
+THEOREM_PULL_BACK = _theorem_number("thm-pullback")
+"""The pull-back to attributes (L9), as the built paper numbers it."""
+
+
 def elasticity_sentence(study, fits) -> Md:
     """One elasticity read as a number from a term's exponents (Theorem 5), and the term whose
     two leading metrics the swaps set.
@@ -728,13 +918,19 @@ def elasticity_sentence(study, fits) -> Md:
         if swaps
         else ""
     )
-    return Md(
-        f"On term {k} the elasticity between {a} and {b} is -{text}: along the term, one percent "
-        f"gained in {b} is {text} percent given up in {a}. The percentages are of the "
-        f"conditioned metrics (their logs after the standard scaler); Theorem 7 gives the rates in "
-        f"the attributes' own units, where the rate between two metrics is multiplied by "
-        f"alpha_i/alpha_j, the ratio of their conditioning exponents.{tail}"
+    from hyperbolic_trade_space import tension_matrix
+
+    cell = float(tension_matrix(fits[case.CASE_K].estimator, study.M)[live, ja, jb])
+    assert cell < -1, "premise: the pair's drawn cell is in the upper triangle (tension order)"
+    text = (
+        f"On term {k} the elasticity between {a} and {b} is -{text}, the ratio of their "
+        f"exponents: along the term, one percent gained in {b} is {text} percent given up in "
+        f"{a}. The tension matrix states the same trade per unit of the conditioned metrics at "
+        f"the term's balanced point, not per percent, so its cell for the pair reads "
+        f"{cell:.1f}. In the attributes' own units {THEOREM_PULL_BACK} multiplies each rate by "
+        f"$\\alpha_i/\\alpha_j$, the ratio of the two conditioning exponents.{tail}"
     )
+    return MdMath(text, text)
 
 
 def planted_sentence() -> Md:
@@ -751,7 +947,7 @@ def planted_sentence() -> Md:
     return Md(
         f"The fit recovers all {_NUMBER_WORDS[gr.RECOVERY_TERMS]} terms on {good} of {len(exact)} "
         f"planted tables of {gr.RECOVERY_ROWS} rows, {gr.RECOVERY_METRICS} metrics and "
-        f"{gr.RECOVERY_TERMS} terms each ({_D14}, Section 8)."
+        f"{gr.RECOVERY_TERMS} terms each ({_D14})."
     )
 
 
@@ -778,7 +974,13 @@ class Decision:
         The named designs: ``sponsor`` (cheapest fleet cost), ``cheapest unit`` (cheapest unit
         cost), ``operator`` (smallest pointing error), ``between`` (minimax regret on pointing
         error and fleet cost), ``balanced`` (smallest gap between the two term levels), and
-        ``fine`` (cheapest fleet cost among the fine-tracker designs).
+        ``fine`` (cheapest fleet cost among the fine-tracker designs); the three-stakeholder
+        rules of Section 8 (WP56): ``sponsor`` (fleet cost), ``cheapest unit`` (the
+        manufacturer's unit cost), ``coverage`` (the operator's largest coverage probability) and
+        ``fleet and coverage`` (minimax regret on fleet cost and coverage probability, the two
+        objectives the fleet ternary sets against each other). The working table carries the
+        ``coverage_probability`` column and ``nd coverage`` (nondominated on fleet cost and
+        coverage probability).
     baseline : dict
         The model's baseline configuration with its ``log V K=2``.
     fleet_budget, unit_limit : float
@@ -833,7 +1035,10 @@ def decision(study=None, fits=None) -> Decision:
                        "term 2 level": levels[:, 1]})  # fmt: skip
     # the shortlist's own order: fleet cost, then design id
     w = out[work].sort_values(["fleet_cost_usd", "design_id"]).reset_index(drop=True)
+    w = case.with_coverage(w)  # the operator's measure (the SysML v2 model's CoverageProbability)
     pe, fc = w["pointing_error_deg"].to_numpy(), w["fleet_cost_usd"].to_numpy()
+    cov = w[case.COVERAGE].to_numpy()
+    w["nd coverage"] = case.nondominated_mask(np.column_stack([-fc, cov]))
     w["nd"] = case.nondominated_mask(-np.column_stack([pe, fc]))
     w["nd unit"] = case.nondominated_mask(-np.column_stack([pe, w["unit_cost_usd"].to_numpy()]))
     all_six = out[six]
@@ -842,6 +1047,7 @@ def decision(study=None, fits=None) -> Decision:
     scaled = np.column_stack([(pe - pe.min()) / np.ptp(pe), (fc - fc.min()) / np.ptp(fc)])
     gap = np.abs(w["term 1 level"] - w["term 2 level"]).to_numpy()
     fine = np.flatnonzero((w["st_grade"] == "fine").to_numpy())
+    shortfall = np.column_stack([(fc - fc.min()) / np.ptp(fc), (cov.max() - cov) / np.ptp(cov)])
     picks = {
         "sponsor": w.iloc[int(np.argmin(fc))],
         "cheapest unit": w.iloc[int(np.argmin(w["unit_cost_usd"].to_numpy()))],
@@ -849,6 +1055,8 @@ def decision(study=None, fits=None) -> Decision:
         "between": w.iloc[int(np.argmin(scaled.max(axis=1)))],
         "balanced": w.iloc[int(np.argmin(gap))],
         "fine": w.iloc[fine[int(np.argmin(fc[fine]))]],
+        "coverage": w.iloc[int(np.argmax(cov))],
+        "fleet and coverage": w.iloc[int(np.argmin(shortfall.max(axis=1)))],
     }
     ids = set(w["design_id"])
     for name, row in picks.items():  # R-6: named designs are in the shortlist and pass all six
@@ -863,6 +1071,9 @@ def decision(study=None, fits=None) -> Decision:
     cols = [f"metrics__{a}" for a in spec.attributes]
     Mb = study.conditioner.transform(frame)[cols].to_numpy()
     base["log V K=2"] = float(fk.estimator.score_samples(Mb)[0])
+    base[case.COVERAGE] = float(
+        case.coverage_probability(base["fleet_size"], base["pointing_error_deg"])
+    )
     counts = {
         "feasible": len(df),
         "six_pass": int(six.sum()),
@@ -870,6 +1081,7 @@ def decision(study=None, fits=None) -> Decision:
         "nondominated": len(nd_ids),
         "nondominated_in_band": len(nd_ids & ids),
         "nondominated_working": int(w["nd"].sum()),
+        "nondominated_coverage": int(w["nd coverage"].sum()),
     }
     return Decision(counts, w, picks, base,
                     spec.cost_requirements["fleet_cost_usd"][0],
@@ -918,48 +1130,44 @@ def _tracker_cost(d: Decision) -> float:
 
 
 def decision_sentence(d: Decision) -> Md:
-    """The closing paragraph of Section 8: the question the method hands the two executives.
+    """The closing paragraph of Section 8: the stakeholders' picks on the shortlist and the question
+    the fit leaves the executives, one stakeholder per objective (WP56; the fleet ternary's
+    mapping): the sponsor's fleet cost, the manufacturer's unit cost, the operator's coverage
+    probability.
 
-    Narrated dollars are to the nearest 1,000 or 0.01 M USD; the tables give them exactly.
+    Narrated dollars are to the nearest 1,000 or 0.01 M USD and coverage to two digits; the table
+    gives them exactly. The premises the sentences rest on are asserted: the manufacturer's and
+    the operator's picks are one design, and the sponsor's is another.
     """
     p = d.picks
-    sp, bw = p["sponsor"], p["between"]
-    assert bw["st_grade"] == "fine" and sp["st_grade"] != "fine", "premise of the paragraph"
-    for role in ("sponsor", "between", "fine"):  # the same design in every regeneration
+    sp, mf, op, bw = p["sponsor"], p["cheapest unit"], p["coverage"], p["fleet and coverage"]
+    assert mf["design_id"] == op["design_id"] != sp["design_id"], "premise of the paragraph"
+    assert int(op["fleet_size"]) > int(bw["fleet_size"]) > int(sp["fleet_size"]), "premise"
+    assert bw["nd coverage"], "premise: the pick between them is one no other beats on both"
+    for role in ("sponsor", "cheapest unit", "coverage", "fleet and coverage"):
         assert entry(f"decision | primary | {role} | design")["identical"], role
-    differs = [
-        label
-        for col, label in (("wheel_class", "wheel class"), ("st_grade", "tracker grade"),
-                           ("fleet_size", "fleet size"))
-        if p["fine"][col] != sp[col]
-    ]  # fmt: skip
-    assert "tracker grade" in differs, "premise of the sentence: the fleets differ in the tracker"
-    assert bw["nd"], "premise of the paragraph: the pick between them is one no other beats"
-    tracker = lambda r: f"{r['wheel_class']}-wheel, {r['st_grade']}-tracker"  # noqa: E731
-    one = lambda v: f"{v:.1g}"  # noqa: E731
+    kind = lambda r: f"{r['wheel_class']}-wheel, {r['st_grade']}-tracker"  # noqa: E731
     held = lambda role, col, orig: _held(f"{role} | {col}", p[role][col], orig)  # noqa: E731
+    two = lambda v: f"{v:.2f}"  # noqa: E731
+    cov = case.COVERAGE
     return Md(
-        f"**What the executives decide.** The case's two stakeholders: the operator cares "
-        f"about the pointing error, the sponsor about the unit cost and the fleet cost. "
-        f"The requirements and the fits "
-        f"cut {thousands(_count(d, 'feasible'))} feasible designs to {_count(d, 'working')} that "
-        f"pass all six requirements and lie in the near-frontier band of both fits, the simpler "
-        f"and the richer (the K = 1 band for both, as at every K; {_D19}). One question remains, "
-        f"and it is theirs: whether a fine star tracker, which brings the pointing error from "
-        f"about {held('sponsor', 'pointing_error_deg', one)} to "
-        f"{held('fine', 'pointing_error_deg', one)} degree, is worth about "
-        f"{_held('fine tracker | extra fleet cost', _tracker_cost(d), lambda v: f'{v / 1e6:.2f}')}"
-        f" M USD of a {d.fleet_budget / 1e6:g} M USD fleet cost limit. "
-        f"The fleets differ in {_and(differs)}, so that cost is theirs, not the tracker's. "
-        f"If it is, the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at "
-        f"{held('between', 'fleet_cost_usd', _musd)} M USD "
-        f"({held('between', 'unit_cost_usd', _thousand_usd)} USD each) "
-        f"is the one whose larger shortfall on the two measures, each scaled from its best to its "
-        f"worst of the {_count(d, 'working')}, is smallest, among the "
-        f"{_count(d, 'nondominated_working')} that no other beats on both; "
-        f"if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
-        f"{held('sponsor', 'fleet_cost_usd', _musd)} M USD is the cheapest fleet. The method "
-        f"prices the question and does not answer it; the numbers are nominal ({_C8})."
+        f"**The decision.** The requirements and the fits cut "
+        f"{thousands(_count(d, 'feasible'))} feasible designs to a shortlist of "
+        f"{_count(d, 'working')} that pass all six requirements and lie in the near-frontier band "
+        f"of both fits ({_D19}). On it the manufacturer and the operator pick the same fleet: "
+        f"{int(op['fleet_size'])} {kind(op)} satellites at "
+        f"{held('cheapest unit', 'unit_cost_usd', _thousand_usd)} USD each, "
+        f"{held('cheapest unit', 'fleet_cost_usd', _musd)} M USD for the fleet and a coverage "
+        f"probability of {held('coverage', cov, two)}. The unit cost falls and the coverage "
+        f"probability rises with the fleet size. The sponsor picks {int(sp['fleet_size'])} "
+        f"{kind(sp)} satellites at {held('sponsor', 'fleet_cost_usd', _musd)} M USD, with a "
+        f"coverage probability of {held('sponsor', cov, two)}. What remains is the question the "
+        f"fit names, and it is the executives': how much fleet cost a gain in coverage probability "
+        f"is worth. Of the {_count(d, 'nondominated_coverage')} shortlisted designs that no other "
+        f"beats on both, the fleet of {int(bw['fleet_size'])} {kind(bw)} satellites at "
+        f"{held('fleet and coverage', 'fleet_cost_usd', _musd)} M USD, with a coverage "
+        f"probability of {held('fleet and coverage', cov, two)}, has the smallest larger "
+        f"shortfall on the two, each scaled from its best to its worst on the shortlist."
     )
 
 
@@ -1038,27 +1246,28 @@ def decision_baseline_sentence() -> Md:
 
 
 def decision_table(d: Decision) -> Md:
-    """The six-row table of Section 8: the rule, the configuration, the three measures and the
-    level (log V at the case's K), exact."""
+    """The table of Section 8: the baseline configuration and the designs the three
+    stakeholders' rules pick, with the three objectives and the level (log V at the case's K),
+    exact."""
     p = d.picks
     rows = [("baseline configuration", None, d.baseline)]
     rows += [
-        ("sponsor alone", "sponsor", p["sponsor"]),
-        ("operator alone", "operator", p["operator"]),
-        ("between them", "between", p["between"]),
-        ("balanced between the terms", "balanced", p["balanced"]),
-        ("cheapest unit cost", "cheapest unit", p["cheapest unit"]),
+        ("sponsor: least fleet cost", "sponsor", p["sponsor"]),
+        ("manufacturer: least unit cost", "cheapest unit", p["cheapest unit"]),
+        ("operator: largest coverage probability", "coverage", p["coverage"]),
+        ("between sponsor and operator", "fleet and coverage", p["fleet and coverage"]),
     ]
 
     def held(role, col, r, fmt):  # the baseline is not a pick: no stability entry, exact
         return fmt(r[col]) if role is None else _held(f"{role} | {col}", r[col], fmt)
 
+    cov = case.COVERAGE
     return Md(md_table(
-        ["rule", "configuration", "pointing error (degree)", "unit cost (USD)",
-         "fleet cost (USD)", "level"],
-        [(n, _config(r), held(k, "pointing_error_deg", r, lambda v: f"{v:.5f}"),
+        ["rule", "configuration", "fleet cost (USD)", "unit cost (USD)", "coverage probability",
+         "level"],
+        [(n, _config(r), held(k, "fleet_cost_usd", r, lambda v: f"{v:,.0f}"),
           held(k, "unit_cost_usd", r, lambda v: f"{v:,.0f}"),
-          held(k, "fleet_cost_usd", r, lambda v: f"{v:,.0f}"), f"{r['log V K=2']:+.3f}")
+          held(k, cov, r, lambda v: f"{v:.3f}"), f"{r['log V K=2']:+.3f}")
          for n, k, r in rows],
     ))  # fmt: skip
 

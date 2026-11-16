@@ -81,3 +81,31 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   terms K represents structure that is not log-convex.
 - **Record:** Appendix B, L10 (the posynomial extension); `work-packages/review/open-questions.md` is its place until
   WP57 decides the appendix section "Assumptions, limitations and open questions".
+
+## OQ-11. The manufacturer is the decision's stakeholder, not the SysML v2 model's
+
+- **Left:** Section 8, "Three stakeholders" (WP56 second unit), said of the decision.
+- **Open:** `stakeholders.sysml` names two stakeholders, the sponsor (price) and the operator (performance), and its
+  `lowCost` concern gives the unit cost to the sponsor; the decision (his mapping, `WP56-decisions.md`) gives the unit
+  cost to a manufacturer. Adding a `Manufacturer` part and a concern for the unit cost would bring the model in line;
+  it is model detail beyond the coverage attribute, a WP56 non-goal.
+- **Record:** `WP56-review.md`, R-1 row 15.
+
+## OQ-12. A stale share in the SysML v2 model's header
+
+- **Left:** the header comment of `examples/adcs/model_v2/cubesat.sysml` (and the record-of-the-baseline comment of
+  part `budgets`).
+- **Open:** the header says 63.7 % of the baseline regime's feasible designs pass the pointing-error requirement; the
+  data of record give 65.6 % (`baseline_requirement_sentence`, D.17's pass column). Editing the comment moves the
+  file's hash the data-of-record ledger holds (`tests/test_mutation_v2.py`), so it waits for the next model change.
+- **Record:** `WP56-review.md`, R-1 row 12; register C403's note.
+
+## OQ-13. The decision's design-level pick under the coverage constants
+
+- **Left:** Section 9's limits (WP56), as "the coverage probability's two constants are mission assumptions the
+  operator supplies".
+- **Open:** the ternary spike found the pick of each rule moves with the definition of the measure and with a factor of
+  two in either constant, while each rule's character holds (sponsor small fleets, operator large); the paper states
+  the constants as assumptions and does not report the movement.
+- **Record:** `work-packages/WP56-rounds/ternary/readout.md`, "The decision's stability";
+  `examples/adcs/spikes/fleet_performance.py`.

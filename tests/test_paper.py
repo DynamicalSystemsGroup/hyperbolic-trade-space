@@ -379,7 +379,7 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
         assert count not in fm, count  # fmt: skip
     prose = _markdown(nb) + _markdown(_nb(SUPPORT_NB))
     assert "attitude determination and control system" not in prose
-    assert "cubesat model coupling power, mass and attitude control" in _section(
+    assert "cubesats whose power, mass and attitude control are coupled" in _section(
         "Case construction"
     )
     assert "cubesat model coupling power, mass and attitude control" in _src(
@@ -710,7 +710,11 @@ def test_case_calls_go_through_the_case_module():
         tree = ast.parse(_src(cell))
         call = _calls(tree)[0]
         name = ast.unparse(call.func)
-        assert name.startswith("case.") or name in {"family_table", "decision_table"}, (
+        assert name.startswith("case.") or name in {
+            "family_table",
+            "decision_table",
+            "requirement_order_table",
+        }, (
             cell.id,
             name,
         )
@@ -2244,7 +2248,9 @@ def test_disclosure_cites_the_incose_paper_and_the_search_and_stage_one_stay_abs
     assert "black box to the method" in body  # the register's wording for a
     # the roadmap of Section 1 (his text, 2026-11-15) names the SysML v2 model, as the abstract does
     body = body.replace("from its SysML v2 model", "")
-    assert not re.search(r"SysML|OpenSysML|Modelica|Simulink|pip install", body, re.I)
+    # WP56: the case is narrated from the SysML v2 system model ("model" names
+    # its object); the tools that run it stay out of the body
+    assert not re.search(r"OpenSysML|Modelica|Simulink|pip install|(?<!\.)SysML(?! v2)", body, re.I)
 
 
 def _structure(nb):
@@ -2521,10 +2527,14 @@ RESULTS = ROOT / "examples" / "adcs" / "experiments" / "reports" / "sensitivity.
 RAW_RESIDUE = re.compile(r"\de-(?:1[3-9]|[2-9]\d)")  # 1e-13 and below, as raw digits
 NUM_CELLS = [
     "num-nondominated", "num-certificates", "num-margin", "num-temperature",
-    "num-regimes", "num-predict", "num-recovery", "num-predict-reading",
-    "num-choosing-k", "num-terms", "num-elasticity", "num-k-temperatures", "num-participation",
-    "num-decision", "num-tension",
+    "num-regimes", "num-predict", "num-choosing-k", "num-terms", "num-elasticity",
+    "num-decision", "num-requirements", "num-fleet-refit", "num-baseline-pointing",
+    "num-planted",
 ]  # fmt: skip
+"""The generated sentences of the paper. WP56 moved num-recovery, num-predict-reading,
+num-k-temperatures, num-participation and num-tension out of Sections 7 to 9 (their calls stay in
+the generator and in :func:`_case_sentences`; ``work-packages/WP56-rounds/moved-to-appendix.md``
+queues them for Appendix C and D)."""
 
 
 def _results():
@@ -2554,7 +2564,28 @@ def _case_sentences():
         "num-participation": gf.participation_sentence(),
         "num-decision": gf.decision_sentence(gf.decision(study, fits)),
         "num-tension": gf.tension_sentence(study, fits, gf.decision(study, fits)),
+        "num-requirements": gf.requirements_sentence(study, fits[1]),
+        "num-fleet-refit": gf.fleet_refit_sentence(),
+        "num-baseline-pointing": gf.baseline_requirement_sentence(case.load_study("stock")),
+        "num-planted": gf.planted_sentence(),
     }
+
+
+def _moved(cid: str) -> str:
+    """The generated sentence of a cell WP56 moved out of Sections 7 to 9, from its generator
+    (``work-packages/WP56-rounds/moved-to-appendix.md``: WP57c lands it in Appendix C or D)."""
+    import case
+    import generate_findings as gf
+
+    if cid == "num-participation":
+        return str(gf.participation_sentence())
+    if cid == "num-recovery":
+        return str(gf.recovery_sentence())
+    if cid == "num-predict-reading":
+        study = case.load_study("primary")
+        reg = case.fit_regressor(study)
+        return str(gf.predict_reading(case.predict_check(study, reg), reg))
+    raise KeyError(cid)
 
 
 @pytest.fixture(scope="module")
@@ -2688,9 +2719,10 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 12, (
+    assert len(floats) == 13, (
         floats
-    )  # ten figures (the prior-art layers and the pipeline joined) and two tables
+    )  # ten figures (the prior-art layers and the pipeline joined) and three tables (WP56: the
+    # requirement order of Section 7)
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -3031,12 +3063,12 @@ def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
     """(2) Does the method recover a known answer, how often, and what the failures are."""
     import generate_results
 
-    sentence = _cell_out(PAPER_NB, "num-recovery")
+    sentence = _moved("num-recovery")
     assert "A known answer" in sentence and "in 16, at the exact maximum" in sentence
     assert "frontier rows on their thinnest term" in sentence and "Appendix D.14" in sentence
-    ids = [c.id for c in _nb(PAPER_NB).cells]
-    figure = ids.index("fig-planes-k1-caption")  # Figure 2, a static directive (WP19 P-5 revised)
-    assert ids.index("sec-case-analysis") < ids.index("num-recovery") < figure
+    ids = [c.id for c in _nb(PAPER_NB).cells]  # WP56: Section 8 keeps the count, at K = 2
+    assert ids.index("sec-case-analysis-2") < ids.index("num-planted") < ids.index("num-terms")
+    assert "16 of 20 planted tables" in _cell_out(PAPER_NB, "num-planted")
     cell = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
     _current(cell, str(generate_results.planted_recovery()), "planted_recovery")
     assert re.search(r"\| infinity \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
@@ -3239,7 +3271,13 @@ def test_the_proposers_radius_is_the_stated_rule_of_the_check_designs():
     import paper_paths  # noqa: F401  (examples/adcs on the path)
     from experiments import check_designs
 
-    text = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "sec-case-analysis-5"))
+    # WP56: the rule left Section 8 for D.10 (work-packages/WP56-rounds/moved-to-appendix.md, which
+    # WP57c lands); until it lands the queued paragraph is the place it is stated
+    moved = (ROOT / "work-packages" / "WP56-rounds" / "moved-to-appendix.md").read_text(
+        encoding="utf-8"
+    )
+    text = next(ln for ln in moved.splitlines() if "a radius that a stated rule" in ln)
+    text = text.split(" | ")[1]  # the verbatim column
     assert check_designs.REACH_QUANTILE == 0.02 and check_designs.HOLES == 300
     assert (
         "a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest "
@@ -3254,9 +3292,10 @@ def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not(
     is another (the measured log V against zero); the Discussion says both, from the same table
     and no claim that the position failed where Section 9 reports 3 of 3 (final round, change
     request 43)."""
-    ids = [c.id for c in _nb(PAPER_NB).cells]
-    assert ids.index("sec-discussion") < ids.index("num-predict-reading")
-    text = _cell_out(PAPER_NB, "num-predict-reading")
+    ids = [c.id for c in _nb(PAPER_NB).cells]  # WP56: the reading goes to D.10; Section 8 keeps
+    assert "num-predict-reading" not in ids  # the finding in one sentence
+    assert "by spending the battery" in _cell_src("sec-case-analysis-5b")
+    text = _moved("num-predict-reading")
     assert "It showed that" in text and "remains a hypothesis" in text
     assert "the easy part" not in text and "It did not show" not in text
     assert "a second quantity, the measured log V against zero" in text
@@ -3359,7 +3398,7 @@ def test_the_added_quantities_are_recorded_on_the_same_five_regenerations():
         if "min" in e:
             assert e["min"] <= e["committed"] <= e["max"], name
     groups = {n.split(" | ")[0] for n in record["quantities"]}
-    assert groups == {"margin", "pca", "decision"}
+    assert groups == {"margin", "pca", "decision", "requirement"}  # WP56: Section 8's exclusions
 
 
 # -- legible figures and their full-size files (the driver's, WP10) -------------------------------
@@ -3518,9 +3557,12 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
         encoding="utf-8"
     )
     assert "fleet" not in view.lower()  # the assembly view draws parts only
-    assert "the fleet size, a count that is no part, so" in body
+    assert "the fleet size $n$, a count that is no part, so" in body
     assert "The fleet size is drawn from 1 to 30" in body
-    assert "under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD" in body
+    assert "A fourth MoE, the fleet's coverage probability" in body  # WP56
+    # WP56: the budget sentence left Section 7 for C.8, which states it
+    c8 = _src(next(c for c in _nb(SUPPORT_NB).cells if "(sub-c-8)=" in _src(c)))
+    assert "under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD" in c8
     sys.path.insert(0, str(ROOT / "examples" / "adcs"))
     from experiments import definitions
 
@@ -3744,13 +3786,17 @@ def test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in
 
     study, _, d = decided
     assert d.counts == {"feasible": 2134, "six_pass": 548, "working": 28, "nondominated": 11,
-                        "nondominated_in_band": 1, "nondominated_working": 5}  # fmt: skip
+                        "nondominated_in_band": 1, "nondominated_working": 5,
+                        "nondominated_coverage": 17}  # fmt: skip
     w = d.working
     assert list(w["fleet_cost_usd"]) == sorted(w["fleet_cost_usd"])
     assert {k: int(v["design_id"]) for k, v in d.picks.items()} == {
         "sponsor": 999, "cheapest unit": 2356, "operator": 2950, "between": 1858,
-        "balanced": 766, "fine": 1858,
+        "balanced": 766, "fine": 1858, "coverage": 2356, "fleet and coverage": 893,
     }  # fmt: skip
+    assert int(w["nd coverage"].sum()) == 17 and bool(
+        w.loc[w["design_id"] == 893, "nd coverage"].iloc[0]
+    )
     assert set(w.loc[w["nd"], "design_id"]) == {190, 766, 999, 1858, 2950}
     ids = set(w["design_id"])
     raw = study.feasible.set_index("design_id")
@@ -3822,10 +3868,16 @@ def test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_no
     for n in ("count | feasible", "count | six_pass", "count | working", "count | nondominated",
               "count | nondominated_in_band", "sponsor | pointing_error_deg",
               "fine | pointing_error_deg", "between | fleet_cost_usd", "between | unit_cost_usd",
-              "sponsor | fleet_cost_usd", "fine tracker | extra fleet cost"):  # fmt: skip
+              "sponsor | fleet_cost_usd", "fine tracker | extra fleet cost",
+              "count | nondominated_coverage", "coverage | coverage_probability",
+              "sponsor | coverage_probability", "fleet and coverage | fleet_cost_usd",
+              "fleet and coverage | coverage_probability",
+              "cheapest unit | unit_cost_usd"):  # fmt: skip
         assert f"decision | primary | {n}" in mine, n
     assert all(e["identical"] for e in mine.values())
     assert all(isinstance(e["committed"], int) for n, e in mine.items() if "| count |" in n)
+    req = {n: e for n, e in record.items() if n.startswith("requirement | primary | ")}
+    assert len(req) == 8 and all(e["identical"] for e in req.values())  # six, jointly, the band
 
 
 @pytest.mark.slow
@@ -3835,29 +3887,29 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
     _, _, d = decided
     text = str(gf.decision_sentence(d))
     plain = re.sub(r"<[^>]+>", "", text)
-    for phrase in ("2,134 feasible designs", "to 28 that pass all six requirements",
-                   "from about 0.003 to 0.0008 degree", "about 0.56 M USD of a 6 M USD",
-                   "fleet of 5 medium-wheel, fine-tracker satellites at 1.69 M USD (337,000 USD",
-                   "is the one whose larger shortfall on the two measures, each scaled from "
-                   "its best to its worst of the 28, is smallest, among the 5 that no other "
-                   "beats on both", "the K = 1 band for both, as at every K; Appendix D.19",
-                   "fleet of 4 small-wheel, medium-tracker satellites "
-                   "at 1.13 M USD is the cheapest fleet", "Appendix C.8"):  # fmt: skip
+    for phrase in ("2,134 feasible designs to a shortlist of 28 that pass all six requirements",
+                   "On it the manufacturer and the operator pick the same fleet: 25 medium-wheel, "
+                   "medium-tracker satellites at 234,000 USD each, 5.85 M USD for the fleet and a "
+                   "coverage probability of 0.98",
+                   "The sponsor picks 4 small-wheel, medium-tracker satellites at 1.13 M USD, with "
+                   "a coverage probability of 0.46",
+                   "how much fleet cost a gain in coverage probability is worth",
+                   "Of the 17 shortlisted designs that no other beats on both, the fleet of 10 "
+                   "small-wheel, medium-tracker satellites at 2.88 M USD, with a coverage "
+                   "probability of 0.76", "Appendix D.19"):  # fmt: skip
         assert phrase in plain, phrase
-    # 150 before the two reader definitions; 180 with the clause that the two fleets differ in
-    # more than the tracker (change request 30 of the final reader round, wave 1); 215 with the
-    # rule in steps and the band named (change requests 51 and 70, the second unit)
-    assert 130 <= len(plain.split()) <= 215
+    assert 120 <= len(plain.split()) <= 190
     detail = str(gf.decision_detail_sentence(d))
     assert "all 548 designs" in detail and "11 are nondominated" in detail
     assert "1 of them lies within" in detail
     table = str(gf.decision_table(d)).splitlines()
-    assert table[0].split(" | ")[0] == "| rule" and len(table) == 2 + 6
+    assert table[0].split(" | ")[0] == "| rule" and len(table) == 2 + 5
     assert [r.split(" | ")[0].strip("| ") for r in table[2:]] == [
-        "baseline configuration", "sponsor alone", "operator alone", "between them",
-        "balanced between the terms", "cheapest unit cost",
+        "baseline configuration", "sponsor: least fleet cost", "manufacturer: least unit cost",
+        "operator: largest coverage probability", "between sponsor and operator",
     ]  # fmt: skip
-    assert "1,686,142" in table[5] and "337,228" in table[5] and "0.00080" in table[5]
+    assert "2,882,089" in table[6] and "288,209" in table[6] and "0.762" in table[6]
+    assert table[4].split(" | ")[1:] == table[5].split(" | ")[1:]  # one design, two rules
     designs = [r for r in str(gf.decision_designs_table(d)).splitlines() if r.startswith("|")]
     assert len(designs) == 2 + 28
     assert sum("fleet cost" in r.split("|")[-2] for r in designs[2:]) == 5
@@ -3879,8 +3931,9 @@ def test_the_decision_follows_the_record_when_the_record_is_perturbed(decided):
     d = gf.decision(dataclasses.replace(study, feasible=raw), fits)
     assert int(d.picks["sponsor"]["design_id"]) == 190  # the next-cheapest fleet cost
     text = str(gf.decision_sentence(d))
-    assert "1.52 M USD is the cheapest fleet" in text and "1.13 M USD" not in text
-    assert "about 0.17 M USD" in text  # 1,686,142 - 1,515,098, not 0.56
+    assert "The sponsor picks 5 small-wheel, medium-tracker satellites at 1.52 M USD" in text
+    assert "1.13 M USD" not in text
+    assert "the fleet of 12 small-wheel, medium-tracker satellites at 3.11 M USD" in text  # moved
     assert "1,127,465" not in str(gf.decision_table(d))
     cap = 5_800_000.0  # the cheapest-unit-cost design (5.85 M USD) now exceeds the fleet budget
     capped = dataclasses.replace(
@@ -3890,15 +3943,12 @@ def test_the_decision_follows_the_record_when_the_record_is_perturbed(decided):
     d = gf.decision(dataclasses.replace(study, spec=capped), fits)
     assert d.counts["six_pass"] < base.counts["six_pass"] and d.counts["working"] < 28
     assert d.working["fleet_cost_usd"].max() <= cap and 2356 not in set(d.working["design_id"])
-    assert "a 5.8 M USD fleet cost limit" in str(gf.decision_sentence(d))
-    # the paragraph says its premise (the between design takes the fine tracker, the sponsor's does
-    # not); a record where that fails raises instead of printing a false sentence
-    tight = dataclasses.replace(
-        study.spec,
-        cost_requirements={**study.spec.cost_requirements, "fleet_cost_usd": (1_700_000.0, "USD")},
-    )
+    # the paragraph says its premise (the manufacturer's and the operator's picks are one design);
+    # under the cap they part (2167 and 390), and the generator raises instead of printing a false
+    # sentence
+    assert d.picks["cheapest unit"]["design_id"] != d.picks["coverage"]["design_id"]
     with pytest.raises(AssertionError, match="premise"):
-        gf.decision_sentence(gf.decision(dataclasses.replace(study, spec=tight), fits))
+        gf.decision_sentence(d)
     assert case.CASE_K == 2
 
 
@@ -3906,19 +3956,27 @@ def test_the_decision_follows_the_record_when_the_record_is_perturbed(decided):
 
 
 def test_section_9_closes_with_the_decision_and_leaves_the_neighbouring_paragraphs_alone():
-    """D-1: the closing subsection follows 'Propose, predict, check' and ends the section; Figure 9
-    and its paragraph, 'Two regimes' and 'Propose, predict, check' are as they were."""
+    """D-1: the closing subsection follows 'Propose, predict, check' and ends the section (WP56:
+    the requirements after the fit, the three stakeholders and their ternary, the refit, the
+    decision and its table, and the sentence that names the code and data)."""
     ids = [c.id for c in _nb(PAPER_NB).cells]
     tail = ids[ids.index("num-predict") + 1 : ids.index("sec-discussion")]
     assert tail == [
-        "fig-fleet-ternary",  # WP56: the decision-maker's ternary before the decision
+        "sec-case-analysis-5b",
+        "sec-case-analysis-req",
+        "num-requirements",
+        "num-design-sets",
+        "sec-case-analysis-decision",
+        "fig-fleet-ternary",
         "fig-fleet-ternary-caption",
+        "num-fleet-refit",
+        "sec-case-analysis-decision-2",
         "decision-case",
         "num-decision",
         "tab-decision",
         "tab-decision-caption",
-        "num-tension",
-    ]  # WP42: the pick's tension closes the section
+        "sec-case-analysis-close",
+    ]
     kept = (
         "sec-case-analysis-3b",
         "num-regimes",
@@ -3929,27 +3987,25 @@ def test_section_9_closes_with_the_decision_and_leaves_the_neighbouring_paragrap
     assert not [i for i in ids if "ternary-pair" in i]
     cells = {c.id: c for c in _nb(PAPER_NB).cells}
     assert _src(cells["sec-case-analysis-3b"]).startswith("**Two regimes.**")
-    assert _src(cells["sec-case-analysis-5"]).startswith("**Propose, predict, check**")
+    assert _src(cells["sec-case-analysis-5"]).startswith("**Propose, predict, check.**")
 
 
 def test_the_decision_paragraph_is_readable_without_the_subsystem_detail():
-    """R-3, R-4, R-5: the executives' measures in their words, subsystem choices as configuration;
-    no exponent, term, design id or log V in the paragraph; the nominal clause points at C.8; the
-    caption says what the method does not tell and points at D.19."""
+    """R-3, R-4, R-5 (WP56: one stakeholder per objective): the three objectives in their words,
+    subsystem choices as configuration; no exponent, term, design id or log V in the paragraph; the
+    caption points at D.19 and carries no caveat (the limits are Section 9's, once)."""
     text = re.sub(r"<[^>]+>", "", _cell_out(PAPER_NB, "num-decision"))
-    assert text.startswith("**What the executives decide.**")
+    assert text.startswith("**The decision.**")
     assert not re.search(r"log V|exponent|\bterms?\b|\bdesign \d|\bid\b|\bV\b", text), text
-    for words in ("pointing error", "unit cost", "fleet cost", "wheel", "tracker", "fleet of"):
+    for words in ("sponsor", "manufacturer", "operator", "coverage probability", "unit cost",
+                  "fleet cost", "wheel", "tracker"):  # fmt: skip
         assert words in text, words
-    raw = _cell_out(PAPER_NB, "num-decision")
-    assert "supporting-material/#sub-c-8" in raw and "the numbers are nominal" in raw
-    assert "does not answer it" in text and "defensible" not in text and "decides" not in text
+    assert "does not answer it" not in text and "defensible" not in text
     caption = next(c for c in _nb(PAPER_NB).cells if c.id == "tab-decision-caption")
-    phrases = ("does not tell the schedule or the risk", "what to buy beyond the modelled parts",
-               "what a larger fleet is worth", "{ref}`Appendix D.19 <sub-d-19>`",
-               ":label: tab-decision")  # fmt: skip
-    for phrase in phrases:
+    for phrase in ("{ref}`Appendix D.19 <sub-d-19>`", ":label: tab-decision",
+                   "the manufacturer's and the operator's rules pick one design"):  # fmt: skip
         assert phrase in _src(caption), phrase
+    assert "schedule" not in _src(caption) and "risk" not in _src(caption)
     assert not re.search(
         r"\d", re.sub(r"D\.19|K = 2|sub-d-19|tab-decision|log V", "", _src(caption))
     )
@@ -4010,8 +4066,13 @@ def test_the_baseline_pointing_error_share_is_generated_from_the_data_of_record(
     fresh = str(gf.baseline_requirement_sentence(stock))
     table = case.requirements_table(stock, case.k_fits(stock, (1,))[1]).set_index("requirement")
     share = table.loc["pointing error", "pass (feasible)"]
-    assert f"which {100 * share:.1f} % of the baseline regime's feasible designs pass" in fresh
-    assert "0.0155 against 0.0085 degree" in fresh
+    unit = table.loc["unit cost", "pass (feasible)"]  # WP56: both requirements the baseline fails
+    assert (
+        f"which {100 * share:.1f} % and {100 * unit:.1f} % of the baseline regime's feasible "
+        "designs pass" in fresh
+    )
+    assert "its pointing error is 0.0155 degree" in fresh and "requirement (0.0085 degree)" in fresh
+    assert "its unit cost 461,360 USD" in fresh and "requirement (350,000 USD)" in fresh
     cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-baseline-pointing")
     _current(_out_text(cell), fresh, "num-baseline-pointing")
     assert "63.7" not in _markdown(_nb(PAPER_NB))  # the figure of an earlier record
@@ -4097,14 +4158,15 @@ def test_the_model_states_thirteen_requirements_four_of_them_the_feasibility_con
     model = (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     assert len(re.findall(r"^\s*requirement def \w+", model, re.M)) == 13
     assert "Four are the flags the experiment reports: settled, momentum_ok, power_ok" in model
-    body = _cell_src("sec-case-construction-1b")
+    body = " ".join(_cell_src("sec-case-construction-1").split())
     assert (
-        "The model states thirteen requirements, one for each traded metric. Four are the "
-        "feasibility conditions"
+        "The SysML v2 model states thirteen requirements, one for each traded metric, and the case "
+        "applies them in the order of"
         in body
-        and "Six are read after the fit" in body
+        and "Four feasibility conditions remove the designs" in body
+        and "six requirements are read after the fit; three filter nothing" in body
     )
-    assert "depth-of-discharge feasibility condition" in _cell_src("sec-case-analysis-5")
+    assert "depth-of-discharge feasibility condition" in _cell_src("sec-case-analysis-5b")
     assert "Six of the model's thirteen requirements" in _cell_src("app-D-req", SUPPORT_NB)
 
 
@@ -4124,14 +4186,21 @@ def test_the_k1_exponents_stability_is_not_assessed_in_the_record_and_the_text_s
     it is not assessed there."""
     table = _cell_out(SUPPORT_NB, "tab-D-choosing_k")
     assert len(re.findall(r"^\| 1 \| .* \| - \|$", table, re.M)) == 2  # both regimes
-    sentence = _cell_out(PAPER_NB, "num-temperature")
+    import case
+    import generate_findings as gf
+
+    # WP56: the sentence left Section 7 (queued for D.5 and the open questions); its generator
+    sentence = str(gf.temperature_variants_sentence(case.load_study("primary")))
     assert "not assessed at K = 1" in sentence and "Appendix D.15" in sentence
 
 
 def test_the_scaler_sentence_quotes_the_sensitivity_table_row():
     """74: the robust scaler's row of D.5 (its size, the metrics it shares, its largest
     exponent)."""
-    sentence = _cell_out(PAPER_NB, "num-temperature")
+    import case
+    import generate_findings as gf
+
+    sentence = str(gf.temperature_variants_sentence(case.load_study("primary")))  # WP56: for D.5
     m = re.search(
         r"The robust scaler changes it: (\d+) metrics, (\d+) of the baseline's (\d+) "
         r"among them, the largest exponent on ([a-z ]+)\.",
@@ -4149,7 +4218,7 @@ def test_the_scaler_sentence_quotes_the_sensitivity_table_row():
 def test_the_participation_and_k1_sentences_read_the_record():
     """72, 73, 46: five metrics carry no K = 1 exponent (the figure's undrawn lines), total mass
     carries 0.02 outside the contending set, and R1's uniqueness is a checked test."""
-    part = _cell_out(PAPER_NB, "num-participation")
+    part = _moved("num-participation")
     assert "carry no exponent at the fit temperature; three of them" in part
     assert "five metrics" not in part and "Five metrics are at most 0.001" in _cell_src(
         "fig-tau-sweep-caption"
@@ -4161,7 +4230,7 @@ def test_the_participation_and_k1_sentences_read_the_record():
 
 def test_the_known_answer_sentence_says_what_the_eleven_row_failure_is():
     """76: D.14's record, the failure with the most frontier rows on its thinnest term."""
-    sentence = _cell_out(PAPER_NB, "num-recovery")
+    sentence = _moved("num-recovery")
     table = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
     m = re.search(
         r"where every recovered table has at least (\d+); the one with (\d+) is "
@@ -4181,8 +4250,8 @@ def test_the_executive_table_caption_band_claim_holds_of_the_picks_and_not_the_b
     shortlist uses, and the baseline row (the level of Table 2's first row) is outside it."""
     _, fits, d = decided
     band = fits[1].band
-    five = ("sponsor", "operator", "between", "balanced", "cheapest unit")
-    assert all(abs(d.picks[k]["log V K=2"]) < band for k in five)
+    picks = ("sponsor", "cheapest unit", "coverage", "fleet and coverage")  # WP56: Table 3's
+    assert all(abs(d.picks[k]["log V K=2"]) < band for k in picks)
     assert abs(d.baseline["log V K=2"]) > band
 
 
@@ -4231,14 +4300,12 @@ def test_d3_names_the_band_of_each_column():
 
 
 def test_the_executive_table_caption_and_the_shortlist_say_their_rules():
-    """38, 50, 71, 70: the executives' measures, the order of the rows, the rule names and the
-    band."""
+    """38, 50, 71, 70 (WP56: one stakeholder per objective): the caption names the rules' source,
+    the band and the one design two rules pick; the rows carry the rules' names."""
     cap = _cell_src("tab-decision-caption")
-    assert "the operator's pointing error, the sponsor's unit cost and fleet cost" in cap
-    assert "do not rank them" in cap and "Balanced between the terms is the design whose" in cap
-    assert (
-        "of the five designs they pick, all inside the near-frontier band that the shortlist" in cap
-    )
+    assert "the three stakeholders' rules pick from the shortlist" in cap
+    assert "do not rank them" in cap and "the baseline's level is outside it" in cap
+    assert "the manufacturer's and the operator's rules pick one design" in cap
     assert any("(sub-d-19)=" in _src(c) for c in _nb(SUPPORT_NB).cells)  # the pointer resolves
 
 
@@ -4352,7 +4419,7 @@ def test_the_one_axis_rule_is_stated_with_its_threshold_in_section_8():
     table, below the 0.99 at which C.5 names a pair one axis."""
     import case
 
-    text = " ".join(_cell_out(PAPER_NB, "num-participation").split())
+    text = " ".join(_moved("num-participation").split())
     assert "nearly one axis" not in text
     assert f"below the {case.ONE_AXIS:g} at which" in text and "|Spearman| at least 0.97" in text
 
@@ -4400,7 +4467,7 @@ def test_the_regimes_gain_ranges_are_the_ones_section_8_states():
         next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-C-configuration_space")
     )
     assert re.search(r"\| Kp \| 0\.2 \| 2 \| 0\.2004 \| 1\.999 \| 0\.03009 \| 0\.999 \|", c1)
-    s8 = " ".join(_cell_src("sec-case-construction-1").split())
+    s8 = " ".join(_cell_src("sec-case-construction-1b").split())
     assert "from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the stock" in s8
 
 
@@ -4481,9 +4548,13 @@ def test_the_three_requirements_neither_filtered_nor_priced_hold_for_every_feasi
         f = case.load_study(regime).feasible
         assert (f["battery_peak_power_ratio"] >= 1.0).all(), regime
         assert (f["power_margin_w"] >= 0.0).all() and (f["energy_balance_wh"] >= 0.0).all(), regime
-    text = " ".join(_cell_src("sec-case-construction-1b").split())
-    assert "the battery peak power ratio, the power margin and the energy balance" in text
-    assert "every feasible design of both regimes meets them" in text
+    import generate_findings as gf
+
+    # WP56: Table 2 states it as the third stage; the generator asserts the bounds on both regimes
+    table = str(gf.requirement_order_table(case.load_study("primary"), case.load_study("stock")))
+    for name in ("battery peak power ratio", "power margin", "energy balance"):
+        row = next(r for r in table.splitlines() if r.startswith(f"| {name} |"))
+        assert "3. met by every feasible design" in row, name
 
 
 # ---- WP56: the tension matrix as one triangle and the decision-maker's ternary -----------------
@@ -4521,3 +4592,100 @@ def test_the_tension_and_fleet_ternary_captions_state_the_fits_values():
     assert (
         len(cap.split(":::")[1].split("[full-size")[0].split(":label: fig-fleet")[1].split()) < 60
     )
+
+
+# ---- WP56 second unit: Sections 7 to 9 on the landed figures -------------------------------------
+
+
+def test_the_requirement_order_table_is_the_models_marks_in_the_cases_order():
+    """Section 7's one table: the thirteen traded metrics with the model's marks (coverage.csv) and
+    requirements, in the case's order (feasibility, after the fit, met everywhere), and the derived
+    coverage probability; the notebook's output is the generator's."""
+    import case
+    import generate_findings as gf
+
+    primary, stock = case.load_study("primary"), case.load_study("stock")
+    table = str(gf.requirement_order_table(primary, stock))
+    rows = [r.strip("|").split(" | ") for r in table.splitlines()[2:]]
+    assert len(rows) == 14
+    stages = [r[3].strip()[:2] for r in rows[:13]]
+    assert stages == ["1."] * 4 + ["2."] * 6 + ["3."] * 3
+    assert {r[0].strip() for r in rows if r[1].strip() == "MoE"} == {
+        "pointing error", "unit cost", "fleet cost", "coverage probability (derived)",
+    }  # fmt: skip
+    first = {r[0].strip() for r in rows[:4]}
+    assert first == {"settling time", "depth of discharge", "momentum headroom", "available power"}
+    assert "launch cost at most 105,770 USD (7,000 USD per kg of total mass)" in table
+    assert _cell_out(PAPER_NB, "tab-requirements").strip() == table.strip()
+
+
+def test_the_fleet_refit_sentence_reads_the_identity_and_both_fits():
+    """Section 8: the identity on every row and the one- and two-term exponents of the fleet's three
+    objectives, the caption's numbers at one term; the notebook prints the generator's sentence."""
+    import generate_findings as gf
+
+    text = str(gf.fleet_refit_sentence())
+    assert "On all 2,134 feasible designs fleet cost over unit cost times fleet size" in text
+    assert "0.14 and 0.86 in term 1 and 0.54 and 0.46 in term 2" in text
+    assert "0.000 on unit cost in both, so both terms lie on the one-term fit's edge" in text
+    caption = _cell_src("fig-fleet-ternary-caption")
+    assert "fleet cost (0.39)" in caption and "coverage probability (0.61)" in caption
+    assert "0.006 on unit cost" in caption
+
+
+@pytest.mark.slow
+def test_the_requirements_sentence_is_d17s_exclusions():
+    """Section 8: the near-frontier designs each requirement excludes after the K = 1 fit, read from
+    ``case.requirements_table`` (D.17), largest first, and all six jointly."""
+    import case
+    import generate_findings as gf
+
+    study = case.load_study("primary")
+    fit = case.k_fits(study, (1,))[1]
+    t = case.requirements_table(study, fit)
+    text = re.sub(r"<[^>]+>", "", str(gf.requirements_sentence(study, fit)))
+    joint = t.loc[t["requirement"] == "all jointly", "near-frontier excluded"].iloc[0]
+    assert f"exclude {joint} near-frontier designs jointly".replace(" of ", " of its ") in text
+    for r in t[t["requirement"] != "all jointly"].itertuples(index=False):
+        assert f"{r[0]} {r[3].split(' of ')[0]}" in text, r[0]
+    assert "peak slew power 108, control effort 95, unit cost 64, fleet cost 57" in text
+
+
+@pytest.mark.slow
+def test_the_terms_and_elasticity_sentences_agree_with_the_tension_figure():
+    """The depth-three cold read's defects: the contending sets against the panels (8 of 13 drawn
+    on each term, 8 and 7 contend, total mass drawn on term 2 outside its set), "leads" as the
+    largest exponent, and the elasticity against the drawn cell (-0.9 per percent, -2.8 per unit)
+    with the conditioning ratio typeset as math."""
+    import case
+    import generate_findings as gf
+
+    from hyperbolic_trade_space import tension_matrix
+
+    study = case.load_study("primary")
+    fits = case.k_fits(study, (1, 2))
+    terms = str(gf.terms_sentence(study, fits))
+    assert "contending sets (exact-maximum supports) of 8 and 7 metrics" in terms
+    assert (
+        "peak slew power, absent from the K = 1 set, carries the largest exponent of term 1"
+        in terms
+    )
+    assert "total mass also carries 0.0064 on term 2" in terms
+    el = gf.elasticity_sentence(study, fits)
+    T = tension_matrix(fits[2].estimator, study.M)
+    uc, ap = study.names.index("unit cost"), study.names.index("available power")
+    assert f"its cell for the pair reads {T[1, uc, ap]:.1f}" in str(el) and "-2.8" in str(el)
+    assert "elasticity between unit cost and available power is -0.9" in str(el)
+    assert "$\\alpha_i/\\alpha_j$" in str(el) and "<math>" in el._repr_html_()
+    assert "alpha_i/alpha_j" not in el._repr_html_()
+
+
+def test_sections_7_to_9_state_each_limit_once_at_the_end_of_the_discussion():
+    """WP56 R-4: the limits passage closes the Discussion; the case sections and the decision's
+    caption carry no caveat of their own (illustrative values, schedule, nominal numbers)."""
+    case_text = _section("Case construction") + _section("Case analysis")
+    for caveat in ("illustrative", "schedule", "nominal", "lower bound", "does not tell"):
+        assert caveat not in case_text, caveat
+    disc = _section("Discussion")
+    assert disc.rstrip().split("\n\n")[-1].startswith("**Limits.**")
+    assert disc.count("illustrative") == 1 and disc.count("schedule") == 1

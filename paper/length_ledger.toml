@@ -2058,3 +2058,27 @@ section = "Prior art"
 words_added = 12
 job = "says that Table 1 summarizes the register of prior art in Appendix G, closing the table's paragraph (WP57a's G5, moved to WP56 as the paper.ipynb writer)"
 reader = "the reader who wants the sources behind a row of Table 1"
+
+# WP56 second unit: Sections 7 to 9 rewritten on the landed figures (WP56-review.md, the before-and-after
+# table). Each cut lowers the section's ceiling to the rendered count after (generated sentences included).
+
+[[cut]]
+date = "2026-11-15"
+section = "Case construction"
+words_removed = 503
+no_longer_did = "the pricing detail (the launch slot, the covered cost, the 8,000,000 USD budget), the ladder provenance of the four thresholds and the illustrative-values caveat (C.8, D.17 and Section 9's limits hold them); the per-paragraph requirement counts (now Table 2, one row per traded metric in the order the case applies them); the participation sentence (queued for D.3), the robust-scaler and resampling sentences (queued for D.5 and the open questions), the planted-table sentence (moved to Section 8, at K = 2), the 'worked example, not a study of either use' sentence and the black-box sentence (the Discussion's answer on reuse). Added: the problem as a triple, the CADRE precedent, the oracle sentence, the baseline configuration carried through"
+authority = "WP56 G1, G6 (the driver's scope approved as the supervisor's proxy, WP56-decisions.md); rendered count 1,482 before, 1,215 after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Case analysis"
+words_removed = 370
+no_longer_did = "the opener's list of pointers, the known-answer paragraph (D.14), the K temperatures sentence (D.15), the strict-convexity remark (D.4), the percentile rule and the never-clipped sentence of propose-predict-check (D.10), the two-stakeholder decision paragraph with the fine-tracker question and the pick's tension sentence (D.19), and the caption's caveats (Section 9's limits). Added: the requirements applied after the fit with their excluded counts, the three stakeholders and the collapse to one trade-off with its refit, the decision on the three-stakeholder rules, and the sentence that names the calls and data behind it"
+authority = "WP56 G2, G6; rendered count 1,901 before, 1,929 after (the ceiling falls from 2,299 to the count)"
+
+[[cut]]
+date = "2026-11-15"
+section = "Discussion"
+words_removed = 309
+no_longer_did = "'Three claims', 'Why a surface', 'Trade-offs beyond the first, and PCA', 'Novelty and white space' and 'The kernel direction' (queued for WP57d's assumptions, limitations and open questions), the Appendix B sentence of 'Verify and validate', the requirements-after-the-fit and 'Numerical' paragraphs (Section 8), the design-sets sentence (Section 8) and the propose-predict-check reading (D.10). Added: what the case showed against Section 1's contribution, the three layers revisited, the limits in one passage at the end"
+authority = "WP56 G5, G6; rendered count 803 before, 494 after"

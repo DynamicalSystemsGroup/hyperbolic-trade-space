@@ -4,7 +4,8 @@
 perturbations of one part in 10^12 and records what the paper reported at the time. The paper has
 since added a few numbers (the median assignment
 margin, the share of spread along the principal directions of the near-frontier chart, and the
-decision section's counts, pointing errors and prices). This
+decision section's counts, pointing errors and prices; at WP56 the coverage probability of the named
+designs, the three-stakeholder picks and the requirements' exclusions). This
 module computes those on the committed data and on the five regenerations, and writes the committed
 file ``stability_extra.json`` that :mod:`paper_stability` reads beside the sensitivity file, so the
 paper prints each of them to the digits that held.
@@ -59,7 +60,8 @@ def quantities(data_dir=None) -> dict:
     return q
 
 
-DECISION_PICKS = ("sponsor", "cheapest unit", "operator", "between", "balanced", "fine")
+DECISION_PICKS = ("sponsor", "cheapest unit", "operator", "between", "balanced", "fine",
+                  "coverage", "fleet and coverage")  # fmt: skip
 """The named designs of ``generate_findings.decision`` (the roles, not the design ids)."""
 
 
@@ -79,9 +81,25 @@ def decision_quantities(spec) -> dict:
     for role in DECISION_PICKS:
         row = d.picks[role]
         q[f"decision | primary | {role} | design"] = str(int(row["design_id"]))
-        for col in ("pointing_error_deg", "unit_cost_usd", "fleet_cost_usd"):
+        for col in ("pointing_error_deg", "unit_cost_usd", "fleet_cost_usd", case.COVERAGE):
             q[f"decision | primary | {role} | {col}"] = float(row[col])
     q["decision | primary | fine tracker | extra fleet cost"] = float(gf._tracker_cost(d))
+    q.update(requirement_quantities(study, case.k_fits(study, (1,))[1]))
+    return q
+
+
+def requirement_quantities(study, fit) -> dict:
+    """Section 8's requirements read after the K = 1 fit (WP56): the near-frontier designs each
+    requirement excludes, all six jointly, and the near-frontier count
+    (``case.requirements_table``). Names are ``requirement | primary | what | excluded``."""
+    import case
+
+    t = case.requirements_table(study, fit)
+    q: dict = {}
+    for r in t.itertuples(index=False):
+        n, near = (int(x) for x in r[3].split(" of "))
+        q[f"requirement | primary | {r[0]} | excluded"] = n
+    q["requirement | primary | near-frontier"] = near
     return q
 
 
