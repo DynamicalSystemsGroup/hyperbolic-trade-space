@@ -71,7 +71,7 @@ TARGET_FRAC_ABOVE = 0.10
 
 
 PRIMARY = ["gains", "gains_headroom"]  # aggressive-gain regime: R-13 (a), (b), (c), (e)
-REGIME = ["baseline", "headroom"]  # stock-gain regime: the recorded comparison
+REGIME = ["baseline", "headroom"]  # baseline regime (the stock gains): the recorded comparison
 
 
 def feasible(df: pd.DataFrame, attrs: list[str] = ATTRS) -> pd.DataFrame:

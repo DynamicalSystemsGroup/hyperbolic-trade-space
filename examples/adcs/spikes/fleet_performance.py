@@ -348,7 +348,7 @@ def main():
                     }
                 )
         rec["variations"] = var
-        # the stock-gain regime, base constants
+        # the baseline regime (key stock), base constants
         sk = make_study(name, c["base"], regime="stock")
         fk = fit_pair(sk)
         dk, _ = decide(sk, fk)
