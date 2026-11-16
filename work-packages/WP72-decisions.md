@@ -79,3 +79,27 @@ whether the wheat page cites the finding (WP71 is scoped to V against biomass al
 recommendation for a next stage: `InvariantFit` in `src/` as a decomposition-family transformer with the chart as
 `transform`, a report and one chart plot, lemma steps for the scale corollary and the group-wise L22, one docs page
 on a non-crypto example.
+
+## His formulation and the roadmap boundary (17:19 EST, verbatim)
+
+"as for the estimator that finds invariants. the thing i was thinking could work is something like a separability
+approach where V (x) = posynomial(x)  AND V (x) = Ax
+
+this would mean the the level set was explained twice, in our case with different variables. one affine and one
+hyperbolic. the low dimensional case being `biomass = wheat * straw`, which is a contant product invariant, but with
+the invariant level sets being a different variable. the generalization being affine on one side and posynomial on
+the other.
+
+like with our earlier work this should start with the monomial case, and a scalar. but we should explore
+generalizations. this should be viewed as a research roadmap and the any new features in the estimator should come in
+0.2 or later"
+
+The driver's reading: the level set explained twice, by a posynomial of one block of the data's variables and by an
+affine function of another block, the two agreeing row by row; the estimator finds both at once (the exponents on the
+simplex for the posynomial side, the affine map for the other), a two-view problem in the spirit of canonical
+correlation between a log-linear view and an affine view. The first case is the monomial with a scalar on the affine
+side: w . log x = log(a y + b) for one variable y, whose statistic at b = 0 is the correlation of log V with log y that
+WP71 just put on the wheat page (0.99 with y = biomass). Generalizations in order: a vector y with A a row; several
+terms on the posynomial side; both sides with several outputs. The roadmap: WP72's readout is stage 1; the next spike
+formulates and plants the separability estimator; nothing of it enters the package before 0.2. Recorded in
+`notes/directions/candidates.md` as the direction's statement.

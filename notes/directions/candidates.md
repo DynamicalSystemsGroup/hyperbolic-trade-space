@@ -24,3 +24,23 @@ invariant of every row); K > 1 (a sum of monomials as the invariant, as in stabl
 posynomial form carries); the tests (planted invariants recovered; the wheat and a market-maker table); what the
 package would expose. Related: the dependence screen among metrics at conditioning and the size-against-shape plot
 (`work-packages/WP70-decisions.md`, 2026-11-16), both the driver's suggestions from the same conversation.
+
+## The separability formulation and the roadmap (the supervisor, 2026-11-16 17:19 EST, verbatim)
+
+"as for the estimator that finds invariants. the thing i was thinking could work is something like a separability
+approach where V (x) = posynomial(x)  AND V (x) = Ax
+
+this would mean the the level set was explained twice, in our case with different variables. one affine and one
+hyperbolic. the low dimensional case being `biomass = wheat * straw`, which is a contant product invariant, but with
+the invariant level sets being a different variable. the generalization being affine on one side and posynomial on
+the other.
+
+like with our earlier work this should start with the monomial case, and a scalar. but we should explore
+generalizations. this should be viewed as a research roadmap and the any new features in the estimator should come in
+0.2 or later"
+
+Reading: the level explained twice, posynomial in one block of variables and affine in another, agreeing row by row;
+first the monomial with a scalar affine side (w . log x = log(a y + b); at b = 0 the statistic is the correlation of
+log V with log y, 0.99 for wheat with y = biomass, `WP71`); then a vector y, several terms, several outputs. WP72's
+spike (`work-packages/WP72-rounds/readout.md`) is stage 1 of this roadmap; the estimator's features enter the package
+at 0.2 or later, never 0.1.
