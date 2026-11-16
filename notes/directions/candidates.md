@@ -44,3 +44,11 @@ first the monomial with a scalar affine side (w . log x = log(a y + b); at b = 0
 log V with log y, 0.99 for wheat with y = biomass, `WP71`); then a vector y, several terms, several outputs. WP72's
 spike (`work-packages/WP72-rounds/readout.md`) is stage 1 of this roadmap; the estimator's features enter the package
 at 0.2 or later, never 0.1.
+
+**His addition (17:20 EST, verbatim):** "it could end up being a different approach but between the market makers and
+the biology examples (and likely others in real life to be found)"
+
+The driver's reading: the separability formulation is a hypothesis, not a design; the spike that follows WP72 keeps
+the approach open (the two-sided within-group estimator, the two-view formulation, or something else) and is judged
+on the cases: the market makers as internal test cases, the biology examples (wheat; the amniote life histories are a
+candidate, with body mass as the size), and other real-life tables the spike looks for.

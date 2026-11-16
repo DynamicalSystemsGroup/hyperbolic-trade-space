@@ -103,3 +103,11 @@ WP71 just put on the wheat page (0.99 with y = biomass). Generalizations in orde
 terms on the posynomial side; both sides with several outputs. The roadmap: WP72's readout is stage 1; the next spike
 formulates and plants the separability estimator; nothing of it enters the package before 0.2. Recorded in
 `notes/directions/candidates.md` as the direction's statement.
+
+**His addition (17:20 EST, verbatim):** "it could end up being a different approach but between the market makers and
+the biology examples (and likely others in real life to be found)"
+
+The driver's reading: the separability formulation is a hypothesis, not a design; the spike that follows WP72 keeps
+the approach open (the two-sided within-group estimator, the two-view formulation, or something else) and is judged
+on the cases: the market makers as internal test cases, the biology examples (wheat; the amniote life histories are a
+candidate, with body mass as the size), and other real-life tables the spike looks for.
