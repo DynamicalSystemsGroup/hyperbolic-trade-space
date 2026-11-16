@@ -132,13 +132,6 @@ reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a pr
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
-phrase = "row gap"
-owner = "WP10 paper stream"
-reason = "BASELINE: ordinary word gap: the per-row score difference whose minimum is the assignment margin (L13) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
 phrase = "sided envelope"
 owner = "WP10 paper stream"
 reason = "BASELINE: one-sided envelope: ordinary adjective phrase describing a cited method and this method's boundary, no second object (WP10 re-triage 2026-11-09)"

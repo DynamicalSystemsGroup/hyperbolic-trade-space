@@ -310,7 +310,7 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
     for phrase in (
         "geometric program",
         "generalized posynomial",
-        "L4.14 to L4.24",
+        "{ref}`Appendix B, L4 <appendix-b>`",
         "one program for all terms",
         "boyd2007tutorial",
     ):
@@ -339,7 +339,10 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
     definition = next(c for c in nb.cells if "prf:definition} Posynomial" in _src(c))
     text = " ".join(_src(definition).split())
     assert "a posynomial, a sum of monomials" in text
-    assert "{prf:ref}`thm-extension`" in text and "is the $1/\\kappa$ power of a posynomial" in text
+    assert (
+        "{ref}`Appendix B, L10 <appendix-b>`" in text
+    )  # the proof pointer (R-2: no forward reference)
+    assert "is the $1/\\kappa$ power of a posynomial" in text
     assert "generalized" not in text
     assert "is the level set $V=1$ of the fit" in " ".join(_markdown(nb).split())  # the surface
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
@@ -469,7 +472,10 @@ def test_separation_of_concerns_no_user_guide_headers():
 
 def test_body_names_no_tooling_versions():
     """R-12: the body names no tooling versions."""
-    assert not re.search(r"\b\d+\.\d+\.\d+\b", _markdown(_nb(PAPER_NB)))
+    body = re.sub(
+        r"\[@[^\]]*\]", "", _markdown(_nb(PAPER_NB))
+    )  # a locator, Section 4.2.3, is no version
+    assert not re.search(r"\b\d+\.\d+\.\d+\b", body)
 
 
 # ---- the word count: what renders, generated sentences included (G-1) ------------------------
@@ -477,6 +483,9 @@ def test_body_names_no_tooling_versions():
 _OPTION_LINE = re.compile(r"^:[\w-]+:.*$", re.M)  # a directive option: it prints nothing
 _FENCE = re.compile(r"^:{3,}\{(?P<name>[\w:-]+)\}[ \t]*(?P<arg>.*)$", re.M)
 _DISPLAY_MATH = re.compile(r"\$\$.*?\$\$", re.S)
+_MATH_BLOCK = re.compile(
+    r"^:{3,}\{math\}\n.*?\n:{3,}[ \t]*$", re.S | re.M
+)  # a labelled display (WP55)
 _CITES = re.compile(r"\[(@[^\]]+)\]")
 _PRF_REF = re.compile(r"\{prf:ref\}`[^`]+`")
 GENERATED_SENTENCES = "num-"
@@ -516,6 +525,7 @@ def rendered_words(text: str) -> int:
     equations. Captions, hypotheses, sketches, script pointers and list items are counted.
     """
     text = _rendered(text)
+    text = _MATH_BLOCK.sub(" ", text)
     text = re.sub(r"<[^>]+>", "", text)  # the tags of a link in a generated sentence print nothing
     text = re.sub(r"\]\([^)\s]*\)", "]", text)  # a link's target is not read, only its text
     text = _PRF_REF.sub("Theorem 0", text)
@@ -2087,34 +2097,17 @@ def test_closing_section_is_short_and_calls_the_derivations_scripted_checks():
     assert "Reproducibility and your own case" not in _markdown(_nb(PAPER_NB))
 
 
-def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
-    """R-17, R-18: L1 to L17 once each (and L20, the noise corollary, after L6, and L21, the
-    tension, after L7), each with the parts of the form. The paper's order is the
-    algorithm's (E-8): the alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
+def test_every_lemma_has_a_let_assume_then_block_with_its_proof_pointer():
+    """R-17, R-18, WP55 G4: L1 to L17 once each (and L20, the noise corollary, after L6, and L21,
+    the tension, after L7). Each result is "Let ... Assume ... Then ..." with its lemma label in the
+    title and ends "Proof: Appendix B, Ln"; the Derived and Hypotheses labels, the sketches and the
+    Script boxes are gone from the main text. The paper's order is the algorithm's (E-8): the
+    alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
     blocks = _blocks()
     tags = [re.search(r"\(L(\d+)(?:, [^)]*)?\)\s*$", title).group(1) for _, title, _, _ in blocks]
     assert [int(t) for t in tags] == [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        20,
-        7,
-        21,
-        8,
-        9,
-        10,
-        11,
-        16,
-        15,
-        12,
-        13,
-        14,
-        14,
-        17,
-    ]
+        1, 2, 3, 4, 5, 6, 20, 7, 21, 8, 9, 10, 11, 16, 15, 12, 13, 14, 14, 17,
+    ]  # fmt: skip
     body = _markdown(_nb(PAPER_NB))
     scripts = {
         int(re.match(r"lemma_(\d+)_", p.name).group(1)): p
@@ -2122,23 +2115,17 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
     }
     for _kind, title, label, content in blocks:
         n = int(re.search(r"\(L(\d+)[,)]", title).group(1))
-        assert "*Hypotheses.*" in content, label
-        assert re.match(
-            r"\*\*(Derived|Numerical|Open)\.\*\*", content.split(":enumerated: false\n")[-1]
-        ), label
-        tail = body.split(f":label: {label}\n", 1)[1].split("\n:::\n", 1)[1]
-        assert tail.lstrip().startswith(":::{prf:proof} Sketch"), label
-        pointer = re.search(
-            r":::\{admonition\} Script\n:class: tip\n"
-            r"`derivation/(lemma_\d+_\w+\.py)`, `verify`; "
-            r"\{ref\}`Appendix B, L(\d+) <appendix-b>`\.",
-            tail,
-        )
-        assert pointer and int(pointer.group(2)) == n, label
-        script = scripts[n]
-        assert script.name == pointer.group(1) and "def verify(" in script.read_text(
-            encoding="utf-8"
-        ), label
+        flat = " ".join(content.split())
+        assert re.match(r"Let ", flat), label
+        assert " Assume " in flat or flat.count("Assume") >= 1, label
+        assert " Then" in flat or "Then," in flat, label
+        assert flat.rstrip().endswith(f"Proof: {{ref}}`Appendix B, L{n} <appendix-b>`."), label
+        assert n in scripts and "def verify(" in scripts[n].read_text(encoding="utf-8"), label
+    main = "\n".join(
+        _section(n) for n in ("Preliminaries and notation", "Definitions", "Methods", "Results")
+    )
+    assert not re.search(r"\*\*(Derived|Numerical|Open)\.\*\*|\*Hypotheses\.\*", main)
+    assert ":::{prf:proof} Sketch" not in body and ":::{admonition} Script" not in body
     kinds = [(k, int(re.search(r"\(L(\d+)[,)]", t).group(1))) for k, t, _, _ in blocks]
     assert kinds[6] == ("corollary", 20)
     assert kinds[13:] == [
@@ -2152,15 +2139,66 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
     ]  # E-8, and the soft-fit certificate (WP17) last
 
 
-def test_badges_are_present_and_the_open_questions_are_marked():
-    """R-7: Derived on proved statements, Numerical on what is observed, Open on Q1 to Q4."""
+def test_assumptions_and_conditions_are_displayed_and_named_where_used():
+    """WP55 G3: A1 to A3 are plain sentences of Section 3; A4 to A11 and R1 to R3 are each a named
+    block in the paragraph of the procedure or result that uses them, never one list up front."""
+    prelim = _section("Preliminaries and notation")
+    for code in ("A1", "A2", "A3"):
+        assert re.search(rf"\b{code}:", prelim), code
+    where = {
+        "Methods": ("A4", "A6", "A8"),
+        "Results": ("A5", "A7", "A9", "A10", "A11", "R1", "R2", "R3"),
+    }
+    for section, codes in where.items():
+        text = _section(section)
+        for code in codes:
+            assert re.search(rf":::\{{prf:assumption\}} {code}, ", text), (section, code)
+    assert "A1: metrics are strictly positive. A2:" not in _markdown(_nb(PAPER_NB))
+
+
+def test_the_open_questions_left_the_narrative_for_the_review_record():
+    """WP55 G4, R-3: Q1 to Q4 are OQ-5 to OQ-8 of work-packages/review/open-questions.md; the
+    results keep one pointer to the appendix section that records what is open."""
     body = _markdown(_nb(PAPER_NB))
-    assert body.count("**Derived.**") == len(_blocks())
-    assert body.count("**Numerical.**") >= 1 and body.count("**Open.**") >= 1
-    open_text = body.split("### Open questions", 1)[1].split("## ", 1)[0]
-    for q in ("Q1", "Q2", "Q3", "Q4", "not pursued"):
-        assert q in open_text, q
-    assert all(f"G-{g}" in open_text for g in (11, 12, 13, 14))
+    assert "### Open questions" not in body and "**Open.**" not in body
+    for q in ("Q1", "Q2", "Q3", "Q4"):
+        assert not re.search(rf"\b{q}:", body), q
+    record = (ROOT / "work-packages" / "review" / "open-questions.md").read_text(encoding="utf-8")
+    for n in (5, 6, 7, 8):
+        assert f"## OQ-{n}." in record
+    assert "records what the results leave open" in _section("Results")
+    for section in ("Preliminaries and notation", "Definitions", "Methods", "Results"):
+        text = _section(section)
+        hits = re.findall(r"[^.]*(?:\bopen\b|not established|conjecture)[^.]*\.", text, re.I)
+        assert all("Appendix E" in h for h in hits), (section, hits)
+
+
+def test_no_section_3_to_6_reference_points_forward():
+    """WP55 R-2: in Sections 3 to 6 a section, theorem or definition reference points back; the
+    exceptions are equations and the proofs of Appendix B."""
+    cells = _nb(PAPER_NB).cells
+    seen: set[str] = set()
+    inside = False
+    for c in cells:
+        if c.cell_type != "markdown":
+            continue
+        src = _src(c)
+        head = _unlabel(src)
+        if head.startswith("## "):
+            inside = head.startswith(
+                ("## Preliminaries", "## Definitions", "## Methods", "## Results")
+            )
+        labels = re.findall(r":label: (\S+)", src) + re.findall(r"^\((sect-[\w-]+)\)=", src, re.M)
+        if inside:
+            for target in re.findall(r"\{(?:prf:ref|numref)\}`(?:[^`<]*<)?([\w-]+)>?`", src):
+                if (
+                    target.startswith(
+                        ("sect-", "thm-", "def-", "prop-", "cor-", "lem-", "alg-", "asm-", "cond-")
+                    )
+                    and target not in labels
+                ):
+                    assert target in seen, (c.id, target)
+        seen.update(labels)
 
 
 def test_no_hedging_phrases_in_the_body():
@@ -2305,6 +2343,9 @@ def test_appendix_and_section_references_resolve():
             for n in re.findall(r"^Appendix B, L(\d+)$", title):
                 assert any(v["number"] == int(n) for v in record.values()), n
         plain = _ROLE.sub("", _unlabel(body))
+        plain = re.sub(
+            r"\[@[^\]]*\]", "", plain
+        )  # a citation's locator names the cited work's own section
         plain = "\n".join(ln for ln in plain.splitlines() if not ln.startswith("#"))
         assert not re.search(r"\b[Ss]ections? \d|\bAppendix [A-G]\b|\b(Table|Figure) \d", plain), (
             re.search(r"\b[Ss]ections? \d|\bAppendix [A-G]\b|\b(Table|Figure) \d", plain)
@@ -2369,13 +2410,10 @@ def test_reader_depth_anchors_are_all_present():
 def test_simplifying_assumptions_are_named_where_made():
     """R-6: the named assumptions of the supervisor's rule appear in Methods."""
     methods = _section("Methods")
-    for marker in (
-        "One term",
-        "Sharp weights",
-        "analyst chooses",
-        "Small $K$",
-        "Log-affine",
-        "which is what log-convex means here",
+    for marker in (  # WP55: the list became sentences beside the procedures that make them
+        "analyst chooses $K$",
+        "sharp weights",
+        "A4, log-affine conditioning",
     ):
         assert marker.lower() in methods.lower(), marker
 
@@ -2682,16 +2720,16 @@ def test_every_figure_and_table_is_referenced_from_the_text():
 
 def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
     """G-4, C-1: Level 1 (descent), Level 2 (numerical stationarity) and Level 3 (conditional
-    local optimality) are named; Level 1 is a Derived block with its script (L15)."""
+    local optimality) are named; Level 1 is a Let-Assume-Then block with its proof pointer (L15)."""
     text = _section("Results")
     for name in ("Level 1, descent", "Level 2, numerical stationarity",
                  "Level 3, conditional local optimality"):  # fmt: skip
         assert name in text, name
     block = next(b for b in _blocks() if "(L15)" in b[1])
-    assert block[2] == "thm-descent" and "**Derived.**" in block[3]
-    for hypothesis in ("each term refit by", "unpenalized", "the soft maximum over all rows"):
+    assert block[2] == "thm-descent" and block[3].startswith("Let ")
+    for hypothesis in ("refit by $f_k$", "unpenalized", "the soft maximum over all rows"):
         assert hypothesis in block[3], hypothesis
-    assert "lemma_15_descent.py" in text
+    assert "Appendix B, L15" in text  # the proof pointer; the script itself is Appendix B's
     abstract = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])["abstract"]
     assert "descent" not in abstract  # R-38: the abstract does not carry the three levels
 
@@ -2718,13 +2756,11 @@ def test_the_claims_of_c1_have_their_true_basis():
     methods = _section("Methods")
     assert "by construction" in methods and "leaves the terms unchanged" in methods
     assert not re.search(r"unchanged \(\{prf:ref\}`thm-extension`\)", methods)
-    results = _section("Results")
-    assert (
-        "recovered none of the 60 planted terms (three on each of twenty tables of 400 rows)"
-        in results
-        and "D.13" in results
+    assert (  # the numbers are Appendix D.13's (the table below); Methods keeps the one sentence
+        "refitting a term on its own rows alone does not recover planted terms" in methods
+        and "D.13" in methods
     )
-    assert "ill-posed" not in results  # what D.13 observed, not a verdict
+    assert "ill-posed" not in methods  # what D.13 observed, not a verdict
     own = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit")
     text = _out_text(own)
     assert text == str(generate_results.own_rows_refit())
@@ -2990,7 +3026,8 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
     """(1) The set is the support of the exact-maximum fit; the figures say so and mark it."""
     text = _markdown(_nb(PAPER_NB))
     definition = text.split("prf:definition} The n-lemma", 1)[1].split(":::", 1)[0]
-    assert "support (exponents above $10^{-9}$) of the exact-maximum" in definition
+    assert "support of the exact-maximum" in definition and "10^{-9}" not in definition  # WP55
+    assert "above $10^{-9}$ in the exact-maximum fit" in _section("Methods")
     assert "participation threshold ($10^{-3}$)" in _section("Methods")
     assert "def-nlemma" in _section("Methods")
     # fig-regimes-caption left with Figure 9 at the supervisor's word "Cut to a pointer" (S-3,
@@ -3067,8 +3104,10 @@ def test_generated_tables_do_not_move_under_platform_perturbation(tmp_path):
 
 def test_cr3_the_target_and_the_band_carry_their_reason_and_the_sensitivity_holds():
     """(3) One sentence each, with a pointer to D.5, which shows the sets do not change."""
-    assert "10 percent here" in _section("Methods") and "Appendix D.5" in _section("Methods")
-    assert "weighs within a factor $e$" in _section("Definitions")
+    assert "about a tenth, by convention" in _section("Methods") and "Appendix D.5" in _section(
+        "Methods"
+    )
+    assert "weighs within a factor $e$" in _section("Methods")  # WP55: with the temperature rule
     table = _cell_out(SUPPORT_NB, "tab-D-sensitivity_variants")
     for regime in ("cubesat-primary", "cubesat-stock"):
         block = table.split(f"Dataset {regime}:", 1)[1].split("Dataset cubesat", 1)[0]
@@ -3260,20 +3299,16 @@ def test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16():
 
 
 def test_cr12_every_hypothesis_label_is_worded_or_explained():
-    """(12) The F and I labels carry their words where first used (A is worded in section 3, R in
-    section 5)."""
+    """(12) The I labels carry their words where first used in the results (A is worded in
+    Sections 3 and 5, R beside its result; the F labels and I4 live in Appendix B since WP55 took
+    the sketches out of the main text)."""
     results = _section("Results")
     for label, words in {
         "I10": "first-order conditions", "I11": "convex on every line is convex",
-        "I5": "moment generating functions", "F10": "the maximum is attained",
-        "I4": "log-sum-exp of affine", "F12": "the minimum is attained",
-        "I9": "Cauchy-Schwarz", "I8": "first-order convexity",
-        "F5": "the maximum is attained", "I6": "implies", "A8": "a partition into nonempty cells",
+        "I5": "moment generating functions", "I9": "Cauchy-Schwarz",
+        "I8": "first-order convexity", "I6": "implies", "A8": "a partition into nonempty cells",
     }.items():  # fmt: skip
         first = re.search(rf"\b{label}\b", results)
-        if not first and label in ("F5", "F10", "F12"):  # the preamble says what the F codes are
-            assert "F, a fallback hypothesis a script declares" in results
-            continue
         assert first, label
         assert words in results[max(first.start() - 60, 0) : first.start() + 160], (label, words)
 
@@ -3711,13 +3746,6 @@ def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():
     assert worse == [n for n, v in loads if v.startswith("-")]
     caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-chart-level-caption"))
     assert "the axis names the metrics it improves" in caption and "to the right" not in caption
-
-
-def test_a_step_range_link_into_the_supporting_material_says_where_it_leads():
-    """P5 found that 'Appendix B, L4.14 to L4.24' did not say it leaves the article."""
-    methods = _section("Methods")
-    assert "{ref}`Appendix B, supporting material, L4.14 to L4.24 <appendix-b>`" in methods
-    assert "Appendix B, L4.14 to L4.24" not in methods
 
 
 # ---- WP39 D-3: the decision generator -----------------------------------------------------------
@@ -4260,10 +4288,11 @@ def test_the_executive_table_caption_and_the_shortlist_say_their_rules():
 
 
 def test_terms_are_numbered_by_share_and_the_estimator_orders_them_so():
-    """62: the numbering rule is stated at Definition 7; the estimator and its test carry it."""
+    """62: the numbering rule is stated with the thresholds and ties (Section 5, WP55); the
+    estimator and its test carry it."""
     assert (
         "Terms are numbered by share, largest first (ties by cell size, then by the first "
-        "exponent)" in _cell_src("sec-definitions-2")
+        "exponent)" in _cell_src("sec-methods-thresholds")
     )
     src = (ROOT / "src" / "hyperbolic_trade_space" / "estimator.py").read_text(encoding="utf-8")
     assert "descending term share, ties by cell size" in src
@@ -4313,7 +4342,6 @@ def test_a_zero_metric_row_is_left_out_without_a_warning():
         warnings.simplefilter("error")
         est = HyperbolicTradeSpace(temperature=20.0).fit(Xz)
     assert est.support_weights_[-1] == 0.0
-    assert "without a warning" in _cell_src("sec-methods")
 
 
 def test_the_improvement_factor_for_a_small_exponent():
@@ -4351,7 +4379,7 @@ def test_the_one_term_sentence_claims_the_unique_optimum_and_not_r1():
     with a positive normal) cannot hold with zero exponents and is not claimed for the case."""
     text = " ".join(_cell_out(PAPER_NB, "num-k1").split())
     assert "R1" not in text and "The exact-maximum optimum is one point" in text
-    assert "R1" in _section("Methods")  # the condition is a hypothesis of the lemmas
+    assert "R1" in _section("Results")  # the condition is stated beside the lemma that uses it
 
 
 def test_d19_says_the_nondominated_sets_of_the_548_and_the_shortlist_differ():
@@ -4458,19 +4486,19 @@ def test_the_statements_of_the_theorems_carry_what_their_scripts_prove():
     descent = " ".join(_cell_src("res-L15").split())
     assert "$K^N+1$ iterations" in descent and "not a practical stopping guarantee" in descent
     cor = " ".join(_cell_src("res-L20").split())
-    assert "the rows need not be independent" in cor and "A10 is not used" in cor
+    assert "A10 is not used" in cor
+    assert "the rows need not be independent" in _cell_src("noise-asm")
     assert (
         "\\delta=-(PCP)^+P\\Sigma w" in cor and "\\Delta w" not in cor and "\\lambda_{\\min}" in cor
     )
     cert = " ".join(_cell_src("res-L17").split())
-    assert "a check of the formulas and not part of the derivation" in cert
     assert "\\mathrm{blockdiag}" in cert and "not in $e^{w}$" in cert
     ext = " ".join(_cell_src("res-L10").split())
     assert "s_k=w_k\\cdot u-\\beta_k$ the score on term $k$" in ext and "x_k=" not in ext
     gap = " ".join(_cell_src("res-L12").split())
     assert "Frank-Wolfe gap" in gap and "f_k^*=\\min_{w\\in\\Delta}f_k(w)" in gap
     defs = _cell_src("sec-definitions")
-    assert "c_k" not in defs and "every $K=2$ figure included, are sharp" in defs
+    assert "c_k=e^{-\\kappa\\beta_k}" in defs and "a_k=\\kappa w_k" in defs  # WP55: the GP bridge
 
 
 def test_the_polish_and_the_unused_lemma_are_named_in_appendix_b2():

@@ -185,17 +185,18 @@ def _anchor(number: int, index: int = 0) -> str:
 
 @cache
 def _box_hypotheses_by_lemma() -> dict[int, str]:
-    """The hypotheses line of each box of the paper that ends its title with ``(Ln)``."""
+    """The hypotheses of each box of the paper that ends its title with ``(Ln)``: the "Assume ..."
+    sentence of its "Let ... Assume ... Then ..." statement (WP55)."""
     cells = json.loads((ROOT / "paper" / "paper.ipynb").read_text(encoding="utf-8"))["cells"]
     out: dict[int, str] = {}
     for cell in cells:
         text = "".join(cell["source"])
-        m = re.match(
-            r":::\{prf:\w+\} .*\(L(\d+)\)\n:label: .*\n\*\*Derived\.\*\* \*Hypotheses\.\* (.*)",
-            text,
-        )
-        if m:
-            line = re.sub(r"\{prf:ref\}`[^`]*`", "an earlier result", m.group(2))
+        m = re.match(r":::\{prf:\w+\} [^\n]*\(L(\d+)\)\n:label: [^\n]*\n(.*?)\n:::", text, re.S)
+        if not m:
+            continue
+        a = re.search(r"\bAssume (.*?)\. Then\b", " ".join(m.group(2).split()))
+        if a:
+            line = re.sub(r"\{prf:ref\}`[^`]*`", "an earlier result", a.group(1))
             line = re.sub(r"\{ref\}`([^<`]*?)\s*<[^>]*>`", r"\1", line)
             line = re.sub(r"<!--.*?-->", "", line).strip().rstrip(".")
             out.setdefault(int(m.group(1)), line)

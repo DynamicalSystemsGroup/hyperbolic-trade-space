@@ -1955,3 +1955,27 @@ section = "AI acknowledgement and Reproducibility"
 words_added = 150
 job = "states what AI assistance did and did not do, how the derivations are checked, and how every figure, table and number is reproduced and the pipeline adapted to a table of one's own"
 reader = "the reader who wants to rerun the work or judge how it was made"
+
+# WP55: the mathematics builds up (Section 3's fitting problem, Sections 4 to 6). The Derived and Hypotheses labels,
+# the sketches and the Script boxes leave Results; the several-term algorithm and the thresholds move to Methods.
+
+[[cut]]
+date = "2026-11-15"
+section = "Results"
+words_removed = 853
+no_longer_did = "stated each result twice, as a Derived block with a hypotheses line and again as a sketch and a script box (the proofs and scripts are Appendix B's); previewed the next blocks in sentences that said what they say; the preamble on the badges; the open questions Q1 to Q4 (now work-packages/review/open-questions.md, OQ-5 to OQ-8); the algorithm subsection, which moved to Methods"
+authority = "WP55 (supervisor, 2026-11-15, ~12:50 EST: build structure, define requirements, define terms, internally compatible, no metanarration; the Boyd lineage's 'Let, Assume, Then' with the proof in the appendix); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Definitions"
+words_removed = 195
+no_longer_did = "carried the n-lemma's three thresholds, the jitter check, the solver's tie-breaking, the within-factor-e bound on the band, the numbering of terms by share and the mean aggregation inside definitions (now in Methods), and pointed forward to results and sections"
+authority = "WP55 (supervisor, 2026-11-15, ~12:50 EST; the register's rule for Section 4: no threshold conventions or solver behaviour inside a definition, no forward reference); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Methods"
+words_added = 522
+job = "states the one-term fit as Section 3's problem, the thresholds and ties moved from the n-lemma definition, the assumptions A4, A6 and A8 each displayed where used, the several-term alternation as a numbered heuristic with its three levels of guarantee as certificate, and the estimator's code names (the algorithm text moved here from Results, 853 words left that section)"
+reader = "the reader at calculus, linear algebra and convex optimization who follows Section 3's kit into the method"
