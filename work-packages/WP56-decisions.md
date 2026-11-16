@@ -150,3 +150,14 @@ C472 and C800 retired; C967 to C971 added); Section 2 names Appendix G. The pros
 Section 8 text ("The case's two stakeholders: the operator ... the sponsor ...") and contradicts the three-stakeholder
 mapping; that is the second unit's rewrite, on these landed figures. The driver accepts phase two as proxy pending the
 unit's final commit and the landing checks.
+
+## The figure phase landed (22:36 EST)
+
+Branch `wp56` at 336ab32 merged into `dev` at c1a886d; CI 43798043201. The driver's checks on the branch: lint, format,
+lock and the proof map clean; derivations and the data of record untouched; attribution grep empty. The driver's
+fast run in the unit's worktree ended "4 failed, 2081 passed, 3 errors" and the chain merged on it (the pipeline's
+status was read, not pytest's; recorded in the driver log). The rerun on dev's head: 2,087 passed, one failure,
+`test_every_paper_key_is_a_label_of_the_built_paper`, which reads the local `paper/_build` of 11:15 against the
+renamed label `fig-tension`; after a fresh build the test passes. The unit's own runs: fast 2,088, slow paper 28.
+The worktree's other failures were not reproduced on dev and are left to CI's verdict. The second unit now rewrites
+the prose of Sections 7 to 9 on these figures.
