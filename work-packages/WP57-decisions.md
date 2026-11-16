@@ -95,3 +95,12 @@ rebased tree, exit codes captured: fast suite 2,091 passed; slow paper tests wit
 register 21; R-1 and R-4's named tests 4 passed; mkdocs built; the supplement check clean. No attribution line on
 either commit. CI 43833554284. For WP57e: D runs D.3 to D.19 with gaps. For WP58: `decision()`'s retired picks and
 `recovery_sentence` (OQ-14).
+
+## WP57d approved as proxy (05:03 EST)
+
+`WP57d-scope-of-work.md` (Appendix E as "Assumptions, limitations and open questions" in the map's three parts, the
+assumptions table generated from `derivation/axioms.py`, the nine queue lines placed, every open OQ listed once;
+Appendix H by the map: the Job block and H.1's self-description cut, H.5 to the repository unless a sentence needs it)
+is approved by the driver under his mandate, after WP57c's landing at 772e343. Ids from C997. One unit on branch
+`wp57d`, dispatched when the regime rename lands and releases the supporting notebook; the driver soft-confirms E and H
+on its captures before landing.
