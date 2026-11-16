@@ -118,3 +118,10 @@ towards the public site is the merge of `paper` into `dev`, then of `dev` into `
 script; the paper's event-driven workflow on its branch; the mode and the slot; the docs' key manifest; the test gate;
 the records; the build plan for three units) is approved by the driver under his mandate on his six answers. One unit
 on branch `wp65`; the specification goes to his read with the items that are his.
+
+## His approval of the plan (15:31 EST, verbatim)
+
+"i approve this plan. do you have what you need from me on that?"
+
+The plan approved: the design the six answers fix (the driver's reading above) and the stages after it (WP65 design,
+WP66a to c build, WP67 quality control, WP68 integrate with the first merge to `main`, WP69 the cascade review).
