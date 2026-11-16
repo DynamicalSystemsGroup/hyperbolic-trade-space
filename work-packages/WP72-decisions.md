@@ -36,3 +36,10 @@ vector. Neither becomes an example on the docsite: the spike's tables live in `w
 later package that exposes the estimator demonstrates it on the wheat table or another non-financial dataset. The
 unit was dispatched with the Uniswap pointer and the diagram's reading before the Balancer message; the Balancer case
 is added to its brief if the hand-back lacks it.
+
+**His refinement (16:13 EST, verbatim):** "financial examples are okay but not crypto. we're trying to shed an
+association with being a crypto firm. finance is okay but needs to be conventional"
+
+The driver's reading, for every public surface (the docsite, the paper, the README, the examples): no
+crypto-economic example or dataset; conventional finance is admissible (a public equities, bond, insurance, banking
+or corporate-finance table); the market-maker tables stay test cases in the spike's record only, named as such.
