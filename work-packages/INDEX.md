@@ -73,6 +73,7 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 59 | Conditioning and feature engineering on the three public cases (spike) | landed, accepted by the driver, his read pending | a2533ca | a9cfb60 | in place until his read; `examples/*/variants.py` stay (code) |
 | 60 | The three example pages | landed, his read pending | 022c4d2 | 65b0683 | in place until his read; then in history |
 | 61 | The work-packages directory indexed and thinned | landed | 48d1e39 | a1a73ab | in place (the protocol) |
+| 63 | The examples with an arc (spike: a template, the four example pages redrafted) | scoped and approved as proxy; unit dispatched | 059132d3 | not landed | in place (not landed or in flight) |
 
 ## Notes, spike outputs and supporting content removed from the tree
 
