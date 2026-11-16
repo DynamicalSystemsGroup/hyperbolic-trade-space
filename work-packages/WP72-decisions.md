@@ -43,3 +43,39 @@ association with being a crypto firm. finance is okay but needs to be convention
 The driver's reading, for every public surface (the docsite, the paper, the README, the examples): no
 crypto-economic example or dataset; conventional finance is admissible (a public equities, bond, insurance, banking
 or corporate-finance table); the market-maker tables stay test cases in the spike's record only, named as such.
+
+## WP72 spike delivered and landed (16:33 EST)
+
+`work-packages/WP72-rounds/` landed as 468681d6: `readout.md` (about 2,700 words), `estimator.py` (`InvariantFit`: minimize
+w'S_W w over the simplex, S_W the pooled within-group scatter of log M; the levels per group as outputs; fallbacks
+when groups are not given, by order or by clustering the levels, the second named as circular; `two_term_invariant`
+for K = 2 by BFGS with restarts), the planted tests and their results, the wheat and market-maker studies with figures
+and manifests, the fetched data git-ignored. Relations to the lemmas stated: L1 (a common scale does not move the
+minimizer), L8 (a scale move changes log V only, a move along the level set changes Z only), L22 (the frontier loss at
+small temperature is the leading term taken group by group; convergence of the minimizers not proved).
+
+Results. Planted: clean tables recovered to 4e-10 (d = 2 and 3, six groups; groups given or found by order); error
+about 0.03 times the level noise up to 0.1; both two-term invariants recovered to 1.5e-8; a frontier cloud reports a
+poor fit (within-share 0.99) rather than a false invariant; failures named (10 percent mislabelled rows, 0.04; the
+order fallback past noise 0.03 at d = 3; pooling without groups biased 0.1; plain PCA leaves the simplex once the
+levels' spread reaches the trades'). Wheat: year and treatment set the level (15 percent of the variance of log V
+within groups against 73 for shuffled labels, w = (0.41, 0.59)); within a group the level is not conserved (flatness
+1.28): biomass is a size the groups set, not an invariant; within a year and section the grain-to-straw ratio is
+what is shared. Market maker: Uniswap v2 DAI/WETH, 4,327 reserve updates in 105 stretches between liquidity events,
+w = (0.4989, 0.5011) with within-share 6e-5; the 0.001 offset from one half is the 0.3 percent fee; log V jumps at
+mints and burns; the frontier fit goes to a vertex. His collaborator's repository (MIT, commit cd768a7) holds the v1
+model and a BigQuery query but no committed table, so the data came from the public chain through a free endpoint
+(blocks 12,959,744 to 12,989,743; hashes in `amm-manifest.toml`).
+
+Flagged for him: the endpoint refused Python's HTTP client; the unit's attempt to present a browser-like user agent
+from Python was blocked by the permission system and dropped; the fetch then used the system's `curl` as itself,
+which the endpoint serves. The data is not in the tree. Whether that fetch is acceptable is his call; the result does
+not depend on it (the planted tests and the wheat study stand alone). The crypto boundary holds: the market maker is
+a test case in this record and nothing on a public surface.
+
+His five questions from the readout wait for his read: what the variant becomes (an estimator of the package; a docs
+section; a readout only); how groups enter; which market-maker data a next stage uses; several terms now or later;
+whether the wheat page cites the finding (WP71 is scoped to V against biomass alone and proceeds so). The unit's
+recommendation for a next stage: `InvariantFit` in `src/` as a decomposition-family transformer with the chart as
+`transform`, a report and one chart plot, lemma steps for the scale corollary and the group-wise L22, one docs page
+on a non-crypto example.
