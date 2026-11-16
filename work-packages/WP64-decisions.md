@@ -185,3 +185,29 @@ owner added later can approve). All three questions closed; WP66a is scoped from
 path of Q2, failure detection and the clean-up script; `test.yml` without the paper tests; `pages.yml` removed; the
 release checks and tests; the records of G6 the unit owns) is approved by the driver under his approval of the plan
 and his three answers. Dispatched on `wp66a`; lands last of the three.
+
+## WP66b landed (16:18 EST)
+
+The paper's release control model landed as ea82a15e (the unit's commit rebased onto dev, plus the driver's one-line
+register fix: C919 names the split test). `paper.yml` (push to `paper` and `qc/paper/**` builds and runs every paper
+test; a `paper-*` tag publishes the HTML tarball and the key manifest as a GitHub release, drafts published last, the
+`paper-release` environment on the publish job per his third answer; the clean-up on failure); `paper/mode.toml` in
+`abstract`; `paper/paper-keys.json` (121 keys, canonical) and `paper/build_keys.py`; `scripts/paper_mode.py` and
+`scripts/paper_pin.py`; `paper/pin_links.py`; `paper/CHANGES.md`; the `paper` marker deselecting 748 paper tests from
+the software gate unless `HTS_PAPER_TESTS=1`; the register, vocabulary and residual tests split by surface with
+`--surface` and `--views`; `tests/test_paper_model.py` (51 tests); `work-packages/release-checklist-paper.md`. Eleven
+choices where the specification was silent in `WP66b-rounds/notes.md`, accepted.
+
+The driver's independent run on the rebased branch, exit codes captured: lint, format, lock, the YAML parse, vocabulary
+on the software surface (0 new), the mode check, the key check, `test_paper_model` 51, the register test, the fast
+suite 1,924 passed with no paper test collected, mkdocs; the paper tests under the switch 230 passed and one failed,
+`test_paper_residual_counts_do_not_rise`, because `scripts/residuals_baseline.json` was taken at c0fe11b and 52 paper
+and appendix counts have risen since: a paper-gate item, not a software-gate one, left for the paper branch (retake
+the baseline with his read, or accept the rises row by row). CI dispatched on dev.
+
+The unit's requests, applied by the driver at the other units' landings since messages to running units were declined:
+WP66c removes `test_every_paper_key_is_a_label_of_the_built_paper` and `test_paper_theme_is_pinned_to_a_commit` from
+`tests/test_site.py` (now in `test_paper_model.py`) and may import `scripts.paper_mode` and read the manifest; WP66a
+keeps `test.yml`'s attribution block byte-identical to `paper.yml`'s, makes `release_cleanup.py` accept paper tags, and
+adds `scripts/paper_mode.py` and `scripts/paper_pin.py` to amendment 29's ownership. His first answer's `blob/dev`
+links are a paper change (the two generator constants and a re-execution of both notebooks) for the paper branch.
