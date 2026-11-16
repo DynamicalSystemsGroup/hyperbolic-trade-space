@@ -102,8 +102,8 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   the case. Only A1 to A3 may return here if WP55 follows the spike's recommendation.
 - **Style:** a quick start for reading the mathematics; nothing fancy or novel; the minimum kit so Section 4 reads.
 - **State:** read by him once; the build-up written after his last comment, soft-confirmed by the driver on the
-  rendered page and landed with WP53 (da8d57a), *not yet read by him*; WP55 reshapes its fitting problem to the
-  lineage's template.
+  rendered page and landed with WP53 (da8d57a); the fitting problem in the lineage's template soft-confirmed and
+  landed with WP55 (98d9753), *not yet read by him*.
 
 ## Section 4, Definitions
 
@@ -113,7 +113,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   first, then formally, as the GP tutorial does.
 - **Must not hold:** forward references to later definitions; threshold conventions and solver behaviour inside a
   definition (the n-lemma's thresholds belong in Methods); gap numbers and appendix pointers.
-- **State:** open (WP55).
+- **State:** soft-confirmed by the driver on the rendered page, landed with WP55 (98d9753), *not yet read by him*.
 
 ## Section 5, Methods
 
@@ -122,14 +122,14 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   alternation with its guarantees; the temperature choice; conditioning (stage 2) as the analyst's step; the
   estimator's names as the WP42 build renamed them (loss, trade_off_report, plot_association).
 - **Must not hold:** results restated; caveats about what is not proved (the ledger).
-- **State:** open (WP55).
+- **State:** soft-confirmed by the driver on the rendered page, landed with WP55 (98d9753), *not yet read by him*.
 
 ## Section 6, Results
 
 - **Holds:** theorems as "Suppose ... Then ...", each with its lemma label and a one-line proof pointer to
   Appendix B; Derived/Hypotheses labels and Script boxes gone from the main text; the open questions Q1 to Q4 moved to
   the ledger.
-- **State:** open (WP55).
+- **State:** soft-confirmed by the driver on the rendered page, landed with WP55 (98d9753), *not yet read by him*.
 
 ## Section 7, Case construction
 

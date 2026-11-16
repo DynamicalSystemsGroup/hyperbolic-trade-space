@@ -20,3 +20,12 @@ style spike reads his papers before WP55 is scoped; WP56's prework reads OpenMDA
 ## Approval as proxy (16:18 EST)
 
 Approved by the driver under the autonomous mode of 2026-11-15: WP55 executes on wp55 from dev at c98044d (WP54 landed), one unit, the driver soft-confirms each of the four sections on screenshots against `paper-requirements.md`, the lemma scripts and the proof map untouched (R-5).
+
+## Landed (19:13 EST)
+
+Landed on `dev` at 98d9753 after the driver's review on the rendered page (Sections 3, 4 and 6 soft-confirmed at
+b87efdd; Section 5 returned with seven revisions and soft-confirmed at 41c04c7: results, ledger pointers and
+implementation detail out of Methods, the "Simplifying assumptions" paragraph dissolved, 1,414 to 1,156 words).
+Evidence: lint, format, lock, residuals, vocabulary, mkdocs and the proof map (22 files, 549 steps) green; notebooks
+re-executed (only Appendix F's checkout hash moved); fast suite 2,085 passed; slow paper tests 27 passed; CI
+43778944233 dispatched. His read of Sections 3 to 6 is pending; the register holds their states.

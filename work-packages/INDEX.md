@@ -66,7 +66,7 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 52 | The governance lineage on the history page (research spike, then a proposal) | landed, accepted | d63e7a6 | 03790a0 | in history: `git show 03790a0:work-packages/<file>` |
 | 53 | Integrate his review batch of 2026-11-15 (abstract, Sections 1 to 3) | landed, his read pending | 0dd4e79 | da8d57a | in place until his read; then in history |
 | 54 | The paper's skeleton (Section 7 into Future work; AI acknowledgement and Reproducibility) | landed, his read pending | 65624d3 | e435e4a | in place until his read; then in history |
-| 55 | The mathematics builds up (Section 3's fitting problem, Sections 4 to 6) | in flight (Sections 3, 4, 6 soft-confirmed; Section 5 in revision) | 022c4d2 | not landed | in place (not landed or in flight) |
+| 55 | The mathematics builds up (Section 3's fitting problem, Sections 4 to 6) | landed, his read pending | 022c4d2 | 98d9753 | in place until his read; then in history |
 | 56 | Sections 7 to 9 from the current model; the decision-maker's ternary | in flight (approved as proxy; unit 1 on the figures and the model attribute) | 37ed0b9 | not landed | in place (not landed or in flight) |
 | 57 | The appendices (a planning package and its children) | planning (the map approved as proxy, read-only; children after WP56) | c89843a | not landed | in place (not landed or in flight) |
 | 58 | The docsite, root page and README swept; the reviewer's guide at the new head | directed (no documents yet) | - | not landed | in place (not landed or in flight) |
