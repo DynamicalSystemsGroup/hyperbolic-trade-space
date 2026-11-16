@@ -152,3 +152,11 @@ A fourth drift (`docs/code-owners.md` asking `dev` for a pull request) is correc
 his and wait for his return (posed one at a time): the review rule on `main` for a sole code owner; what a merge
 without a new version does; whether a paper tag's publication waits for his approval. WP66c and WP66b can start
 before those answers (WP66b with the paper-release environment as a one-line switch); WP66a waits on the second.
+
+## WP66b and WP66c approved as proxy (15:48 EST)
+
+`WP66b-scope-of-work.md` (the paper model) and `WP66c-scope-of-work.md` (the composer, the abstract page and the
+docs' keys) are approved by the driver under his approval of the plan; each unit's contract is its section of the
+specification and the build plan's file set, disjoint from the other's. Both dispatched in parallel on `wp66b` and
+`wp66c`; landing order b then c. WP66a (the software model) waits on his second question (what a merge without a new
+version does).
