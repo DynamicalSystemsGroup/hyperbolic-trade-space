@@ -309,7 +309,8 @@ def fleet_refit_sentence() -> Md:
 
 
 def participation_sentence() -> Md:
-    """The traded metrics that enter no contending set, and why (Appendix C.5).
+    """The traded metrics that enter no contending set, and why (Appendix D.3, under the terms
+    whose summed pair it names; the one-axis threshold is Appendix C.5's).
 
     A metric participates when it is in the contending set of some term of some fit at K = 1 to
     the deepest K the case fits, in either regime. A metric that never does is read with its
@@ -357,7 +358,7 @@ def participation_sentence() -> Md:
         f"carry no exponent at the fit temperature; {_NUMBER_WORDS.get(len(later), len(later))} "
         f"of them ({_and(later)}) enter a contending set at K = 2 or 3 or in the other regime. A "
         f"zero exponent says the metric does not set the surface in this sample; a near-collinear "
-        f"pair is read summed ({_D3})."
+        f"pair is read summed."
     )
 
 
@@ -377,11 +378,11 @@ def _scaler_variant_sentence(study) -> str:
     base_set = {m.strip() for m in base["contending set"].split(",")}
     rob_set = {m.strip() for m in rob["contending set"].split(",")}
     if rob_set == base_set and rob["largest exponent at"] == base["largest exponent at"]:
-        return " The robust scaler leaves it unchanged."
+        return " The robust scaler leaves the K = 1 contending set unchanged."
     return (
-        f" The robust scaler changes it: {len(rob_set)} metrics, {len(rob_set & base_set)} of the "
-        f"baseline's {len(base_set)} among them, the largest exponent on "
-        f"{rob['largest exponent at']}."
+        f" The robust scaler changes the K = 1 contending set: {len(rob_set)} metrics, "
+        f"{len(rob_set & base_set)} of the baseline's {len(base_set)} among them, the largest "
+        f"exponent on {rob['largest exponent at']}."
     )
 
 
@@ -456,7 +457,8 @@ def temperature_variants_sentence(study) -> Md:
     """What the robust scaler does to the K = 1 contending set, and what is not assessed at K = 1
     (Appendix D.5's scaler row; the movement of an exponent vector is D.15's, at K = 2).
 
-    Left Section 7 at WP56 (``work-packages/WP56-rounds/moved-to-appendix.md``, target D.5).
+    Left Section 7 at WP56; printed in Appendix D.5 under the sensitivity table
+    (:func:`temperature_variants`).
     """
     scaler = _scaler_variant_sentence(study).strip()
     return Md(
@@ -593,6 +595,11 @@ def terms_sentence(study, fits) -> Md:
     )
 
 
+def temperature_variants() -> Md:
+    """Appendix D.5's sentence on the primary regime, from the data of record (one call)."""
+    return temperature_variants_sentence(case.load_study("primary"))
+
+
 def k_temperatures_sentence(study, fits) -> Md:
     """Each K's own fit temperature and band, selected by the one rule, and which band the figures
     and the association reading use (the K = 1 band at every K, gap G-9)."""
@@ -605,6 +612,13 @@ def k_temperatures_sentence(study, fits) -> Md:
         f"tau = {_and(taus)} at K = {_and(Ks)}, with bands 1/tau of {_and(bands)}. The figures "
         f"and the association reading use the K = 1 band at every K (gap G-9, {_E})."
     )
+
+
+def k_temperatures() -> Md:
+    """Appendix D.15's sentence on each K's fit temperature, primary regime (one call)."""
+    import generate_results as gr
+
+    return k_temperatures_sentence(gr._study("primary"), gr._fits("primary"))
 
 
 def certificate_sentence(fits) -> Md:
@@ -801,7 +815,7 @@ def predict_check_sentence(table, reg) -> Md:
 
 
 def predict_reading(table, reg) -> Md:
-    """What propose, predict, check showed and did not, for the Discussion.
+    """What propose, predict, check showed and did not (Appendix D.10, under its table).
 
     Reads the same table as :func:`predict_check_sentence`, and the recorded predictions and the
     measured check designs of the spec for what the proposals are: how many distinct
@@ -1171,63 +1185,12 @@ def decision_sentence(d: Decision) -> Md:
     )
 
 
-_ARCSEC_PER_DEG = 3600.0
-
-
-def tension_sentence(study, fits, d: Decision) -> Md:
-    """Section 8's sentence on the pick's tension: the design that balances the operator's pointing
-    error and the sponsor's fleet cost, read in the attributes' own units on the K = 2 fit.
-
-    The tension is ``design_tensions`` at that design (from the data), in USD per arcsecond; the
-    percent per percent is the same slope scaled by the attributes' own ratio, and the other term's
-    value is the formula at the same design on the other term of the fit. Every number is computed
-    here from the fit and the table, none typed; the quantities are not in the five-regeneration
-    stability study, so they print at two figures from the data of record.
-    """
-    from hyperbolic_trade_space import design_tensions
-
-    est = fits[case.CASE_K].estimator
-    assert est.exponents_.shape[0] == 2, "premise of the sentence: it names the other term"
-    names, attrs = list(study.names), list(study.spec.attributes)
-    pe, fc = names.index("pointing error"), names.index("fleet cost")
-    assert attrs[pe] == "pointing_error_deg" and attrs[fc] == "fleet_cost_usd", attrs
-    pick = d.picks["between"]
-    idx = int(np.flatnonzero(study.feasible["design_id"].to_numpy() == pick["design_id"])[0])
-    raw = study.feasible[attrs].to_numpy(float)[idx : idx + 1]
-    pre = study.conditioner.named_transformers_["metrics"]
-    dt = design_tensions(est, study.M[idx : idx + 1], preconditioner=pre, attributes=raw)
-    own = int(dt.term[0])
-    ratio = (raw[0, pe] + pre.shift_[pe]) / (raw[0, fc] + pre.shift_[fc])  # x_i / x_j
-    t_own = dt.attribute_by_term[0, own, pe, fc]  # USD per degree
-    t_other = dt.attribute_by_term[0, 1 - own, pe, fc]
-    percent = abs(t_own) * ratio  # percent of fleet cost per percent of pointing error
-    cfg = f"{int(pick['fleet_size'])} {pick['wheel_class']}-wheel, {pick['st_grade']}-tracker"
-    per_arcsec = lambda t: f"{t / _ARCSEC_PER_DEG / 1e6:+.1f}"  # noqa: E731  (M USD)
-    return Md(
-        f"At the picked fleet ({cfg} satellites) the surface's tension between the operator's "
-        f"pointing error and the sponsor's fleet cost is {per_arcsec(t_own)} M USD "
-        f"per arcsecond: along the surface, one percent more pointing error goes with "
-        f"{percent:.1f} percent less fleet cost. It is a rate at that design with the other "
-        f"metrics held, not the price of the better tracker, and on the other term of the fit it "
-        f"is {per_arcsec(t_other)} M USD per arcsecond."
-    )
-
-
-def decision_detail_sentence(d: Decision) -> Md:
-    """What the fit adds to a two-measure view, for Appendix D: the nondominated designs over all
-    six-pass designs and how many of them lie in the shortlist."""
-    from generate_model import DATASET_LABELS
-
-    return Md(
-        f"Dataset {DATASET_LABELS['primary']}: nondominance depends on the set it is read in. Over "
-        f"all {_count(d, 'six_pass')} designs that pass the six requirements, "
-        f"{_count(d, 'nondominated')} are nondominated on pointing error and fleet cost, and "
-        f"{_count(d, 'nondominated_in_band')} of them lies within the band of both fits, so the "
-        f"others lie outside the band of at least one fit. Among the shortlist's "
-        f"{_count(d, 'working')} alone (the designs of the six that lie in that band), "
-        f"{_count(d, 'nondominated_working')} are nondominated on pointing error and fleet cost: "
-        f"the two sets differ."
-    )
+def proposals_reading() -> Md:
+    """Appendix D.10's reading of the proposals, primary regime, from the data of record (one
+    call)."""
+    study = case.load_study("primary")
+    reg = case.fit_regressor(study)
+    return predict_reading(case.predict_check(study, reg), reg)
 
 
 def decision_baseline_sentence() -> Md:
@@ -1272,15 +1235,10 @@ def decision_table(d: Decision) -> Md:
     ))  # fmt: skip
 
 
-def _marks(r) -> str:
-    """Nondominated on pointing error and fleet cost, on pointing error and unit cost, or both."""
-    on = [n for n, k in (("fleet cost", "nd"), ("unit cost", "nd unit")) if r[k]]
-    return " and ".join(on)
-
-
 def decision_designs_table(d: Decision) -> Md:
-    """Appendix D's table: the shortlist ordered by fleet cost, exact, with the nondominated
-    designs (on pointing error and fleet cost) marked."""
+    """Appendix D's table: the shortlist ordered by fleet cost, exact, with each design's coverage
+    probability and the designs no other on the shortlist beats on both fleet cost and coverage
+    probability marked (the 17 of Section 8's decision sentence)."""
     from generate_model import DATASET_LABELS
 
     w = d.working
@@ -1292,17 +1250,18 @@ def decision_designs_table(d: Decision) -> Md:
         if ties
         else "Pointing error is printed to six decimals."
     )
+    cov = case.COVERAGE
     return Md(f"Dataset {DATASET_LABELS['primary']}. {digits}\n\n" + md_table(
         ["design", "wheel / tracker", "panel (m)", "battery (Wh)", "Kp", "Kd", "fleet",
-         "pointing error (degree)", "unit cost (USD)", "fleet cost (USD)", "level (K=2)",
-         "level (K=1)", "term 1 level (K=2)", "term 2 level (K=2)",
-         "nondominated on pointing error and"],
+         "pointing error (degree)", "unit cost (USD)", "fleet cost (USD)",
+         "coverage probability", "level (K=2)", "level (K=1)",
+         "nondominated on fleet cost and coverage probability"],
         [(int(r["design_id"]), f"{r['wheel_class']} / {r['st_grade']}",
           f"{r['panel_span_m']:.2f}", f"{r['battery_wh']:.0f}", f"{r['Kp']:.2f}",
           f"{r['Kd']:.2f}", int(r["fleet_size"]), f"{r['pointing_error_deg']:.6f}",
-          f"{r['unit_cost_usd']:,.0f}", f"{r['fleet_cost_usd']:,.0f}",
-          f"{r['log V K=2']:+.4f}", f"{r['log V K=1']:+.4f}", f"{r['term 1 level']:+.4f}",
-          f"{r['term 2 level']:+.4f}", _marks(r))
+          f"{r['unit_cost_usd']:,.0f}", f"{r['fleet_cost_usd']:,.0f}", f"{r[cov]:.3f}",
+          f"{r['log V K=2']:+.4f}", f"{r['log V K=1']:+.4f}",
+          "yes" if r["nd coverage"] else "")
          for _, r in w.iterrows()],
     ))  # fmt: skip
 
@@ -1310,8 +1269,3 @@ def decision_designs_table(d: Decision) -> Md:
 def decision_designs() -> Md:
     """Appendix D's table of the shortlist, computed from the data of record (one call)."""
     return decision_designs_table(decision())
-
-
-def decision_detail() -> Md:
-    """What the fit adds to a two-measure view, computed from the data of record (one call)."""
-    return decision_detail_sentence(decision())

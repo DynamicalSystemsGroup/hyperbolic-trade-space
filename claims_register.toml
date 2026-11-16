@@ -5362,63 +5362,6 @@ source = "WP35 wording unit"
 note = "The four conditions are printed as counts of the six tables of a cell, from RATES and the record's n (a share of 0.9 of six tables is 6 of 6, 0.1 is 0 of 6, 0.2 is 1 of 6); fix FW-6 and FW-7."
 
 [[claim]]
-id = "C609"
-fragment = "all {_count(d, 'six_pass')} designs that pass"
-file = "paper/generate_findings.py"
-anchor = "def decision_detail_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_detail_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 548: the feasible designs that pass all six requirements (D.17)."
-
-[[claim]]
-id = "C610"
-fragment = "{_count(d, 'nondominated')} are nondominated on pointing error and fleet cost, and"
-file = "paper/generate_findings.py"
-anchor = "def decision_detail_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_detail_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 11: the six-pass designs that no other six-pass design beats on both pointing error and fleet cost."
-
-[[claim]]
-id = "C611"
-fragment = "{_count(d, 'nondominated_in_band')} of them lies within the band of both fits,"
-file = "paper/generate_findings.py"
-anchor = "def decision_detail_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_detail_sentence",
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
-  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 1: of those 11, the ones within the band of both fits (the shortlist)."
-
-[[claim]]
 id = "C612"
 fragment = "the baseline regime (stock gains) has ... {thousands(len(study.feasible))} feasible designs,"
 file = "paper/generate_findings.py"
@@ -5468,7 +5411,7 @@ note = "Exact on the data of record (the baseline regime's counts are not among 
 
 [[claim]]
 id = "C616"
-fragment = "int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.6f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r['log V K=2']:+.4f}\", f\"{r['log V K=1']:+.4f}\", f\"{r['term 1 level']:+.4f}\", f\"{r['term 2 level']:+.4f}\", _marks(r))"
+fragment = "f\"{r['Kd']:.2f}\", int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.6f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r[cov]:.3f}\","
 file = "paper/generate_findings.py"
 anchor = "def decision_designs_table"
 kind = "R"
@@ -5482,7 +5425,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP39 notebook unit"
-note = "Appendix D.19's table of the shortlist: every cell is the generator's value, exact, ordered by fleet cost, with the nondominated designs marked; the test pins 28 rows and 5 marked on fleet cost."
+note = "WP57c: the shortlist table carries the coverage probability (the SysML v2 model's CoverageProbability) and marks the designs nondominated on fleet cost and coverage probability; the term-level columns of the retired balanced rule are gone."
 
 [[claim]]
 id = "C617"
@@ -5513,36 +5456,6 @@ status = "backed"
 disposition = "keep"
 source = "WP39 notebook unit"
 note = "The generator asserts it for the six named designs (the sponsor's, the cheapest-unit-cost, the operator's, the between design, the balanced and the cheapest fine-tracker design) and the test re-checks it against the requirement mask."
-
-[[claim]]
-id = "C620"
-fragment = "sponsor alone takes the smallest fleet cost; the operator alone the smallest pointing error;"
-file = "paper/supporting_material.ipynb"
-anchor = "D.19 The decision: the shortlist and the rules"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The picks are the generator's (argmin of fleet cost and of pointing error over the shortlist); the test pins the design ids, 999 and 2950."
-
-[[claim]]
-id = "C621"
-fragment = "between them, the design whose larger shortfall on pointing error and fleet cost is smallest,"
-file = "paper/supporting_material.ipynb"
-anchor = "D.19 The decision: the shortlist and the rules"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision",
-  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
-]
-status = "backed"
-disposition = "keep"
-source = "WP39 notebook unit"
-note = "The generator scales each measure to 0 to 1 over the shortlist and takes the design with the smallest larger scaled value (minimax regret); the test pins the design, 1858."
 
 [[claim]]
 id = "C624"
@@ -5589,7 +5502,7 @@ note = "D.15's movement column is the dash at K = 1: the movement of an exponent
 
 [[claim]]
 id = "C628"
-fragment = "The robust scaler changes it: {len(rob_set)} metrics, {len(rob_set & base_set)} of the"
+fragment = "The robust scaler changes the K = 1 contending set: {len(rob_set)} metrics,"
 file = "paper/generate_findings.py"
 anchor = ""
 kind = "R"
@@ -5828,21 +5741,6 @@ status = "backed"
 disposition = "keep"
 source = "final round, third paper unit, change requests 93 to 165"
 note = "L5: LSE = LME + (log N)/tau; L2: a constant added to J moves beta and leaves the minimizers (requests 158 and 164)."
-
-[[claim]]
-id = "C661"
-fragment = "nondominance depends on the set it is read in"
-file = "paper/generate_findings.py"
-anchor = "def decision_detail_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::decision_detail_sentence",
-  "test:tests/test_paper.py::test_d19_says_the_nondominated_sets_of_the_548_and_the_shortlist_differ",
-]
-status = "backed"
-disposition = "keep"
-source = "final round, third paper unit, change requests 93 to 165"
-note = "D.19: 548 designs pass the six requirements, 11 are nondominated among them and 1 of the 11 is in the shortlist; among the shortlist's 28 alone 5 are (request 142)."
 
 [[claim]]
 id = "C662"
@@ -7195,40 +7093,6 @@ status = "backed"
 disposition = "keep"
 source = "WP42 Amendment 1"
 note = "L21 differentiates the term's hyperplane in two metrics with the others held; it says nothing of how a configuration moves a design (the lemma's own 'does not prove' clause). The routes page of the docs states what is computable and what is a conjecture past the sampled designs."
-
-[[claim]]
-id = "C797"
-fragment = "At the picked fleet ({cfg} satellites) the surface's tension between the operator's ... pointing error and the sponsor's fleet cost is {per_arcsec(t_own)} M USD"
-file = "paper/generate_findings.py"
-anchor = "def tension_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::tension_sentence",
-  "lemma:L21.15",
-  "test:tests/test_paper.py::test_the_picks_tension_sentence_agrees_with_finite_differences_of_the_fitted_surface",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP42 Amendment 1 (the supervisor, 'Accept as drafted')"
-note = "Computed from the fit and the table by design_tensions at the picked design (1858, on term 1, 0.16 in score from the seam) in USD per arcsecond; the test takes the central difference of the fitted surface through the conditioning and agrees. The quantities are not in the five-regeneration stability study (stability_extra.json), so they print at two figures from the data of record."
-
-[[claim]]
-id = "C798"
-fragment = "{percent:.1f} percent less fleet cost. It is a rate at that design with the other ... metrics held, not the price of the better tracker, and on the other term of the fit it ... is {per_arcsec(t_other)} M USD per arcsecond."
-file = "paper/generate_findings.py"
-anchor = "def tension_sentence"
-kind = "R"
-backing = [
-  "gen:paper/generate_findings.py::tension_sentence",
-  "lemma:L21",
-  "test:tests/test_paper.py::test_the_picks_tension_sentence_agrees_with_finite_differences_of_the_fitted_surface",
-  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-]
-status = "backed"
-disposition = "keep"
-source = "WP42 Amendment 1"
-note = "One percent more pointing error goes with the percent given of the fleet cost in the attributes' own units: |dFC/dPE| PE/FC at the pick. 'Not the price of the better tracker': the tension holds the other metrics fixed along the surface, and the tracker changes several (the fleets differ in the tracker grade, D.19)."
 
 [[claim]]
 id = "C799"
@@ -9400,3 +9264,93 @@ status = "backed"
 disposition = "keep"
 source = "WP56 second unit (the prose of Sections 7 to 9)"
 note = "Appendix F.2's container paragraph: byte for byte inside the pinned image, last digits elsewhere; the decision's test compares exactly only in the environment of record."
+
+[[claim]]
+id = "C988"
+fragment = "For two metrics with identical columns the loss is flat along their swap"
+file = "paper/supporting_material.ipynb"
+anchor = "D.4 The regimes side by side"
+kind = "M"
+backing = [
+  "lemma:L4.12",
+  "lemma:L4",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the material WP56 moved (as the retired C409)"
+note = "L4's second derivative of J_tau along v is (tau/2) sum_i sum_l p_i p_l (s_i - s_l)^2 with s_i = v . u_i; along the swap of two identical columns every s_i is zero, so the curvature is zero."
+
+[[claim]]
+id = "C989"
+fragment = "within a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest predicted distances to the 300 most isolated points of white space"
+file = "paper/supporting_material.ipynb"
+anchor = "D.10 Propose, predict, check"
+kind = "S"
+backing = [
+  "func:examples/adcs/experiments/check_designs.py::Proposer",
+  "test:tests/test_paper.py::test_the_proposers_radius_is_the_stated_rule_of_the_check_designs",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the material WP56 moved (as the retired C391)"
+note = "Proposer.draw computes the reach as the REACH_QUANTILE (0.02) quantile of the nearest predicted distances of the HOLES (300) most isolated holes, at run time; the test pins both constants and the sentence."
+
+[[claim]]
+id = "C990"
+fragment = "a prediction outside the quantity's admissible range is reported as invalid, never clipped"
+file = "paper/supporting_material.ipynb"
+anchor = "D.10 Propose, predict, check"
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the material WP56 moved (as the retired C041)"
+note = "A rule for the reading, not a measured result: inverting a level into a bounded outcome is the analyst's task; clipping would hide that the model left the quantity's range."
+
+[[claim]]
+id = "C991"
+fragment = "The four limits are illustrative values chosen from a ladder of candidates by the share of the feasible designs each admits, not a mission's; the SysML v2 model's part `budgets` records each with its row of the ladder."
+file = "paper/supporting_material.ipynb"
+anchor = "D.17 The requirements read after the fit"
+kind = "S"
+backing = [
+  "test:tests/test_case.py::test_requirements_are_the_models_budgets",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+  "file:work-packages/WP23-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the material WP56 moved (as the retired C500)"
+note = "The model's Budgets doc: the four thresholds are the supervisor's choice from the loop's ladder, each literal's doc naming its ladder row and the share of the feasible designs it admits; the test holds the case's limits to those literals."
+
+[[claim]]
+id = "C992"
+fragment = "sponsor: least fleet cost; ... manufacturer: least unit cost; ... operator: largest coverage probability; ... between sponsor and operator: the design whose larger shortfall on fleet cost and coverage probability is smallest, each scaled from its best to its worst value on the shortlist (minimax regret)."
+file = "paper/supporting_material.ipynb"
+anchor = "D.19 The decision: the shortlist and the rules"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_d19_states_section_8s_four_rules_and_no_other",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the material WP56 moved (Section 8's four rules; replaces the retired C620, C621)"
+note = "decision(): the sponsor's pick is the argmin of fleet cost, the manufacturer's of unit cost, the operator's the argmax of coverage probability, and the pick between sponsor and operator the argmin over the shortlist of the larger of the two shortfalls scaled to 0 to 1; the rule names are Table 3's (decision_table)."
+
+[[claim]]
+id = "C993"
+fragment = "The coverage probability is the SysML v2 model's `CoverageProbability`, read from the fleet size and the pointing error."
+file = "paper/supporting_material.ipynb"
+anchor = "D.19 The decision: the shortlist and the rules"
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/stakeholders.sysml",
+  "test:tests/test_system_model_v2.py::test_coverage_probability_in_the_model_is_the_pipelines",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the material WP56 moved"

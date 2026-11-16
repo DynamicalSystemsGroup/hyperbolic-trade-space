@@ -1078,7 +1078,10 @@ def test_d_contains_no_definition_of_the_system():
 
 def test_every_table_of_d_cites_its_dataset_by_cs_label():
     labels = set(generate_model.DATASET_LABELS.values())
+    moved = {cell for cell, _ in MOVED_TO_D.values()}  # sentences under a table that cites it
     for c in _cells_of("D"):
+        if c.id in moved:
+            continue
         text = _out_text(c)
         cited = set(re.findall(r"\b(cubesat-\w+|planted-[\w-]+)", text))
         assert cited and cited <= labels, (c.id, cited)
@@ -2532,9 +2535,10 @@ NUM_CELLS = [
     "num-planted",
 ]  # fmt: skip
 """The generated sentences of the paper. WP56 moved num-recovery, num-predict-reading,
-num-k-temperatures, num-participation and num-tension out of Sections 7 to 9 (their calls stay in
-the generator and in :func:`_case_sentences`; ``work-packages/WP56-rounds/moved-to-appendix.md``
-queues them for Appendix C and D)."""
+num-k-temperatures, num-participation and num-tension out of Sections 7 to 9; WP57c landed the
+participation sentence in D.3, the reading of the proposals in D.10 and the K temperatures in D.15
+(``MOVED_TO_D``), left the recovery sentence to D.14's own tables and retired the tension sentence
+(``work-packages/WP56-rounds/moved-to-appendix.md``, each line marked)."""
 
 
 def _results():
@@ -2563,7 +2567,6 @@ def _case_sentences():
         "num-k-temperatures": gf.k_temperatures_sentence(study, fits),
         "num-participation": gf.participation_sentence(),
         "num-decision": gf.decision_sentence(gf.decision(study, fits)),
-        "num-tension": gf.tension_sentence(study, fits, gf.decision(study, fits)),
         "num-requirements": gf.requirements_sentence(study, fits[1]),
         "num-fleet-refit": gf.fleet_refit_sentence(),
         "num-baseline-pointing": gf.baseline_requirement_sentence(case.load_study("stock")),
@@ -2571,21 +2574,54 @@ def _case_sentences():
     }
 
 
+MOVED_TO_D = {
+    "num-participation": ("sent-D-participation", "participation_sentence"),
+    "num-temperature-variants": ("sent-D-temperature-variants", "temperature_variants"),
+    "num-predict-reading": ("sent-D-proposals", "proposals_reading"),
+    "num-k-temperatures": ("sent-D-k-temperatures", "k_temperatures"),
+}
+"""The generated sentences WP56 moved out of Sections 7 to 9 and WP57c landed in Appendix D:
+paper cell -> (the Appendix D cell, its one-call generator)."""
+
+
 def _moved(cid: str) -> str:
-    """The generated sentence of a cell WP56 moved out of Sections 7 to 9, from its generator
-    (``work-packages/WP56-rounds/moved-to-appendix.md``: WP57c lands it in Appendix C or D)."""
-    import case
+    """The generated sentence of a cell WP56 moved out of Sections 7 to 9: the committed output
+    of the Appendix D cell that prints it (``MOVED_TO_D``), or, for the recovery sentence that
+    D.14's tables state in full and no cell prints, its generator."""
     import generate_findings as gf
 
-    if cid == "num-participation":
-        return str(gf.participation_sentence())
+    if cid in MOVED_TO_D:
+        return _cell_out(SUPPORT_NB, MOVED_TO_D[cid][0])
     if cid == "num-recovery":
         return str(gf.recovery_sentence())
-    if cid == "num-predict-reading":
-        study = case.load_study("primary")
-        reg = case.fit_regressor(study)
-        return str(gf.predict_reading(case.predict_check(study, reg), reg))
     raise KeyError(cid)
+
+
+@pytest.mark.slow
+def test_the_moved_sentences_in_appendix_d_are_their_generators_output():
+    """WP57c G2: each sentence WP56 moved out of Sections 7 to 9 is printed by one call in the
+    Appendix D subsection that holds what it reads (participation in D.3, the scaler variant in
+    D.5, the proposals in D.10, each K's temperature in D.15), and the output is current."""
+    import generate_findings as gf
+
+    exact = exact_only("planted_table_sha256")
+    rtol = listed()["planted_table_sha256"]["text_rtol"]
+    cells = _appendix_cells(_nb(SUPPORT_NB))["D"]
+    ids = [c.id for c in cells]
+    for cid, (dcell, fn) in MOVED_TO_D.items():
+        assert dcell in ids, dcell
+        assert f"{fn}()" in _cell_src(dcell, SUPPORT_NB), dcell
+        committed, fresh = _cell_out(SUPPORT_NB, dcell), str(getattr(gf, fn)())
+        ok = committed == fresh if exact else _same_text(committed, fresh, rtol)
+        assert ok, f"{dcell}: {STALE}"
+        assert cid not in [c.id for c in _nb(PAPER_NB).cells], cid
+    before = {"sent-D-participation": "tab-D-exponents_and_terms",
+              "sent-D-temperature-variants": "tab-D-sensitivity_variants",
+              "sent-D-proposals": "tab-D-propose_predict_check",
+              "sent-D-k-temperatures": "tab-D-choosing_k"}  # fmt: skip
+    for dcell, table in before.items():
+        assert ids.index(dcell) == ids.index(table) + 1, dcell
+    assert "sub-d-3" not in _cell_out(SUPPORT_NB, "sent-D-participation")  # no link to itself
 
 
 @pytest.fixture(scope="module")
@@ -3271,13 +3307,8 @@ def test_the_proposers_radius_is_the_stated_rule_of_the_check_designs():
     import paper_paths  # noqa: F401  (examples/adcs on the path)
     from experiments import check_designs
 
-    # WP56: the rule left Section 8 for D.10 (work-packages/WP56-rounds/moved-to-appendix.md, which
-    # WP57c lands); until it lands the queued paragraph is the place it is stated
-    moved = (ROOT / "work-packages" / "WP56-rounds" / "moved-to-appendix.md").read_text(
-        encoding="utf-8"
-    )
-    text = next(ln for ln in moved.splitlines() if "a radius that a stated rule" in ln)
-    text = text.split(" | ")[1]  # the verbatim column
+    # WP56 moved the rule from Section 8 to D.10; WP57c landed it there
+    text = _norm_ws(_cell_src("app-D-7", SUPPORT_NB))
     assert check_designs.REACH_QUANTILE == 0.02 and check_designs.HOLES == 300
     assert (
         "a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest "
@@ -3808,49 +3839,29 @@ def test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in
     assert d.baseline["unit_cost_usd"] == 461_360.0
 
 
-@pytest.mark.slow
-def test_the_picks_tension_sentence_agrees_with_finite_differences_of_the_fitted_surface(decided):
-    """WP42: the numbers of Section 9's sentence on the pick's tension are the derivative of the
-    K = 2 surface at the picked design, in the attributes' own units, against central differences
-    taken through the conditioning (the level held): -1.4 M USD per arcsecond on the pick's term,
-    2.4 percent per percent, -0.4 on the other term."""
-    import generate_findings as gf
-    from scipy.optimize import brentq
-
-    study, fits, d = decided
-    est = fits[2].estimator
-    attrs = list(study.spec.attributes)
-    pe, fc = attrs.index("pointing_error_deg"), attrs.index("fleet_cost_usd")
-    pre = study.conditioner.named_transformers_["metrics"]
-    pick = d.picks["between"]
-    idx = int(np.flatnonzero(study.feasible["design_id"].to_numpy() == pick["design_id"])[0])
-    raw0 = study.feasible[attrs].to_numpy(float)[idx]
-    assert int(est.assign_cells(study.M[idx : idx + 1])[0]) == 0  # the pick is on term 1
-    h = 1e-5
-
-    def slope():
-        target = float(est.score_samples(pre.transform(raw0[None]))[0])
-        pts = []
-        for sgn in (+1, -1):
-            r = raw0.copy()
-            r[pe] *= 1 + sgn * h
-
-            def level(c, r=r):
-                q = r.copy()
-                q[fc] = c
-                return float(est.score_samples(pre.transform(q[None]))[0]) - target
-
-            c = brentq(level, raw0[fc] * 0.9, raw0[fc] * 1.1, xtol=1e-9, rtol=1e-14)
-            pts.append((r[pe], c))
-        return (pts[0][1] - pts[1][1]) / (pts[0][0] - pts[1][0])
-
-    fd = slope()  # USD per degree on the pick's own term
-    text = str(gf.tension_sentence(study, fits, d))
-    assert f"{fd / 3600.0 / 1e6:+.1f} M USD per arcsecond" in text
-    assert f"goes with {abs(fd) * raw0[pe] / raw0[fc]:.1f} percent less fleet cost" in text
-    assert "-1.4 M USD per arcsecond" in text and "2.4 percent" in text
-    assert text.endswith("on the other term of the fit it is -0.4 M USD per arcsecond.")
-    assert "5 medium-wheel, fine-tracker satellites" in text
+def test_d19_states_section_8s_four_rules_and_no_other():
+    """WP57c R-4: D.19's rule paragraph names the four rules of Table 3 (one stakeholder per
+    objective, and the pick between sponsor and operator) and not the rules they replaced (the
+    operator's pointing error, the pick balanced between the terms); the shortlist table carries
+    the coverage probability and its nondominated mark."""
+    rules = _cell_src("app-D-decision", SUPPORT_NB)
+    table = _cell_out(PAPER_NB, "tab-decision")
+    names = [r.split(" | ")[0].strip("| ") for r in table.splitlines()[3:]]
+    assert names == [
+        "sponsor: least fleet cost",
+        "manufacturer: least unit cost",
+        "operator: largest coverage probability",
+        "between sponsor and operator",
+    ]
+    for name in names:
+        assert name in rules, name
+    assert "fleet cost and coverage probability" in rules and "minimax regret" in rules
+    assert "pointing error" not in rules.replace("the pointing error.", "")  # only as an input
+    assert "balanced between the terms" not in rules and "term levels" not in rules
+    head = _cell_out(SUPPORT_NB, "tab-D-decision_designs").split("\n\n", 1)[1].splitlines()[0]
+    assert "| coverage probability |" in head
+    assert head.rstrip(" |").endswith("nondominated on fleet cost and coverage probability")
+    assert "sent-D-decision" not in [c.id for c in _nb(SUPPORT_NB).cells]
 
 
 def _tracker_cost_of(d):
@@ -3899,9 +3910,6 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
                    "probability of 0.76", "Appendix D.19"):  # fmt: skip
         assert phrase in plain, phrase
     assert 120 <= len(plain.split()) <= 190
-    detail = str(gf.decision_detail_sentence(d))
-    assert "all 548 designs" in detail and "11 are nondominated" in detail
-    assert "1 of them lies within" in detail
     table = str(gf.decision_table(d)).splitlines()
     assert table[0].split(" | ")[0] == "| rule" and len(table) == 2 + 5
     assert [r.split(" | ")[0].strip("| ") for r in table[2:]] == [
@@ -3912,7 +3920,8 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
     assert table[4].split(" | ")[1:] == table[5].split(" | ")[1:]  # one design, two rules
     designs = [r for r in str(gf.decision_designs_table(d)).splitlines() if r.startswith("|")]
     assert len(designs) == 2 + 28
-    assert sum("fleet cost" in r.split("|")[-2] for r in designs[2:]) == 5
+    assert "coverage probability" in designs[0]
+    assert sum(r.split("|")[-2].strip() == "yes" for r in designs[2:]) == 17  # Section 8's 17
 
 
 @pytest.mark.slow
@@ -4021,7 +4030,6 @@ def test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_o
     _current(_cell_out(PAPER_NB, "tab-decision"), str(gf.decision_table(d)), "tab-decision")
     support = _nb(SUPPORT_NB)
     for cid, fresh in (("tab-D-decision_designs", gf.decision_designs_table(d)),
-                       ("sent-D-decision", gf.decision_detail_sentence(d)),
                        ("sent-D-decision-baseline", gf.decision_baseline_sentence())):  # fmt: skip
         _current(_out_text(next(c for c in _code_cells(support) if c.id == cid)), str(fresh), cid)
     base = str(gf.decision_baseline_sentence())
@@ -4029,7 +4037,7 @@ def test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_o
         "2,355 feasible designs, 523 that pass the six requirements and 19 within the band" in base
     )
     table = _cell_out(SUPPORT_NB, "tab-D-decision_designs")
-    assert table.count("\n| ") >= 28 and "fleet cost" in table
+    assert table.count("\n| ") >= 28 and "coverage probability" in table
 
 
 @pytest.mark.slow
@@ -4197,13 +4205,11 @@ def test_the_k1_exponents_stability_is_not_assessed_in_the_record_and_the_text_s
 def test_the_scaler_sentence_quotes_the_sensitivity_table_row():
     """74: the robust scaler's row of D.5 (its size, the metrics it shares, its largest
     exponent)."""
-    import case
-    import generate_findings as gf
 
-    sentence = str(gf.temperature_variants_sentence(case.load_study("primary")))  # WP56: for D.5
+    sentence = _moved("num-temperature-variants")  # WP56 moved it to D.5; WP57c landed it
     m = re.search(
-        r"The robust scaler changes it: (\d+) metrics, (\d+) of the baseline's (\d+) "
-        r"among them, the largest exponent on ([a-z ]+)\.",
+        r"The robust scaler changes the K = 1 contending set: (\d+) metrics, (\d+) of the "
+        r"baseline's (\d+) among them, the largest exponent on ([a-z ]+)\.",
         sentence,
     )
     assert m, sentence
@@ -4402,16 +4408,6 @@ def test_the_one_term_sentence_claims_the_unique_optimum_and_not_r1():
     text = " ".join(_cell_out(PAPER_NB, "num-k1").split())
     assert "R1" not in text and "The exact-maximum optimum is one point" in text
     assert "R1" in _section("Results")  # the condition is stated beside the lemma that uses it
-
-
-def test_d19_says_the_nondominated_sets_of_the_548_and_the_shortlist_differ():
-    """142: nondominance is read within a set; the counts of the two sets come from the decision."""
-    text = " ".join(_cell_out(SUPPORT_NB, "sent-D-decision").split())
-    assert "nondominance depends on the set it is read in" in text and "the two sets differ" in text
-    counts = [int(x) for x in re.findall(r"\b(\d+)\b", text)]
-    assert (
-        counts[:2] == [548, 11] and 28 in counts
-    )  # the six-pass set, its nondominated, the shortlist
 
 
 def test_the_one_axis_rule_is_stated_with_its_threshold_in_section_8():
