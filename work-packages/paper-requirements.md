@@ -196,23 +196,27 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - **Rule for all:** each appendix supports the prose one step deeper where the prose needs it; no opinion on the
   paper's text; no metanarration; material that does not earn its place moves to the repository, which the paper
   cites; re-lettered in the order of first mention, once, last.
-- **A, symbols and terms:** the register; consistent with Section 3's kit. Soft-confirmed by the driver on the
-  unit's screenshots, landed with WP57a (07842b7), not yet read by him.
-- **B, the derivations:** the lemma scripts as pencil-and-paper substitutes, never formal verification; the proofs
-  Section 6 points to. Soft-confirmed by the driver on the unit's screenshots, landed with WP57b (07842b7), not yet
+- **A, the register of prior art:** the three layers' order; entries cited. Landed with WP57a (07842b7; the reading
+  pass to `paper/supplement/reading-pass.md`), re-lettered from G with WP57e (64f01a1d), not yet read by him.
+- **B, the case tables:** the numbers Section 8 reads, no more. Soft-confirmed by the driver on the unit's captures
+  of the rendered page, landed with WP57c (772e343), re-lettered from D with WP57e (64f01a1d; B.1 to B.14), not yet
   read by him.
-- **C, the case model:** what Section 7 narrates, one step deeper. Soft-confirmed by the driver on the unit's
-  captures of the rendered page, landed with WP57c (772e343), not yet read by him.
-- **D, the case tables:** the numbers Section 8 reads, no more. Soft-confirmed by the driver on the unit's captures
-  of the rendered page, landed with WP57c (772e343), not yet read by him.
-- **E, assumptions, limitations and open questions:** the assumptions generated from the derivation's ledger, the
+- **C, the HoroPCA comparison:** its three boundaries (WP35), kept since Section 2's paragraph cites it; its solver
+  notes to `notes/directions/`. Soft-confirmed by the driver on the unit's captures of the rendered page, landed with
+  WP57d (c8f8407b), re-lettered from H with WP57e (64f01a1d), not yet read by him.
+- **D, symbols and terms:** the register; consistent with Section 3's kit. Soft-confirmed by the driver on the
+  unit's screenshots, landed with WP57a (07842b7), re-lettered from A with WP57e (64f01a1d), not yet read by him.
+- **E, the derivations:** the lemma scripts as pencil-and-paper substitutes, never formal verification; the proofs
+  Section 6 points to. Soft-confirmed by the driver on the unit's screenshots, landed with WP57b (07842b7),
+  re-lettered from B with WP57e (64f01a1d), not yet read by him.
+- **F, the case model:** what Section 7 narrates, one step deeper. Soft-confirmed by the driver on the unit's
+  captures of the rendered page, landed with WP57c (772e343), re-lettered from C with WP57e (64f01a1d), not yet read
+  by him.
+- **G, assumptions, limitations and open questions:** the assumptions generated from the derivation's ledger, the
   limitations one row per item with the section it left and its record, every open question listed once. Soft-confirmed
-  by the driver on the unit's captures of the rendered page, landed with WP57d (c8f8407b), not yet read by him.
-- **F, reproduction:** the toolchain, environment and commands Section 11 points to. Landed with WP57a (07842b7),
-  not yet read by him.
-- **G, the register of prior art:** the three layers' order; entries cited. Landed with WP57a (07842b7; G.2 to
-  `paper/supplement/reading-pass.md`), not yet read by him.
-- **H, the HoroPCA comparison:** its three boundaries (WP35), kept since Section 2's paragraph cites it; H.5 to
-  `notes/directions/`. Soft-confirmed by the driver on the unit's captures of the rendered page, landed with WP57d
-  (c8f8407b), not yet read by him.
-- **State:** A to H landed and soft-confirmed, none yet read by him; re-lettering open (WP57e).
+  by the driver on the unit's captures of the rendered page, landed with WP57d (c8f8407b), re-lettered from E with
+  WP57e (64f01a1d), not yet read by him.
+- **H, reproduction:** the toolchain, environment and commands Sections 8 and 11 point to. Landed with WP57a
+  (07842b7), re-lettered from F with WP57e (64f01a1d), not yet read by him.
+- **State:** A to H landed and soft-confirmed, re-lettered once by first mention with WP57e (64f01a1d: G, D, H, A, B,
+  C, E, F became A to H), none yet read by him; the parent's D-3 read of the whole supporting material next.

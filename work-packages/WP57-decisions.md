@@ -148,3 +148,36 @@ c8f8407b the rule gives G, D, H, A, B, C, E, F: the register of prior art become
 reproduction H. Every letter changes; the result goes to him with his read, where the rule is his to revise, and the
 package is rerunnable. One unit on branch `wp57e`; the driver soft-confirms on its captures before landing. After it
 lands: the parent's D-3, a read of the whole supporting material, then WP58.
+
+## WP57e accepted as proxy and landed (09:23 EST)
+
+Delivered on branch `wp57e`, one commit, 64f01a1d, off the head 6d86038d (no rebase). The order recomputed on the paper
+at the base by `map_counts.py`: G, D, H, A, B, C, E, F, so the register of prior art is A, the case tables B, the
+HoroPCA comparison C, notation D, the proofs E, the case model F, the assumptions section G and reproduction H; old
+D.3 to D.19 are B.1 to B.14 and every other appendix keeps its numbers under its new letter. One detail against the
+scope's purpose line: H's (old F's) first mention is Section 8's closing paragraph, not Section 11; the order is the
+same. 43 tracked files follow (the paper's 74 roles as the only main-text edit; the supporting notebook's headings,
+anchors, cell ids, labels and cell order, re-executed; generators' link constants renamed after their targets; 96
+register anchors and two fragments; the ledger's ceiling keys and each row's `section` key; the residual baseline's
+keys renamed, not regenerated; the checkers' patterns; tests; docs, the case, the glossary's two `defined_in`; the gaps
+ledger that G.2's table prints). Dated records left as written, each named in `WP57e-review.md` with its reason.
+Numbering test restored and a first-mention test added, so the rule is checked on every run. Register: no id added
+or retired.
+
+The driver's calls: the unit's four readings accepted (a ledger row's `section` follows because it is the key the
+ceiling sums by, its text as written; the baseline renamed so no rise of dev is absorbed; the gaps ledger follows as
+the source of a printed table; the surface-id pattern widened to H). Test function names keep their dated letters
+(56 register backings and `scripts/check.py` cite them); a rename is WP58's if wanted. The one register `note` that
+carries a role to an old anchor (OQ-14's, `sub-d-19`) is provenance text that nothing renders, left for WP58 with the
+other dated fields. R-1 to R-6 met per the review (85 pointers, 0 land elsewhere; word diff 0 changes beyond letters
+and numbers; outputs letters only but H.1's commit row and H.4's row order; the build log clean). Soft-confirmed on
+the captures: the outline A to H with consecutive numbers, the eight openings, Section 2's pointer landing on B.11 and
+Section 6's on G. The driver's independent run on the branch, exit codes captured: lint, format, lock, proof map (22
+files, 549 steps), vocabulary (0 new), supplement check, register 21, data and derivation diff empty, word diff,
+pointers, R-3 grep, mkdocs, fast suite 2,097 passed, slow paper tests with the docstring test 31 passed; residuals
+exit 1 as on dev with dev's 126 rises less one (the supporting material's terms undefined at first use, now under its
+baseline). No attribution line. Fast-forwarded and pushed; CI 43885046691. For his read: every letter changed, the
+rule his to revise, the package rerunnable from `WP57-rounds/e/reletter.py`; the supporting page's table numbers
+follow page order (HoroPCA Table 1, the assumptions Table 2, cited Table 3, gaps Table 4); C's table caption names its
+own appendix in plain text, a wording edit for WP58. Next: the parent's D-3, a read of the whole supporting material,
+then WP58.
