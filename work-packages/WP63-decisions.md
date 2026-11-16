@@ -47,3 +47,16 @@ answer, what it cannot show). The driver's independent run on the branch, exit c
 vocabulary (0 new), residuals exit 1 as on dev with no new rise, mkdocs, the diff within the scope's files, the page
 tests (test_wp45_examples, test_site, test_docs) 163 passed, 1 skipped. No attribution line. CI dispatched on dev.
 His read decides the arc's wording.
+
+## His direction on the wheat figure (15:51 EST, verbatim)
+
+"looking at the wheat example i was thinking maybe we ought to extend this figure to include lines for a bunch of V
+values not just the V=1 value (and label them). as drawn it reads like fit line and feels off. but if instead we drew
+level sets with labeled values of V i think it would make its point much better, it also shows the the tool is still
+useful even when the trade-off in question is only 2 dimensional"
+
+The driver's reading: Figure 10 (the log plane of grain and straw) redrawn as labeled level sets of V, the frontier
+V = 1 among them, so the picture is the fitted surface's field and not one line; the band's job re-judged; the
+figure loop run on the redraw (cold read, the sentence test, ink as data, legibility, shows and does not show); the
+caption and alt text follow; a small unit after the register repair lands, since both touch the wheat page's
+register rows.
