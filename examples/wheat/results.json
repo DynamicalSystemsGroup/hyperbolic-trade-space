@@ -354,6 +354,7 @@
         "grain",
         "straw"
       ],
+      "corr_log_v_log_biomass": 0.99,
       "exponents_k1": {
         "grain": 0.4458678943082456,
         "straw": 0.5541321056917544

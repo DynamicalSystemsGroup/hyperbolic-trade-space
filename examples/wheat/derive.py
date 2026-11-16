@@ -65,6 +65,18 @@ def harvest_index(x):
     return x["grain"] / (x["grain"] + x["straw"])
 
 
+def level_biomass_correlation(x, tau, seed=0):
+    """Correlation of log V (K = 1 at ``tau``) with log biomass (grain + straw), two decimals."""
+    import numpy as np
+
+    from hyperbolic_trade_space import HyperbolicTradeSpace
+
+    est = HyperbolicTradeSpace(temperature=tau, random_state=seed).fit(condition(x))
+    log_v = est.score_samples(condition(x))
+    log_b = np.log(x["grain"].to_numpy(float) + x["straw"].to_numpy(float))
+    return round(float(np.corrcoef(log_v, log_b)[0, 1]), 2)
+
+
 def check(path, m):
     """Verify the zip (the download of record) or the extracted CSV against the manifest."""
     name = Path(path).name
@@ -208,6 +220,8 @@ def main(argv=None):
         )
         res["rows"] = len(frame)
         res["harvest_index_median"] = float(harvest_index(frame).median())
+        if label == PRIMARY:
+            res["corr_log_v_log_biomass"] = level_biomass_correlation(frame, res["tau_selected"])
         results["runs"][label] = res
         print(label, res["n"], res["n_lemma"], res["exponents_k1"], flush=True)
     fitkit.dump(results, HERE / "results.json")

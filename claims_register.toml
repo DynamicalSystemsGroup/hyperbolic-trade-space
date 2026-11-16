@@ -10079,3 +10079,15 @@ status = "backed"
 disposition = "keep"
 source = "WP57d (Appendix E, assumptions, limitations and open questions)"
 note = "Queue line 7 (WP56, The kernel direction)."
+
+[[claim]]
+id = "C1103"
+fragment = "is an index of biomass: across the plot-years log V correlates with log biomass at 0.99"
+file = "docs/examples/wheat.md"
+anchor = "What the fit says"
+kind = "S"
+backing = ["file:examples/wheat/derive.py", "file:examples/wheat/results.json"]
+status = "backed"
+disposition = "keep"
+source = "examples/wheat/results.json, runs.primary.corr_log_v_log_biomass (K = 1 at the selected temperature, standardized-log conditioning, 3,753 plot-years; biomass = grain + straw)"
+note = "WP71: the level V against biomass."
