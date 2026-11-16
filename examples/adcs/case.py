@@ -2295,27 +2295,97 @@ TENSION_LIMIT = 1.3
 """The colour scale of the tension matrix: |tension| from 10**-1.3 to 10**1.3 about 1."""
 
 
+TENSION_TRIANGLES = ("both", "upper", "lower")
+"""The halves of the tension matrix :func:`tension_matrix_figure` can draw."""
+TENSION_ORDERS = ("exponent", "tension")
+"""The row orders of :func:`tension_matrix_figure`."""
+
+
+def tension_order(T, keep, order="exponent"):
+    """The metrics that carry an exponent on one term, in the row order of the tension matrix.
+
+    Parameters
+    ----------
+    T : ndarray of shape (n_features, n_features)
+        One term's tension matrix (``hyperbolic_trade_space.tension_matrix(...)[k]``).
+    keep : sequence of int
+        The metrics that carry an exponent on the term, sorted by exponent, largest first.
+    order : {"exponent", "tension"}, default="exponent"
+        ``"exponent"`` keeps ``keep``. ``"tension"`` sorts by the mean of ``log|T[i, j]|`` over
+        the other metrics, largest first: since ``|T[i, j]| = s_i / s_j`` with ``s_i`` the term's
+        exponent over the metric's conditioned value at the balanced point, this sorts by
+        ``s_i``, and every cell above the diagonal is then at least one in size.
+
+    Returns
+    -------
+    list of int
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> s = np.array([1.0, 4.0, 2.0])
+    >>> T = -s[:, None] / s[None, :]
+    >>> tension_order(T, [0, 1, 2], "tension")
+    [1, 2, 0]
+    """
+    keep = [int(j) for j in keep]
+    if order == "exponent":
+        return keep
+    if order != "tension":
+        raise ValueError(f"order must be one of {TENSION_ORDERS}, got {order!r}")
+    score = {
+        i: float(np.mean([np.log(abs(T[i, j])) for j in keep if j != i])) if len(keep) > 1 else 0.0
+        for i in keep
+    }
+    return sorted(keep, key=lambda i: -score[i])
+
+
+def _tension_cells(keep, triangle):
+    """The (row, column) pairs of metrics drawn off the diagonal, for one half or both."""
+    return [
+        (i, j)
+        for a, i in enumerate(keep)
+        for b, j in enumerate(keep)
+        if a != b and (triangle == "both" or (b > a) == (triangle == "upper"))
+    ]
+
+
 @_legible
-def tension_matrix_figure(study, fit):
+def tension_matrix_figure(study, fit, triangle="both", order="exponent"):
     """The tension matrix of every term, at the term's balanced point, cut to the metrics that
-    carry an exponent on the term (sorted by exponent, largest first).
+    carry an exponent on the term.
 
     A cell is the change in the column metric per one unit of the row metric's conditioned value,
     along the term: ``hyperbolic_trade_space.tension_matrix``. The metrics with no exponent on the
     term are not drawn and the line under the panel names them, so a zero or a blank cell is not
-    shown. The grey diagonal is a metric against itself.
+    shown. The two halves are reciprocals (``T[i, j] * T[j, i] = 1``), so one half carries the
+    matrix; ``triangle`` picks the half. With ``"both"`` the grey diagonal is a metric against
+    itself.
 
     Parameters
     ----------
     study : Study
     fit : Fit
+    triangle : {"both", "upper", "lower"}, default="both"
+        The cells drawn: all, those right of the diagonal, or those left of it. A single half
+        is drawn strictly: no diagonal, and the row and the column that would hold no cell
+        (the last row and first column of the upper half, the first row and last column of the
+        lower) are dropped.
+    order : {"exponent", "tension"}, default="exponent"
+        The order of the rows and columns (:func:`tension_order`): by the term's exponent,
+        largest first, or by the size of the row's tensions, largest first (every cell right of
+        the diagonal then at least one in size).
 
     Returns
     -------
     matplotlib.figure.Figure
     """
-    from matplotlib.colors import TwoSlopeNorm
+    from matplotlib.colors import ListedColormap, Normalize, TwoSlopeNorm
 
+    if triangle not in TENSION_TRIANGLES:
+        raise ValueError(f"triangle must be one of {TENSION_TRIANGLES}, got {triangle!r}")
+    if order not in TENSION_ORDERS:
+        raise ValueError(f"order must be one of {TENSION_ORDERS}, got {order!r}")
     hts, _, _ = _lib()
     plt = _plt()
     T = hts.tension_matrix(fit.estimator, study.M)
@@ -2326,15 +2396,21 @@ def tension_matrix_figure(study, fit):
     fig, axes = plt.subplots(len(W), 1, figsize=(FIGURE_WIDTH_IN, 7.4 * len(W)), squeeze=False)
     for k, ax in enumerate(axes[:, 0]):
         w = W[k]
-        keep = [
+        by_w = [
             j for j in np.argsort(-w, kind="stable") if w[j] > hts.estimator.PARTICIPATION_THRESHOLD
         ]
+        keep = tension_order(T[k], by_w, order)
         gone = [names[j] for j in range(len(w)) if j not in set(keep)]
         n = len(keep)
-        for a, i in enumerate(keep):
-            for b, j in enumerate(keep):
-                if i == j:
+        rows = {"both": keep, "upper": keep[:-1], "lower": keep[1:]}[triangle]
+        cols = {"both": keep, "upper": keep[1:], "lower": keep[:-1]}[triangle]
+        cells = set(_tension_cells(keep, triangle))
+        for a, i in enumerate(rows):
+            for b, j in enumerate(cols):
+                if i == j and triangle == "both":
                     ax.add_patch(plt.Rectangle((b - 0.5, a - 0.5), 1, 1, fc="#d9d9d9", ec="none"))
+                    continue
+                if (i, j) not in cells:
                     continue
                 v = T[k, i, j]
                 col = cmap(norm(np.log10(-v)))
@@ -2348,11 +2424,11 @@ def tension_matrix_figure(study, fit):
                 )
                 ax.text(b, a, text, ha="center", va="center",
                         color="black" if lum > 0.5 else "white")  # fmt: skip
-        ax.set_xlim(-0.5, n - 0.5)
-        ax.set_ylim(n - 0.5, -0.5)
+        ax.set_xlim(-0.5, len(cols) - 0.5)
+        ax.set_ylim(len(rows) - 0.5, -0.5)
         ax.set_aspect("equal")
-        ax.set_xticks(range(n), [names[j] for j in keep], rotation=90)
-        ax.set_yticks(range(n), [f"{names[j]}  w={w[j]:.2f}" for j in keep])
+        ax.set_xticks(range(len(cols)), [names[j] for j in cols], rotation=90)
+        ax.set_yticks(range(len(rows)), [f"{names[j]}  w={w[j]:.2f}" for j in rows])
         ax.tick_params(length=0)
         for side in ax.spines.values():
             side.set_visible(False)
@@ -2360,11 +2436,17 @@ def tension_matrix_figure(study, fit):
             _wrap("column: the metric that gives way. No exponent on this term, so not drawn: "
                   + ", ".join(gone), 60)
         )  # fmt: skip
-        ax.set_ylabel("row: the metric that rises")
+        ax.set_ylabel("row: the metric that rises (w: its exponent on the term)")
         ax.set_title(f"term {k + 1}: {n} of {len(w)} metrics carry an exponent")
-        sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
+        drawn = [abs(T[k, i, j]) for i, j in _tension_cells(keep, triangle)]
+        lo = -TENSION_LIMIT if min(drawn, default=0) < 1 else 0.0  # the drawn side(s) of one
+        hi = TENSION_LIMIT if max(drawn, default=2) > 1 else 0.0
+        lo, hi = (lo, hi) if lo < hi else (-TENSION_LIMIT, TENSION_LIMIT)
+        part = ListedColormap(cmap(np.linspace(norm(lo), norm(hi), 256)))
+        sm = plt.cm.ScalarMappable(norm=Normalize(lo, hi), cmap=part)
         cb = fig.colorbar(sm, ax=ax, fraction=0.035, pad=0.03)
-        cb.set_ticks([-1, 0, 1], labels=["0.1", "1", "10"])
+        ticks = [t for t in (-1, 0, 1) if lo <= t <= hi]
+        cb.set_ticks(ticks, labels=[{-1: "0.1", 0: "1", 1: "10"}[t] for t in ticks])
         cb.set_label("size of the tension (log scale)")
         cb.outline.set_visible(False)
     fig.tight_layout()
@@ -2613,6 +2695,195 @@ def ternary_pair_figure(fits=None):
     fig.legend(keys, text, loc="lower center", ncol=2, frameon=False, labelcolor=ink,
                fontsize=FIGURE_MIN_FONT_PT + 0.5, handlelength=2.2, labelspacing=0.9,
                columnspacing=2.0, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
+    return fig
+
+
+COVERAGE_P0 = 0.2
+"""The coverage probability's single-satellite chance ``p0``: one satellite pointing without error
+covers the target set in the planning period with this probability (``CoverageAssumptions`` in
+``model_v2/stakeholders.sysml``, which states the reading; a test holds the two equal)."""
+COVERAGE = "coverage_probability"
+"""The column the case adds to a table for the coverage probability (not in the data of record)."""
+FLEET_TERNARY = ("fleet_cost_usd", "unit_cost_usd", COVERAGE)
+"""The decision-maker's ternary: the top corner, the left, the right."""
+STAKEHOLDER_OF = {
+    "fleet_cost_usd": "sponsor",
+    "unit_cost_usd": "manufacturer",
+    COVERAGE: "operator",
+}
+"""One stakeholder per objective of the decision-maker's ternary (``WP56-decisions.md``)."""
+FLEET_TERNARY_K = 1
+FLEET_TERNARY_TITLE = "fleet cost, unit cost and coverage probability"
+"""The terms of the decision-maker's ternary (the figure loop's choice, ``WP56-rounds/figures``)."""
+
+
+def coverage_probability(fleet_size, pointing_error_deg, p0=COVERAGE_P0, e0=None):
+    """The probability that a fleet covers a target in the planning period.
+
+    ``P = 1 - (1 - p0 exp(-e / e0)) ** n``: ``n`` identical, independent satellites, each covering
+    the target set with ``p0`` at zero pointing error and with ``1/e`` of that at ``e = e0``. The
+    definition, its constants and their readings are the SysML v2 model's
+    (``CoverageProbability`` and ``CoverageAssumptions`` in ``model_v2/stakeholders.sysml``).
+
+    Parameters
+    ----------
+    fleet_size : array-like
+        Satellites in the fleet (the data's ``fleet_size``).
+    pointing_error_deg : array-like
+        Pointing error in degrees (the data's ``pointing_error_deg``).
+    p0 : float, default=COVERAGE_P0
+        One satellite's chance at zero pointing error.
+    e0 : float, optional
+        The pointing error (degree) at which that chance falls to ``1/e`` of ``p0``; default the
+        pointing-error requirement of :data:`CUBESAT`.
+
+    Returns
+    -------
+    numpy.ndarray
+        Probabilities in ``[0, 1)``.
+
+    Examples
+    --------
+    >>> float(coverage_probability(1, 0.0))
+    0.2
+    >>> bool(coverage_probability(10, 0.001) > coverage_probability(5, 0.001))
+    True
+    >>> bool(coverage_probability(10, 0.008) < coverage_probability(10, 0.001))
+    True
+    """
+    if e0 is None:
+        e0 = CUBESAT.requirements["pointing_error_deg"][0]
+    n = np.asarray(fleet_size, dtype=float)
+    e = np.asarray(pointing_error_deg, dtype=float)
+    return 1.0 - (1.0 - p0 * np.exp(-e / e0)) ** n
+
+
+def with_coverage(df):
+    """A copy of a table of designs with the :data:`COVERAGE` column added.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Rows with ``fleet_size`` and ``pointing_error_deg``.
+
+    Returns
+    -------
+    pandas.DataFrame
+    """
+    return df.assign(**{COVERAGE: coverage_probability(df["fleet_size"], df["pointing_error_deg"])})
+
+
+def fleet_ternary_study(regime="primary", spec=CUBESAT):
+    """The feasible designs of a regime on the three objectives of the decision-maker's ternary.
+
+    Fleet cost and unit cost (smaller is better) and the coverage probability (larger is better),
+    each conditioned as the case conditions its metrics.
+
+    Parameters
+    ----------
+    regime : str
+    spec : CaseSpec
+
+    Returns
+    -------
+    Study
+    """
+    full = load_study(regime, spec)
+    feasible = with_coverage(full.feasible)
+    spec3 = with_spec(
+        full.spec,
+        attributes=FLEET_TERNARY,
+        short={**full.spec.short, COVERAGE: "coverage probability"},
+        units={**full.spec.units, COVERAGE: "probability"},
+        orientation={**full.spec.orientation, COVERAGE: +1},
+    )
+    cond, M = _condition(feasible, FLEET_TERNARY, spec3)
+    return Study(spec3, regime, full.raw, feasible, FLEET_TERNARY, M, cond)
+
+
+def fleet_ternary_corner(attr, spec=CUBESAT):
+    """The label of a corner of the decision-maker's ternary: what a design there has.
+
+    A corner holds the designs whose total is all in one conditioned objective, so the label is
+    the objective in the direction it is better (low for a cost, high for the coverage
+    probability) and the stakeholder who holds it.
+
+    Examples
+    --------
+    >>> fleet_ternary_corner("unit_cost_usd")
+    'low unit cost\\n(manufacturer)'
+    """
+    better = "high" if {**spec.orientation, COVERAGE: +1}[attr] > 0 else "low"
+    short = {**spec.short, COVERAGE: "coverage probability"}[attr]
+    return f"{better} {short}\n({STAKEHOLDER_OF[attr]})"
+
+
+def fleet_ternary_figure(study=None, fit=None, K=FLEET_TERNARY_K):
+    """The decision-maker's ternary: fleet cost, unit cost and coverage probability.
+
+    The package's ``plot_ternary(..., lines=True)`` on the three objectives of
+    :func:`fleet_ternary_study`, fitted at ``K`` terms with the temperature of :func:`fit_study`;
+    each corner names its objective and the stakeholder who holds it (:data:`STAKEHOLDER_OF`).
+    The light scheme, as the paper shows it.
+
+    Parameters
+    ----------
+    study : Study, optional
+        Default ``fleet_ternary_study()``.
+    fit : Fit, optional
+        Default ``fit_study(study, K)``.
+    K : int, default=FLEET_TERNARY_K
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
+    from matplotlib.lines import Line2D
+
+    _, _, plotting = _lib()
+    plt = _plt()
+    study = study or fleet_ternary_study()
+    fit = fit or fit_study(study, K)
+    est = fit.estimator
+    scheme = "light"
+    width, height, side = 5.6, 5.6, 3.7
+    fig = plt.figure(figsize=(width, height))
+    with _ternary_house_style():
+        sch = plotting._TERN_SCHEMES[scheme]
+        ax = fig.add_axes([0.95 / width, 1.35 / height, side / width, side / height])
+        plotting.plot_ternary(est, study.M, names=list(study.names), lines=True, ax=ax,
+                              scheme=scheme)  # fmt: skip
+        _ternary_border_and_callouts(ax, est, study.M, scheme)
+        if len(est.exponents_) == 1:  # one term: its number labels nothing
+            for a in ax.findobj(lambda a: a.get_gid() == "ternary-star-label-0"):
+                a.set_visible(False)
+        corner = {study.spec.short[a]: fleet_ternary_corner(a, study.spec) for a in study.attrs}
+        for t in ax.texts:
+            words = " ".join(t.get_text().split())
+            if words.startswith("favours "):
+                t.set_text(corner[words.removeprefix("favours ")])
+        ax.set_title(FLEET_TERNARY_TITLE, loc="left", pad=36, fontsize=FIGURE_MIN_FONT_PT + 2,
+                     fontweight="bold", color=sch["ink"])  # fmt: skip
+        col = plotting._ternary_colours(est.exponents_)
+    ink = sch["ink"]
+    keys = [
+        Line2D([], [], marker="o", ls="", ms=7, mfc=sch["dots"], mec=sch["plate"]),
+        Line2D([], [], color=ink, lw=1.0),
+    ]
+    text = [
+        "a design, placed by its shares of the three objectives",
+        "thin lines: equal invariant value V at a fixed total",
+    ]
+    if len(est.exponents_) > 1:
+        keys.append(Line2D([], [], color=_TERN_BORDER[scheme], lw=2.2, ls=(0, (6, 3))))
+        text.append("dashed line: where the leading term changes")
+    for k in range(len(est.exponents_)):
+        m = plotting._TERN_MARKERS[k][0]
+        keys.append(Line2D([], [], marker=m, ls="", ms=10, mfc=col[k], mec=ink, mew=1.1))
+        which = f"term {k + 1}" if len(est.exponents_) > 1 else "the one term"
+        text.append(f"{_TERN_SHAPE[m]}: the exponent vector of {which}, not a design")
+    fig.legend(keys, text, loc="lower center", ncol=1, frameon=False, labelcolor=ink,
+               fontsize=FIGURE_MIN_FONT_PT + 0.5, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
     return fig
 
 

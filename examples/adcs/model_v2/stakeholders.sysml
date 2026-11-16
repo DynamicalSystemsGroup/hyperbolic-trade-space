@@ -13,10 +13,15 @@
  *                      roll-ups, cost to build and effective life
  *   4. evidence        verification cases that verify the concerns' requirements and point at where
  *                      the evidence is logged and the environment that produced it
+ *   5. coverage        the operator's measure of the fleet (WP56): the coverage probability, a
+ *                      derived attribute of the fleet from its size and the pointing error, with its
+ *                      two constants; the case's generator computes it beside the data of record
  *
  * The engineers' requirements, their thresholds and the tensions between them stay in
  * cubesat.sysml, at their own level; this file says which concern each serves. Nothing here is read
- * by the oracle, the coverage table, the view generator, the data or the contract.
+ * by the oracle, the coverage table, the view generator, the data or the contract; section 5's
+ * coverage probability is computed by the case's generator (examples/adcs/case.py) from the data of
+ * record, with the constants stated here, and a test holds the two to one value.
  */
 package CubesatStakeholders {
     private import ScalarValues::*;
@@ -312,5 +317,47 @@ package CubesatStakeholders {
         :>> recordEntry = "Container regression at the WP30 data gate (2026-11-11, image 27add815d66c, head c64430e)";
         :>> testNode = "tests/test_case.py::test_feasible_mask_counts_on_frozen_data";
         :>> environment = "27add815d66c";
+    }
+
+    // ==========================================================================================
+    // 5. COVERAGE: the operator's measure of the fleet (WP56)
+    // ==========================================================================================
+    part def CoverageAssumptions {
+        doc /* The two constants of the coverage probability. They are mission assumptions the data
+               of record do not carry; the operator supplies them for a real mission.
+               singleSatelliteCoverage (p0 = 0.2, a probability): the chance that one satellite
+               pointing without error covers the target set in the planning period.
+               errorScale (e0, an angle): the pointing error at which that chance falls to 1/e of
+               p0, set to the pointing-error limit of the requirement (budgets.pointingErrorLimit,
+               0.008495 degree), so a design at the limit keeps 1/e of the single-satellite chance. */
+        attribute singleSatelliteCoverage : Real = 0.2;
+        attribute errorScale : PlaneAngleValue = budgets.pointingErrorLimit;
+    }
+    part coverageAssumptions : CoverageAssumptions;
+
+    calc def CoverageProbability {
+        doc /* MoE: how well the fleet does its job, the operator's measure of the fleet and the
+               performance objective of the decision-maker's ternary (WP56). A derived attribute of
+               the fleet of `fleetSize` identical satellites of the configuration: the probability
+               that a target is covered by at least one satellite in the planning period,
+               P = 1 - (1 - p(e))^n, with p(e) = p0 exp(-e / e0), n the fleet size, e the pointing
+               error (the calc PointingError) and p0, e0 the constants of CoverageAssumptions.
+               Dimensionless, from 0 to 1; it rises with the fleet size at a falling rate and falls
+               with the pointing error. It takes the satellites as independent and the target set
+               as one, and it models nothing of orbits, revisit or communication.
+               Why this measure: the brief was an aggregate an executive reads as how well the fleet
+               does its job, rising with fleet size with diminishing returns and falling with
+               pointing error, with little new detail. Of the three definitions the WP56 spike
+               compared (this one, an observation capacity with a ceiling, a refresh rate), it is the
+               quantity an operator holds for a coverage problem; it needs the fewest constants, each
+               with an operational reading, and one of them is the requirement already in the model;
+               it is bounded, so it is not read as a count. It saturates: a fleet of 30 satellites at
+               small pointing error comes close to 1. The comparison, the decision's stability across
+               the three definitions and across a factor of two in each constant, and what the data
+               cannot settle are recorded in work-packages/WP56-rounds/ternary/readout.md. */
+        in c : Cubesat;
+        attribute p : Real = coverageAssumptions.singleSatelliteCoverage
+            * OpenSysMLMathFunctions::exp(-(PointingError(c) / coverageAssumptions.errorScale));
+        return : Real = 1.0 - (1.0 - p) ** c.fleetSize;
     }
 }

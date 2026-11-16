@@ -2051,3 +2051,10 @@ section = "Appendix B"
 words_removed = 277
 no_longer_did = "B.2's 'The algorithm' paragraph (398 words) restated Section 5's alternation, labels and program, commented on each lemma before its table (L16's program and bound, L17's Hessian, L18, L19, L21) and said which result the paper does not use (L19); the 121 words kept are the restart rule, the stop rule, the polish with G-16 and that the status refers to the polished point, what Section 5's 'steps: Appendix B.2' and Section 6's 'Newton steps that close the gap the solver leaves' point at; 'L16 does not prove that the alternation converges' is queued for WP57d (assumptions-queue.md); register rows C132 to C136, C139 to C146 and C667 retire with their sentences, C137, C138 and C666 keep theirs"
 authority = "WP57b; map_counts.py before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Prior art"
+words_added = 12
+job = "says that Table 1 summarizes the register of prior art in Appendix G, closing the table's paragraph (WP57a's G5, moved to WP56 as the paper.ipynb writer)"
+reader = "the reader who wants the sources behind a row of Table 1"

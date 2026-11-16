@@ -52,7 +52,6 @@ PAPER_FIGURES = (
     "nlemma",
     "planes",
     "chart_level",
-    "ternary_pair",
     "prior_art_layers",
     "pipeline",
 )

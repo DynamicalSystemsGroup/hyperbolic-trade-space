@@ -4669,71 +4669,6 @@ source = "WP29 placement (OD4: the injection table is the corollary's demonstrat
 note = "Eight draws per cell, seeds 100 to 107; the noise is injected into noise-free data of record; only the primary regime's half-percent row agrees within the spread (the regenerated data of 3,000 designs per regime); every other row is read as the prediction exceeding the measurement."
 
 [[claim]]
-id = "C468"
-fragment = "in A one region trades pointing error against control effort and the other region total mass against pointing error"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "R"
-backing = ["test:tests/test_paper.py::test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give", "test:tests/test_case.py::test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_names", "gen:paper/figures/ternary_pair.py::ternary_pair_paper_figure"]
-status = "backed"
-disposition = "keep"
-source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
-note = "Panel A is the primary regime's pointing error, total mass and control effort at K = 2: the exponents above the labelling threshold 0.12 are {pointing error, control effort} for term 1 and {total mass, pointing error} for term 2; the tau = infinity contending sets are {pointing error, control effort} and {pointing error, total mass, control effort}."
-
-[[claim]]
-id = "C469"
-fragment = "in B one region trades settling time against control effort and the other region is depth of discharge alone"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "R"
-backing = ["test:tests/test_paper.py::test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give", "test:tests/test_case.py::test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_names", "gen:paper/figures/ternary_pair.py::ternary_pair_paper_figure"]
-status = "backed"
-disposition = "keep"
-source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
-note = "Panel B is settling time, control effort and depth of discharge at K = 2: term 1 is almost all depth of discharge (about 0.96) and term 2 is settling time and control effort; the tau = infinity contending set is all three metrics for both terms, so the caption speaks of the regions the drawing labels, not of the n-lemma."
-
-[[claim]]
-id = "C470"
-fragment = "A design sits at its shares of the triple's total (each metric in units of its geometric mean over the table, the three then summed), a corner being all of the total in one metric, where that metric alone raises V and nothing trades; a numbered marker is a term's exponent vector, and a region is where that term is the largest"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "S"
-backing = ["test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors", "test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "func:src/hyperbolic_trade_space/plotting.py::plot_ternary"]
-status = "backed"
-disposition = "keep"
-source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
-note = "As C455 and C456 for the docs page: a marker sits at the term's exponent vector; a region is the argmax term of the fit."
-
-[[claim]]
-id = "C471"
-fragment = "picked from the 56 triples of eight of the thirteen metrics ... fits that could be made had at least two stable terms that contend differently"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "R"
-backing = [
-  "gen:paper/figures/triple_search.py::main",
-  "test:tests/test_paper.py::test_the_ternary_caption_counts_are_the_triple_search_record",
-  "file:paper/figures/triple_search_record.json",
-  "file:work-packages/WP19-figure-review.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper; final round wave 1, change request 28 (the sentence moved into the caption and gave the count)"
-note = "triple_search.py on the data of record (the first eight attributes, 56 triples in each regime at K = 1, 2, 3, 336 fits): 291 fits could be made (45 have a term with under two near-frontier rows); 105 have at least two real regions with different contending sets, a region being a cell of at least ten near-frontier designs whose exponents move by at most 0.10 over refits and resamples, under a certified fit; 21 have three. The earlier WP19 count (55 of 275, on the 706-design table of that date) is superseded by the record. Both drawn triples, at K = 2, are among the 105; the figure is a pick among them, as the caption says."
-
-[[claim]]
-id = "C472"
-fragment = "*Shows:* where each term leads and where its V peaks. *Does not show:* groups of designs, the values of V on the lines, the other ten metrics or a cause."
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "S"
-backing = ["test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak", "test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors"]
-status = "backed"
-disposition = "keep"
-source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
-note = "As C455 for the docs page; the ten metrics are the thirteen less the triple (a test computes the count from the metric set)."
-
-[[claim]]
 id = "C474"
 fragment = "point to K = {K} on {regimes}, none deciding alone: the mean"
 file = "paper/generate_findings.py"
@@ -7793,22 +7728,6 @@ source = "WP42 Amendment 1 (WP11-decisions.md, the supervisor, 2026-11-14, 15:50
 note = "scikit-learn documents the quantity a solver minimizes as the loss (loss functions, loss_ attributes of its estimators); the choice of loss for the method layer and objective for the decision layer is the supervisor's ruling, entered in the glossary with its layer."
 
 [[claim]]
-id = "C800"
-fragment = "Only the metrics that carry an exponent on the term are drawn, sorted by exponent, and the line under each panel names the others"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "S"
-backing = [
-  "func:examples/adcs/case.py::tension_matrix_figure",
-  "lemma:L21.13",
-  "test:tests/test_case.py::test_the_tension_matrix_figure_draws_the_terms_that_carry_an_exponent",
-]
-status = "backed"
-disposition = "keep"
-source = "WP42 Amendment 1 (Figure 7)"
-note = "case.tension_matrix_figure draws hyperbolic_trade_space.tension_matrix cut to the metrics with an exponent above the participation threshold; every drawn off-diagonal cell is negative (L21.13), which the test asserts on the figure's cells."
-
-[[claim]]
 id = "C801"
 fragment = "The fit recovers all {_NUMBER_WORDS[gr.RECOVERY_TERMS]} terms on {good} of {len(exact)}"
 file = "paper/generate_findings.py"
@@ -9633,3 +9552,81 @@ status = "backed"
 disposition = "keep"
 source = "WP57a"
 note = "generate_supplement.write_all writes render(name) for each file of FILES; the two tests compare the committed file with render and a fresh write in a temporary directory with it."
+
+[[claim]]
+id = "C967"
+fragment = "Every drawn value is therefore -1 or less, from -1.1 to -17 on term 1 and from -1.0 to -30 on term 2"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:examples/adcs/case.py::tension_matrix_figure",
+  "test:tests/test_paper.py::test_the_tension_and_fleet_ternary_captions_state_the_fits_values",
+  "file:work-packages/WP56-rounds/figures/tension-values.txt",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+note = "The upper half in the tension order: |T[i, j]| = s_i / s_j with s_i = w_i / m_i at the balanced point (L21), so the order by s puts every drawn cell at one or more in size; the ranges per term are the fit's (1.081 to 17.283, 1.013 to 30.131)."
+
+[[claim]]
+id = "C968"
+fragment = "the metrics run from the one whose unit is worth most on the term to the least"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "func:examples/adcs/case.py::tension_order",
+  "test:tests/test_fleet_coverage.py::test_tension_order_puts_every_upper_cell_at_one_or_more",
+  "lemma:L21.12",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+
+[[claim]]
+id = "C969"
+fragment = "for the metrics with an exponent w on the term, the others named below each panel"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "func:examples/adcs/case.py::tension_matrix_figure",
+  "lemma:L21.13",
+  "test:tests/test_case.py::test_the_tension_matrix_figure_draws_one_triangle",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+note = "As the retired C800, without its 'sorted by exponent' (the paper's order is now the tension order, C968)."
+
+[[claim]]
+id = "C970"
+fragment = "each undrawn cell is the reciprocal of its mirror image"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "M"
+backing = [
+  "lemma:L21.12",
+  "func:src/hyperbolic_trade_space/tensions.py::tension_matrix",
+  "test:tests/test_tensions.py::test_the_cases_of_the_definition",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+
+[[claim]]
+id = "C971"
+fragment = "fitted with one term over the primary regime's 2,134 feasible designs ... it lies on the edge from fleet cost (0.39) to coverage probability (0.61), with 0.006 on unit cost"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:examples/adcs/case.py::fleet_ternary_figure",
+  "test:tests/test_paper.py::test_the_tension_and_fleet_ternary_captions_state_the_fits_values",
+  "file:work-packages/WP56-rounds/figures/ternary-values.txt",
+]
+status = "backed"
+disposition = "keep"
+source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+note = "The K = 1 fit of case.fleet_ternary_study (fleet cost, unit cost, coverage probability; coverage probability defined in examples/adcs/model_v2/stakeholders.sysml, CoverageProbability)."
