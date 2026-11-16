@@ -1,0 +1,145 @@
+key    anchor       cells  md code  prose  gener.  rows  cited by
+front                   2   1    1      6       0     0  -
+A      appendix-a       2   1    1      0    2510    65  [3]
+B      appendix-b       4   2    2    125     793    24  [3, 4, 5, 6, 9]
+B.1    sub-b-1          2   1    1      0   10748   184  -
+B.2    sub-b-2          2   1    1    121   21238   365  [5, 6]
+B.3    sub-b-3          2   1    1      0     596    30  -
+C      appendix-c       2   2    0    172       0     0  [7]
+C.1    sub-c-1          2   1    1      0     157     7  [7, 8]
+C.2    sub-c-2          3   1    2      0     342    31  -
+C.3    sub-c-3          2   1    1      0     189    10  -
+C.4    sub-c-4          2   1    1      0     532    26  [5]
+C.5    sub-c-5          4   2    2     51    1901    90  -
+C.6    sub-c-6          2   1    1      0     113     3  -
+C.7    sub-c-7          2   1    1      0      88     8  [7]
+C.8    sub-c-8          1   1    0    566       0     0  [7]
+D      appendix-d       2   2    0    220       0     0  [8]
+D.1    sub-d-1          2   1    1      0     466    26  -
+D.2    sub-d-2          2   1    1      0     234     6  -
+D.3    sub-d-3          2   1    1      0    1752   100  [7, 8]
+D.4    sub-d-4          2   1    1      0     148     7  [8]
+D.5    sub-d-5          2   1    1      0     418    10  [5]
+D.6    sub-d-6          2   1    1      0     260     6  -
+D.7    sub-d-7          2   1    1     54      85     3  -
+D.8    sub-d-8          4   2    2    192     286    12  [6, 8]
+D.9    sub-d-9          2   1    1      0      76     4  -
+D.10   sub-d-10         2   1    1      0      94     3  [8]
+D.11   sub-d-11         2   1    1      0     445    15  [5, 8]
+D.12   sub-d-12         2   1    1    162     108    12  -
+D.13   sub-d-13         2   1    1     40      78     2  [5]
+D.14   sub-d-14         3   2    1     47     449     6  [6, 7]
+D.15   sub-d-15         3   2    1    146     194     8  [8]
+D.16   sub-d-16         3   2    1     90      84     3  [2, 8]
+D.17   sub-d-17         4   2    2    400    1286    34  [7, 9]
+D.18   sub-d-18         2   1    1     86     299     8  -
+D.19   sub-d-19         5   2    3    187    1108    28  [8]
+E      appendix-e       3   2    1     92    3951    18  [6, 9]
+F      appendix-f       1   1    0      0       0     0  [11]
+F.1    sub-f-1          2   1    1      0     185    17  -
+F.2    sub-f-2          2   2    0     99       0     0  -
+F.3    sub-f-3          2   1    1     42     276     8  -
+F.4    sub-f-4          2   1    1      0     867    46  -
+G      appendix-g       1   1    0      0       0     0  [12]
+G.1    sub-g-1          3   2    1     29    2791     0  -
+H      appendix-h       2   2    0     46       0     0  [2]
+H.1    sub-h-1          2   1    1    190      98     0  -
+H.2    sub-h-2          1   1    0    105       0     0  -
+H.3    sub-h-3          6   2    4     45     271    12  -
+H.4    sub-h-4          3   2    1    180      48     0  -
+H.5    sub-h-5          1   1    0     98       0     0  -
+
+appendix cells  prose  gener.  rows
+front        2      6       0     0
+A            2      0    2510    65
+B           10    246   33375   603
+C           20    789    3322   175
+D           50   1624    7870   293
+E            3     92    3951    18
+F            9    141    1328    71
+G            4     29    2791     0
+H           15    664     417    12
+all        115   3591   55564  1237
+
+first mention in the paper (letter, paper cell, offset): [('D', 13, 943), ('H', 13, 1291), ('A', 14, 218), ('B', 16, 2428), ('C', 20, 2290), ('E', 54, 0), ('F', 111, 750), ('G', 112, 97)]
+
+appendix-a   S3  cell  14: (sect-notation)= ## Preliminaries and notation Mathematical notation follows Boyd and Vandenberghe [@boyd2004convex] and estimator terms follow the scikit-learn
+appendix-b   S3  cell  16: Under the log change of variables $u=\log m$ the monomial $m^{w}$ is the linear function $w\cdot u$, so the scores are linear in $w$ and $J_\tau$ is a log-mean-
+appendix-b   S4  cell  17: In the notation of the geometric programming tutorial [@boyd2007tutorial, Section 2.1], term $k$ is the monomial $c_km^{a_k}$ with $c_k=e^{-\kappa\beta_k}$ and 
+appendix-b   S5  cell  20: Its optimal value $\beta$ is the log-mean-exp, not the unnormalized log-sum-exp ({ref}`Appendix B, L5 <appendix-b>`): the factor $1/N$ leaves the minimizer unch
+appendix-b   S5  cell  20: At finite $\tau$ one term is a geometric program in $x=e^{w}$, convex in $w$ ({ref}`Appendix B, L4 <appendix-b>`). $V_K$ is a generalized posynomial, the term m
+appendix-b   S5  cell  20: The several-term fit alternates weights with one program for all terms ({ref}`Appendix B, L16 <appendix-b>`).
+appendix-b   S5  cell  20: The fit weighs every design in its soft maximum, and one inside the near-frontier band weighs within a factor $e$ of the weight a design on the surface would ha
+appendix-b   S5  cell  20: Negative values are rejected, and the pull-back to attribute units is exact ({ref}`Appendix B, L9 <appendix-b>`).
+appendix-b   S5  cell  22: With $K$ terms the fit is the posynomial of {prf:ref}`def-posynomial`, with parameters $W=(w_1,\dots,w_K)$ and reaches $\beta_k=J_\tau(w_k)$, the soft maximum o
+appendix-b   S5  cell  22: Terms: with the weights held, refit the terms and reset $\beta_k=J_\tau(w_k)$: at $\kappa=\infty$ each $w_k$ minimizes $f_k$ of {eq}`eq-slack` over the simplex;
+appendix-b   S5  cell  22: Terms: with the weights held, refit the terms and reset $\beta_k=J_\tau(w_k)$: at $\kappa=\infty$ each $w_k$ minimizes $f_k$ of {eq}`eq-slack` over the simplex;
+appendix-b   S5  cell  22: Write $n_k$ for the designs labelled $k$ and $\bar u_k$ for their mean log-metric: :::{math} :label: eq-slack \begin{aligned} f_k(w)&=J_\tau(w)-\bar u_k\cdot w,
+appendix-b   S5  cell  22: The certificate of the heuristic is three levels of guarantee, each proved in {ref}`Appendix B <appendix-b>`: descent, the mean slack does not rise at an accept
+appendix-b   S6  cell  24: (sect-results)= ## Results Hypotheses marked I are results of the literature, taken as given; $\mathrm{L}n$ is the lemma script that proves a result, and the pr
+appendix-b   S6  cell  25: Then for $\lambda>0$ and $\beta\in\mathbb{R}$ $$ V(\lambda m)=\lambda V(m),\qquad V\big(m/V(m)\big)=1,\qquad V(me^{-\beta})=e^{-\beta}V(m). $$ Proof: {ref}`Appe
+appendix-b   S6  cell  26: Proof: {ref}`Appendix B, L2 <appendix-b>`. ::: Adding $c$ to every log-metric multiplies every metric by $e^{c}$, a change of units.
+appendix-b   S6  cell  28: Assume A2, A3 and I10 (the first-order conditions) and, for the facet-normal reading of R1 ({prf:ref}`cond-r1`), $w_j>0$ for every $j$ at the fit temperature, t
+appendix-b   S6  cell  28: Then $g=U^\top p$ and $$ g_j\ge\lambda,\qquad w_j(g_j-\lambda)=0,\qquad j=1,\dots,d, $$ so $U^\top p$ has equal components on the support of $w$. <!-- vocab-exe
+appendix-b   S6  cell  29: Proof: {ref}`Appendix B, L4 <appendix-b>`. ::: $J_\tau$ is the log-sum-exp, convex [@boyd2004convex, Section 3.1.5], composed with a linear map and shifted by a
+appendix-b   S6  cell  30: Proof: {ref}`Appendix B, L5 <appendix-b>`. ::: The bounds on $\mathrm{LSE}_\tau$ are the log-sum-exp's own approximation of the maximum [@boyd2004convex, Sectio
+appendix-b   S6  cell  32: Then $$ \frac1\tau\log\mathbb{E}\,e^{\tau w\cdot\varepsilon}=\frac{\tau\sigma^2\lVert w\rVert^2}{2}. $$ Proof: {ref}`Appendix B, L6 <appendix-b>`. ::: A populat
+appendix-b   S6  cell  33: A5 is the case $\Sigma=\sigma^2I$. ::: :::{prf:assumption} A10, multiplicative measurement error :label: asm-attribute-error :enumerated: false An attribute's m
+appendix-b   S6  cell  33: A5 is the case $\Sigma=\sigma^2I$. ::: :::{prf:assumption} A10, multiplicative measurement error :label: asm-attribute-error :enumerated: false An attribute's m
+appendix-b   S6  cell  34: Proof: {ref}`Appendix B, L20 <appendix-b>`. ::: Gaussian noise of covariance $\Sigma$ on the log-metrics adds a ridge to the loss; zero exponents stay zero, and
+appendix-b   S6  cell  35: Proof: {ref}`Appendix B, L7 <appendix-b>`. ::: The hyperplane is the convex form of the monomial constraint $m^{w}=e^{\beta}$ [@boyd2004convex, Section 4.5.3], 
+appendix-b   S6  cell  36: Proof: {ref}`Appendix B, L21 <appendix-b>`. ::: The log-log form of the first is the elasticity $-w_{ki}/w_{kj}$ ({prf:ref}`thm-elasticity`), with the cases of 
+appendix-b   S6  cell  36: The attribute-unit form follows by the chain rule on the tension and, independently, by the implicit derivative of the surface written in the attributes ({ref}`
+appendix-b   S6  cell  38: Assume A2, A7 and I6 ($QQ^\top=I$ implies $Q^\top Q=I$); for the $K>1$ clause, A6 and the shift property of {ref}`Appendix B, L10 <appendix-b>`.
+appendix-b   S6  cell  38: Proof: {ref}`Appendix B, L8 <appendix-b>`. ::: The chart is an orthogonal change of coordinates of the log-metrics, from the sum-zero space and its normal; noth
+appendix-b   S6  cell  39: Proof: {ref}`Appendix B, L9 <appendix-b>`. ::: In attribute units $V$ is a monomial of the shifted attributes, in the form of the geometric programming tutorial
+appendix-b   S6  cell  40: Proof: {ref}`Appendix B, L10 <appendix-b>`. ::: The bounds are the log-sum-exp's own with $n=K$ [@boyd2004convex, Section 3.1.5], and $\Phi_K$ is the log-sum-ex
+appendix-b   S6  cell  41: Proof: {ref}`Appendix B, L11 <appendix-b>`. ::: Maximizing $V$ maximizes $w\cdot u$, a weighted sum of the log-metrics; this is scalarization, and positive weig
+appendix-b   S6  cell  43: Then $$ F(W)\le G_\alpha(W)-E, $$ with equality at the weights' own terms; $e^{G_\alpha}$ is a generalized posynomial in $e^{w}$; and $F$ is symmetric in the te
+appendix-b   S6  cell  43: Proof: {ref}`Appendix B, L16 <appendix-b>`. ::: The inequality is the descent condition of the soft-weight alternation: refitting under fixed weights lowers $G_
+appendix-b   S6  cell  43: Its certificate is the second-order test of {ref}`Appendix B, L17 <appendix-b>`, beside the three levels of the sharp fit.
+appendix-b   S6  cell  44: Proof: {ref}`Appendix B, L15 <appendix-b>`. ::: Reassigning each row to the cell of its maximizing term lowers or keeps $F$, and refitting each term by $f_k$ do
+appendix-b   S6  cell  45: Proof: {ref}`Appendix B, L12 <appendix-b>`. ::: $G_k$ is the Frank-Wolfe gap of $f_k$ over the simplex, and the bound is the first-order condition for convexity
+appendix-b   S6  cell  47: Proof: {ref}`Appendix B, L13 <appendix-b>`. ::: The vector $(u_i,-1)$ makes the score $w_k\cdot u_i-\beta_k$ linear in the parameters $(w_k,\beta_k)$, so Cauchy
+appendix-b   S6  cell  48: Proof: {ref}`Appendix B, L14 <appendix-b>`. ::: R2 keeps each row's maximizing term, so the loss equals $F$ there and the sum regroups by cell with each summand
+appendix-b   S6  cell  49: Then, with $F^*_{\text{fixed}}=\sum_k\frac{n_k}{N}f_k^*$ the least mean slack with the cells held fixed, $$ 0\le F(W)-F^*_{\text{fixed}}\le\sum_k\frac{n_k}{N}G_
+appendix-b   S6  cell  50: Then if $H$ is positive definite on the tangent space of the active face (positive-multiplier bounds fixed, the rest free; it contains the critical cone, {ref}`
+appendix-b   S6  cell  50: Both $D$ and $M$ are positive semidefinite: $$ D=\mathrm{blockdiag}\Big(\tfrac{n_k}{N}\,\tau\,\mathrm{Cov}_{p_k}(u)\Big),\qquad V^\top MV=\frac1N\sum_i\mathrm{V
+appendix-b   S6  cell  50: Proof: {ref}`Appendix B, L17 <appendix-b>`. ::: $D$ is the weighted within-term curvature and $\kappa M$ the designs' ambiguity between terms, which lowers it.
+appendix-b   S9  cell 106: {ref}`Appendix B <appendix-b>` gives one line of code to read each proof step against; it cannot say that a sentence means what its line computes.
+appendix-c   S7  cell  59: {ref}`Appendix C <appendix-c>` describes the model behind the evaluation and names each dataset; {numref}`Figure %s <fig-behavioural>` traces each traded metric
+appendix-d   S8  cell  73: (sect-case-analysis)= ## Case analysis We read the case as the method asks: what contends, how, and where designs sit (the closing decision: {numref}`Table %s <
+appendix-e   S6  cell  54: {ref}`Appendix E <appendix-e>` records what the results leave open.
+appendix-e   S9  cell 109: {ref}`Appendix E <appendix-e>` gives the ledger.
+appendix-f   S11 cell 111: The pinned toolchain, the environment of record and the commands are in {ref}`Appendix F <appendix-f>`.
+appendix-g   S12 cell 112: (sect-cited)= ## Works cited The list holds the sources of the main text and of the register of {ref}`Appendix G <appendix-g>`. ```{bibliography} ```
+appendix-h   S2  cell  13: In a prospectively specified test, on an embedding of ours, the authors' code, at its defaults and one direction at a time, recovered the planted trade-offs onl
+sub-b-2      S5  cell  22: A design's cell, the term that scores it highest in the fit ({prf:ref}`def-posynomial`), is read after the fit (steps: {ref}`Appendix B.2 <sub-b-2>`).
+sub-b-2      S6  cell  51: Certified is a status at the returned point, set by tolerances, and the returned point is polished: at finite $\tau$ each term's refit is followed by Newton ste
+sub-c-1      S7  cell  56: Every name is read from the system model; so are the ranges, which the view does not draw ({ref}`Appendix C.1 <sub-c-1>`). ::: *Shows:* every part of the cubesa
+sub-c-1      S7  cell  59: We use two regimes of the same design problem, which differ in the gains' sampled range: the proportional gain $K_p$ from 0.2 to 2 in the aggressive (primary) r
+sub-c-1      S8  cell  95: **Two regimes.** The same pipeline on the baseline regime, whose gains were sampled over a lower range ({ref}`Appendix C.1 <sub-c-1>`), separates the problem's 
+sub-c-4      S5  cell  20: The case's conditioning rule is {ref}`Appendix C.4 <sub-c-4>`'s.
+sub-c-7      S7  cell  71: Where the answer must be known, we plant it, with the generator of {ref}`Appendix C.7 <sub-c-7>`; the recovery of planted terms is read in {ref}`Appendix D.14 <
+sub-c-8      S7  cell  64: The launch slot (a 50 kg minimum) is not costed, so for fleets of one to three the slot is up to 4.2 times the reported launch cost, and at three at most 1.4 ti
+sub-d-10     S8  cell  97: A regressor from configuration to chart coordinates predicts where proposals fall; we then measure them ({ref}`Appendix D.10 <sub-d-10>`).
+sub-d-11     S5  cell  21: The exact-maximum support is checked under rounding-level jitter ({ref}`Appendix D.11 <sub-d-11>`); at $K=1$ its optimum is one point on the two regimes, and fo
+sub-d-11     S8  cell  73: (sect-case-analysis)= ## Case analysis We read the case as the method asks: what contends, how, and where designs sit (the closing decision: {numref}`Table %s <
+sub-d-13     S5  cell  22: The refit of record is $f_k$ over all rows, centred at the cell's mean; refitting a term on its own rows alone does not recover planted terms ({ref}`Appendix D.
+sub-d-14     S6  cell  44: A repeated partition pins both drops to zero, so the loop stops; the bound is a pigeonhole count over the partitions, not a practical stopping guarantee, and {r
+sub-d-14     S7  cell  71: Where the answer must be known, we plant it, with the generator of {ref}`Appendix C.7 <sub-c-7>`; the recovery of planted terms is read in {ref}`Appendix D.14 <
+sub-d-15     S8  cell  84: :::{figure} figures/fig-chart-level.png :label: fig-chart-case The chart of the K = 2 fit, the K the package's checks point to ({ref}`Appendix D.15 <sub-d-15>`)
+sub-d-16     S2  cell  13: We borrow that setting and the estimator interface of scikit-learn, and use PCA as a downstream step ({ref}`Appendix D.16 <sub-d-16>`).
+sub-d-16     S8  cell  84: It is a reading of the sampled designs and not part of the model ({ref}`Appendix D.16 <sub-d-16>` gives its share of the spread and its loadings; the axis names
+sub-d-17     S7  cell  61: Six are read after the fit: four thresholds (peak slew power, pointing error, control effort and the launch budget, read as a limit on total mass at 7,000 USD p
+sub-d-17     S7  cell  64: The fit ignores them all; {ref}`Appendix D.17 <sub-d-17>` reads them after it.
+sub-d-17     S9  cell 106: **Numerical.** {ref}`Appendix D.17 <sub-d-17>` prices each of the six requirements read after the fit at the fitted reference surface and counts the near-fronti
+sub-d-19     S8  cell 104: The rows show wheel, tracker and fleet only; the picks' other design variables (panel span, battery capacity, the gains) are in {ref}`Appendix D.19 <sub-d-19>`.
+sub-d-19     S8  cell 104: The shortlist and the rules are in {ref}`Appendix D.19 <sub-d-19>`. :label: tab-decision-case :::{embed} #tab-decision :remove-input: true ::: ::::
+sub-d-3      S7  cell  69: *Does not show:* fit quality, the fitted reference surface or the designs near it, any K > 1 fit, the exponents' values at the fit temperature ({ref}`Appendix D
+sub-d-3      S8  cell  95: The sets are compared with such a pair counted as one (its exponents are still read apart, {ref}`Appendix D.3 <sub-d-3>`).
+sub-d-4      S8  cell  95: **Two regimes.** The same pipeline on the baseline regime, whose gains were sampled over a lower range ({ref}`Appendix C.1 <sub-c-1>`), separates the problem's 
+sub-d-5      S5  cell  20: Halving or doubling that fraction leaves the contending sets unchanged, and a different scaler does not ({ref}`Appendix D.5 <sub-d-5>`).
+sub-d-8      S6  cell  44: A fit that stops with an empty cell is reported as stationary without margin, never certified ({ref}`Appendix D.8 <sub-d-8>`).
+sub-d-8      S6  cell  51: **The stopping declaration.** Each returned fit carries the levels it meets ({ref}`Appendix D.8 <sub-d-8>`).
+sub-d-8      S8  cell  82: At K = 2 the trade-off separates into two terms with different contending sets ({numref}`Figure %s <fig-chart-case>` and {numref}`Figure %s <fig-tension-matrix>

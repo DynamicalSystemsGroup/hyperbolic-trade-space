@@ -785,9 +785,9 @@ def test_no_withdrawn_appendices():
     assert not [p for p in PAPER.glob("*audit*")]
 
 
-JOB_BLOCKS = {"B", "C", "D", "E", "H"}
-"""The appendices that still open with a Job block and the three tiers (R-25), until WP57b, WP57c
-and WP57d tighten them; WP57a cut the blocks of A, F and G (the rule on metanarration)."""
+JOB_BLOCKS = {"C", "D", "E", "H"}
+"""The appendices that still open with a Job block and the three tiers (R-25), until WP57c and
+WP57d tighten them; WP57a and WP57b cut the blocks of A, F, G and B (the rule on metanarration)."""
 
 
 def test_job_blocks_remain_only_in_the_appendices_not_yet_tightened():
@@ -2767,11 +2767,13 @@ def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
     steps = sum(len(lem["steps"]) for lem in record.values())
     assert f"{results} results in {len(record)} files and {steps} steps" in text
     last = max(lem["number"] for lem in record.values())  # derived from the record, never typed
-    assert f"(L12 to L{last})" in text and "L15. descent" in _proof_text()
+    assert "L15. descent" in _proof_text()
     heading = (
         f"### B.2 The several-term fit, its levels of guarantee and the tension (L12 to L{last})"
     )
     assert heading in _src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-B-2"))
+    # WP57b: the rule and the kinds; no list of the appendix's parts, no repeat of Section 9
+    assert "two parts" not in text and "human validation" not in text
 
 
 def test_the_claims_of_c1_have_their_true_basis():
@@ -4523,14 +4525,20 @@ def test_the_statements_of_the_theorems_carry_what_their_scripts_prove():
     assert "c_k=e^{-\\kappa\\beta_k}" in defs and "a_k=\\kappa w_k" in defs  # WP55: the GP bridge
 
 
-def test_the_polish_and_the_unused_lemma_are_named_in_appendix_b2():
-    """138: the status refers to the polished point; L19 is used by no result of the paper."""
+def test_appendix_b2_is_the_restart_stop_and_polish_rules():
+    """138, then WP57b: B.2 is the paragraph Section 5's "steps: Appendix B.2" and Section 6's
+    "Newton steps that close the gap the solver leaves" point at: the restart rule, the stop rule,
+    the polish with G-16, the status at the polished point; no restatement of the alternation's
+    program, no commentary on the lemmas, nothing about what the paper does not use."""
     b2 = " ".join(_cell_src("app-B-2", SUPPORT_NB).split())
     assert "five reduced Newton steps (the polish)" in b2 and "G-16" in b2
-    assert (
-        "L19 bounds the noise shift of the offset, and no result or table of this paper uses it"
-        in b2
-    )
+    assert "random centres in the chart" in b2 and "restart whose mean slack is smallest" in b2
+    assert "if the mean slack rose, stop with the previous state" in b2
+    assert "the status refers to the polished point" in b2
+    cut = ("L19", "does not prove", "no result or table of this paper", "softmax", "L17 treats")
+    for gone in cut:
+        assert gone not in b2, gone
+    assert len(b2.split()) <= 160
     results = " ".join(_section("Results").split())
     assert "the returned point is polished" in results
 

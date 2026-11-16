@@ -1,0 +1,32 @@
+Every 'Appendix B, Ln' pointer of paper/paper.ipynb (role {ref}, target <appendix-b>), the id of the result's heading
+in Appendix B (generate_proofs._anchor) and, for a step pointer, its row in the step table (proofs_fit for L1 to L11,
+proofs_solver for L12 to L22). Made by the script in work-packages/WP57b-review.md.
+
+pointer    sections                                     landing anchor heading in table step row
+L1         results                                      proof-l1       yes      (result)
+L2         results                                      proof-l2       yes      (result)
+L3         results                                      proof-l3       yes      (result)
+L3.9       results                                      proof-l3       yes      yes
+L4         methods,notation,results                     proof-l4       yes      (result)
+L5         methods,results                              proof-l5       yes      (result)
+L5.25      methods                                      proof-l5       yes      yes
+L6         results                                      proof-l6       yes      (result)
+L7         results                                      proof-l7       yes      (result)
+L8         results                                      proof-l8       yes      (result)
+L9         methods,results                              proof-l9       yes      (result)
+L10        definitions,methods,results                  proof-l10      yes      (result)
+L11        results                                      proof-l11      yes      (result)
+L12        results                                      proof-l12      yes      (result)
+L13        results                                      proof-l13      yes      (result)
+L14        results                                      proof-l14      yes      (result)
+L15        results                                      proof-l15      yes      (result)
+L16        methods,results                              proof-l16      yes      (result)
+L17        results                                      proof-l17      yes      (result)
+L17.13     results                                      proof-l17      yes      yes
+L17.19     results                                      proof-l17      yes      yes
+L18        results                                      proof-l18      yes      (result)
+L19        results                                      proof-l19      yes      (result)
+L20        results                                      proof-l20      yes      (result)
+L21        results                                      proof-l21      yes      (result)
+
+all pointers land: True | 25 distinct pointers

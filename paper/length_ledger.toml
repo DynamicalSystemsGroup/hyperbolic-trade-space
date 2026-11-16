@@ -2034,3 +2034,20 @@ section = "Appendix G"
 words_added = 29
 job = "one line at the end of G.1 names the reading pass (one row per citing sentence, the source, the place read) and links its file in the repository"
 reader = "the reader of the register who wants to check what the paper took from a source"
+
+# WP57b: Appendix B is the proofs Section 6 points to, with the one paragraph Sections 5 and 6 need on the restart,
+# stop and polish rules (WP57-decisions.md; the map, section 1). Words by map_counts.py, prose of the cells.
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix B"
+words_removed = 112
+no_longer_did = "the Job block said what the main text keeps, what the appendix carries and what the repository keeps; 'What the scripts establish' (C387 to C389) stays as the cell's whole; how_to_read in paper/generate_proofs.py loses its two-parts list and its closing paragraph, which repeated Section 9's verify-and-validate sentence (about 60 generated words, outside the prose count)"
+authority = "WP57b (the supervisor: tighten the appendices, do not metanarrate); the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix B"
+words_removed = 277
+no_longer_did = "B.2's 'The algorithm' paragraph (398 words) restated Section 5's alternation, labels and program, commented on each lemma before its table (L16's program and bound, L17's Hessian, L18, L19, L21) and said which result the paper does not use (L19); the 121 words kept are the restart rule, the stop rule, the polish with G-16 and that the status refers to the polished point, what Section 5's 'steps: Appendix B.2' and Section 6's 'Newton steps that close the gap the solver leaves' point at; 'L16 does not prove that the alternation converges' is queued for WP57d (assumptions-queue.md); register rows C132 to C136, C139 to C146 and C667 retire with their sentences, C137, C138 and C666 keep theirs"
+authority = "WP57b; map_counts.py before and after"

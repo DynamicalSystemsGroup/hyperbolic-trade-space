@@ -301,7 +301,7 @@ def _part(numbers, path) -> Md:
 
 
 def how_to_read(path=RECORD) -> Md:
-    """The rule of the appendix, what the correspondence establishes, and the kinds of step.
+    """The rule of the appendix and the kinds of step, with their counts in the record.
 
     Parameters
     ----------
@@ -311,14 +311,12 @@ def how_to_read(path=RECORD) -> Md:
     Returns
     -------
     Md
-        The rule (each proof one file, each step one line, the tag its address), the three kinds
-        of step with their counts in the record, and what the checker cannot establish.
+        The rule (each proof one file, each step one line, the tag its address) and the three
+        kinds of step with their counts in the record.
     """
     record = _load(path)
     steps = [s for _, lem in _lemmas(record) for s in lem["steps"]]
     counts = {k: sum(s["kind"] == k for s in steps) for k in KIND_ORDER}
-    last = max(lem["number"] for lem in record["lemmas"].values())
-    parts = "\n".join(f"- {name} (L{lo} to L{hi or last})" for name, lo, hi in PARTS)
     results = sum(len(lem["results"]) for _, lem in _lemmas(record))
     return Md(
         f"Each proof is one file of `derivation/`, and each step of the proof is one line of that "
@@ -336,13 +334,7 @@ def how_to_read(path=RECORD) -> Md:
         f"links to its entry.\n\n"
         f"A step that SymPy cannot derive is an explicit hypothesis or an entry of the ledger. "
         f"Two results may share a file. L14 proves Proposition 3 and its corollary, the "
-        f"approximate certificate; each names the same file and owns its own steps. The appendix "
-        f"has two parts:\n\n{parts}\n\n"
-        f"What the correspondence establishes is this. Every step of the prose has exactly one "
-        f"line of code. The lines are in the order of the prose. Every computed line passes. "
-        f"Neither a line nor a sentence can change without the checker reporting the step. What "
-        f"it cannot establish is that a sentence means what its line computes; that reading is "
-        f"the human validation."
+        f"approximate certificate; each names the same file and owns its own steps."
     )
 
 

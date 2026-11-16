@@ -1163,66 +1163,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "V(km)=kV(m) and V(m/V(m))=1 give m = V(m) * (m/V(m)) with m/V on the frontier"
 
 [[claim]]
-id = "C132"
-fragment = "every term is fitted against every design, each offset"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_solvers.py::test_corollary_bound_on_every_planted_fit", "test:tests/test_solvers.py::test_r1_planted_certificates"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Offsets use LME of full U@w_k for each term; the linear part uses the term's own rows; test pins the all-rows offset."
-
-[[claim]]
-id = "C133"
-fragment = "each offset $\\beta_k=J_\\tau(w_k)$ being the soft maximum of the term's scores over all rows"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_solvers.py::test_corollary_bound_on_every_planted_fit", "test:tests/test_solvers.py::test_r1_planted_certificates", "test:tests/test_solvers.py::test_terms_k1_equals_slsqp_and_degenerate"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Test recomputes log_mean_exp(U @ W[k], tau) over all rows and matches the objective; offset_residual <= 1e-12."
-
-[[claim]]
-id = "C134"
-fragment = "The alternation takes weights from the current model and then solves one program for all terms"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::soft_weights", "lemma:L16.11", "test:tests/test_soft_fit.py::test_r1_the_soft_objective_never_rises_across_the_history"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Soft path _solve_terms_soft takes softmax weights of the current model then refits; 'one program' is L16's formulation (code refits per term, which the fixed weights allow)"
-
-[[claim]]
-id = "C135"
-fragment = "The package uses the sharp limit of the weights, one label per design"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone", "test:tests/test_soft_fit.py::test_r3_the_limit_kappa_to_infinity_is_the_label_fit"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Default term_temperature=inf is the label fit (one argmax label per row)"
-
-[[claim]]
-id = "C136"
-fragment = "separates into one convex program per term"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["lemma:L16.44", "lemma:L4"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Fixed-weight objective regroups by terms (L16.44), each term a convex soft-max program (L4); code _refit loops per label"
-
-[[claim]]
 id = "C137"
 fragment = "For each restart the package starts from random centres in the chart"
 file = "paper/supporting_material.ipynb"
@@ -1245,102 +1185,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Guard rejects a rise beyond GUARD_TOL and returns the previous state"
-
-[[claim]]
-id = "C139"
-fragment = "fixed-weight loss bounds the soft model's mean slack from above and equals it at the model the weights came from"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L16.43", "lemma:L16.41"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "F <= G_alpha - E with equality at x = x0; fixed-weight objective is G_alpha less the constant E (same minimizers)"
-
-[[claim]]
-id = "C140"
-fragment = "generalized posynomial in $e^{w}$, so its minimization is a generalized geometric program"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L16.49", "lemma:L16.31"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Generalized posynomial in exp(w) by I15 (inherited); GGP conclusion rests on I15"
-
-[[claim]]
-id = "C141"
-fragment = "a generalized geometric program in the sense of Boyd et al. [@boyd2007tutorial]"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "L"
-backing = ["bib:boyd2007tutorial", "file:paper/reading_pass.yaml"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "reading_pass.yaml row n 37, verdict supported (sect. 5.3 generalized posynomials)"
-
-[[claim]]
-id = "C142"
-fragment = "L16 does not prove that the alternation converges."
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L16"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Stated as a non-result in the L16 docstring ('What this does NOT prove'); not a tagged step"
-
-[[claim]]
-id = "C143"
-fragment = "the gradient and the Hessian $D-\\kappa M$ of its loss"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L17.34", "lemma:L17.35"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Gradient L17.34, Hessian V'DV - kappa V'MV L17.35"
-
-[[claim]]
-id = "C144"
-fragment = "the second-order test that certifies a strict local minimizer"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L17.44"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "KKT plus positive definiteness on the face gives a strict local minimizer (I16)"
-
-[[claim]]
-id = "C145"
-fragment = "The label belongs to the package and not to the model"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "file:work-packages/interface-contract.md"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "cell_ is argmax over the fitted scores, analysis not part of the model; contract: cell_ stays the analysis by the dominant term"
-
-[[claim]]
-id = "C146"
-fragment = "which term scores a design highest is analysis of the fitted model"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "P"
-backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "file:work-packages/interface-contract.md"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Same backing as C053; kind P but a statement about the package"
 
 [[claim]]
 id = "C147"
@@ -6607,21 +6451,6 @@ status = "backed"
 disposition = "keep"
 source = "final round, third paper unit, change requests 93 to 165"
 note = "POLISH_STEPS = 5 after each finite-tau term refit; the soft alternation ends with a joint polish; G-16 reports the gap SLSQP alone leaves (request 138)."
-
-[[claim]]
-id = "C667"
-fragment = "no result or table of this paper uses it"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "M"
-backing = [
-  "file:derivation/lemma_19_noise_shift_bound.py",
-  "file:derivation/proof_map_record.json",
-]
-status = "backed"
-disposition = "keep"
-source = "final round, third paper unit, change requests 93 to 165"
-note = "No derivation file imports L19_RESULT and the paper's tables name no L19 step (request 148)."
 
 [[claim]]
 id = "C668"
