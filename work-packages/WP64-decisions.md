@@ -125,3 +125,11 @@ on branch `wp65`; the specification goes to his read with the items that are his
 
 The plan approved: the design the six answers fix (the driver's reading above) and the stages after it (WP65 design,
 WP66a to c build, WP67 quality control, WP68 integrate with the first merge to `main`, WP69 the cascade review).
+
+## His expectation for 0.1 (15:41 EST, verbatim)
+
+"this split should leave my package in a clean state for an 0.1 release with the paper link only holding the abstract
+so i am expecting to need to do that configuration and release work soon."
+
+The driver's reading: the build (WP66a to c) and integration (WP68) stages are the priority after the design lands;
+the target state is `dev` merged into `main` as 0.1 with `/paper/` the abstract page.
