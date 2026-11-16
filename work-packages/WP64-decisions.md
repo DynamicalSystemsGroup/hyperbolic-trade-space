@@ -95,3 +95,26 @@ pin; earlier pins remain as tags, GitHub releases and their Zenodo DOIs, not as 
 **Q5, the paper's tests and the software's gate (15:24 EST):** "All leave" (the popup's option: the paper's tests run
 only in the paper branch's workflow; the software gate runs the package, docs and site tests; a software change that
 breaks the paper shows on the paper branch when it merges `dev` in).
+
+**Q6, what publishes the software (15:27 EST):** "can you do merge itself releases plus failure detection instrument
+with a clean up script?"
+
+The driver's reading of the six answers, the design the next stage specifies: the software's release is the merge of
+the `dev` pull request into `main` (the gate: required checks, code-owner review, a merge commit); the push to `main`
+runs the release workflow, which creates the `v<version>` tag, publishes to PyPI and composes and deploys the site as
+called jobs; every step reports, a failure anywhere is detected and named in the run, and a clean-up script (run by the
+workflow on failure and runnable by hand) removes the tag and the draft release so the merge can be retried. The
+paper iterates on a `paper` branch, whose workflow is event-driven: a push builds and tests the whole paper, a
+`paper-*` tag publishes its built HTML and its key manifest as a GitHub release, which Zenodo archives with a DOI
+(the software's releases likewise, through the GitHub integration); the paper's tests run only there. On `dev` and
+`main` the `/paper/` slot is the title, the author and the approved abstract until the paper's mode names a published
+pin; the site composer takes the paper slot from that release's artefact and never builds the paper itself, so a
+paper that does not build cannot block the software. Only the current pin is served. The paper's release event
+towards the public site is the merge of `paper` into `dev`, then of `dev` into `main`.
+
+## WP65 approved as proxy (15:27 EST)
+
+`WP65-scope-of-work.md` (stage 2, the design: the software's release workflow with failure detection and the clean-up
+script; the paper's event-driven workflow on its branch; the mode and the slot; the docs' key manifest; the test gate;
+the records; the build plan for three units) is approved by the driver under his mandate on his six answers. One unit
+on branch `wp65`; the specification goes to his read with the items that are his.
