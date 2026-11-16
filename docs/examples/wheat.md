@@ -60,7 +60,7 @@ At two terms, at the same temperature, the terms carry shares of 0.57 and 0.43 o
 
 **The ladder.** Grain's exponent runs from 0.29, with no scaler, to 0.72, in Section 1 and in modern cultivars at nitrogen of at least 96. That subset takes straw's weight from 0.55 to 0.28. A negative association, -0.62 to -0.90, holds in every row of the scaler, cap, subset and trend variants.
 
-**Functions of the two yields.** Biomass, a function of grain and straw, takes exponent 0.00 and leaves the fit unchanged; the harvest index displaces grain, whose exponent falls to 0.00, and the second term goes. Rotating the two log yields before the fit and pulling the frontier back weights grain and straw by 0.71 and -0.23, or -0.11 and 0.71 with the second component reversed: a frontier that rewards less of one yield, with no ceiling.
+**Functions of the two yields.** Biomass, a function of grain and straw, takes exponent 0.00 and leaves the fit unchanged. The fitted level V, a weighted geometric mean of the two yields, is an index of biomass: across the plot-years log V correlates with log biomass at 0.99. The harvest index displaces grain, whose exponent falls to 0.00, and the second term goes. Rotating the two log yields before the fit and pulling the frontier back weights grain and straw by 0.71 and -0.23, or -0.11 and 0.71 with the second component reversed: a frontier that rewards less of one yield, with no ceiling.
 
 **The cultivars.** At nitrogen of at least 96 kg per hectare the median harvest index is 0.52 for Cappelle Desprez (1968 to 1978) and 0.76 for Zyatt (2019 to 2022), at median total biomass of 8.97 and 8.75 t per hectare.
 
@@ -68,7 +68,7 @@ At two terms, at the same temperature, the terms carry shares of 0.57 and 0.43 o
 
 ## What the fit says
 
-The fitted level V, a weighted geometric mean of the two yields, is an index of biomass: across the plot-years log V correlates with log biomass at 0.99. At a fixed level grain trades against straw at the rate the exponents give. Near the frontier a plot-year with more grain has less straw, in every variant. The newest cultivar puts three quarters of its biomass in grain, the oldest half, at much the same total: the shift the breeding studies report. The ceiling on grain alone is conditional.
+At a fixed level grain trades against straw at the rate the exponents give. Near the frontier a plot-year with more grain has less straw, in every variant. The newest cultivar puts three quarters of its biomass in grain, the oldest half, at much the same total: the shift the breeding studies report. The ceiling on grain alone is conditional.
 
 ## What the example cannot show
 

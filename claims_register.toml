@@ -7946,7 +7946,7 @@ note = "Fixed across the ladder."
 
 [[claim]]
 id = "C907"
-fragment = "Biomass, a function of grain and straw, takes exponent 0.00 and leaves the fit unchanged; the harvest index ... displaces grain, whose exponent falls to 0.00"
+fragment = "The harvest index displaces grain, whose exponent falls to 0.00, and the second term goes."
 file = "docs/examples/wheat.md"
 anchor = "The fit"
 kind = "S"
@@ -10084,7 +10084,7 @@ note = "Queue line 7 (WP56, The kernel direction)."
 id = "C1103"
 fragment = "is an index of biomass: across the plot-years log V correlates with log biomass at 0.99"
 file = "docs/examples/wheat.md"
-anchor = "What the fit says"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/wheat/derive.py", "file:examples/wheat/results.json"]
 status = "backed"
