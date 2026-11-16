@@ -205,11 +205,14 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   captures of the rendered page, landed with WP57c (772e343), not yet read by him.
 - **D, the case tables:** the numbers Section 8 reads, no more. Soft-confirmed by the driver on the unit's captures
   of the rendered page, landed with WP57c (772e343), not yet read by him.
-- **E, the gaps ledger:** becomes "Assumptions, limitations and open questions": the open questions moved out of the
-  narrative, each with its section and record.
+- **E, assumptions, limitations and open questions:** the assumptions generated from the derivation's ledger, the
+  limitations one row per item with the section it left and its record, every open question listed once. Soft-confirmed
+  by the driver on the unit's captures of the rendered page, landed with WP57d (c8f8407b), not yet read by him.
 - **F, reproduction:** the toolchain, environment and commands Section 11 points to. Landed with WP57a (07842b7),
   not yet read by him.
 - **G, the register of prior art:** the three layers' order; entries cited. Landed with WP57a (07842b7; G.2 to
   `paper/supplement/reading-pass.md`), not yet read by him.
-- **H, the HoroPCA comparison:** its three boundaries (WP35); kept if Section 2's paragraph needs it.
-- **State:** A, B, C, D, F and G landed and soft-confirmed; E and H open (WP57d); re-lettering open (WP57e).
+- **H, the HoroPCA comparison:** its three boundaries (WP35), kept since Section 2's paragraph cites it; H.5 to
+  `notes/directions/`. Soft-confirmed by the driver on the unit's captures of the rendered page, landed with WP57d
+  (c8f8407b), not yet read by him.
+- **State:** A to H landed and soft-confirmed, none yet read by him; re-lettering open (WP57e).

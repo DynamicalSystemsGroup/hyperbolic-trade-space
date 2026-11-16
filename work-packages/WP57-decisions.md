@@ -104,3 +104,35 @@ Appendix H by the map: the Job block and H.1's self-description cut, H.5 to the 
 is approved by the driver under his mandate, after WP57c's landing at 772e343. Ids from C997. One unit on branch
 `wp57d`, dispatched when the regime rename lands and releases the supporting notebook; the driver soft-confirms E and H
 on its captures before landing.
+
+## WP57d accepted as proxy and landed (07:27 EST)
+
+Read on the unit's captures of the rendered appendices (`WP57-rounds/d/`: E's opening and E.1's two tables, E.2's
+table and the gaps table, E.3, H.1 and H.4) and its cold read. Branch `wp57d`, based on `dev` at 2db089d5 (no rebase
+needed), fast-forwarded: c8f8407b, one commit for E and H, since both live in the supporting notebook and each commit
+is to pass the suite (the scope allowed one or two). E is "Assumptions, limitations and open questions" in three
+parts. E.1: two tables generated from `derivation/axioms.py` and the proof map (A0 to A11 and R1 to R3, each with the
+section that states it and the lemmas that import it, each lemma a link to its proof; I1 to I18 and F5 to F19 with
+their citations), nothing typed but the captions. E.2: a typed table of 39 limitations, one per row with the section
+it left and its record, then the gaps table in four columns, each gap linking its row of the ledger. E.3: OQ-1 to
+OQ-10 and OQ-12 to OQ-14 in the ledger's order and words, then Section 9's two research questions; OQ-11 (closed)
+absent. All nine lines of `WP57-rounds/assumptions-queue.md` placed and marked. H: the Job block and H.1's sentence
+about the appendix cut; H.2 to H.4 kept; H.5 moved verbatim to `notes/directions/wp35-horopca-formalism-and-solvers.md`
+and cited in one line at the end of H.4, after the check that no sentence of Sections 2 to 9 needs it. No main-text
+edit; the anchors `appendix-e` and `appendix-h` resolve. Typed prose E 92 to 1,637 words (a list of items with their
+records; link targets counted), H 664 to 513 (rendered 916 to 751, the ceiling lowered to 751); the supporting
+material's generated words 53,460 to 52,619. Register: C997 to C1050 added; C585 to C588 and C591 retired; none
+re-anchored.
+
+The driver's calls: the one-commit delivery accepted; the unit's reading of the research questions' records accepted
+(successive trade-offs has no readout in `notes/directions/`, so its row names the design specification and the
+choosing-K guide); where the map's section 2.1 and the paper differ, the paper governs (six items no longer in the
+paper are not listed); E.3 lists the repository-internal questions OQ-12 and OQ-14 beside the method's, as the scope
+asked for every open entry, and his read decides whether they stay. R-1 to R-6 met per the review's tables. The
+driver's independent run on the merged tree, exit codes captured: lint, format, lock, proof map (22 files, 549 steps),
+vocabulary (0 new), supplement check, register 21, fast suite 2,095 passed, slow paper tests with the docstring test
+31 passed, mkdocs built, data and derivation diff empty; residuals exit 1 as on dev with the same rises, the
+supporting notebook at or below dev on every count. No attribution line. CI 43866677782. For WP57e: E keeps its
+letter here; the supporting page's table numbers after E moved by three. For WP58: E.3 links `WP57c-review.md`,
+`WP56-rounds/ternary/readout.md` and `WP36-decisions.md`, which need the archived hash when those documents leave
+the tree.
