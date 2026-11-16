@@ -3884,7 +3884,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP23 close-out, D-18; final round wave 1, change request 8; the unit-cost requirement and the configuration added at WP56 second unit (the prose of Sections 7 to 9) (the one configuration carried through the case)"
-note = "the model's PointingError of cubesatBaseline is 0.015535 degree, the limit 0.008495 (budgets.pointingErrorLimit), and the engine verifies `not satisfy`; the baseline regime's pass fraction is read by the generator from case.requirement_mask on the stock regime's feasible designs (0.656 on the data of record, D.17's pass column); the typed 63.7 % was the figure of an earlier record"
+note = "the model's PointingError of cubesatBaseline is 0.015535 degree, the limit 0.008495 (budgets.pointingErrorLimit), and the engine verifies `not satisfy`; the baseline regime's pass fraction is read by the generator from case.requirement_mask on the baseline regime's feasible designs (0.656 on the data of record, D.17's pass column); the typed 63.7 % was the figure of an earlier record"
 
 [[claim]]
 id = "C404"
@@ -4208,7 +4208,7 @@ note = "Moved from the choosing-K page to the Examples page (WP33 placement 1). 
 
 [[claim]]
 id = "C436"
-fragment = "The stock regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break, so that mean level cannot choose K; its thinnest term holds 0.35 at K = 2 and 0.13 at K = 3."
+fragment = "The baseline regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break, so that mean level cannot choose K; its thinnest term holds 0.35 at K = 2 and 0.13 at K = 3."
 file = "docs/examples.md"
 anchor = ""
 kind = "R"
@@ -4216,7 +4216,7 @@ backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py:
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
-note = "Stock regime at its K = 1 temperature on the regenerated record: slack 0.115, 0.060, 0.030, 0.017, 0.007; thinnest share 0.35 at K = 2, 0.13 at K = 3; 'No break' is the reading of drops that shrink steadily; stated as the reading."
+note = "Baseline regime at its K = 1 temperature on the regenerated record: slack 0.115, 0.060, 0.030, 0.017, 0.007; thinnest share 0.35 at K = 2, 0.13 at K = 3; 'No break' is the reading of drops that shrink steadily; stated as the reading."
 
 [[claim]]
 id = "C437"
@@ -4312,7 +4312,7 @@ backing = ["func:src/hyperbolic_trade_space/tuning.py::select_temperature", "fun
 status = "backed"
 disposition = "keep"
 source = "WP31 task-reader fix (1)"
-note = "Run on the cubesat metrics, select_temperature(M, 0.10, bounds=(3, 1000)) returns 38.096 (primary) and 45.679 (stock), equal to case.fit_study(study, K=1).tau, which calls it with spec.target_frac = 0.10, spec.tau_bounds = (3, 1000) and n_terms = 1. The second argument is target_frac_above (the docstring)."
+note = "Run on the cubesat metrics, select_temperature(M, 0.10, bounds=(3, 1000)) returns 38.096 (primary) and 45.679 (baseline), equal to case.fit_study(study, K=1).tau, which calls it with spec.target_frac = 0.10, spec.tau_bounds = (3, 1000) and n_terms = 1. The second argument is target_frac_above (the docstring)."
 
 [[claim]]
 id = "C449"
@@ -4336,7 +4336,7 @@ backing = ["glossary:cell", "glossary:term-share", "gen:tests/test_docs.py::_run
 status = "backed"
 disposition = "keep"
 source = "WP31 task-reader fix (2)"
-note = "The cells partition the rows (glossary), so equal cells hold 1/K each; the page claims no threshold for thin, only the reading against 1/K, with the printed thinnest shares 0.17 at K = 3 (stock) and 0.07 at K = 2 (primary)."
+note = "The cells partition the rows (glossary), so equal cells hold 1/K each; the page claims no threshold for thin, only the reading against 1/K, with the printed thinnest shares 0.17 at K = 3 (baseline) and 0.07 at K = 2 (primary)."
 
 [[claim]]
 id = "C452"
@@ -5706,7 +5706,7 @@ note = "D.18: the factor is predicted over measured mean, over the rows where it
 
 [[claim]]
 id = "C663"
-fragment = "the proportional gain $K_p$ from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the stock (baseline) regime"
+fragment = "the proportional gain $K_p$ from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the baseline regime"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "R"
@@ -5717,7 +5717,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "final round, third paper unit, change requests 93 to 165"
-note = "C.1's table: Kp declared 0.2 to 2, sampled 0.2004 to 1.999 (primary) and 0.03009 to 0.999 (stock) (request 145; the supervisor's case model, one clause)."
+note = "C.1's table: Kp declared 0.2 to 2, sampled 0.2004 to 1.999 (primary) and 0.03009 to 0.999 (baseline) (request 145; the supervisor's case model, one clause)."
 
 [[claim]]
 id = "C665"

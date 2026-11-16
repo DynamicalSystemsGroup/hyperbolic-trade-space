@@ -87,7 +87,7 @@ for r, s in studies.items():
 ```
 
 The primary regime drops by 0.078, then 0.023, 0.012 and 0.005: a break at K = 2, where the
-thinnest term holds 0.28 (0.21 at K = 3). The stock regime drops by 0.055, 0.031, 0.012 and 0.010,
+thinnest term holds 0.28 (0.21 at K = 3). The baseline regime drops by 0.055, 0.031, 0.012 and 0.010,
 bending with no break, so that mean level cannot choose K; its thinnest term holds 0.35 at K = 2 and
 0.13 at K = 3.
 
@@ -110,7 +110,7 @@ the near-frontier designs it excludes and a price at the one-term frontier. The 
 ```text
 # case.requirements_summary()
 requirement      pass             near excluded       price, bands
-(primary | stock)
+(primary | baseline)
 peak slew power  58.8 | 64.1 %    108/238 | 145/293   0 | 0
 pointing error   95.2 | 65.6 %    8/238 | 118/293     0.08 | 0.79
 control effort   57.4 | 88.5 %    95/238 | 32/293     0 | 0.91
@@ -135,14 +135,14 @@ primary, feasible (2134): unit cost, available power, pointing error,
 primary, thresholds met (814): momentum headroom, settling time,
   available power, unit cost, pointing error, fleet cost, depth of
   discharge
-stock, all designs (3000): available power, momentum headroom, total
+baseline, all designs (3000): available power, momentum headroom, total
   mass, unit cost, pointing error, settling time, fleet cost, depth of
   discharge
-stock, feasible (2355): momentum headroom, available power, total mass,
-  settling time, pointing error, depth of discharge, unit cost, fleet
-  cost
-stock, thresholds met (882): momentum headroom, settling time, available
-  power, unit cost, total mass, pointing error
+baseline, feasible (2355): momentum headroom, available power, total
+  mass, settling time, pointing error, depth of discharge, unit cost,
+  fleet cost
+baseline, thresholds met (882): momentum headroom, settling time,
+  available power, unit cost, total mass, pointing error
 ```
 
 ## Three metrics as shares of a total

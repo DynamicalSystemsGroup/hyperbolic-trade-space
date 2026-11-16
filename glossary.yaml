@@ -824,6 +824,19 @@ entries:
     not: 'a traded metric or a dataset column; a cited launch price'
     defined_in: 'model_v2/cubesat.sysml (calc def LaunchCost, LaunchBudgetRequirement); case-model.md, The requirements and what each reads'
 
+  - id: 'baseline-regime'
+    term: 'baseline regime'
+    short: 'The second regime of the case: the designs drawn with the proportional gain Kp from 0.03 to 1 (the stock gains), dataset cubesat-stock.'
+    register: 'baseline regime'
+    formal: 'the data of record whose gains are sampled from the stock gain box, Kp from 0.03 to 1; dataset identifier cubesat-stock (the CaseSpec key stock)'
+    not: 'the primary regime (aggressive gains, Kp from 0.2 to 2), the baseline configuration (one design of the SysML v2 model), or a term of the fit'
+    defined_in: 'Section 7, Case construction; examples/adcs/case.py (CaseSpec.regimes, regime_word)'
+    aliases:
+      - 'baseline regimes'
+    avoid:
+      - phrase: 'stock regime'
+        reason: 'the supervisor named the second regime the baseline regime (WP56-decisions.md); one object, one name; the identifier cubesat-stock and the key stock stay in the data'
+
 assumed:
   - term: 'convex program'
     reason: 'convex optimization at the level of Boyd and Vandenberghe 2004'

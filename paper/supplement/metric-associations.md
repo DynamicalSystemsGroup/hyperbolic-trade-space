@@ -1,6 +1,6 @@
-# The table of metrics: the stock regime's first rows and every pair's association
+# The table of metrics: the baseline regime's first rows and every pair's association
 
-Appendix C.5 prints the primary regime's first rows and the pairs at |Spearman| 0.5 or above; this file holds the stock regime's first rows and all the pairs of traded metrics over the feasible designs of both regimes. The tables are `generate_model.metric_table` and `generate_model.metric_associations`, read from the data of record (`examples/adcs/data/v2/`) and written by `uv run python paper/generate_supplement.py`.
+Appendix C.5 prints the primary regime's first rows and the pairs at |Spearman| 0.5 or above; this file holds the baseline regime's first rows and all the pairs of traded metrics over the feasible designs of both regimes. The tables are `generate_model.metric_table` and `generate_model.metric_associations`, read from the data of record (`examples/adcs/data/v2/`) and written by `uv run python paper/generate_supplement.py`.
 
 Each metric is `m_j = exp((o_j log(a_j + s_j) - c_j) / k_j)` for attribute `a_j`, with orientation `o_j` (+1 larger is better, -1 smaller is better), shift `s_j = 0`, and the offset `c_j` and log scale `k_j` of the conditioning above. The table of metrics, one row per kept design and one column per metric, is where the model ends and the method begins.
 
@@ -95,4 +95,4 @@ Dataset cubesat-stock: 2,355 designs by 13 metrics; the first 5 rows:
 | control effort | depth of discharge | -0.006 | +0.000 | -0.004 | -0.003 | no |
 | battery peak power ratio | fleet cost | +0.004 | +0.008 | +0.015 | +0.018 | no |
 
-Pairs at |Spearman| 0.99 or above, read as one axis with their two exponents summed per term: primary regime: energy balance and available power; stock regime: energy balance and available power.
+Pairs at |Spearman| 0.99 or above, read as one axis with their two exponents summed per term: primary regime: energy balance and available power; baseline regime: energy balance and available power.

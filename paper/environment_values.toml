@@ -34,7 +34,7 @@ reason = """term numbers: the estimator numbers the terms by descending term sha
 fit; the rows, columns and keys of the tables below follow that numbering (D.3
 exponents_and_terms, D.8 termination_records, which holds the fits at K = 1, 2, 3 and
 conditioning_ since WP57c). Only a platform tie in near-equal shares could swap two terms; the
-shares here are far apart (D.3 prints 0.754 against 0.246 at K = 2 in the stock regime), so no
+shares here are far apart (D.3 prints 0.754 against 0.246 at K = 2 in the baseline regime), so no
 swap is expected"""
 elsewhere = """tests/test_paper.py::test_term_numbered_tables_are_current compares the multiset of
 the cells of each table with its committed output, so the same terms in another order agree"""

@@ -122,7 +122,7 @@ records in `work-packages/` (a test checks this). The replacement is the registe
 - `the three regimes`
 
 The word `regime` denotes a gain-box dataset of the case (the primary regime, aggressive controller
-gains, or the stock regime), and only that. A term of the fit is a term, never a regime: the
+gains, or the baseline regime), and only that. A term of the fit is a term, never a regime: the
 forbidden phrase `the three regimes` is the misuse. (The shorter "three regimes" cannot be listed:
 the preserved snapshot `paper-sources/method.md` says "needs three regimes", and a snapshot is not
 edited.)

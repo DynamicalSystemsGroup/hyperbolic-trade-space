@@ -1895,11 +1895,12 @@ EXPONENT_FLOOR = 1e-3
 
 
 def regime_word(study):
-    """The name of a study's regime as a figure prints it.
+    """The name of a study's regime as a figure or a sentence prints it.
 
     Parameters
     ----------
-    study : Study
+    study : Study or str
+        A study, or a regime key of the CaseSpec.
 
     Returns
     -------
@@ -1913,8 +1914,11 @@ def regime_word(study):
     'baseline'
     >>> regime_word(SimpleNamespace(regime="primary"))
     'primary'
+    >>> regime_word("stock")
+    'baseline'
     """
-    return _REGIME_WORDS.get(study.regime, study.regime)
+    key = study if isinstance(study, str) else study.regime
+    return _REGIME_WORDS.get(key, key)
 
 
 def _exponent_cmap(plt):

@@ -954,7 +954,7 @@ authority = "the supervisor, S-3: 'Cut to a pointer'"
 date = "2026-11-10"
 section = "Case construction"
 words_removed = 10
-no_longer_did = "Figure 4's caption pointed to the stock regime as the second panel of a figure that is gone"
+no_longer_did = "Figure 4's caption pointed to the baseline regime as the second panel of a figure that is gone"
 authority = "the supervisor, S-3: 'Cut to a pointer'"
 
 [[raise]]
@@ -2099,13 +2099,13 @@ date = "2026-11-16"
 section = "Case analysis"
 words_added = 2
 job = "the nondominated counts' parenthetical names Appendix D.9, the table of those counts in both regimes (WP57c's D.9 default)"
-reader = "the reader who wants the stock regime's counts and shares"
+reader = "the reader who wants the baseline regime's counts and shares"
 
 [[cut]]
 date = "2026-11-16"
 section = "Appendix C"
 words_removed = 460
-no_longer_did = "the Job block (it judged whether the case is a fair test and repeated two Section 7 sentences); C.8's 'What the case leaves out' paragraph and its five items (the case page's 'What the case leaves out' holds them, in its own words). C.5 prints one preview and the 17 pairs at |Spearman| 0.5 or above; the stock preview and all 78 pairs are paper/supplement/metric-associations.md. Typed prose 789 to 329"
+no_longer_did = "the Job block (it judged whether the case is a fair test and repeated two Section 7 sentences); C.8's 'What the case leaves out' paragraph and its five items (the case page's 'What the case leaves out' holds them, in its own words). C.5 prints one preview and the 17 pairs at |Spearman| 0.5 or above; the baseline preview and all 78 pairs are paper/supplement/metric-associations.md. Typed prose 789 to 329"
 authority = "WP57c G3 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"
 
 [[cut]]

@@ -132,7 +132,7 @@ def datasets_sentence(primary, stock) -> Md:
     n = len(a.raw)
     return Md(
         f"The primary regime evaluates {thousands(len(a.raw))} designs and keeps "
-        f"{thousands(len(a.feasible))} as feasible; the stock regime evaluates "
+        f"{thousands(len(a.feasible))} as feasible; the baseline regime evaluates "
         f"{thousands(len(b.raw))} and keeps {thousands(len(b.feasible))}. "
         f"Each design carries {_NUMBER_WORDS.get(len(a.attrs), len(a.attrs))} attributes. "
         f"The designs are drawn at random, {thousands(n)} per "
@@ -150,7 +150,7 @@ def baseline_requirement_sentence(stock) -> Md:
     The configuration and its attributes are the case specification's
     (``case.CUBESAT.baseline_configuration``, the model's ``cubesatBaseline`` as the oracle
     measures it); the limits are the requirements'; the shares are ``case.requirement_mask`` on
-    the stock regime's feasible designs, the mask ``case.requirements_table`` reads (Appendix
+    the baseline regime's feasible designs, the mask ``case.requirements_table`` reads (Appendix
     D.17's pass column).
     """
     spec = stock.spec
@@ -524,7 +524,7 @@ def choosing_k_sentence() -> Md:
         return _and(fmt(t.set_index("K").loc[k, col]) for t in tabs.values())
 
     two = lambda v: f"{v:.2f}"  # noqa: E731
-    regimes = _and(f"the {r} regime" for r in tabs)
+    regimes = _and(f"the {case.regime_word(r)} regime" for r in tabs)
     return Md(
         f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_D15}) "
         f"point to K = {K} on {regimes}, none deciding alone: the mean "
@@ -671,8 +671,9 @@ def margin_sentence(study, fits) -> Md:
         if held and all(e is not None and e.get("identical") for e in held)
         else f"whether the contending sets hold under rounding-level jitter is read in {_D11}"
     )
+    word = case.regime_word(r)
     return Md(
-        f"On the cubesat case of Section 7 ({r} regime, {thousands(N)} feasible designs), "
+        f"On the cubesat case of Section 7 ({word} regime, {thousands(N)} feasible designs), "
         f"at K = {K} "
         f"the margin, a gap between term scores, is "
         f"{stable(f'certificate | {r} | {K} | gamma', four)}, against a band 1/tau "
@@ -763,11 +764,12 @@ def regime_sentence() -> Md:
     regs = list(case.CUBESAT.regimes)
     sets = {r: set(s.strip() for s in t.loc["contending set", r].split(",")) for r in regs}
     a, b = regs[0], regs[1]
+    wa, wb = case.regime_word(a), case.regime_word(b)
     spec = case.CUBESAT
     ga, gb = spec.subsystems_of(sets[a]), spec.subsystems_of(sets[b])
     only_a, only_b = [g for g in ga if g not in gb], [g for g in gb if g not in ga]
     point = "".join(
-        f": {_span(only)} enters only in the {r} regime"
+        f": {_span(only)} enters only in the {case.regime_word(r)} regime"
         for r, only in ((a, only_a), (b, only_b))
         if only
     )
@@ -779,23 +781,23 @@ def regime_sentence() -> Md:
         middle = (
             f"; {x} and {y}, one in each regime's own part, are the strongest-associated pair "
             f"of traded metrics (Spearman {rho[a]:+.3f} and {rho[b]:+.3f} over the feasible "
-            f"designs, {_D3}); counting them as one, the {a} regime alone has "
-            f"{_and(sorted(own_a))}, the {b} regime alone {_and(sorted(own_b))}"
+            f"designs, {_D3}); counting them as one, the {wa} regime alone has "
+            f"{_and(sorted(own_a))}, the {wb} regime alone {_and(sorted(own_b))}"
         )
     elif own_b and not own_a:
-        middle = f"; the {a} set lies inside the {b} set, which adds {_and(sorted(own_b))}"
+        middle = f"; the {wa} set lies inside the {wb} set, which adds {_and(sorted(own_b))}"
     elif own_a and not own_b:
-        middle = f"; the {b} set lies inside the {a} set, which adds {_and(sorted(own_a))}"
+        middle = f"; the {wb} set lies inside the {wa} set, which adds {_and(sorted(own_a))}"
     else:
         middle = (
-            f"; the {a} regime alone has {_and(sorted(own_a))}, the {b} regime alone "
+            f"; the {wa} regime alone has {_and(sorted(own_a))}, the {wb} regime alone "
             f"{_and(sorted(own_b))}"
         )
     return Md(
         f"The regimes return {_a(t.loc['n_lemma', a])} {t.loc['n_lemma', a]}-lemma and "
         f"{_a(t.loc['n_lemma', b])} {t.loc['n_lemma', b]}-lemma "
         f"sharing {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))})"
-        f"{middle}. The {b} set spans {_span(gb)}{point}."
+        f"{middle}. The {wb} set spans {_span(gb)}{point}."
     )
 
 
@@ -1195,7 +1197,7 @@ def proposals_reading() -> Md:
 
 
 def decision_baseline_sentence() -> Md:
-    """The stock-gain regime's funnel in one sentence, for Appendix D.19: the same shortlist rule
+    """The baseline regime's funnel in one sentence, for Appendix D.19: the same shortlist rule
     applied to the second regime of the case. Counts are exact on the data of record."""
     from generate_model import DATASET_LABELS
 

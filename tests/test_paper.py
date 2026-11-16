@@ -390,7 +390,7 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
 
 
 def test_generated_sentences_name_the_subsystems_from_the_one_mapping():
-    """Subsystems come from ``CaseSpec.subsystems``; mass enters only in the stock regime."""
+    """Subsystems come from ``CaseSpec.subsystems``; mass enters only in the baseline regime."""
     import case
 
     spec = case.CUBESAT
@@ -398,9 +398,9 @@ def test_generated_sentences_name_the_subsystems_from_the_one_mapping():
     k1 = _out_text(next(c for c in _code_cells(nb) if c.id == "num-k1"))
     reg = _out_text(next(c for c in _code_cells(nb) if c.id == "num-regimes"))
     assert "across controls, power and energy, plus cost:" in k1
-    assert "the primary set lies inside the stock set, which adds total mass" in reg
-    assert "The stock set spans controls, power and energy, mass, plus cost" in reg
-    assert "mass enters only in the stock regime" in reg
+    assert "the primary set lies inside the baseline set, which adds total mass" in reg
+    assert "The baseline set spans controls, power and energy, mass, plus cost" in reg
+    assert "mass enters only in the baseline regime" in reg
     assert spec.subsystems["total_mass_kg"] == "mass"
 
 
@@ -1184,8 +1184,8 @@ def test_a_count_in_the_regime_sentence_has_its_thousands_separator_and_the_attr
 
     text = str(gf.datasets_sentence(regime(3000, 2134), regime(3000, 2355)))
     assert text.startswith(
-        "The primary regime evaluates 3,000 designs and keeps 2,134 as feasible; the stock regime "
-        "evaluates 3,000 and keeps 2,355. Each design carries thirteen attributes. "
+        "The primary regime evaluates 3,000 designs and keeps 2,134 as feasible; the baseline "
+        "regime evaluates 3,000 and keeps 2,355. Each design carries thirteen attributes. "
         "The designs are drawn at random, 3,000 per regime"
     )
     import paper_common
@@ -2939,7 +2939,7 @@ def test_section_9_prints_the_strongest_pair_to_the_digits_appendix_d4_prints():
     Section 9's regime sentence is D.4's, to three decimals, so "+0.99" does not sit beside D.4's
     "no pair reaches 0.99". On the regenerated data the one-axis pair of both regimes (energy
     balance and available power, D.4) has no member in a regime's own part of the contending set,
-    so the sentence prints no value and says the primary set lies inside the stock set."""
+    so the sentence prints no value and says the primary set lies inside the baseline set."""
     sentence = _cell_out(PAPER_NB, "num-regimes")
     d4 = _cell_out(SUPPORT_NB, "tab-D-regime_comparison")
     values = re.findall(r"Spearman (\+\d\.\d{3}) and (\+\d\.\d{3}) over", sentence)
@@ -2948,7 +2948,7 @@ def test_section_9_prints_the_strongest_pair_to_the_digits_appendix_d4_prints():
         assert float(v) < 0.99
     assert not values
     assert "energy balance and available power" in d4
-    assert "the primary set lies inside the stock set" in sentence
+    assert "the primary set lies inside the baseline set" in sentence
 
 
 def test_no_doubled_label_before_a_cross_reference():
@@ -3059,9 +3059,9 @@ def test_reading_pass_supplement_equals_its_generator_and_g1_cites_it():
 
 @pytest.mark.slow
 def test_the_c_and_d_supplement_files_equal_their_generators_and_are_cited():
-    """WP57c: C.5's stock preview and full pair table, D.1's sweep and D.6's refits are files under
-    paper/supplement/, each its generator's output, each cited by one line of C or D; C.5 keeps
-    the primary regime's preview and the pairs at |Spearman| 0.5 or above."""
+    """WP57c: C.5's baseline preview and full pair table, D.1's sweep and D.6's refits are files
+    under paper/supplement/, each its generator's output, each cited by one line of C or D; C.5
+    keeps the primary regime's preview and the pairs at |Spearman| 0.5 or above."""
     for name, cell in (("metric-associations.md", "app-C-5-associations"),
                        ("temperature-sweep.md", "app-D-supplement"),
                        ("refits-by-category.md", "app-D-supplement")):  # fmt: skip
@@ -4484,13 +4484,16 @@ def test_the_noise_ridge_factor_sentence_is_computed_from_the_table():
 
 
 def test_the_regimes_gain_ranges_are_the_ones_section_8_states():
-    """145: C.1's table gives Kp 0.2 to 2 (primary) and 0.03 to 1 (stock)."""
+    """145: C.1's table gives Kp 0.2 to 2 (primary) and 0.03 to 1 (baseline)."""
     c1 = _out_text(
         next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-C-configuration_space")
     )
     assert re.search(r"\| Kp \| 0\.2 \| 2 \| 0\.2004 \| 1\.999 \| 0\.03009 \| 0\.999 \|", c1)
     s8 = " ".join(_cell_src("sec-case-construction-1b").split())
-    assert "from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the stock" in s8
+    assert (
+        "from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the baseline regime"
+        in s8
+    )
 
 
 def test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_so():

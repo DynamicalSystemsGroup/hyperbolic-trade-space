@@ -52,9 +52,9 @@ FILES: dict[str, tuple[str, str, Callable[[], str]]] = {
         lambda: str(generate_reading_pass.reading_pass_table(plain=True)),
     ),
     "metric-associations.md": (
-        "The table of metrics: the stock regime's first rows and every pair's association",
+        "The table of metrics: the baseline regime's first rows and every pair's association",
         "Appendix C.5 prints the primary regime's first rows and the pairs at |Spearman| 0.5 or "
-        "above; this file holds the stock regime's first rows and all the pairs of traded "
+        "above; this file holds the baseline regime's first rows and all the pairs of traded "
         "metrics over the feasible designs of both regimes. The tables are "
         "`generate_model.metric_table` and `generate_model.metric_associations`, read from the "
         f"data of record (`examples/adcs/data/v2/`) and written by `{COMMAND}`.",

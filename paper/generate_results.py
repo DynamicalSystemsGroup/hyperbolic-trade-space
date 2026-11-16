@@ -177,6 +177,7 @@ def regime_comparison() -> Md:
     table = regime_table()
     # The dataset file names and sizes are Appendix C's; this table keeps what the method found.
     table = table[~table["quantity"].isin(["dataset", "feasible n"])]
+    table = table.rename(columns={r: case.regime_word(r) for r in case.CUBESAT.regimes})
     return Md(f"Datasets {cites}:\n\n" + frame_table(table) + "\n\n" + _one_axis_sentence())
 
 
@@ -350,26 +351,27 @@ def _moving_rows():
     four = lambda v: format(v, ".4g")  # noqa: E731
     groups = []
     for r in case.CUBESAT.regimes:
+        w = case.regime_word(r)
         groups += [
-            (f"nondominated, {v}, {r}", f"nondominated | {r} | {v} | nondominated", None)
+            (f"nondominated, {v}, {w}", f"nondominated | {r} | {v} | nondominated", None)
             for v in case.CUBESAT.views
         ]
         groups += [
-            (f"fraction above V = 1, K = 1, {r}", f"fit | {r} K=1 | frac_above_", four),
-            (f"effective sample size, K = 1, {r}", f"fit | {r} K=1 | n_eff_", four),
-            (f"near-frontier designs, K = 1, {r}", f"fit | {r} K=1 | near-frontier designs", None),
+            (f"fraction above V = 1, K = 1, {w}", f"fit | {r} K=1 | frac_above_", four),
+            (f"effective sample size, K = 1, {w}", f"fit | {r} K=1 | n_eff_", four),
+            (f"near-frontier designs, K = 1, {w}", f"fit | {r} K=1 | near-frontier designs", None),
         ]
         groups += [
-            (f"{kind}, {pair}, {r}", f"association | {r} | {pair} | {kind}", four)
+            (f"{kind}, {pair}, {w}", f"association | {r} | {pair} | {kind}", four)
             for pair in (f"{a}, {b}" for a, b in case.CUBESAT.association_pairs)
             for kind in ("pearson", "spearman")
         ]
         groups += [
-            (f"term {k} share, K = 3, {r}", f"D terms K=3 | {r} | {k} | share", four)
+            (f"term {k} share, K = 3, {w}", f"D terms K=3 | {r} | {k} | share", four)
             for k in (1, 2, 3)
         ]
         groups += [
-            (f"{what}, K = {K}, {r}", f"certificate | {r} | {K} | {col}", four)
+            (f"{what}, K = {K}, {w}", f"certificate | {r} | {K} | {col}", four)
             for K in (2, 3)
             for what, col in (("largest term gap", "max gap"), ("margin", "gamma"),
                               ("radius", "radius"))

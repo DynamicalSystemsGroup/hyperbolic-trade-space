@@ -241,7 +241,7 @@ def test_examples_page_choosing_k_numbers_are_the_blocks_output(monkeypatch):
          ["drops [0.078 0.023 0.012 0.005]"]),
         ("a break at K = 2, where the thinnest term holds 0.28 (0.21 at K = 3)",
          ["K=2 slack=0.043 thinnest=0.28", "K=3 slack=0.020 thinnest=0.21"]),
-        ("The stock regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break",
+        ("The baseline regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break",
          ["drops [0.055 0.031 0.012 0.01 ]"]),
         ("0.35 at K = 2 and 0.13 at K = 3",
          ["K=2 slack=0.060 thinnest=0.35", "K=3 slack=0.030 thinnest=0.13"]),
