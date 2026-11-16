@@ -1,0 +1,466 @@
+# WP64 D-2: the release machinery as it is at dev 537f54ea (2026-11-16), one table per component.
+# The design package diffs this file against the built state. `line` is where the component's trigger or
+# definition is read. `side` says which release the component serves today: software, paper or both.
+# Live GitHub state (read with `gh api`, read-only, 2026-11-16) is under [live].
+
+[meta]
+commit = "537f54ea"
+read = "2026-11-16"
+
+[live]
+default_branch = "main"
+visibility = "public"
+main_head = "e7fd1165 (2026-11-08)"
+commits_dev_ahead_of_main = 2018
+workflows_on_main = [".github/workflows/test.yml"]
+workflows_registered = ["Tests"]
+main_protection = "none (rules/branches/main returns [], branches/main/protection 404)"
+environments = 0
+pages_configured = false
+releases = 0
+tags = 0
+remote_branches = ["main", "dev"]
+
+# ---- workflows ---------------------------------------------------------------------------------
+
+[workflow.tests]
+kind = "workflow"
+path = ".github/workflows/test.yml"
+line = "6-18"
+side = "both"
+trigger = ["workflow_dispatch (windows, default true)", "workflow_call (windows, default false)"]
+inputs = ["checked-out ref", "uv.lock", "examples/adcs/experiments/toolkit-pin.toml"]
+outputs = ["Linux shards fast, slow, docs-paper", "Windows shards fast, slow when asked", "attribution grep over history"]
+
+[workflow.tests_docs_paper_shard]
+kind = "workflow-job"
+path = ".github/workflows/test.yml"
+line = "22-24, 109"
+side = "both"
+trigger = ["matrix shard docs-paper"]
+inputs = ["tests/test_site.py", "tests/test_build_generated.py", "tests/test_docs.py", "tests/test_paper.py", "tests/test_container.py", "tests/test_narrative.py"]
+outputs = ["slow tests of the docs and paper modules"]
+
+[workflow.pages]
+kind = "workflow"
+path = ".github/workflows/pages.yml"
+line = "5-8"
+side = "both"
+trigger = ["push tags v*", "workflow_dispatch (build only)"]
+inputs = ["tagged commit", "whole suite", "scripts/assemble_site.py (strict paper)"]
+outputs = ["Pages artefact _site", "deploy to environment github-pages on refs/tags/v", "concurrency group pages"]
+
+[workflow.release]
+kind = "workflow"
+path = ".github/workflows/release.yml"
+line = "12-25"
+side = "software"
+trigger = ["workflow_dispatch (target dry-run|testpypi, tag)", "push tags v*"]
+inputs = ["pyproject.toml version", "CHANGELOG.md", "uv.lock", "action pins", "tests via workflow_call"]
+outputs = ["wheel", "sdist", "CycloneDX bill", "TestPyPI (env testpypi, from dev)", "PyPI (env pypi, tag on main)", "GitHub release"]
+
+[workflow.merge_by_code_owner]
+kind = "workflow"
+path = ".github/workflows/merge-by-code-owner.yml"
+line = "6-9"
+side = "both"
+trigger = ["pull_request_target closed, base dev"]
+inputs = ["event payload", ".github/CODEOWNERS"]
+outputs = ["comment on failure"]
+
+[workflow.pr_fields]
+kind = "workflow"
+path = ".github/workflows/pr-fields.yml"
+line = "5-7"
+side = "both"
+trigger = ["pull_request_target opened, edited, synchronize"]
+inputs = ["PR description"]
+outputs = ["comment on failure"]
+
+[workflow.pr_linked_issue]
+kind = "workflow"
+path = ".github/workflows/pr-linked-issue.yml"
+line = "5-7"
+side = "both"
+trigger = ["pull_request_target opened, edited, labeled, unlabeled"]
+inputs = ["PR description", "labels"]
+outputs = ["comment on failure"]
+
+[workflow.issue_admissibility]
+kind = "workflow"
+path = ".github/workflows/issue-admissibility.yml"
+line = "5-7"
+side = "both"
+trigger = ["issues opened, edited"]
+inputs = ["issue body"]
+outputs = ["draft label kept", "comment"]
+
+[workflow.draft_label_gate]
+kind = "workflow"
+path = ".github/workflows/draft-label-gate.yml"
+line = "5-7"
+side = "both"
+trigger = ["issues unlabeled"]
+inputs = ["actor", ".github/CODEOWNERS"]
+outputs = ["draft label restored when the actor is not a code owner"]
+
+[rules.release_admissibility]
+kind = "record"
+path = ".github/RELEASE_ADMISSIBILITY.md"
+line = "10-18"
+side = "software"
+trigger = ["read by people; enforced by release.yml"]
+inputs = []
+outputs = ["nine conditions on a v* tag on main"]
+
+[rules.code_owners_page]
+kind = "record"
+path = "docs/code-owners.md"
+line = "14-16, 27-38, 72-82"
+side = "software"
+trigger = ["read by people"]
+inputs = []
+outputs = ["the flow", "settings to make", "the cut-a-release steps"]
+
+# ---- site assembly -----------------------------------------------------------------------------
+
+[site.assemble]
+kind = "script"
+path = "scripts/assemble_site.py"
+line = "143-178"
+side = "both"
+trigger = ["pages.yml:41", "scripts/stage_site.py", "tests/test_site.py fixture assembled"]
+inputs = ["site/index.html", "site/history.html", "docs/", "mkdocs.yml", "paper/"]
+outputs = ["_site/index.html", "_site/history.html", "_site/docs/", "_site/paper/"]
+
+[site.paper_slot]
+kind = "function"
+path = "scripts/assemble_site.py"
+line = "86-114"
+side = "paper"
+trigger = ["assemble(paper=strict|auto|placeholder)"]
+inputs = ["paper/_build/html", "site/paper/index.html", "route /hyperbolic-trade-space/paper"]
+outputs = ["_site/paper/"]
+
+[site.generated_pages]
+kind = "script"
+path = "scripts/build_generated.py"
+line = "30-31"
+side = "both"
+trigger = ["assemble_site.py:162"]
+inputs = ["glossary.yaml", "derivation/"]
+outputs = ["docs/generated/glossary.md", "build/generated/derivations.md", "build/generated/verification.md"]
+
+[site.root_figures]
+kind = "script"
+path = "scripts/build_site_figures.py"
+line = "36-42"
+side = "software"
+trigger = ["assemble_site.py:176"]
+inputs = ["hyperbolic_trade_space.plotting"]
+outputs = ["ternary-planted-*.png", "site-slices-*.png"]
+
+[site.stage]
+kind = "script"
+path = "scripts/stage_site.py"
+line = "25-35, 56-66"
+side = "both"
+trigger = ["by hand"]
+inputs = ["assemble_site.assemble"]
+outputs = ["_stage/ on 127.0.0.1", "nine review pages including /paper/"]
+
+[site.paper_keys]
+kind = "mkdocs-hook"
+path = "scripts/paper_keys.py"
+line = "24-27, 38-51, 73-80"
+side = "both"
+trigger = ["mkdocs.yml:41-42"]
+inputs = ["paper/paper.ipynb", "paper/supporting_material.ipynb"]
+outputs = ["links ../paper/#key and ../paper/supporting-material/#key", "strict build failure on an unknown key"]
+citations = 23
+pages_citing = 9
+
+[site.root_page]
+kind = "page"
+path = "site/index.html"
+line = "176-184"
+side = "both"
+trigger = ["copied by assemble_site.py:169"]
+inputs = []
+outputs = ["cards paper/ and docs/getting-started/", "footer PyPI and releases links"]
+
+[site.paper_placeholder]
+kind = "page"
+path = "site/paper/index.html"
+line = "145-151"
+side = "paper"
+trigger = ["assemble --paper placeholder"]
+inputs = []
+outputs = ["'The paper is in preparation'"]
+
+[site.history_page]
+kind = "page"
+path = "site/history.html"
+line = "89"
+side = "both"
+trigger = ["assemble_site.py:171"]
+inputs = ["history.yaml"]
+outputs = ["a link to paper/"]
+
+# ---- the paper ---------------------------------------------------------------------------------
+
+[paper.myst]
+kind = "config"
+path = "paper/myst.yml"
+line = "9-14, 46-47, 69"
+side = "paper"
+trigger = ["myst build --html in paper/"]
+inputs = ["paper.ipynb", "supporting_material.ipynb", "docs/references.bib", "article theme at a pinned commit"]
+outputs = ["paper/_build/html", "myst.xref.json"]
+
+[paper.execute]
+kind = "script"
+path = "paper/execute_notebooks.py"
+line = "1-21"
+side = "paper"
+trigger = ["by hand", "container", "PAPER_EXECUTE=1 test"]
+inputs = ["the two notebooks", "project kernel"]
+outputs = ["committed outputs", "paper/figures/fig-*.png"]
+
+[paper.paths]
+kind = "module"
+path = "paper/paper_paths.py"
+line = "15-19"
+side = "paper"
+trigger = ["imported by cells and generators"]
+inputs = ["PAPER_REPO_ROOT"]
+outputs = ["sys.path: root, src, examples/adcs, paper"]
+
+[paper.generators]
+kind = "modules"
+path = "paper/generate_*.py"
+line = "generate_findings.py:18; generate_model.py:15,21; generate_proofs.py:23; generate_gaps.py:20,127; generate_register.py:23,29; generate_prior_art.py:34; generate_repro.py:20-22,41"
+side = "paper"
+trigger = ["notebook cells"]
+inputs = ["src/hyperbolic_trade_space", "examples/adcs (case, ledger, data, coverage)", "derivation/", "glossary.yaml", "scripts/check_vocabulary.py", "docs/references.bib", "uv.lock", "pyproject.toml"]
+outputs = ["appendix tables", "the paper's numbers"]
+
+[paper.repo_links]
+kind = "constant"
+path = "paper/paper_common.py"
+line = "20"
+side = "paper"
+trigger = ["generators"]
+inputs = []
+outputs = ["links to blob/main/ (also paper/generate_proofs.py:25)"]
+
+[paper.container]
+kind = "scripts"
+path = "paper/container/"
+line = "README.md:17-22,42-49; build.sh:15-21; build-paper.sh:30-31"
+side = "both"
+trigger = ["by hand at gates"]
+inputs = ["Dockerfile", "git bundle of HEAD", "uv.lock"]
+outputs = ["images hts-paper, hts-alt", "offline paper build", "re-pinned exact values"]
+
+[paper.record]
+kind = "record"
+path = "paper/container/RECORD.md"
+line = "16-27"
+side = "both"
+trigger = ["written at gates"]
+inputs = ["container runs"]
+outputs = ["pins including the uv.lock hash"]
+
+[paper.length_ledger]
+kind = "record"
+path = "paper/length_ledger.toml"
+line = "18-19"
+side = "paper"
+trigger = ["tests/test_paper.py"]
+inputs = ["rendered prose"]
+outputs = ["ceilings"]
+
+[paper.claims_register]
+kind = "record"
+path = "claims_register.toml"
+line = "22"
+side = "both"
+trigger = ["tests/test_claims_register.py"]
+inputs = []
+outputs = ["748 claims: 361 paper/, 307 docs/, 57 site/, 23 other"]
+
+[paper.tests]
+kind = "tests"
+path = "tests/test_paper.py"
+line = "61, 723, 879, 2583, 2605-2608"
+side = "paper"
+trigger = ["fast shard (unmarked)", "docs-paper shard (slow)", "PAPER_EXECUTE=1", "PAPER_BUILD=1"]
+inputs = ["committed notebook outputs", "generators"]
+outputs = ["stale-output failures", "clean-kernel and HTML build checks when gated on"]
+
+# ---- tests that couple the docs and the site to the paper --------------------------------------
+
+[tests.docs_cite_by_key]
+kind = "test"
+path = "tests/test_site.py"
+line = "387"
+side = "both"
+trigger = ["fast shard"]
+inputs = ["docs pages"]
+outputs = ["no raw paper/ link in docs"]
+
+[tests.keys_equal_built_labels]
+kind = "test"
+path = "tests/test_site.py"
+line = "420-433"
+side = "both"
+trigger = ["skips without paper/_build"]
+inputs = ["paper/_build/html/myst.xref.json"]
+outputs = ["each key on its page"]
+
+[tests.root_doors]
+kind = "test"
+path = "tests/test_site.py"
+line = "484-496"
+side = "both"
+trigger = ["fast shard"]
+inputs = ["site/index.html"]
+outputs = ["doors paper/ and docs/getting-started/"]
+
+[tests.assembled_layout]
+kind = "test"
+path = "tests/test_site.py"
+line = "1241-1279"
+side = "both"
+trigger = ["slow, docs-paper shard"]
+inputs = ["assemble --paper placeholder"]
+outputs = ["_site/paper/index.html equals the placeholder"]
+
+[tests.live_routes]
+kind = "test-constant"
+path = "tests/test_site.py"
+line = "108-117"
+side = "both"
+trigger = ["tests"]
+inputs = []
+outputs = ["paper/ among the live routes"]
+
+[tests.pages_workflow_pinned]
+kind = "test"
+path = "tests/test_site.py"
+line = "1199-1229"
+side = "both"
+trigger = ["fast shard"]
+inputs = [".github/workflows/pages.yml"]
+outputs = ["triggers exactly v* tags and dispatch; deploy on refs/tags/v; concurrency pages"]
+
+[tests.ci_shards]
+kind = "test"
+path = "tests/test_ci_shards.py"
+line = "19"
+side = "both"
+trigger = ["fast shard"]
+inputs = [".github/workflows/test.yml"]
+outputs = ["shards fast, slow, docs-paper"]
+
+[contract.interface]
+kind = "record"
+path = "work-packages/interface-contract.toml"
+line = "90-97, 245, 268-270, 293-300"
+side = "both"
+trigger = ["amended, never drifted"]
+inputs = []
+outputs = ["paper's API reads", "generated pages' consumer", "reference keys", "paper_cmd, public_paths with /paper/"]
+
+# ---- release records ---------------------------------------------------------------------------
+
+[records.version]
+kind = "field"
+path = "pyproject.toml"
+line = "3"
+side = "software"
+trigger = ["release.yml version check"]
+inputs = []
+outputs = ["0.0.1 (also src/hyperbolic_trade_space/__init__.py:16)"]
+
+[records.urls]
+kind = "field"
+path = "pyproject.toml"
+line = "30-35"
+side = "software"
+trigger = ["PyPI metadata"]
+inputs = []
+outputs = ["Homepage, Documentation, Changelog at blob/main"]
+
+[records.environment_groups]
+kind = "field"
+path = "pyproject.toml"
+line = "48, 52"
+side = "both"
+trigger = ["uv sync"]
+inputs = []
+outputs = ["paper group among the default groups"]
+
+[records.changelog]
+kind = "record"
+path = "CHANGELOG.md"
+line = "8-11"
+side = "both"
+trigger = ["release_checks.py changelog"]
+inputs = []
+outputs = ["[Unreleased] - target 0.1.0, paper and software entries mixed"]
+
+[records.readme]
+kind = "record"
+path = "README.md"
+line = "3-6"
+side = "both"
+trigger = ["read"]
+inputs = []
+outputs = ["links to /docs/ and /paper/"]
+
+[records.checklist]
+kind = "record"
+path = "work-packages/WP8b-release-checklist.md"
+line = "12-88"
+side = "both"
+trigger = ["by hand"]
+inputs = []
+outputs = ["sections A to G; G2 says the repository is private (it is public)"]
+
+[records.release_candidate]
+kind = "record"
+path = "work-packages/release-candidate.md"
+line = "5, 46, 68, 163"
+side = "both"
+trigger = ["by hand"]
+inputs = []
+outputs = ["the candidate as one thing"]
+
+[records.punch_list]
+kind = "record"
+path = "work-packages/release-punch-list.md"
+line = "16, 49-50"
+side = "both"
+trigger = ["by hand"]
+inputs = []
+outputs = ["the /paper/ route; the version; the first Pages deployment"]
+
+[records.reviewers_guide]
+kind = "record"
+path = "work-packages/reviewers-guide/README.md"
+line = "7-11"
+side = "both"
+trigger = ["by hand"]
+inputs = ["the staged site"]
+outputs = ["four sittings; sitting-1-paper.md:3-5 is the paper"]
+
+[records.branching]
+kind = "record"
+path = "work-packages/README.md"
+line = "62-74"
+side = "both"
+trigger = ["read"]
+inputs = []
+outputs = ["commit to dev; --no-ff merge to main when content merits CI; staged review before a deploying merge; lines 68-69 say CI runs on pushes and PRs to main, which test.yml does not"]
