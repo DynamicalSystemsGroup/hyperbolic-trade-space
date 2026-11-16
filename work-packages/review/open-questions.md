@@ -119,4 +119,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   error, the pick between pointing error and fleet cost, the design balanced between the terms, the cheapest
   fine-tracker design) and the nondominated marks on pointing error; no sentence or table prints them now, and the
   stability record keeps their entries. Whether they leave the generator and the record is not decided.
+- **Also open (WP57c's landing):** `generate_findings.recovery_sentence` prints in no cell (D.14's tables state every
+  failure) and feeds the same stability record through `paper_perturb.py` (`sentence num-recovery`); it leaves with
+  the picks when the record is regenerated.
 - **Record:** `work-packages/WP57c-review.md`, "Left for the driver"; `paper/stability_extra.json`.

@@ -196,14 +196,20 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
 - **Rule for all:** each appendix supports the prose one step deeper where the prose needs it; no opinion on the
   paper's text; no metanarration; material that does not earn its place moves to the repository, which the paper
   cites; re-lettered in the order of first mention, once, last.
-- **A, symbols and terms:** the register; consistent with Section 3's kit.
+- **A, symbols and terms:** the register; consistent with Section 3's kit. Soft-confirmed by the driver on the
+  unit's screenshots, landed with WP57a (07842b7), not yet read by him.
 - **B, the derivations:** the lemma scripts as pencil-and-paper substitutes, never formal verification; the proofs
-  Section 6 points to.
-- **C, the case model:** what Section 7 narrates, one step deeper.
-- **D, the case tables:** the numbers Section 8 reads, no more.
+  Section 6 points to. Soft-confirmed by the driver on the unit's screenshots, landed with WP57b (07842b7), not yet
+  read by him.
+- **C, the case model:** what Section 7 narrates, one step deeper. Soft-confirmed by the driver on the unit's
+  captures of the rendered page, landed with WP57c (772e343), not yet read by him.
+- **D, the case tables:** the numbers Section 8 reads, no more. Soft-confirmed by the driver on the unit's captures
+  of the rendered page, landed with WP57c (772e343), not yet read by him.
 - **E, the gaps ledger:** becomes "Assumptions, limitations and open questions": the open questions moved out of the
   narrative, each with its section and record.
-- **F, reproduction:** the toolchain, environment and commands Section 11 points to.
-- **G, the register of prior art:** the three layers' order; entries cited.
+- **F, reproduction:** the toolchain, environment and commands Section 11 points to. Landed with WP57a (07842b7),
+  not yet read by him.
+- **G, the register of prior art:** the three layers' order; entries cited. Landed with WP57a (07842b7; G.2 to
+  `paper/supplement/reading-pass.md`), not yet read by him.
 - **H, the HoroPCA comparison:** its three boundaries (WP35); kept if Section 2's paragraph needs it.
-- **State:** open (WP57 and its children).
+- **State:** A, B, C, D, F and G landed and soft-confirmed; E and H open (WP57d); re-lettering open (WP57e).

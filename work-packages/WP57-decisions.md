@@ -67,3 +67,31 @@ paragraph to Section 8's four rules, which D.19 contradicts until then; the rest
 every "pending WP56" row re-read against the pointers as WP56 leaves them (C.5, C.8 and D.17's typed pointers and the
 old C.8 slot sentence left Sections 7 to 9; D.9 is reached by a default; D.18 gets Corollary 1's pointer by call 1).
 Ids from C988. One unit on branch `wp57c`; the driver soft-confirms C and D on its captures before landing.
+
+## WP57c accepted as proxy and landed (03:45 EST)
+
+Read on the unit's captures of the rendered appendices (`WP57-rounds/c/`: C's opening, C.5, C.8, D's opening, D.8,
+D.17, D.19 and Corollary 1) and its cold read. Branch `wp57c` rebased onto `dev` at 78a40d1 (the OQ-11 commits) and
+fast-forwarded: ba4e188 (D.19 states Section 8's four rules as a list; the shortlist table carries the coverage
+probability and the mark for the 17 of 28 designs nondominated on fleet cost and coverage probability; WP56's moved
+material landed in D.3, D.4, D.5, D.10, D.15 and D.17; `tension_sentence` and `decision_detail` retired) and 772e343
+(the G1 table re-read at WP56's landing; C's opening and D's Job block gone; C.5 to one primary preview and the 17
+pairs at |Spearman| 0.5 or above in either regime, the rest in `paper/supplement/metric-associations.md`; C.8 the cost
+paragraph with its lower-bound sentence, the rest on `examples/adcs/case-model.md`; D.1 and D.6 to
+`paper/supplement/`; D.2 and D.12's tables into D.8 and D.12's paragraphs onto `docs/user-guide/termination.md`; D.7
+generated under D.17; Corollary 1 points to D.18). Typed prose C 789 to 329 words and D 1,624 to 1,314 (the map's
+estimate for D missed by about 300 words, most of it WP56's material landing there); the supporting material 3,589
+to 2,819 typed words. Register: C988 to C996 added; C032, C147, C153, C424, C609 to C611, C620, C621, C661, C797 and
+C798 retired; eleven re-anchored. Every line of `WP56-rounds/moved-to-appendix.md` marked.
+
+The driver's calls: the two amendments accepted (the D-numbering test asserts order only until WP57e re-letters; the
+termination page's budget 743 to 767 for D.12's 24 words); `recovery_sentence`, printed nowhere now, stays in the
+generator and joins OQ-14 with the decision's unused picks, since it feeds the stability record through
+`paper_perturb.py` and leaves with that record's regeneration; the D.9 default taken (the nondominated sentence names
+D.9 for its counts). R-1 to R-6 met: the G1 table and the `references_resolve` test; the residual checker with the
+supporting notebook at or below dev on every count; the paths in the review; the D.19 rules test; proof map 22 files,
+549 steps and the data diff empty; lint, format, lock and vocabulary clean. The driver's independent run on the
+rebased tree, exit codes captured: fast suite 2,091 passed; slow paper tests with the docstring test 31 passed;
+register 21; R-1 and R-4's named tests 4 passed; mkdocs built; the supplement check clean. No attribution line on
+either commit. CI 43833554284. For WP57e: D runs D.3 to D.19 with gaps. For WP58: `decision()`'s retired picks and
+`recovery_sentence` (OQ-14).
