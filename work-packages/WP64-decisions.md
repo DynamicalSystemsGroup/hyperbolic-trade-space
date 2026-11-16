@@ -17,3 +17,16 @@ The driver's reading: the paper's lifecycle has four modes, forthcoming (the abs
 paper, iterated), submitted (pinned to a submission) and revision (pinned again); the software and the docs follow an
 open-source release lifecycle of their own; 0.1 of the software ships with the paper in forthcoming mode. The abstract
 approved is the one in `paper/paper.ipynb`'s front matter at cdd597f5.
+
+## His clarification (12:32 EST, verbatim)
+
+"keep in mind the repo is open source so if someone pulls the repo they can still build the paper. we don't need to its
+forthcoming we can just say we're iterating towards a paper release"
+
+## WP64 approved as proxy (12:32 EST)
+
+`WP64-scope-of-work.md` (one declared mode read by the site assembly; the abstract page at `/paper/` in `abstract`
+mode with the approved abstract read from the notebook, the iteration line and the build command; the root card per
+mode; the docs' `paper:` citations landing on the abstract page; the release checklist split into the software's and
+the paper's; the mode set to `abstract` for 0.1) is approved by the driver under his mandate on the direction above.
+One unit on branch `wp64`; the driver soft-confirms on captures and lands it on `dev` for his read.
