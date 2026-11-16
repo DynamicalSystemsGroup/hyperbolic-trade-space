@@ -1,5 +1,10 @@
 # WP65 D-3: his keyboard items and the details that remain his
 
+Decided (15:56 EST, 2026-11-16; his words in `WP64-decisions.md`): question 1, the review rule with him as bypass (two
+rulesets on `main`); question 2, a merge without a new version redeploys the site only; question 3, a `paper-release`
+environment whose required reviewers are the code owners ("a code owner must approve it but it does not need to be
+me"), self-review allowed while he is the only one. The steps below read with those answers.
+
 Settings no agent can make: none exists today (WP64 readout, live state of 2026-11-16). Do them before the first
 pull request from `dev` into `main` (build plan, section 6); the driver reads each back with `gh api` afterwards.
 Where a setting depends on one of his three questions (the last section), the step names the question.

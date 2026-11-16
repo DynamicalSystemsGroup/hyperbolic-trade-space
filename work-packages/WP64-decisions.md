@@ -171,3 +171,17 @@ he merges by ticking the bypass; the checks still bind; the bypass goes the day 
 **Q2, a merge without a new version (15:54 EST):** "Site-only redeploy" (the popup's option: when the tag exists on an
 earlier commit and the package files are unchanged since it, the run composes and deploys the site and skips the tag,
 PyPI and the release; a change to package files with an unchanged version still fails).
+
+**Q3, approval of a paper tag's publication (15:56 EST):** "a code owner must approve it but it does not need to be me"
+
+The driver's reading of the three: Q1 the review rule with him as bypass (two rulesets on `main`); Q2 a merge
+without a new version redeploys the site only; Q3 the `paper-release` environment on the paper workflow's publish
+job with the code owners as its required reviewers (today that is him alone, so self-review stays allowed; any code
+owner added later can approve). All three questions closed; WP66a is scoped from them.
+
+## WP66a approved as proxy (15:56 EST)
+
+`WP66a-scope-of-work.md` (the software model: `release.yml` rewritten with the merge as the release, the site-only
+path of Q2, failure detection and the clean-up script; `test.yml` without the paper tests; `pages.yml` removed; the
+release checks and tests; the records of G6 the unit owns) is approved by the driver under his approval of the plan
+and his three answers. Dispatched on `wp66a`; lands last of the three.

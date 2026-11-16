@@ -78,6 +78,7 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 65 | The two release control models, designed (stage 2: specification, build plan, his items) | delivered and accepted as proxy; three questions wait for him | d9e4922f | 44c22443 | in place (not landed or in flight) |
 | 66b | The paper model built (paper.yml, mode file, key manifest, pin tooling, the paper marker, splits by surface, the paper's checklist) | approved as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
 | 66c | The composer, the abstract page and the docs' keys built (site.yml, pages-deploy.yml, the slot per mode, the abstract page, paper_keys from the manifest) | approved as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
+| 66a | The software model built (release.yml with the merge as the release and the site-only path, the clean-up script, test.yml without the paper tests, pages.yml removed, the records) | approved as proxy on his three answers; unit dispatched | pending | not landed | in place (not landed or in flight) |
 | 70 | The iron triangle as an HTS study: the probe (metric mapping, open-data survey, synthetic design, a bounded case study, the pitch) | approved on his words and as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
 
 ## Notes, spike outputs and supporting content removed from the tree
