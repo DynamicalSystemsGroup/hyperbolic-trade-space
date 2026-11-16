@@ -137,3 +137,16 @@ driver's calls on the loop's screenshots, as the scope leaves them to him as pro
   cost, low unit cost, high coverage) in the figure loop, and keeps the title as the measure's name.
 - The collapse holds exactly on the data of record: fleet cost over unit cost times fleet size lies within
   1e-8 of one on every row (a test now checks it).
+
+## Phase two read at depth three (22:15 EST)
+
+On the unit's build (port 8821, branch `wp56` at bdb0b49 plus the Appendix G rewording): Figure 9, the tension
+matrix, as the strict upper triangle in tension order with a three-sentence caption giving the ranges (every drawn
+value at or below minus one; -1.1 to -17 on term 1, -1.0 to -30 on term 2); Figure 10, the stakeholder ternary at one
+term with the corners "low fleet cost (sponsor)", "low unit cost (manufacturer)", "high coverage probability
+(operator)", the star on the fleet-cost to coverage edge, the title the measure's name and no formula. Both read on
+the page as his sentences say. The old `fig-ternary-pair`, its paragraph and its generators are out (register C468 to
+C472 and C800 retired; C967 to C971 added); Section 2 names Appendix G. The prose around both figures is still the old
+Section 8 text ("The case's two stakeholders: the operator ... the sponsor ...") and contradicts the three-stakeholder
+mapping; that is the second unit's rewrite, on these landed figures. The driver accepts phase two as proxy pending the
+unit's final commit and the landing checks.
