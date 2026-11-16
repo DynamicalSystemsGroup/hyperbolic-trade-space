@@ -23,3 +23,27 @@ And: "maybe a template for examples would help"
 redrafted to it with every code block, plot and number kept, a readout with cold reads) is approved by the driver under
 his mandate on the direction above. One unit on branch `wp63`; the driver soft-confirms on captures and lands the drafts
 on `dev` for his read, as with the paper's sections. Dispatched after WP57's D-3 hand-back; D-3's records follow.
+
+## WP63 accepted as proxy and landed (15:20 EST)
+
+Delivered on `wp63`, one commit, rebased onto the records head and fast-forwarded as a9a267ed. The template
+`notes/examples-template.md` (the five parts, each with its must, must-not and length; headings in the page's words;
+the dictionary as a text block since the site's phone rule forbids Markdown tables and a list would cost each page's
+budget; glossary links at first use). The four pages redrafted: every code block, figure, alt text, caption (Figures 6
+to 10 unchanged) and register comment kept; the cubesat page in second-level headings because the docs tests pin its
+choosing-K section and five phrases and the user guide links two of its anchors. Prose words within budget on every
+page (cubesat 988 of 990; perovskite 687, amniote 679, wheat 690 of 700; the site 11,330 of 11,335). Cold reads, one
+context-gapped reader per page (P3 or P4), answered the three questions in the page's intent on all four; two flags
+acted on (the cubesat answer scoped to the thirteen-metric fit; the amniote fit paragraph naming the four-metric fit).
+
+The driver's calls on the unit's five: the dictionary stays a text block (the budgets stay); the glossary links are
+the method-term fix and a pointer to the user guide is not added (no words to spare, and the guide is one click away
+in the nav); the perovskite sentence on the band gap rests on the cited detailed-balance paper, a verified source,
+and stays; the wheat sentence "the shift the breeding studies report" stays beside "describes and does not test
+breeding", since the first compares the medians to the cited studies and the second says what the data cannot
+attribute; the synthetic three-metric case stays on the Examples page as the root page's construction (WP58 may move
+it). Soft-confirmed on the captures (the arc visible on each page: source, attributes, the question, the fit, the
+answer, what it cannot show). The driver's independent run on the branch, exit codes captured: lint, format, lock,
+vocabulary (0 new), residuals exit 1 as on dev with no new rise, mkdocs, the diff within the scope's files, the page
+tests (test_wp45_examples, test_site, test_docs) 163 passed, 1 skipped. No attribution line. CI dispatched on dev.
+His read decides the arc's wording.
