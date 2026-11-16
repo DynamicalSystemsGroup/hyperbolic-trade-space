@@ -101,3 +101,25 @@ derived metric's ternary beside the level sets; the level-set figure unit holds 
 landing), and the "learn the shape" question answered in chat: the level V is the size and the chart the shape, the
 derived metric's zero exponent is the detection, and a dependence screen among metrics at conditioning is the tool
 the package lacks and the docs could carry as a recipe.
+
+## The wheat figure as labelled level sets, landed (16:45 EST)
+
+Landed as a6db66e8: `plot_log_plane` gains `levels` (a sequence of V values or an integer count; V = 1 always among them
+as the frontier in the frontier colour, the others thinner grey; a contour of the hard-max envelope, so K > 1 follows
+the frontier's own rule; labels at each line's end on the side away from the data; the band drawn only on request
+beside levels; every existing call unchanged, the original plotting tests green before the change). Figure 10 on the
+wheat page: levels 0.1, 0.25, 0.5, 1, 1.5 (round values about even in log V, spanning a tenth of plot-years below
+0.13 to a maximum of 1.8); the band dropped from this figure (0.12 in log V, narrower than the gap to the next level,
+so ink without a reading; the prose keeps the 0.12); the caption: "Broadbalk plot-years in the log plane of grain and
+straw, with lines of equal V, a weighted geometric mean of both yields; the heavy line V = 1 is the fitted frontier.
+Along each line the model trades grain for straw." The figure loop: three cold readers (two before the caption's
+revision, one after; the last read every label and took the trade as the model's from the caption); the sentence
+test kept the figure for where the plot-years sit across the levels; the frame now hugs the data; legible in both
+schemes at the column width; shows, does not show and good for in `WP63-rounds/wheat-figure/review.md` with the
+before and after captures. No register row re-anchored (none quoted the old caption). The driver soft-confirmed on
+the captures. The driver's run on the rebased branch, exit codes captured: lint, format, the doctests, the plotting,
+register, record and budget tests, the figure build (22 images), mkdocs, vocabulary (0 new), the fast suite 2,102
+passed. CI dispatched. The unit's recommendation for the second step, for his read: an integer default of about five
+levels so every log-plane figure shows the frontier as one of a family, each of the four docs pages and the case's
+figure re-captioned and cold-read, the ADCS levels chosen by hand, the band opt-in at the method level, an additive
+row in the interface contract when the default changes.
