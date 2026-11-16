@@ -51,3 +51,14 @@ the spike.
 paper to the software, the two candidate control models with the events, branches, gates and artefacts of each, the
 decisions that are his, and the package sequence for the stages after it. No change to the repository's machinery in
 this package. Approved by the driver under his mandate on the direction above.
+
+## WP64 spike delivered and accepted as proxy (12:44 EST)
+
+`WP64-rounds/readout.md` and `machinery.toml` landed at 86a3841e. The driver verified the live claims with `gh api`:
+the repository is public; `main` is e7fd1165, 2,018 commits behind `dev`, holding only `test.yml`, so `pages.yml` and
+`release.yml` have never run; no rulesets, no branch protection, no environments, Pages unconfigured, no releases or
+tags. 23 couplings, five of which must be cut or bridged for either side to release alone (the docs' keys resolved
+from the notebooks; the paper's tests in the software gate; the strict paper build before the Pages deploy; one Pages
+artefact; one version and tag space). Three paper designs (pointer branch; the paper owns its branch; tags only), two
+site compositions, three software designs. R-1 to R-5 met. His six questions go to him one at a time from here; the
+design stage WP65 is scoped from his answers.
