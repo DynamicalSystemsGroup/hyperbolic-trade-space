@@ -203,3 +203,10 @@ verdicts, F-5 and F-31; the table numbering, F-4; the proposal count, F-14; the 
 parent's record and are worked in WP58 after his word where they touch the main text. The review's seventeen WP58 items
 are adopted into WP58's scope as proposed. The parent WP57's good enough is met (map accepted, five children landed and
 soft-confirmed, re-lettered once, R-1 to R-5 per the review); its done waits on his read.
+
+## His answer on the repository links (12:22 EST, verbatim)
+
+Asked (popup, three plain options: pin to the build's commit; keep `blob/main`; point at dev): "point at dev but
+consider repointing to main upon release". The driver's reading: every repository link the supporting material and the
+docs write (`blob/main`, 178 on the supporting page) points at `blob/dev` from WP58 on, and the release checklist
+carries the step "repoint the repository links to main" for his decision at release. Worked in WP58.
