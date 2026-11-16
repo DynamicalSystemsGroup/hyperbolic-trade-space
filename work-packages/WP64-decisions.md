@@ -160,3 +160,10 @@ docs' keys) are approved by the driver under his approval of the plan; each unit
 specification and the build plan's file set, disjoint from the other's. Both dispatched in parallel on `wp66b` and
 `wp66c`; landing order b then c. WP66a (the software model) waits on his second question (what a merge without a new
 version does).
+
+## His answers to the design's three questions (popups, one at a time; verbatim)
+
+**Q1, the review rule on `main` (15:53 EST):** "Review rule, you as bypass" (the popup's option: two rulesets on
+`main`, one requiring a pull request with one approval and code-owner review with repository admins able to bypass it
+for pull requests only, the other holding the required checks, merge-only, no deletions or force pushes, no bypass;
+he merges by ticking the bypass; the checks still bind; the bypass goes the day a second code owner exists).
