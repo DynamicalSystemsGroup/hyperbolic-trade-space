@@ -52,3 +52,17 @@ The driver's reading: the separability formulation is a hypothesis, not a design
 the approach open (the two-sided within-group estimator, the two-view formulation, or something else) and is judged
 on the cases: the market makers as internal test cases, the biology examples (wheat; the amniote life histories are a
 candidate, with body mass as the size), and other real-life tables the spike looks for.
+
+**His note on the formulation (17:27 EST, verbatim):** "since we're working with nonnegative values (the posynomials)
+you may also want to explore semidemifinite cone programs or precisely striclty positive definite cone programs.
+otherwise i think you just end up with Linear programs (equality constraint formulation) on the affine side. seems like
+a lot of potential for weird fits. but a lot of it should be on the analysis or modeler since this is essentially
+choosing kernels"
+
+The driver's reading: the affine side over nonnegative data is a conic problem, not a plain linear program with
+equality constraints (the positive orthant at least; a positive-definite cone where the affine side is a quadratic
+form), and the spike should write it that way and look at what each cone admits and refuses; degenerate fits are
+expected and must be reported, not hidden; which variables sit on which side, and in what form, is the analyst's
+choice, as a kernel is: the package supplies the estimator and the diagnostics, the modeller the blocks. Consistent
+with the package's line that conditioning is the analyst's job and that kernel methods are documented extensions
+compatible with generalized geometric programming.
