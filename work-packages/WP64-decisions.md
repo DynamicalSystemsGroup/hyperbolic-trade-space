@@ -74,3 +74,14 @@ The driver's reading: now, the paper builds from `dev` (its sources stay there) 
 the design keeps the step to a separate `paper` branch open for after a stable release, where each paper version pins
 the software release that was current when it shipped. The priority is `dev` merged into `main` for 0.1 as soon as
 reasonable.
+
+**Q2, where the paper is read (15:21 EST):** "one site, with /paper/ and in order to make this work now i want the
+/paper on dev to be just title author and abstract, with the full paper build on the paper branch. then i can merge
+paper into dev, then into main to trigger a rebuild. we have some risks of merge conflicts if they are moving in
+parallel but it should only be in link correctness since the paper is itself a website and its code components are all
+pinned with reproducibility machinery"
+
+The driver's reading, Q1 and Q2 together: one site; a `paper` branch where the paper is iterated and its full build
+runs; on `dev` the `/paper/` slot is the title, the author and the abstract; the paper's release event is the merge of
+`paper` into `dev` and then of `dev` into `main`, which rebuilds the site; conflicts between the branches are expected
+only in links.
