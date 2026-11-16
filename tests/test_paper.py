@@ -2684,46 +2684,6 @@ def test_the_paper_claims_no_external_review():
     assert "machine-checked" not in _section("AI acknowledgement").lower()
 
 
-def test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give():
-    """The caption of the two-panel ternary (the real data's two triples): each region it names is
-    the set of metrics whose exponent in that term is above the drawing's labelling threshold, and
-    the tau = infinity contending sets (the n-lemma) are the ones the search found."""
-    import case
-
-    from hyperbolic_trade_space import tensions
-
-    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-ternary-pair-caption"))
-    fits = case.ternary_pair_fits()
-    named = {  # the regions of the drawing, from the fit's exponents above 0.12
-        panel: [
-            {n for n, w in zip(st.names, term, strict=True) if w > 0.12} for term in est.exponents_
-        ]
-        for panel, (st, est) in fits.items()
-    }
-    assert named == {
-        "A": [{"pointing error", "control effort"}, {"total mass", "pointing error"}],
-        "B": [{"settling time", "control effort"}, {"depth of discharge"}],  # terms in share order
-    }
-    contending = {
-        panel: [
-            {st.names[i] for i in r.contending_set} for r in tensions.trade_off_report(est, st.M)
-        ]
-        for panel, (st, est) in fits.items()
-    }
-    assert contending["A"] == [
-        {"pointing error", "control effort"},
-        {"pointing error", "total mass", "control effort"},
-    ]
-    assert contending["B"] == [
-        {"settling time", "control effort", "depth of discharge"},
-        {"settling time", "depth of discharge"},
-    ]  # the first region's one exponent above the labelling threshold is depth of discharge's
-    for words in ("pointing error against control effort", "total mass against pointing error",
-                  "settling time against control effort", "depth of discharge alone"):  # fmt: skip
-        assert words in caption, words
-    assert "in A" in caption and "in B" in caption and "the other region" in caption
-
-
 def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
@@ -3060,7 +3020,7 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
     # outlined the contending set, left the paper's figures (it stays in the package as
     # plot_association). The contending set is read from the K = 1 and K = 2 sentences below.
     caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tension-matrix-caption"))
-    assert "carry an exponent on the term" in caption and "balanced point" in caption
+    assert "with an exponent w on the term" in caption and "balanced point" in caption
     k1 = _cell_out(PAPER_NB, "num-k1")
     assert "exact-maximum fit has a" in k1 and "exponents at the fit temperature" in k1
     assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-terms")
@@ -3206,6 +3166,7 @@ def test_the_case_reads_one_named_k():
         assert "CASE_K" in src and "fits[3]" not in src and "n_terms=3" not in src, name
     cells = {c.id: _src(c) for c in _nb(PAPER_NB).cells}
     assert "case.CASE_K" in cells["fit-case"] and "fit_case" in cells["fig-tension-matrix"]
+    assert 'triangle="upper", order="tension"' in cells["fig-tension-matrix"]
     assert not [i for i, t in cells.items() if "fits[3]" in t or "fit3" in t]
     for fn in (gf.terms_sentence, gf.elasticity_sentence, gf.choosing_k_sentence):
         assert "CASE_K" in inspect.getsource(fn), fn.__name__
@@ -3448,7 +3409,7 @@ def test_every_figure_shows_its_smallest_text_at_the_body_small_print_size_at_12
     shows the image (the column is FIGURE_COLUMN_PX wide; an image narrower than it is not
     stretched). Figure 6 was shown at 0.40 of its size and its 7 pt labels were 4 px."""
     images = _figure_images()
-    assert len(images) == 2  # the case's figure cells (WP19 P-7, P-10; Figure 9 went: S-3, R-10)
+    assert len(images) == 3  # the case's figure cells (WP19 P-7, P-10; WP56 adds the ternary)
     for name, (data, min_pt) in images.items():
         width, dpi = _png_size_and_dpi(data)
         scale = min(1.0, FIGURE_COLUMN_PX / width)
@@ -3742,19 +3703,6 @@ def test_appendix_e_rows_g2_and_g17_carry_the_thirteen_metric_record():
     )
 
 
-def test_the_ternary_figures_does_not_show_line_counts_the_metrics_each_triple_leaves_out():
-    """Stage 6 review, finding 1: the 'other N metrics' is the metric set less the triple's three,
-    computed here; the paper's line says it in words."""
-    import case
-
-    words = {10: "ten", 5: "five"}
-    for panel, (_, triple, _) in case.TERNARY_PAIR.items():
-        left = len(case.CUBESAT.attributes) - len(triple)
-        assert left == 10 and len(triple) == 3, panel
-    lines = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-ternary-pair-lines"))
-    assert f"the other {words[left]} metrics" in lines and "the other five" not in lines
-
-
 def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():
     """The chart's axis says which metrics a step to the right improves or worsens: the leading
     loadings of D.16's first direction (K = 1, primary regime), by sign. The caption names none."""
@@ -3963,18 +3911,23 @@ def test_section_9_closes_with_the_decision_and_leaves_the_neighbouring_paragrap
     ids = [c.id for c in _nb(PAPER_NB).cells]
     tail = ids[ids.index("num-predict") + 1 : ids.index("sec-discussion")]
     assert tail == [
+        "fig-fleet-ternary",  # WP56: the decision-maker's ternary before the decision
+        "fig-fleet-ternary-caption",
         "decision-case",
         "num-decision",
         "tab-decision",
         "tab-decision-caption",
         "num-tension",
     ]  # WP42: the pick's tension closes the section
-    kept = ("sec-ternary-pair", "fig-ternary-pair-caption", "fig-ternary-pair-lines",
-            "sec-case-analysis-3b", "num-regimes", "sec-case-analysis-5",
-            "num-predict")  # fmt: skip
+    kept = (
+        "sec-case-analysis-3b",
+        "num-regimes",
+        "sec-case-analysis-5",
+        "num-predict",
+    )  # fmt: skip  (WP56: the ternary pair and its paragraph left the paper)
     assert set(kept) <= set(ids)
+    assert not [i for i in ids if "ternary-pair" in i]
     cells = {c.id: c for c in _nb(PAPER_NB).cells}
-    assert _src(cells["sec-ternary-pair"]).startswith("**Three metrics at a time.**")
     assert _src(cells["sec-case-analysis-3b"]).startswith("**Two regimes.**")
     assert _src(cells["sec-case-analysis-5"]).startswith("**Propose, predict, check**")
 
@@ -4109,28 +4062,6 @@ def test_appendix_e_cubesat_rows_carry_the_temperatures_and_slacks_of_the_data_o
     for r, name in (("primary", "primary"), ("stock", "baseline")):
         assert f"{obj(r, 3):.3f} against {obj(r, 1):.3f} ({name}" in note
         assert f"{obj(r, 1):.3f} to {obj(r, 3):.3f} ({name}" in note
-
-
-def test_the_ternary_caption_counts_are_the_triple_search_record():
-    """CR 28: the caption says how many fits of the search showed two stable terms that contend
-    differently; the count is read from the record of ``triple_search.py`` (56 triples, two
-    regimes, K = 1, 2, 3), and both drawn triples are among those fits at K = 2."""
-    record = json.loads(
-        (ROOT / "paper" / "figures" / "triple_search_record.json").read_text(encoding="utf-8")
-    )
-    assert len(record) == 56 * 2 * 3
-    made = [r for r in record if "terms" in r]
-    two = [r for r in made if r["texture"] >= 2]
-    cap = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-ternary-pair-caption"))
-    assert f"{len(two)} of the {len(made)} fits that could be made" in cap
-    drawn = (
-        {"pointing error", "total mass", "control effort"},
-        {"settling time", "control effort", "depth of discharge"},
-    )
-    for triple in drawn:
-        assert any(
-            r["regime"] == "primary" and r["K"] == 2 and set(r["triple"]) == triple for r in two
-        ), triple
 
 
 # ---- the final reader round, second paper unit (change requests 32 to 92) ----------------------
@@ -4487,7 +4418,8 @@ def test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_
 
 def test_figure_captions_name_the_launch_link_the_sweep_ring_and_the_gloss_of_favours():
     """152, 140, 132: the caption of Figure 3 says which way the launch link runs; Figure 4's rings
-    are the sweep point nearest the fit temperature; Figure 8 glosses the corner's word."""
+    are the sweep point nearest the fit temperature (WP56: the ternary pair, whose corner word
+    Figure 8 glossed, left the paper)."""
     c3 = " ".join(_cell_src("fig-behavioural-caption").split())
     assert (
         "launch budget requirement reads the launch cost" in c3
@@ -4497,9 +4429,6 @@ def test_figure_captions_name_the_launch_link_the_sweep_ring_and_the_gloss_of_fa
     assert "sweep point nearest the fit temperature, which is not the fit itself" in _cell_src(
         "fig-tau-sweep-caption"
     )
-    c8 = _cell_src("fig-ternary-pair-caption")
-    assert "that metric's share of the triple's total is largest" in c8
-    assert "names its leading pair where the third exponent is small" in c8
 
 
 def test_the_statements_of_the_theorems_carry_what_their_scripts_prove():
@@ -4555,3 +4484,40 @@ def test_the_three_requirements_neither_filtered_nor_priced_hold_for_every_feasi
     text = " ".join(_cell_src("sec-case-construction-1b").split())
     assert "the battery peak power ratio, the power margin and the energy balance" in text
     assert "every feasible design of both regimes meets them" in text
+
+
+# ---- WP56: the tension matrix as one triangle and the decision-maker's ternary -----------------
+
+
+@pytest.mark.slow
+def test_the_tension_and_fleet_ternary_captions_state_the_fits_values():
+    """WP56 D-1: Figure 7's caption states the range of the drawn half (the upper triangle in the
+    tension order, every value at or below minus one) as the case's K = 2 fit gives it, term by
+    term; the ternary's caption states the K = 1 fit's design count and exponents on the three
+    objectives, read from ``case.fleet_ternary_study``."""
+    import case
+
+    from hyperbolic_trade_space import tension_matrix
+
+    study = case.load_study("primary")
+    fit = case.fit_study(study, K=case.CASE_K)
+    T = tension_matrix(fit.estimator, study.M)
+    cap = " ".join(_cell_src("fig-tension-matrix-caption").split())
+    for k, w in enumerate(np.atleast_2d(fit.estimator.exponents_)):
+        keep = case.tension_order(T[k], [j for j in np.argsort(-w, kind="stable") if w[j] > 1e-3],
+                                  "tension")  # fmt: skip
+        upper = [abs(T[k, i, j]) for a, i in enumerate(keep) for j in keep[a + 1 :]]
+        assert min(upper) >= 1.0
+        lo, hi = min(upper), max(upper)
+        top = f"{hi:.0f}" if hi >= 10 else f"{hi:.1f}"
+        assert f"from -{lo:.1f} to -{top} on term {k + 1}" in cap, (k, lo, hi)
+    assert "-1 or less" in cap
+    st = case.fleet_ternary_study()
+    w = case.fit_study(st, case.FLEET_TERNARY_K).estimator.exponents_[0]
+    cap = " ".join(_cell_src("fig-fleet-ternary-caption").split())
+    assert f"{len(st.feasible):,} feasible designs" in cap
+    assert f"fleet cost ({w[0]:.2f})" in cap and f"coverage probability ({w[2]:.2f})" in cap
+    assert f"{w[1]:.3f} on unit cost" in cap
+    assert (
+        len(cap.split(":::")[1].split("[full-size")[0].split(":label: fig-fleet")[1].split()) < 60
+    )

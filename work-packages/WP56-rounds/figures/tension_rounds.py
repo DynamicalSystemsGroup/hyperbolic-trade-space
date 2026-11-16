@@ -6,7 +6,7 @@ and writes ``tension-values.txt`` and the current round's PNG beside this file (
 100 dpi, the paper's call ``case.tension_matrix_figure``). Earlier rounds' PNGs are kept as they
 were rendered: r0 the paper's figure before WP56; r1 the two halves in exponent order; r2 the upper
 half in tension order, the colour bar's full range; r3 the bar cut to the drawn side; r4 the grey
-diagonal kept.
+diagonal kept; r5 the strict half (no diagonal, empty row and column dropped).
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ import case  # noqa: E402
 
 import hyperbolic_trade_space as hts  # noqa: E402
 
-CURRENT = ("r4-upper-tension-diagonal", "upper", "tension")  # round, triangle, order
+CURRENT = ("r5-upper-strict", "upper", "tension")  # round, triangle, order
 
 
 def values(study, fit):

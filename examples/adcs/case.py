@@ -2359,15 +2359,18 @@ def tension_matrix_figure(study, fit, triangle="both", order="exponent"):
     along the term: ``hyperbolic_trade_space.tension_matrix``. The metrics with no exponent on the
     term are not drawn and the line under the panel names them, so a zero or a blank cell is not
     shown. The two halves are reciprocals (``T[i, j] * T[j, i] = 1``), so one half carries the
-    matrix; ``triangle`` picks the half. The grey diagonal is a metric against itself.
+    matrix; ``triangle`` picks the half. With ``"both"`` the grey diagonal is a metric against
+    itself.
 
     Parameters
     ----------
     study : Study
     fit : Fit
     triangle : {"both", "upper", "lower"}, default="both"
-        The cells drawn: all, those right of the diagonal, or those left of it; the grey
-        diagonal is kept, so a row and the column of the same metric meet on it.
+        The cells drawn: all, those right of the diagonal, or those left of it. A single half
+        is drawn strictly: no diagonal, and the row and the column that would hold no cell
+        (the last row and first column of the upper half, the first row and last column of the
+        lower) are dropped.
     order : {"exponent", "tension"}, default="exponent"
         The order of the rows and columns (:func:`tension_order`): by the term's exponent,
         largest first, or by the size of the row's tensions, largest first (every cell right of
@@ -2399,11 +2402,12 @@ def tension_matrix_figure(study, fit, triangle="both", order="exponent"):
         keep = tension_order(T[k], by_w, order)
         gone = [names[j] for j in range(len(w)) if j not in set(keep)]
         n = len(keep)
-        rows = cols = keep
+        rows = {"both": keep, "upper": keep[:-1], "lower": keep[1:]}[triangle]
+        cols = {"both": keep, "upper": keep[1:], "lower": keep[:-1]}[triangle]
         cells = set(_tension_cells(keep, triangle))
         for a, i in enumerate(rows):
             for b, j in enumerate(cols):
-                if i == j:
+                if i == j and triangle == "both":
                     ax.add_patch(plt.Rectangle((b - 0.5, a - 0.5), 1, 1, fc="#d9d9d9", ec="none"))
                     continue
                 if (i, j) not in cells:
@@ -2797,6 +2801,23 @@ def fleet_ternary_study(regime="primary", spec=CUBESAT):
     return Study(spec3, regime, full.raw, feasible, FLEET_TERNARY, M, cond)
 
 
+def fleet_ternary_corner(attr, spec=CUBESAT):
+    """The label of a corner of the decision-maker's ternary: what a design there has.
+
+    A corner holds the designs whose total is all in one conditioned objective, so the label is
+    the objective in the direction it is better (low for a cost, high for the coverage
+    probability) and the stakeholder who holds it.
+
+    Examples
+    --------
+    >>> fleet_ternary_corner("unit_cost_usd")
+    'low unit cost\\n(manufacturer)'
+    """
+    better = "high" if {**spec.orientation, COVERAGE: +1}[attr] > 0 else "low"
+    short = {**spec.short, COVERAGE: "coverage probability"}[attr]
+    return f"{better} {short}\n({STAKEHOLDER_OF[attr]})"
+
+
 def fleet_ternary_figure(study=None, fit=None, K=FLEET_TERNARY_K):
     """The decision-maker's ternary: fleet cost, unit cost and coverage probability.
 
@@ -2836,12 +2857,11 @@ def fleet_ternary_figure(study=None, fit=None, K=FLEET_TERNARY_K):
         if len(est.exponents_) == 1:  # one term: its number labels nothing
             for a in ax.findobj(lambda a: a.get_gid() == "ternary-star-label-0"):
                 a.set_visible(False)
-        who = {study.spec.short[a]: STAKEHOLDER_OF[a] for a in study.attrs}
+        corner = {study.spec.short[a]: fleet_ternary_corner(a, study.spec) for a in study.attrs}
         for t in ax.texts:
             words = " ".join(t.get_text().split())
             if words.startswith("favours "):
-                name = words.removeprefix("favours ")
-                t.set_text(f"{t.get_text()}\n({who[name]})")
+                t.set_text(corner[words.removeprefix("favours ")])
         ax.set_title(FLEET_TERNARY_TITLE, loc="left", pad=36, fontsize=FIGURE_MIN_FONT_PT + 2,
                      fontweight="bold", color=sch["ink"])  # fmt: skip
         col = plotting._ternary_colours(est.exponents_)
@@ -2860,7 +2880,8 @@ def fleet_ternary_figure(study=None, fit=None, K=FLEET_TERNARY_K):
     for k in range(len(est.exponents_)):
         m = plotting._TERN_MARKERS[k][0]
         keys.append(Line2D([], [], marker=m, ls="", ms=10, mfc=col[k], mec=ink, mew=1.1))
-        text.append(f"{_TERN_SHAPE[m]}: the exponent vector of term {k + 1}")
+        which = f"term {k + 1}" if len(est.exponents_) > 1 else "the one term"
+        text.append(f"{_TERN_SHAPE[m]}: the exponent vector of {which}, not a design")
     fig.legend(keys, text, loc="lower center", ncol=1, frameon=False, labelcolor=ink,
                fontsize=FIGURE_MIN_FONT_PT + 0.5, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
     return fig

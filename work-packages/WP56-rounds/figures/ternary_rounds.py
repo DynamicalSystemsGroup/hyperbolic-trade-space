@@ -23,9 +23,11 @@ sys.path[:0] = [str(ROOT / "src"), str(ROOT / "examples" / "adcs")]
 
 import case  # noqa: E402
 
-CURRENT = "r2"
+CURRENT = "r4"
 KS = (1, 2)  # the fits whose numbers are printed
-RENDER = (1,)  # the current round renders K = 1 (r1 rendered K = 1 and K = 2)
+RENDER = (
+    1,
+)  # r1 rendered K = 1 and K = 2; r2 and r3 K = 1 (r3: corners by what a design there has)
 
 
 def main():

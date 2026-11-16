@@ -19,7 +19,8 @@ def test_model_views_in_the_paper_equal_the_models_views():
 
 
 def test_the_nlemma_figure_is_committed_beside_its_generator():
-    assert {"nlemma", "planes", "chart_level", "ternary_pair"} <= set(build_figures.PAPER_FIGURES)
+    assert {"nlemma", "planes", "chart_level"} <= set(build_figures.PAPER_FIGURES)
+    assert "ternary_pair" not in build_figures.PAPER_FIGURES  # WP56: left the paper
     assert (ROOT / "paper" / "figures" / "fig-nlemma.png").stat().st_size > 10_000
 
 
@@ -41,12 +42,6 @@ def test_each_drawn_svg_equals_its_generators_output(module, svg):
     finally:
         sys.path.remove(str(ROOT / "paper"))
     assert (ROOT / "paper" / "figures" / svg).read_text(encoding="utf-8") == generator.svg()
-
-
-def test_the_two_panel_ternary_is_committed_beside_its_generator():
-    """Figure 9: the module draws ``case.ternary_pair_figure``; its PNG is committed."""
-    assert (ROOT / "paper" / "figures" / "ternary_pair.py").is_file()
-    assert (ROOT / "paper" / "figures" / "fig-ternary-pair.png").stat().st_size > 10_000
 
 
 def test_plain_build_leaves_the_paper_figures_alone(monkeypatch, tmp_path):

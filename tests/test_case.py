@@ -261,9 +261,9 @@ def test_the_tension_matrix_figure_draws_the_terms_that_carry_an_exponent(small,
 @pytest.mark.parametrize("triangle", ["upper", "lower"])
 @pytest.mark.parametrize("order", ["exponent", "tension"])
 def test_the_tension_matrix_figure_draws_one_triangle(small, triangle, order):
-    """WP56 (Figure 7 as one triangle): ``triangle`` draws one half, the grey diagonal kept and
-    the rows and columns the same metrics in one order; ``order="tension"`` puts every cell right
-    of the diagonal at -1 or below; an unknown option raises."""
+    """WP56 (Figure 7 as one triangle): ``triangle`` draws one half strictly (no diagonal, the
+    empty row and column dropped), the exponent on each row label; ``order="tension"`` puts every
+    cell right of the diagonal at -1 or below; an unknown option raises."""
     import matplotlib.pyplot as plt
 
     from hyperbolic_trade_space import tension_matrix
@@ -277,13 +277,15 @@ def test_the_tension_matrix_figure_draws_one_triangle(small, triangle, order):
         by_w = [j for j in np.argsort(-W[k], kind="stable") if W[k][j] > 1e-3]
         keep = case.tension_order(T[k], by_w, order)
         n = len(keep)
-        assert [t.get_text() for t in ax.get_xticklabels()] == [small.names[j] for j in keep]
-        rows = [t.get_text().split("  w=")[0] for t in ax.get_yticklabels()]
-        assert rows == [small.names[j] for j in keep]
+        rows, cols = (keep[:-1], keep[1:]) if triangle == "upper" else (keep[1:], keep[:-1])
+        assert [t.get_text() for t in ax.get_xticklabels()] == [small.names[j] for j in cols]
+        labels = [t.get_text().split("  w=")[0] for t in ax.get_yticklabels()]
+        assert labels == [small.names[j] for j in rows]
+        assert all("  w=" in t.get_text() for t in ax.get_yticklabels())  # the exponent stays
         cells = [(t.get_position(), float(t.get_text())) for t in ax.texts]
-        assert len(cells) == n * (n - 1) // 2
-        above = [(x > y) for (x, y), _ in cells]
-        assert all(above) if triangle == "upper" else not any(above)
+        assert len(cells) == n * (n - 1) // 2  # no diagonal, no empty row or column
+        on_side = [(x >= y) if triangle == "upper" else (x <= y) for (x, y), _ in cells]
+        assert all(on_side)
         if order == "tension":
             values = [v for _, v in cells]
             assert (
@@ -299,7 +301,8 @@ def test_the_tension_matrix_figure_draws_one_triangle(small, triangle, order):
 def test_the_fleet_ternary_names_its_measure_and_its_stakeholders():
     """WP56 (the decision-maker's ternary): three objectives of the primary regime, the title
     names the coverage probability and carries no formula, each corner names its stakeholder;
-    at K = 1 the unit-cost exponent is the smallest (the one trade-off is fleet cost against
+    each corner says what a design there has (low cost, high coverage); at K = 1 the unit-cost
+    exponent is the smallest (the one trade-off is fleet cost against
     coverage probability)."""
     import matplotlib.pyplot as plt
 
@@ -311,12 +314,13 @@ def test_the_fleet_ternary_names_its_measure_and_its_stakeholders():
     fig = case.fleet_ternary_figure(st, fit)
     (ax,) = fig.axes
     assert ax.get_title(loc="left") == case.FLEET_TERNARY_TITLE
-    corners = [" ".join(t.get_text().split()) for t in ax.texts if "favours" in t.get_text()]
+    corners = [" ".join(t.get_text().split()) for t in ax.texts if "(" in t.get_text()]
     assert sorted(corners) == sorted([
-        "favours fleet cost (sponsor)",
-        "favours unit cost (manufacturer)",
-        "favours coverage probability (operator)",
+        "low fleet cost (sponsor)",
+        "low unit cost (manufacturer)",
+        "high coverage probability (operator)",
     ])  # fmt: skip
+    assert not [t for t in ax.texts if "favours" in t.get_text()]
     plt.close(fig)
 
 
