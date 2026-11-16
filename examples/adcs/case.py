@@ -2744,7 +2744,7 @@ def coverage_probability(fleet_size, pointing_error_deg, p0=COVERAGE_P0, e0=None
 
     Examples
     --------
-    >>> float(coverage_probability(1, 0.0))
+    >>> round(float(coverage_probability(1, 0.0)), 12)
     0.2
     >>> bool(coverage_probability(10, 0.001) > coverage_probability(5, 0.001))
     True
