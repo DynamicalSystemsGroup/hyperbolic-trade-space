@@ -41,3 +41,20 @@ WP57c (C, D) after WP56; WP57d (E, H) after c; WP57e last.
 need, every proof reachable by its lemma label, the derivation chain and proof map unchanged), both at d7d3403, are
 approved by the driver under his mandate. One unit runs a then b on branch `wp57ab` after WP55 lands; the driver
 soft-confirms each appendix on screenshots before the next child.
+
+## WP57a and WP57b accepted as proxy and landed (20:52 EST)
+
+Read on the unit's screenshots of the rendered appendices (A's table, F, G and G.1's end; B's opening, B.2 and the
+L16 table). WP57a d4f6fc5: the companion paragraph and the Job blocks of A, F and G gone; A's register 72 to 65 rows
+without the Layer column, five `defined_in` fields repointed; G.2 to `paper/supplement/reading-pass.md` (55 rows,
+generated, with a staleness test), cited in one line at the end of G.1. WP57b 88ce016: B's Job block gone, "What the
+scripts establish" kept; `how_to_read` shortened; B.2 is one paragraph of 121 words on restarts, stopping and the
+polish; all 25 "Appendix B, Ln" pointers of Sections 3 to 6 land on their result; the derivation chain and proof map
+unchanged (22 files, 549 steps). The driver's one landing edit (04a1e3a): B.2 named "its step (3)", a step the
+algorithm no longer has, and now names the descent rule (L15). Supporting material after both: 115 cells, typed prose
+4,440 to 3,591 words, metanarration count 16 to 8. Register: C131, C161, C132 to C136, C139 to C146 and C667
+retired; C1101 and C1102 added (C967 to C1100 left to WP56). Checks: fast suite 2,086, slow paper 27, paper tests
+rerun after the edit 206 passed; lint, format, lock, vocabulary clean. Landed on `dev` at 07842b7; CI 43788752177.
+Queued for WP57d: `WP57-rounds/assumptions-queue.md`. For WP58: the dead glossary entry termination-status; five
+`defined_in` fields naming repository records; the live lists that still say "Appendix G.2"; the stale myst.yml
+comment "(Appendices A to G)".
