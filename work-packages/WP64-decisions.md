@@ -91,3 +91,7 @@ archived with a DOI, the software's as well as the paper's; one switch in Zenodo
 
 **Q4, earlier pins on the site (15:23 EST):** "Only the current one" (the popup's option: `/paper/` serves the current
 pin; earlier pins remain as tags, GitHub releases and their Zenodo DOIs, not as pages).
+
+**Q5, the paper's tests and the software's gate (15:24 EST):** "All leave" (the popup's option: the paper's tests run
+only in the paper branch's workflow; the software gate runs the package, docs and site tests; a software change that
+breaks the paper shows on the paper branch when it merges `dev` in).
