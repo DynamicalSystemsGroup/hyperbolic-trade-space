@@ -167,3 +167,7 @@ version does).
 `main`, one requiring a pull request with one approval and code-owner review with repository admins able to bypass it
 for pull requests only, the other holding the required checks, merge-only, no deletions or force pushes, no bypass;
 he merges by ticking the bypass; the checks still bind; the bypass goes the day a second code owner exists).
+
+**Q2, a merge without a new version (15:54 EST):** "Site-only redeploy" (the popup's option: when the tag exists on an
+earlier commit and the package files are unchanged since it, the run composes and deploys the site and skips the tag,
+PyPI and the release; a change to package files with an unchanged version still fails).
