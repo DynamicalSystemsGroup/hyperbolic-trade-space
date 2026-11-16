@@ -21,7 +21,7 @@
 
 [[claim]]
 id = "C001"
-fragment = "a marker is not where V = 1"
+fragment = "A numbered marker is a term's exponent vector, where its V, the invariant value, is largest for a fixed total, not where V = 1."
 file = "docs/examples.md"
 anchor = ""
 kind = "S"
@@ -4388,7 +4388,7 @@ note = "Regions are the argmax term of the fit (the partition test); a marker si
 
 [[claim]]
 id = "C456"
-fragment = "A region is where one term is the largest: an analysis of the fit, not a label on a design."
+fragment = "A region is where one term is largest: an analysis of the fit, not a label on a design."
 file = "docs/examples.md"
 anchor = ""
 kind = "S"
@@ -4480,7 +4480,7 @@ note = "Section 9's sentence: the K the package's choosing-K checks pick for the
 id = "C490"
 fragment = "contending sets of 8 and 7 metrics and shares of 74 and 26 percent of the near-frontier designs. The larger adds peak slew power to the one-term contending set, and the smaller is that set."
 file = "docs/examples.md"
-anchor = "A cubesat trade study across power, mass and attitude control"
+anchor = "Choosing K on the case"
 kind = "R"
 backing = [
   "gen:examples/adcs/case.py::term_table",
@@ -7448,7 +7448,7 @@ note = "TEMPERATURE and FIT_SEED, one fit shared by both figures."
 
 [[claim]]
 id = "C844"
-fragment = "at 50, 11 percent of them lie beyond it."
+fragment = "At 50, 11 percent of the designs lie beyond the surface."
 file = "docs/examples.md"
 anchor = "The synthetic three-metric case"
 kind = "S"
@@ -7460,7 +7460,7 @@ note = "The measured share beyond the surface at temperature 50 (the block print
 
 [[claim]]
 id = "C845"
-fragment = "A region is where one term binds, the term whose piece the surface follows there; at the temperature used, that term carries the largest weight."
+fragment = "A region is where one term binds"
 file = "docs/examples.md"
 anchor = "The synthetic three-metric case"
 kind = "S"
@@ -7472,7 +7472,7 @@ note = "The region rule is plotting._ternary_region_of."
 
 [[claim]]
 id = "C846"
-fragment = "the shares there equal the term's exponents, and for a given total the term is largest there."
+fragment = "a numbered marker's shares equal its term's exponents"
 file = "docs/examples.md"
 anchor = "The synthetic three-metric case"
 kind = "S"
@@ -7600,7 +7600,7 @@ note = "The estimator takes a table of metrics and nothing of how the attributes
 id = "C856"
 fragment = "Version 1.0.1 (doi:10.5281/zenodo.5837035, licence CC BY 4.0, credited to that paper) holds 42,443 devices in 410 columns."
 file = "docs/examples/perovskite.md"
-anchor = "The dataset"
+anchor = "Where the devices come from"
 kind = "S"
 backing = ["file:examples/perovskite/manifest.toml", "file:examples/perovskite/results.json", "bib:jacobsson2021open"]
 status = "backed"
@@ -7612,7 +7612,7 @@ note = "Manifest of the archive; counts.rows_in_table in results.json."
 id = "C857"
 fragment = "The fetch downloads the 3.3 MB archive, stops if its size or hash differs"
 file = "docs/examples/perovskite.md"
-anchor = "The dataset"
+anchor = "Where the devices come from"
 kind = "S"
 backing = ["gen:examples/perovskite/run.py::main", "file:examples/perovskite/manifest.toml"]
 status = "backed"
@@ -7624,7 +7624,7 @@ note = "size = 3317874 in the manifest; fitkit.verify raises on a changed size o
 id = "C858"
 fragment = "Rows with a missing, zero or negative attribute, or FF above 1, are dropped, leaving 40,045."
 file = "docs/examples/perovskite.md"
-anchor = "The dataset"
+anchor = "The attributes"
 kind = "S"
 backing = ["gen:examples/perovskite/run.py::feasible", "file:examples/perovskite/results.json"]
 status = "backed"
@@ -7634,9 +7634,9 @@ note = "counts.after_FF_le_1 in results.json."
 
 [[claim]]
 id = "C859"
-fragment = "so every orientation is +1 and nothing is inverted or shifted"
+fragment = "All three are larger-is-better, so nothing is inverted or shifted."
 file = "docs/examples/perovskite.md"
-anchor = "The conditioning rule"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/run.py::condition", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7648,7 +7648,7 @@ note = "LogAffinePreconditioner(orientation=1, shift=0.0, scaler=standard)."
 id = "C860"
 fragment = "Without a scaler, FF, whose log varies least, takes 0.99 and the Voc-Jsc association turns positive (+0.29)."
 file = "docs/examples/perovskite.md"
-anchor = "The conditioning rule"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7682,7 +7682,7 @@ note = "runs.primary.k2: term_share, mean_slack, mean_slack_k1."
 
 [[claim]]
 id = "C863"
-fragment = "the small term holds 2.4 percent of the rows and puts Jsc's exponent at 0"
+fragment = "The small term holds 2.4 percent of the rows and puts Jsc's exponent at 0"
 file = "docs/examples/perovskite.md"
 anchor = "The fit"
 kind = "S"
@@ -7694,9 +7694,9 @@ note = "runs.primary.k2.term_share[1] 0.0245; exponents[1].Jsc 0.0."
 
 [[claim]]
 id = "C864"
-fragment = "Voc, Jsc and FF are all in the contending set, so the n-lemma is 3."
+fragment = "Voc, Jsc and FF are all in the ... contending set ... so the n-lemma is 3."
 file = "docs/examples/perovskite.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7708,7 +7708,7 @@ note = "ladder rows primary, robust_scaler, quantile, extremes_capped: contendin
 id = "C865"
 fragment = "each exponent moves: Voc from 0.12 to 0.43, Jsc from 0.27 to 0.75, FF from 0.02 to 0.61"
 file = "docs/examples/perovskite.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7718,9 +7718,9 @@ note = "Min and max of ladder.*.exponents over the four rows."
 
 [[claim]]
 id = "C866"
-fragment = "the near-frontier association of Voc with Jsc is negative in all four, from -0.13 to -0.82"
+fragment = "The near-frontier association of Voc with Jsc is negative in all four, from -0.13 to -0.82"
 file = "docs/examples/perovskite.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7732,7 +7732,7 @@ note = "ladder.*.association['Voc|Jsc']."
 id = "C867"
 fragment = "Jsc with FF is negative in all four (-0.27 to -0.64), and Voc with FF is negative in three (-0.39 to -0.44) and +0.23 under the cap."
 file = "docs/examples/perovskite.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7744,7 +7744,7 @@ note = "ladder.*.association['Jsc|FF'] and ['Voc|FF']."
 id = "C868"
 fragment = "In the standard-scaler fit the strongest pair is Jsc with FF (-0.63), not Voc with Jsc (-0.14)."
 file = "docs/examples/perovskite.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/run.py::main", "file:examples/perovskite/results.json"]
 status = "backed"
@@ -7753,22 +7753,10 @@ source = "WP60, the perovskite page"
 note = "runs.primary.association."
 
 [[claim]]
-id = "C869"
-fragment = "The set was the whole set in all four, so its membership says little"
-file = "docs/examples/perovskite.md"
-anchor = "The named trade-off"
-kind = "S"
-backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
-status = "backed"
-disposition = "keep"
-source = "WP60, the perovskite page"
-note = "Three metrics in all four rows, each contending set of size 3."
-
-[[claim]]
 id = "C870"
 fragment = "Five rows have Voc above 2 V or Jsc above 40 mA/cm2, probably module or unit entries."
 file = "docs/examples/perovskite.md"
-anchor = "The extremes rule"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/run.py::variants", "file:examples/perovskite/results.json"]
 status = "backed"
@@ -7780,7 +7768,7 @@ note = "runs.primary.rows 40045 minus runs.caps_Voc2_Jsc40.rows 40040."
 id = "C871"
 fragment = "Capping them moves the Voc-Jsc association from -0.14 to -0.82."
 file = "docs/examples/perovskite.md"
-anchor = "The extremes rule"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7790,9 +7778,9 @@ note = "ladder.primary and ladder.extremes_capped association['Voc|Jsc']."
 
 [[claim]]
 id = "C872"
-fragment = "Added as a fourth metric, PCE takes exponent 0.50 and FF falls to 0.00"
+fragment = "Added as a fourth metric, power conversion efficiency (PCE) takes exponent 0.50 and FF falls to 0.00"
 file = "docs/examples/perovskite.md"
-anchor = "Derived metrics"
+anchor = "The fit"
 kind = "S"
 backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
 status = "backed"
@@ -7801,22 +7789,10 @@ source = "WP60, the perovskite page"
 note = "ladder.pce_added.exponents: PCE 0.503, FF 2e-19."
 
 [[claim]]
-id = "C873"
-fragment = "The detailed-balance limit calculates efficiency with the band gap as a parameter"
-file = "docs/examples/perovskite.md"
-anchor = "The named trade-off"
-kind = "L"
-backing = ["bib:shockley1961detailed"]
-status = "backed"
-disposition = "keep"
-source = "WP60, the perovskite page"
-note = "Abstract of Shockley and Queisser 1961, read 2026-11-14 (WP45 record, section 1)."
-
-[[claim]]
 id = "C896"
 fragment = "3,753 plot-years with both yields recorded and positive, 44 percent of the archive's 8,573"
 file = "docs/examples/wheat.md"
-anchor = "The dataset"
+anchor = "The attributes"
 kind = "S"
 backing = ["file:examples/wheat/results.json", "file:examples/wheat/derive.py"]
 status = "backed"
@@ -7826,7 +7802,7 @@ note = "Counts of the derived table against the archive."
 
 [[claim]]
 id = "C897"
-fragment = "The temperature is the one that puts a tenth of the rows above the frontier: 8.3, a band of 0.12 in log V"
+fragment = "is the one that puts a tenth of the rows above the frontier: 8.3, a band of 0.12 in log V"
 file = "docs/examples/wheat.md"
 anchor = "The fit"
 kind = "S"
@@ -7838,7 +7814,7 @@ note = "select_temperature at target_frac_above 0.1."
 
 [[claim]]
 id = "C898"
-fragment = "grain's exponent is 0.45 and straw's 0.55, the contending set is both, and the association of the two log yields near the frontier is -0.87"
+fragment = "At one term grain's exponent is 0.45 and straw's 0.55, the ... contending set ... is both, and the association of the two log yields near the frontier is -0.87"
 file = "docs/examples/wheat.md"
 anchor = "The fit"
 kind = "S"
@@ -7876,7 +7852,7 @@ note = "Mean slack at K = 1 and K = 2."
 id = "C901"
 fragment = "the median harvest index is 0.52 for Cappelle Desprez (1968 to 1978) and 0.76 for Zyatt (2019 to 2022), at median total biomass of 8.97 and 8.75 t per hectare"
 file = "docs/examples/wheat.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/wheat/results.json", "bib:austin1993old"]
 status = "backed"
@@ -7912,7 +7888,7 @@ note = "Primary, winter, robust, N at least 96, modern, no-scaler and year-remov
 id = "C904"
 fragment = "Grain's exponent runs from 0.29, with no scaler, to 0.72, in Section 1 and in modern cultivars at nitrogen of at least 96"
 file = "docs/examples/wheat.md"
-anchor = "What moves across the ladder"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/wheat/variants.json"]
 status = "backed"
@@ -7924,7 +7900,7 @@ note = "A range with the rows that bound it, not one exponent."
 id = "C905"
 fragment = "That subset takes straw's weight from 0.55 to 0.28"
 file = "docs/examples/wheat.md"
-anchor = "What moves across the ladder"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/wheat/variants.json"]
 status = "backed"
@@ -7934,9 +7910,9 @@ note = "Straw's exponent in the primary and the modern, high-nitrogen rows."
 
 [[claim]]
 id = "C906"
-fragment = "The dilemma and a negative association, -0.62 to -0.90, hold in every row"
+fragment = "A negative association, -0.62 to -0.90, holds in every row of the scaler, cap, subset and trend variants."
 file = "docs/examples/wheat.md"
-anchor = "What moves across the ladder"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/wheat/variants.json", "file:work-packages/WP59-rounds/wheat.md"]
 status = "backed"
@@ -7948,7 +7924,7 @@ note = "Fixed across the ladder."
 id = "C907"
 fragment = "Biomass, a function of grain and straw, takes exponent 0.00 and leaves the fit unchanged; the harvest index ... displaces grain, whose exponent falls to 0.00"
 file = "docs/examples/wheat.md"
-anchor = "What moves across the ladder"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/wheat/variants.json"]
 status = "backed"
@@ -7960,7 +7936,7 @@ note = "Derived metrics of the same two columns."
 id = "C908"
 fragment = "weights grain and straw by 0.71 and -0.23, or -0.11 and 0.71 with the second component reversed"
 file = "docs/examples/wheat.md"
-anchor = "What moves across the ladder"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/wheat/variants.json", "file:work-packages/WP59-rounds/wheat.md"]
 status = "backed"
@@ -7970,9 +7946,9 @@ note = "Pulled back weights from the WP59 chains reading."
 
 [[claim]]
 id = "C876"
-fragment = "holds 21,322 species of mammals, birds and reptiles in 36 columns"
+fragment = "It holds 21,322 species in 36 columns; a row is one species."
 file = "docs/examples/amniote.md"
-anchor = "The dataset"
+anchor = "Where the species come from"
 kind = "S"
 backing = ["file:examples/amniote/results.json", "file:examples/amniote/manifest.toml", "bib:myhrvold2015amniote"]
 status = "backed"
@@ -7984,7 +7960,7 @@ note = "results.json counts.rows_in_table; manifest.toml columns and licence."
 id = "C877"
 fragment = "the complete cases with all five attributes strictly positive are 2,770 species, 13 percent of the table: 1,548 mammals, 1,028 birds and 194 reptiles"
 file = "docs/examples/amniote.md"
-anchor = "The dataset"
+anchor = "The attributes"
 kind = "S"
 backing = ["file:examples/amniote/results.json"]
 status = "backed"
@@ -7996,7 +7972,7 @@ note = "results.json counts.complete_cases and complete_Mammalia, _Aves, _Reptil
 id = "C878"
 fragment = "Added as a fifth metric it takes exponent 0.00 and changes no other number, so it is set aside."
 file = "docs/examples/amniote.md"
-anchor = "The conditioning rule"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
@@ -8006,9 +7982,9 @@ note = "variants.json annual_fecundity_added: the fecundity exponent 0.00, the o
 
 [[claim]]
 id = "C879"
-fragment = "partialling out mass adds litters per year to the set"
+fragment = "except that partialling out mass adds litters per year"
 file = "docs/examples/amniote.md"
-anchor = "The conditioning rule"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
@@ -8018,7 +7994,7 @@ note = "variants.json mass_partialled_out contending_set has four members; mass_
 
 [[claim]]
 id = "C880"
-fragment = "At K = 1 the fit temperature is 10.7, chosen so that a tenth of species lie above the surface."
+fragment = "For the four-metric fit at K = 1 the ... fit temperature ... is 10.7, chosen so that a tenth of species lie above the surface."
 file = "docs/examples/amniote.md"
 anchor = "The fit"
 kind = "S"
@@ -8068,7 +8044,7 @@ note = "variants.json primary k2.terms: litter size 0.04 to 0.19, litters per ye
 id = "C884"
 fragment = "Their near-frontier association is -0.89 to -0.97, and longevity against litters per year is -0.60 to -0.67."
 file = "docs/examples/amniote.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
@@ -8080,7 +8056,7 @@ note = "variants.json association over primary, robust_scaler, quantile, mass_pa
 id = "C885"
 fragment = "Longevity against litter size is -0.04 to -0.17"
 file = "docs/examples/amniote.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
@@ -8092,7 +8068,7 @@ note = "variants.json association longevity|litter_size over the same five rows.
 id = "C886"
 fragment = "longevity 0.41 to 0.53, earliness 0.30 to 0.36, litter size 0.09 to 0.15, litters per year 0.00 to 0.14."
 file = "docs/examples/amniote.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
@@ -8104,7 +8080,7 @@ note = "variants.json exponents over the same five rows."
 id = "C887"
 fragment = "With no scaler earliness takes all the exponent"
 file = "docs/examples/amniote.md"
-anchor = "The named trade-off"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
@@ -8116,7 +8092,7 @@ note = "variants.json no_scaler: earliness 1.00, the others 0.00."
 id = "C888"
 fragment = "with maturity not inverted it gives +0.76 and the same set."
 file = "docs/examples/amniote.md"
-anchor = "The check on your own dataset"
+anchor = "The fit"
 kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
