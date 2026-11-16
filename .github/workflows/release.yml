@@ -1,15 +1,21 @@
 name: Release
 
-# Publishing is by trusted publishing (OpenID Connect): no token or password is stored anywhere.
-# Two ways in, both started by a code owner:
-#   * a manual dispatch on the dev branch publishes the candidate to TestPyPI (environment testpypi);
-#     the default target, dry-run, builds and checks everything and publishes nothing;
-#   * a tag v<version> pushed on a commit of main publishes to PyPI (environment pypi).
-# A release is refused before anything is built unless: the tag equals the package version, the
-# changelog has its entry, the lock is current, every action is pinned to a commit, and the suite passes;
-# and after the build unless the software bill of materials names every package in uv.lock
-# (.github/RELEASE_ADMISSIBILITY.md, row by row).
+# The merge of a pull request from dev into main is the software's release (package, docs, root page).
+# The pull request runs the job `admissibility` (a required check). The push of the merge commit to main
+# runs the release: admissibility again on the merge commit, the suite, the build, the composed site, then
+# the tag v<version> and a draft GitHub release, PyPI by trusted publishing (no token anywhere), the deploy
+# of the site and the publication of the release. The tag is created here and starts nothing (a tag made
+# with the workflow's token raises no event); no job waits on a tag event and no trigger reads tags.
+# A merge without a new version (the tag exists on an earlier commit and src/, pyproject.toml and uv.lock
+# are unchanged since it) redeploys the site only: no tag, no PyPI, no release.
+# A push to qc/** and a dispatch run the dry-run path: admissibility, the build and the site, nothing after.
+# Any failure on main runs `on-failure`: the failed jobs and steps in the summary, scripts/release_cleanup.py,
+# and an issue labelled release-failure. The rows this enforces: .github/RELEASE_ADMISSIBILITY.md.
 on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, "qc/**", "!qc/paper/**"]
   workflow_dispatch:
     inputs:
       target:
@@ -21,27 +27,35 @@ on:
         description: "Tag to check the version against (a dry run of the tag rule); blank on a real dispatch"
         type: string
         default: ""
-  push:
-    tags: ["v*"]
 
 permissions:
   contents: read
 
+# A running release is never cancelled; a pull request's newer push supersedes its older run.
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('release-pr-{0}', github.event.pull_request.number) || format('release-{0}', github.ref) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   check:
-    name: check version and branch
+    name: admissibility
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
     outputs:
       version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      tag_state: ${{ steps.tag.outputs.tag_state }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
-      - name: Version matches the tag
+      - name: The version is a release version (and equals the tag input, on a dispatch with one)
         id: version
         env:
-          TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+          TAG: ${{ inputs.tag }}
         run: |
           if [ -n "$TAG" ]; then
             version=$(uv run --no-project python scripts/check_release_version.py --tag "$TAG")
@@ -49,22 +63,46 @@ jobs:
             version=$(uv run --no-project python scripts/check_release_version.py)
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
-      - name: The changelog has an entry for this version
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+      - name: The tag v<version> is new, ours, or a site-only merge (taken fails)
+        id: tag
         env:
           VERSION: ${{ steps.version.outputs.version }}
-          TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+          SHA: ${{ github.sha }}
         run: |
-          if [ -n "$TAG" ]; then final=--final; else final=; fi
+          state=$(uv run --no-project python scripts/release_checks.py tag --tag "v$VERSION" --sha "$SHA")
+          echo "tag_state=$state" >> "$GITHUB_OUTPUT"
+          echo "admissibility: v$VERSION is $state at ${SHA::12}" >> "$GITHUB_STEP_SUMMARY"
+      - name: The changelog has an entry for this version
+        if: steps.tag.outputs.tag_state != 'site-only'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          FINAL: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'pull_request' || inputs.tag != '' }}
+        run: |
+          if [ "$FINAL" = "true" ]; then final=--final; else final=; fi
           uv run --no-project python scripts/release_checks.py changelog --version "$VERSION" $final
       - name: The lock matches the declaration
         run: uv lock --check
       - name: Every action is pinned to a commit
         run: uv run --no-project python scripts/release_checks.py pins
-      - name: A tag release comes from main
-        if: github.ref_type == 'tag'
+      - name: The paper's mode file is valid for serving
+        run: uv run --no-project python scripts/paper_mode.py check --stage served
+      - name: The release is a merge commit whose second parent is on dev
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: uv run --no-project python scripts/release_checks.py merge --sha "$GITHUB_SHA" --from origin/dev
+      - name: No release run on main is queued or in progress
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git merge-base --is-ancestor "$GITHUB_SHA" origin/main \
-            || { echo "::error::tag $GITHUB_REF_NAME is not on main; releases are cut from main."; exit 1; }
+          busy=0
+          for status in in_progress queued; do
+            n=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow release.yml --branch main --event push \
+                  --status "$status" --json databaseId --jq length)
+            busy=$((busy + n))
+          done
+          [ "$busy" = "0" ] \
+            || { echo "::error::a release run on main is queued or in progress; merge after it ends."; exit 1; }
       - name: A TestPyPI publish comes from dev
         if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
         run: |
@@ -72,9 +110,9 @@ jobs:
             || { echo "::error::TestPyPI publishes run from the dev branch; this ref is $GITHUB_REF."; exit 1; }
 
   test:
-    name: test suite
+    name: test
     needs: check
-    if: ${{ github.ref_type == 'tag' || inputs.target == 'testpypi' }}
+    if: ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/qc/'))) || (github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi') }}
     uses: ./.github/workflows/test.yml
     with:
       windows: false
@@ -82,7 +120,10 @@ jobs:
   build:
     name: build and check
     needs: check
+    if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       # The export below is a uv preview feature; the version is fixed so its format does not move.
@@ -120,6 +161,84 @@ jobs:
           path: sbom/
           if-no-files-found: error
 
+  site:
+    name: site
+    needs: check
+    if: ${{ github.event_name != 'pull_request' }}
+    uses: ./.github/workflows/site.yml
+
+  tag:
+    name: tag and draft release
+    needs: [check, test, build, site]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.outputs.tag_state != 'site-only' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ needs.check.outputs.version }}
+      TAG: ${{ needs.check.outputs.tag }}
+      TAG_STATE: ${{ needs.check.outputs.tag_state }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Create the tag on the merge commit (when new)
+        if: needs.check.outputs.tag_state == 'new'
+        run: |
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            tag -a "$TAG" -m "hyperbolic-trade-space $VERSION" "$GITHUB_SHA"
+          git push origin "refs/tags/$TAG"
+      - name: Release notes from the changelog
+        run: uv run --no-project python scripts/release_checks.py changelog --version "$VERSION" --final --notes notes.md
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: sbom
+          path: sbom/
+      - name: Draft release with the wheel, the sdist and the bill of materials
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft > draft.txt 2>/dev/null; then
+            [ "$(cat draft.txt)" = "true" ] \
+              || { echo "::error::release $TAG is already published; nothing to draft."; exit 1; }
+            gh release upload "$TAG" dist/* sbom/sbom.cdx.json --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" dist/* sbom/sbom.cdx.json --repo "$GITHUB_REPOSITORY" \
+              --draft --verify-tag --title "$TAG" --notes-file notes.md
+          fi
+
+  # The one step that cannot be undone: PyPI accepts a version's files once. Trusted publishing does
+  # not accept a reusable workflow, so this job stays in release.yml (the publisher names release.yml).
+  publish-pypi:
+    name: publish to PyPI
+    needs: [check, tag]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.outputs.tag_state != 'site-only' }}
+    runs-on: ubuntu-24.04
+    environment:
+      name: pypi
+      url: https://pypi.org/p/hyperbolic-trade-space
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          skip-existing: true
+      - name: The files PyPI holds for the version are the files built here
+        env:
+          VERSION: ${{ needs.check.outputs.version }}
+        run: uv run --no-project python scripts/release_checks.py pypi --version "$VERSION" --dist dist
+
   publish-testpypi:
     name: publish to TestPyPI
     needs: [build, test]
@@ -139,46 +258,102 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
 
-  publish-pypi:
-    name: publish to PyPI
-    needs: [build, test]
-    if: ${{ github.ref_type == 'tag' }}
-    runs-on: ubuntu-24.04
-    environment:
-      name: pypi
-      url: https://pypi.org/p/hyperbolic-trade-space
+  # The environment github-pages is set inside pages-deploy.yml (a calling job cannot set one).
+  # On a site-only merge publish-pypi is skipped and the deploy still runs after the suite and the site.
+  deploy-site:
+    name: deploy the site
+    needs: [check, test, publish-pypi, site]
+    if: ${{ !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.result == 'success' && needs.test.result == 'success' && needs.site.result == 'success' && (needs.publish-pypi.result == 'success' || (needs.check.outputs.tag_state == 'site-only' && needs.publish-pypi.result == 'skipped')) }}
     permissions:
+      pages: write
       id-token: write
-    steps:
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: dist
-          path: dist/
-      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+    uses: ./.github/workflows/pages-deploy.yml
 
-  github-release:
-    name: GitHub release with the bill of materials
-    needs: [check, publish-pypi]
-    if: ${{ github.ref_type == 'tag' }}
+  publish-release:
+    name: publish the release
+    needs: [check, deploy-site]
+    if: ${{ !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.result == 'success' && needs.deploy-site.result == 'success' }}
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ needs.check.outputs.tag }}
+      TAG_STATE: ${{ needs.check.outputs.tag_state }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Publish the draft (Zenodo archives the published release)
+        if: needs.check.outputs.tag_state != 'site-only'
+        run: gh release edit "$TAG" --draft=false --latest
+      - name: Close the failure issues of this version
+        run: |
+          if [ "$TAG_STATE" = "site-only" ]; then title="Site redeploy of $TAG failed"; else title="Release $TAG failed"; fi
+          gh issue list --label release-failure --state open --json number,title \
+            --jq ".[] | select(.title == \"$title\") | .number" > open.txt
+          while read -r n; do
+            [ -n "$n" ] && gh issue close "$n" --comment "Run $RUN_URL succeeded for $TAG."
+          done < open.txt
+
+  on-failure:
+    name: on failure, clean up and open an issue
+    needs: [check, test, build, site, tag, publish-pypi, publish-testpypi, deploy-site, publish-release]
+    if: ${{ always() && (failure() || cancelled()) && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      issues: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      VERSION: ${{ needs.check.outputs.version }}
+      TAG_STATE: ${{ needs.check.outputs.tag_state }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: dist
-          path: dist/
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: sbom
-          path: sbom/
-      - name: Create the release with the wheel, the sdist and the bill of materials
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.check.outputs.version }}
+      - name: Name each failed job and its first failed step
         run: |
-          uv run --no-project python scripts/release_checks.py changelog --version "${VERSION}" --final --notes notes.md
-          gh release create "$GITHUB_REF_NAME" dist/* sbom/sbom.cdx.json \
-            --repo "$GITHUB_REPOSITORY" --verify-tag --title "$GITHUB_REF_NAME" --notes-file notes.md
+          {
+            echo "## Release run $GITHUB_RUN_ID at ${GITHUB_SHA::12}"
+            echo
+            gh run view "$GITHUB_RUN_ID" --json jobs --jq '.jobs[]
+              | select(.conclusion == "failure" or .conclusion == "cancelled")
+              | "- Failed: job `\(.name)`, step `\(([.steps[]? | select(.conclusion == "failure") | .name] | first) // "-")`"'
+            echo
+            echo "Run: $RUN_URL"
+          } > failed.md
+          cat failed.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Clean up the tag and the draft release
+        run: |
+          if [ -z "$VERSION" ]; then
+            echo "Clean-up: not run (the version was not read; nothing was created)." > cleanup.md
+          elif [ "$TAG_STATE" = "site-only" ]; then
+            echo "Clean-up: not run (a site-only merge; v$VERSION belongs to an earlier release)." > cleanup.md
+          else
+            set +e
+            uv run --no-project python scripts/release_cleanup.py --tag "v$VERSION" \
+              --run-id "$GITHUB_RUN_ID" --report cleanup.md
+            code=$?
+            set -e
+            echo "" >> cleanup.md
+            echo "release_cleanup exit $code" >> cleanup.md
+          fi
+          cat cleanup.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Open or comment the release-failure issue
+        run: |
+          if [ -z "$VERSION" ]; then title="Release at ${GITHUB_SHA::12} failed"
+          elif [ "$TAG_STATE" = "site-only" ]; then title="Site redeploy of v$VERSION failed"
+          else title="Release v$VERSION failed"; fi
+          cat failed.md cleanup.md > body.md
+          gh label create release-failure --force --color B60205 \
+            --description "A release run on main failed; opened by release.yml"
+          n=$(gh issue list --label release-failure --state open --json number,title \
+                --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)
+          if [ -n "$n" ]; then
+            gh issue comment "$n" --body-file body.md
+          else
+            gh issue create --title "$title" --label release-failure --body-file body.md
+          fi

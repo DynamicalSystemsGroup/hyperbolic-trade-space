@@ -12,7 +12,16 @@ package.
 
 ### Added
 
-- Windows as a third platform for the fast and slow test shards, run on dispatch and at gates; the paper build stays on Linux and macOS (WP34).
+- Two release lifecycles. The software (the package, the docs and the root page) is released by the merge of a
+  pull request from `dev` into `main`: the release workflow checks admissibility, runs the suite, builds, creates
+  the tag `v<version>`, publishes to PyPI by trusted publishing, deploys the site and publishes the GitHub release;
+  a failure is named in the run, cleaned up by `scripts/release_cleanup.py` and reported in an issue; a merge
+  without a new version redeploys the site only. The paper has its own branch (`paper`), tags (`paper-*`, published
+  as GitHub releases on a code owner's approval) and change record (`paper/CHANGES.md`); its tests run in its own
+  workflow and leave the software's suite. `/paper/` serves the mode named in `paper/mode.toml`, which is
+  `abstract` (the title, the author and the abstract) (WP65, WP66).
+- Windows as a third platform for the fast and slow test shards, run on dispatch and at gates; the paper's tests
+  run in the paper's workflow (WP34).
 - The package `hyperbolic_trade_space` (alias `hts`): the posynomial invariant form for a trade
   space, with the scikit-learn estimator `HyperbolicTradeSpace` (fit, `transform`,
   `inverse_transform`, `score_samples`), the frontier chart (Helmert and additive-log-ratio
@@ -82,5 +91,5 @@ package.
 
 ### Notes
 
-- Not part of 0.1.0: the trade-off-aware search (WP12, after 0.1); publishing to PyPI or an
-  image registry; the PDF export.
+- Not part of 0.1.0: the trade-off-aware search (WP12, after 0.1); an image on a registry; the
+  PDF export.

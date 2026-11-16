@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 28
+contract_version = 29
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -267,7 +267,10 @@ notes_in_navigation = false
 citation_syntax = "[@key]"
 reference_key_syntax = "[text](paper:key)"
 reference_key_resolver = "scripts/paper_keys.py"
-reference_key_sources = ["paper/paper.ipynb", "paper/supporting_material.ipynb"]
+reference_key_sources = ["paper/paper-keys.json"]
+reference_key_manifest_generator = "paper/build_keys.py"
+reference_key_slot_variable = "HTS_PAPER_SLOT"
+reference_key_abstract_target = "/paper/"
 citation_multi = "[@key1; @key2]"
 math_inline = "$...$"
 math_display = "$$...$$"
@@ -292,18 +295,27 @@ docs_out = "_site/docs/"
 docs_config = "mkdocs.yml"
 paper_cmd = "uv run myst build --html"
 paper_cwd = "paper/"
-paper_out = "_site/paper/"
+paper_out = "paper/_build/html (published as paper-html.tar.gz)"
 paper_config = "paper/myst.yml"
 root_index_source = "site/index.html"
 root_index_out = "_site/index.html"
 site_dir = "_site/"
 public_paths = ["/", "/docs/", "/paper/"]
 public_url = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
-workflow = ".github/workflows/pages.yml"
-workflow_deploys_on = "release tag v* and manual dispatch only; never on a push to main or dev"
+workflow = ".github/workflows/release.yml"
+site_workflow = ".github/workflows/site.yml"
+pages_deploy_workflow = ".github/workflows/pages-deploy.yml"
+workflow_deploys_on = "a push to main (a merged pull request from dev), through release.yml's called jobs; a dispatch or a qc/** push builds and never deploys"
 workflow_never_deploys_from = "dev"
 ci_workflow = ".github/workflows/test.yml"
-branches = ["dev", "main"]
+branches = ["dev", "main", "paper"]
+paper_workflow = ".github/workflows/paper.yml"
+paper_branch = "paper"
+paper_artefacts = ["paper-html.tar.gz", "paper-keys.json"]
+paper_tag_prefix = "paper-"
+paper_mode_file = "paper/mode.toml"
+paper_modes = ["abstract", "working", "submitted", "revision"]
+paper_slot = "abstract page in abstract mode, the pin's published artefact otherwise; the composer never builds the paper"
 dependency_groups_required = ["dev", "docs", "notebooks", "case"]
 default_groups = ["dev", "case", "docs"]
 python = "3.12"
@@ -316,7 +328,8 @@ docs = "wp8a"
 paper = "wp10"
 
 [build.stage]
-release_control = "a merge to main that would deploy is preceded by a review of the staged localhost site, recorded in the merging package's decisions file"
+release_control = "a merge to main is a release; the pull request's review includes the staged site, recorded in the release issue"
+paper_slot = "abstract unless --artefact names a local artefact of the pin"
 script = "scripts/stage_site.py"
 command = "uv run python scripts/stage_site.py --serve"
 build_dir = "_stage/"
@@ -351,15 +364,15 @@ paths = [
 
 [ownership.wp8a]
 paths = [
-  "mkdocs.yml", "glossary.yaml", "site/", "scripts/", ".github/workflows/pages.yml",
-  "tests/test_site.py", "docs/index.md", "docs/getting-started.md", "docs/user-guide/",
+  "mkdocs.yml", "glossary.yaml", "site/", "scripts/", ".github/workflows/site.yml",
+  ".github/workflows/pages-deploy.yml", "tests/test_site.py", "tests/test_paper_slot.py", "docs/index.md", "docs/getting-started.md", "docs/user-guide/",
   "docs/api-reference.md", "docs/examples.md", "docs/examples/", "docs/bridge.md", "docs/theory.md", "docs/further-reading.md", "docs/code-owners.md", "docs/generated/", "docs/superpowers/notes/paper-sources/",
 ]
 
 [ownership.wp10]
 paths = [
   "paper/", "examples/adcs/case.py", "tests/test_paper.py", "tests/test_case.py",
-  "docs/references.bib",
+  "docs/references.bib", ".github/workflows/paper.yml", "tests/test_paper_model.py",
 ]
 
 # WP12 touches presentation only through declared additions (additive amendment at its scope).
@@ -367,7 +380,10 @@ paths = [
 paths = []
 
 [ownership.wp8b]
-paths = ["CHANGELOG.md", "LICENSE", ".github/workflows/release.yml"]
+paths = [
+  "CHANGELOG.md", "LICENSE", ".github/workflows/release.yml", "CITATION.cff",
+  "scripts/release_cleanup.py", "tests/test_release_workflows.py", "tests/test_release_cleanup.py",
+]
 
 [ownership.driver]
 paths = ["pyproject.toml", "uv.lock", ".gitignore"]
@@ -381,6 +397,11 @@ paths = ["pyproject.toml", "uv.lock", ".gitignore"]
 "docs/superpowers/notes/paper-sources/" = "wp8a"
 "tests/test_paper.py" = "wp10"
 "tests/test_case.py" = "wp10"
+"tests/test_paper_model.py" = "wp10"
+"tests/test_paper_slot.py" = "wp8a"
+"tests/test_release_workflows.py" = "wp8b"
+"tests/test_release_cleanup.py" = "wp8b"
+"scripts/release_cleanup.py" = "wp8b"
 
 [skips]
 [skips.myst_config]

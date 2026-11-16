@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 28. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 29. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 28
+contract_version = 29
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -66,17 +66,27 @@ docs.bibliography = "docs/references.bib"
 docs.citation_syntax = "[@key]"
 docs.reference_key_syntax = "[text](paper:key)"
 docs.reference_key_resolver = "scripts/paper_keys.py"
-docs.reference_key_sources = ["paper/paper.ipynb", "paper/supporting_material.ipynb"]
+docs.reference_key_sources = ["paper/paper-keys.json"]
+docs.reference_key_manifest_generator = "paper/build_keys.py"
+docs.reference_key_slot_variable = "HTS_PAPER_SLOT"
+docs.reference_key_abstract_target = "/paper/"
 docs.math_inline = "$...$"
 docs.math_display = "$$...$$"
 build.tests_cmd = "uv run pytest"
 build.docs_cmd = "uv run --group docs mkdocs build --strict"
 build.docs_out = "_site/docs/"
 build.paper_cmd = "uv run myst build --html"
-build.paper_out = "_site/paper/"
+build.paper_out = "paper/_build/html (published as paper-html.tar.gz)"
 build.root_index_out = "_site/index.html"
-build.workflow = ".github/workflows/pages.yml"
-build.workflow_deploys_on = "release tag v* and manual dispatch only; never on a push to main or dev"
+build.workflow = ".github/workflows/release.yml"
+build.site_workflow = ".github/workflows/site.yml"
+build.pages_deploy_workflow = ".github/workflows/pages-deploy.yml"
+build.workflow_deploys_on = "a push to main (a merged pull request from dev), through release.yml's called jobs; a dispatch or a qc/** push builds and never deploys"
+build.branches = ["dev", "main", "paper"]
+build.paper_workflow = ".github/workflows/paper.yml"
+build.paper_artefacts = ["paper-html.tar.gz", "paper-keys.json"]
+build.paper_mode_file = "paper/mode.toml"
+build.paper_modes = ["abstract", "working", "submitted", "revision"]
 build.default_groups = ["dev", "case", "docs"]
 build.stage.script = "scripts/stage_site.py"
 build.stage.command = "uv run python scripts/stage_site.py --serve"
@@ -275,10 +285,13 @@ the vocabulary review (`notes/vocabulary-review.md`). Notes under `docs/superpow
 excluded from navigation. `docs/superpowers/notes/paper-sources/` holds verbatim snapshots of the
 pages that left the docsite (read-only; the paper's author reads them). Citations: `[@key]` (several
 as `[@key1; @key2]`) against `docs/references.bib`. References into the paper: `[text](paper:key)`, where
-`key` is a label the paper defines (a `:label:` line or a `(key)=` target in `paper/paper.ipynb` or
-`paper/supporting_material.ipynb`, the only list of keys); the docs build (`scripts/paper_keys.py`, a
-`mkdocs.yml` hook) turns it into a relative link to the paper page and anchor and fails on a key the
-paper does not define; a docs page links the paper in no other way. Math: LaTeX in `$...$` and `$$...$$`. The
+`key` is a label the paper defines. The list of keys is the manifest `paper/paper-keys.json`, written on
+the `paper` branch by `paper/build_keys.py` from the `:label:` lines and `(key)=` targets of
+`paper/paper.ipynb` and `paper/supporting_material.ipynb` and carried to `dev` by the merge; the docs
+build (`scripts/paper_keys.py`, a `mkdocs.yml` hook) reads the manifest and fails on a key it does not
+hold. With `HTS_PAPER_SLOT=pin` a key becomes a relative link to the paper page and anchor; with
+`abstract` (the abstract page, or a pin that could not be served) it becomes a link to `/paper/`. A
+docs page links the paper in no other way. Math: LaTeX in `$...$` and `$$...$$`. The
 presentation side owns the pages; the technical side edits none, and a pinned page is renamed or
 removed only by an amendment. `docs/api-reference.md` opens with the hand-written overview (since version 21) and
 continues with the part generated from the numpydoc docstrings (supervisor, OD2: "Generated from docstrings").
@@ -289,10 +302,18 @@ Presentation-owned: `mkdocs.yml`, `glossary.yaml`, the pages above, `docs/genera
 
 - tests: `uv run pytest`
 - docsite: `uv run --group docs mkdocs build --strict` into `_site/docs/`
-- paper: `uv run myst build --html`, run in `paper/`, delivered to `_site/paper/`
+- paper: `uv run myst build --html`, run in `paper/` on the `paper` branch by
+  `.github/workflows/paper.yml`, into `paper/_build/html`; a `paper-*` tag publishes it as the release
+  assets `paper-html.tar.gz` and `paper-keys.json`. The mode file `paper/mode.toml` (`abstract`,
+  `working`, `submitted`, `revision`) names what `/paper/` serves: the abstract page in `abstract` mode,
+  the pin's published artefact otherwise; the site's composer never builds the paper
 - root index: `site/index.html` copied to `_site/index.html`
-- Pages: `.github/workflows/pages.yml` deploys on a release tag `v*` and on manual dispatch only, never on a push to `main` or `dev`; the existing
-  `.github/workflows/test.yml` stays the technical side's CI
+- Pages: `.github/workflows/release.yml` deploys, on a push to `main` (a merged pull request from
+  `dev`), through its called jobs: `.github/workflows/site.yml` composes the site and
+  `.github/workflows/pages-deploy.yml` deploys it. A dispatch or a `qc/**` push builds and never
+  deploys; `dev` and `paper` never deploy. `.github/workflows/test.yml` stays the technical side's CI
+  (pull requests into `main`, called by the release, dispatch)
+- branches: `dev`, `main`, `paper`
 - public paths: `/`, `/docs/`, `/paper/` (under `https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/`), stable
 - dependency groups: `docs` and `paper` belong to the presentation side, `dev`, `case`, `notebooks` to
   the technical side; `default-groups` is `["dev", "case", "docs"]`; `pyproject.toml` itself is edited by the
@@ -315,8 +336,10 @@ uv run python scripts/stage_site.py --serve
 WP8a delivers `scripts/stage_site.py` and the first such review; the clause is skipped until the file
 exists. Release control (supervisor, OD1, verbatim): "the review of the staged local host version of
 the site should be done before a merge that would generate a deployment. this needs to be part of
-release control". A merge to `main` that would deploy is therefore preceded by a review of the staged
-site, recorded in the merging package's decisions file. The review loop needs no publish.
+release control". A merge to `main` is a release, so the review of the staged site is part of the
+release pull request from `dev` into `main` and is recorded in the release issue the pull request
+closes; the site is staged with `/paper/` as it will deploy (the abstract page, or the pin's artefact
+given with `--artefact`). The review loop needs no publish.
 
 ## 14. Change control (R-8)
 
@@ -359,6 +382,7 @@ the last row of the change log.
 | 26 | 2026-11-15 | The bridge page (WP41 D-1): `docs/bridge.md` is added to `docs.pages` and `presentation_pages` after the Examples page and linked from the Home page's journeys and the paper's Section 7; no symbol changes. |
 | 27 | 2026-11-15 | A page on the fit temperature (WP46 D-4, the supervisor's "In the 0.1 candidate", `WP46-decisions.md`): `docs.pages` and `docs.presentation_pages` gain `user-guide/temperature.md` between Fitting and Choosing K; `plotting.py` gains `temperature_path` and `plot_temperature_path`; the derivation chain gains L22. Additive on the manifest (floor rule); no number changes | presentation (the docsite page) and technical (`plotting.py`, `derivation/lemma_22_small_temperature.py`) | `WP46-decisions.md`, "Placement and approval" |
 | 28 | 2026-11-15 | The three example pages (WP60): `docs/examples/perovskite.md`, `docs/examples/amniote.md` and `docs/examples/wheat.md` are added to `docs.pages` and `presentation_pages` after the Examples page, under Examples in the navigation; `docs/examples/` joins WP8a's ownership paths; no symbol changes | presentation (the docs pages; `tests/test_site.py`) | `WP60-scope-of-work.md`, D-1 and D-3 |
+| 29 | 2026-11-16 | The two release lifecycles (WP65 specification 6.1, built by WP66a to c): a merge of the pull request from `dev` into `main` is the software's release; `.github/workflows/pages.yml` is removed and `build.workflow` is `.github/workflows/release.yml`, which composes the site through `site.yml` and deploys it through `pages-deploy.yml` (new `build.site_workflow`, `build.pages_deploy_workflow`; `build.workflow_deploys_on` rewritten); `build.branches` gains `paper`; the paper builds and publishes on its own branch through `paper.yml` (new `build.paper_workflow`, `paper_branch`, `paper_artefacts`, `paper_tag_prefix`, `paper_mode_file`, `paper_modes`, `paper_slot`) and `build.paper_out` becomes the built directory published as `paper-html.tar.gz`; the docs' reference keys come from the manifest `paper/paper-keys.json` (`docs.reference_key_sources`; new `reference_key_manifest_generator`, `reference_key_slot_variable`, `reference_key_abstract_target`); `build.stage.release_control` says the release pull request's review includes the staged site, recorded in the release issue, and `build.stage.paper_slot` is new. Ownership: `pages.yml` leaves WP8a, `site.yml`, `pages-deploy.yml` and `tests/test_paper_slot.py` join it; `paper.yml` and `tests/test_paper_model.py` join WP10; `CITATION.cff`, `scripts/release_cleanup.py`, `tests/test_release_workflows.py` and `tests/test_release_cleanup.py` join WP8b. Not additive: a pinned workflow is removed, pinned values change. The public paths are unchanged; no number changes | both | `WP64-decisions.md`, his approval of the plan (15:31) and his three answers (15:53 to 15:56); `WP66a-scope-of-work.md`, approved by the driver as his proxy |
 
 ## 15. Consumers: may assume, must not touch
 
@@ -375,10 +399,10 @@ boundary of section 3; that figures and data are committed and stable; the conte
 `docs/superpowers/notes/paper-sources/` (read-only), `glossary.yaml` (the register's phrases) and the
 generated `derivations.md` and `verification.md` in `build/generated/`. Must not touch: data files,
 figures and case modules other than `examples/adcs/case.py`; the docsite files; the derivation chain.
-Its build is the paper command of section 11, delivered to `_site/paper/`; the paper is committed executed.
+Its build is the paper command of section 11, run on the `paper` branch and published at a pin; the paper is committed executed.
 
-**Release machinery (WP8b).** May assume: one version source (section 5), the `pages.yml` and
-`test.yml` workflow names, the branch rule. Must not touch: the package code or content, the docsite
+**Release machinery (WP8b).** May assume: one version source (section 5), the `release.yml`,
+`site.yml`, `pages-deploy.yml`, `paper.yml` and `test.yml` workflow names, the branch rule. Must not touch: the package code or content, the docsite
 and the paper beyond reading their outputs; it edits the version in the two places together, with the
 manifest value.
 
@@ -396,10 +420,10 @@ Sides are pairwise disjoint; the manifest carries the explicit paths and the tes
 | technical | `src/`, `derivation/`, `tests/` (except carve-outs), `docs/superpowers/` (except the carve-out below), the case modules, notebook, `data/`, `figures/`, `model_v2/`, `experiments/` and `case-model.md` under `examples/adcs/`, `.github/workflows/test.yml`, `README.md`, `.python-version` |
 | process | `work-packages/` (except carve-outs), `CLAUDE.md` |
 | WP14 | `work-packages/interface-contract.md`, `work-packages/interface-contract.toml`, `tests/test_interface_contract.py` |
-| WP8a | `mkdocs.yml`, `glossary.yaml`, `site/`, `scripts/`, `.github/workflows/pages.yml`, `tests/test_site.py`, `docs/index.md`, `docs/getting-started.md`, `docs/user-guide/`, `docs/api-reference.md`, `docs/examples.md`, `docs/examples/`, `docs/bridge.md`, `docs/theory.md`, `docs/further-reading.md`, `docs/code-owners.md`, `docs/generated/`, `docs/superpowers/notes/paper-sources/` (carve-out inside the technical `docs/superpowers/`) |
-| WP10 | `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`, `tests/test_case.py`, `docs/references.bib` |
+| WP8a | `mkdocs.yml`, `glossary.yaml`, `site/`, `scripts/` (except `scripts/release_cleanup.py`), `.github/workflows/site.yml`, `.github/workflows/pages-deploy.yml`, `tests/test_site.py`, `tests/test_paper_slot.py`, `docs/index.md`, `docs/getting-started.md`, `docs/user-guide/`, `docs/api-reference.md`, `docs/examples.md`, `docs/examples/`, `docs/bridge.md`, `docs/theory.md`, `docs/further-reading.md`, `docs/code-owners.md`, `docs/generated/`, `docs/superpowers/notes/paper-sources/` (carve-out inside the technical `docs/superpowers/`) |
+| WP10 | `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`, `tests/test_case.py`, `docs/references.bib`, `.github/workflows/paper.yml`, `tests/test_paper_model.py` |
 | WP12 | none yet; declared by an additive amendment when its scope is approved |
-| WP8b | `CHANGELOG.md`, `LICENSE`, `.github/workflows/release.yml` |
+| WP8b | `CHANGELOG.md`, `LICENSE`, `.github/workflows/release.yml`, `CITATION.cff`, `scripts/release_cleanup.py`, `tests/test_release_workflows.py`, `tests/test_release_cleanup.py` |
 | driver | `pyproject.toml`, `uv.lock`, `.gitignore` |
 
 Links from one side's file to another side's are allowed; no file is shared beyond links.

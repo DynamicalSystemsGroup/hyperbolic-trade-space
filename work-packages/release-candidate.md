@@ -201,3 +201,18 @@ abstract) is the goal the day's work serves; the build units WP66a to c land in 
 control (WP67) and integration (WP68) are scoped and run as far as his keyboard items allow, with those items ready
 for him as exact steps; the example work (WP63's figure, WP70's probe) lands behind the release work; nothing merges
 to `main`, tags or publishes before his word. Tick updates continue in the fixed shape.
+
+## The two lifecycles (2026-11-16)
+
+The supervisor's six answers and three later ones (`WP64-decisions.md`) split the release in two; the design is
+`WP65-design/specification.md`.
+
+- 0.1 is the software's release: the package, the docs and the root page. It happens when the pull request from
+  `dev` into `main` is merged; the Release workflow then tags `v0.1.0`, publishes to PyPI, deploys the site and
+  publishes the GitHub release.
+- The paper is in `abstract` mode at 0.1 (`paper/mode.toml`): `/paper/` holds the title, the author and the
+  abstract he approved (`WP64-decisions.md`). The paper keeps iterating on the `paper` branch and reaches the site
+  at a later pin, through a merge of `paper` into `dev` and the next merge of `dev` into `main`.
+- "Candidate" for 0.1 means the rows of `release-checklist-software.md`. The reader round, the container gate and
+  the paper's appendices move to the paper's lifecycle and its list, `release-checklist-paper.md`.
+- Step 7 of the path, "The PR from `dev` to `main`", is the release pull request: its merge is the release.

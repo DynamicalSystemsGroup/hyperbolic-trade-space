@@ -1,9 +1,12 @@
 name: Tests
 
-# Manual dispatch only (the driver dispatches once per batch of pushes, at the gates; verification in
-# tiers). A dispatch runs the Linux matrix and the Windows fast and slow shards; pushes run nothing.
-# release.yml calls this workflow (Linux only) before it publishes.
+# The software's suite (the paper's tests run in paper.yml on the paper branch and are deselected here:
+# every shard says `not paper` and the paper switch is never set). Runs on pull requests into main (the
+# required checks `test (fast)`, `test (slow)`, `test (docs)`), when release.yml calls it (Linux only), and
+# on manual dispatch (Linux and, by default, Windows). No push trigger. Windows never runs on a pull request.
 on:
+  pull_request:
+    branches: [main]
   workflow_call:
     inputs:
       windows:
@@ -17,11 +20,14 @@ on:
         type: boolean
         default: true
 
+permissions:
+  contents: read
+
 env:
-  # The modules that build the site, the docs and the paper (they share generated files).
+  # The modules that build the site and the docs (they share generated files).
   DOCS_MODULES: >-
-    tests/test_site.py tests/test_build_generated.py tests/test_docs.py tests/test_paper.py
-    tests/test_container.py tests/test_narrative.py
+    tests/test_site.py tests/test_build_generated.py tests/test_docs.py tests/test_narrative.py
+    tests/test_paper_slot.py
 
 jobs:
   test:
@@ -29,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [fast, slow, docs-paper]
+        shard: [fast, slow, docs]
     # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
     runs-on: ubuntu-24.04
     steps:
@@ -92,8 +98,8 @@ jobs:
         with:
           path: ~/.cache/hyperbolic-trade-space
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
-      # fast + slow + docs-paper = every test: unmarked tests; marked slow outside the docs
-      # modules; marked slow inside them.
+      # fast + slow + docs = every software test: unmarked; marked slow outside the docs modules;
+      # marked slow inside them. `not paper` in each (belt and braces: the conftest deselects them too).
       - name: Test (${{ matrix.shard }})
         env:
           REQUIRE_OPENSYSML: "1"
@@ -101,19 +107,19 @@ jobs:
         run: |
           opts="-q -n auto --dist loadgroup"
           case "$SHARD" in
-            fast) uv run pytest $opts -m "not slow" ;;
+            fast) uv run pytest $opts -m "not slow and not paper" ;;
             slow)
               ignores=""
               for m in $DOCS_MODULES; do ignores="$ignores --ignore=$m"; done
-              uv run pytest $opts -m slow $ignores ;;
-            docs-paper) uv run pytest $opts -m slow $DOCS_MODULES ;;
+              uv run pytest $opts -m "slow and not paper" $ignores ;;
+            docs) uv run pytest $opts -m "slow and not paper" $DOCS_MODULES ;;
           esac
 
   windows:
     name: windows (${{ matrix.shard }})
-    if: ${{ inputs.windows }}
-    # The docs-paper shard stays on Linux and macOS (WP34 stage 2 decision).
-    # Windows runs the fast and slow shards at every gate dispatch.
+    # Never on a pull request (inputs.windows is false there; the event test says so outright).
+    # The docs shard stays on Linux (WP34 stage 2 decision); Windows runs fast and slow on a dispatch.
+    if: ${{ github.event_name != 'pull_request' && inputs.windows }}
     strategy:
       fail-fast: false
       matrix:
@@ -168,9 +174,9 @@ jobs:
         run: |
           opts="-q -n auto --dist loadgroup"
           case "$SHARD" in
-            fast) uv run pytest $opts -m "not slow" ;;
+            fast) uv run pytest $opts -m "not slow and not paper" ;;
             slow)
               ignores=""
               for m in $DOCS_MODULES; do ignores="$ignores --ignore=$m"; done
-              uv run pytest $opts -m slow $ignores ;;
+              uv run pytest $opts -m "slow and not paper" $ignores ;;
           esac

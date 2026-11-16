@@ -23,6 +23,7 @@ from typing import Protocol, runtime_checkable
 
 import pandas as pd
 import pytest
+import yaml
 from packaging.version import Version
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -766,7 +767,7 @@ def test_r6_syntax_helper_and_notes_pinned():
         "R-6", "the reference-key resolver exists"
     )
     assert all((ROOT / p).is_file() for p in DOCS["reference_key_sources"]), msg(
-        "R-6", "the notebooks that define the keys exist"
+        "R-6", "the reference-key sources exist"
     )
 
 
@@ -840,8 +841,11 @@ def test_r7_python_version_and_branches():
     assert _read(".python-version").strip().startswith(BUILD["python"]), msg(
         "R-7", f".python-version must be {BUILD['python']}"
     )
-    assert BUILD["branches"] == ["dev", "main"] and "release tag" in BUILD["workflow_deploys_on"], (
-        msg("R-7", "branches dev and main; deployment on a release tag only", "both")
+    assert BUILD["branches"] == ["dev", "main", "paper"], msg(
+        "R-7", "branches dev, main and paper", "both"
+    )
+    assert BUILD["workflow_deploys_on"].startswith("a push to main"), msg(
+        "R-7", "deployment on a push to main (a merged pull request from dev) only", "both"
     )
     assert BUILD["workflow_never_deploys_from"] == "dev", msg("R-7", "dev never deploys", "both")
     assert (ROOT / BUILD["ci_workflow"]).is_file(), msg("R-7", "the technical CI workflow exists")
@@ -858,11 +862,12 @@ def test_r7_commands_are_pinned_strings():
     }
     for key, value in expected.items():
         assert BUILD[key] == value, msg("R-7", f"build.{key} must be {value!r}", "both")
-    assert (BUILD["docs_out"], BUILD["paper_out"], BUILD["root_index_out"]) == (
-        "_site/docs/",
-        "_site/paper/",
-        "_site/index.html",
-    ), msg("R-7", "outputs under _site/ are the stable public paths", "presentation")
+    assert (BUILD["docs_out"], BUILD["root_index_out"]) == ("_site/docs/", "_site/index.html"), msg(
+        "R-7", "outputs under _site/ are the stable public paths", "presentation"
+    )
+    assert BUILD["paper_out"] == "paper/_build/html (published as paper-html.tar.gz)", msg(
+        "R-7", "the paper builds on its branch and is published as an artefact", "presentation"
+    )
     assert BUILD["public_paths"] == ["/", "/docs/", "/paper/"], msg(
         "R-7", "public paths are stable", "presentation"
     )
@@ -907,16 +912,104 @@ def test_r7_docsite_configuration():
     )
 
 
-def test_r7_pages_workflow():
-    text = _read(BUILD["workflow"])
-    assert re.search(r"tags:\s*\[\s*[\"']v\*[\"']", text) and "workflow_dispatch" in text, msg(
-        "R-7", "the Pages workflow triggers on a release tag v* and manual dispatch", "presentation"
+def _workflow(rel: str) -> dict:
+    wf = yaml.safe_load(_read(rel))
+    return {"on": wf.get("on", wf.get(True)), **wf}
+
+
+def test_r7_release_and_site_workflows():
+    assert not (ROOT / ".github/workflows/pages.yml").exists(), msg(
+        "R-7", "pages.yml is removed (amendment 29)", "presentation"
     )
-    assert not re.search(r"branches:\s*\[[^\]]*\bmain\b", text), msg(
-        "R-7", "the Pages workflow never triggers on a push to main", "presentation"
+    release = _workflow(BUILD["workflow"])
+    assert BUILD["workflow"] == ".github/workflows/release.yml", msg(
+        "R-7", "the release workflow is the deploying workflow", "both"
     )
-    assert not re.search(r"branches:\s*\[[^\]]*\bdev\b", text), msg(
-        "R-7", "the Pages workflow never deploys from dev", "presentation"
+    on = release["on"]
+    assert on["push"]["branches"][0] == "main" and "tags" not in on["push"], msg(
+        "R-7", "the release runs on a push to main and never on a tag", "both"
+    )
+    assert not any(b == "dev" for b in on["push"]["branches"]), msg(
+        "R-7", "a push to dev never runs the release", "both"
+    )
+    jobs = release["jobs"]
+    assert jobs["site"]["uses"] == f"./{BUILD['site_workflow']}", msg(
+        "R-7", "the site is composed by the called site workflow", "presentation"
+    )
+    assert jobs["deploy-site"]["uses"] == f"./{BUILD['pages_deploy_workflow']}", msg(
+        "R-7", "the site is deployed by the called pages-deploy workflow", "presentation"
+    )
+    assert "refs/heads/main" in jobs["deploy-site"]["if"], msg(
+        "R-7", "the deploy runs only on a push to main", "both"
+    )
+    site = _workflow(BUILD["site_workflow"])
+    assert set(site["on"]) == {"workflow_call", "workflow_dispatch"}, msg(
+        "R-7", "site.yml is called by the release or dispatched, and never deploys", "presentation"
+    )
+    assert "deploy-pages" not in _read(BUILD["site_workflow"]), msg(
+        "R-7", "site.yml never deploys", "presentation"
+    )
+    deploy = _workflow(BUILD["pages_deploy_workflow"])
+    assert set(deploy["on"]) == {"workflow_call"}, msg(
+        "R-7", "pages-deploy.yml is called only", "presentation"
+    )
+    assert BUILD["workflow_never_deploys_from"] == "dev", msg("R-7", "dev never deploys", "both")
+
+
+def test_r6_reference_keys_from_the_manifest():
+    assert DOCS["reference_key_sources"] == ["paper/paper-keys.json"], msg(
+        "R-6", "the docs read the reference keys from the committed manifest", "both"
+    )
+    assert DOCS["reference_key_manifest_generator"] == "paper/build_keys.py", msg(
+        "R-6", "the manifest is written by paper/build_keys.py", "presentation"
+    )
+    assert (DOCS["reference_key_slot_variable"], DOCS["reference_key_abstract_target"]) == (
+        "HTS_PAPER_SLOT",
+        "/paper/",
+    ), msg("R-6", "the slot variable and the abstract target are pinned", "presentation")
+    for rel in DOCS["reference_key_sources"] + [DOCS["reference_key_manifest_generator"]]:
+        assert (ROOT / rel).is_file(), msg("R-6", f"{rel} exists", "presentation")
+    resolver = _read(DOCS["reference_key_resolver"])
+    assert "paper-keys.json" in resolver and DOCS["reference_key_slot_variable"] in resolver, msg(
+        "R-6", "the resolver reads the manifest and the slot variable", "presentation"
+    )
+
+
+def test_r7_paper_branch_workflow_and_modes_pinned():
+    assert (BUILD["paper_workflow"], BUILD["paper_branch"], BUILD["paper_tag_prefix"]) == (
+        ".github/workflows/paper.yml",
+        "paper",
+        "paper-",
+    ), msg("R-7", "the paper's workflow, branch and tag prefix are pinned", "presentation")
+    assert BUILD["paper_branch"] in BUILD["branches"], msg(
+        "R-7", "the paper branch is one of the branches", "both"
+    )
+    assert BUILD["paper_artefacts"] == ["paper-html.tar.gz", "paper-keys.json"], msg(
+        "R-7", "a paper release publishes two assets", "presentation"
+    )
+    assert BUILD["paper_modes"] == ["abstract", "working", "submitted", "revision"], msg(
+        "R-7", "the four modes are pinned", "presentation"
+    )
+    paper = _workflow(BUILD["paper_workflow"])
+    push = paper["on"]["push"]
+    assert BUILD["paper_branch"] in push["branches"], msg(
+        "R-7", "paper.yml runs on a push to the paper branch", "presentation"
+    )
+    assert push["tags"] == [f"{BUILD['paper_tag_prefix']}*"], msg(
+        "R-7", "paper.yml publishes on a paper-* tag only", "presentation"
+    )
+    assert "deploy-pages" not in _read(BUILD["paper_workflow"]), msg(
+        "R-7", "paper.yml never deploys Pages", "presentation"
+    )
+    mode = tomllib.loads(_read(BUILD["paper_mode_file"]))
+    assert mode["mode"] in BUILD["paper_modes"], msg(
+        "R-7", f"{BUILD['paper_mode_file']} names one of the modes", "presentation"
+    )
+    assert BUILD["paper_slot"].startswith("abstract page in abstract mode"), msg(
+        "R-7", "the slot rule is pinned", "presentation"
+    )
+    assert STAGE["paper_slot"].startswith("abstract unless --artefact"), msg(
+        "R-12", "staging is offline: the abstract page unless a local artefact is given", "both"
     )
 
 

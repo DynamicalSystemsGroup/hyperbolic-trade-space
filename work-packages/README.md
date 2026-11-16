@@ -64,15 +64,18 @@ The reader-run directories `WP28-inventory/` and `WP28-retest/` stay.
   merging content that merits it"):** day-to-day commits (records, scopes, notes, spikes, work in
   progress, package deliveries while under review) go to `dev`, gated by the local checks
   (`uv run pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check`, the
-  attribution grep). `main` receives `git merge --no-ff dev` when content merits a CI run: an
-  accepted package, a release, a correction to published material; CI (`.github/workflows/test.yml`)
-  runs on pushes and pull requests to `main` and on manual dispatch only. A cross-platform check
-  before a merge, when a package touched numerics, is a manual dispatch of the workflow on `dev`.
+  attribution grep). Three branches: `dev`, `main` and `paper`. `main` receives only the merge of a pull
+  request from `dev`, and that merge is a release of the software (the package, the docs, the root page):
+  `.github/workflows/release.yml` runs on the push, tags `v<version>`, publishes to PyPI and deploys the site
+  (when the version is already released and the package files are unchanged since its tag, it redeploys the
+  site only). The paper is edited
+  on `paper`; `paper.yml` runs on pushes to `paper` and on `paper-*` tags, which publish the paper as a GitHub
+  release. `test.yml` runs on pull requests into `main`, when `release.yml` calls it, and on dispatch; a
+  cross-platform check before a merge, when a package touched numerics, is a manual dispatch of it on `dev`.
   The merge commit's message names the packages or records it carries. Release control (supervisor,
-  2026-11-08, at WP14's gate): a merge to `main` that would deploy the site is preceded by a review
-  of the staged localhost build of the whole site (root index, `/docs/`, `/paper/`), recorded in the
-  merging package's decisions file; the one-command local build-and-serve is part of the WP14
-  interface contract and delivered by WP8a.
+  2026-11-08, at WP14's gate): the review of the staged localhost build of the whole site (root index,
+  `/docs/`, `/paper/`) is part of the release pull request and is recorded in the release issue it closes;
+  the one-command local build-and-serve is part of the WP14 interface contract and delivered by WP8a.
 - **Execution:** autonomous inside the approved scope; TDD per module; `uv run` for every command;
   scikit-learn conformance per `notes/sklearn-conformance.md`.
 
