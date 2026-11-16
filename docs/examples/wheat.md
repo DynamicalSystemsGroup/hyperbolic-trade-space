@@ -1,20 +1,31 @@
 # Broadbalk wheat: grain against straw
 
-## The dataset
+## Where the plot-years come from
 
-Grain and straw yields from the Broadbalk wheat experiment, 1968 to 2022, published by the Electronic Rothamsted Archive as [doi:10.23637/rbk1-yld6822-01](https://doi.org/10.23637/rbk1-yld6822-01) (Glendining and Poulton, 2023) under CC BY 4.0. The download sits behind a form, so a reader fetches it by hand and rebuilds the derived table with `uv run python examples/wheat/derive.py examples/wheat/data/01-YLD6822.zip`. The committed derived table, `examples/wheat/derived/grain_straw.csv`, is what the code below reads: 3,753 plot-years with both yields recorded and positive, 44 percent of the archive's 8,573, in columns grain, straw, year, plot, treatment, cultivar, nitrogen, cropping and section.
+Broadbalk, at Rothamsted in Harpenden, has grown winter wheat since autumn 1843 to test mineral fertilizers and manure on strips, in sections later given different rotations. The Electronic Rothamsted Archive publishes its grain and straw yields for 1968 to 2022 as [doi:10.23637/rbk1-yld6822-01](https://doi.org/10.23637/rbk1-yld6822-01) (Glendining and Poulton, 2023) under CC BY 4.0. A row is one plot in one year. The download sits behind a form: fetch it by hand and rebuild the derived table with `uv run python examples/wheat/derive.py examples/wheat/data/01-YLD6822.zip`.
 
-## Metrics and configuration
+## The attributes
 
-The metrics are grain and straw. The configuration is the treatment, the cultivar and the year.
+```text
+grain (+1)      grain yield, t/ha at 85% dry matter; column grain
+straw (+1)      straw yield, t/ha at 85% dry matter; column straw
+configuration   treatment (fertilizer_code), cultivar,
+                year (harvest_year)
+also kept       plot, nitrogen in kg/ha (total_fertilizer_n_amount),
+                cropping, section
+```
 
-## The conditioning rule
+The committed derived table, `examples/wheat/derived/grain_straw.csv`, is what the code reads: 3,753 plot-years with both yields recorded and positive, 44 percent of the archive's 8,573.
 
-Grain and straw are both larger is better. Each yield is taken in logs and given a standard scaler, orientation +1, shift 0 ([conditioning](../user-guide/conditioning.md)).
+## What the fit is asked
+
+Old and modern wheat cultivars reach similar biomass, and the modern ones put more of it in grain: a higher harvest index, grain over grain plus straw ([@austin1980genetic; @austin1993old]). Near the frontier of Broadbalk's yields, does grain trade against straw, and does the harvest index differ between the cultivars of 1968 and of 2022?
 
 ## The fit
 
-The temperature is the one that puts a tenth of the rows above the frontier: 8.3, a band of 0.12 in log V. At one term grain's exponent is 0.45 and straw's 0.55, the contending set is both, and the association of the two log yields near the frontier is -0.87.
+Grain and straw are both larger is better. Each yield is taken in logs and given a standard scaler, orientation +1, shift 0 ([conditioning](../user-guide/conditioning.md)).
+
+The [temperature](../generated/glossary.md) is the one that puts a tenth of the rows above the frontier: 8.3, a band of 0.12 in log V. At one term grain's exponent is 0.45 and straw's 0.55, the [contending set](../generated/glossary.md) is both, and the association of the two log yields near the frontier is -0.87.
 
 ```python {.runnable}
 import pandas as pd
@@ -45,22 +56,19 @@ print(round(tau, 1), fit.exponents_.round(2))
 <figcaption>Figure 10. Broadbalk plot-years in the log plane of grain and straw: the line is the fitted frontier and the grey band, 0.12 wide in log V, holds the plot-years nearest to it.</figcaption>
 </figure>
 
-At two terms, at the same temperature, the terms carry shares of 0.57 and 0.43 of the near-frontier rows and the fit is certified. The mean level below the frontier falls from 0.859 to 0.748.
-With two metrics the frontier is a line in log units, the simplex a segment, and the chart one position and one level. The second term has grain alone as its contending set, a limit on grain with straw free, which one term cannot show; it holds in 7 of the 15 rows of the conditioning ladder, so it is read as conditional.
+At two terms, at the same temperature, the terms carry shares of 0.57 and 0.43 of the near-frontier rows and the fit is certified. The mean level below the frontier falls from 0.859 to 0.748. The second term has grain alone as its contending set, a limit on grain with straw free, which one term cannot show; it holds in 7 of the 15 rows of the conditioning ladder, so it is read as conditional.
 
-## The named trade-off
+**The ladder.** Grain's exponent runs from 0.29, with no scaler, to 0.72, in Section 1 and in modern cultivars at nitrogen of at least 96. That subset takes straw's weight from 0.55 to 0.28. A negative association, -0.62 to -0.90, holds in every row of the scaler, cap, subset and trend variants.
 
-The named trade-off is the harvest index, grain over grain plus straw: old and modern cultivars reach similar biomass, and the modern ones put more of it in grain ([@austin1980genetic; @austin1993old]). The negative association is that dilemma. At nitrogen of at least 96 kg per hectare the median harvest index is 0.52 for Cappelle Desprez (1968 to 1978) and 0.76 for Zyatt (2019 to 2022), at median total biomass of 8.97 and 8.75 t per hectare.
+**Functions of the two yields.** Biomass, a function of grain and straw, takes exponent 0.00 and leaves the fit unchanged; the harvest index, the other function of the two, displaces grain, whose exponent falls to 0.00, and the second term goes. Rotating the two log yields before the fit and pulling the frontier back weights grain and straw by 0.71 and -0.23, or -0.11 and 0.71 with the second component reversed: a frontier that rewards less of one yield, with no ceiling. A principal component analysis after the fit gives one direction, grain against straw.
 
-## What moves across the ladder
+**The cultivars.** At nitrogen of at least 96 kg per hectare the median harvest index is 0.52 for Cappelle Desprez (1968 to 1978) and 0.76 for Zyatt (2019 to 2022), at median total biomass of 8.97 and 8.75 t per hectare.
 
-Grain's exponent runs from 0.29, with no scaler, to 0.72, in Section 1 and in modern cultivars at nitrogen of at least 96. That subset takes straw's weight from 0.55 to 0.28. The dilemma and a negative association, -0.62 to -0.90, hold in every row of the scaler, cap, subset and trend variants.
+**The check on your own dataset.** Refit with one conditioning change at a time, the scaler, a cap, a subset or a removed trend, and read the contending set, the sign of the association, each exponent's range and the second term's set. A weight that moves with the scaler is the scaler's.
 
-Biomass, a function of grain and straw, takes exponent 0.00 and leaves the fit unchanged; the harvest index, the other function of the two, displaces grain, whose exponent falls to 0.00, and the second term goes. Rotating the two log yields before the fit and pulling the frontier back weights grain and straw by 0.71 and -0.23, or -0.11 and 0.71 with the second component reversed: a frontier that rewards less of one yield, with no ceiling. Two metrics leave nothing to reduce. A principal component analysis after the fit gives one direction, grain against straw.
+## What the fit says
 
-## The check on your own dataset
-
-Refit the dataset with one conditioning change at a time: scaler, caps, a subset, a trend removed. Read the contending set, the sign of the association near the frontier, each exponent's range and whether the second term's contending set is one metric. A weight that moves with the scaler is the scaler's.
+Near the frontier a plot-year with more grain has less straw, in every variant. The newest cultivar puts three quarters of its biomass in grain, the oldest half, at much the same total: the shift the breeding studies report. The ceiling on grain alone is conditional.
 
 ## What the example cannot show
 

@@ -1,23 +1,43 @@
 # Examples
 
-## A cubesat trade study across power, mass and attitude control
+## Where the cubesat designs come from
 
-For a worked case: a synthetic satellite demonstrator, [a cubesat model](paper:sect-case-construction) coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings.
+The case is a fleet of identical 12U-class cubesats whose power, mass and attitude control are coupled, described by a [SysML v2 system model](paper:sect-case-construction). A [configuration](generated/glossary.md) swaps the reaction wheel and the star tracker, tunes the panel span, the battery capacity and the controller gains Kp and Kd, and sets the fleet size; the slew is simulated and the model computes the rest. A row is one synthetic design. Two regimes of 3,000 designs differ in the sampled gains. The model and the data are in [`examples/adcs/`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/tree/main/examples/adcs/):
 
-The primary regime's table has 2,134 feasible designs of 3,000. With the fit temperature chosen by `select_temperature` for a tenth of designs
-above V = 1:
+```bash
+uv run python examples/adcs/k_terms.py
+```
 
-- **One term.** The trade-off report finds a contending set of seven metrics that trade off: unit cost, available power,
-  pointing error, fleet cost, momentum headroom, settling time, depth of discharge. Seven contending metrics make a 7-lemma.
-- **Two terms.** The case is read at K = 2, the K the [choosing-K checks](user-guide/choosing-k.md) pick. At the
-  one-term temperature the designs' mean level below the surface falls from 0.122 to 0.043. At the
-  two-term fit's own temperature, status `certified`, the terms have contending sets of 8 and 7 metrics and
-  shares of 74 and 26 percent of the near-frontier designs. The larger adds peak slew power to the
-  one-term contending set, and the smaller is that set.
-- **A second table.** The stock-gains table gives a different one-term
-  contending set.
+## What each column measures
 
-## The one-term fit, drawn
+```text
+metric (orientation)           unit      column
+settling time (-1)             s         settling_time_s
+pointing error (-1)            deg       pointing_error_deg
+total mass (-1)                kg        total_mass_kg
+control effort (-1)            N.m.s     control_effort
+power margin (+1)              W         power_margin_w
+energy balance (+1)            Wh        energy_balance_wh
+peak slew power (-1)           W         peak_slew_power_w
+depth of discharge (-1)        fraction  dod_eclipse
+momentum headroom (+1)         ratio     momentum_headroom
+available power (+1)           W         available_power_w
+battery peak power ratio (+1)  ratio     battery_peak_power_ratio
+unit cost (-1)                 USD       unit_cost_usd
+fleet cost (-1)                USD       fleet_cost_usd
+configuration: wheel class, star-tracker grade, panel span,
+  battery capacity, Kp, Kd, fleet size
+```
+
+Thirteen metrics are traded. Pointing error, unit cost and fleet cost are the stakeholders' measures of effectiveness; the other ten are measures of performance. Orientation -1 marks a cost, inverted. With four feasibility flags on settling, momentum, power and depth of discharge, the primary regime has 2,134 feasible designs of 3,000.
+
+## What the fit is asked
+
+The stakeholders ask for a payload that points and a fleet they can afford. Near the [frontier](generated/glossary.md), do their three measures trade against one another and against the subsystems' measures, and does one trade describe the table, or two?
+
+## The one-term fit
+
+At the fit temperature `select_temperature` picks for a tenth of designs above V = 1, the one-term [trade-off report](generated/glossary.md) finds a contending set of seven metrics that trade off, a 7-lemma: unit cost, available power, pointing error, fleet cost, momentum headroom, settling time, depth of discharge.
 
 ```python {.runnable}
 import sys
@@ -102,10 +122,11 @@ for K in (2, 3, 4):
 Over three draws the primary regime's movement is 0.18 to 0.20 at K = 2, 0.15 to 0.29 at K = 3 and
 0.14 to 0.95 at K = 4. The ranges overlap, so this check excludes none.
 
+The case is read at K = 2. At the one-term temperature the designs' mean level below the surface falls from 0.122 to 0.043. At the two-term fit's own temperature, status `certified`, the terms have contending sets of 8 and 7 metrics and shares of 74 and 26 percent of the near-frontier designs. The larger adds peak slew power to the one-term contending set, and the smaller is that set.
+
 ## Requirements read after the fit
 
-The fit ignores the model's six requirements. Read after it, each has a pass share,
-the near-frontier designs it excludes and a price at the one-term frontier. The price is in band widths and, for the costs and the mass, in USD:
+The fit ignores the model's six requirements. Read after it, each has a pass share, near-frontier exclusions and a price in band widths and USD:
 
 ```text
 # case.requirements_summary()
@@ -124,7 +145,7 @@ unit cost        35,200 | 27,300 USD per satellite
 fleet cost       1,130,000 | 1,140,000 USD per fleet
 ```
 
-Refitted on three design sets, the one-term contending set barely moves. The third keeps the designs that meet the four performance thresholds; the two cost limits are read after the fit:
+Refitted on three design sets, the one-term contending set barely moves; the third keeps the designs meeting the four performance thresholds:
 
 ```text
 # case.design_sets_summary()
@@ -147,7 +168,7 @@ baseline, thresholds met (882): momentum headroom, settling time,
 
 ## Three metrics as shares of a total
 
-A ternary plot places a design by its shares of a total among three metrics.
+A ternary plot places a design by its shares of three metrics.
 
 ```python {.runnable}
 import sys
@@ -165,12 +186,7 @@ case.ternary_pair_figure(fits)
 <figcaption>Figure 7. A: one region trades pointing error against control effort, the other total mass against pointing error. B: one region trades settling time against control effort; the other region is depth of discharge alone. Shows: where each term leads and where its V peaks. Does not show: groups of designs, the values of V on the lines, a cause.</figcaption>
 </figure>
 
-Reading it:
-
-- A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total.
-  V, the invariant value, also depends on the total, so a marker is not where V = 1.
-- A region is where one term is the largest: an analysis of the fit, not a label on a
-  design.
+A numbered marker is a term's exponent vector, where its V, the invariant value, is largest for a fixed total, not where V = 1. A region is where one term is largest: an analysis of the fit, not a label on a design.
 
 ```python {.runnable}
 from hyperbolic_trade_space.plotting import ternary_marker_values
@@ -184,11 +200,19 @@ for name, (study, est) in fits.items():
     )
 ```
 
-The triples show how to read the figure; they are not findings.
+The triples are not findings.
+
+## What the fit says
+
+In the thirteen-metric fit all three stakeholder measures contend, joined by two power and two control metrics; total mass and control effort do not. Two terms describe the primary regime. The baseline regime's set includes total mass, so the sampled gains decide part of it. Jointly, the six requirements pass about a quarter of the designs.
+
+## What the case cannot show
+
+The designs are synthetic, the model a demonstrator, and the frontier that of the sampled box.
 
 ## The synthetic three-metric case
 
-The [root page](index.md)'s two figures are drawn from one constructed table and one fit, so the planted terms are known. Three terms are planted in 900 designs, three metrics each.
+The [root page](index.md)'s two figures come from one constructed table, so the planted terms are known: three terms in 900 designs of three metrics.
 
 **The table.** Seed 11. Most designs lie on or below the surface: 70 percent on it, the rest below it
 by an exponential depth of mean 0.25 in log V, and the surface rows scatter by 0.07 in log V.
@@ -211,8 +235,7 @@ X, info = make_frontier_data(
 print(info["exponents"].round(2))
 ```
 
-**The fit.** Three terms, temperature 50, seed 0. The temperature sets how closely the surface is pulled to the
-designs: at 50, 11 percent of them lie beyond it.
+**The fit.** Three terms, temperature 50, seed 0. At 50, 11 percent of the designs lie beyond the surface.
 
 ```python {.runnable}
 ts = HyperbolicTradeSpace(
@@ -224,10 +247,8 @@ print(
 )
 ```
 
-**The triangle.** A design sits at its shares of the three metrics, each in units of its typical size. A region is
-where one term binds, the term whose piece the surface follows there; at the temperature used, that term carries the
-largest weight. A numbered marker is a term's characteristic point: the shares there equal the term's exponents,
-and for a given total the term is largest there.
+**The triangle.** Shares are in units of each metric's typical size. A region is where one term binds; a
+numbered marker's shares equal its term's exponents.
 
 ```python {.runnable}
 from hyperbolic_trade_space.plotting import ternary_marker_values
@@ -235,10 +256,9 @@ from hyperbolic_trade_space.plotting import ternary_marker_values
 print(ternary_marker_values(ts, X).round(2).to_string(index=False))
 ```
 
-**The slices.** One pair of metrics per row, the third held at its median; `build_slices(out, quantile=0.2)` holds it at another quantile instead. The first column is the exact section of
+**The slices.** One pair of metrics per row, the third held at its median. The first column is the exact section of
 the surface, the second its log, the third the chart: the surface laid flat as a line at log V = 0, the position
-along the pair being the difference of the two log metrics over the square root of two. The helpers are in
-`scripts/build_site_figures.py`.
+along the pair being the difference of the two log metrics over the square root of two.
 
 ```python {.runnable}
 import sys
@@ -265,22 +285,8 @@ The last two calls write the root page's images.
 
 ## Three public datasets
 
-Each page states the dataset and its licence, the conditioning rule with every orientation and its reason, the fits at
-K = 1 and 2, and the reading against the trade-off the field names, with the exponents as ranges across the
-conditioning choices: [perovskite solar cells](examples/perovskite.md) (40,045 devices, three metrics),
-[amniote life histories](examples/amniote.md) (2,770 species, four metrics, the orientation of a time cost decides
-what trades) and [Broadbalk wheat](examples/wheat.md) (3,753 plot-years, two metrics).
+On measured data: [perovskite solar cells](examples/perovskite.md) (40,045 devices, three metrics), [amniote life histories](examples/amniote.md) (2,770 species, four metrics) and [Broadbalk wheat](examples/wheat.md) (3,753 plot-years, two metrics).
 
 ## Proposing a design for a point with no datum
 
 The case also proposes designs for gaps in the chart, then builds and measures them: [From the chart back to a design](bridge.md).
-
-## Run it
-
-[`examples/adcs/`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/tree/main/examples/adcs/)
-holds the design space, the evaluation model, the seeded datasets, the figures and
-`k_terms.py`, which fits one, two and three terms to each regime:
-
-```bash
-uv run python examples/adcs/k_terms.py
-```
