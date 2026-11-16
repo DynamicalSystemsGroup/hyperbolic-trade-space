@@ -213,3 +213,21 @@ the glossary and everywhere else. His choice, verbatim from the popup: "baseline
 ("stock" goes from the paper, the generators, the captions and the tests; a glossary entry `baseline regime`) after
 WP57c lands, since WP57c holds the notebooks; it runs with the OQ-11 model edit's landing or just after.
 
+
+## The regime rename landed (05:22 EST)
+
+His choice "baseline regime" is now the second regime's one name in the current material: 7728d32 (the unit) and
+2184781 (the driver's landing edit, two code comments that named the regime by its gains). The paper, the supporting
+material, the generators, the captions, the tests, the docs pages, the register's quotes, the length ledger and the
+container record use it; table labels that printed the key `stock` where the paper means the regime now print
+"baseline" through `case.regime_word`, which accepts a key. One rewording, in Section 7's defining sentence: "in the
+stock (baseline) regime" is "in the baseline regime" (C663). The glossary gains `baseline regime` (Kp from 0.03 to 1,
+the stock gains, dataset `cubesat-stock`; its `not` field separates it from the primary regime and from the baseline
+configuration) with "stock regime" as an avoided phrase, so the vocabulary check holds the name. Kept as they are: the
+dataset identifier `cubesat-stock` and the key `stock` in code and data; "stock" where it names the gains; two lines of
+the verbatim snapshot `docs/superpowers/notes/paper-sources/method.md`, which is not edited; the history files. For
+his read: "baseline" now names both the regime and the baseline configuration (Table 3's first row), told apart by the
+glossary. Checks by the unit and again by the driver on the rebased tree, exit codes captured: fast suite 2,091;
+slow paper tests with the docstring test 31; register 21; lint, format, lock, proof map (22 files, 549 steps),
+vocabulary (0 new), supplement, mkdocs; non-goal paths unchanged; residuals exit 1 as on dev with both notebooks at
+or below dev. Report: `WP56-rounds/regime-rename.md`. CI 43848052784.
