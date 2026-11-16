@@ -2056,5 +2056,5 @@ authority = "WP57b; map_counts.py before and after"
 date = "2026-11-15"
 section = "Prior art"
 words_added = 12
-job = "names Appendix G as the register of prior art that Table 1 summarizes, closing the table's paragraph (WP57a's G5, moved to WP56 as the paper.ipynb writer)"
+job = "says that Table 1 summarizes the register of prior art in Appendix G, closing the table's paragraph (WP57a's G5, moved to WP56 as the paper.ipynb writer)"
 reader = "the reader who wants the sources behind a row of Table 1"
