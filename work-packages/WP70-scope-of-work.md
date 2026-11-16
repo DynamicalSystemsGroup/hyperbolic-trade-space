@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT for his approval in chat (quoted in `WP70-decisions.md`); one open decision below |
+| **Status** | DRAFT, approved on his words of 2026-11-16 (quoted in `WP70-decisions.md`) and by the driver as his proxy for the details; no open decision |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; the probe writes only under `work-packages/WP70-rounds/` |
 | **Approval record** | His plain OK in chat, quoted verbatim in `WP70-decisions.md` |
@@ -32,7 +32,7 @@ model and analysis; the first audience is project-management people (a COO who i
 - G3. **The synthetic alternative, designed:** a generator structured to his story (a planned schedule and budget, a
   scope in story points, m quality metrics; the trade-offs planted and the noise), what it can show that a dataset
   cannot (planted answers recovered) and what it cannot (anything about real projects).
-- G4. **The pitch:** two or three bounded options for the first study, each with the dataset or the generator, the
+- G4. **The pitch, for a larger programme or against one:** the proof of concept (D-4) and two or three bounded options for the first study, each with the dataset or the generator, the
   metrics, the unit of analysis, the questions the fit is asked in project-management terms (which sides trade near
   the frontier, how many terms, where the quality metrics sit), the analysis plan (the arc of `notes/examples-template.md`),
   the deliverable (an example page in this repository, or a study of its own), the cost, and what would make it fail;
@@ -51,7 +51,7 @@ no claim about the iron triangle beyond what the survey and the design support.
 | D-1 | `work-packages/WP70-rounds/pitch.md`: G1, G4, and the summary of G2 and G3 | G1 to G4 |
 | D-2 | `work-packages/WP70-rounds/datasets.md`: the survey table of G2 with every source cited | G2 |
 | D-3 | `work-packages/WP70-rounds/synthetic.md`: the generator's design of G3 | G3 |
-| D-4 | *(open decision 1)* a throwaway probe fit on the best candidate dataset, its numbers and one figure in the pitch, the notebook under `WP70-rounds/` and not in the tree's examples | G4 |
+| D-4 | A bounded case study as the proof of concept behind the pitch: an initial fit on a real open dataset, or on the synthetic generator, or one of each, with its conditioning, the fit, one or two figures and the reading in project-management terms; its notebook or script and its outputs under `WP70-rounds/`, not in the tree's examples; the data fetched by manifest (source, licence, hash) and not committed unless its licence allows and the pitch asks for it | G4 |
 
 ## Requirements and checks
 
@@ -79,13 +79,14 @@ Good enough met; the first study scoped as its own package from his choice.
 
 ## Open decisions
 
-1. **Does the probe include a throwaway fit** on the best open dataset it finds (D-4), so the pitch shows a first
-   result, or is the probe survey and design only? *(to him)*
+None. His answer of 2026-11-16 (`WP70-decisions.md`) sets the probe's depth: a bounded case study backs the pitch;
+the pitch is for a larger programme, or argues that the materials are too sparse for one and recommends smaller
+cases integrated into the examples with no bigger plan.
 
 ## Agent's defaults
 
-- One unit, time-boxed to about a day of work; WebFetch and WebSearch for the survey; sources cited with the date
-  read.
+- One unit; WebFetch and WebSearch for the survey; sources cited with the date read; the case study's fits run with
+  the installed package and its conditioning tools, nothing added to `src/`.
 - Candidate families to search first: issue-tracker archives with story points and sprints (public Jira datasets,
   Apache projects, the agile story-point corpora used in effort-estimation research); public portfolios with planned
   and actual cost and schedule and an outcome rating (the US Federal IT Dashboard, the UK Infrastructure and Projects

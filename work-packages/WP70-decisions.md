@@ -18,3 +18,17 @@ entire research program around the iron triangle is merited in my opinion but fo
 and come back to me with a pitch for a bounded scope model and analysis using HTS for an iron triangle.
 
 the initial goal is to get project management folks (like my COO who is a PE & PMP interested)"
+
+## His answer on the probe's depth (15:44 EST, verbatim)
+
+Asked whether the probe includes a throwaway fit or stays survey and pitch: "you can do more than that. i need to walk
+away from my computer for a while. i you can do a bounded case study based on what you learn. think of the pitch as
+for a larger program with the initial fit (real or synthetic or one of each) as the proof of concept to back up the
+pitch for a broader program. you can also argue that the materials are two sparse to do a broader program and instead
+recommend smaller cases integrated into examples with no bigger picture plan"
+
+## WP70 approved (15:44 EST)
+
+His words above are the approval of the probe at that depth; the driver approves the scope's details as his proxy
+under the mandate (D-4 as the bounded case study, real or synthetic or one of each; the pitch for a programme or
+against one). One unit on branch `wp70`; the pitch and the case study go to his read.

@@ -76,6 +76,7 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 63 | The examples with an arc (spike: a template, the four example pages redrafted) | landed, his read pending | 059132d3 | a9a267ed | in place (not landed or in flight) |
 | 64 | Two release control models: the paper event-driven from its own branch, the software gated on the merge to main (stage 1, the research spike) | spike delivered and accepted as proxy (86a3841e); his six decisions in progress; WP65 design next | 537f54ea | not landed | in place (not landed or in flight) |
 | 65 | The two release control models, designed (stage 2: specification, build plan, his items) | scoped and approved as proxy on his six answers; unit dispatched | pending | not landed | in place (not landed or in flight) |
+| 70 | The iron triangle as an HTS study: the probe (metric mapping, open-data survey, synthetic design, a bounded case study, the pitch) | approved on his words and as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
 
 ## Notes, spike outputs and supporting content removed from the tree
 
