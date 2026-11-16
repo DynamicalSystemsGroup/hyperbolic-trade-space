@@ -182,7 +182,7 @@ def test_appendix_a_notation_table_does_not_count_as_a_use(tmp_path):
         "cells": [
             {
                 "cell_type": "markdown",
-                "source": ["## Appendix A. Notation and terms\n\nelasticity; fit temperature\n"],
+                "source": ["## Appendix D. Notation and terms\n\nelasticity; fit temperature\n"],
             }
         ]
     }

@@ -84,12 +84,12 @@ temperatures you could have chosen, and an effective sample that is more than a 
 ## The two ends
 
 **tau to infinity.** The maximum is exact, no design lies above the surface, and the fit is the
-supporting envelope (lemma 5 in [Appendix B](paper:appendix-b)). The last position of the path is
+supporting envelope (lemma 5 in [Appendix E](paper:appendix-e)). The last position of the path is
 this limit.
 
 **tau to zero.** The small-tau end is a regularity the sweep shows, not a derived limit. What is
 derived is that the soft maximum tends to the mean of the scores, so the weights become uniform and
 `n_eff_` tends to the number of designs, and that on centred log-metrics, whose mean score is zero,
 the first term that depends on the exponents is tau over two times the variance of the score
-(lemma 22 in [Appendix B](paper:appendix-b)). Whether the exponents tend to the combination of least variance on the simplex is
+(lemma 22 in [Appendix E](paper:appendix-e)). Whether the exponents tend to the combination of least variance on the simplex is
 not proved: the lemma does not bound the remainder over the simplex.

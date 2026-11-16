@@ -1,0 +1,70 @@
+{
+ "appendix_headings": [
+  "Appendix A. Register of prior art\u00b6",
+  "Appendix B. Extended results: what the method found in the table\u00b6",
+  "Appendix C. HoroPCA beside this work: a tested hypothesis\u00b6",
+  "Appendix D. Notation and terms\u00b6",
+  "Appendix E. Proofs, step for step with their scripts\u00b6",
+  "Appendix F. The case\u2019s model: how the table of metrics came to be\u00b6",
+  "Appendix G. Assumptions, limitations and open questions\u00b6",
+  "Appendix H. Computational reproducibility\u00b6"
+ ],
+ "anchors_missing": [],
+ "old_anchors_present": [],
+ "unresolved_refs": [],
+ "scrollWidth": 1280,
+ "in_this_article": "IN THIS ARTICLE"
+}
+nav box [965.625, 361.265625, 290.375, 50, 50]
+in this article, open: IN THIS ARTICLE
+Appendix A. Register of prior art
+A.1 The register
+Appendix B. Extended results: what the method found in the table
+B.1 Exponents and terms
+B.2 The regimes side by side
+B.3 Sensitivity variants
+B.4 The solver’s termination records
+B.5 Comparison with nondominated sorting
+B.6 Propose, predict, check
+B.7 Stability of the conclusions under rounding-level jitter
+B.8 The refit on a term’s own rows
+B.9 Does the fit recover a planted answer: twenty tables
+B.10 Choosing K for the case
+B.11 Chaining with PCA: the principal directions of the near-frontier chart
+B.12 The requirements read after the fit
+B.13 The noise-ridge corollary against injected noise
+B.14 The decision: the shortlist and the rules
+Appendix C. HoroPCA beside this work: a tested hypothesis
+C.1 The hypothesis and what would refute it
+C.2 The experiment
+C.3 Results
+C.4 What the table shows
+Appendix D. Notation and terms
+Appendix E. Proofs, step for step with their scripts
+E.1 The fit and its geometry (L1 to L11)
+E.2 The several-term fit, its levels of guarantee and the tension (L12 to L22)
+E.3 The checker and the record
+Appendix F. The case’s model: how the table of metrics came to be
+F.1 Configurations (the design variables and their ranges)
+F.2 The evaluation
+F.3 Feasibility
+F.4 Conditioning
+F.5 The table of metrics
+F.6 The datasets
+F.7 The planted example
+F.8 The cost model
+Appendix G. Assumptions, limitations and open questions
+G.1 Assumptions
+G.2 Limitations
+G.3 Open questions
+Appendix H. Computational reproducibility
+H.1 The pinned toolchain
+H.2 The environment of record
+H.3 Commands
+H.4 One row per figure and table
+SUPPORTING DOCUMENTS
+Supporting material
+pointer-s2-b11 link text: Appendix B.11 href: /paper/supporting-material#sub-b-11
+pointer-s2-b11 landed at: http://127.0.0.1:8907/paper/supporting-material/#sub-b-11
+pointer-s6-g link text: Appendix G href: /paper/supporting-material#appendix-g
+pointer-s6-g landed at: http://127.0.0.1:8907/paper/supporting-material/#appendix-g

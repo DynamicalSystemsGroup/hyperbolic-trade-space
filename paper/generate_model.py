@@ -1,9 +1,9 @@
-"""Appendix C: the case's model, how the table of metrics came to be.
+"""Appendix F: the case's model, how the table of metrics came to be.
 
 Everything here describes the pipeline up to the method's input and nothing the method computes:
 no exponent, temperature, value of V, term, reach or share appears in any table (R-26). The tables
 are produced from the case module's spec and data by calls into ``case``; none is typed. Datasets
-are named once, by the labels of :data:`DATASET_LABELS`, which the tables of Appendix D cite.
+are named once, by the labels of :data:`DATASET_LABELS`, which the tables of Appendix B cite.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from paper_paths import ROOT
 
 LEDGER = ROOT / "examples" / "adcs" / "experiments" / "ledger" / "ledger.jsonl"
 
-# The label of each dataset, defined once here and cited by Appendix D.
+# The label of each dataset, defined once here and cited by Appendix B.
 DATASET_LABELS = {
     "primary": "cubesat-primary",
     "stock": "cubesat-stock",
@@ -190,7 +190,7 @@ def metric_table(spec=None, n=5, regimes=None) -> Md:
     n : int, default 5
         Rows shown per dataset.
     regimes : sequence of str, optional
-        The regimes shown; default the first (the primary regime, Appendix C.5). The supplement
+        The regimes shown; default the first (the primary regime, Appendix F.5). The supplement
         shows the others (``paper/supplement/metric-associations.md``).
 
     Returns
@@ -304,7 +304,7 @@ def _associations(regime):
 
 
 def _one_axis_sentence() -> str:
-    """The association step's outcome in one sentence, from the data (C.5, D.3, D.4).
+    """The association step's outcome in one sentence, from the data (F.5, B.1, B.2).
 
     Each regime is named as the paper names it in prose ("primary regime", "baseline regime"), not
     by its dataset label.
@@ -334,7 +334,7 @@ def _one_axis_sentence() -> str:
 
 
 SHOWN_ASSOCIATION = 0.5
-"""Appendix C.5 prints the pairs at |Spearman| this or above in a regime; the supplement, all."""
+"""Appendix F.5 prints the pairs at |Spearman| this or above in a regime; the supplement, all."""
 
 
 def metric_associations(at_least=SHOWN_ASSOCIATION) -> Md:

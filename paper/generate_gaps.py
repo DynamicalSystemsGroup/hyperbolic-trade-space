@@ -1,4 +1,4 @@
-"""Appendix E: the assumptions, from the derivation's ledger, and the abstraction gaps.
+"""Appendix G: the assumptions, from the derivation's ledger, and the abstraction gaps.
 
 Nothing is retyped. The assumptions tables read ``derivation/axioms.py`` (each entry's statement and
 citation), the proof map's record (the results that import each entry) and the paper (the section
@@ -92,7 +92,7 @@ def math_role(text: str) -> str:
 
 
 def gaps_table() -> MdMath:
-    """The gaps table of Appendix E: one row per gap, its mathematics typeset on the page.
+    """The gaps table of Appendix G: one row per gap, its mathematics typeset on the page.
 
     Returns
     -------
@@ -263,7 +263,7 @@ def assumptions_table() -> Md:
     -------
     Md
         Markdown pipe table: id, statement, the section of the paper that states it, and the
-        results that import it, each a link to its proof in Appendix B.
+        results that import it, each a link to its proof in Appendix E.
     """
     return Md(md_table(["Id", "Assumption", "Stated in", "Used by"], assumption_rows()))
 

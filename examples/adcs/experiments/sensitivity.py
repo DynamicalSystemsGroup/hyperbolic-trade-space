@@ -17,7 +17,7 @@ directory inside ``examples/adcs/data``, and nothing here touches the ledger.
 **Analysis.** For the committed data and each regeneration, :func:`quantities` runs the paper's
 computations through ``case.py`` (the one-term fit with the temperature re-selected, K = 2 and 3,
 the regime comparison, the nondominated counts, propose-predict-check, the candidates and the
-Appendix D tables) and the paper's generated sentences, and :func:`compare_runs` sets every
+Appendix B tables) and the paper's generated sentences, and :func:`compare_runs` sets every
 quantity of the regenerations against the committed one at the precision the paper prints.
 
 From the repository root::
@@ -316,7 +316,7 @@ def quantities(data_dir: Path | str) -> dict:
     ``group | row | column``. Groups: ``sentence`` (the paper's generated sentences, verbatim),
     ``contending`` (contending sets), ``leading`` (each term's leading metrics), ``association``
     (association signs and values), ``tau``, ``certificate``, ``regime``, ``nondominated``,
-    ``candidate``, ``predict`` (and ``predict, committed checks``), and the Appendix D tables
+    ``candidate``, ``predict`` (and ``predict, committed checks``), and the Appendix B tables
     (``D k_table``, ``D exponents``, ``D terms``, ``D tau_sweep``, ``D sensitivity``,
     ``D refits``).
     """
@@ -689,7 +689,7 @@ def report(
         "nondominated counts, the candidates and propose-predict-check (the regressor refit on "
         "the regenerated primary data; the recorded predictions; the check designs regenerated "
         "with the same kind of perturbation, and, as a second reading, the committed check "
-        "measurements). Every table of Appendix D and every generated sentence of the case "
+        "measurements). Every table of Appendix B and every generated sentence of the case "
         "sections was computed, and each quantity is compared at the precision the paper prints "
         "it (tables at four significant digits, temperatures at one decimal, sentences "
         "verbatim). The terms of K = 2 and K = 3 are compared as labelled and, separately, as "

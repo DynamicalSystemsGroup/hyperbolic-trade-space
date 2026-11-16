@@ -522,7 +522,7 @@ entries:
     not: 'a condition of the fit itself (the exponents lie on the simplex); an objective'
     layer: 'decision'
     used_in: 'decision analysis, optimization'
-    defined_in: 'Requirements after the fit; Appendix D.17'
+    defined_in: 'Requirements after the fit; Appendix B.12'
     aliases:
       - 'constraints'
 
@@ -755,7 +755,7 @@ entries:
     register: 'check'
     formal: 'the comparison of the measured chart point of a proposal with its predicted chart point within the tolerance, together with the feasibility conditions'
     not: 'an estimate of the rate at which proposals are confirmed'
-    defined_in: 'Appendix D.10; WP41 note'
+    defined_in: 'Appendix B.6; WP41 note'
     aliases:
       - 'checks'
       - 'checked'

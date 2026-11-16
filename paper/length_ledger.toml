@@ -36,23 +36,23 @@ total = 5900
 "AI acknowledgement and Reproducibility" = 0
 "Works cited" = 3
 # The supporting material is outside the count (words_by_section reads the paper only); the entry
-# below admits rows that record what is added to Appendix B and why.
+# below admits rows that record what is added to Appendix E and why.
+"Appendix E" = 0
+# And Appendix F (WP30: the cost model and what the case leaves out).
+"Appendix F" = 0
+# The same for Appendix B (WP28 S-10).
 "Appendix B" = 0
-# And Appendix C (WP30: the cost model and what the case leaves out).
+# And Appendix A (WP35: the HoroPCA passage and its table).
+"Appendix A" = 0
+# And Appendix C (WP35 amendment 1: the HoroPCA comparison as a tested hypothesis).
 "Appendix C" = 0
-# The same for Appendix D (WP28 S-10).
-"Appendix D" = 0
-# And Appendix G (WP35: the HoroPCA passage and its table).
-"Appendix G" = 0
-# And Appendix H (WP35 amendment 1: the HoroPCA comparison as a tested hypothesis).
-"Appendix H" = 0
 # And the top of the supporting material, before Appendix A (its audience line).
 "Supporting material" = 0
-# And Appendices A and F (WP57a: the Job blocks cut).
-"Appendix A" = 0
-"Appendix F" = 0
-# And Appendix E (WP57d: assumptions, limitations and open questions).
-"Appendix E" = 0
+# And Appendices D and H (WP57a: the Job blocks cut).
+"Appendix D" = 0
+"Appendix H" = 0
+# And Appendix G (WP57d: assumptions, limitations and open questions).
+"Appendix G" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -508,7 +508,7 @@ reader = "the reader who took the association cells for the model's structure"
 
 [[raise]]
 date = "2026-11-09"
-section = "Appendix B"
+section = "Appendix E"
 words_added = 132
 job = "states what the lemma scripts do and do not establish: a substitute for pencil-and-paper derivation between free-form proof and a proof assistant, each step a line the reader can run, and not formal verification, which is said only of the Z3 checks of the case's system model"
 reader = "the reader of Appendix B deciding what a checked step buys"
@@ -961,7 +961,7 @@ authority = "the supervisor, S-3: 'Cut to a pointer'"
 
 [[raise]]
 date = "2026-11-10"
-section = "Appendix D"
+section = "Appendix B"
 words_added = 153
 job = "the supervisor's word on D.12 (S-10, WP28-decisions.md): 'keep and clarify why it matters ... we do need to provide a concise explanation for why this is relevant and how it was computed. someone who runs into issue needs a way to inspect the conditioning of their problem since trouble shooting may involve feature engineering work': D.12 says why the conditioning of the exponents matters, how the number is computed, and how a reader inspects their own problem"
 reader = "the discerning reader and the external reviewer who asked for the diagnostic, and the user whose own fit shows a small value"
@@ -975,14 +975,14 @@ reader = "the reader who stops after the main-results list and needs to know wha
 
 [[cut]]
 date = "2026-11-11"
-section = "Appendix D"
+section = "Appendix B"
 words_removed = 3
 no_longer_did = "D.12's first paragraph read the small value as weakly identified exponents, which the register's backing for the flat-direction claim does not carry (WP25-4 T-3)"
 authority = "WP25-4 instance 4, row T-3 (WP25-decisions.md)"
 
 [[cut]]
 date = "2026-11-11"
-section = "Appendix D"
+section = "Appendix B"
 words_removed = 1
 no_longer_did = "D.12's second paragraph read a small value as the data fixing the exponents loosely (a reading the definition of curvature alone does not back), and the sentence after it said the case shows both; net one word (the driver's decision, cd2aad2)"
 authority = "the driver, cd2aad2"
@@ -1073,7 +1073,7 @@ reader = "the reader who asked whether three terms was a bad choice for the case
 
 [[raise]]
 date = "2026-11-11"
-section = "Appendix D"
+section = "Appendix B"
 words_added = 88
 job = "D.15 says which three checks choose K for the case, at which temperature each is read and how the K is read from them, in place of the fixed-temperature note it replaces"
 reader = "the reader checking the main text's K against the checks it names"
@@ -1126,14 +1126,14 @@ reader = "the reader asking where sampling strategy belongs in the optimisation 
 # (the standing order of 2026-11-11, 09:40: the body keeps a sentence or two, the appendix the detail).
 [[raise]]
 date = "2026-11-11"
-section = "Appendix C"
+section = "Appendix F"
 words_added = 343
 job = "C.8 states how the unit cost and the fleet cost are priced (part prices, the fleet curve, launch), what the cost covers and leaves out, the two budgets, and what the case as a whole leaves out, so the body's one-sentence coverage and its claim of a demonstration rest on a checkable statement"
 reader = "the new-space systems engineer and the executive judging whether the case is realistic enough and honest where it is a toy"
 
 [[cut]]
 date = "2026-11-11"
-section = "Appendix C"
+section = "Appendix F"
 words_removed = 20
 no_longer_did = "the job's two bullets restated the section list the reader is about to see and the main text's length ('about 300 words', which was no longer true); one bullet now names what the main text keeps and what the appendix carries"
 authority = "the triage's offset for the new paragraph (WP30-rounds/persona-baseline/triage.md, Class 3 texts)"
@@ -1204,21 +1204,21 @@ reader = "the reader who stops at the first screens (P5: found the statement onl
 # The P7 and P8 final reads, triaged (WP30-rounds/persona-final/triage.md): what each omission does to a reading.
 [[raise]]
 date = "2026-11-12"
-section = "Appendix C"
+section = "Appendix F"
 words_added = 229
 job = "C.8's list says, item by item, what a flight-hardware reader may not take from the case: the pointing error is a loop-and-tracker figure, the momentum check is one slew, the launch slot is not priced (understated 3.1 to 4.2 times at a fleet of one), the horizon and slew law are choices, the wings are rigid and the mass axis a trim on a fixed bus; the body keeps one clause"
 reader = "the systems engineer judging whether the case is honest where it is a toy"
 
 [[raise]]
 date = "2026-11-12"
-section = "Appendix D"
+section = "Appendix B"
 words_added = 45
 job = "D.17 states that the excess column puts the price of meeting a requirement in currency (USD per satellite, USD per fleet, the mass as USD of launch), the one conversion the program reader can negotiate with; the bands stay beside it"
 reader = "the executive weighing which requirement is dear"
 
 [[raise]]
 date = "2026-11-12"
-section = "Appendix D"
+section = "Appendix B"
 words_added = 52
 job = "D.7 says what the constrained fit reads of the hand-named candidates (two sit beyond the thresholds-met surface; none meets all four thresholds), a result the candidate table's last column holds and no sentence read"
 reader = "the executive reading the case for the decision it supports"
@@ -1256,7 +1256,7 @@ authority = "WP35 build, offsetting the HoroPCA paragraph (length is a regulariz
 
 [[raise]]
 date = "2026-11-12"
-section = "Appendix G"
+section = "Appendix A"
 words_added = 659
 job = "the full version of the HoroPCA distinction: the solver contrast, what HoroPCA does that this work does not, the plain statement that the embedding was ours and not natural for the data, the reading of the generated results table, and the limits of the comparison with the spike record cited; the numbers sit here so that Section 2 holds none"
 reader = "the expert who asks what running the closest existing analog on the paper's tables showed"
@@ -1279,7 +1279,7 @@ authority = "WP33 R-3, marginal-value test (the cut that pays for the audience s
 # Appendix D.3: the summed-pairs table, one per regime (the supervisor's skim, driver-log b229220).
 [[cut]]
 date = "2026-11-12"
-section = "Appendix D"
+section = "Appendix B"
 words_removed = 120
 no_longer_did = "D.3 printed the one-axis pair's summed exponents as three frames per regime (K = 1, 2, 3), each row repeating the pair in a column of identical text under the labels 'exponent a' and 'exponent b', and closed with a sentence naming the same pair again; one table per regime now names the pair once in its lead sentence, carries K as a column and the two exponents under the metrics' own names, and the closing sentence (also printed in C.5 and D.4) is dropped"
 authority = "the supervisor's skim of D.3, driver-log entry b229220 (the 'cubesat-stock' table has the same fix)"
@@ -1287,7 +1287,7 @@ authority = "the supervisor's skim of D.3, driver-log entry b229220 (the 'cubesa
 # Appendix G.2: the reading pass becomes a table to check against the sources (the supervisor, WP38-decisions.md 7257053).
 [[cut]]
 date = "2026-11-12"
-section = "Appendix G"
+section = "Appendix A"
 words_removed = 853
 no_longer_did = "G.2 rendered the machine's reading of its own citations: a count line, a verdict column (supported, partly supported, not found, not accessible), the reason for each verdict, and the action taken on the sentence, in six columns; the paragraph above the table described the verdicts. A reader cannot use a verdict to check a citation, and the table said a machine had checked. The table now gives, for each citing sentence still in the paper, what we say, the source and the place in it, three columns; the record keeps the verdicts"
 authority = "the supervisor, WP38-decisions.md at 7257053 (G.2 lets a reader check for themselves; it is not a report that a machine checked)"
@@ -1304,14 +1304,14 @@ authority = "WP36 decision entry 441cdcb (placement (a); the unit takes out at l
 # without a new row and the assistant's word). Appendix H replaces the HoroPCA passage of Appendix G.
 [[raise]]
 date = "2026-11-13"
-section = "Appendix H"
+section = "Appendix C"
 words_added = 900
 job = "states the HoroPCA comparison as a hypothesis with the result that would refute each part, the design in one paragraph, the generated results table, what the table shows (the two methods estimate different things and are complementary), the part not in the hypothesis, the reading limits with the embedding stated as ours, and how the formalisms and solvers differ"
 reader = "the expert who asks whether the closest existing analog does what this work does, and what the experiment would have shown otherwise"
 
 [[cut]]
 date = "2026-11-13"
-section = "Appendix G"
+section = "Appendix A"
 words_removed = 659
 no_longer_did = "the HoroPCA passage (cells app-G-horopca and app-G-horopca-reading, with the generated table tab-G-horopca) asserted a causal reading, 'recovered only where the generator made them the direction of largest spread', from a handful of tables where the factor was never varied, with an undefined 'recovered', terms (PC, absolute cosine, span alignment, distortion, frame, horosphere) left unexplained, a cubesat 'target' that was this work's own fit, numbers without a source or command, and a table without a caption or source; Appendix H states the claim as a hypothesis, tests it by varying the factor with the edge fixed, and carries each of those fixes"
 authority = "WP35 amendment 1, the supervisor's request (13165e8) that the comparison have its own appendix"
@@ -1319,7 +1319,7 @@ authority = "WP35 amendment 1, the supervisor's request (13165e8) that the compa
 # The one sentence that Appendix G keeps to point at Appendix H.
 [[raise]]
 date = "2026-11-13"
-section = "Appendix G"
+section = "Appendix A"
 words_added = 11
 job = "one sentence under the register points the HoroPCA row at Appendix H, where the comparison is tested by experiment"
 reader = "the reader of the register who looks for what running HoroPCA on the paper's tables showed"
@@ -1327,7 +1327,7 @@ reader = "the reader of the register who looks for what running HoroPCA on the p
 # Appendix G.2: the view carries the paper's sentence and the source's link (the supervisor's return on the G.2 table).
 [[cut]]
 date = "2026-11-13"
-section = "Appendix G"
+section = "Appendix A"
 words_removed = 79
 no_longer_did = "G.2's 'What we say' column carried the record's disposition for 21 rows ('Cited now for ...', 'Cited now only for ...', 'The sentence now says only ...', 'Attributed through the review in ...') and, for the rows the record gave as '(same)' or 'Table row ...', the record's note instead of a sentence; each cell is now the paper's own sentence at the citation. 'Where in it' carried the fetch addresses of the reading (api.crossref.org calls, a Semantic Scholar API call) as text, which no reader opens; it now says where in the source the place read lies and links the source's own DOI or page. The Job line of Appendix G still described the table as what was read, the verdict and what the paper does, and G.2's lead said sentences reworded after the reading were given as reworded; both now describe the three columns"
 authority = "the assistant's return of G.2 on three points (2026-11-12); the supervisor, WP38-decisions.md at 7257053"
@@ -1370,14 +1370,14 @@ authority = "P5's reading of the Methods link (the assistant's brief to this uni
 # takes out; 900 + 81 - 61 = 920.
 [[raise]]
 date = "2026-11-14"
-section = "Appendix H"
+section = "Appendix C"
 words_added = 81
 job = "defines at first use what the three fresh readers could not read: the spread ratio rho as a ratio of standard deviations of the edge's vector and the largest direction orthogonal to it; t as a fraction of the way from the depth direction of the package's generator (equal exponents) to one metric; kind C as still scoring the same vector, its rows spread symmetrically along it; the threshold's number (0.9) where the recovery is defined; the ball as the disk that models hyperbolic space; the exponential map at the origin in the first reading limit; 'before any table of this experiment existed'; H1 to H4 as counts of the six tables, HoroPCA named at its two scales; the caption's line saying what H1 to H4 and the HoroPCA column mean; 'its fourth' for the smallest-variance component; the solver paragraph's sources split by claim and 'shortfall from the best value'; and the reviewer's second boundary stated with its number (30 percent of the rows on the edge)"
 reader = "the novice and the expert who read the finished Appendix H cold (P9, P10, R-13): one blocked on 'vector' and 'symmetric' in construction C, eight more slowed by rho, t, the depth direction, the ball and the two different 0.9s"
 
 [[cut]]
 date = "2026-11-14"
-section = "Appendix H"
+section = "Appendix C"
 words_removed = 61
 no_longer_did = "'hypothesis, experiment, results, reading and solver differences' in the job line listed the headings that follow (3 words out; the tier stays, as every appendix has the three); 'no noise,' in the design paragraph said what the first reading limit already says as 'noise-free' (2); '30 percent of the rows on the edge,' in the design paragraph is stated once, in the second reading limit, where it is the boundary (8 out, 8 in); 'robustness under realistic sampling is separate' repeated the limit's 'a mechanism demonstration' (6); 'by a linear program or sequential quadratic programming' named two solvers the argument does not use and the novice could not read (8); ', though an analyst with other domain information might choose it' was an aside the experiment does not back (10); 'A HoroPCA of the chart would be the same kind of chain and was not run' said what was not done in an unrun experiment, and the sentence before it carries the complementarity (16); 'The threshold is 0.9, fixed before the run.' repeated H.1, which now gives the number where the recovery is defined and the time of commitment in its first paragraph (8)"
 authority = "the assistant's ruling at 3fb77e6 (the four cuts the review names pay for the rest; the ledger test measures); marginal-value test"
@@ -1385,7 +1385,7 @@ authority = "the assistant's ruling at 3fb77e6 (the four cuts the review names p
 # Appendix G's HoroPCA row (FW-15, 'on the paper's tables') and the reading pass's wording of Section 2's sentence (FW-1).
 [[raise]]
 date = "2026-11-14"
-section = "Appendix G"
+section = "Appendix A"
 words_added = 8
 job = "the HoroPCA row says where the result holds, 'on the synthetic tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only where ...', for 'on the paper's tables its exponents are recovered by neither HoroPCA nor PCA except ...', which read as the paper's own case study; the reading pass says 'prospectively specified', as Section 2 and Appendix H do (one term for one thing)"
 reader = "the expert who reads the register's HoroPCA row and takes 'the paper's tables' for the case study"
@@ -1432,7 +1432,7 @@ authority = "the assistant's ruling on Q4 (b), WP39-decisions.md, stage 2 (the K
 
 [[raise]]
 date = "2026-11-13"
-section = "Appendix D"
+section = "Appendix B"
 words_added = 287
 job = "D.19 gives the detail behind Section 9's closing paragraph: the shortlist's definition and the rules that pick from it (the sponsor alone, the operator alone, between them by minimax regret, balanced between the terms, the cheapest unit cost), the 28-design table with the nondominated designs marked and exact values, what the fit adds to a two-measure view (11 nondominated over all 548 six-pass designs, 1 inside both bands), and the baseline regime's funnel in one sentence; the appendix's job line names it (six words net)"
 reader = "the executive weighing which design to ask for, and the systems engineer checking the shortlist"
@@ -1997,42 +1997,42 @@ authority = "WP57a (the supervisor's direction in WP57-decisions.md: the appendi
 
 [[cut]]
 date = "2026-11-15"
-section = "Appendix A"
+section = "Appendix D"
 words_removed = 83
 no_longer_did = "the Job block said what the main text, the appendix and the repository each keep, and that the table is compiled from the glossary and never typed; the heading and the table say it, and the register row C131 that rested on the sentence retires"
 authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
 
 [[cut]]
 date = "2026-11-15"
-section = "Appendix F"
+section = "Appendix H"
 words_removed = 116
 no_longer_did = "the Job block said what Section 11 keeps, what the appendix carries and what the repository keeps; F.1 to F.4 carry it under their headings"
 authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
 
 [[cut]]
 date = "2026-11-15"
-section = "Appendix G"
+section = "Appendix A"
 words_removed = 186
 no_longer_did = "the Job block argued with an objection ('answer in advance the objection that this work is just some existing method'), counted Section 2's words and listed the appendix's own contents; the scope sentence ('This register is not exhaustive ... read only in part') is queued for the assumptions, limitations and open questions section (work-packages/WP57-rounds/assumptions-queue.md, WP57d); the register row C161 that rested on the Job block retires"
 authority = "WP57a (the supervisor: 'the appendices job IS NOT to opine on the text of the paper'); map_counts.py before and after"
 
 [[cut]]
 date = "2026-11-15"
-section = "Appendix G"
+section = "Appendix A"
 words_removed = 12
 no_longer_did = "the pointer cell under the register said that the HoroPCA entry above is tested in Appendix H; the entry's own text cites Appendix H"
 authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
 
 [[cut]]
 date = "2026-11-15"
-section = "Appendix G"
+section = "Appendix A"
 words_removed = 54
 no_longer_did = "G.2 'What the paper took from where' printed, inside the paper, a 53-row table whose rows quote the paper's own sentences beside the source and the place read, with an introduction saying so; the table is now paper/supplement/reading-pass.md, written by the same function from paper/reading_pass.yaml (the supervisor, WP38: 'keep it in its yaml form for our own checking ... drop it from the supporting materials')"
 authority = "WP57a, the driver's call 2 in WP57-decisions.md on the supervisor's WP38 words; map_counts.py before and after"
 
 [[raise]]
 date = "2026-11-15"
-section = "Appendix G"
+section = "Appendix A"
 words_added = 29
 job = "one line at the end of G.1 names the reading pass (one row per citing sentence, the source, the place read) and links its file in the repository"
 reader = "the reader of the register who wants to check what the paper took from a source"
@@ -2042,14 +2042,14 @@ reader = "the reader of the register who wants to check what the paper took from
 
 [[cut]]
 date = "2026-11-15"
-section = "Appendix B"
+section = "Appendix E"
 words_removed = 112
 no_longer_did = "the Job block said what the main text keeps, what the appendix carries and what the repository keeps; 'What the scripts establish' (C387 to C389) stays as the cell's whole; how_to_read in paper/generate_proofs.py loses its two-parts list and its closing paragraph, which repeated Section 9's verify-and-validate sentence (about 60 generated words, outside the prose count)"
 authority = "WP57b (the supervisor: tighten the appendices, do not metanarrate); the standing rule on metanarration; map_counts.py before and after"
 
 [[cut]]
 date = "2026-11-15"
-section = "Appendix B"
+section = "Appendix E"
 words_removed = 277
 no_longer_did = "B.2's 'The algorithm' paragraph (398 words) restated Section 5's alternation, labels and program, commented on each lemma before its table (L16's program and bound, L17's Hessian, L18, L19, L21) and said which result the paper does not use (L19); the 121 words kept are the restart rule, the stop rule, the polish with G-16 and that the status refers to the polished point, what Section 5's 'steps: Appendix B.2' and Section 6's 'Newton steps that close the gap the solver leaves' point at; 'L16 does not prove that the alternation converges' is queued for WP57d (assumptions-queue.md); register rows C132 to C136, C139 to C146 and C667 retire with their sentences, C137, C138 and C666 keep theirs"
 authority = "WP57b; map_counts.py before and after"
@@ -2105,14 +2105,14 @@ reader = "the reader who wants the baseline regime's counts and shares"
 
 [[cut]]
 date = "2026-11-16"
-section = "Appendix C"
+section = "Appendix F"
 words_removed = 460
 no_longer_did = "the Job block (it judged whether the case is a fair test and repeated two Section 7 sentences); C.8's 'What the case leaves out' paragraph and its five items (the case page's 'What the case leaves out' holds them, in its own words). C.5 prints one preview and the 17 pairs at |Spearman| 0.5 or above; the baseline preview and all 78 pairs are paper/supplement/metric-associations.md. Typed prose 789 to 329"
 authority = "WP57c G3 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"
 
 [[cut]]
 date = "2026-11-16"
-section = "Appendix D"
+section = "Appendix B"
 words_removed = 310
 no_longer_did = "the Job block (it judged the main text's summary and listed the appendix's contents); D.7's typed sentence (generated under D.17's second table); D.12's three paragraphs (the termination page's conditioning_ section); the narrating openers of D.13, D.15, D.18 and D.19; D.17's gloss of each column. D.1 and D.6 are paper/supplement/, D.2 and D.12's tables are D.8's. Added: the pair counted as one (D.4), the proposer's rule and the never-clipped rule (D.10), the ladder of the four limits (D.17), D.19's four rules and D.8's conditioning sentence. Typed prose 1,624 to 1,314"
 authority = "WP57c G2, G4 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"
@@ -2123,14 +2123,14 @@ authority = "WP57c G2, G4 (the driver's scope approved as the supervisor's proxy
 
 [[raise]]
 date = "2026-11-16"
-section = "Appendix E"
+section = "Appendix G"
 words_added = 1545
 job = "Appendix E becomes 'Assumptions, limitations and open questions': the assumptions generated from the derivation's ledger (two tables, their captions typed), the limitations one line each by the section they left with their record, the gaps table in four columns, and every open question of the review ledger with its record, the nine queued sentences of WP56, WP57a and WP57b placed among them. The Job block (92 words) is cut. Typed Markdown 92 to 1,637 words by map_counts.py, links and roles counted as written"
 reader = "the reader who asks what the paper assumes, what it does not establish and what is open, and wants each answer once with its record"
 
 [[cut]]
 date = "2026-11-16"
-section = "Appendix H"
+section = "Appendix C"
 words_removed = 169
 no_longer_did = "the Job block (it said what the appendix carries and what the main text keeps); H.1's sentence describing the appendix as a follow-up experiment, not a benchmark (C591); H.5, how the formalism and the solvers differ, now notes/directions/wp35-horopca-formalism-and-solvers.md, cited in one line at the end of H.4 (G.1's HoroPCA entry carries the same contrast). Rendered prose 916 to 751"
 authority = "WP57d G3 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md; the driver's call 3)"

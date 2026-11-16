@@ -8,7 +8,7 @@ sentence (``status`` and ``now``). The file is the record and is made from the M
 it); a test compares the two. The table shows only what a reader needs to check a citation: what
 we say (the paper's own sentence), the source, the place in it with the source's own link. The
 record's verdict, reason, disposition and fetch addresses are not shown. The table is written to
-``paper/supplement/reading-pass.md`` by ``paper/generate_supplement.py`` and cited from Appendix G.1.
+``paper/supplement/reading-pass.md`` by ``paper/generate_supplement.py`` and cited from Appendix A.1.
 """
 
 # ruff: noqa: E501

@@ -402,10 +402,10 @@ def test_docsite_cites_the_paper_only_through_keys():
 def test_paper_keys_resolve_to_relative_links_and_unknown_keys_fail():
     mod = _paper_keys_module()
     keys = mod.paper_keys()
-    assert keys["thm-kkt"] == "paper/" and keys["appendix-b"] == "paper/supporting-material/"
-    text = "[a](paper:thm-kkt) and [b](paper:appendix-b)"
+    assert keys["thm-kkt"] == "paper/" and keys["appendix-e"] == "paper/supporting-material/"
+    text = "[a](paper:thm-kkt) and [b](paper:appendix-e)"
     assert mod.resolve(text, "", keys) == (
-        "[a](../paper/#thm-kkt) and [b](../paper/supporting-material/#appendix-b)"
+        "[a](../paper/#thm-kkt) and [b](../paper/supporting-material/#appendix-e)"
     )
     assert mod.resolve("[a](paper:fig-nlemma)", "user-guide/fitting/", keys) == (
         "[a](../../../paper/#fig-nlemma)"

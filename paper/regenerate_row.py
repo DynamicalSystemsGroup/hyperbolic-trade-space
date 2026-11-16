@@ -1,8 +1,8 @@
-"""Regenerate one row of Appendix F.4: the cell that makes one figure or table of the paper.
+"""Regenerate one row of Appendix H.4: the cell that makes one figure or table of the paper.
 
     uv run python paper/regenerate_row.py ROW [--out FILE]
 
-``ROW`` is the first column of the table in Appendix F.4 (``fig-tau-sweep``, ``tab-D-stability``,
+``ROW`` is the first column of the table in Appendix H.4 (``fig-tau-sweep``, ``tab-B-stability``,
 ...). The script runs the cells of the row's notebook that the row needs and prints the table (as
 Markdown) or saves the figure (to ``FILE``, default ``ROW.png`` in the current directory); it
 writes nothing in the repository. A row of the supporting material needs only the setup cell; a
@@ -56,7 +56,7 @@ def run(row: str):
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="regenerate_row", description=__doc__.splitlines()[0])
-    parser.add_argument("row", help="a row of Appendix F.4, such as fig-tau-sweep")
+    parser.add_argument("row", help="a row of Appendix H.4, such as fig-tau-sweep")
     parser.add_argument("--out", type=Path, default=None, help="where to save a figure")
     args = parser.parse_args(argv)
     value = run(args.row)

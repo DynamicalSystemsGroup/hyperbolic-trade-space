@@ -21,7 +21,7 @@ suite fast enough that the full run is routine.
 
 | Tier | When | What | Takes | Who waits |
 |---|---|---|---|---|
-| 0 | before every commit | lint and format on the files changed; the tests mapped to the paths changed (`scripts/check.py --changed`); for `derivation/`, the proof map and the Appendix B test with the appendix regenerated | seconds to two minutes | the author, briefly |
+| 0 | before every commit | lint and format on the files changed; the tests mapped to the paths changed (`scripts/check.py --changed`); for `derivation/`, the proof map and the Appendix E test with the appendix regenerated | seconds to two minutes | the author, briefly |
 | 1 | before every push | the fast suite: the whole suite without the tests marked `slow` (`uv run pytest -m "not slow"`), in parallel workers | under three minutes | the author |
 | 2 | continuously, on `dev` | the full suite with every check (lemma chain, proof map, ledger, lint, format, lock, attribution) on each new head, run by a watcher in the driver's clean worktree; verdicts appended to a log; the Linux run dispatched once per batch of pushes (about hourly) or when numerics changed, never per push | 15 to 25 minutes, in the background | nobody; a red verdict names the commit range since the last green and goes to the owner to fix forward within the hour |
 | 3 | at an acceptance, and before any merge to `main` | tier 2 green on both platforms on the exact commit, plus the driver's browser pass | once per package | the driver, once |
@@ -35,7 +35,7 @@ suite never waits for a build.
   notebook executions, regenerations, the planted benchmarks, site builds); `pytest --durations=30`
   lists them. The fast suite still runs every quick test, which is most of the correctness checks.
 - **A path-to-tests map** (`scripts/check.py`): changed paths under `src/` run the package tests and
-  doctests; `derivation/` runs the derivation and proof-map tests and the Appendix B test; `paper/`
+  doctests; `derivation/` runs the derivation and proof-map tests and the Appendix E test; `paper/`
   the paper tests; `docs/`, `site/`, `scripts/` the site and docs tests; `examples/` the case,
   experiment and notebook tests. `--changed` reads `git diff --name-only origin/dev...HEAD`.
 - **Parallel workers.** `pytest-xdist` as a dev dependency (the driver owns `pyproject.toml`), with

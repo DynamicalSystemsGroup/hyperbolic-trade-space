@@ -1,4 +1,4 @@
-"""Appendix F: computational reproducibility, generated from the lock and the repository.
+"""Appendix H: computational reproducibility, generated from the lock and the repository.
 
 The pinned toolchain is read from ``uv.lock``, ``pyproject.toml`` and ``.python-version`` and never
 typed (R-30). The row-per-item table is read from the paper's own cells (R-23, R-24). The container
@@ -152,7 +152,7 @@ def commands() -> Md:
         ),
         (
             "uv run python paper/regenerate_row.py ROW",
-            "regenerate one row of the table in F.4 (ROW is its first column): runs the cells "
+            "regenerate one row of the table in H.4 (ROW is its first column): runs the cells "
             "that row needs and prints the table or saves the figure, writing nothing in the "
             "repository",
             "prints the table, equal to that cell's committed output, or names the figure file",

@@ -11,7 +11,7 @@ belongs to the fit and the conditioning together; it is not a property of the mo
 statement that the cubesat is noisy.
 
 Columns, per regime and delta: ``conditioning_`` of the clean fit; the largest component of the
-shift the corollary of Appendix B (L20) predicts on the active face, with Sigma = diag(sigma_j^2);
+shift the corollary of Appendix E (L20) predicts on the active face, with Sigma = diag(sigma_j^2);
 the largest component of the mean measured shift of the exponents over 8 repetitions (seeds 100 to
 107); the largest spread of a component across the repetitions; the contending-set overlap
 (Jaccard index of the exponents above 1e-3, 1 = same set). Run from the repository root:

@@ -53,7 +53,7 @@ FILES: dict[str, tuple[str, str, Callable[[], str]]] = {
     ),
     "metric-associations.md": (
         "The table of metrics: the baseline regime's first rows and every pair's association",
-        "Appendix C.5 prints the primary regime's first rows and the pairs at |Spearman| 0.5 or "
+        "Appendix F.5 prints the primary regime's first rows and the pairs at |Spearman| 0.5 or "
         "above; this file holds the baseline regime's first rows and all the pairs of traded "
         "metrics over the feasible designs of both regimes. The tables are "
         "`generate_model.metric_table` and `generate_model.metric_associations`, read from the "

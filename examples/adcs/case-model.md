@@ -179,7 +179,7 @@ cubesatBaseline`, which the engine checks true. The battery's discharge rating i
 continuous rating of 1 C (`environment.batteryDischargeRate`, 1.0 per hour): the pack delivers its
 capacity in one hour. It is the plain rating of a small-satellite lithium-ion pack and not a cited
 one. None of these thresholds enters the dataset or the fit. The fit is on the feasible designs,
-and the case reads the four requirements after it (`case.requirements_table`, `case.design_sets_table`; Appendix D.17 of the supporting material).
+and the case reads the four requirements after it (`case.requirements_table`, `case.design_sets_table`; Appendix B.12 of the supporting material).
 
 ### What the case leaves out
 "Verification" on this page is a solver checking a requirement on a configuration, not a hardware test. The model is a
@@ -242,7 +242,7 @@ temperature shows more texture, more metrics carrying weight. The paper's regene
 heatmap checks it; it is never a target. No metric, threshold or constant of the model
 was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces.
 
-What the fit returns on the thirteen-metric data is in Appendix D of the supporting material.
+What the fit returns on the thirteen-metric data is in Appendix B of the supporting material.
 
 ## Running an experiment and reading the ledger
 

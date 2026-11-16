@@ -1,6 +1,6 @@
-"""Appendix D: extended results, what the method found in the table of metrics.
+"""Appendix B: extended results, what the method found in the table of metrics.
 
-Each table cites its dataset by the label that Appendix C defines
+Each table cites its dataset by the label that Appendix F defines
 (:data:`generate_model.DATASET_LABELS`) and repeats nothing else from C: no variable range,
 constraint, scenario constant or conditioning rule appears here (R-26). The tables are produced by
 calls into the case module and the package; none is typed.
@@ -175,7 +175,7 @@ def regime_comparison() -> Md:
     """
     cites = ", ".join(DATASET_LABELS[r] for r in case.CUBESAT.regimes)
     table = regime_table()
-    # The dataset file names and sizes are Appendix C's; this table keeps what the method found.
+    # The dataset file names and sizes are Appendix F's; this table keeps what the method found.
     table = table[~table["quantity"].isin(["dataset", "feasible n"])]
     table = table.rename(columns={r: case.regime_word(r) for r in case.CUBESAT.regimes})
     return Md(f"Datasets {cites}:\n\n" + frame_table(table) + "\n\n" + _one_axis_sentence())
@@ -187,7 +187,7 @@ def termination_records() -> Md:
 
     One table per regime: the temperature re-selected at each K and its band, ``loss_`` and
     ``frac_above_``, the largest term gap, the status, the margin gamma, the stable radius, the
-    Corollary bound (``case.k_table``, the term rows and shares left to D.3's term tables) and
+    Corollary bound (``case.k_table``, the term rows and shares left to B.1's term tables) and
     ``conditioning_``, the smallest eigenvalue of the restricted Hessian at each term's fit, to two
     digits.
 
@@ -321,7 +321,7 @@ def _names():
     return summary()["quantities"]
 
 
-# -- D.11: stability of the conclusions under rounding-level jitter ----------------------------
+# -- B.7: stability of the conclusions under rounding-level jitter ----------------------------
 
 CONCLUSIONS = (
     ("the contending sets (K = 1 and each term at K = 3)", ("contending |",), ""),
@@ -480,7 +480,7 @@ def own_rows_refit() -> Md:
             f"{count['support']} of {n}", f"{max(err['support']):.3f}",
         ])  # fmt: skip
     return Md(
-        f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at 400 rows and seeds 0 "
+        f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix F at 400 rows and seeds 0 "
         f"to {OWN_ROWS_SEEDS - 1}, the true labels given:\n\n"
         + md_table(
             [
@@ -496,7 +496,7 @@ def own_rows_refit() -> Md:
     )
 
 
-# -- D.14: the planted example, twenty tables --------------------------------------------------
+# -- B.9: the planted example, twenty tables --------------------------------------------------
 
 RECOVERY_SEEDS = 20
 """Planted tables for the recovery count (``make_frontier_data``, seeds 0 to 19)."""
@@ -604,7 +604,7 @@ def planted_recovery() -> Md:
     below = sum(r["max_gap"] < tol for r in runs)
     cap_above = sum(r["status"] == "iteration_cap" and r["max_gap"] >= tol for r in runs)
     return Md(
-        f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at {RECOVERY_ROWS} "
+        f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix F at {RECOVERY_ROWS} "
         f"rows, {RECOVERY_METRICS} metrics and {RECOVERY_TERMS} terms, seeds 0 to "
         f"{RECOVERY_SEEDS - 1}, the solver's defaults "
         f"(five restarts, `random_state = 0`). A table is recovered when the largest error of "
@@ -638,7 +638,7 @@ def planted_recovery() -> Md:
     )  # fmt: skip
 
 
-# -- D.15: choosing K for the case -----------------------------------------------------------------
+# -- B.10: choosing K for the case -----------------------------------------------------------------
 
 
 @cache
@@ -678,12 +678,12 @@ def choosing_k() -> Md:
     return Md("\n\n".join(parts))
 
 
-# -- D.8 (margin): how to read the size of a margin ------------------------------------------------
+# -- B.4 (margin): how to read the size of a margin ------------------------------------------------
 
 
 def margin_reading() -> Md:
     """The median over the designs of the gap between best and second-best term score, the scale
-    a margin is read against (the margin, radius and band are in the table above it in D.8).
+    a margin is read against (the margin, radius and band are in the table above it in B.4).
 
     Returns
     -------
@@ -702,7 +702,7 @@ def margin_reading() -> Md:
     return Md("\n\n".join(parts))
 
 
-# -- D.16: chaining with PCA -----------------------------------------------------------------------
+# -- B.11: chaining with PCA -----------------------------------------------------------------------
 
 
 def pca_chain() -> Md:

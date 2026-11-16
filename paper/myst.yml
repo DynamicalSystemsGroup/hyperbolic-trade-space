@@ -5,7 +5,7 @@ version: 1
 project:
   id: hyperbolic-trade-space-paper
   # paper.ipynb is the paper (the notebook is the paper); supporting_material.ipynb is published
-  # beside it as the lettered appendices (Appendices A to G).
+  # beside it as the lettered appendices (Appendices A to H).
   index: paper.ipynb
   numbering:
     headings: true
@@ -34,7 +34,7 @@ project:
     - open source software
   # Acronyms used in prose; every abbreviation in the paper's prose appears here, except PCA: the builder
   # matches an abbreviation inside a longer word and underlined the PCA of "HoroPCA" (WP35 amendment 1),
-  # so PCA is spelled out at its first use, in the abstract, and again in Appendix H.
+  # so PCA is spelled out at its first use, in the abstract, and again in Appendix C.
   abbreviations:
     ADCS: attitude determination and control system
     DEA: data envelopment analysis

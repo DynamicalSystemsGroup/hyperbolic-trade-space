@@ -38,7 +38,7 @@ in the theorem that derives it. The supervisor's word is elasticity.
 | `assumed` | standard vocabulary assumed of the reader (calculus, linear algebra, convex optimization at the level of Boyd and Vandenberghe; scikit-learn's documented vocabulary), each with its source | resolves; not defined again in our prose |
 | `stems` | the stems that mark a term of art in this subject (posynomial, monomial, program, frontier, facet, envelope, surface, chart, lemma, rate, margin, radius, temperature, gap, ...) | every phrase built on a stem must resolve to an entry, an alias or an assumed term |
 
-A sentence that describes a source in the source's own words (Appendix G, Further reading) is
+A sentence that describes a source in the source's own words (Appendix A, Further reading) is
 exempt for the phrase it reports, by an explicit marker beside it, never by a blanket exclusion of a
 file.
 

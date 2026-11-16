@@ -1,7 +1,7 @@
 """WP10 structural checks of the paper: the shells, the generators and the register of prior art.
 
 Offline and fast. What is checked now is what exists now: the build configuration, the notebooks'
-cell structure (one call per code cell), the appendices A to G with their jobs and tiers, the
+cell structure (one call per code cell), the appendices A to H with their jobs and tiers, the
 tables compiled from their sources (the glossary, the abstraction-gaps ledger, the register of
 prior art, the lock file), and the register's phrase lists. Requirements that depend on the paper's
 prose (word budgets per section, the register phrase for each object, every appendix cited from the
@@ -77,15 +77,17 @@ SECTIONS = [
     "Works cited",
 ]
 APPENDICES = {
-    "A": "Notation and terms",
-    "B": "Proofs, step for step with their scripts",
-    "C": "The case's model: how the table of metrics came to be",
-    "D": "Extended results: what the method found in the table",
-    "E": "Assumptions, limitations and open questions",
-    "F": "Computational reproducibility",
-    "G": "Register of prior art",
-    "H": "HoroPCA beside this work: a tested hypothesis",
+    "A": "Register of prior art",
+    "B": "Extended results: what the method found in the table",
+    "C": "HoroPCA beside this work: a tested hypothesis",
+    "D": "Notation and terms",
+    "E": "Proofs, step for step with their scripts",
+    "F": "The case's model: how the table of metrics came to be",
+    "G": "Assumptions, limitations and open questions",
+    "H": "Computational reproducibility",
 }
+"""The appendices, lettered in the order the paper first mentions each (WP57e, the rule of call 4
+in ``WP57-decisions.md``)."""
 TIERS = ("**Main text keeps:**", "**This appendix carries:**", "**The repository keeps:**")
 # Appendices whose generated content waits for another package's deliverable (stated in the report).
 AWAITING_RECORD: set[str] = set()
@@ -101,7 +103,7 @@ OUTLINE_FAMILIES = {
 }  # fmt: skip
 PRIOR_FIELDS = ("does", "shares", "differs", "cites")
 WORDS_BANNED_IN_PRIOR_ART = re.compile(r"\b(novel|first|new)\b", re.I)
-# Fitted vocabulary that Appendix C must not contain; the system vocabulary D must not contain.
+# Fitted vocabulary that Appendix F must not contain; the system vocabulary D must not contain.
 FITTED_WORDS = re.compile(
     r"\b(temperature|tau|frac_above_?|loss_|n_eff_?|reach|log V|gamma|radius|status)\b", re.I
 )
@@ -310,7 +312,7 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
     for phrase in (
         "geometric program",
         "generalized posynomial",
-        "{ref}`Appendix B, L4 <appendix-b>`",
+        "{ref}`Appendix E, L4 <appendix-e>`",
         "one program for all terms",
         "boyd2007tutorial",
     ):
@@ -331,7 +333,7 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
     """WP10 Amendment 4, R-33 and R-34, kept for the body; the abstract is the supervisor's text of
     2026-11-14 (WP11-decisions.md). The Definition names the posynomial, the invariant as its root
     and the surface as the sum equal to one, citing L10; "generalized posynomial" is in no Markdown
-    cell of the paper but the Methods one (reports of a source, the family table and Appendix G, are
+    cell of the paper but the Methods one (reports of a source, the family table and Appendix A, are
     generated output and stay). The surface is a model of the data underlying the table, whose
     reading is a view. The abstract names the model by what it is: the level sets of a posynomial
     function of the metrics, and says nothing of "the table" or of a reference surface."""
@@ -340,7 +342,7 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
     text = " ".join(_src(definition).split())
     assert "a posynomial, a sum of monomials" in text
     assert (
-        "{ref}`Appendix B, L10 <appendix-b>`" in text
+        "{ref}`Appendix E, L10 <appendix-e>`" in text
     )  # the proof pointer (R-2: no forward reference)
     assert "is the $1/\\kappa$ power of a posynomial" in text
     assert "generalized" not in text
@@ -382,7 +384,7 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
     assert "cubesats whose power, mass and attitude control are coupled" in _section(
         "Case construction"
     )
-    assert "app-C-job" not in {c.id for c in _nb(SUPPORT_NB).cells}  # WP57c: C opens on C.1
+    assert "app-F-job" not in {c.id for c in _nb(SUPPORT_NB).cells}  # WP57c: C opens on F.1
     cell = next(c for c in _code_cells(nb) if c.id == "num-attributes")
     out = _out_text(cell)
     for group in ("controls (", "power and energy (", "mass (total mass)"):
@@ -733,7 +735,7 @@ _WARNING_TEXT = re.compile(r"\w*Warning\b|warnings\.warn|did not converge")
 def test_committed_outputs_carry_no_stderr_or_warning():
     """No executed cell of either notebook carries a stderr stream or a warning's text: a
     solver's termination status is a fact for a table's status column, not a line on the page
-    (driver-log, 2026-11-09, the D.14 recovery cell)."""
+    (driver-log, 2026-11-09, the B.9 recovery cell)."""
     problems = []
     for path in (PAPER_NB, SUPPORT_NB):
         for cell in _code_cells(_nb(path)):
@@ -774,9 +776,36 @@ def test_figures_have_numbered_self_contained_captions():
 # ---- the appendices ----------------------------------------------------------------------------
 
 
-def test_appendix_headings_a_to_g_in_order():
+def test_appendix_headings_a_to_h_in_order():
     heads = [h for h in _headings(_nb(SUPPORT_NB)) if h.startswith("Appendix")]
     assert heads == [f"Appendix {k}. {v}" for k, v in APPENDICES.items()]
+
+
+def test_the_letters_are_the_order_of_first_mention_in_the_paper():
+    """WP57e R-1: the first reference to an appendix or to any of its subsections, in the paper's
+    cell order from the front matter to the works cited, meets the letters A to H in order."""
+    first: list[str] = []
+    for c in _nb(PAPER_NB).cells:
+        if c.cell_type != "markdown":
+            continue
+        for m in re.finditer(r"\{ref\}`[^`<]*<(?:appendix-([a-h])|sub-([a-h])-\d+)>`", _src(c)):
+            letter = (m.group(1) or m.group(2)).upper()
+            if letter not in first:
+                first.append(letter)
+    assert first == list(APPENDICES)
+
+
+def test_every_appendix_numbers_its_subsections_from_one():
+    """WP57e G4: under each letter the subsections run 1, 2, 3, ... with no gap, in the order of
+    the page (D, the notation table, has none)."""
+    for letter, cells in _appendix_cells(_nb(SUPPORT_NB)).items():
+        nums = [
+            int(n) for c in cells if c.cell_type == "markdown"
+            for n in re.findall(rf"^### {letter}\.(\d+) ", _unlabel(_src(c)), re.M)
+        ]  # fmt: skip
+        assert nums == list(range(1, len(nums) + 1)), (letter, nums)
+    heads = [h.split(" ", 1)[0] for h in _headings(_nb(SUPPORT_NB), "###")]
+    assert [h[0] for h in heads] == sorted(h[0] for h in heads)  # each under its own letter
 
 
 def test_no_withdrawn_appendices():
@@ -819,7 +848,7 @@ def test_appendix_cells_import_from_the_generators():
         assert re.search(r"^from generate_\w+ import \w+$", _src(cell), re.M), cell.id
 
 
-# -- A: the register table is compiled from glossary.yaml
+# -- D: the register table is compiled from glossary.yaml
 
 
 def test_register_table_equals_the_glossary_entries_in_use():
@@ -848,30 +877,30 @@ def test_register_table_equals_the_glossary_entries_in_use():
 
 
 def test_register_committed_output_is_current():
-    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-A-register")
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-register")
     assert _out_text(cell) == str(generate_register.register_table()), STALE
 
 
-# -- E: assumptions, limitations and open questions
+# -- G: assumptions, limitations and open questions
 
 
 def _e_cells():
-    return _appendix_cells(_nb(SUPPORT_NB))["E"]
+    return _appendix_cells(_nb(SUPPORT_NB))["G"]
 
 
 def test_appendix_e_has_its_three_parts_in_order():
-    """WP57d G1: E.1 assumptions, E.2 limitations, E.3 open questions, anchored ``sub-e-1`` to
-    ``sub-e-3``; each part is tables, the typed parts no prose outside them but their captions."""
-    heads = [_src(c).splitlines()[:2] for c in _e_cells() if _src(c).startswith("(sub-e-")]
+    """WP57d G1: G.1 assumptions, G.2 limitations, G.3 open questions, anchored ``sub-g-1`` to
+    ``sub-g-3``; each part is tables, the typed parts no prose outside them but their captions."""
+    heads = [_src(c).splitlines()[:2] for c in _e_cells() if _src(c).startswith("(sub-g-")]
     assert heads == [
-        ["(sub-e-1)=", "### E.1 Assumptions"],
-        ["(sub-e-2)=", "### E.2 Limitations"],
-        ["(sub-e-3)=", "### E.3 Open questions"],
+        ["(sub-g-1)=", "### G.1 Assumptions"],
+        ["(sub-g-2)=", "### G.2 Limitations"],
+        ["(sub-g-3)=", "### G.3 Open questions"],
     ]
     ids = [c.id for c in _e_cells()]
-    assert ids.index("tab-E-assumptions") < ids.index("app-E-2") < ids.index("tab-E-gaps")
-    assert ids.index("tab-E-gaps") < ids.index("app-E-3")
-    for cid in ("app-E-2", "app-E-3"):
+    assert ids.index("tab-G-assumptions") < ids.index("app-G-2") < ids.index("tab-G-gaps")
+    assert ids.index("tab-G-gaps") < ids.index("app-G-3")
+    for cid in ("app-G-2", "app-G-3"):
         body = _src(next(c for c in _e_cells() if c.id == cid)).split("\n", 3)[3]
         assert all(ln.startswith("|") for ln in body.splitlines()), cid
 
@@ -905,7 +934,7 @@ def test_the_assumptions_tables_are_the_ledger_of_the_derivation():
     assert stated["A1"] == stated["A2"] == stated["A3"] == "Section 3"
     assert stated["A4"] == stated["A6"] == stated["A8"] == "Section 5"
     assert all(stated[n] == "Section 6" for n in ("A5", "A7", "A9", "A10", "A11", "R1", "R2", "R3"))
-    for cid, fn in (("tab-E-assumptions", "assumptions_table"), ("tab-E-cited", "cited_table")):
+    for cid, fn in (("tab-G-assumptions", "assumptions_table"), ("tab-G-cited", "cited_table")):
         cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == cid)
         assert _out_text(cell) == str(getattr(generate_gaps, fn)()), STALE
 
@@ -920,11 +949,11 @@ def _open_question_ids() -> tuple[list[str], list[str]]:
 
 
 def test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one():
-    """WP57d G1, G5: each open OQ is one row of E.3, in the ledger's order; no closed entry is
+    """WP57d G1, G5: each open OQ is one row of G.3, in the ledger's order; no closed entry is
     listed; the two research questions of Section 9 point at their records in the repository."""
     open_ids, closed = _open_question_ids()
     assert closed == ["OQ-11"] and "OQ-14" in open_ids
-    text = _src(next(c for c in _e_cells() if c.id == "app-E-3"))
+    text = _src(next(c for c in _e_cells() if c.id == "app-G-3"))
     listed = re.findall(r"\[(OQ-\d+)\]", text)
     assert listed == open_ids
     assert not any(f"[{c}]" in text for c in closed)
@@ -936,14 +965,15 @@ def test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one():
 
 def test_e2_places_every_line_of_the_queue_and_names_records_that_resolve():
     """WP57d G2, R-1: every queue line of ``WP57-rounds/assumptions-queue.md`` is marked with where
-    it landed; every G-id in E.2 is a row of the gaps table, every OQ-id an open entry of the
+    it landed; every G-id in G.2 is a row of the gaps table, every OQ-id an open entry of the
     ledger, every L-id a lemma of the proof map."""
     queue = (ROOT / "work-packages" / "WP57-rounds" / "assumptions-queue.md").read_text(
         encoding="utf-8"
     )
     rows = [ln for ln in queue.splitlines() if ln.startswith("| ") and "---" not in ln][1:]
+    # the queue is a dated record: it names the parts by the letter they had at WP57d
     assert len(rows) == 9 and all("E.2" in r or "E.3" in r for r in rows)
-    text = _src(next(c for c in _e_cells() if c.id == "app-E-2"))
+    text = _src(next(c for c in _e_cells() if c.id == "app-G-2"))
     gaps = {r["id"] for r in generate_gaps.gap_rows()}
     assert set(re.findall(r"\bG-\d+", text)) <= gaps
     assert set(re.findall(r"\bOQ-\d+", text)) <= set(_open_question_ids()[0])
@@ -969,7 +999,7 @@ def test_gaps_table_has_every_ledger_row():
 
 
 def test_gaps_committed_output_is_current():
-    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-E-gaps")
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-G-gaps")
     assert _out_text(cell) == str(generate_gaps.gaps_table()), STALE
 
 
@@ -987,7 +1017,7 @@ def test_gaps_table_typesets_its_mathematics_on_the_page():
 
 
 def test_register_table_typesets_its_mathematics_on_the_page():
-    """Appendix A's table, as Appendix E's: the page shows an HTML output as given, so each
+    """Appendix D's table, as Appendix G's: the page shows an HTML output as given, so each
     ``$...$`` span of the register is written as MathML, no literal dollar sign is left, and the
     Markdown a notebook viewer typesets is the glossary's text unchanged."""
     table = generate_register.register_table()
@@ -1053,7 +1083,7 @@ def test_the_tex_subset_of_the_tables_becomes_mathml():
         tex_to_mathml(r"\frac{a}{b}")
 
 
-# -- F: the pinned toolchain is generated from the lock
+# -- H: the pinned toolchain is generated from the lock
 
 
 def _lock_versions():
@@ -1087,21 +1117,21 @@ def test_toolchain_matches_the_lock_pyproject_and_python_version():
 
 def test_f_prose_types_no_versions():
     """R-24, R-30: the versions come from the generator, never from typed prose."""
-    cells = _appendix_cells(_nb(SUPPORT_NB))["F"]
+    cells = _appendix_cells(_nb(SUPPORT_NB))["H"]
     for c in cells:
         if c.cell_type == "markdown":
             assert not re.search(r"\b\d+\.\d+(\.\d+)?\b", _src(c)), c.id
 
 
 def test_f_toolchain_committed_output_matches_the_lock():
-    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-F-toolchain")
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-H-toolchain")
     out = _out_text(cell)
     for name in ("numpy", "scipy", "scikit-learn", "sympy", "pandas", "matplotlib", "mystmd"):
         assert f"| {name} | {_lock_versions()[name]} |" in out, f"{name}: {STALE}"
 
 
 def test_f_container_paragraph_is_a_marked_placeholder_region():
-    cells = _appendix_cells(_nb(SUPPORT_NB))["F"]
+    cells = _appendix_cells(_nb(SUPPORT_NB))["H"]
     text = "\n".join(_src(c) for c in cells if c.cell_type == "markdown")
     assert text.count("% container-paragraph:begin") == 1
     assert text.count("% container-paragraph:end") == 1
@@ -1132,7 +1162,7 @@ def test_f_has_a_row_for_every_figure_and_table_cell():
         assert all(cell.strip() for cell in r)
 
 
-# -- C and D: disjoint and complementary at the metric table
+# -- F and B: disjoint and complementary at the metric table
 
 
 def _cells_of(letter):
@@ -1140,10 +1170,10 @@ def _cells_of(letter):
 
 
 def test_c_defines_the_dataset_labels_and_names_each_dataset_once():
-    out = "\n".join(_out_text(c) for c in _cells_of("C"))
+    out = "\n".join(_out_text(c) for c in _cells_of("F"))
     labels = set(generate_model.DATASET_LABELS.values())
     assert len(labels) == 3
-    table = next(c for c in _cells_of("C") if c.id == "tab-C-datasets")
+    table = next(c for c in _cells_of("F") if c.id == "tab-F-datasets")
     for label in labels:
         assert _out_text(table).count(f"| {label} |") == 1, label
         assert label in out
@@ -1151,14 +1181,14 @@ def test_c_defines_the_dataset_labels_and_names_each_dataset_once():
 
 def test_c_contains_no_fitted_quantity():
     """R-26: no exponent fitted, temperature, value of V, term found, reach or share in C."""
-    for c in _cells_of("C"):
+    for c in _cells_of("F"):
         text = _out_text(c)
         assert not FITTED_WORDS.search(text), (c.id, FITTED_WORDS.search(text).group(0))
 
 
 def test_d_contains_no_definition_of_the_system():
     """R-26: no variable range, constraint, scenario constant or conditioning rule in D."""
-    for c in _cells_of("D"):
+    for c in _cells_of("B"):
         m = SYSTEM_WORDS.search(_out_text(c))
         assert not m, (c.id, m and m.group(0))
 
@@ -1166,7 +1196,7 @@ def test_d_contains_no_definition_of_the_system():
 def test_every_table_of_d_cites_its_dataset_by_cs_label():
     labels = set(generate_model.DATASET_LABELS.values())
     moved = {cell for cell, _ in MOVED_TO_D.values()}  # sentences under a table that cites it
-    for c in _cells_of("D"):
+    for c in _cells_of("B"):
         if c.id in moved:
             continue
         text = _out_text(c)
@@ -1176,11 +1206,11 @@ def test_every_table_of_d_cites_its_dataset_by_cs_label():
 
 
 def test_no_table_or_figure_appears_in_both_c_and_d():
-    c_calls = {ast.unparse(_calls(ast.parse(_src(c)))[0]) for c in _cells_of("C")}
-    d_calls = {ast.unparse(_calls(ast.parse(_src(c)))[0]) for c in _cells_of("D")}
+    c_calls = {ast.unparse(_calls(ast.parse(_src(c)))[0]) for c in _cells_of("F")}
+    d_calls = {ast.unparse(_calls(ast.parse(_src(c)))[0]) for c in _cells_of("B")}
     assert not c_calls & d_calls
-    c_tables = set().union(*[_tables(_out_text(c)) for c in _cells_of("C")])
-    d_tables = set().union(*[_tables(_out_text(c)) for c in _cells_of("D")])
+    c_tables = set().union(*[_tables(_out_text(c)) for c in _cells_of("F")])
+    d_tables = set().union(*[_tables(_out_text(c)) for c in _cells_of("B")])
     assert not c_tables & d_tables
 
 
@@ -1221,8 +1251,8 @@ def _current(committed: str, fresh: str, what: str) -> None:
 
 
 _TERM_NUMBERED = (
-    ("tab-D-exponents_and_terms", "exponents_and_terms"),
-    ("tab-D-termination_records", "termination_records"),
+    ("tab-B-exponents_and_terms", "exponents_and_terms"),
+    ("tab-B-termination_records", "termination_records"),
 )
 
 
@@ -1250,9 +1280,9 @@ def test_term_numbered_tables_are_current():
 
 @pytest.mark.slow
 def test_d2_lists_follow_the_estimators_term_order_for_every_k():
-    """D.2's per-term lists are the estimator's own: ``term rows`` are the cell sizes and
-    ``term shares`` the ``term_share_`` (to three digits) of each fit, in the order the fit
-    returns them."""
+    """The old D.2's per-term lists (now B.4's) are the estimator's own: ``term rows`` are the
+    cell sizes and ``term shares`` the ``term_share_`` (to three digits) of each fit, in the order
+    the fit returns them."""
     import case
     import generate_results as gr
 
@@ -1298,9 +1328,9 @@ def test_an_exact_zero_and_a_residue_have_one_spelling_in_a_stable_table():
 
 
 def test_d3_exponent_tables_print_no_bare_zero_exponent():
-    """Every exponent cell of D.3 is a number or the bound; an exact zero is the bound."""
+    """Every exponent cell of B.1 is a number or the bound; an exact zero is the bound."""
     by_id = {c.id: c for c in _code_cells(_nb(SUPPORT_NB))}
-    text = _out_text(by_id["tab-D-exponents_and_terms"])
+    text = _out_text(by_id["tab-B-exponents_and_terms"])
     rows = [line for line in text.splitlines() if re.match(r"\| [a-z]", line)]
     exponent_rows = [r for r in rows if r.count("|") >= 4 and "term" not in r.lower()]
     assert exponent_rows
@@ -1316,7 +1346,7 @@ def test_c_committed_output_is_current():
     """
     exact = exact_only("planted_table_sha256")
     rtol = listed()["planted_table_sha256"]["text_rtol"]
-    for cell in _cells_of("C"):
+    for cell in _cells_of("F"):
         fn = re.search(r"import (\w+)", _src(cell)).group(1)
         committed, fresh = _out_text(cell), str(getattr(generate_model, fn)())
         if exact:
@@ -1342,11 +1372,11 @@ def test_planted_example_is_reproducible_and_has_known_terms():
     assert info["exponents"].shape == (3, 4) and X.shape[1] == 4
 
 
-# -- B: the proofs, compiled from the record
+# -- E: the proofs, compiled from the record
 
 RECORD = ROOT / "derivation" / "proof_map_record.json"
-_PROOF_CELLS = ("tab-B-how-to-read", "tab-B-proof-map", "tab-B-proofs-fit", "tab-B-proofs-solver",
-                "tab-B-checker")  # fmt: skip
+_PROOF_CELLS = ("tab-E-how-to-read", "tab-E-proof-map", "tab-E-proofs-fit", "tab-E-proofs-solver",
+                "tab-E-checker")  # fmt: skip
 
 
 def _record():
@@ -1516,7 +1546,7 @@ def test_figure1_is_not_in_the_paper_and_the_index_page_no_longer_shows_it():
     assert "figure1" not in assembler.replace("Figure 1", "")  # no consumer on the page
 
 
-# -- C and D: the completions
+# -- F and B: the completions
 
 
 def test_each_attribute_has_a_producer_that_exists_in_its_file():
@@ -1587,26 +1617,20 @@ def test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice
 
 def test_c_has_the_metric_table_and_the_sources_and_d_has_the_extended_tables():
     sections = _appendix_cells(_nb(SUPPORT_NB))
-    ids_c = {c.id for c in sections["C"]}
-    assert {"tab-C-attribute_sources", "tab-C-metric_table"} <= ids_c
-    ids_d = {c.id for c in sections["D"]}
+    ids_c = {c.id for c in sections["F"]}
+    assert {"tab-F-attribute_sources", "tab-F-metric_table"} <= ids_c
+    ids_d = {c.id for c in sections["B"]}
     assert (
-        "tab-D-sensitivity_variants" in ids_d
-    )  # WP57c: D.1 and D.6 to the supplement, D.7 in D.17
-    assert not ids_d & {"tab-D-refits_by_category", "tab-D-candidate_designs",
-                        "tab-D-temperature_selection", "tab-D-k_diagnostics",
-                        "tab-D-conditioning_diagnostic"}  # fmt: skip
-    heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith(("C.", "D."))]
-    assert heads == [f"C.{k}" + h[3:] for k, h in enumerate(heads[: len(heads)], 1) if h[0] == "C"][
-        : sum(h[0] == "C" for h in heads)
-    ] + [h for h in heads if h[0] == "D"]  # C numbered in order
-    d_nums = [int(re.match(r"D\.(\d+)", h).group(1)) for h in heads if h[0] == "D"]
-    assert d_nums == sorted(set(d_nums))  # in order; WP57e re-letters and closes the gaps
+        "tab-B-sensitivity_variants" in ids_d
+    )  # WP57c: the old D.1 and D.6 to the supplement, the old D.7 into B.12
+    assert not ids_d & {"tab-B-refits_by_category", "tab-B-candidate_designs",
+                        "tab-B-temperature_selection", "tab-B-k_diagnostics",
+                        "tab-B-conditioning_diagnostic"}  # fmt: skip
 
 
 def test_the_c_and_d_additions_are_current_and_cite_the_labels():
-    for cell in _cells_of("D"):
-        if cell.id in {"tab-D-sensitivity_variants", "tab-D-termination_records"}:
+    for cell in _cells_of("B"):
+        if cell.id in {"tab-B-sensitivity_variants", "tab-B-termination_records"}:
             assert "cubesat-primary" in _out_text(cell), cell.id
 
 
@@ -1657,7 +1681,7 @@ def test_prior_art_says_nothing_is_novel_first_or_new():
 
 
 def test_every_differs_cell_has_this_work_as_its_subject():
-    """WP35 Q2: Table 1 and Appendix G read down the "differs" column in one voice. Every full
+    """WP35 Q2: Table 1 and Appendix A read down the "differs" column in one voice. Every full
     cell and every short phrase opens "This work", so no cell can be read as the other method's
     property; what a family does, including its limits, is in `does`."""
     for e in generate_prior_art.entries():
@@ -1672,11 +1696,11 @@ def test_every_differs_cell_has_this_work_as_its_subject():
 
 def test_section2_table_is_a_subset_of_the_register_with_the_same_wording():
     """R-27: section 2's rows are the flagged entries, and each cell's phrase is an extract of the
-    Appendix G field of the same name, word for word.
+    Appendix A field of the same name, word for word.
 
     The requirement's intent is one source with one wording. The table used to print the three
     sentences in full, five columns of them in a narrow column two screens tall; it now prints a
-    short phrase per cell (``short`` in ``prior_art.yaml``) and Appendix G the sentences, so the
+    short phrase per cell (``short`` in ``prior_art.yaml``) and Appendix A the sentences, so the
     test asks that each phrase occurs in the field it abbreviates, and that the field is in the
     register verbatim. Decided by the driver (WP10, table 1 made readable)."""
     entries = generate_prior_art.entries()
@@ -1742,27 +1766,26 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
 
 
 def test_the_candidates_paragraph_is_cut_and_the_table_stays_in_appendix_d():
-    """Change request 14 moved Table 2 to D.7; WP39 D-5 cut the paragraph and its sentence from
-    Section 9 (the hand-named candidates all miss the thresholds; the shortlist of the decision is
-    the case's concrete designs). D.7 keeps the table and its sentence, and nothing points to a
-    removed label."""
+    """Change request 14 moved Table 2 to the old D.7; WP39 D-5 cut the paragraph and its sentence
+    from Section 9 (the hand-named candidates all miss the thresholds; the shortlist of the decision
+    is the case's concrete designs). The old D.7 kept the table and its sentence, and nothing
+    points to a removed label."""
     import generate_findings as gf
 
     paper_ids = {c.id for c in _nb(PAPER_NB).cells}
     assert not paper_ids & {"sec-case-analysis-4", "cand-table", "num-candidates", "tab-candidates"}
-    assert "Candidates." not in _section("Case analysis") and "sub-d-7" not in _markdown(
-        _nb(PAPER_NB)
-    )
+    assert "Candidates." not in _section("Case analysis")
     assert not hasattr(gf, "candidates_sentence")
-    # WP57c: D.7 merged into D.17; the candidates' sentence is generated under the design sets
-    assert "tab-D-candidate_designs" not in {c.id for c in _cells_of("D")}
-    assert "candidates, fast_effort_hungry" in _cell_out(SUPPORT_NB, "tab-D-design_sets_comparison")
+    # WP57c: the old D.7 merged into B.12; the candidates' sentence is generated under the design
+    # sets
+    assert "tab-B-candidate_designs" not in {c.id for c in _cells_of("B")}
+    assert "candidates, fast_effort_hungry" in _cell_out(SUPPORT_NB, "tab-B-design_sets_comparison")
 
 
 def test_prior_art_committed_outputs_are_current():
     paper = {c.id: c for c in _code_cells(_nb(PAPER_NB))}
     assert _out_text(paper["tab-families"]) == str(generate_prior_art.family_table()), STALE
-    reg = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-G-register")
+    reg = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-A-register")
     assert _out_text(reg) == str(generate_prior_art.register()), STALE
 
 
@@ -1782,11 +1805,11 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
         "downstream step",
     ):
         assert phrase in p, phrase
-    # WP35 amendment 1: the paragraph points at Appendix H and says what it tests
+    # WP35 amendment 1: the paragraph points at Appendix C and says what it tests
     assert (
         "recovered the planted trade-offs only where they were the direction of largest spread" in p
     )
-    assert "{ref}`Appendix H <appendix-h>`" in p and "Appendix G" not in p
+    assert "{ref}`Appendix C <appendix-c>`" in p and "Appendix A" not in p
     assert "kernel" not in p.lower()
     assert "unrelated" not in s2 and "Färe" not in s2  # the two caveats are pointers or gone
     assert s2.count("hyperbolic") == 1  # HoroPCA's own space; the word is defined in Definitions
@@ -1799,7 +1822,7 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
     )
 
 
-# ---- Appendix H: the HoroPCA comparison as a tested hypothesis (WP35, amendment 1) ---------------
+# ---- Appendix C: the HoroPCA comparison as a tested hypothesis (WP35, amendment 1) ---------------
 
 SPIKE_H = ROOT / "work-packages" / "WP35-rounds" / "spike-h"
 HYPOTHESIS_COMMIT = "830cf54"
@@ -1957,6 +1980,7 @@ def test_the_design_constants_of_appendix_h_are_the_pre_registered_ones():
         "rho in {2, 0.5}",
     ):
         assert phrase in text, phrase
+    # the spike's dated draft keeps the id the appendix had then
     draft = (SPIKE_H / "h-sections.md").read_text(encoding="utf-8")
     design = draft.split("=== app-H-2 | markdown", 1)[1].split("=== ", 1)[0]
     for phrase in (
@@ -1969,7 +1993,7 @@ def test_the_design_constants_of_appendix_h_are_the_pre_registered_ones():
         "2 or 0.5",
     ):
         assert phrase in design, phrase
-    h2 = next(c for c in _appendix_cells(_nb(SUPPORT_NB))["H"] if c.id == "app-H-2")
+    h2 = next(c for c in _appendix_cells(_nb(SUPPORT_NB))["C"] if c.id == "app-C-2")
     assert all(p in _src(h2) for p in ("Four metrics, 300 rows", "six tables per setting"))
 
 
@@ -1982,17 +2006,17 @@ def _h5_note() -> str:
 
 
 def _appendix_h_cells():
-    return _appendix_cells(_nb(SUPPORT_NB))["H"]
+    return _appendix_cells(_nb(SUPPORT_NB))["C"]
 
 
 def _appendix_h_prose() -> str:
-    """The prose of Appendix H as the reader meets it: its Markdown and its generated sentences
-    (cells ``sent-H-*``), not its table."""
+    """The prose of Appendix C as the reader meets it: its Markdown and its generated sentences
+    (cells ``sent-C-*``), not its table."""
     parts = []
     for c in _appendix_h_cells():
         if c.cell_type == "markdown":
             parts.append(_src(c))
-        elif c.id.startswith("sent-H-"):
+        elif c.id.startswith("sent-C-"):
             parts.append(_out_text(c))
     return "\n\n".join(parts)
 
@@ -2000,14 +2024,14 @@ def _appendix_h_prose() -> str:
 def test_appendix_h_has_its_four_sections_in_the_supervisors_order():
     """WP35 RA-1: hypothesis (with its refutation conditions), experiment, results, what the table
     shows; how the formalism and the solvers differ is a note of the repository (WP57d), cited in
-    one line at the end of H.4."""
+    one line at the end of C.4."""
     heads = [
-        _src(c).split("\n")[1] if _src(c).startswith("(sub-h-") else None
+        _src(c).split("\n")[1] if _src(c).startswith("(sub-c-") else None
         for c in _appendix_h_cells()
         if c.cell_type == "markdown"
     ]
     heads = [h for h in heads if h]
-    assert [h.split(" ", 2)[0:2] for h in heads] == [["###", f"H.{i}"] for i in range(1, 5)]
+    assert [h.split(" ", 2)[0:2] for h in heads] == [["###", f"C.{i}"] for i in range(1, 5)]
     assert [h.split(" ", 2)[2].split()[0] for h in heads] == ["The", "The", "Results", "What"]
     assert heads[0].endswith("what would refute it")
     last = _src(_appendix_h_cells()[-1])
@@ -2016,25 +2040,25 @@ def test_appendix_h_has_its_four_sections_in_the_supervisors_order():
 
 
 H_CEILING = 920 - 169
-"""Appendix H's ceiling after WP57d's cut row (``paper/length_ledger.toml``)."""
+"""Appendix C's ceiling after WP57d's cut row (``paper/length_ledger.toml``)."""
 
 
 def test_appendix_h_is_within_its_ledger_ceiling():
     """WP35 amendment 1: the visible prose (Markdown, the caption, the generated sentences; not the
     table) is at most the ceiling the ledger fixes: 920 words (900, raised by the wording unit's row
-    on the assistant's word, 3fb77e6), lowered by WP57d's cut row (the Job block, H.1's sentence
-    about the appendix, H.5), raised again only by a new row and the assistant's word."""
+    on the assistant's word, 3fb77e6), lowered by WP57d's cut row (the Job block, C.1's sentence
+    about the appendix, the old H.5), raised again only by a new row and the assistant's word."""
     _, ceilings = ledger_ceilings()
-    assert ceilings["Appendix H"] == H_CEILING
-    assert rendered_words(_appendix_h_prose()) <= ceilings["Appendix H"]
+    assert ceilings["Appendix C"] == H_CEILING
+    assert rendered_words(_appendix_h_prose()) <= ceilings["Appendix C"]
 
 
 def test_appendix_h_prints_no_typed_number_in_its_table_and_sentence_cells():
     """WP35 RA-2: the table and the sentences of results are generated: their cells hold one call
     and no digit, and their committed outputs equal what the generator prints now."""
     cells = {c.id: c for c in _code_cells(_nb(SUPPORT_NB)) if c.id.endswith("hypothesis")
-             or c.id.startswith("sent-H-")}  # fmt: skip
-    assert "tab-H-hypothesis" in cells and len(cells) >= 5
+             or c.id.startswith("sent-C-")}  # fmt: skip
+    assert "tab-C-hypothesis" in cells and len(cells) >= 5
     for cid, c in cells.items():
         calls = [ln for ln in _src(c).splitlines() if ln and not ln.startswith("from ")]
         assert len(calls) == 1 and not re.search(r"\d", calls[0]), cid
@@ -2044,7 +2068,7 @@ def test_appendix_h_prints_no_typed_number_in_its_table_and_sentence_cells():
 
 def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
     """WP35 RA-4, RA-10: PCA, |cos|, R, frame and horosphere each have a plain line at first use;
-    the chain to D.16 is in words with its pointer."""
+    the chain to B.11 is in words with its pointer."""
     text = _appendix_h_prose()
 
     def first(term):
@@ -2057,12 +2081,12 @@ def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
     assert "(|cos|, agreement of directions ignoring sign)" in text
     assert first("|cos|") < first("threshold")
     assert "distance R from the centre" in text and first("R from") < first("R = 3")
-    note = _h5_note()  # H.5's terms moved with it (WP57d)
+    note = _h5_note()  # the old H.5's terms moved with it (WP57d)
     assert (
         "frame, k orthonormal directions" in note
         and "horospheres (the curved counterparts of hyperplanes" in note
     )
-    assert "{ref}`Appendix D.16 <sub-d-16>`" in " ".join(_src(c) for c in _appendix_h_cells())
+    assert "{ref}`Appendix B.11 <sub-b-11>`" in " ".join(_src(c) for c in _appendix_h_cells())
     assert "was not run" in text
     assert "second embedding was not run" in text and "not tree-like" in text
     assert "The embedding is part of the treatment" in text  # decision 1862491, boundary (a)
@@ -2075,7 +2099,7 @@ def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
 def test_appendix_h_wording_unit_defines_its_terms_and_states_counts():
     """WP35 wording unit (FW-1 to FW-13, FW-15 to FW-20; FW-14 not applied): rho, t, the depth
     direction, the generator, the ball and the threshold are defined at first use; H1 to H4 are
-    counts of the six tables; the verdict sentence names no total; Section 2 and Appendix H use
+    counts of the six tables; the verdict sentence names no total; Section 2 and Appendix C use
     one term (prospectively specified) for one thing."""
     text = _appendix_h_prose()
     record = _record_h()
@@ -2099,7 +2123,7 @@ def test_appendix_h_wording_unit_defines_its_terms_and_states_counts():
     )  # FW-19, the second boundary with its number
     assert "(its fourth)" in text and "analyst with other domain" not in text  # FW-13, FW-20
     assert "linear program" not in text and "sequential quadratic" not in text  # FW-17
-    note = _h5_note()  # H.5 moved to the repository's note (WP57d), its wording kept
+    note = _h5_note()  # the old H.5 moved to the repository's note (WP57d), its wording kept
     assert "shortfall from the best value" in note and "how far its loss is" in note  # FW-16
     assert "chami2021horopca" in note and "its loss)" in note
     assert "c9a9996 (Adam, random starts)" in note
@@ -2113,15 +2137,15 @@ def test_appendix_h_wording_unit_defines_its_terms_and_states_counts():
     assert "at least" not in conditions and "of the tables" not in conditions  # counts, no shares
     verdict = str(generate_prior_art.horopca_verdict_sentence())
     assert verdict == "Every check in the 11 cells holds, so every part survives."  # FW-11
-    caption = next(c for c in _appendix_h_cells() if c.id == "tab-H-hypothesis-caption")
-    assert "H1 to H4 are listed in H.1; HoroPCA cells read R = 0.25, R = 1" in _src(
+    caption = next(c for c in _appendix_h_cells() if c.id == "tab-C-hypothesis-caption")
+    assert "H1 to H4 are listed in C.1; HoroPCA cells read R = 0.25, R = 1" in _src(
         caption
     )  # FW-12
     section2 = _section("Prior art")
     assert "prospectively specified test" in section2 and "pre-registered" not in section2  # FW-1
     prior = next(r for r in generate_prior_art.entries() if r["id"] == "horopca")
     assert (
-        "on the synthetic tables of Appendix H, the leading components of PCA and HoroPCA"
+        "on the synthetic tables of Appendix C, the leading components of PCA and HoroPCA"
         in " ".join(prior["differs"].split())
     )  # FW-15
 
@@ -2138,7 +2162,7 @@ def _forbidden_in(text: str) -> list[str]:
 
 
 def test_no_sentence_says_horopca_is_worse_or_calls_this_work_a_pca():
-    """WP35 RA-6 (default phrase list): Section 2's HoroPCA paragraph, and Appendix H once it is in
+    """WP35 RA-6 (default phrase list): Section 2's HoroPCA paragraph, and Appendix C once it is in
     the notebook, say what each method estimates and never rank them nor call this work a PCA or
     HoroPCA a kernel method."""
     paragraph = next(p for p in _section("Prior art").split("\n\n") if "HoroPCA" in p)
@@ -2158,12 +2182,12 @@ def test_the_source_map_names_the_hypothesis_table_and_its_record():
 
 
 def test_appendix_g_is_the_register_and_one_line_citing_the_reading_pass():
-    """WP57a: the heading, G.1's heading, the register, one line naming the reading pass's file;
-    no Job block, no scope sentence (queued for WP57d), no pointer cell, no G.2."""
-    cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
-    assert [c.id for c in cells] == ["app-G", "app-G-1", "tab-G-register", "app-G-reading-pass"]
+    """WP57a: the heading, A.1's heading, the register, one line naming the reading pass's file;
+    no Job block, no scope sentence (queued for WP57d), no pointer cell, no A.2."""
+    cells = _appendix_cells(_nb(SUPPORT_NB))["A"]
+    assert [c.id for c in cells] == ["app-A", "app-A-1", "tab-A-register", "app-A-reading-pass"]
     text = "\n".join(_src(c) for c in cells if c.cell_type == "markdown")
-    assert "not exhaustive" not in text and "G.2" not in text and "tested by experiment" not in text
+    assert "not exhaustive" not in text and "A.2" not in text and "tested by experiment" not in text
     assert "paper/supplement/reading-pass.md" in _src(cells[-1])
     assert len(_src(cells[-1]).split()) <= 30
 
@@ -2224,7 +2248,7 @@ def test_closing_section_is_short_and_calls_the_derivations_scripted_checks():
     or formally verified (proof-conventions.md)."""
     text = _section("AI acknowledgement and Reproducibility")
     assert _prose_words(text) < 200
-    assert "@zargham2026incose" in text and "supervisor-gated" in text and "appendix-f" in text
+    assert "@zargham2026incose" in text and "supervisor-gated" in text and "appendix-h" in text
     assert not re.search(r"machine-checked|formally verified", text, re.I)
     assert "Reproducibility and your own case" not in _markdown(_nb(PAPER_NB))
 
@@ -2232,7 +2256,7 @@ def test_closing_section_is_short_and_calls_the_derivations_scripted_checks():
 def test_every_lemma_has_a_let_assume_then_block_with_its_proof_pointer():
     """R-17, R-18, WP55 G4: L1 to L17 once each (and L20, the noise corollary, after L6, and L21,
     the tension, after L7). Each result is "Let ... Assume ... Then ..." with its lemma label in the
-    title and ends "Proof: Appendix B, Ln"; the Derived and Hypotheses labels, the sketches and the
+    title and ends "Proof: Appendix E, Ln"; the Derived and Hypotheses labels, the sketches and the
     Script boxes are gone from the main text. The paper's order is the algorithm's (E-8): the
     alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
     blocks = _blocks()
@@ -2251,7 +2275,7 @@ def test_every_lemma_has_a_let_assume_then_block_with_its_proof_pointer():
         assert re.match(r"Let ", flat), label
         assert " Assume " in flat or flat.count("Assume") >= 1, label
         assert " Then" in flat or "Then," in flat, label
-        assert flat.rstrip().endswith(f"Proof: {{ref}}`Appendix B, L{n} <appendix-b>`."), label
+        assert flat.rstrip().endswith(f"Proof: {{ref}}`Appendix E, L{n} <appendix-e>`."), label
         assert n in scripts and "def verify(" in scripts[n].read_text(encoding="utf-8"), label
     main = "\n".join(
         _section(n) for n in ("Preliminaries and notation", "Definitions", "Methods", "Results")
@@ -2302,12 +2326,12 @@ def test_the_open_questions_left_the_narrative_for_the_review_record():
     for section in ("Preliminaries and notation", "Definitions", "Methods", "Results"):
         text = _section(section)
         hits = re.findall(r"[^.]*(?:\bopen\b|not established|conjecture)[^.]*\.", text, re.I)
-        assert all("Appendix E" in h for h in hits), (section, hits)
+        assert all("Appendix G" in h for h in hits), (section, hits)
 
 
 def test_no_section_3_to_6_reference_points_forward():
     """WP55 R-2: in Sections 3 to 6 a section, theorem or definition reference points back; the
-    exceptions are equations and the proofs of Appendix B."""
+    exceptions are equations and the proofs of Appendix E."""
     cells = _nb(PAPER_NB).cells
     seen: set[str] = set()
     inside = False
@@ -2389,12 +2413,13 @@ def _reference_targets():
 
 
 def _subsection_labels() -> dict[str, str]:
-    """``sub-d-3`` -> its heading, from the ``(sub-d-3)=`` line of each subsection of the supporting
-    material (Appendices B to H); the number in the label must be the heading's own."""
+    """``sub-b-1`` -> its heading, from the ``(sub-b-1)=`` line of each subsection of the supporting
+    material (every appendix with subsections); the number in the label must be the heading's
+    own."""
     out = {}
     for c in _nb(SUPPORT_NB).cells:
         m = (
-            re.match(r"^\((sub-[b-h]-\d+)\)=\n### ([B-H]\.\d+) ", _src(c))
+            re.match(r"^\((sub-[a-h]-\d+)\)=\n### ([A-H]\.\d+) ", _src(c))
             if c.cell_type == "markdown"
             else None
         )
@@ -2406,17 +2431,17 @@ def _subsection_labels() -> dict[str, str]:
 
 
 def test_every_subsection_heading_carries_a_label():
-    """Cross-references land on the subsection (D.3, F.2), not the top of the appendix (G-12)."""
+    """Cross-references land on the subsection (B.1, H.2), not the top of the appendix (G-12)."""
     headings = [
         h for c in _nb(SUPPORT_NB).cells if c.cell_type == "markdown"
-        for h in re.findall(r"^### ([B-H]\.\d+) ", _unlabel(_src(c)), re.M)
+        for h in re.findall(r"^### ([A-H]\.\d+) ", _unlabel(_src(c)), re.M)
     ]  # fmt: skip
     assert headings and sorted(_subsection_labels().values()) == sorted(headings)
 
 
 def test_every_appendix_subsection_named_in_the_main_text_resolves_to_a_label_that_exists():
-    """In the prose, a reference to Appendix D.n (or just D.n) is a role naming ``sub-d-n``; in a
-    generated sentence it is a link to ``supporting-material/#sub-d-n``; both labels exist."""
+    """In the prose, a reference to Appendix B.n (or just B.n) is a role naming ``sub-b-n``; in a
+    generated sentence it is a link to ``supporting-material/#sub-b-n``; both labels exist."""
     labels = _subsection_labels()
     paper = _nb(PAPER_NB)
     body = _markdown(paper)
@@ -2426,14 +2451,14 @@ def test_every_appendix_subsection_named_in_the_main_text_resolves_to_a_label_th
         assert label in labels and title.endswith(labels[label]), (title, label)
     plain = _ROLE.sub("", _unlabel(body))
     plain = re.sub(r"\{ref\}`[^`]*`", "", plain)
-    assert not re.search(r"\b[B-G]\.\d{1,2}\b", plain), re.search(r"\b[B-G]\.\d{1,2}\b", plain)
+    assert not re.search(r"\b[A-H]\.\d{1,2}\b", plain), re.search(r"\b[A-H]\.\d{1,2}\b", plain)
     generated = " ".join(_out_text(c) for c in _code_cells(paper) if c.id.startswith("num-"))
     links = re.findall(r'<a href="supporting-material/#(sub-[^"]+)"[^>]*>([^<]*)</a>', generated)
     assert len(links) >= 3
     for label, text in links:
         assert label in labels and text == f"Appendix {labels[label]}", (label, text)
     unlinked = re.sub(r"<a [^>]*>[^<]*</a>", "", generated)
-    assert not re.search(r"\b(?:Appendix )?[B-G]\.\d{1,2}\b", unlinked), unlinked
+    assert not re.search(r"\b(?:Appendix )?[A-H]\.\d{1,2}\b", unlinked), unlinked
 
 
 def test_every_heading_has_a_label_and_the_labels_follow_the_structure():
@@ -2474,16 +2499,16 @@ def test_appendix_and_section_references_resolve():
                     or (len(title) == 1 and title == label[-1].upper())
                     or title == "supporting material's appendices"  # the Organization route
                 ), (title, label)
-            for n in re.findall(r"^Appendix B, L(\d+)$", title):
+            for n in re.findall(r"^Appendix E, L(\d+)$", title):
                 assert any(v["number"] == int(n) for v in record.values()), n
         plain = _ROLE.sub("", _unlabel(body))
         plain = re.sub(
             r"\[@[^\]]*\]", "", plain
         )  # a citation's locator names the cited work's own section
         plain = "\n".join(ln for ln in plain.splitlines() if not ln.startswith("#"))
-        assert not re.search(r"\b[Ss]ections? \d|\bAppendix [A-G]\b|\b(Table|Figure) \d", plain), (
-            re.search(r"\b[Ss]ections? \d|\bAppendix [A-G]\b|\b(Table|Figure) \d", plain)
-        )
+        # the letters the check read before WP57e ([A-G], all but the HoroPCA appendix), re-lettered
+        typed = r"\b[Ss]ections? \d|\bAppendix [ABD-H]\b|\b(Table|Figure) \d"
+        assert not re.search(typed, plain), re.search(typed, plain)
     paper_body = _markdown(_nb(PAPER_NB))
     letters = {m[-1].upper() for _, _, m in _ROLE.findall(paper_body) if m.startswith("appendix-")}
     assert letters == set(APPENDICES)
@@ -2572,7 +2597,7 @@ def test_notebooks_execute_from_a_clean_kernel_and_match_the_committed_outputs(t
             keys_a = [sorted(o.get("data", {})) for o in ca.outputs]
             keys_b = [sorted(o.get("data", {})) for o in cb.outputs]
             assert keys_a == keys_b, ca.id
-            if ca.id.startswith("tab-F-toolchain"):
+            if ca.id.startswith("tab-H-toolchain"):
                 continue  # the commit and the platform are observed values
             assert _out_text(ca) == _out_text(cb), ca.id
 
@@ -2637,8 +2662,8 @@ NUM_CELLS = [
 ]  # fmt: skip
 """The generated sentences of the paper. WP56 moved num-recovery, num-predict-reading,
 num-k-temperatures, num-participation and num-tension out of Sections 7 to 9; WP57c landed the
-participation sentence in D.3, the reading of the proposals in D.10 and the K temperatures in D.15
-(``MOVED_TO_D``), left the recovery sentence to D.14's own tables and retired the tension sentence
+participation sentence in B.1, the reading of the proposals in B.6 and the K temperatures in B.10
+(``MOVED_TO_D``), left the recovery sentence to B.9's own tables and retired the tension sentence
 (``work-packages/WP56-rounds/moved-to-appendix.md``, each line marked)."""
 
 
@@ -2676,19 +2701,19 @@ def _case_sentences():
 
 
 MOVED_TO_D = {
-    "num-participation": ("sent-D-participation", "participation_sentence"),
-    "num-temperature-variants": ("sent-D-temperature-variants", "temperature_variants"),
-    "num-predict-reading": ("sent-D-proposals", "proposals_reading"),
-    "num-k-temperatures": ("sent-D-k-temperatures", "k_temperatures"),
+    "num-participation": ("sent-B-participation", "participation_sentence"),
+    "num-temperature-variants": ("sent-B-temperature-variants", "temperature_variants"),
+    "num-predict-reading": ("sent-B-proposals", "proposals_reading"),
+    "num-k-temperatures": ("sent-B-k-temperatures", "k_temperatures"),
 }
-"""The generated sentences WP56 moved out of Sections 7 to 9 and WP57c landed in Appendix D:
-paper cell -> (the Appendix D cell, its one-call generator)."""
+"""The generated sentences WP56 moved out of Sections 7 to 9 and WP57c landed in Appendix B:
+paper cell -> (the Appendix B cell, its one-call generator)."""
 
 
 def _moved(cid: str) -> str:
     """The generated sentence of a cell WP56 moved out of Sections 7 to 9: the committed output
-    of the Appendix D cell that prints it (``MOVED_TO_D``), or, for the recovery sentence that
-    D.14's tables state in full and no cell prints, its generator."""
+    of the Appendix B cell that prints it (``MOVED_TO_D``), or, for the recovery sentence that
+    B.9's tables state in full and no cell prints, its generator."""
     import generate_findings as gf
 
     if cid in MOVED_TO_D:
@@ -2701,13 +2726,13 @@ def _moved(cid: str) -> str:
 @pytest.mark.slow
 def test_the_moved_sentences_in_appendix_d_are_their_generators_output():
     """WP57c G2: each sentence WP56 moved out of Sections 7 to 9 is printed by one call in the
-    Appendix D subsection that holds what it reads (participation in D.3, the scaler variant in
-    D.5, the proposals in D.10, each K's temperature in D.15), and the output is current."""
+    Appendix B subsection that holds what it reads (participation in B.1, the scaler variant in
+    B.3, the proposals in B.6, each K's temperature in B.10), and the output is current."""
     import generate_findings as gf
 
     exact = exact_only("planted_table_sha256")
     rtol = listed()["planted_table_sha256"]["text_rtol"]
-    cells = _appendix_cells(_nb(SUPPORT_NB))["D"]
+    cells = _appendix_cells(_nb(SUPPORT_NB))["B"]
     ids = [c.id for c in cells]
     for cid, (dcell, fn) in MOVED_TO_D.items():
         assert dcell in ids, dcell
@@ -2716,13 +2741,13 @@ def test_the_moved_sentences_in_appendix_d_are_their_generators_output():
         ok = committed == fresh if exact else _same_text(committed, fresh, rtol)
         assert ok, f"{dcell}: {STALE}"
         assert cid not in [c.id for c in _nb(PAPER_NB).cells], cid
-    before = {"sent-D-participation": "tab-D-exponents_and_terms",
-              "sent-D-temperature-variants": "tab-D-sensitivity_variants",
-              "sent-D-proposals": "tab-D-propose_predict_check",
-              "sent-D-k-temperatures": "tab-D-choosing_k"}  # fmt: skip
+    before = {"sent-B-participation": "tab-B-exponents_and_terms",
+              "sent-B-temperature-variants": "tab-B-sensitivity_variants",
+              "sent-B-proposals": "tab-B-propose_predict_check",
+              "sent-B-k-temperatures": "tab-B-choosing_k"}  # fmt: skip
     for dcell, table in before.items():
         assert ids.index(dcell) == ids.index(table) + 1, dcell
-    assert "sub-d-3" not in _cell_out(SUPPORT_NB, "sent-D-participation")  # no link to itself
+    assert "sub-b-1" not in _cell_out(SUPPORT_NB, "sent-B-participation")  # no link to itself
 
 
 @pytest.fixture(scope="module")
@@ -2760,9 +2785,9 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
     gap = q["certificate | primary | 2 | max gap"]
     if max(abs(gap["min"]), abs(gap["max"])) < 1e-12:
         assert "term gap below 1e-12" in cert
-    # the term shares moved from the sentence to the terms table of Appendix D (D.3), where each
+    # the term shares moved from the sentence to the terms table of Appendix B (B.1), where each
     # is printed to the digits that hold over the datasets, never the committed value alone
-    terms = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
+    terms = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-exponents_and_terms")
     primary = _out_text(terms).split("Dataset cubesat-stock", 1)[0]
     for k in (1, 2, 3):
         name = f"D terms K=3 | primary | {k} | share"
@@ -2789,7 +2814,7 @@ def test_no_residue_is_printed_as_raw_digits(case_sentences):
         assert not RAW_RESIDUE.search(str(text)), key
     for nb in (PAPER_NB, SUPPORT_NB):
         for cell in _code_cells(_nb(nb)):
-            if cell.id.startswith(("num-", "tab-D-")):
+            if cell.id.startswith(("num-", "tab-B-")):
                 assert not RAW_RESIDUE.search(_out_text(cell)), cell.id
     assert "below 1e-12" in str(case_sentences["num-certificates"])
 
@@ -2807,17 +2832,15 @@ def test_generated_sentences_committed_output_is_current(case_sentences):
 def test_appendix_d_has_the_stability_subsection_and_section_9_points_to_it():
     import generate_results
 
-    heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith("D.")]
-    assert "D.11 Stability of the conclusions under rounding-level jitter" in heads
-    first = [h for h in heads if int(h.split()[0][2:]) <= 11]  # D.1 to D.11 (gaps until WP57e)
-    assert heads[: len(first)] == first
-    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-stability")
+    heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith("B.")]
+    assert "B.7 Stability of the conclusions under rounding-level jitter" in heads
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-stability")
     exact = exact_only("planted_table_sha256")
     committed, fresh = _out_text(cell), str(generate_results.stability())
     rtol = listed()["planted_table_sha256"]["text_rtol"]
     assert (committed == fresh) if exact else _same_text(committed, fresh, rtol), STALE
     assert "identical" in committed and "differs" not in committed
-    assert "D.11" in _section("Case analysis")
+    assert "B.7" in _section("Case analysis")
 
 
 def test_stability_table_is_derived_from_the_results_file():
@@ -2883,13 +2906,13 @@ def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
     assert block[2] == "thm-descent" and block[3].startswith("Let ")
     for hypothesis in ("refit by $f_k$", "unpenalized", "the soft maximum over all rows"):
         assert hypothesis in block[3], hypothesis
-    assert "Appendix B, L15" in text  # the proof pointer; the script itself is Appendix B's
+    assert "Appendix E, L15" in text  # the proof pointer; the script itself is Appendix E's
     abstract = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])["abstract"]
     assert "descent" not in abstract  # R-38: the abstract does not carry the three levels
 
 
 def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
-    """C-1: Appendix B follows the record (L16 included); its counts are read, never typed."""
+    """C-1: Appendix E follows the record (L16 included); its counts are read, never typed."""
     record = _record()["lemmas"]
     assert "lemma_15_descent.py" in record
     text = str(generate_proofs.how_to_read())
@@ -2899,47 +2922,47 @@ def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
     last = max(lem["number"] for lem in record.values())  # derived from the record, never typed
     assert "L15. descent" in _proof_text()
     heading = (
-        f"### B.2 The several-term fit, its levels of guarantee and the tension (L12 to L{last})"
+        f"### E.2 The several-term fit, its levels of guarantee and the tension (L12 to L{last})"
     )
-    assert heading in _src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-B-2"))
+    assert heading in _src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-E-2"))
     # WP57b: the rule and the kinds; no list of the appendix's parts, no repeat of Section 9
     assert "two parts" not in text and "human validation" not in text
 
 
 def test_the_claims_of_c1_have_their_true_basis():
     """C-1: terms unchanged under smoothing is by construction; outward monotonicity is Open; the
-    principal directions are a reading; the own-rows refit points to its number in Appendix D."""
+    principal directions are a reading; the own-rows refit points to its number in Appendix B."""
     methods = _section("Methods")
     assert "by construction" in methods and "leaves the terms unchanged" in methods
     assert not re.search(r"unchanged \(\{prf:ref\}`thm-extension`\)", methods)
-    assert (  # the numbers are Appendix D.13's (the table below); Methods keeps the one sentence
+    assert (  # the numbers are Appendix B.8's (the table below); Methods keeps the one sentence
         "refitting a term on its own rows alone does not recover planted terms" in methods
-        and "D.13" in methods
+        and "B.8" in methods
     )
-    assert "ill-posed" not in methods  # what D.13 observed, not a verdict
-    own = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit")
+    assert "ill-posed" not in methods  # what B.8 observed, not a verdict
+    own = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-own_rows_refit")
     text = _out_text(own)
     assert text == str(generate_results.own_rows_refit())
     assert re.search(r"\| 0 of 60 \|", text) and re.search(r"\| 60 of 60 \|", text)
 
 
 def test_appendix_d8_prints_the_conditioning_of_the_exponents():
-    """G-4 (WP57c: D.12's table merged into D.8): `conditioning_` is a column of D.8's table, one
-    value per term at each K, per regime, with its one defining sentence."""
-    out = _cell_out(SUPPORT_NB, "tab-D-termination_records")
+    """G-4 (WP57c: the old D.12's table merged into B.4): `conditioning_` is a column of B.4's
+    table, one value per term at each K, per regime, with its one defining sentence."""
+    out = _cell_out(SUPPORT_NB, "tab-B-termination_records")
     for regime in ("cubesat-primary", "cubesat-stock"):
         part = out.split(f"Dataset {regime}:")[1].split("Dataset")[0]
         head = part.strip().splitlines()[0]
         assert head.rstrip(" |").endswith("conditioning_"), head
         rows = [r for r in part.splitlines() if re.match(r"\| [123] \|", r)]
         assert [r.split("|")[-2].count(",") for r in rows] == [0, 1, 2]
-        assert "term rows" not in head and "term shares" not in head  # D.3's columns
-    assert "a small value flags a nearly flat direction" in _cell_src("app-D-5", SUPPORT_NB)
-    assert "app-D-cond" not in {c.id for c in _nb(SUPPORT_NB).cells}
+        assert "term rows" not in head and "term shares" not in head  # B.1's columns
+    assert "a small value flags a nearly flat direction" in _cell_src("app-B-4", SUPPORT_NB)
+    assert "app-B-cond" not in {c.id for c in _nb(SUPPORT_NB).cells}
 
 
 def _injected_noise_rows(text: str) -> list[dict]:
-    """The rows of D.18's table as dicts keyed by the header cells."""
+    """The rows of B.13's table as dicts keyed by the header cells."""
     lines = [ln for ln in text.splitlines() if ln.startswith("|")]
     head = [c.strip() for c in lines[0].strip("|").split("|")]
     return [
@@ -2949,12 +2972,12 @@ def _injected_noise_rows(text: str) -> list[dict]:
 
 
 def test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses():
-    """WP29, narrowed in the WP30 cascade to the regenerated table: D.18 says the predicted largest
+    """WP29, narrowed in the WP30 cascade to the regenerated table: B.13 says the predicted largest
     shift agrees with the measured mean within the spread of the draws at half a percent in the
     primary regime only, exceeds it in every other row, and that the contending set changes most at
     10 percent noise in both regimes (the Jaccard column)."""
     nb = _nb(SUPPORT_NB)
-    cell = next(c for c in _code_cells(nb) if c.id == "tab-D-injected_noise")
+    cell = next(c for c in _code_cells(nb) if c.id == "tab-B-injected_noise")
     rows = _injected_noise_rows(_out_text(cell))
     assert len(rows) == 8
     by = {(r["regime"], r["delta (%)"]): r for r in rows}
@@ -2972,28 +2995,28 @@ def test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses():
     for regime in ("cubesat-primary", "cubesat-stock"):
         jac = [f(by[(regime, d)], "contending-set Jaccard") for d in ("0.5", "2.0", "5.0", "10.0")]
         assert jac[-1] == min(jac) and jac[-1] < 1  # the set changes most at 10 percent
-    d18 = next(c for c in nb.cells if c.id == "app-D-noise")
-    assert "D.18" in _src(d18) and "injected" in _src(d18)
+    d18 = next(c for c in nb.cells if c.id == "app-B-noise")
+    assert "B.13" in _src(d18) and "injected" in _src(d18)
 
 
 @pytest.mark.slow
 def test_d18_table_is_the_injection_script_output():
-    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-injected_noise")
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-injected_noise")
     assert _out_text(cell) == str(generate_results.injected_noise())
 
 
 def test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it():
-    """S-10 (the supervisor's word, WP28-decisions.md), WP57c: the explanation D.12 carried is the
-    termination page's, which says why it matters, how it is computed and how to inspect it; D.8
-    prints the case's values (K = 1 first in each regime) and links the page; the code path
-    exists, and the call it gives runs on a strictly positive array."""
+    """S-10 (the supervisor's word, WP28-decisions.md), WP57c: the explanation the old D.12
+    carried is the termination page's, which says why it matters, how it is computed and how to
+    inspect it; B.4 prints the case's values (K = 1 first in each regime) and links the page; the
+    code path exists, and the call it gives runs on a strictly positive array."""
     text = (ROOT / "docs" / "user-guide" / "termination.md").read_text(encoding="utf-8")
     text = " ".join(text.split())
     for part in ("that loss's curvature along its flattest direction", "How it is computed",
                  "On your own problem"):  # fmt: skip
         assert part in text, part
-    assert "docs/user-guide/termination.md" in _cell_src("app-D-5", SUPPORT_NB)
-    out = _cell_out(SUPPORT_NB, "tab-D-termination_records")
+    assert "docs/user-guide/termination.md" in _cell_src("app-B-4", SUPPORT_NB)
+    out = _cell_out(SUPPORT_NB, "tab-B-termination_records")
     for r in generate_results._studies():
         value = f"{generate_results._fits(r)[1].estimator.conditioning_[0]:.2g}"
         part = out.split(f"Dataset {generate_model.DATASET_LABELS[r]}:")[1]
@@ -3042,12 +3065,12 @@ def test_the_paper_claims_nothing_as_novel():
 
 def test_section_9_prints_the_strongest_pair_to_the_digits_appendix_d4_prints():
     """O-8 (WP25-review.md; WP28-retest.md G-6), narrowed in the WP30 cascade: a Spearman value in
-    Section 9's regime sentence is D.4's, to three decimals, so "+0.99" does not sit beside D.4's
+    Section 9's regime sentence is B.2's, to three decimals, so "+0.99" does not sit beside B.2's
     "no pair reaches 0.99". On the regenerated data the one-axis pair of both regimes (energy
-    balance and available power, D.4) has no member in a regime's own part of the contending set,
+    balance and available power, B.2) has no member in a regime's own part of the contending set,
     so the sentence prints no value and says the primary set lies inside the baseline set."""
     sentence = _cell_out(PAPER_NB, "num-regimes")
-    d4 = _cell_out(SUPPORT_NB, "tab-D-regime_comparison")
+    d4 = _cell_out(SUPPORT_NB, "tab-B-regime_comparison")
     values = re.findall(r"Spearman (\+\d\.\d{3}) and (\+\d\.\d{3}) over", sentence)
     for v in (v for pair in values for v in pair):
         assert v in d4, v
@@ -3075,7 +3098,7 @@ def test_generated_sentences_have_no_interval_in_parentheses():
 
 def test_conditioning_symbol_is_not_set_as_mathematics():
     """G-7: `$conditioning_$` printed a processing error; an attribute name is in code font."""
-    text = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-A-register"))
+    text = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-register"))
     assert "$conditioning_$" not in text and "`conditioning_`" in text
 
 
@@ -3133,7 +3156,7 @@ def test_reading_pass_rows_carry_what_the_paper_does_and_resolve_in_the_bibliogr
 def test_reading_pass_supplement_equals_its_generator_and_g1_cites_it():
     """WP57a (the supervisor, WP38: keep the YAML for our own checking, drop the table from the
     supporting material): paper/supplement/reading-pass.md is render('reading-pass.md'), the plain
-    reading_pass_table from the record; G.1's last cell links it; the table keeps the three columns
+    reading_pass_table from the record; A.1's last cell links it; the table keeps the three columns
     the supervisor set at 7257053 (what we say, the source, where in it; no verdict, why or status),
     one row per citing sentence."""
     path = PAPER / "supplement" / "reading-pass.md"
@@ -3158,25 +3181,25 @@ def test_reading_pass_supplement_equals_its_generator_and_g1_cites_it():
     assert "api.crossref.org" not in text and "api.semanticscholar.org" not in text
     assert "<div" not in text and "style=" not in text  # Markdown only, for the repository's viewer
     assert all(f"({generate_reading_pass.PAPER_PAGE}#cite-" in ln for ln in lines[2:])
-    g1 = _appendix_cells(_nb(SUPPORT_NB))["G"][-1]
+    g1 = _appendix_cells(_nb(SUPPORT_NB))["A"][-1]
     assert "blob/main/paper/supplement/reading-pass.md" in _src(g1)
-    assert not any(c.id == "tab-G-reading_pass_table" for c in _nb(SUPPORT_NB).cells)
+    assert not any(c.id == "tab-A-reading_pass_table" for c in _nb(SUPPORT_NB).cells)
 
 
 @pytest.mark.slow
 def test_the_c_and_d_supplement_files_equal_their_generators_and_are_cited():
-    """WP57c: C.5's baseline preview and full pair table, D.1's sweep and D.6's refits are files
-    under paper/supplement/, each its generator's output, each cited by one line of C or D; C.5
-    keeps the primary regime's preview and the pairs at |Spearman| 0.5 or above."""
-    for name, cell in (("metric-associations.md", "app-C-5-associations"),
-                       ("temperature-sweep.md", "app-D-supplement"),
-                       ("refits-by-category.md", "app-D-supplement")):  # fmt: skip
+    """WP57c: F.5's baseline preview and full pair table, the old D.1's sweep and D.6's refits are
+    files under paper/supplement/, each its generator's output, each cited by one line of F or
+    B; F.5 keeps the primary regime's preview and the pairs at |Spearman| 0.5 or above."""
+    for name, cell in (("metric-associations.md", "app-F-5-associations"),
+                       ("temperature-sweep.md", "app-B-supplement"),
+                       ("refits-by-category.md", "app-B-supplement")):  # fmt: skip
         text = (PAPER / "supplement" / name).read_text(encoding="utf-8")
         assert text == generate_supplement.render(name), f"{name}: {STALE}"
         assert f"paper/supplement/{name}" in _cell_src(cell, SUPPORT_NB), name
-    c5 = _cell_out(SUPPORT_NB, "tab-C-metric_table")
+    c5 = _cell_out(SUPPORT_NB, "tab-F-metric_table")
     assert "cubesat-primary" in c5 and "cubesat-stock" not in c5
-    pairs = _cell_out(SUPPORT_NB, "tab-C-metric_associations")
+    pairs = _cell_out(SUPPORT_NB, "tab-F-metric_associations")
     rows = [r for r in pairs.splitlines() if r.startswith("| ") and "metric a" not in r]
     spearman = [max(abs(float(c)) for c in (r.split("|")[3], r.split("|")[5])) for r in rows]
     assert spearman and min(spearman) >= generate_model.SHOWN_ASSOCIATION
@@ -3232,11 +3255,11 @@ def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
 
     sentence = _moved("num-recovery")
     assert "A known answer" in sentence and "in 16, at the exact maximum" in sentence
-    assert "frontier rows on their thinnest term" in sentence and "Appendix D.14" in sentence
+    assert "frontier rows on their thinnest term" in sentence and "Appendix B.9" in sentence
     ids = [c.id for c in _nb(PAPER_NB).cells]  # WP56: Section 8 keeps the count, at K = 2
     assert ids.index("sec-case-analysis-2") < ids.index("num-planted") < ids.index("num-terms")
     assert "16 of 20 planted tables" in _cell_out(PAPER_NB, "num-planted")
-    cell = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
+    cell = _cell_out(SUPPORT_NB, "tab-B-planted_recovery")
     _current(cell, str(generate_results.planted_recovery()), "planted_recovery")
     assert re.search(r"\| infinity \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
     assert re.search(r"\| 50 \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
@@ -3245,7 +3268,7 @@ def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
     assert re.search(r"\| 1 \| 5 \| no \| no \| certified \| \d\.\d\d \| \d\.\d\d \|", cell)
     assert not re.search(r"\| infinity \| \d+ \| \d\.\d\d", cell)
     heads = _headings(_nb(SUPPORT_NB), "###")
-    assert any(h.startswith("D.14 ") for h in heads)
+    assert any(h.startswith("B.9 ") for h in heads)
 
 
 @pytest.mark.skipif(not os.environ.get("PAPER_EXECUTE"), reason="set PAPER_EXECUTE=1 (about 4 min)")
@@ -3255,7 +3278,7 @@ def test_generated_tables_do_not_move_under_platform_perturbation(tmp_path):
     A run with one BLAS thread and a run with four must agree with the plain run exactly; a run
     with the restart order permuted (``random_state`` shifted) may move only the names listed under
     ``[perturbation]`` in ``paper/environment_values.toml`` (the term-numbered tables and the
-    multi-modal D.14), each of which the audit table there explains.
+    multi-modal B.9), each of which the audit table there explains.
     """
     allowed = set(tomllib.loads(VALUES_FILE.read_text(encoding="utf-8"))["perturbation"][
         "moves_under_restart_shift"])  # fmt: skip
@@ -3286,12 +3309,12 @@ def test_generated_tables_do_not_move_under_platform_perturbation(tmp_path):
 
 
 def test_cr3_the_target_and_the_band_carry_their_reason_and_the_sensitivity_holds():
-    """(3) One sentence each, with a pointer to D.5, which shows the sets do not change."""
-    assert "about a tenth, by convention" in _section("Methods") and "Appendix D.5" in _section(
+    """(3) One sentence each, with a pointer to B.3, which shows the sets do not change."""
+    assert "about a tenth, by convention" in _section("Methods") and "Appendix B.3" in _section(
         "Methods"
     )
     assert "weighs within a factor $e$" in _section("Methods")  # WP55: with the temperature rule
-    table = _cell_out(SUPPORT_NB, "tab-D-sensitivity_variants")
+    table = _cell_out(SUPPORT_NB, "tab-B-sensitivity_variants")
     for regime in ("cubesat-primary", "cubesat-stock"):
         block = table.split(f"Dataset {regime}:", 1)[1].split("Dataset cubesat", 1)[0]
         rows = {r.split("|")[1].strip(): r.split("|") for r in block.splitlines() if r[:1] == "|"}
@@ -3338,16 +3361,16 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
 
 
 def test_cr8_the_k_comparison_is_read_at_the_one_term_temperature_and_names_the_cases_k():
-    """(8) the mean slack across K at one temperature, and the K the checks pick (D.15; the
+    """(8) the mean slack across K at one temperature, and the K the checks pick (B.10; the
     supervisor's call of 2026-11-11, WP30-decisions.md, "The choice of K in the case")."""
     import case
 
     sentence = _cell_out(PAPER_NB, "num-choosing-k")
-    assert "Appendix D.15" in sentence and "at the K = 1 temperature" in sentence
+    assert "Appendix B.10" in sentence and "at the K = 1 temperature" in sentence
     assert f"point to K = {case.CASE_K}" in sentence and "none deciding alone" in sentence
     assert "the step where a thin term appears" in sentence
-    assert "resampling" not in sentence  # WP39 D-5: the movement stays in D.15's table
-    cell = _cell_out(SUPPORT_NB, "tab-D-choosing_k")
+    assert "resampling" not in sentence  # WP39 D-5: the movement stays in B.10's table
+    cell = _cell_out(SUPPORT_NB, "tab-B-choosing_k")
     assert "at the K = 1 temperature" in cell and "The checks point to K = 2." in cell
 
 
@@ -3388,7 +3411,7 @@ def test_choosing_k_picks_the_cases_k_on_both_regimes_and_the_prose_quotes_the_t
         assert own[2] > 0.2 and own[3] < 0.1, regime  # a thin term appears at K = 3
         assert t.loc[4, "movement"] > 0.5 > t.loc[2, "movement"], regime  # a splinter at K = 4
     table, sentence = str(gr.choosing_k()), str(gf.choosing_k_sentence())
-    _current(_cell_out(SUPPORT_NB, "tab-D-choosing_k"), table, "choosing_k")
+    _current(_cell_out(SUPPORT_NB, "tab-B-choosing_k"), table, "choosing_k")
     _current(_cell_out(PAPER_NB, "num-choosing-k"), sentence, "num-choosing-k")
     quoted = set(re.findall(r"\b\d\.\d\d\b", sentence))
     tabled = {f"{float(x):.2f}" for x in re.findall(r"\b\d\.\d{2,3}\b", table)}
@@ -3421,12 +3444,12 @@ def test_the_planes_figures_bottom_panel_is_one_terms_line():
 
 
 def test_cr9_the_margin_and_the_radius_are_read_against_the_band_and_the_median_margin():
-    """(9) one sentence in section 6 and the table in D.8."""
+    """(9) one sentence in section 6 and the table in B.4."""
     import generate_results
 
     sentence = _cell_out(PAPER_NB, "num-margin")
     assert "band 1/tau" in sentence and "median best-minus-second-best" in sentence
-    cell = _cell_out(SUPPORT_NB, "tab-D-margin_reading")
+    cell = _cell_out(SUPPORT_NB, "tab-B-margin_reading")
     _current(cell, str(generate_results.margin_reading()), "margin_reading")
     ids = [c.id for c in _nb(PAPER_NB).cells]
     last = ids.index("sec-case-construction")
@@ -3438,8 +3461,8 @@ def test_the_proposers_radius_is_the_stated_rule_of_the_check_designs():
     import paper_paths  # noqa: F401  (examples/adcs on the path)
     from experiments import check_designs
 
-    # WP56 moved the rule from Section 8 to D.10; WP57c landed it there
-    text = _norm_ws(_cell_src("app-D-7", SUPPORT_NB))
+    # WP56 moved the rule from Section 8 to B.6; WP57c landed it there
+    text = _norm_ws(_cell_src("app-B-6", SUPPORT_NB))
     assert check_designs.REACH_QUANTILE == 0.02 and check_designs.HOLES == 300
     assert (
         "a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest "
@@ -3454,7 +3477,7 @@ def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not(
     is another (the measured log V against zero); the Discussion says both, from the same table
     and no claim that the position failed where Section 9 reports 3 of 3 (final round, change
     request 43)."""
-    ids = [c.id for c in _nb(PAPER_NB).cells]  # WP56: the reading goes to D.10; Section 8 keeps
+    ids = [c.id for c in _nb(PAPER_NB).cells]  # WP56: the reading goes to B.6; Section 8 keeps
     assert "num-predict-reading" not in ids  # the finding in one sentence
     assert "by spending the battery" in _cell_src("sec-case-analysis-5b")
     text = _moved("num-predict-reading")
@@ -3469,12 +3492,12 @@ def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not(
 
 @pytest.mark.slow
 def test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16():
-    """(11) One worked result, in D.16, with a pointer from the text (Section 1's main-results item
+    """(11) One worked result, in B.11, with a pointer from the text (Section 1's main-results item
     was cut at his review of 2026-11-15; Section 2's HoroPCA paragraph points to it)."""
     import generate_results
 
-    assert "Appendix D.16" in _section("Prior art")
-    cell = _cell_out(SUPPORT_NB, "tab-D-pca_chain")
+    assert "Appendix B.11" in _section("Prior art")
+    cell = _cell_out(SUPPORT_NB, "tab-B-pca_chain")
     _current(cell, str(generate_results.pca_chain()), "pca_chain")
     assert "Share of the spread" in cell
     import paper_stability
@@ -3486,7 +3509,7 @@ def test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16():
 
 def test_cr12_every_hypothesis_label_is_worded_or_explained():
     """(12) The I labels carry their words where first used in the results (A is worded in
-    Sections 3 and 5, R beside its result; the F labels and I4 live in Appendix B since WP55 took
+    Sections 3 and 5, R beside its result; the F labels and I4 live in Appendix E since WP55 took
     the sketches out of the main text)."""
     results = _section("Results")
     for label, words in {
@@ -3506,7 +3529,7 @@ def test_cr13_the_first_generated_range_says_what_varies():
     # sentence prints no range and says what a range would be; a count that moves is a range.
     assert re.search(r"\d+ to \d+", first) or "is printed as a range" in first
     assert "five regenerations of the data under rounding-level perturbation" in first
-    assert "Appendix D.11" in first
+    assert "Appendix B.7" in first
     # The sentence left Section 1 for Case analysis on his word (2026-11-15, WP11-decisions.md),
     # so it is no longer the text's first range; what it says about a range still holds.
 
@@ -3524,7 +3547,7 @@ def test_cr15_appendix_b_says_where_two_statements_share_a_script():
 
 def test_cr18_appendix_f_says_how_to_compare_regenerate_and_what_needs_a_checkout():
     """(18) git checkout, the exact comparison command, one row, and the site build line."""
-    cells = _appendix_cells(_nb(SUPPORT_NB))["F"]
+    cells = _appendix_cells(_nb(SUPPORT_NB))["H"]
     prose = "\n".join(_src(c) for c in cells if c.cell_type == "markdown")
     assert "git checkout" in prose and "skip with a reason" in prose
     commands = str(generate_repro.commands())
@@ -3538,7 +3561,7 @@ def test_cr18_regenerate_row_reproduces_the_committed_output_of_a_row():
     """The script runs the cells a row needs and prints what the committed cell holds."""
     import regenerate_row
 
-    for row, nb_path in (("tab-A-register", SUPPORT_NB), ("tab-F-commands", SUPPORT_NB)):
+    for row, nb_path in (("tab-D-register", SUPPORT_NB), ("tab-H-commands", SUPPORT_NB)):
         assert regenerate_row.run(row) is not None
         assert str(regenerate_row.run(row)).strip() == _cell_out(nb_path, row).strip(), row
     with pytest.raises(SystemExit):
@@ -3722,8 +3745,8 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
     assert "the fleet size $n$, a count that is no part, so" in body
     assert "The fleet size is drawn from 1 to 30" in body
     assert "A fourth MoE, the fleet's coverage probability" in body  # WP56
-    # WP56: the budget sentence left Section 7 for C.8, which states it
-    c8 = _src(next(c for c in _nb(SUPPORT_NB).cells if "(sub-c-8)=" in _src(c)))
+    # WP56: the budget sentence left Section 7 for F.8, which states it
+    c8 = _src(next(c for c in _nb(SUPPORT_NB).cells if "(sub-f-8)=" in _src(c)))
     assert "under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD" in c8
     sys.path.insert(0, str(ROOT / "examples" / "adcs"))
     from experiments import definitions
@@ -3738,13 +3761,13 @@ def _norm_ws(text: str) -> str:
 
 
 def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out():
-    """C.8 reads the model: prices, budgets and the order of exclusions; the rest of what the case
-    leaves out (the load, the limits' kinds) is the case page's, which C.8 cites (WP57c: the mirror
-    WP30-rounds/appendix-c-leaves-out.md followed C.8's paragraph and left with it)."""
+    """F.8 reads the model: prices, budgets and the order of exclusions; the rest of what the case
+    leaves out (the load, the limits' kinds) is the case page's, which F.8 cites (WP57c: the mirror
+    WP30-rounds/appendix-f-leaves-out.md followed F.8's paragraph and left with it)."""
     model = _norm_ws(
         (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     )
-    c8 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-8")))
+    c8 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-F-8")))
     page = _norm_ws((ROOT / "examples" / "adcs" / "case-model.md").read_text(encoding="utf-8"))
     assert "examples/adcs/case-model.md" in c8 and "What the case leaves out" in c8
     for model_has, c8_has in [
@@ -3775,7 +3798,7 @@ def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left
     assert (
         len(budgets) == 6 and "Four requirement limits" in page and "two are cost budgets" in page
     )
-    order = [  # the model's order of exclusions, and C.8's (the supervisor's, 2026-11-11, 10:35)
+    order = [  # the model's order of exclusions, and F.8's (the supervisor's, 2026-11-11, 10:35)
         "payload and its instruments", "communications", "flight software",
         "environmental testing beyond the assembly line", "licensing",
         "ground station network and operations", "launch slot minimum", "broker fees",
@@ -3790,11 +3813,11 @@ def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left
     left_out = r"\w*(?:thermal|schedule|fault|redundan|communic|growth|desaturat)"
     absent = kinds + left_out
     assert not re.search(absent, model, re.I), "the model names no element of what is left out"
-    assert not (ROOT / "work-packages" / "WP30-rounds" / "appendix-c-leaves-out.md").exists()
+    assert not (ROOT / "work-packages" / "WP30-rounds" / "appendix-f-leaves-out.md").exists()
 
 
 def test_appendix_c8_list_states_numbers_the_data_and_the_model_give():
-    """The case page's list of what the case leaves out (C.8's list until WP57c) prints numbers: the
+    """The case page's list of what the case leaves out (F.8's list until WP57c) prints numbers: the
     smallest pointing error, the launch slot's effect at fleets of one to three, the traded mass
     over the fixed bus; each is computed from the feasible designs of both regimes."""
     import case
@@ -3824,21 +3847,22 @@ def test_appendix_c8_list_states_numbers_the_data_and_the_model_give():
     assert f"{factor[2].min():.1f} to {factor[2].max():.1f} at two" in c8
     assert f"at most {factor[3].max():.1f} at three" in c8
     assert (factor[3] >= 1.0).all()  # the slot still binds at three
-    assert "0.0006 degree" in page and "50 kg" not in _cell_src("app-C-8", SUPPORT_NB)
+    assert "0.0006 degree" in page and "50 kg" not in _cell_src("app-F-8", SUPPORT_NB)
 
 
 @pytest.mark.slow
 def test_d7_says_two_candidates_sit_beyond_the_thresholds_met_surface_and_none_meets_them():
-    """D.7's sentence (P8 final read F4): on the one-term fit to the feasible designs that meet the
-    four performance thresholds, fast_effort_hungry and precise_heavy_sensor score above the
-    surface (log V +0.315, +0.354) and light_slow below it; none of the three candidates, nor the
-    baseline configuration, meets all four thresholds."""
+    """The old D.7's sentence (P8 final read F4): on the one-term fit to the feasible designs that
+    meet the four performance thresholds, fast_effort_hungry and precise_heavy_sensor score above
+    the surface (log V +0.315, +0.354) and light_slow below it; none of the three candidates, nor
+    the baseline configuration, meets all four thresholds."""
     import case
 
     placement = case.design_sets_placement(sets={"primary": case.design_sets("primary")})
     rows = placement.set_index("design")
     log_v = lambda name: float(rows.loc[name, "fit on thresholds met"].split()[0])  # noqa: E731
-    d7 = _norm_ws(_cell_out(SUPPORT_NB, "tab-D-design_sets_comparison"))  # WP57c: D.7 in D.17
+    # WP57c: the old D.7 in B.12
+    d7 = _norm_ws(_cell_out(SUPPORT_NB, "tab-B-design_sets_comparison"))
     assert f"fast_effort_hungry (log V {log_v('fast_effort_hungry'):+.3f})" in d7
     assert f"precise_heavy_sensor ({log_v('precise_heavy_sensor'):+.3f})" in d7
     assert log_v("light_slow") < 0 and "two of the three candidates" in d7
@@ -3909,13 +3933,13 @@ def test_appendix_e_rows_g2_and_g17_carry_the_thirteen_metric_record():
 
 def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():
     """The chart's axis says which metrics a step to the right improves or worsens: the leading
-    loadings of D.16's first direction (K = 1, primary regime), by sign. The caption names none."""
+    loadings of B.11's first direction (K = 1, primary regime), by sign. The caption names none."""
     import case
     from figures.chart_level import leading_direction
 
     study = case.load_study("primary")
     better, worse, _ = leading_direction(study, case.fit_study(study))[1:]
-    text = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-pca_chain"))
+    text = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-pca_chain"))
     row = next(r for r in text.splitlines() if r.startswith("| 1 |"))
     loads = [m.rsplit(" ", 1) for m in row.split("|")[3].strip().split(", ")]
     assert better == [n for n, v in loads if v.startswith("+")]
@@ -3971,11 +3995,11 @@ def test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in
 
 
 def test_d19_states_section_8s_four_rules_and_no_other():
-    """WP57c R-4: D.19's rule paragraph names the four rules of Table 3 (one stakeholder per
+    """WP57c R-4: B.14's rule paragraph names the four rules of Table 3 (one stakeholder per
     objective, and the pick between sponsor and operator) and not the rules they replaced (the
     operator's pointing error, the pick balanced between the terms); the shortlist table carries
     the coverage probability and its nondominated mark."""
-    rules = _cell_src("app-D-decision", SUPPORT_NB)
+    rules = _cell_src("app-B-decision", SUPPORT_NB)
     table = _cell_out(PAPER_NB, "tab-decision")
     names = [r.split(" | ")[0].strip("| ") for r in table.splitlines()[3:]]
     assert names == [
@@ -3989,10 +4013,10 @@ def test_d19_states_section_8s_four_rules_and_no_other():
     assert "fleet cost and coverage probability" in rules and "minimax regret" in rules
     assert "pointing error" not in rules.replace("the pointing error.", "")  # only as an input
     assert "balanced between the terms" not in rules and "term levels" not in rules
-    head = _cell_out(SUPPORT_NB, "tab-D-decision_designs").split("\n\n", 1)[1].splitlines()[0]
+    head = _cell_out(SUPPORT_NB, "tab-B-decision_designs").split("\n\n", 1)[1].splitlines()[0]
     assert "| coverage probability |" in head
     assert head.rstrip(" |").endswith("nondominated on fleet cost and coverage probability")
-    assert "sent-D-decision" not in [c.id for c in _nb(SUPPORT_NB).cells]
+    assert "sent-B-decision" not in [c.id for c in _nb(SUPPORT_NB).cells]
 
 
 def _tracker_cost_of(d):
@@ -4038,7 +4062,7 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
                    "how much fleet cost a gain in coverage probability is worth",
                    "Of the 17 shortlisted designs that no other beats on both, the fleet of 10 "
                    "small-wheel, medium-tracker satellites at 2.88 M USD, with a coverage "
-                   "probability of 0.76", "Appendix D.19"):  # fmt: skip
+                   "probability of 0.76", "Appendix B.14"):  # fmt: skip
         assert phrase in plain, phrase
     assert 120 <= len(plain.split()) <= 190
     table = str(gf.decision_table(d)).splitlines()
@@ -4133,7 +4157,7 @@ def test_section_9_closes_with_the_decision_and_leaves_the_neighbouring_paragrap
 def test_the_decision_paragraph_is_readable_without_the_subsystem_detail():
     """R-3, R-4, R-5 (WP56: one stakeholder per objective): the three objectives in their words,
     subsystem choices as configuration; no exponent, term, design id or log V in the paragraph; the
-    caption points at D.19 and carries no caveat (the limits are Section 9's, once)."""
+    caption points at B.14 and carries no caveat (the limits are Section 9's, once)."""
     text = re.sub(r"<[^>]+>", "", _cell_out(PAPER_NB, "num-decision"))
     assert text.startswith("**The decision.**")
     assert not re.search(r"log V|exponent|\bterms?\b|\bdesign \d|\bid\b|\bV\b", text), text
@@ -4142,32 +4166,32 @@ def test_the_decision_paragraph_is_readable_without_the_subsystem_detail():
         assert words in text, words
     assert "does not answer it" not in text and "defensible" not in text
     caption = next(c for c in _nb(PAPER_NB).cells if c.id == "tab-decision-caption")
-    for phrase in ("{ref}`Appendix D.19 <sub-d-19>`", ":label: tab-decision",
+    for phrase in ("{ref}`Appendix B.14 <sub-b-14>`", ":label: tab-decision",
                    "the manufacturer's and the operator's rules pick one design"):  # fmt: skip
         assert phrase in _src(caption), phrase
     assert "schedule" not in _src(caption) and "risk" not in _src(caption)
     assert not re.search(
-        r"\d", re.sub(r"D\.19|K = 2|sub-d-19|tab-decision|log V", "", _src(caption))
+        r"\d", re.sub(r"B\.14|K = 2|sub-b-14|tab-decision|log V", "", _src(caption))
     )
 
 
 @pytest.mark.slow
 def test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output(decided):
-    """D-1, D-2, R-1: the six-row table, the 28-design table and the Appendix D sentences are the
+    """D-1, D-2, R-1: the six-row table, the 28-design table and the Appendix B sentences are the
     generator's output (exact in the environment of record)."""
     import generate_findings as gf
 
     _, _, d = decided
     _current(_cell_out(PAPER_NB, "tab-decision"), str(gf.decision_table(d)), "tab-decision")
     support = _nb(SUPPORT_NB)
-    for cid, fresh in (("tab-D-decision_designs", gf.decision_designs_table(d)),
-                       ("sent-D-decision-baseline", gf.decision_baseline_sentence())):  # fmt: skip
+    for cid, fresh in (("tab-B-decision_designs", gf.decision_designs_table(d)),
+                       ("sent-B-decision-baseline", gf.decision_baseline_sentence())):  # fmt: skip
         _current(_out_text(next(c for c in _code_cells(support) if c.id == cid)), str(fresh), cid)
     base = str(gf.decision_baseline_sentence())
     assert (
         "2,355 feasible designs, 523 that pass the six requirements and 19 within the band" in base
     )
-    table = _cell_out(SUPPORT_NB, "tab-D-decision_designs")
+    table = _cell_out(SUPPORT_NB, "tab-B-decision_designs")
     assert table.count("\n| ") >= 28 and "coverage probability" in table
 
 
@@ -4197,7 +4221,7 @@ def test_the_baseline_row_fails_the_requirements_the_other_rows_meet(decided):
 @pytest.mark.slow
 def test_the_baseline_pointing_error_share_is_generated_from_the_data_of_record():
     """CR 8: the share of the baseline regime's feasible designs that pass the pointing-error
-    requirement is the generator's value, read from the same mask as D.17's pass column."""
+    requirement is the generator's value, read from the same mask as B.12's pass column."""
     import case
     import generate_findings as gf
 
@@ -4220,7 +4244,7 @@ def test_the_baseline_pointing_error_share_is_generated_from_the_data_of_record(
 @pytest.mark.slow
 def test_the_discussion_gives_the_contending_set_change_from_the_design_sets_of_the_record():
     """CR 9: how far imposing requirements before the fit moves the one-term contending set is
-    the generator's reading of D.17's second table, per regime, with the set's own size."""
+    the generator's reading of B.12's second table, per regime, with the set's own size."""
     import case
     import generate_findings as gf
     import generate_results as gr
@@ -4272,7 +4296,7 @@ def _cell_src(cell_id: str, path=PAPER_NB) -> str:
 
 
 def test_works_cited_says_what_it_holds_and_each_entry_is_cited_in_the_register():
-    """44: the shared bibliography holds the main text's sources and Appendix G's; the seven
+    """44: the shared bibliography holds the main text's sources and Appendix A's; the seven
     entries a reader asked about are each cited by a register row of prior_art.yaml."""
     assert "sources of the main text and of the register" in _cell_src("bibliography")
     cited = {k for e in generate_prior_art.entries() for k in e["cites"]}
@@ -4306,7 +4330,7 @@ def test_the_model_states_thirteen_requirements_four_of_them_the_feasibility_con
         and "six requirements are read after the fit; three filter nothing" in body
     )
     assert "depth-of-discharge feasibility condition" in _cell_src("sec-case-analysis-5b")
-    assert "Six of the model's thirteen requirements" in _cell_src("app-D-req", SUPPORT_NB)
+    assert "Six of the model's thirteen requirements" in _cell_src("app-B-req", SUPPORT_NB)
 
 
 @pytest.mark.slow
@@ -4321,23 +4345,23 @@ def test_the_fleet_cost_is_the_unit_cost_times_the_fleet_size():
 
 
 def test_the_k1_exponents_stability_is_not_assessed_in_the_record_and_the_text_says_so():
-    """61: D.15's movement column is empty at K = 1 (the dash), so the sentence beside n_eff says
+    """61: B.10's movement column is empty at K = 1 (the dash), so the sentence beside n_eff says
     it is not assessed there."""
-    table = _cell_out(SUPPORT_NB, "tab-D-choosing_k")
+    table = _cell_out(SUPPORT_NB, "tab-B-choosing_k")
     assert len(re.findall(r"^\| 1 \| .* \| - \|$", table, re.M)) == 2  # both regimes
     import case
     import generate_findings as gf
 
-    # WP56: the sentence left Section 7 (queued for D.5 and the open questions); its generator
+    # WP56: the sentence left Section 7 (queued for B.3 and the open questions); its generator
     sentence = str(gf.temperature_variants_sentence(case.load_study("primary")))
-    assert "not assessed at K = 1" in sentence and "Appendix D.15" in sentence
+    assert "not assessed at K = 1" in sentence and "Appendix B.10" in sentence
 
 
 def test_the_scaler_sentence_quotes_the_sensitivity_table_row():
-    """74: the robust scaler's row of D.5 (its size, the metrics it shares, its largest
+    """74: the robust scaler's row of B.3 (its size, the metrics it shares, its largest
     exponent)."""
 
-    sentence = _moved("num-temperature-variants")  # WP56 moved it to D.5; WP57c landed it
+    sentence = _moved("num-temperature-variants")  # WP56 moved it to B.3; WP57c landed it
     m = re.search(
         r"The `RobustScaler` variant changes the K = 1 contending set: (\d+) metrics, (\d+) of "
         r"the "
@@ -4345,7 +4369,7 @@ def test_the_scaler_sentence_quotes_the_sensitivity_table_row():
         sentence,
     )
     assert m, sentence
-    table = _cell_out(SUPPORT_NB, "tab-D-sensitivity_variants").split("Dataset")[1]
+    table = _cell_out(SUPPORT_NB, "tab-B-sensitivity_variants").split("Dataset")[1]
     row = next(r for r in table.splitlines() if r.startswith("| robust scaler"))
     cols = [c.strip() for c in row.strip("|").split("|")]
     assert (cols[5], cols[8], cols[7]) == (m.group(1), m.group(2), m.group(4))
@@ -4367,9 +4391,9 @@ def test_the_participation_and_k1_sentences_read_the_record():
 
 
 def test_the_known_answer_sentence_says_what_the_eleven_row_failure_is():
-    """76: D.14's record, the failure with the most frontier rows on its thinnest term."""
+    """76: B.9's record, the failure with the most frontier rows on its thinnest term."""
     sentence = _moved("num-recovery")
-    table = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
+    table = _cell_out(SUPPORT_NB, "tab-B-planted_recovery")
     m = re.search(
         r"where every recovered table has at least (\d+); the one with (\d+) is "
         r"(\w+) at temperature 50 and still errs by ([\d.]+), with ([\d.]+) of",
@@ -4395,7 +4419,7 @@ def test_the_executive_table_caption_band_claim_holds_of_the_picks_and_not_the_b
 
 def test_figure_6_draws_the_band_on_both_sides():
     """175: Definition 4's band is |log V| < 1/tau; the figure shades it above and below the
-    surface line, with its width in the legend, and the designs it holds are the ones D.3 counts."""
+    surface line, with its width in the legend, and the designs it holds are the ones B.1 counts."""
     import case
     from figures.chart_level import chart_level_figure
 
@@ -4412,7 +4436,7 @@ def test_figure_6_draws_the_band_on_both_sides():
     logv = fits[case.CASE_K].estimator.transform(study.M)[:, -1]
     d3 = " ".join(
         _out_text(
-            next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
+            next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-exponents_and_terms")
         ).split()
     )
     assert int((abs(logv) < band).sum()) == 318 + 119 and "| 318 |" in d3 and "| 119 |" in d3
@@ -4424,7 +4448,7 @@ def test_d3_names_the_band_of_each_column():
     import generate_results as gr
 
     text = _out_text(
-        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-exponents_and_terms")
     )
     assert text == str(gr.exponents_and_terms())
     assert "column counts the designs within the K = 1 band (0.0240) of the K = 2 fit" in text
@@ -4444,7 +4468,7 @@ def test_the_executive_table_caption_and_the_shortlist_say_their_rules():
     assert "the three stakeholders' rules pick from the shortlist" in cap
     assert "do not rank them" in cap and "the baseline's level is outside it" in cap
     assert "the manufacturer's and the operator's rules pick one design" in cap
-    assert any("(sub-d-19)=" in _src(c) for c in _nb(SUPPORT_NB).cells)  # the pointer resolves
+    assert any("(sub-b-14)=" in _src(c) for c in _nb(SUPPORT_NB).cells)  # the pointer resolves
 
 
 def test_terms_are_numbered_by_share_and_the_estimator_orders_them_so():
@@ -4543,8 +4567,8 @@ def test_the_one_term_sentence_claims_the_unique_optimum_and_not_r1():
 
 
 def test_the_one_axis_rule_is_stated_with_its_threshold_in_section_8():
-    """116: the metrics in no contending set move with a partner at the lowest |Spearman| of C.5's
-    table, below the 0.99 at which C.5 names a pair one axis."""
+    """116: the metrics in no contending set move with a partner at the lowest |Spearman| of F.5's
+    table, below the 0.99 at which F.5 names a pair one axis."""
     import case
 
     text = " ".join(_moved("num-participation").split())
@@ -4553,19 +4577,19 @@ def test_the_one_axis_rule_is_stated_with_its_threshold_in_section_8():
 
 
 def test_appendix_e_rows_agree_with_appendix_d():
-    """143: G-7's and G-13's counts are D.14's, G-7's errors are D.13's, G-17's are D.11's (the
-    ledger's rows, which Appendix E's gaps table links)."""
+    """143: G-7's and G-13's counts are B.9's, G-7's errors are B.8's, G-17's are B.7's (the
+    ledger's rows, which Appendix G's gaps table links)."""
     e = " ".join(" ".join(str(v) for v in r.values()) for r in generate_gaps.gap_rows())
     e = " ".join(e.split())
-    d11 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-stability"))
-    d13 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit"))
+    d11 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-stability"))
+    d13 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-own_rows_refit"))
     d14 = _out_text(
-        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-planted_recovery")
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-planted_recovery")
     )
     moving = int(re.search(r"of which (\d+) numbers move at all", d11).group(1))
     total = int(re.search(r"(\d+) quantities, of which", d11).group(1))
     m = re.search(
-        r"\((\d+) of the record's (\d+) quantities: (\d+) numbers, as Appendix D.11 counts", e
+        r"\((\d+) of the record's (\d+) quantities: (\d+) numbers, as Appendix B.7 counts", e
     )
     assert m, "G-17's count"
     assert (int(m.group(1)), int(m.group(2)), int(m.group(3))) == (moving + 1, total, moving)
@@ -4579,9 +4603,9 @@ def test_appendix_e_rows_agree_with_appendix_d():
 
 
 def test_the_noise_ridge_factor_sentence_is_computed_from_the_table():
-    """149: D.18 says by what factor the prediction exceeds the measurement."""
+    """149: B.13 says by what factor the prediction exceeds the measurement."""
     text = _out_text(
-        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-injected_noise")
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-B-injected_noise")
     )
     assert text == str(generate_results.injected_noise())
     assert re.search(
@@ -4590,9 +4614,9 @@ def test_the_noise_ridge_factor_sentence_is_computed_from_the_table():
 
 
 def test_the_regimes_gain_ranges_are_the_ones_section_8_states():
-    """145: C.1's table gives Kp 0.2 to 2 (primary) and 0.03 to 1 (baseline)."""
+    """145: F.1's table gives Kp 0.2 to 2 (primary) and 0.03 to 1 (baseline)."""
     c1 = _out_text(
-        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-C-configuration_space")
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-F-configuration_space")
     )
     assert re.search(r"\| Kp \| 0\.2 \| 2 \| 0\.2004 \| 1\.999 \| 0\.03009 \| 0\.999 \|", c1)
     s8 = " ".join(_cell_src("sec-case-construction-1b").split())
@@ -4603,9 +4627,9 @@ def test_the_regimes_gain_ranges_are_the_ones_section_8_states():
 
 
 def test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_so():
-    """141: D.2's K = 2 row has the fraction above V = 1 within 0.01 of the target; the caption
-    names the level and says about a tenth lie above the line."""
-    d2 = _cell_out(SUPPORT_NB, "tab-D-termination_records")  # WP57c: D.2's table is D.8's
+    """141: the old D.2's K = 2 row has the fraction above V = 1 within 0.01 of the target; the
+    caption names the level and says about a tenth lie above the line."""
+    d2 = _cell_out(SUPPORT_NB, "tab-B-termination_records")  # WP57c: the old D.2's table is B.4's
     primary = d2.split("Dataset cubesat-stock")[0]
     row = next(r for r in primary.splitlines() if r.startswith("| 2 |"))
     frac = float(row.split("|")[5])
@@ -4653,11 +4677,11 @@ def test_the_statements_of_the_theorems_carry_what_their_scripts_prove():
 
 
 def test_appendix_b2_is_the_restart_stop_and_polish_rules():
-    """138, then WP57b: B.2 is the paragraph Section 5's "steps: Appendix B.2" and Section 6's
+    """138, then WP57b: E.2 is the paragraph Section 5's "steps: Appendix E.2" and Section 6's
     "Newton steps that close the gap the solver leaves" point at: the restart rule, the stop rule,
     the polish with G-16, the status at the polished point; no restatement of the alternation's
     program, no commentary on the lemmas, nothing about what the paper does not use."""
-    b2 = " ".join(_cell_src("app-B-2", SUPPORT_NB).split())
+    b2 = " ".join(_cell_src("app-E-2", SUPPORT_NB).split())
     assert "five reduced Newton steps (the polish)" in b2 and "G-16" in b2
     assert "random centres in the chart" in b2 and "restart whose mean slack is smallest" in b2
     assert "if the mean slack rose, stop with the previous state" in b2
@@ -4767,7 +4791,7 @@ def test_the_fleet_refit_sentence_reads_the_identity_and_both_fits():
 @pytest.mark.slow
 def test_the_requirements_sentence_is_d17s_exclusions():
     """Section 8: the near-frontier designs each requirement excludes after the K = 1 fit, read from
-    ``case.requirements_table`` (D.17), largest first, and all six jointly."""
+    ``case.requirements_table`` (B.12), largest first, and all six jointly."""
     import case
     import generate_findings as gf
 

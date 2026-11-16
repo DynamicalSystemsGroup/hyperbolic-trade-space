@@ -1,0 +1,7 @@
+front matter folded into Appendix A: compared as one surface, appendix/title
+94 surfaces after, 94 before, 24 keys renamed
+  totals acronyms_undefined_at_first_use: 25 -> 24
+  totals terms_undefined_at_first_use: 276 -> 266
+2 differences
+paper/supporting_material.ipynb acronyms_undefined_at_first_use 7 -> 6
+paper/supporting_material.ipynb terms_undefined_at_first_use 16 -> 6

@@ -7,7 +7,7 @@ The surfaces:
     ``paper/paper.ipynb``: the abstract, then the body by heading (Markdown cells and the
     Markdown outputs of code cells, the generated sentences and tables).
 ``appendix``
-    ``paper/supporting_material.ipynb``: each appendix by heading (Appendix A is generated from
+    ``paper/supporting_material.ipynb``: each appendix by heading (Appendix D is generated from
     ``glossary.yaml`` and is read through the glossary surface, not twice).
 ``docs``
     ``docs/*.md`` and ``docs/user-guide/*.md``, one surface per page.
@@ -56,7 +56,7 @@ VIEWS = {
     "example": "the docs site as rendered (case model page) or the file on GitHub",
     "readme": "README.md as GitHub renders it",
     "site": "the root and history pages as rendered",
-    "glossary": "the docs site's Glossary page and Appendix A as rendered",
+    "glossary": "the docs site's Glossary page and Appendix D as rendered",
 }
 _HEAD_HTML = re.compile(r"<h([1-6])\b", re.I)
 _BLOCK_TAGS = re.compile(
@@ -284,7 +284,7 @@ def _split(blocks: list[Block], depth: int, limit: int):
 
 
 def _is_generated(key: tuple, kind: str) -> bool:
-    return kind == "appendix" and bool(key) and bool(re.match(r"Appendix A\b", key[0][1]))
+    return kind == "appendix" and bool(key) and bool(re.match(r"Appendix D\b", key[0][1]))
 
 
 def _merge_small(pieces: list, kind: str) -> list:
@@ -310,7 +310,7 @@ def _merge_small(pieces: list, kind: str) -> list:
     return pieces
 
 
-_CODE = re.compile(r"^(Appendix [A-G]|[A-G]\.\d+|L\d+)\b")
+_CODE = re.compile(r"^(Appendix [A-H]|[A-H]\.\d+|L\d+)\b")
 
 
 def _title_of(key: tuple, fallback: str) -> str:

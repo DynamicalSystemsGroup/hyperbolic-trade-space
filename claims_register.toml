@@ -184,7 +184,7 @@ note = "Section 6.2; interface contract version 6 ('certified' has two meanings;
 id = "C024"
 fragment = "Inside the pinned linux/arm64 image the results reproduce byte for byte"
 file = "paper/supporting_material.ipynb"
-anchor = "F.2 The environment of record"
+anchor = "H.2 The environment of record"
 kind = "S"
 backing = [
   "file:paper/container/RECORD.md",
@@ -198,7 +198,7 @@ note = "Appendix F.2; RECORD.md: hts-paper and hts-alt give the same executed-ce
 id = "C025"
 fragment = "values differ at the last digits because the platforms' mathematical libraries differ, and the conclusions are unchanged"
 file = "paper/supporting_material.ipynb"
-anchor = "F.2 The environment of record"
+anchor = "H.2 The environment of record"
 kind = "S"
 backing = [
   "file:paper/container/RECORD.md",
@@ -212,7 +212,7 @@ note = "Appendix F.2; RECORD.md: Values-that-differ table; the 46 failures are e
 id = "C026"
 fragment = "The exact tests therefore run only in the environment of record, and everything else compares within stated tolerances"
 file = "paper/supporting_material.ipynb"
-anchor = "F.2 The environment of record"
+anchor = "H.2 The environment of record"
 kind = "S"
 backing = [
   "file:paper/container/RECORD.md",
@@ -226,7 +226,7 @@ note = "Appendix F.2; RECORD.md: HTS_ENVIRONMENT_OF_RECORD; tolerance 1e-9 and 0
 id = "C027"
 fragment = "The image id changes with every commit because the history layer carries the commit"
 file = "paper/supporting_material.ipynb"
-anchor = "F.2 The environment of record"
+anchor = "H.2 The environment of record"
 kind = "S"
 backing = [
   "file:paper/container/RECORD.md",
@@ -240,7 +240,7 @@ note = "Appendix F.2; RECORD.md: Pins: image id of hts-paper."
 id = "C028"
 fragment = "Git history enters the image through a git bundle that"
 file = "paper/supporting_material.ipynb"
-anchor = "F.2 The environment of record"
+anchor = "H.2 The environment of record"
 kind = "S"
 backing = [
   "file:paper/container/RECORD.md",
@@ -254,7 +254,7 @@ note = "Appendix F.2; RECORD.md: History section: git bundle passed as the named
 id = "C029"
 fragment = "The image pins Node.js for arm64, with its checksum and signature verified"
 file = "paper/supporting_material.ipynb"
-anchor = "F.2 The environment of record"
+anchor = "H.2 The environment of record"
 kind = "S"
 backing = [
   "file:paper/container/RECORD.md",
@@ -3250,7 +3250,7 @@ note = "gamma is a gap between scores w.u - beta with u = log metrics; the 1/tau
 id = "C342"
 fragment = "The stable radius is gamma divided by twice the largest norm of a row of the log-metrics with a final entry of minus one"
 file = "paper/supporting_material.ipynb"
-anchor = "D.8 The solver's termination records"
+anchor = "B.4 The solver's termination records"
 kind = "M"
 backing = ["lemma:L13.11", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms"]
 status = "backed"
@@ -3648,7 +3648,7 @@ note = "Responsibility statement for the downstream inversion; see the predictio
 id = "C387"
 fragment = "The lemma scripts are a substitute for pencil-and-paper derivation, not formal verification"
 file = "paper/supporting_material.ipynb"
-anchor = "Appendix B. Proofs, step for step with their scripts"
+anchor = "Appendix E. Proofs, step for step with their scripts"
 kind = "S"
 backing = [
   "func:derivation/run.py::run_chain",
@@ -3665,7 +3665,7 @@ note = "what the scripts are: plain SymPy run as a chain (run_chain), each step 
 id = "C388"
 fragment = "step is one line of symbolic algebra that the reader can run against its sentence"
 file = "paper/supporting_material.ipynb"
-anchor = "Appendix B. Proofs, step for step with their scripts"
+anchor = "Appendix E. Proofs, step for step with their scripts"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_every_step_tag_of_the_record_appears_once_in_a_proof_and_none_is_empty",
@@ -3680,7 +3680,7 @@ note = "every tagged step of the record appears once in a proof with its sentenc
 id = "C389"
 fragment = "The formal prover in this work is the Z3 solver behind the requirement checks of the case's system model"
 file = "paper/supporting_material.ipynb"
-anchor = "Appendix B. Proofs, step for step with their scripts"
+anchor = "Appendix E. Proofs, step for step with their scripts"
 kind = "S"
 backing = [
   "func:examples/adcs/experiments/toolkit.py::verify_solve",
@@ -4246,7 +4246,7 @@ note = "The standard fact that the d components of a table of d metrics exhaust 
 id = "C441"
 fragment = "a small value flags a nearly flat direction"
 file = "paper/supporting_material.ipynb"
-anchor = "D.8 The solver's termination records"
+anchor = "B.4 The solver's termination records"
 kind = "M"
 backing = ["lemma:L17.5", "test:tests/test_estimator.py::test_conditioning_drops_for_nearly_collinear_metrics"]
 status = "backed"
@@ -4448,7 +4448,7 @@ note = "The statement is first order, interior solution, small noise, Gaussian, 
 id = "C463"
 fragment = "At half a percent in the primary regime the predicted largest shift agrees with the measured mean within the spread of the draws; in every other row the prediction exceeds the measurement"
 file = "paper/supporting_material.ipynb"
-anchor = "D.18 The noise-ridge corollary against injected noise"
+anchor = "B.13 The noise-ridge corollary against injected noise"
 kind = "R"
 backing = [
   "gen:paper/generate_results.py::injected_noise",
@@ -4558,7 +4558,7 @@ note = "fleetSize is an attribute of the Cubesat as a whole in the model file (s
 id = "C496"
 fragment = "The fleet cost requirement holds the covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
 file = "paper/supporting_material.ipynb"
-anchor = "Appendix C. The case's model: how the table of metrics came to be"
+anchor = "Appendix F. The case's model: how the table of metrics came to be"
 kind = "P"
 backing = [
   "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
@@ -4606,7 +4606,7 @@ note = "narrowed from 'four threshold requirements': the unit cost limit (350,00
 id = "C499"
 fragment = "The two cost limits are not among them. They are budget limits read after the fit, and no design of fleet size one passes the unit cost limit, so a set constrained by it would be a fleet-size choice, not a design-space one."
 file = "paper/supporting_material.ipynb"
-anchor = "D.17 The requirements read after the fit"
+anchor = "B.12 The requirements read after the fit"
 kind = "R"
 backing = [
   "test:tests/test_case.py::test_every_cost_requirement_is_read_at_the_designs_own_fleet_size",
@@ -4681,7 +4681,7 @@ note = "PointingError in the model is the root-sum-square of the steady error an
 id = "C505"
 fragment = "the excess column converts the price to currency, the median amount by which the excluded near-frontier designs exceed the limit"
 file = "paper/supporting_material.ipynb"
-anchor = "D.17 The requirements read after the fit"
+anchor = "B.12 The requirements read after the fit"
 kind = "R"
 backing = [
   "test:tests/test_case.py::test_the_requirements_prices_are_also_in_currency",
@@ -4952,7 +4952,7 @@ note = "Readout section 2: closing the gap needs a rounding-error statement and 
 id = "C570"
 fragment = "HoroPCA [@chami2021horopca] carries principal component analysis (PCA), the directions along which a table spreads most, into hyperbolic space"
 file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
+anchor = "C.1 The hypothesis and what would refute it"
 kind = "L"
 backing = [
   "bib:chami2021horopca",
@@ -4967,7 +4967,7 @@ note = "As C529 and reading_pass row 44: HoroPCA is the components of PCA (subsp
 id = "C571"
 fragment = "The hypothesis, committed with its refutation conditions before any table of this experiment existed"
 file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
+anchor = "C.1 The hypothesis and what would refute it"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_the_pre_registered_rates_are_those_of_the_hypothesis_file",
@@ -4982,7 +4982,7 @@ note = "hypothesis.md was committed at 830cf54 with the three scripts, before re
 id = "C572"
 fragment = "is that PCA and HoroPCA follow the spread and this work follows the edge"
 file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
+anchor = "C.1 The hypothesis and what would refute it"
 kind = "R"
 backing = [
   "gen:paper/generate_prior_art.py::horopca_hypothesis_table",
@@ -4998,7 +4998,7 @@ note = "The hypothesis H (one sentence in hypothesis.md); every pre-registered p
 id = "C573"
 fragment = "This work finds the edge of the table instead: a vector of exponents defining a surface that bounds the rows from above"
 file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
+anchor = "C.1 The hypothesis and what would refute it"
 kind = "M"
 backing = [
   "glossary:fitted-reference-surface",
@@ -5013,7 +5013,7 @@ note = "The fit minimizes a one-sided soft maximum over the simplex; the surface
 id = "C574"
 fragment = "Four metrics, 300 rows, six tables per setting"
 file = "paper/supporting_material.ipynb"
-anchor = "H.2 The experiment"
+anchor = "C.2 The experiment"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_the_design_constants_of_appendix_h_are_the_pre_registered_ones",
@@ -5029,7 +5029,7 @@ note = "hypothesis.md, 'The experiment': d = 4, n = 300, seeds 100 to 105, no no
 id = "C575"
 fragment = "Each table goes to this work (one term), to PCA (first component) and to HoroPCA (first direction; the authors' code, five restarts)"
 file = "paper/supporting_material.ipynb"
-anchor = "H.2 The experiment"
+anchor = "C.2 The experiment"
 kind = "S"
 backing = [
   "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
@@ -5045,7 +5045,7 @@ note = "hypothesis.md and experiment_methods.py: HyperbolicTradeSpace(n_terms=1)
 id = "C576"
 fragment = "HoroPCA needs a ball (the disk that models hyperbolic space), so the log-metrics are centred and scaled until the farthest lies at distance R from the centre"
 file = "paper/supporting_material.ipynb"
-anchor = "H.2 The experiment"
+anchor = "C.2 The experiment"
 kind = "S"
 backing = [
   "file:work-packages/WP35-rounds/spike-h/readout.md",
@@ -5061,7 +5061,7 @@ note = "readout section 6 ('R'): centre, one scale so the farthest point has tan
 id = "C577"
 fragment = "while the leading directions of PCA and HoroPCA track the variation in the sampled designs, so their agreement depends on how the boundary's orientation relates to the sample's spread"
 file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
+anchor = "C.4 What the table shows"
 kind = "R"
 backing = [
   "gen:paper/generate_prior_art.py::horopca_hypothesis_table",
@@ -5077,7 +5077,7 @@ note = "The table: PCA's first component and HoroPCA's first direction (R = 0.25
 id = "C578"
 fragment = "In these controlled constructions this work tracks the planted upper boundary"
 file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
+anchor = "C.4 What the table shows"
 kind = "R"
 backing = [
   "gen:paper/generate_prior_art.py::horopca_hypothesis_table",
@@ -5093,7 +5093,7 @@ note = "Arms A and B: this work recovers w in 54 of 54 tables (cosine at least 0
 id = "C580"
 fragment = "chains them, running PCA on the chart of the near-frontier designs"
 file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
+anchor = "C.4 What the table shows"
 kind = "S"
 backing = [
   "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
@@ -5108,7 +5108,7 @@ note = "As C531: the tension report runs PCA on the chart coordinates of the nea
 id = "C582"
 fragment = "The embedding is part of the treatment: the centre, the scale R and the exponential map at the origin into the ball are our choices, so the experiment distinguishes the implemented pipelines under it and cannot establish that HoroPCA could never recover boundary information"
 file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
+anchor = "C.4 What the table shows"
 kind = "S"
 backing = [
   "file:work-packages/WP35-rounds/spike-h/readout.md",
@@ -5123,7 +5123,7 @@ note = "readout section 7, first item; decision Question 2 (b): not run, stated 
 id = "C583"
 fragment = "The tables favour clean identification (noise-free, four metrics, 30 percent of the rows on the edge, a fixed temperature) and are not tree-like, the data HoroPCA was built for"
 file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
+anchor = "C.4 What the table shows"
 kind = "R"
 backing = [
   "gen:paper/generate_prior_art.py::horopca_verdicts",
@@ -5140,7 +5140,7 @@ note = "Gromov four-point relative delta 0.26 to 0.33 on the planted tables agai
 id = "C584"
 fragment = "HoroPCA ran one direction at its default settings"
 file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
+anchor = "C.4 What the table shows"
 kind = "S"
 backing = [
   "file:work-packages/WP35-rounds/spike-h/readout.md",
@@ -5155,7 +5155,7 @@ note = "k = 1 in the table, the repository's defaults, Adam at learning rate 0.0
 id = "C590"
 fragment = "Six tables per cell establish separation, not population recovery rates; every 6/6 is a count"
 file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
+anchor = "C.4 What the table shows"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_the_hypothesis_table_equals_the_record_cell_by_cell",
@@ -5170,7 +5170,7 @@ note = "n = 6 per cell in results.json; the reviewer's boundary (c), recorded at
 id = "C592"
 fragment = "the standard deviation along the edge's vector (the planted exponents) over that along the largest direction orthogonal to it"
 file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
+anchor = "C.1 The hypothesis and what would refute it"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_h_wording_unit_defines_its_terms_and_states_counts",
@@ -5186,7 +5186,7 @@ note = "hypothesis.md, 'Spread ratio rho': the standard deviation of the log-met
 id = "C593"
 fragment = "Kind B moves the vector by a fraction t from the depth direction of the package's generator (equal exponents, where it puts its spread) to one metric, and kind C removes the edge and still scores the same vector"
 file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
+anchor = "C.1 The hypothesis and what would refute it"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_h_wording_unit_defines_its_terms_and_states_counts",
@@ -5202,7 +5202,7 @@ note = "hypothesis.md, arm B: w_t = (1 - t)(1/4, 1/4, 1/4, 1/4) + t(1, 0, 0, 0),
 id = "C594"
 fragment = "A method *recovers* the vector when the absolute cosine (|cos|, agreement of directions ignoring sign) of its direction with it reaches the threshold, 0.9"
 file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
+anchor = "C.1 The hypothesis and what would refute it"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_h_wording_unit_defines_its_terms_and_states_counts",
@@ -5315,7 +5315,7 @@ note = "The model's baseline configuration has a pointing error of 0.0155 degree
 id = "C619"
 fragment = "Each named design is asserted to lie in the shortlist and to pass the six requirements."
 file = "paper/supporting_material.ipynb"
-anchor = "D.19 The decision: the shortlist and the rules"
+anchor = "B.14 The decision: the shortlist and the rules"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::decision",
@@ -8776,7 +8776,7 @@ note = "As the retired C929. As the retired C020. Section 6.2; as stated in thei
 id = "C1101"
 fragment = "The reading pass, one row per sentence of the paper that rests on a cited work, with the source and the place in it that was read, is"
 file = "paper/supporting_material.ipynb"
-anchor = "G.1 The register"
+anchor = "A.1 The register"
 kind = "S"
 backing = [
   "gen:paper/generate_supplement.py::render",
@@ -9138,7 +9138,7 @@ note = "Appendix F.2's container paragraph: byte for byte inside the pinned imag
 id = "C988"
 fragment = "For two metrics with identical columns the loss is flat along their swap"
 file = "paper/supporting_material.ipynb"
-anchor = "D.4 The regimes side by side"
+anchor = "B.2 The regimes side by side"
 kind = "M"
 backing = [
   "lemma:L4.12",
@@ -9153,7 +9153,7 @@ note = "L4's second derivative of J_tau along v is (tau/2) sum_i sum_l p_i p_l (
 id = "C989"
 fragment = "within a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest predicted distances to the 300 most isolated points of white space"
 file = "paper/supporting_material.ipynb"
-anchor = "D.10 Propose, predict, check"
+anchor = "B.6 Propose, predict, check"
 kind = "S"
 backing = [
   "func:examples/adcs/experiments/check_designs.py::Proposer",
@@ -9168,7 +9168,7 @@ note = "Proposer.draw computes the reach as the REACH_QUANTILE (0.02) quantile o
 id = "C990"
 fragment = "a prediction outside the quantity's admissible range is reported as invalid, never clipped"
 file = "paper/supporting_material.ipynb"
-anchor = "D.10 Propose, predict, check"
+anchor = "B.6 Propose, predict, check"
 kind = "P"
 backing = [
   "reading",
@@ -9182,7 +9182,7 @@ note = "A rule for the reading, not a measured result: inverting a level into a 
 id = "C991"
 fragment = "The four limits are illustrative values chosen from a ladder of candidates by the share of the feasible designs each admits, not a mission's; the SysML v2 model's part `budgets` records each with its row of the ladder."
 file = "paper/supporting_material.ipynb"
-anchor = "D.17 The requirements read after the fit"
+anchor = "B.12 The requirements read after the fit"
 kind = "S"
 backing = [
   "test:tests/test_case.py::test_requirements_are_the_models_budgets",
@@ -9198,7 +9198,7 @@ note = "The model's Budgets doc: the four thresholds are the supervisor's choice
 id = "C992"
 fragment = "sponsor: least fleet cost; ... manufacturer: least unit cost; ... operator: largest coverage probability; ... between sponsor and operator: the design whose larger shortfall on fleet cost and coverage probability is smallest, each scaled from its best to its worst value on the shortlist (minimax regret)."
 file = "paper/supporting_material.ipynb"
-anchor = "D.19 The decision: the shortlist and the rules"
+anchor = "B.14 The decision: the shortlist and the rules"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::decision",
@@ -9214,7 +9214,7 @@ note = "decision(): the sponsor's pick is the argmin of fleet cost, the manufact
 id = "C993"
 fragment = "The coverage probability is the SysML v2 model's `CoverageProbability`, read from the fleet size and the pointing error."
 file = "paper/supporting_material.ipynb"
-anchor = "D.19 The decision: the shortlist and the rules"
+anchor = "B.14 The decision: the shortlist and the rules"
 kind = "S"
 backing = [
   "file:examples/adcs/model_v2/stakeholders.sysml",
@@ -9228,7 +9228,7 @@ source = "WP57c (Appendices C and D), the material WP56 moved"
 id = "C994"
 fragment = "The covered cost is a lower bound on a full costing: it covers the bus (structure, power, radios and computer), the attitude-control parts, assembly and test, and wholesale launch"
 file = "paper/supporting_material.ipynb"
-anchor = "C.8 The cost model"
+anchor = "F.8 The cost model"
 kind = "S"
 backing = [
   "file:examples/adcs/model_v2/stakeholders.sysml",
@@ -9242,7 +9242,7 @@ note = "The model's COVERAGE docs (cubesat.sysml UnitCost and FleetCost, stakeho
 
 [[claim]]
 id = "C995"
-fragment = "Appendix D.18 <sub-d-18>` sets it against noise injected into the case's data"
+fragment = "Appendix B.13 <sub-b-13>` sets it against noise injected into the case's data"
 file = "paper/paper.ipynb"
 anchor = "Results"
 kind = "R"
@@ -9258,7 +9258,7 @@ source = "WP57c (Appendices C and D), the second unit (the driver's call 1: Coro
 id = "C996"
 fragment = "Each regime's table gives the fits at K = 1, 2 and 3, each K at its own fit temperature, with the conditioning of the exponents, `conditioning_`: the smallest eigenvalue of the restricted Hessian at each term's fit"
 file = "paper/supporting_material.ipynb"
-anchor = "D.8 The solver's termination records"
+anchor = "B.4 The solver's termination records"
 kind = "S"
 backing = [
   "gen:paper/generate_results.py::termination_records",
@@ -9273,7 +9273,7 @@ source = "WP57c (Appendices C and D), the second unit (D.2's and D.12's tables m
 id = "C997"
 fragment = "Dominance stops discriminating as metrics are added: read on this case's counts"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::nondominated_sentence",
@@ -9288,7 +9288,7 @@ note = "Section 2. As C064 (Section 2), with D.9's counts."
 id = "C998"
 fragment = "The HoroPCA comparison: its reading limits (a) to (c)"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "file:work-packages/WP35-rounds/spike-h/readout.md",
@@ -9303,7 +9303,7 @@ note = "Section 2. A pointer to H.4's three reading limits, C582, C583 and C590;
 id = "C999"
 fragment = "The energy differential is a level by analogy with a potential, neither a physical energy nor a Euclidean distance"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "glossary:energy-differential",
@@ -9318,7 +9318,7 @@ note = "Section 4. As C006 (Section 4)."
 id = "C1000"
 fragment = "A tension is a rate along the fitted reference surface, not the effect of changing a design variable"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L21",
@@ -9333,7 +9333,7 @@ note = "Section 4. As C796 (Section 4)."
 id = "C1001"
 fragment = "The conditioning choices define the question: a stable fitted direction answers it as the metrics were conditioned, and rescaling one metric changes which term is tangent"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L9",
@@ -9348,7 +9348,7 @@ note = "Section 5. Section 5's conditioning paragraph; A4 is the conditioning's 
 id = "C1002"
 fragment = "The target fraction of designs above $V=1$, about a tenth, is a convention, checked at half and double"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "func:src/hyperbolic_trade_space/tuning.py::select_temperature",
@@ -9363,7 +9363,7 @@ note = "Section 5. As C962 (Section 5); D.5 prints the halved and doubled fracti
 id = "C1003"
 fragment = "The three thresholds that read an exponent, $10^{-12}$, $10^{-9}$ and $10^{-3}$, are conventions: numerically zero is not mathematically zero"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "file:docs/superpowers/notes/abstraction-gaps.md",
@@ -9377,7 +9377,7 @@ note = "Section 5. Section 5, thresholds and ties; G-2."
 id = "C1004"
 fragment = "The analyst chooses $K$; the package's checks inform the choice, none deciding alone"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "file:docs/user-guide/choosing-k.md",
@@ -9392,7 +9392,7 @@ note = "Section 5. Section 5 and D.15's checks; no check decides K alone."
 id = "C1005"
 fragment = "The mean slack is not convex, so the several-term alternation is a heuristic that returns a local fit with no global guarantee"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L16",
@@ -9407,7 +9407,7 @@ note = "Section 5. Section 5; L16 part i shows F is not convex; G-14."
 id = "C1006"
 fragment = "R1 does not imply that the finite-$\\tau$ minimizer is interior"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L3",
@@ -9422,7 +9422,7 @@ note = "Section 6. Section 6's commentary on L3; G-2."
 id = "C1007"
 fragment = "The fit is convex, not claimed strictly: which of a nearly coincident pair of metrics carries the exponent is not read as a finding"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L4",
@@ -9437,7 +9437,7 @@ note = "Section 6. Section 6 (L4) and D.4's pair rule (C988)."
 id = "C1008"
 fragment = "The Gaussian cumulant is a population identity, with no consistency claim"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L6",
@@ -9452,7 +9452,7 @@ note = "Section 6. Section 6's commentary on L6; G-3, G-11."
 id = "C1009"
 fragment = "The noise ridge is the shift of the minimizer of the expected loss, not of one noisy fit, and does not say whether the elasticities are right"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L20",
@@ -9467,7 +9467,7 @@ note = "Section 6. As C462 (Section 6)."
 id = "C1010"
 fragment = "The elasticities and improvement factors are read for metrics with sizeable exponents, and are the fit's own only where $w_j>0$ at the fit temperature"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L7",
@@ -9482,7 +9482,7 @@ note = "Section 6. Section 6's commentary on L7; G-2."
 id = "C1011"
 fragment = "The tension does not say that the fitted reference surface is the right one, nor give the tension at a seam"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L21",
@@ -9496,7 +9496,7 @@ note = "Section 6. Section 6's commentary on L21."
 id = "C1012"
 fragment = "A maximizer of $V$ is weakly efficient; the converse is not claimed"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L11",
@@ -9510,7 +9510,7 @@ note = "Section 6. As C927 (Section 6)."
 id = "C1013"
 fragment = "The bound of $K^N+1$ iterations is a pigeonhole count, not a practical stopping guarantee; stationarity of the stop, and convergence otherwise, are not claimed"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L15",
@@ -9525,7 +9525,7 @@ note = "Section 6. Section 6's commentary on L15; D.14 records fits at the cap; 
 id = "C1014"
 fragment = "The stable radius is a sufficient condition, not tight"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L13",
@@ -9539,7 +9539,7 @@ note = "Section 6. Section 6 (L13, a sufficient condition); D.8's margin reading
 id = "C1015"
 fragment = "The approximate certificate is for the returned run, not across restarts"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L14",
@@ -9554,7 +9554,7 @@ note = "Section 6. Section 6's commentary on the approximate certificate; G-15."
 id = "C1016"
 fragment = "Certified is a status at the returned point, set by tolerances: whether a fit is stationary within tolerance is measured, not proved"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "test:tests/test_estimator.py::test_termination_record_for_k_terms",
@@ -9569,7 +9569,7 @@ note = "Section 6. Section 6, the stopping declaration; G-16."
 id = "C1017"
 fragment = "On the case, which term a design within the band of a seam falls to is not a finding"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::margin_sentence",
@@ -9584,7 +9584,7 @@ note = "Section 6. Section 6's generated margin sentence (37 designs on the prim
 id = "C1018"
 fragment = "The exponents' stability under resampling of the rows is not assessed at $K=1$; the movement of an exponent vector is read from $K=2$"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::temperature_variants_sentence",
@@ -9599,7 +9599,7 @@ note = "Section 7. Queue line 9 (WP56, Section 7); D.5 prints the sentence (C627
 id = "C1019"
 fragment = "The position along the surface, the first principal direction of the near-frontier designs, is a reading of the sampled designs and not part of the model"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "gen:paper/figures/chart_level.py::leading_direction",
@@ -9614,7 +9614,7 @@ note = "Section 8. Figure 7's caption (Section 8) and D.16."
 id = "C1020"
 fragment = "Term 1's elasticity is read across the alternatives of the swapped parts, not along one continuous trade"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::elasticity_sentence",
@@ -9629,7 +9629,7 @@ note = "Section 8. Section 8's generated elasticity sentence."
 id = "C1021"
 fragment = "Propose, predict, check is a check on three proposals, which fail the depth-of-discharge feasibility condition; turning a predicted level into a bounded outcome can fail while the fit is certified"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::predict_reading",
@@ -9645,7 +9645,7 @@ note = "Section 8. As C404 (Section 8) and D.10's never-clipped rule (C990)."
 id = "C1022"
 fragment = "The collapse of the three objectives to one trade-off holds for this cost model; a cost that scales differently with the fleet size enters as a new table"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::fleet_refit_sentence",
@@ -9660,7 +9660,7 @@ note = "Section 8. Section 8, Three stakeholders: a revised cost model enters as
 id = "C1023"
 fragment = "Machine verification shows that a formula follows from its hypotheses and that the code agrees, not that the hypotheses suit a table; the line of a proof step cannot say that a sentence means what the line computes"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "file:derivation/proofmap.py",
@@ -9675,7 +9675,7 @@ note = "Section 9. Queue line 8 (WP56); Section 9's human validation and Appendi
 id = "C1024"
 fragment = "One term is tangent at one place and conservative off it"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L7",
@@ -9690,7 +9690,7 @@ note = "Section 9. Section 9's limits; G-1."
 id = "C1025"
 fragment = "The exponents and elasticities describe how the sampled designs trade, not a causal exchange that changing a variable would reproduce; they depend on the conditioning, and a small sample determines them weakly"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "file:docs/user-guide/limitations.md",
@@ -9705,7 +9705,7 @@ note = "Section 9. Section 9's limits; G-3, G-12."
 id = "C1026"
 fragment = "Designed samples, such as grids, are not independent observations: the exponents describe the sample and are not estimates with a sampling error"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "file:docs/superpowers/notes/abstraction-gaps.md",
@@ -9720,7 +9720,7 @@ note = "Section 9. Section 9's limits; G-11."
 id = "C1027"
 fragment = "The certificate covers a local minimizer: with the cells held fixed for a sharp fit, a strict local minimizer where the first-order conditions hold exactly for a soft fit. That the surface describes the observed designs is read from the table's figures; that the fit holds for designs outside the table, or supports a decision, needs its own validation"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L14",
@@ -9736,7 +9736,7 @@ note = "Section 9. Queue line 3 (WP56, Three claims; C039 retired then, C040 kep
 id = "C1028"
 fragment = "The case's hardware values are illustrative and its costs a lower bound on a full costing; the case has no schedule, no payload and a flat launch price"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "file:examples/adcs/case-model.md",
@@ -9751,7 +9751,7 @@ note = "Section 9. Section 9's limits; C.8 and the case's model page (C994)."
 id = "C1029"
 fragment = "Trade-offs the sampling never exercised cannot appear"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "file:docs/superpowers/notes/abstraction-gaps.md",
@@ -9765,7 +9765,7 @@ note = "Section 9. Section 9's limits; G-12, G-13."
 id = "C1030"
 fragment = "Novelty $V-1$ is a relative improvement, meaningful against the band $1/\\tau$: it says how far beyond the fitted reference surface a design lies, not whether anyone wants it; white space is an opportunity only where the trade space is log-convex around it, which the data cannot prove"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "M"
 backing = [
   "lemma:L1",
@@ -9780,7 +9780,7 @@ note = "Section 9. Queue line 6 (WP56, Novelty and white space); Section 9's whi
 id = "C1031"
 fragment = "An answer far from the fitted reference surface is hard to justify, and configuration management needs the analysis rerun on empirical data"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "file:examples/adcs/case-model.md",
@@ -9795,7 +9795,7 @@ note = "Section 9. Queue line 4 (WP56, Why a surface); the case's attributes com
 id = "C1032"
 fragment = "A requirement's price is a feature of the fitted model on this table, not a causal exchange"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "gen:paper/generate_results.py::requirements_at_the_frontier",
@@ -9810,7 +9810,7 @@ note = "Appendix D.17. D.17's price paragraph."
 id = "C1033"
 fragment = "The conditioning is refitted on each noisy table, which L18 does not cover, and eight draws are few"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "R"
 backing = [
   "gen:paper/generate_results.py::injected_noise",
@@ -9825,7 +9825,7 @@ note = "Appendix D.18. D.18's reading."
 id = "C1034"
 fragment = "Results reproduce byte for byte only inside the image of record; elsewhere values agree within stated tolerances"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "file:paper/container/RECORD.md",
@@ -9839,7 +9839,7 @@ note = "Appendix F. As C024 (F.2)."
 id = "C1035"
 fragment = "The register of prior art is not exhaustive: the bibliographic records of the cited works were verified, and what each work says was read only in part"
 file = "paper/supporting_material.ipynb"
-anchor = "E.2 Limitations"
+anchor = "G.2 Limitations"
 kind = "S"
 backing = [
   "file:paper/supplement/reading-pass.md",
@@ -9854,7 +9854,7 @@ note = "Appendix G. Queue line 1 (WP57a, Appendix G's scope sentence)."
 id = "C1036"
 fragment = "The outer loop of the search: outward in expectation"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "S"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9869,7 +9869,7 @@ note = "OQ-1 of the ledger (Section 10); the title in the ledger's words."
 id = "C1037"
 fragment = "A convergence result when the expected progress ceases"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "S"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9884,7 +9884,7 @@ note = "OQ-2 of the ledger (Section 10); the title in the ledger's words."
 id = "C1038"
 fragment = "Ascent may reach only the log-convex part of the Pareto boundary"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "S"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9899,7 +9899,7 @@ note = "OQ-3 of the ledger (Section 10); the title in the ledger's words."
 id = "C1039"
 fragment = "How a sampling strategy enters the nested loops"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "S"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9914,7 +9914,7 @@ note = "OQ-4 of the ledger (Section 10); the title in the ledger's words."
 id = "C1040"
 fragment = "Global convergence of the several-term alternation"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9930,7 +9930,7 @@ note = "OQ-5 of the ledger (Section 6); the title in the ledger's words."
 id = "C1041"
 fragment = "Statistical consistency under noise and refitting"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9946,7 +9946,7 @@ note = "OQ-6 of the ledger (Section 6); the title in the ledger's words."
 id = "C1042"
 fragment = "Identifiability of the active metrics under finite, biased observations"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9962,7 +9962,7 @@ note = "OQ-7 of the ledger (Section 6); the title in the ledger's words."
 id = "C1043"
 fragment = "When the fitted reference surface recovers the Pareto boundary"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9978,7 +9978,7 @@ note = "OQ-8 of the ledger (Section 6); the title in the ledger's words."
 id = "C1044"
 fragment = "The tie at the exact maximum for several terms"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -9994,7 +9994,7 @@ note = "OQ-9 of the ledger (Section 5); the title in the ledger's words."
 id = "C1045"
 fragment = "A log-convex surface only ... sect-methods ... sect-discussion ... L10"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -10009,7 +10009,7 @@ note = "OQ-10 of the ledger (Sections 5 and 9); the title in the ledger's words.
 id = "C1046"
 fragment = "A stale share in the SysML v2 model's header"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "S"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -10024,7 +10024,7 @@ note = "OQ-12 of the ledger (the SysML v2 model); the title in the ledger's word
 id = "C1047"
 fragment = "The decision's design-level pick under the coverage constants"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "S"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -10037,9 +10037,9 @@ note = "OQ-13 of the ledger (Section 9); the title in the ledger's words."
 
 [[claim]]
 id = "C1048"
-fragment = "The decision's unused picks ... {ref}`D.19 <sub-d-19>`"
+fragment = "The decision's unused picks ... {ref}`B.14 <sub-b-14>`"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "S"
 backing = [
   "file:work-packages/review/open-questions.md",
@@ -10054,7 +10054,7 @@ note = "OQ-14 of the ledger ({ref}`D.19 <sub-d-19>`); the title in the ledger's 
 id = "C1049"
 fragment = "A search for successive trade-offs, each found after removing the last, as PCA extracts components: neither that it works nor that the trade-offs are orthogonal is claimed"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:notes/2026-11-07-posynomial-invariant-form-design.md",
@@ -10069,7 +10069,7 @@ note = "Queue line 5 (WP56, Trade-offs beyond the first, and PCA)."
 id = "C1050"
 fragment = "Which kernel expansions keep the fit a geometric program in the exponents and the model a generalized geometric program in the metrics; nothing is built"
 file = "paper/supporting_material.ipynb"
-anchor = "E.3 Open questions"
+anchor = "G.3 Open questions"
 kind = "M"
 backing = [
   "file:notes/directions/wp43-kernel-direction.md",

@@ -266,7 +266,7 @@ def _term_regex(phrases: list[str]) -> re.Pattern:
     return re.compile(r"(?<![\w-])(" + "|".join(alts) + r")(?:s|es)?(?![\w-])", re.I)
 
 
-_LINK_CUE = re.compile(r"glossary|notation|\{term\}|\{ref\}`?(?:sub-)?a-|appendix[-\s]a\b", re.I)
+_LINK_CUE = re.compile(r"glossary|notation|\{term\}|\{ref\}`?(?:sub-)?d-|appendix[-\s]d\b", re.I)
 
 
 def document_report(blocks: list[tuple[str, ps.Block]], glossary: dict[str, list[str]]) -> dict:

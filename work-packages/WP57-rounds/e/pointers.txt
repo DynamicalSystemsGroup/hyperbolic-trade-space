@@ -1,0 +1,34 @@
+| Before: label, heading | After: label, heading | Pointers (cell: text before -> after) |
+|---|---|---|
+| `appendix-g` Appendix G. Register of prior art | `appendix-a` Appendix A. Register of prior art | bibliography, sec-prior-art: Appendix G -> Appendix A (x2) |
+| `sub-d-16` D.16 Chaining with PCA: the principal directions of the near-frontier chart | `sub-b-11` B.11 Chaining with PCA: the principal directions of the near-frontier chart | fig-chart-level-caption, sec-prior-art-3: Appendix D.16 -> Appendix B.11 (x2) |
+| `appendix-h` Appendix H. HoroPCA beside this work: a tested hypothesis | `appendix-c` Appendix C. HoroPCA beside this work: a tested hypothesis | sec-prior-art-3: Appendix H -> Appendix C |
+| `appendix-a` Appendix A. Notation and terms | `appendix-d` Appendix D. Notation and terms | sec-preliminaries: Appendix A -> Appendix D |
+| `appendix-b` Appendix B. Proofs, step for step with their scripts | `appendix-e` Appendix E. Proofs, step for step with their scripts | 977883ab, noise-asm, res-L1, res-L10, res-L11, res-L12, res-L13, res-L14a, res-L14b, res-L15, res-L17, res-L2, res-L20, res-L21, res-L3, res-L4, res-L5, res-L6, res-L7, res-L8, res-L9, sec-definitions, sec-methods, sec-methods-several, sec-preliminaries-b, sec-results: Appendix B, L4 -> Appendix E, L4 (x4); Appendix B, L10 -> Appendix E, L10 (x4); Appendix B, L5 -> Appendix E, L5 (x2); Appendix B, L16 -> Appendix E, L16 (x5); Appendix B, L5.25 -> Appendix E, L5.25; Appendix B, L9 -> Appendix E, L9 (x3); Appendix B -> Appendix E (x2); Appendix B, L1 -> Appendix E, L1; Appendix B, L2 -> Appendix E, L2; Appendix B, L3.9 -> Appendix E, L3.9; Appendix B, L3 -> Appendix E, L3; Appendix B, L6 -> Appendix E, L6; Appendix B, L18 -> Appendix E, L18; Appendix B, L19 -> Appendix E, L19; Appendix B, L20 -> Appendix E, L20; Appendix B, L7 -> Appendix E, L7; Appendix B, L21 -> Appendix E, L21; Appendix B, L8 -> Appendix E, L8; Appendix B, L11 -> Appendix E, L11; Appendix B, L17 -> Appendix E, L17 (x2); Appendix B, L15 -> Appendix E, L15; Appendix B, L12 -> Appendix E, L12; Appendix B, L13 -> Appendix E, L13; Appendix B, L14 -> Appendix E, L14 (x2); Appendix B, L17.19 -> Appendix E, L17.19; Appendix B, L17.13 -> Appendix E, L17.13 |
+| `sub-d-5` D.5 Sensitivity variants | `sub-b-3` B.3 Sensitivity variants | generated `_D5` -> `_B3`, sec-methods: Appendix D.5 -> Appendix B.3 (x2) |
+| `sub-c-4` C.4 Conditioning | `sub-f-4` F.4 Conditioning | sec-methods: Appendix C.4 -> Appendix F.4 |
+| `sub-d-11` D.11 Stability of the conclusions under rounding-level jitter | `sub-b-7` B.7 Stability of the conclusions under rounding-level jitter | generated `_D11` -> `_B7`, sec-case-analysis-1, sec-methods-thresholds: Appendix D.11 -> Appendix B.7 (x2); D.11 -> B.7 |
+| `sub-b-2` B.2 The several-term fit, its levels of guarantee and the tension (L12 to L22) | `sub-e-2` E.2 The several-term fit, its levels of guarantee and the tension (L12 to L22) | sec-methods-several, sec-results-stopping: Appendix B.2 -> Appendix E.2 (x2) |
+| `sub-d-13` D.13 The refit on a term's own rows | `sub-b-8` B.8 The refit on a term's own rows | sec-methods-several: Appendix D.13 -> Appendix B.8 |
+| `sub-d-18` D.18 The noise-ridge corollary against injected noise | `sub-b-13` B.13 The noise-ridge corollary against injected noise | res-L20: Appendix D.18 -> Appendix B.13 |
+| `sub-d-14` D.14 Does the fit recover a planted answer: twenty tables | `sub-b-9` B.9 Does the fit recover a planted answer: twenty tables | generated `_D14` -> `_B9`, res-L15: Appendix D.14 -> Appendix B.9 (x2) |
+| `sub-d-8` D.8 The solver's termination records | `sub-b-4` B.4 The solver's termination records | generated `_D8` -> `_B4`, res-L15, sec-case-analysis-2, sec-results-stopping: Appendix D.8 -> Appendix B.4 (x4) |
+| `appendix-e` Appendix E. Assumptions, limitations and open questions | `appendix-g` Appendix G. Assumptions, limitations and open questions | generated `_E` -> `_G`, sec-discussion, sec-results-open: Appendix E -> Appendix G (x3) |
+| `appendix-c` Appendix C. The case's model: how the table of metrics came to be | `appendix-f` Appendix F. The case's model: how the table of metrics came to be | sec-case-construction: Appendix C -> Appendix F |
+| `sub-c-1` C.1 Configurations (the design variables and their ranges) | `sub-f-1` F.1 Configurations (the design variables and their ranges) | fig-assembly-caption: Appendix C.1 -> Appendix F.1 |
+| `sub-c-6` C.6 The datasets | `sub-f-6` F.6 The datasets | sec-case-construction-1b: Appendix C.6 -> Appendix F.6 |
+| `appendix-d` Appendix D. Extended results: what the method found in the table | `appendix-b` Appendix B. Extended results: what the method found in the table | sec-case-analysis-1: Appendix D -> Appendix B |
+| `sub-c-7` C.7 The planted example | `sub-f-7` F.7 The planted example | sec-case-analysis-2: Appendix C.7 -> Appendix F.7 |
+| `sub-d-15` D.15 Choosing K for the case | `sub-b-10` B.10 Choosing K for the case | fig-chart-level-caption, generated `_D15` -> `_B10`: Appendix D.15 -> Appendix B.10 (x2) |
+| `sub-d-4` D.4 The regimes side by side | `sub-b-2` B.2 The regimes side by side | sec-case-analysis-3b: Appendix D.4 -> Appendix B.2 |
+| `sub-d-10` D.10 Propose, predict, check | `sub-b-6` B.6 Propose, predict, check | sec-case-analysis-5: Appendix D.10 -> Appendix B.6 |
+| `sub-d-19` D.19 The decision: the shortlist and the rules | `sub-b-14` B.14 The decision: the shortlist and the rules | generated `_D19` -> `_B14`, tab-decision-caption: Appendix D.19 -> Appendix B.14 (x2) |
+| `sub-f-3` F.3 Commands | `sub-h-3` H.3 Commands | sec-case-analysis-close: Appendix F.3 -> Appendix H.3 |
+| `sub-f-2` F.2 The environment of record | `sub-h-2` H.2 The environment of record | sec-case-analysis-close: Appendix F.2 -> Appendix H.2 |
+| `appendix-f` Appendix F. Computational reproducibility | `appendix-h` Appendix H. Computational reproducibility | acknowledgments: Appendix F -> Appendix H |
+| `sub-d-3` D.3 Exponents and terms | `sub-b-1` B.1 Exponents and terms | generated `_D3` -> `_B1`: Appendix D.3 -> Appendix B.1 |
+| `sub-d-9` D.9 Comparison with nondominated sorting | `sub-b-5` B.5 Comparison with nondominated sorting | generated `_D9` -> `_B5`: Appendix D.9 -> Appendix B.5 |
+| `sub-c-5` C.5 The table of metrics | `sub-f-5` F.5 The table of metrics | generated `_C5` -> `_F5`: Appendix C.5 -> Appendix F.5 |
+| `sub-d-17` D.17 The requirements read after the fit | `sub-b-12` B.12 The requirements read after the fit | generated `_D17` -> `_B12`: Appendix D.17 -> Appendix B.12 |
+
+85 pointers to 30 targets, 0 differ

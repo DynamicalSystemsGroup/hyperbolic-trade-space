@@ -839,7 +839,7 @@ def mean_slack_fixed_tau(study, fits, tau=None):
 
 CASE_K = 2
 """The number of terms of the case's several-term reading: the K the paper's choosing-K methods
-pick for the case (:func:`chosen_k`, Appendix D.15). Every figure, table and sentence of the case
+pick for the case (:func:`chosen_k`, Appendix B.10). Every figure, table and sentence of the case
 analysis that reads a several-term fit reads this value."""
 
 CHOOSE_KS = (1, 2, 3, 4)

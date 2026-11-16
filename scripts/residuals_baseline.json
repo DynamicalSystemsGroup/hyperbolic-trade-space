@@ -309,26 +309,29 @@
   "appendix/title": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
-   "words": 36,
-   "prose_words": 36,
-   "paragraphs": 2,
-   "sentences": 2,
-   "metanarration": 0,
+   "words": 190,
+   "prose_words": 190,
+   "paragraphs": 3,
+   "sentences": 4,
+   "metanarration": 1,
    "hedges": 0,
    "intensifiers": 0,
-   "parens": 4,
-   "long_parens": 0,
+   "parens": 1,
+   "long_parens": 1,
    "path_parens": 0,
-   "dense_paras": 1,
+   "dense_paras": 0,
    "restatements": 0,
-   "long_sentences": 0,
-   "compound": 0,
+   "long_sentences": 1,
+   "compound": 1,
    "deep_clauses": 0,
-   "max_parens": 4,
-   "mean_sentence": 18.0,
-   "max_sentence": 34
+   "max_parens": 1,
+   "mean_sentence": 46.0,
+   "max_sentence": 121,
+   "metanarration_by_pattern": {
+    "this-section": 1
+   }
   },
-  "appendix/appendix-a": {
+  "appendix/appendix-d": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 1718,
@@ -354,7 +357,7 @@
     "this-section": 1
    }
   },
-  "appendix/appendix-b": {
+  "appendix/appendix-e": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 827,
@@ -379,7 +382,7 @@
     "this-section": 1
    }
   },
-  "appendix/b-1": {
+  "appendix/e-1": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 407,
@@ -621,7 +624,7 @@
    "mean_sentence": 27.0,
    "max_sentence": 89
   },
-  "appendix/b-2": {
+  "appendix/e-2": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 259,
@@ -885,7 +888,7 @@
    "mean_sentence": 36.6,
    "max_sentence": 131
   },
-  "appendix/b-3": {
+  "appendix/e-3": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 318,
@@ -907,7 +910,7 @@
    "mean_sentence": 13.5,
    "max_sentence": 20
   },
-  "appendix/appendix-c": {
+  "appendix/appendix-f": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 181,
@@ -932,7 +935,7 @@
     "this-section": 1
    }
   },
-  "appendix/c-1": {
+  "appendix/f-1": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 260,
@@ -954,7 +957,7 @@
    "mean_sentence": 0.0,
    "max_sentence": 0
   },
-  "appendix/c-3": {
+  "appendix/f-3": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 409,
@@ -976,7 +979,7 @@
    "mean_sentence": 11.8,
    "max_sentence": 37
   },
-  "appendix/c-5": {
+  "appendix/f-5": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 1126,
@@ -998,7 +1001,7 @@
    "mean_sentence": 22.0,
    "max_sentence": 31
   },
-  "appendix/c-6": {
+  "appendix/f-6": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 691,
@@ -1020,7 +1023,7 @@
    "mean_sentence": 29.5,
    "max_sentence": 84
   },
-  "appendix/appendix-d": {
+  "appendix/appendix-b": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 226,
@@ -1089,7 +1092,7 @@
    "mean_sentence": 7.1,
    "max_sentence": 19
   },
-  "appendix/d-4": {
+  "appendix/b-2": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 420,
@@ -1155,7 +1158,7 @@
    "mean_sentence": 17.2,
    "max_sentence": 69
   },
-  "appendix/d-9": {
+  "appendix/b-5": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 472,
@@ -1199,7 +1202,7 @@
    "mean_sentence": 18.1,
    "max_sentence": 37
   },
-  "appendix/d-13": {
+  "appendix/b-8": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 537,
@@ -1221,7 +1224,7 @@
    "mean_sentence": 28.6,
    "max_sentence": 65
   },
-  "appendix/d-15": {
+  "appendix/b-10": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 266,
@@ -1243,7 +1246,7 @@
    "mean_sentence": 15.8,
    "max_sentence": 56
   },
-  "appendix/d-16": {
+  "appendix/b-11": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 168,
@@ -1265,7 +1268,7 @@
    "mean_sentence": 17.2,
    "max_sentence": 23
   },
-  "appendix/d-17": {
+  "appendix/b-12": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 1319,
@@ -1287,7 +1290,7 @@
    "mean_sentence": 20.4,
    "max_sentence": 75
   },
-  "appendix/d-18": {
+  "appendix/b-13": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 278,
@@ -1309,7 +1312,7 @@
    "mean_sentence": 19.8,
    "max_sentence": 45
   },
-  "appendix/d-19": {
+  "appendix/b-14": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 769,
@@ -1331,7 +1334,7 @@
    "mean_sentence": 25.7,
    "max_sentence": 66
   },
-  "appendix/appendix-e": {
+  "appendix/appendix-g": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 3720,
@@ -1356,7 +1359,7 @@
     "this-section": 1
    }
   },
-  "appendix/appendix-f": {
+  "appendix/appendix-h": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 1207,
@@ -1382,32 +1385,29 @@
     "this-section": 2
    }
   },
-  "appendix/appendix-g": {
+  "appendix/appendix-a": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
-   "words": 190,
-   "prose_words": 190,
-   "paragraphs": 3,
-   "sentences": 4,
-   "metanarration": 1,
+   "words": 36,
+   "prose_words": 36,
+   "paragraphs": 2,
+   "sentences": 2,
+   "metanarration": 0,
    "hedges": 0,
    "intensifiers": 0,
-   "parens": 1,
-   "long_parens": 1,
+   "parens": 4,
+   "long_parens": 0,
    "path_parens": 0,
-   "dense_paras": 0,
+   "dense_paras": 1,
    "restatements": 0,
-   "long_sentences": 1,
-   "compound": 1,
+   "long_sentences": 0,
+   "compound": 0,
    "deep_clauses": 0,
-   "max_parens": 1,
-   "mean_sentence": 46.0,
-   "max_sentence": 121,
-   "metanarration_by_pattern": {
-    "this-section": 1
-   }
+   "max_parens": 4,
+   "mean_sentence": 18.0,
+   "max_sentence": 34
   },
-  "appendix/g-1": {
+  "appendix/a-1": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 1135,
@@ -1473,7 +1473,7 @@
    "mean_sentence": 35.6,
    "max_sentence": 156
   },
-  "appendix/g-2": {
+  "appendix/a-2": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 1207,
@@ -1495,7 +1495,7 @@
    "mean_sentence": 27.0,
    "max_sentence": 45
   },
-  "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp": {
+  "appendix/appendix-c": {
    "file": "paper/supporting_material.ipynb",
    "kind": "appendix",
    "words": 1023,
@@ -4498,7 +4498,7 @@
    "acronyms": [
     {
      "acronym": "DEA",
-     "first_surface": "appendix/appendix-g",
+     "first_surface": "appendix/appendix-a",
      "first_location": "cell 99",
      "count": 5,
      "defined_at_first_use": false,
@@ -4554,7 +4554,7 @@
     },
     {
      "acronym": "PCA",
-     "first_surface": "appendix/d-16",
+     "first_surface": "appendix/b-11",
      "first_location": "cell 71",
      "count": 26,
      "defined_at_first_use": false,
@@ -4574,273 +4574,273 @@
    "terms": [
     {
      "term": "active-face",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 2,
      "defined_at_first_use": true
     },
     {
      "term": "assignment",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 2,
      "defined_at_first_use": false
     },
     {
      "term": "assignment-margin",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 1,
      "defined_at_first_use": false
     },
     {
      "term": "attributes",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 16",
      "count": 7,
      "defined_at_first_use": true
     },
     {
      "term": "cell",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 17,
      "defined_at_first_use": true
     },
     {
      "term": "certificate",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 7 output",
      "count": 6,
      "defined_at_first_use": false
     },
     {
      "term": "chart",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 11,
      "defined_at_first_use": false
     },
     {
      "term": "conditioning",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 12,
      "defined_at_first_use": true
     },
     {
      "term": "conditioning-of-the-exponents",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 36",
      "count": 2,
      "defined_at_first_use": true
     },
     {
      "term": "configuration",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 16",
      "count": 7,
      "defined_at_first_use": true
     },
     {
      "term": "contending-set",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 78",
      "count": 2,
      "defined_at_first_use": true
     },
     {
      "term": "effective-sample-size",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 38 output",
      "count": 3,
      "defined_at_first_use": true
     },
     {
      "term": "elasticity",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 5,
      "defined_at_first_use": false
     },
     {
      "term": "energy-differential",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 1,
      "defined_at_first_use": true
     },
     {
      "term": "exponent-vector",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 69",
      "count": 5,
      "defined_at_first_use": true
     },
     {
      "term": "fitted-reference-surface",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 4,
      "defined_at_first_use": true
     },
     {
      "term": "frontier",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 16,
      "defined_at_first_use": false
     },
     {
      "term": "generalized-geometric-program",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 11",
      "count": 1,
      "defined_at_first_use": true
     },
     {
      "term": "generalized-posynomial",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 11",
      "count": 5,
      "defined_at_first_use": true
     },
     {
      "term": "geometric-program",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 11",
      "count": 7,
      "defined_at_first_use": true
     },
     {
      "term": "hyperbolic",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 102 output",
      "count": 8,
      "defined_at_first_use": true
     },
     {
      "term": "improvement-factor",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 1,
      "defined_at_first_use": false
     },
     {
      "term": "launch-cost",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 34",
      "count": 1,
      "defined_at_first_use": true
     },
     {
      "term": "log-metrics",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 53",
      "count": 3,
      "defined_at_first_use": true
     },
     {
      "term": "mean-slack",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 11",
      "count": 13,
      "defined_at_first_use": true
     },
     {
      "term": "metrics",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 37,
      "defined_at_first_use": true
     },
     {
      "term": "monomial",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 102 output",
      "count": 1,
      "defined_at_first_use": true
     },
     {
      "term": "near-frontier-band",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 80",
      "count": 1,
      "defined_at_first_use": true
     },
     {
      "term": "number-of-metrics",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 38 output",
      "count": 1,
      "defined_at_first_use": false
     },
     {
      "term": "number-of-terms",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 102 output",
      "count": 1,
      "defined_at_first_use": true
     },
     {
      "term": "posynomial",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 7,
      "defined_at_first_use": true
     },
     {
      "term": "reach",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 6,
      "defined_at_first_use": true
     },
     {
      "term": "ridge",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 3,
      "defined_at_first_use": false
     },
     {
      "term": "share",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 7 output",
      "count": 28,
      "defined_at_first_use": false
     },
     {
      "term": "stable-radius",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 3,
      "defined_at_first_use": false
     },
     {
      "term": "supporting-envelope",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 2,
      "defined_at_first_use": true
     },
     {
      "term": "temperature",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 10 output",
      "count": 3,
      "defined_at_first_use": true
     },
     {
      "term": "term",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 2",
      "count": 95,
      "defined_at_first_use": true
     },
     {
      "term": "term-gap",
-     "first_surface": "appendix/appendix-h-horopca-beside-this-work-a-tested-hyp",
+     "first_surface": "appendix/appendix-c",
      "first_location": "cell 12 output",
      "count": 3,
      "defined_at_first_use": true

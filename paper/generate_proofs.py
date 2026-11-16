@@ -1,4 +1,4 @@
-"""Appendix B: proofs, step for step with their scripts.
+"""Appendix E: proofs, step for step with their scripts.
 
 Compiled from ``derivation/proof_map_record.json``, the committed record of the proof-map checker,
 and from the lemma scripts and the axiom ledger it points to. Nothing here is typed per proof: the

@@ -1,4 +1,4 @@
-"""Appendix G and section 2's family table, compiled from ``prior_art.yaml``.
+"""Appendix A and section 2's family table, compiled from ``prior_art.yaml``.
 
 One source, two views: the register (every entry, grouped by family, with the four fields and the
 "why this is not just X" sentence of the nearest neighbours) and section 2's table (the entries
@@ -134,7 +134,7 @@ def family_table(only_section2: bool = True) -> Md:
 
 
 def register() -> Md:
-    """The register of Appendix G: every entry, grouped by family, four fields each.
+    """The register of Appendix A: every entry, grouped by family, four fields each.
 
     Returns
     -------
@@ -157,7 +157,7 @@ def register() -> Md:
     return Md("\n".join(out))
 
 
-# ---- Appendix H: the HoroPCA comparison as a tested hypothesis (WP35, amendment 1) --------------
+# ---- Appendix C: the HoroPCA comparison as a tested hypothesis (WP35, amendment 1) --------------
 
 SPIKE_H = ROOT / "work-packages" / "WP35-rounds" / "spike-h"
 """The record of the pre-registered experiment: ``results.json`` (the cells), ``hypothesis.md``
@@ -300,7 +300,7 @@ def _parts_text(parts) -> str:
 
 
 def horopca_hypothesis_table() -> Md:
-    """The results table of Appendix H, generated from ``results.json``.
+    """The results table of Appendix C, generated from ``results.json``.
 
     One row per cell of arms A, B and C, then one row for the whole hypothesis. The verdict comes
     first (it is computed from the pre-registered refutation conditions applied to the cell, with

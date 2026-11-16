@@ -22,7 +22,7 @@ Fails on four kinds of violation:
     parentheses or after a comma, no "is/means/called", no cross-reference role, no link to the
     glossary or notation.
 ``dead-entry``
-    a glossary entry no prose uses (the Appendix A notation table, compiled from the glossary,
+    a glossary entry no prose uses (the Appendix D notation table, compiled from the glossary,
     does not count as a use).
 
 Reports without failing: once-used terms (entries and assumed terms used exactly once), and with
@@ -202,7 +202,7 @@ def read_notebook(root: Path, rel: str) -> list[Para]:
                 section = ps[-1].section
             paras += ps
     for p in paras:
-        if re.match(r"Appendix A\b", p.section):
+        if re.match(r"Appendix D\b", p.section):
             p.generated_notation = True
     return paras
 

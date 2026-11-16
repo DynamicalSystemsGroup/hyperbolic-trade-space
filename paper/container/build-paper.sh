@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build the paper's HTML inside the container, with or without network (WP10, Appendix F).
+# Build the paper's HTML inside the container, with or without network (WP10, Appendix H).
 #
 #   docker run --rm --network none hts-paper sh paper/container/build-paper.sh
 #

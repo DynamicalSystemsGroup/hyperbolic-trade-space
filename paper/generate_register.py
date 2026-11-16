@@ -1,10 +1,10 @@
-"""Appendix A: the register of notation and terms, compiled from ``glossary.yaml``.
+"""Appendix D: the register of notation and terms, compiled from ``glossary.yaml``.
 
 The table is never typed. ``glossary.yaml`` (the shared source of the register's phrases) holds
 the fields ``term``, ``symbol``, ``register``, ``formal``, ``not``, ``defined_in``; the table lists
 one row per entry the paper or the appendices use, in the glossary's order. A use is a match of
 the entry's term or an alias in the prose or the generated outputs of ``paper/paper.ipynb`` or
-``paper/supporting_material.ipynb``, outside Appendix A, by the rule of
+``paper/supporting_material.ipynb``, outside Appendix D, by the rule of
 ``scripts/check_vocabulary.py`` (the same matching that reports a dead entry); an entry no sentence
 of the two documents uses stays in the glossary and off the page. An optional ``anchor`` field (the
 scikit-learn or Boyd and Vandenberghe usage an entry anchors to) is shown as a column when any
@@ -35,11 +35,11 @@ def glossary_entries(path=GLOSSARY) -> list[dict]:
 
 
 def _paragraphs(root, rel: str) -> list:
-    """The paragraphs of a notebook as the checker reads them, less the cells of Appendix A.
+    """The paragraphs of a notebook as the checker reads them, less the cells of Appendix D.
 
-    ``check_vocabulary.read_notebook`` marks Appendix A's paragraphs by the heading they sit under,
-    which it misses when an anchor line (``(appendix-a)=``) precedes the heading in its cell; the
-    cells are taken out here by position instead, from the heading of Appendix A to the next
+    ``check_vocabulary.read_notebook`` marks Appendix D's paragraphs by the heading they sit under,
+    which it misses when an anchor line (``(appendix-d)=``) precedes the heading in its cell; the
+    cells are taken out here by position instead, from the heading of Appendix D to the next
     appendix heading.
     """
     import json
@@ -49,7 +49,7 @@ def _paragraphs(root, rel: str) -> list:
     for cell in cells:
         source = "".join(cell["source"])
         if cell["cell_type"] == "markdown" and re.search(r"^## Appendix [A-Z]\.", source, re.M):
-            skipping = bool(re.search(r"^## Appendix A\.", source, re.M))
+            skipping = bool(re.search(r"^## Appendix D\.", source, re.M))
         if skipping:
             continue
         chunks = (
@@ -72,7 +72,7 @@ def used_entry_ids(root=ROOT, documents=DOCUMENTS) -> set[str]:
 
     The rule is ``scripts/check_vocabulary.py``'s: a paragraph of a document (typed Markdown or a
     generated Markdown output) uses an entry when the entry's term or one of its aliases matches
-    in it; the paragraphs of Appendix A, the table this filter builds, do not count.
+    in it; the paragraphs of Appendix D, the table this filter builds, do not count.
     """
     glossary = cv.load_glossary(root)
     used: set[str] = set()
@@ -122,7 +122,7 @@ def register_rows(entries=None, used=None) -> tuple[list[str], list[list[str]]]:
 
 
 def register_table() -> MdMath:
-    """The register table of Appendix A.
+    """The register table of Appendix D.
 
     Returns
     -------

@@ -75,7 +75,7 @@ def link_paths(text: str) -> str:
 
 
 def appendix_link(label: str, text: str) -> str:
-    """A link from the paper's page to a subsection of the supporting material (``sub-d-11``).
+    """A link from the paper's page to a subsection of the supporting material (``sub-b-7``).
 
     The generated sentences are output cells, which the site does not parse for cross-reference
     roles; the link is plain HTML to the target that the supporting page's heading carries.

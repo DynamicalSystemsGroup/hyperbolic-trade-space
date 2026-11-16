@@ -17,17 +17,17 @@ from paper_stability import cell, entry, stable, summary
 
 from hyperbolic_trade_space.estimator import PARTICIPATION_THRESHOLD
 
-_D3 = appendix_link("sub-d-3", "Appendix D.3")
-_D5 = appendix_link("sub-d-5", "Appendix D.5")
-_D8 = appendix_link("sub-d-8", "Appendix D.8")
-_D9 = appendix_link("sub-d-9", "Appendix D.9")
-_D11 = appendix_link("sub-d-11", "Appendix D.11")
-_D14 = appendix_link("sub-d-14", "Appendix D.14")
-_C5 = appendix_link("sub-c-5", "Appendix C.5")
-_E = appendix_link("appendix-e", "Appendix E")
-_D15 = appendix_link("sub-d-15", "Appendix D.15")
-_D17 = appendix_link("sub-d-17", "Appendix D.17")
-_D19 = appendix_link("sub-d-19", "Appendix D.19")
+_B1 = appendix_link("sub-b-1", "Appendix B.1")
+_B3 = appendix_link("sub-b-3", "Appendix B.3")
+_B4 = appendix_link("sub-b-4", "Appendix B.4")
+_B5 = appendix_link("sub-b-5", "Appendix B.5")
+_B7 = appendix_link("sub-b-7", "Appendix B.7")
+_B9 = appendix_link("sub-b-9", "Appendix B.9")
+_F5 = appendix_link("sub-f-5", "Appendix F.5")
+_G = appendix_link("appendix-g", "Appendix G")
+_B10 = appendix_link("sub-b-10", "Appendix B.10")
+_B12 = appendix_link("sub-b-12", "Appendix B.12")
+_B14 = appendix_link("sub-b-14", "Appendix B.14")
 
 
 def _and(items) -> str:
@@ -93,13 +93,13 @@ def nondominated_sentence(study) -> Md:
     runs = _NUMBER_WORDS.get(len(summary()["seeds"]), len(summary()["seeds"]))
     if any(" to " in p for p in parts):
         tail = (
-            f"({_D9}; a range is the spread over {runs} regenerations of the data under "
-            f"rounding-level perturbation, {_D11})"
+            f"({_B5}; a range is the spread over {runs} regenerations of the data under "
+            f"rounding-level perturbation, {_B7})"
         )
     else:
         tail = (
-            f"({_D9}; counts that hold over {runs} regenerations of the data under rounding-level "
-            f"perturbation; a number that moves over them is printed as a range, {_D11})"
+            f"({_B5}; counts that hold over {runs} regenerations of the data under rounding-level "
+            f"perturbation; a number that moves over them is printed as a range, {_B7})"
         )
     return Md(
         f"Of {thousands(n)} feasible cubesat designs, the nondominated set (on the conditioned "
@@ -151,7 +151,7 @@ def baseline_requirement_sentence(stock) -> Md:
     (``case.CUBESAT.baseline_configuration``, the model's ``cubesatBaseline`` as the oracle
     measures it); the limits are the requirements'; the shares are ``case.requirement_mask`` on
     the baseline regime's feasible designs, the mask ``case.requirements_table`` reads (Appendix
-    D.17's pass column).
+    B.12's pass column).
     """
     spec = stock.spec
     b = spec.baseline_configuration
@@ -248,7 +248,7 @@ def requirement_order_table(primary, stock) -> Md:
 
 def requirements_sentence(study, fit) -> Md:
     """The six requirements read after the K = 1 fit as constraints: how many of its near-frontier
-    designs each excludes, and all six jointly (``case.requirements_table``, Appendix D.17).
+    designs each excludes, and all six jointly (``case.requirements_table``, Appendix B.12).
 
     The counts are printed through the stability entries ``requirement | primary | ...``
     (``stability_extra.py``).
@@ -267,7 +267,7 @@ def requirements_sentence(study, fit) -> Md:
         f"exclude "
         f"{count('all jointly', n_joint)} of its "
         f"{_held_q('requirement | primary | near-frontier', n_near)} near-frontier designs "
-        f"jointly; one at a time: {parts} ({_D17})."
+        f"jointly; one at a time: {parts} ({_B12})."
     )
 
 
@@ -309,8 +309,8 @@ def fleet_refit_sentence() -> Md:
 
 
 def participation_sentence() -> Md:
-    """The traded metrics that enter no contending set, and why (Appendix D.3, under the terms
-    whose summed pair it names; the one-axis threshold is Appendix C.5's).
+    """The traded metrics that enter no contending set, and why (Appendix B.1, under the terms
+    whose summed pair it names; the one-axis threshold is Appendix F.5's).
 
     A metric participates when it is in the contending set of some term of some fit at K = 1 to
     the deepest K the case fits, in either regime. A metric that never does is read with its
@@ -354,7 +354,7 @@ def participation_sentence() -> Md:
         f"{_and('the ' + n for n in out)}, enter no contending set (the support of a term's "
         f"exact-maximum fit) at K = 1 to {depth} in either regime: "
         f"each moves with a metric that does (|Spearman| at least {low:.2f}, below the "
-        f"{case.ONE_AXIS:g} at which {_C5} names a pair one axis). At K = 1 in the {regs[0]} "
+        f"{case.ONE_AXIS:g} at which {_F5} names a pair one axis). At K = 1 in the {regs[0]} "
         f"regime {_NUMBER_WORDS.get(len(zero), len(zero))} "
         f"carry no exponent at the fit temperature; {_NUMBER_WORDS.get(len(later), len(later))} "
         f"of them ({_and(later)}) enter a contending set at K = 2 or 3 or in the other regime. A "
@@ -372,7 +372,7 @@ def _target_variants_keep_the_set(study) -> bool:
 
 
 def _scaler_variant_sentence(study) -> str:
-    """What the robust scaler does to the K = 1 contending set (Appendix D.5's scaler row): its
+    """What the robust scaler does to the K = 1 contending set (Appendix B.3's scaler row): its
     size, how many of the baseline's metrics it shares and where its largest exponent falls."""
     t = case.sensitivity_table(study).set_index("variant")
     base, rob = t.loc["baseline"], t.loc["robust scaler"]
@@ -392,7 +392,7 @@ def design_sets_sentence() -> Md:
 
     For each regime, the fit of record (the feasible designs) against the fit on every design and
     the fit on the feasible designs that meet the four performance thresholds, all in the feasible
-    set's conditioning (``case.design_sets_table``, Appendix D.17's second table). A set's
+    set's conditioning (``case.design_sets_table``, Appendix B.12's second table). A set's
     difference from the fit of record is the number of metrics in one contending set and not in
     the other, the larger of the two directions; the sentence gives the largest over the other
     two sets, with the size of the fit of record's contending set.
@@ -421,7 +421,7 @@ def design_sets_sentence() -> Md:
         "With every design set conditioned as the fit of record is, removing the infeasible "
         "designs or imposing the four performance thresholds before the fit "
         + " and ".join(parts)
-        + f" ({_D17})."
+        + f" ({_B12})."
     )
 
 
@@ -430,8 +430,8 @@ def temperature_sentence(study, fit) -> Md:
 
     The second sentence reads the effective sample size (the glossary's definition: the inverse
     sum of squares of the support weights, so the designs the soft maximum weighs as if equally)
-    and says whether the contending set holds with the target fraction halved and doubled (D.5);
-    the digits that hold are D.11's.
+    and says whether the contending set holds with the target fraction halved and doubled (B.3);
+    the digits that hold are B.7's.
     """
     r = study.regime
     frac = stable(f"fit | {r} K=1 | frac_above_", lambda v: f"{v:.3f}")
@@ -450,22 +450,22 @@ def temperature_sentence(study, fit) -> Md:
         f"of the designs in the fit: the designs the soft maximum weighs as if equally, so the "
         f"exponents at the fit temperature rest on about that many of the "
         f"{thousands(len(study.M))} "
-        f"designs. The contending set {holds} ({_D5})."
+        f"designs. The contending set {holds} ({_B3})."
     )
 
 
 def temperature_variants_sentence(study) -> Md:
     """What the robust scaler does to the K = 1 contending set, and what is not assessed at K = 1
-    (Appendix D.5's scaler row; the movement of an exponent vector is D.15's, at K = 2).
+    (Appendix B.3's scaler row; the movement of an exponent vector is B.10's, at K = 2).
 
-    Left Section 7 at WP56; printed in Appendix D.5 under the sensitivity table
+    Left Section 7 at WP56; printed in Appendix B.3 under the sensitivity table
     (:func:`temperature_variants`).
     """
     scaler = _scaler_variant_sentence(study).strip()
     return Md(
         f"{scaler} The exponents' stability under "
         f"resampling of the rows is not assessed at K = 1: the movement of an exponent vector is "
-        f"read from K = 2 ({_D15})."
+        f"read from K = 2 ({_B10})."
     )
 
 
@@ -504,11 +504,11 @@ def k1_sentence(study, fit) -> Md:
 
 
 def choosing_k_sentence() -> Md:
-    """The K the paper's choosing-K checks pick for the case, and why (Appendix D.15).
+    """The K the paper's choosing-K checks pick for the case, and why (Appendix B.10).
 
     Read from :func:`generate_results.choosing_k_tables`: the K at which the mean slack drops most,
     the drop at the next K, and the thinnest term's share at the pick and at the next K (each K's
-    own temperature). The movement under resampling stays in Appendix D.15.
+    own temperature). The movement under resampling stays in Appendix B.10.
     """
     import generate_results as gr
 
@@ -526,7 +526,7 @@ def choosing_k_sentence() -> Md:
     two = lambda v: f"{v:.2f}"  # noqa: E731
     regimes = _and(f"the {case.regime_word(r)} regime" for r in tabs)
     return Md(
-        f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_D15}) "
+        f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_B10}) "
         f"point to K = {K} on {regimes}, none deciding alone: the mean "
         f"slack (in log V), read at the K = 1 temperature, drops most at K = {K} "
         f"({both('drop', K, two)}) "
@@ -543,7 +543,7 @@ def terms_sentence(study, fits) -> Md:
     without an association reading, and the term shares.
 
     The terms are in the estimator's order, descending term share. The shares are printed to two
-    digits, the precision the reading uses; Appendix D.3 has the rows.
+    digits, the precision the reading uses; Appendix B.1 has the rows.
     """
     K = case.CASE_K
     ft = case.term_table(study, fits, K=K)
@@ -592,12 +592,12 @@ def terms_sentence(study, fits) -> Md:
         f"The K = {K} terms have contending sets (exact-maximum supports) of "
         f"{_and(ft['n_lemma'])} metrics; {absent}.{extra} "
         + (f"{thin[0].capitalize()}; the term shares" if thin else "The term shares")
-        + f" are {shares} for terms {terms} ({_D3})."
+        + f" are {shares} for terms {terms} ({_B1})."
     )
 
 
 def temperature_variants() -> Md:
-    """Appendix D.5's sentence on the primary regime, from the data of record (one call)."""
+    """Appendix B.3's sentence on the primary regime, from the data of record (one call)."""
     return temperature_variants_sentence(case.load_study("primary"))
 
 
@@ -611,12 +611,12 @@ def k_temperatures_sentence(study, fits) -> Md:
     return Md(
         f"Each K selects its own fit temperature by the same rule: "
         f"tau = {_and(taus)} at K = {_and(Ks)}, with bands 1/tau of {_and(bands)}. The figures "
-        f"and the association reading use the K = 1 band at every K (gap G-9, {_E})."
+        f"and the association reading use the K = 1 band at every K (gap G-9, {_G})."
     )
 
 
 def k_temperatures() -> Md:
-    """Appendix D.15's sentence on each K's fit temperature, primary regime (one call)."""
+    """Appendix B.10's sentence on each K's fit temperature, primary regime (one call)."""
     import generate_results as gr
 
     return k_temperatures_sentence(gr._study("primary"), gr._fits("primary"))
@@ -658,7 +658,7 @@ def margin_sentence(study, fits) -> Md:
     """How to read the size of the margin and the stable radius, with this case's values.
 
     The margin and the radius are read against the band 1/tau and against the median gap between
-    a design's best and second-best term score (Appendix D.8); the designs within the band of a
+    a design's best and second-best term score (Appendix B.4); the designs within the band of a
     seam are counted (:func:`designs_on_a_seam`).
     """
     r, K = study.regime, case.CASE_K
@@ -667,9 +667,9 @@ def margin_sentence(study, fits) -> Md:
     times = f"{float(f'{fits[K].band / (fits[K].estimator.termination_.gamma / 2):.2g}'):g}"
     held = [entry(f"contending | {r} K={K} term {k} | set") for k in range(1, K + 1)]
     sets = (
-        f"the contending sets themselves hold under rounding-level jitter ({_D11})"
+        f"the contending sets themselves hold under rounding-level jitter ({_B7})"
         if held and all(e is not None and e.get("identical") for e in held)
-        else f"whether the contending sets hold under rounding-level jitter is read in {_D11}"
+        else f"whether the contending sets hold under rounding-level jitter is read in {_B7}"
     )
     word = case.regime_word(r)
     return Md(
@@ -691,7 +691,7 @@ def margin_sentence(study, fits) -> Md:
 
 
 def recovery_sentence() -> Md:
-    """Whether the fit recovers a known answer: the planted tables of Appendix D.14."""
+    """Whether the fit recovers a known answer: the planted tables of Appendix B.9."""
     import generate_results as gr
 
     runs = gr.recovery_runs()
@@ -719,9 +719,9 @@ def recovery_sentence() -> Md:
         f"every recovered table has at least {thin_ok}; the one with {rows[-1]} is "
         f"{worst['status']} at temperature {gr.RECOVERY_TAUS[1]:g} and still errs by "
         f"{worst['error']:.2f}, with {worst['right']:.2f} of its frontier rows on the right term "
-        f"({_D14})"
+        f"({_B9})"
         if same
-        else f"the failures differ between the temperatures ({_D14})"
+        else f"the failures differ between the temperatures ({_B9})"
     )
     return Md(
         f"**A known answer.** On the {n} planted tables the fit recovers all three terms to "
@@ -735,7 +735,7 @@ def _straddling_pair(regs, sets):
     spearman})`` with ``x`` in the first regime's own part, else ``None``.
 
     The association is Spearman over the feasible designs (``case.association_all_pairs``,
-    the table of D.3 and D.4).
+    the table of B.1 and B.2).
     """
     a, b = regs
     strongest = {}
@@ -781,7 +781,7 @@ def regime_sentence() -> Md:
         middle = (
             f"; {x} and {y}, one in each regime's own part, are the strongest-associated pair "
             f"of traded metrics (Spearman {rho[a]:+.3f} and {rho[b]:+.3f} over the feasible "
-            f"designs, {_D3}); counting them as one, the {wa} regime alone has "
+            f"designs, {_B1}); counting them as one, the {wa} regime alone has "
             f"{_and(sorted(own_a))}, the {wb} regime alone {_and(sorted(own_b))}"
         )
     elif own_b and not own_a:
@@ -818,7 +818,7 @@ def predict_check_sentence(table, reg) -> Md:
 
 
 def predict_reading(table, reg) -> Md:
-    """What propose, predict, check showed and did not (Appendix D.10, under its table).
+    """What propose, predict, check showed and did not (Appendix B.6, under its table).
 
     Reads the same table as :func:`predict_check_sentence`, and the recorded predictions and the
     measured check designs of the spec for what the proposals are: how many distinct
@@ -878,7 +878,7 @@ def predict_reading(table, reg) -> Md:
 
 SWAP_SET = ("pointing error", "peak slew power")
 """The metrics the swapped parts, the tracker grade and the wheel class, step (the bottom panel
-of the planes figure: columns and bands; Appendix C.2): a term led by two of them trades
+of the planes figure: columns and bands; Appendix F.2): a term led by two of them trades
 across the swapped parts' alternatives rather than along one continuous trade."""
 
 
@@ -951,11 +951,11 @@ def elasticity_sentence(study, fits) -> Md:
 
 
 def planted_sentence() -> Md:
-    """The recovery count of Appendix D.14, with what the tables it counts are.
+    """The recovery count of Appendix B.9, with what the tables it counts are.
 
-    The twenty tables are drawn by the generator of Appendix C.7 at a size of their own
-    (``RECOVERY_ROWS``), not the 900-row table of C.7's worked example, so the sentence names their
-    size and leaves that example to C.7 and the sentence before it.
+    The twenty tables are drawn by the generator of Appendix F.7 at a size of their own
+    (``RECOVERY_ROWS``), not the 900-row table of F.7's worked example, so the sentence names their
+    size and leaves that example to F.7 and the sentence before it.
     """
     import generate_results as gr
 
@@ -964,11 +964,11 @@ def planted_sentence() -> Md:
     return Md(
         f"The fit recovers all {_NUMBER_WORDS[gr.RECOVERY_TERMS]} terms on {good} of {len(exact)} "
         f"planted tables of {gr.RECOVERY_ROWS} rows, {gr.RECOVERY_METRICS} metrics and "
-        f"{gr.RECOVERY_TERMS} terms each ({_D14})."
+        f"{gr.RECOVERY_TERMS} terms each ({_B9})."
     )
 
 
-# ---- the decision (WP39): the closing subsection of Section 8 and Appendix D's table -------------
+# ---- the decision (WP39): the closing subsection of Section 8 and Appendix B's table -------------
 # One function, ``decision``, computes every number from the study and its fits; the paragraph, the
 # six-row table and the 28-design table are formatted from its result and nothing else is typed.
 
@@ -1171,7 +1171,7 @@ def decision_sentence(d: Decision) -> Md:
         f"**The decision.** The requirements and the fits cut "
         f"{thousands(_count(d, 'feasible'))} feasible designs to a shortlist of "
         f"{_count(d, 'working')} that pass all six requirements and lie in the near-frontier band "
-        f"of both fits ({_D19}). On it the manufacturer and the operator pick the same fleet: "
+        f"of both fits ({_B14}). On it the manufacturer and the operator pick the same fleet: "
         f"{int(op['fleet_size'])} {kind(op)} satellites at "
         f"{held('cheapest unit', 'unit_cost_usd', _thousand_usd)} USD each, "
         f"{held('cheapest unit', 'fleet_cost_usd', _musd)} M USD for the fleet and a coverage "
@@ -1189,7 +1189,7 @@ def decision_sentence(d: Decision) -> Md:
 
 
 def proposals_reading() -> Md:
-    """Appendix D.10's reading of the proposals, primary regime, from the data of record (one
+    """Appendix B.6's reading of the proposals, primary regime, from the data of record (one
     call)."""
     study = case.load_study("primary")
     reg = case.fit_regressor(study)
@@ -1197,7 +1197,7 @@ def proposals_reading() -> Md:
 
 
 def decision_baseline_sentence() -> Md:
-    """The baseline regime's funnel in one sentence, for Appendix D.19: the same shortlist rule
+    """The baseline regime's funnel in one sentence, for Appendix B.14: the same shortlist rule
     applied to the second regime of the case. Counts are exact on the data of record."""
     from generate_model import DATASET_LABELS
 
@@ -1239,7 +1239,7 @@ def decision_table(d: Decision) -> Md:
 
 
 def decision_designs_table(d: Decision) -> Md:
-    """Appendix D's table: the shortlist ordered by fleet cost, exact, with each design's coverage
+    """Appendix B's table: the shortlist ordered by fleet cost, exact, with each design's coverage
     probability and the designs no other on the shortlist beats on both fleet cost and coverage
     probability marked (the 17 of Section 8's decision sentence)."""
     from generate_model import DATASET_LABELS
@@ -1270,5 +1270,5 @@ def decision_designs_table(d: Decision) -> Md:
 
 
 def decision_designs() -> Md:
-    """Appendix D's table of the shortlist, computed from the data of record (one call)."""
+    """Appendix B's table of the shortlist, computed from the data of record (one call)."""
     return decision_designs_table(decision())

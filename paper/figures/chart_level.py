@@ -7,7 +7,7 @@ band is drawn as Definition 4 gives it, ``|log V| < band`` on both sides of the 
 is in the legend (an earlier drawing showed it below the line only). The first drawing
 put the first Helmert coordinate ``Z0`` on the horizontal axis and readers took nothing from it
 (WP11 CR-30), so the axis is now the direction along which the near-frontier designs spread the
-most: the first principal direction of the near-frontier chart, the one Appendix D.16 reads
+most: the first principal direction of the near-frontier chart, the one Appendix B.11 reads
 (``case.pca_directions``: the trade-off report's analysis of the K = 1 fit's band, signed with its
 largest loading positive). The chart coordinates ``Z`` do not depend on the fit, so the same
 direction serves the chart of the case's ``case.CASE_K`` terms drawn here. Designs are one
@@ -35,7 +35,7 @@ except ImportError:  # run as a script from paper/figures
     from planes import DESIGN, INK, _case
 
 HERE = pathlib.Path(__file__).resolve().parent
-LEADING = 3  # metrics named on the axis, as Appendix D.16 lists them
+LEADING = 3  # metrics named on the axis, as Appendix B.11 lists them
 
 
 def leading_direction(study, fit, leading=LEADING):
@@ -45,7 +45,7 @@ def leading_direction(study, fit, leading=LEADING):
     -------
     direction : ndarray of shape (d - 1,)
         A unit vector in chart coordinates ``Z``, signed so that its largest loading on the
-        log-metrics is positive (Appendix D.16's convention).
+        log-metrics is positive (Appendix B.11's convention).
     better, worse : list of str
         The names of the ``leading`` metrics that load most on it, split by the sign of their
         loading: a step along the direction improves ``better`` and worsens ``worse`` (every

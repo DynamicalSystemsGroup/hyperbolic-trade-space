@@ -1,0 +1,18 @@
+base [('G', 7, 1336), ('D', 13, 943), ('H', 13, 1291), ('A', 14, 218), ('B', 16, 2428), ('C', 20, 2290), ('E', 54, 0), ('F', 105, 256)]
+  G | cell 7 (sec-prior-art) | Prior art | The table summarizes the register of prior art in {ref}`Appendix G <appendix-g>`.
+  D | cell 13 (sec-prior-art-3) | Prior art | We borrow that setting and the estimator interface of scikit-learn, and use PCA as a downstream step ({ref}`Appendix D.16 <sub-d-16>`).
+  H | cell 13 (sec-prior-art-3) | Prior art | In a prospectively specified test, on an embedding of ours, the authors' code, at its defaults and one direction at a time, recovered the planted trade-offs only where they were the direction of largest spread; the tables are clean, so it demonstrates a mechanism and does not measure how often recovery succeeds ({ref}`Appendix H <appendix-h>`).
+  A | cell 14 (sec-preliminaries) | Preliminaries and notation | Mathematical notation follows Boyd and Vandenberghe [@boyd2004convex] and estimator terms follow the scikit-learn documentation [@pedregosa2011scikit; @buitinck2013api]; {ref}`Appendix A <appendix-a>` is the full register of symbols and terms.
+  B | cell 16 (sec-preliminaries-b) | Preliminaries and notation | Under the log change of variables $u=\log m$ the monomial $m^{w}$ is the linear function $w\cdot u$, so the scores are linear in $w$ and $J_\tau$ is a log-mean-exp of linear functions, convex in $w$ ({ref}`Appendix B, L4 <appendix-b>`).
+  C | cell 20 (sec-methods) | Methods | The case's conditioning rule is {ref}`Appendix C.4 <sub-c-4>`'s.
+  E | cell 54 (sec-results-open) | Results | {ref}`Appendix E <appendix-e>` records what the results leave open.
+  F | cell 105 (sec-case-analysis-close) | Case analysis | {ref}`Appendix F.3 <sub-f-3>` gives the commands; outside the environment of record values differ in the last digits ({ref}`Appendix F.2 <sub-f-2>`).
+now [('A', 7, 1336), ('B', 13, 943), ('C', 13, 1291), ('D', 14, 218), ('E', 16, 2428), ('F', 20, 2290), ('G', 54, 0), ('H', 105, 256)]
+  A | cell 7 (sec-prior-art) | Prior art | The table summarizes the register of prior art in {ref}`Appendix A <appendix-a>`.
+  B | cell 13 (sec-prior-art-3) | Prior art | We borrow that setting and the estimator interface of scikit-learn, and use PCA as a downstream step ({ref}`Appendix B.11 <sub-b-11>`).
+  C | cell 13 (sec-prior-art-3) | Prior art | In a prospectively specified test, on an embedding of ours, the authors' code, at its defaults and one direction at a time, recovered the planted trade-offs only where they were the direction of largest spread; the tables are clean, so it demonstrates a mechanism and does not measure how often recovery succeeds ({ref}`Appendix C <appendix-c>`).
+  D | cell 14 (sec-preliminaries) | Preliminaries and notation | Mathematical notation follows Boyd and Vandenberghe [@boyd2004convex] and estimator terms follow the scikit-learn documentation [@pedregosa2011scikit; @buitinck2013api]; {ref}`Appendix D <appendix-d>` is the full register of symbols and terms.
+  E | cell 16 (sec-preliminaries-b) | Preliminaries and notation | Under the log change of variables $u=\log m$ the monomial $m^{w}$ is the linear function $w\cdot u$, so the scores are linear in $w$ and $J_\tau$ is a log-mean-exp of linear functions, convex in $w$ ({ref}`Appendix E, L4 <appendix-e>`).
+  F | cell 20 (sec-methods) | Methods | The case's conditioning rule is {ref}`Appendix F.4 <sub-f-4>`'s.
+  G | cell 54 (sec-results-open) | Results | {ref}`Appendix G <appendix-g>` records what the results leave open.
+  H | cell 105 (sec-case-analysis-close) | Case analysis | {ref}`Appendix H.3 <sub-h-3>` gives the commands; outside the environment of record values differ in the last digits ({ref}`Appendix H.2 <sub-h-2>`).

@@ -93,7 +93,7 @@ proposal beyond the fitted reference surface pushes it outward. Both are settled
 
 On the cubesat case the check ran once on three proposals. Each landed within the band of its predicted
 point, and each failed the depth-of-discharge condition, so the case's reading is that they reached the surface
-by spending the battery ([Appendix D.10](paper:sub-d-10)). Two of the three are the same configuration, since two
+by spending the battery ([Appendix B.6](paper:sub-b-6)). Two of the three are the same configuration, since two
 white-space points had one pooled configuration nearest.
 
 ## The outer loop, and what is open
