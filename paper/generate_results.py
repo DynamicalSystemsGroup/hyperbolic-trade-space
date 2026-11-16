@@ -79,7 +79,7 @@ def _terms(regime, ft, K=3):
 
 
 def temperature_selection() -> Md:
-    """The K = 1 fit across temperatures, per regime.
+    """The K = 1 fit across temperatures, per regime (``paper/supplement/temperature-sweep.md``).
 
     Returns
     -------
@@ -91,27 +91,12 @@ def temperature_selection() -> Md:
         "Each row is the K = 1 fit at the temperature tau. The columns give the fraction of "
         "designs above V = 1, the effective sample size, the number of metrics with an exponent "
         "above 0.001, and the largest exponent with its metric. The fit temperature is chosen "
-        f"so that the fraction above V = 1 reaches the target {target:.2f} (Section 7)."
+        f"so that the fraction above V = 1 reaches the target {target:.2f}, the rule of Section 5."
     )
     parts = [
         f"{_cite(r)}:\n\n" + _t(case.tau_sweep(s), f"D tau_sweep | {r}") for r, s in studies.items()
     ]
     return Md(lead + "\n\n" + "\n\n".join(parts))
-
-
-def k_diagnostics() -> Md:
-    """The K = 1, 2, 3 diagnostic table with the certificate columns, per regime.
-
-    Returns
-    -------
-    Md
-        Temperature re-selected at each K; the certificate columns are the solver's record.
-    """
-    parts = []
-    for r, s in _studies().items():
-        kt = case.k_table(s, _fits(r))
-        parts.append(f"{_cite(r)}:\n\n" + _t(kt, f"D k_table | {r}", "K"))
-    return Md("\n\n".join(parts))
 
 
 def exponents_and_terms() -> Md:
@@ -196,13 +181,20 @@ def regime_comparison() -> Md:
 
 
 def termination_records() -> Md:
-    """The solver's termination records for the planted data and the case.
+    """The fits at K = 1, 2, 3 with the solver's termination records, per regime, then the planted
+    data's record.
+
+    One table per regime: the temperature re-selected at each K and its band, ``loss_`` and
+    ``frac_above_``, the largest term gap, the status, the margin gamma, the stable radius, the
+    Corollary bound (``case.k_table``, the term rows and shares left to D.3's term tables) and
+    ``conditioning_``, the smallest eigenvalue of the restricted Hessian at each term's fit, to two
+    digits.
 
     Returns
     -------
     Md
-        Status, largest term gap, margin, radius and the Corollary bound, as printed by the code,
-        and the planted terms' recovery (largest exponent deviation after matching terms).
+        The case's tables, then the planted terms' record and recovery (largest exponent
+        deviation after matching terms).
     """
     import k_terms
 
@@ -214,8 +206,17 @@ def termination_records() -> Md:
         float(np.abs(W[list(perm)] - P).max())
         for perm in itertools.permutations(range(len(P)))
     )  # fmt: skip
-    parts = [f"{_cite(r)}:\n\n" + _t(case.certificate_table(_fits(r)), f"certificate | {r}", "K")
-             for r in _studies()]  # fmt: skip
+    parts = []
+    for r, s in _studies().items():
+        kt = case.k_table(s, _fits(r)).drop(columns=["term rows", "term shares"])
+        table = stable_frame(kt, f"D k_table | {r}", "K")
+        table["conditioning_"] = [
+            "["
+            + ", ".join(f"{v:.2g}" for v in np.atleast_1d(_fits(r)[int(K)].estimator.conditioning_))
+            + "]"
+            for K in kt["K"]
+        ]
+        parts.append(f"{_cite(r)}:\n\n" + frame_table(table))
     for col in ("max gap", "bound"):  # residues of the polish: a bound, not digits
         planted_rec[col] = [residue_bound(v) for v in planted_rec[col]]
     parts.append(f"Dataset {DATASET_LABELS['planted']}, temperature {PLANTED_TAU:g}:\n\n"
@@ -265,7 +266,8 @@ def sensitivity_variants() -> Md:
 
 
 def refits_by_category() -> Md:
-    """The K = 1 fit refit within each level of the first covariate, per regime.
+    """The K = 1 fit refit within each level of the first covariate, per regime
+    (``paper/supplement/refits-by-category.md``).
 
     Returns
     -------
@@ -274,27 +276,6 @@ def refits_by_category() -> Md:
     parts = [f"{_cite(r)}:\n\n" + _t(case.category_refits(s), f"D refits | {r}", "wheel_class")
              for r, s in _studies().items()]  # fmt: skip
     return Md("\n\n".join(parts))
-
-
-def candidate_designs() -> Md:
-    """The measured candidate designs scored against the K = 1 fit of the primary regime.
-
-    Returns
-    -------
-    Md
-    """
-    return Md(
-        "The table scores the candidates against the K = 1 fit of record, to all feasible "
-        "designs.\n\n"
-        f"{_cite('primary')}:\n\n"
-        + frame_table(
-            stable_frame(
-                case.candidate_table(_study("primary"), _fits("primary")[1]),
-                "candidate",
-                "candidate",
-            )
-        )
-    )
 
 
 def regime_table():
@@ -513,30 +494,6 @@ def own_rows_refit() -> Md:
     )
 
 
-def conditioning_diagnostic() -> Md:
-    """The conditioning of the exponents, ``conditioning_``, per regime, K and term.
-
-    Returns
-    -------
-    Md
-        The smallest eigenvalue of the restricted Hessian of the loss at each term's fit, to
-        two digits: a small value flags a nearly flat direction (weak identifiability of the
-        exponents); a read-only diagnostic of the estimator.
-    """
-    parts = []
-    for r in _studies():
-        rows = [
-            [K, k + 1, f"{v:.2g}"]
-            for K, f in _fits(r).items()
-            for k, v in enumerate(np.atleast_1d(f.estimator.conditioning_))
-        ]
-        parts.append(
-            f"{_cite(r)}:\n\n"
-            + md_table(["K", "Term", "`conditioning_` (smallest eigenvalue)"], rows)
-        )
-    return Md("\n\n".join(parts))
-
-
 # -- D.14: the planted example, twenty tables --------------------------------------------------
 
 RECOVERY_SEEDS = 20
@@ -723,29 +680,22 @@ def choosing_k() -> Md:
 
 
 def margin_reading() -> Md:
-    """The assignment margin and stable radius against the band and the median margin.
+    """The median over the designs of the gap between best and second-best term score, the scale
+    a margin is read against (the margin, radius and band are in the table above it in D.8).
 
     Returns
     -------
     Md
-        Per regime and K > 1: the margin, the stable radius, the band 1/tau, and the median over
-        the designs of the gap between best and second-best term score.
+        Per regime and K > 1.
     """
     parts = []
     for r in _studies():
         rows = []
         for K in (2, 3):
-            rows.append([
-                K,
-                stable(f"certificate | {r} | {K} | gamma"),
-                stable(f"certificate | {r} | {K} | radius"),
-                stable(f"D k_table | {r} | {K} | band 1/tau"),
-                stable(f"margin | {r} | {K} | median margin", lambda v: f"{v:.3f}"),
-            ])  # fmt: skip
+            rows.append([K, stable(f"margin | {r} | {K} | median margin", lambda v: f"{v:.3f}")])
         parts.append(
             f"{_cite(r)}:\n\n"
-            + md_table(["K", "Margin (gamma)", "Stable radius", "Band 1/tau",
-                        "Median best-minus-second-best term score"], rows)
+            + md_table(["K", "Median best-minus-second-best term score"], rows)
         )  # fmt: skip
     return Md("\n\n".join(parts))
 
@@ -856,7 +806,40 @@ def design_sets_comparison() -> Md:
         f"Datasets {cites}. The fit on each design set:\n\n"
         + frame_table(fits_t)
         + "\n\nThe baseline configuration and the check designs in each set's one-term fit, "
-        "log V (in band widths, share of the set's designs below):\n\n" + frame_table(place)
+        "log V (in band widths, share of the set's designs below):\n\n"
+        + frame_table(place)
+        + "\n\n"
+        + _candidates_sentence(place)
+    )
+
+
+def _candidates_sentence(place) -> str:
+    """The three measured candidates against the fit on the thresholds met, primary regime: those
+    beyond the reference surface (log V above zero), and that none of them, nor the baseline
+    configuration, meets the four thresholds (the table's own columns, read)."""
+    rows = place[place["dataset"] == DATASET_LABELS["primary"]].set_index("design")
+    cands = [n for n in rows.index if n not in ("baseline configuration",)
+             and not n.startswith("proposal")]  # fmt: skip
+    lv = {n: float(rows.loc[n, "fit on thresholds met"].split()[0]) for n in cands}
+    beyond = [n for n in cands if lv[n] > 0]
+    met = [n for n in [*cands, "baseline configuration"] if rows.loc[n, "meets the thresholds"]]
+    words = {1: "one", 2: "two", 3: "three"}
+    first = ", ".join(
+        f"{n} (log V {lv[n]:+.3f})" if i == 0 else f"{n} ({lv[n]:+.3f})"
+        for i, n in enumerate(beyond)
+    )
+    first = first.replace(", ", " and ") if len(beyond) == 2 else first
+    tail = (
+        f"none of the {words.get(len(cands), len(cands))}, nor the baseline configuration, "
+        "meets all four thresholds"
+        if not met
+        else f"{', '.join(met)} meet all four thresholds"
+    )
+    return (
+        f"Read against the fit to the feasible designs that meet the four performance thresholds, "
+        f"{words.get(len(beyond), len(beyond))} of the {words.get(len(cands), len(cands))} "
+        f"candidates, {first}, sit beyond the reference surface fitted to those designs in the "
+        f"primary dataset; {tail}."
     )
 
 

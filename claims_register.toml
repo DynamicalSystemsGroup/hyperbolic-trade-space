@@ -279,20 +279,6 @@ source = "WP10, supervisor words of 2026-11-09; re-anchored at WP56 second unit 
 note = "Section 3 defines the evaluation as a black box to the method (a simulator, a physical test or a human assessment), so the table and the fit do not depend on where the attributes came from."
 
 [[claim]]
-id = "C032"
-fragment = "this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
-file = "paper/supporting_material.ipynb"
-anchor = "Appendix C. The case's model: how the table of metrics came to be"
-kind = "M"
-backing = [
-  "file:paper/paper.ipynb",
-]
-status = "backed"
-disposition = "keep"
-source = "WP10, supervisor words of 2026-11-09 (WP10-decisions.md)"
-note = "Section 3 defines the evaluation as a black box to the method (a simulator, a physical test or a human assessment), so the table and the fit do not depend on where the attributes came from."
-
-[[claim]]
 id = "C034"
 fragment = "High-dimensional n-lemmas are detected and used to inform a design decision by stakeholders who care primarily about cost and performance"
 file = "paper/paper.ipynb"
@@ -1061,18 +1047,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Guard rejects a rise beyond GUARD_TOL and returns the previous state"
 
 [[claim]]
-id = "C147"
-fragment = "The repository keeps:** the SysML model file, the evaluation code, the experiment ledger and the data."
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_paper.py::test_each_attribute_has_a_producer_that_exists_in_its_file", "test:tests/test_paper.py::test_c_committed_output_is_current"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "SysML model, evaluation code (adcs_sim.py, cubesat_model.py) read by the producer test; ledger and data read by datasets() whose output the committed-output test pins; a scope statement"
-
-[[claim]]
 id = "C148"
 fragment = "`certified`: the assignment is fixed, residuals and gaps are within tolerance, no cell is empty and the margin is positive; levels 1 to 3 hold."
 file = "paper/supporting_material.ipynb"
@@ -1131,18 +1105,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "the Termination fields (max_gap, bound, gamma, radius, shares) are the contract's pinned termination_fields, checked against the class"
-
-[[claim]]
-id = "C153"
-fragment = "says what refitting a term on its own rows alone does on planted data: it recovers none of the terms"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "R"
-backing = ["gen:paper/generate_results.py::own_rows_refit", "test:tests/test_paper.py::test_the_claims_of_c1_have_their_true_basis"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "meta-sentence about what Section 'Results' says; the test asserts 'ill-posed (observed on planted data' and 'D.13' in Results, and that D.13 shows 0 of 60 against 60 of 60"
 
 [[claim]]
 id = "C154"
@@ -4106,8 +4068,8 @@ note = "Narrowed in the third paper unit (change request 137): the sentence no l
 [[claim]]
 id = "C423"
 fragment = "`conditioning_` is that loss's curvature along its flattest direction: where it is small, moving the exponents along that direction barely changes the loss"
-file = "paper/supporting_material.ipynb"
-anchor = "D.12 The conditioning of the exponents"
+file = "docs/user-guide/termination.md"
+anchor = ""
 kind = "M"
 backing = [
   "func:src/hyperbolic_trade_space/estimator.py::_conditioning",
@@ -4117,28 +4079,13 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP28 S-10 (the supervisor's word, WP28-decisions.md)"
-note = "The smallest eigenvalue of a Hessian is the smallest second-order change of the objective per unit squared step in a unit direction; the Hessian is that of the convex per-term objective restricted to the participating exponents and the simplex tangent space (estimator.py, _conditioning)."
-
-[[claim]]
-id = "C424"
-fragment = "The case's one-term fit has 0.17 in the primary regime and 0.21 in the stock regime"
-file = "paper/supporting_material.ipynb"
-anchor = "D.12 The conditioning of the exponents"
-kind = "R"
-backing = [
-  "gen:paper/generate_results.py::conditioning_diagnostic",
-  "test:tests/test_paper.py::test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it",
-]
-status = "backed"
-disposition = "keep"
-source = "WP28 S-10"
-note = "The K = 1 rows of the D.12 tables; the test recomputes both values from the fits and compares them with the paragraph."
+note = "WP57c: D.12's paragraphs moved to the termination page's `conditioning_` section, which already said why it matters and how it is computed."
 
 [[claim]]
 id = "C425"
 fragment = "`HyperbolicTradeSpace(temperature=50.0).fit(M).conditioning_` for a strictly positive array `M`"
-file = "paper/supporting_material.ipynb"
-anchor = "D.12 The conditioning of the exponents"
+file = "docs/user-guide/termination.md"
+anchor = ""
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it",
@@ -4146,7 +4093,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP28 S-10"
-note = "The test evaluates the printed call on a strictly positive planted table and checks it returns one positive value."
+note = "WP57c: D.12's paragraphs moved to the termination page's `conditioning_` section, which already said why it matters and how it is computed."
 
 [[claim]]
 id = "C426"
@@ -4299,7 +4246,7 @@ note = "The standard fact that the d components of a table of d metrics exhaust 
 id = "C441"
 fragment = "a small value flags a nearly flat direction"
 file = "paper/supporting_material.ipynb"
-anchor = "D.12 The conditioning of the exponents"
+anchor = "D.8 The solver's termination records"
 kind = "M"
 backing = ["lemma:L17.5", "test:tests/test_estimator.py::test_conditioning_drops_for_nearly_collinear_metrics"]
 status = "backed"
@@ -4624,9 +4571,9 @@ note = "C.8: the prices, budgets, the 40,000 USD note on a 1U series and the ord
 
 [[claim]]
 id = "C497"
-fragment = "It has no schedule or qualification, no fault tolerance, no thermal or communications model, no mass or power growth allowance and a constant 12 W load."
-file = "paper/supporting_material.ipynb"
-anchor = "Appendix C. The case's model: how the table of metrics came to be"
+fragment = "It has no schedule or qualification, no fault tolerance, no thermal or communications model, no mass or power growth allowance and a constant 12 W load"
+file = "examples/adcs/case-model.md"
+anchor = "What the case leaves out"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
@@ -4687,9 +4634,9 @@ note = "No attribute, calc or requirement of the model is a schedule or a payloa
 
 [[claim]]
 id = "C502"
-fragment = "so the launch cost is understated by 3.1 to 4.2 times at one satellite, 1.5 to 2.1 at two and at most 1.4 at three, each the slot over the reported launch cost"
-file = "paper/supporting_material.ipynb"
-anchor = "C.8 The cost model and what the case leaves out"
+fragment = "the launch cost is understated by 3.1 to 4.2 times at one satellite, 1.5 to 2.1 at two and at most 1.4 at three, each the slot over the reported launch cost"
+file = "examples/adcs/case-model.md"
+anchor = "What the case leaves out"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_c8_list_states_numbers_the_data_and_the_model_give",
@@ -4702,9 +4649,9 @@ note = "The factor is 50 kg over the satellite's total mass (the slot against th
 
 [[claim]]
 id = "C503"
-fragment = "the mass axis is a trim, 1.3 to 5.7 kg of traded parts on about 10.6 kg of fixed bus"
-file = "paper/supporting_material.ipynb"
-anchor = "C.8 The cost model and what the case leaves out"
+fragment = "The mass axis is a trim, 1.3 to 5.7 kg of traded parts on about 10.6 kg of fixed bus"
+file = "examples/adcs/case-model.md"
+anchor = "What the case leaves out"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_c8_list_states_numbers_the_data_and_the_model_give",
@@ -4717,9 +4664,9 @@ note = "Fixed bus = 10.0 kg bus, 0.5 kg antenna, 0.1 kg inertial unit, read from
 
 [[claim]]
 id = "C504"
-fragment = "so its smallest value, 0.0006 degree, is a loop-and-tracker figure and not a flight claim"
-file = "paper/supporting_material.ipynb"
-anchor = "C.8 The cost model and what the case leaves out"
+fragment = "so its smallest value, 0.0006 degree, is not a flight claim"
+file = "examples/adcs/case-model.md"
+anchor = "What the case leaves out"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_appendix_c8_list_states_numbers_the_data_and_the_model_give",
@@ -4747,9 +4694,9 @@ note = "excess = median over the excluded near-frontier designs of (value - limi
 
 [[claim]]
 id = "C506"
-fragment = "two of the three candidates, fast_effort_hungry (log V +0.315) and precise_heavy_sensor (+0.354), sit beyond the reference surface fitted to those designs in the primary dataset"
-file = "paper/supporting_material.ipynb"
-anchor = "D.7 Candidate designs"
+fragment = "candidates, {first}, sit beyond the reference surface fitted to those designs in the"
+file = "paper/generate_results.py"
+anchor = "def _candidates_sentence"
 kind = "R"
 backing = [
   "test:tests/test_paper.py::test_d7_says_two_candidates_sit_beyond_the_thresholds_met_surface_and_none_meets_them",
@@ -4758,7 +4705,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "P8 final read F4; the triage of 2026-11-12 (body not changed: the balance rule)"
-note = "The values are the thresholds-met column of D.17's placement table (case.design_sets_placement): fast_effort_hungry +0.315, precise_heavy_sensor +0.354, light_slow -0.638; baseline configuration, the three candidates and the check designs: the table's 'meets the thresholds' column is False for the four named, True for proposal_2 only."
+note = "WP57c: D.7 merged into D.17; the sentence is generated from the placement table under D.17's second table (fast_effort_hungry +0.315, precise_heavy_sensor +0.354 on the fit to the thresholds met), and the test recomputes the placement."
 
 [[claim]]
 id = "C507"
@@ -5502,7 +5449,7 @@ note = "D.15's movement column is the dash at K = 1: the movement of an exponent
 
 [[claim]]
 id = "C628"
-fragment = "The robust scaler changes the K = 1 contending set: {len(rob_set)} metrics,"
+fragment = "The `RobustScaler` variant changes the K = 1 contending set: {len(rob_set)} metrics,"
 file = "paper/generate_findings.py"
 anchor = ""
 kind = "R"
@@ -5839,13 +5786,13 @@ file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "R"
 backing = [
-  "gen:paper/generate_results.py::k_diagnostics",
+  "gen:paper/generate_results.py::termination_records",
   "test:tests/test_paper.py::test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_so",
 ]
 status = "backed"
 disposition = "keep"
 source = "final round, third paper unit, change requests 93 to 165"
-note = "D.2: at K = 2 the fraction above V = 1 is 0.0951, within 0.01 of the target 0.10; 203 of 2,134 designs (request 141)."
+note = "D.8 (D.2's table until WP57c): at K = 2 the fraction above V = 1 is 0.0951, within 0.01 of the target 0.10; 203 of 2,134 designs (request 141)."
 
 [[claim]]
 id = "C671"
@@ -9354,3 +9301,48 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP57c (Appendices C and D), the material WP56 moved"
+
+[[claim]]
+id = "C994"
+fragment = "The covered cost is a lower bound on a full costing: it covers the bus (structure, power, radios and computer), the attitude-control parts, assembly and test, and wholesale launch"
+file = "paper/supporting_material.ipynb"
+anchor = "C.8 The cost model"
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/stakeholders.sysml",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+  "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the second unit"
+note = "The model's COVERAGE docs (cubesat.sysml UnitCost and FleetCost, stakeholders.sysml) state the cost as a lower bound on a full costing and list what it includes and excludes; the test holds C.8's exclusions to the model's order. The step deeper for Section 9's 'its costs a lower bound on a full costing'."
+
+[[claim]]
+id = "C995"
+fragment = "Appendix D.18 <sub-d-18>` sets it against noise injected into the case's data"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::injected_noise",
+  "test:tests/test_paper.py::test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the second unit (the driver's call 1: Corollary 1's pointer to D.18)"
+
+[[claim]]
+id = "C996"
+fragment = "Each regime's table gives the fits at K = 1, 2 and 3, each K at its own fit temperature, with the conditioning of the exponents, `conditioning_`: the smallest eigenvalue of the restricted Hessian at each term's fit"
+file = "paper/supporting_material.ipynb"
+anchor = "D.8 The solver's termination records"
+kind = "S"
+backing = [
+  "gen:paper/generate_results.py::termination_records",
+  "test:tests/test_paper.py::test_appendix_d8_prints_the_conditioning_of_the_exponents",
+  "func:src/hyperbolic_trade_space/estimator.py::_conditioning",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57c (Appendices C and D), the second unit (D.2's and D.12's tables merged into D.8)"

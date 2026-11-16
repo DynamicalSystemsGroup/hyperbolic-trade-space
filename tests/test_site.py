@@ -80,7 +80,7 @@ BUDGETS = {
     "user-guide/tension-routes.md": 220,  # WP42
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
-    "user-guide/termination.md": 743,  # 600 until WP28 S-10
+    "user-guide/termination.md": 767,  # 600 until WP28 S-10; 743 until WP57c (+24, D.12 moved in)
     "user-guide/limitations.md": 491,
     # api.md (300) merged in; the ::: are not prose; 287 until WP42; 291 until WP46 (two links
     # to the temperature page)

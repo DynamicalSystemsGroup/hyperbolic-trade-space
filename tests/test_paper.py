@@ -382,9 +382,7 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
     assert "cubesats whose power, mass and attitude control are coupled" in _section(
         "Case construction"
     )
-    assert "cubesat model coupling power, mass and attitude control" in _src(
-        next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-job")
-    )
+    assert "app-C-job" not in {c.id for c in _nb(SUPPORT_NB).cells}  # WP57c: C opens on C.1
     cell = next(c for c in _code_cells(nb) if c.id == "num-attributes")
     out = _out_text(cell)
     for group in ("controls (", "power and energy (", "mass (total mass)"):
@@ -789,9 +787,10 @@ def test_no_withdrawn_appendices():
     assert not [p for p in PAPER.glob("*audit*")]
 
 
-JOB_BLOCKS = {"C", "D", "E", "H"}
-"""The appendices that still open with a Job block and the three tiers (R-25), until WP57c and
-WP57d tighten them; WP57a and WP57b cut the blocks of A, F, G and B (the rule on metanarration)."""
+JOB_BLOCKS = {"E", "H"}
+"""The appendices that still open with a Job block and the three tiers (R-25), until WP57d
+tightens them; WP57a, WP57b and WP57c cut the blocks of A, F, G, B, C and D (the rule on
+metanarration)."""
 
 
 def test_job_blocks_remain_only_in_the_appendices_not_yet_tightened():
@@ -816,13 +815,6 @@ def test_appendix_e_job_block_types_no_gap_range():
     assert ids == [f"G-{i}" for i in range(1, len(ids) + 1)]
     job = _src(_appendix_cells(_nb(SUPPORT_NB))["E"][1])
     assert not re.search(r"G-\d+ to G-\d+", job)
-
-
-def test_c_and_d_each_point_to_the_other_in_their_opening():
-    """R-26: the opening sentence of C names D and the opening sentence of D names C."""
-    sections = _appendix_cells(_nb(SUPPORT_NB))
-    assert "Appendix D" in _src(sections["C"][1]).split("\n")[0]
-    assert "Appendix C" in _src(sections["D"][1]).split("\n")[0]
 
 
 def test_no_appendix_is_a_stub():
@@ -1134,10 +1126,8 @@ def _current(committed: str, fresh: str, what: str) -> None:
 
 
 _TERM_NUMBERED = (
-    ("tab-D-k_diagnostics", "k_diagnostics"),
     ("tab-D-exponents_and_terms", "exponents_and_terms"),
     ("tab-D-termination_records", "termination_records"),
-    ("tab-D-conditioning_diagnostic", "conditioning_diagnostic"),
 )
 
 
@@ -1505,20 +1495,23 @@ def test_c_has_the_metric_table_and_the_sources_and_d_has_the_extended_tables():
     ids_c = {c.id for c in sections["C"]}
     assert {"tab-C-attribute_sources", "tab-C-metric_table"} <= ids_c
     ids_d = {c.id for c in sections["D"]}
-    assert {"tab-D-sensitivity_variants", "tab-D-refits_by_category",
-            "tab-D-candidate_designs"} <= ids_d  # fmt: skip
+    assert (
+        "tab-D-sensitivity_variants" in ids_d
+    )  # WP57c: D.1 and D.6 to the supplement, D.7 in D.17
+    assert not ids_d & {"tab-D-refits_by_category", "tab-D-candidate_designs",
+                        "tab-D-temperature_selection", "tab-D-k_diagnostics",
+                        "tab-D-conditioning_diagnostic"}  # fmt: skip
     heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith(("C.", "D."))]
     assert heads == [f"C.{k}" + h[3:] for k, h in enumerate(heads[: len(heads)], 1) if h[0] == "C"][
         : sum(h[0] == "C" for h in heads)
     ] + [h for h in heads if h[0] == "D"]  # C numbered in order
     d_nums = [int(re.match(r"D\.(\d+)", h).group(1)) for h in heads if h[0] == "D"]
-    assert d_nums == list(range(1, len(d_nums) + 1))
+    assert d_nums == sorted(set(d_nums))  # in order; WP57e re-letters and closes the gaps
 
 
 def test_the_c_and_d_additions_are_current_and_cite_the_labels():
     for cell in _cells_of("D"):
-        if cell.id in {"tab-D-sensitivity_variants", "tab-D-refits_by_category",
-                       "tab-D-candidate_designs"}:  # fmt: skip
+        if cell.id in {"tab-D-sensitivity_variants", "tab-D-termination_records"}:
             assert "cubesat-primary" in _out_text(cell), cell.id
 
 
@@ -1666,7 +1659,9 @@ def test_the_candidates_paragraph_is_cut_and_the_table_stays_in_appendix_d():
         _nb(PAPER_NB)
     )
     assert not hasattr(gf, "candidates_sentence")
-    assert "tab-D-candidate_designs" in {c.id for c in _cells_of("D")}
+    # WP57c: D.7 merged into D.17; the candidates' sentence is generated under the design sets
+    assert "tab-D-candidate_designs" not in {c.id for c in _cells_of("D")}
+    assert "candidates, fast_effort_hungry" in _cell_out(SUPPORT_NB, "tab-D-design_sets_comparison")
 
 
 def test_prior_art_committed_outputs_are_current():
@@ -2708,7 +2703,8 @@ def test_appendix_d_has_the_stability_subsection_and_section_9_points_to_it():
 
     heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith("D.")]
     assert "D.11 Stability of the conclusions under rounding-level jitter" in heads
-    assert heads[:11] == [h for h in heads if int(h.split()[0][2:]) <= 11]  # D.1 to D.11 in order
+    first = [h for h in heads if int(h.split()[0][2:]) <= 11]  # D.1 to D.11 (gaps until WP57e)
+    assert heads[: len(first)] == first
     cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-stability")
     exact = exact_only("planted_table_sha256")
     committed, fresh = _out_text(cell), str(generate_results.stability())
@@ -2821,13 +2817,19 @@ def test_the_claims_of_c1_have_their_true_basis():
     assert re.search(r"\| 0 of 60 \|", text) and re.search(r"\| 60 of 60 \|", text)
 
 
-@pytest.mark.slow
-def test_appendix_d_prints_the_conditioning_diagnostic():
-    """G-4: the column `conditioning_` is printed per regime, K and term."""
-    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-conditioning_diagnostic")
-    assert "`conditioning_`" in _out_text(cell)
-    assert _out_text(cell) == str(generate_results.conditioning_diagnostic())
-    assert any(r in _out_text(cell) for r in ("Dataset cubesat-primary", "Dataset cubesat-stock"))
+def test_appendix_d8_prints_the_conditioning_of_the_exponents():
+    """G-4 (WP57c: D.12's table merged into D.8): `conditioning_` is a column of D.8's table, one
+    value per term at each K, per regime, with its one defining sentence."""
+    out = _cell_out(SUPPORT_NB, "tab-D-termination_records")
+    for regime in ("cubesat-primary", "cubesat-stock"):
+        part = out.split(f"Dataset {regime}:")[1].split("Dataset")[0]
+        head = part.strip().splitlines()[0]
+        assert head.rstrip(" |").endswith("conditioning_"), head
+        rows = [r for r in part.splitlines() if re.match(r"\| [123] \|", r)]
+        assert [r.split("|")[-2].count(",") for r in rows] == [0, 1, 2]
+        assert "term rows" not in head and "term shares" not in head  # D.3's columns
+    assert "a small value flags a nearly flat direction" in _cell_src("app-D-5", SUPPORT_NB)
+    assert "app-D-cond" not in {c.id for c in _nb(SUPPORT_NB).cells}
 
 
 def _injected_noise_rows(text: str) -> list[dict]:
@@ -2875,26 +2877,25 @@ def test_d18_table_is_the_injection_script_output():
 
 
 def test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it():
-    """S-10 (the supervisor's word, WP28-decisions.md): D.12 carries the concise explanation. Its
-    two case values are the K = 1 values of the tables below it, the code path it names exists,
-    and the call it gives runs on a strictly positive array."""
-    cell = next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-D-cond")
-    text = _src(cell)
-    for part in ("*Why it matters.*", "*How it is computed.*", "*Inspecting your own problem.*"):
+    """S-10 (the supervisor's word, WP28-decisions.md), WP57c: the explanation D.12 carried is the
+    termination page's, which says why it matters, how it is computed and how to inspect it; D.8
+    prints the case's values (K = 1 first in each regime) and links the page; the code path
+    exists, and the call it gives runs on a strictly positive array."""
+    text = (ROOT / "docs" / "user-guide" / "termination.md").read_text(encoding="utf-8")
+    text = " ".join(text.split())
+    for part in ("that loss's curvature along its flattest direction", "How it is computed",
+                 "On your own problem"):  # fmt: skip
         assert part in text, part
-    values = {
-        r: f"{generate_results._fits(r)[1].estimator.conditioning_[0]:.2g}"
-        for r in generate_results._studies()
-    }
-    assert (
-        f"has {values['primary']} in the primary regime and {values['stock']} in the stock" in text
-    )
+    assert "docs/user-guide/termination.md" in _cell_src("app-D-5", SUPPORT_NB)
+    out = _cell_out(SUPPORT_NB, "tab-D-termination_records")
+    for r in generate_results._studies():
+        value = f"{generate_results._fits(r)[1].estimator.conditioning_[0]:.2g}"
+        part = out.split(f"Dataset {generate_model.DATASET_LABELS[r]}:")[1]
+        row = next(x for x in part.splitlines() if x.startswith("| 1 |"))
+        assert row.rstrip(" |").endswith(f"[{value}]"), row
     assert "def _conditioning" in (
         ROOT / "src" / "hyperbolic_trade_space" / "estimator.py"
     ).read_text(encoding="utf-8")
-    assert "def conditioning_diagnostic" in (PAPER / "generate_results.py").read_text(
-        encoding="utf-8"
-    )
     from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
 
     call = re.search(
@@ -3056,10 +3057,34 @@ def test_reading_pass_supplement_equals_its_generator_and_g1_cites_it():
     assert not any(c.id == "tab-G-reading_pass_table" for c in _nb(SUPPORT_NB).cells)
 
 
+@pytest.mark.slow
+def test_the_c_and_d_supplement_files_equal_their_generators_and_are_cited():
+    """WP57c: C.5's stock preview and full pair table, D.1's sweep and D.6's refits are files under
+    paper/supplement/, each its generator's output, each cited by one line of C or D; C.5 keeps
+    the primary regime's preview and the pairs at |Spearman| 0.5 or above."""
+    for name, cell in (("metric-associations.md", "app-C-5-associations"),
+                       ("temperature-sweep.md", "app-D-supplement"),
+                       ("refits-by-category.md", "app-D-supplement")):  # fmt: skip
+        text = (PAPER / "supplement" / name).read_text(encoding="utf-8")
+        assert text == generate_supplement.render(name), f"{name}: {STALE}"
+        assert f"paper/supplement/{name}" in _cell_src(cell, SUPPORT_NB), name
+    c5 = _cell_out(SUPPORT_NB, "tab-C-metric_table")
+    assert "cubesat-primary" in c5 and "cubesat-stock" not in c5
+    pairs = _cell_out(SUPPORT_NB, "tab-C-metric_associations")
+    rows = [r for r in pairs.splitlines() if r.startswith("| ") and "metric a" not in r]
+    spearman = [max(abs(float(c)) for c in (r.split("|")[3], r.split("|")[5])) for r in rows]
+    assert spearman and min(spearman) >= generate_model.SHOWN_ASSOCIATION
+    full = (PAPER / "supplement" / "metric-associations.md").read_text(encoding="utf-8")
+    assert full.count("\n| ") - 2 > len(rows) and "cubesat-stock: " in full
+
+
 def test_generate_supplement_writes_what_its_generators_return(tmp_path):
     """The script writes render(name) for each file and --check reports a stale one."""
     names = generate_supplement.write_all(tmp_path)
-    assert names == list(generate_supplement.FILES) == ["reading-pass.md"]
+    assert names == list(generate_supplement.FILES) == [
+        "reading-pass.md", "metric-associations.md", "temperature-sweep.md",
+        "refits-by-category.md",
+    ]  # fmt: skip
     for name in names:
         assert (tmp_path / name).read_text(encoding="utf-8") == generate_supplement.render(name)
     assert generate_supplement.stale(tmp_path) == []
@@ -3554,7 +3579,7 @@ def test_the_two_metrics_in_no_contending_set_are_the_computed_ones(case_sentenc
         "Of the thirteen traded metrics, two, the power margin and the battery peak power ratio,"
         in text
     )
-    assert "enter no contending set at K = 1 to 3 in either regime" in text
+    assert "exact-maximum fit) at K = 1 to 3 in either regime" in text
     assert "|Spearman| at least 0.97" in text
 
 
@@ -3607,12 +3632,15 @@ def _norm_ws(text: str) -> str:
 
 
 def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out():
-    """C.8 reads the model: prices, budgets, the order of exclusions, the load; and the paragraph
-    that leaves out is the one the docs stream mirrors (WP30-rounds/appendix-c-leaves-out.md)."""
+    """C.8 reads the model: prices, budgets and the order of exclusions; the rest of what the case
+    leaves out (the load, the limits' kinds) is the case page's, which C.8 cites (WP57c: the mirror
+    WP30-rounds/appendix-c-leaves-out.md followed C.8's paragraph and left with it)."""
     model = _norm_ws(
         (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     )
     c8 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-8")))
+    page = _norm_ws((ROOT / "examples" / "adcs" / "case-model.md").read_text(encoding="utf-8"))
+    assert "examples/adcs/case-model.md" in c8 and "What the case leaves out" in c8
     for model_has, c8_has in [
         ("attribute launchRate : Real = 7000.0", "7,000 USD per kilogram"),
         (
@@ -3631,14 +3659,16 @@ def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left
             "a single satellite of this class costs more",
             "which no single satellite of this class clears",
         ),
-        ("housekeeping and payload 12 W", "a constant 12 W load"),
         ("fleet size 1 to 30", "one to thirty identical satellites"),
         ("2026 vendor and marketplace listings", "2026 vendor and marketplace listings"),
     ]:
         assert model_has in model, model_has
         assert c8_has in c8, c8_has
+    assert "housekeeping and payload 12 W" in model and "a constant 12 W load" in page
     budgets = re.findall(r"attribute (\w+(?:Limit|Budget)) :", model)
-    assert len(budgets) == 6 and "Four requirement limits" in c8 and "two are cost budgets" in c8
+    assert (
+        len(budgets) == 6 and "Four requirement limits" in page and "two are cost budgets" in page
+    )
     order = [  # the model's order of exclusions, and C.8's (the supervisor's, 2026-11-11, 10:35)
         "payload and its instruments", "communications", "flight software",
         "environmental testing beyond the assembly line", "licensing",
@@ -3653,24 +3683,19 @@ def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left
     kinds = r"(?:part|attribute|calc|requirement|action|analysis)\s+(?:def\s+)?"
     left_out = r"\w*(?:thermal|schedule|fault|redundan|communic|growth|desaturat)"
     absent = kinds + left_out
-    assert not re.search(absent, model, re.I), "the model names no element of what C.8 leaves out"
-    mirror = (ROOT / "work-packages" / "WP30-rounds" / "appendix-c-leaves-out.md").read_text(
-        encoding="utf-8"
-    )
-    quote = re.search(r"> \*\*What the case leaves out\.\*\*(.*?)\n\n", mirror, re.S).group(1)
-    paragraph = _norm_ws(re.sub(r"\n> ?", " ", quote)).strip()
-    assert paragraph in c8, "the paragraph of the mirror file is C.8's"
+    assert not re.search(absent, model, re.I), "the model names no element of what is left out"
+    assert not (ROOT / "work-packages" / "WP30-rounds" / "appendix-c-leaves-out.md").exists()
 
 
 def test_appendix_c8_list_states_numbers_the_data_and_the_model_give():
-    """The list after C.8's paragraph prints numbers: the smallest pointing error, the launch slot's
-    effect at fleets of one to three, the traded mass over the fixed bus; each is computed from the
-    feasible designs of both regimes (and the case page repeats the first two)."""
+    """The case page's list of what the case leaves out (C.8's list until WP57c) prints numbers: the
+    smallest pointing error, the launch slot's effect at fleets of one to three, the traded mass
+    over the fixed bus; each is computed from the feasible designs of both regimes."""
     import case
     import pandas as pd
 
-    c8 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-8")))
     page = _norm_ws((ROOT / "examples" / "adcs" / "case-model.md").read_text(encoding="utf-8"))
+    c8 = page  # the list moved to the case page with WP57c
     model = _norm_ws(
         (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     )
@@ -3693,7 +3718,7 @@ def test_appendix_c8_list_states_numbers_the_data_and_the_model_give():
     assert f"{factor[2].min():.1f} to {factor[2].max():.1f} at two" in c8
     assert f"at most {factor[3].max():.1f} at three" in c8
     assert (factor[3] >= 1.0).all()  # the slot still binds at three
-    assert "3.1 to 4.2 times at one satellite" in page and "0.0006 degree" in page
+    assert "0.0006 degree" in page and "50 kg" not in _cell_src("app-C-8", SUPPORT_NB)
 
 
 @pytest.mark.slow
@@ -3707,7 +3732,7 @@ def test_d7_says_two_candidates_sit_beyond_the_thresholds_met_surface_and_none_m
     placement = case.design_sets_placement(sets={"primary": case.design_sets("primary")})
     rows = placement.set_index("design")
     log_v = lambda name: float(rows.loc[name, "fit on thresholds met"].split()[0])  # noqa: E731
-    d7 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-D-cand")))
+    d7 = _norm_ws(_cell_out(SUPPORT_NB, "tab-D-design_sets_comparison"))  # WP57c: D.7 in D.17
     assert f"fast_effort_hungry (log V {log_v('fast_effort_hungry'):+.3f})" in d7
     assert f"precise_heavy_sensor ({log_v('precise_heavy_sensor'):+.3f})" in d7
     assert log_v("light_slow") < 0 and "two of the three candidates" in d7
@@ -4208,7 +4233,8 @@ def test_the_scaler_sentence_quotes_the_sensitivity_table_row():
 
     sentence = _moved("num-temperature-variants")  # WP56 moved it to D.5; WP57c landed it
     m = re.search(
-        r"The robust scaler changes the K = 1 contending set: (\d+) metrics, (\d+) of the "
+        r"The `RobustScaler` variant changes the K = 1 contending set: (\d+) metrics, (\d+) of "
+        r"the "
         r"baseline's (\d+) among them, the largest exponent on ([a-z ]+)\.",
         sentence,
     )
@@ -4470,7 +4496,7 @@ def test_the_regimes_gain_ranges_are_the_ones_section_8_states():
 def test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_so():
     """141: D.2's K = 2 row has the fraction above V = 1 within 0.01 of the target; the caption
     names the level and says about a tenth lie above the line."""
-    d2 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-k_diagnostics"))
+    d2 = _cell_out(SUPPORT_NB, "tab-D-termination_records")  # WP57c: D.2's table is D.8's
     primary = d2.split("Dataset cubesat-stock")[0]
     row = next(r for r in primary.splitlines() if r.startswith("| 2 |"))
     frac = float(row.split("|")[5])

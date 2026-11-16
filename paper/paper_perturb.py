@@ -43,10 +43,10 @@ def generated() -> dict[str, str]:
 
     out = {}
     for name in ("planted_recovery", "margin_reading", "pca_chain",
-                 "stability", "temperature_selection", "k_diagnostics", "exponents_and_terms",
+                 "stability", "temperature_selection", "exponents_and_terms",
                  "regime_comparison", "sensitivity_variants", "refits_by_category",
-                 "candidate_designs", "termination_records", "nondominated",
-                 "propose_predict_check", "conditioning_diagnostic", "own_rows_refit"):  # fmt: skip
+                 "termination_records", "nondominated",
+                 "propose_predict_check", "own_rows_refit"):  # fmt: skip
         out[f"D {name}"] = str(getattr(gr, name)())
     for name in ("configuration_space", "evaluation", "attribute_sources", "feasibility",
                  "conditioning", "metric_table", "datasets", "planted_example"):  # fmt: skip

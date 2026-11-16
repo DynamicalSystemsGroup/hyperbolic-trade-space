@@ -17,6 +17,28 @@ from collections.abc import Callable
 import generate_reading_pass
 from paper_paths import PAPER
 
+
+def _metric_associations() -> str:
+    import case
+    import generate_model
+
+    rest = list(case.CUBESAT.regimes)[1:]
+    return (
+        str(generate_model.metric_table(regimes=rest))
+        + "\n\n"
+        + str(generate_model.metric_associations(at_least=0.0))
+    )
+
+
+def _results(name: str) -> Callable[[], str]:
+    def table() -> str:
+        import generate_results
+
+        return str(getattr(generate_results, name)())
+
+    return table
+
+
 SUPPLEMENT = PAPER / "supplement"
 COMMAND = "uv run python paper/generate_supplement.py"
 
@@ -28,6 +50,29 @@ FILES: dict[str, tuple[str, str, Callable[[], str]]] = {
         "`paper/reading_pass.yaml`; the table is `generate_reading_pass.reading_pass_table`'s, "
         f"written by `{COMMAND}`.",
         lambda: str(generate_reading_pass.reading_pass_table(plain=True)),
+    ),
+    "metric-associations.md": (
+        "The table of metrics: the stock regime's first rows and every pair's association",
+        "Appendix C.5 prints the primary regime's first rows and the pairs at |Spearman| 0.5 or "
+        "above; this file holds the stock regime's first rows and all the pairs of traded "
+        "metrics over the feasible designs of both regimes. The tables are "
+        "`generate_model.metric_table` and `generate_model.metric_associations`, read from the "
+        f"data of record (`examples/adcs/data/v2/`) and written by `{COMMAND}`.",
+        _metric_associations,
+    ),
+    "temperature-sweep.md": (
+        "The K = 1 fit at each temperature of the sweep, both regimes",
+        "The sweep behind the fit temperature of each regime; the paper's figure of the sweep "
+        "draws the primary regime. The table is `generate_results.temperature_selection`, read "
+        f"from the data of record and written by `{COMMAND}`.",
+        _results("temperature_selection"),
+    ),
+    "refits-by-category.md": (
+        "The K = 1 fit within each wheel class, both regimes",
+        "The one-term fit refitted on the designs of each wheel class. The table is "
+        "`generate_results.refits_by_category`, read from the data of record and written by "
+        f"`{COMMAND}`.",
+        _results("refits_by_category"),
     ),
 }
 """File name -> (title, the sentence under it, the generator of its table)."""

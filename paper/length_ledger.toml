@@ -2082,3 +2082,35 @@ section = "Discussion"
 words_removed = 309
 no_longer_did = "'Three claims', 'Why a surface', 'Trade-offs beyond the first, and PCA', 'Novelty and white space' and 'The kernel direction' (queued for WP57d's assumptions, limitations and open questions), the Appendix B sentence of 'Verify and validate', the requirements-after-the-fit and 'Numerical' paragraphs (Section 8), the design-sets sentence (Section 8) and the propose-predict-check reading (D.10). Added: what the case showed against Section 1's contribution, the three layers revisited, the limits in one passage at the end"
 authority = "WP56 G5, G6; rendered count 803 before, 494 after"
+
+# WP57c: Appendices C and D (WP57c-review.md). The two main-text pointers the driver's calls allow,
+# and a cut row per appendix (the supporting material is outside the count; the rows record what left
+# and why, by WP57-rounds/map_counts.py, typed prose before and after).
+
+[[raise]]
+date = "2026-11-16"
+section = "Results"
+words_added = 11
+job = "Corollary 1's commentary points to Appendix D.18, the one measurement of the ridge against noise injected into the case's data (the driver's call 1 on the WP57 map)"
+reader = "the reader of Corollary 1 who asks whether the ridge is seen in fitted data"
+
+[[raise]]
+date = "2026-11-16"
+section = "Case analysis"
+words_added = 2
+job = "the nondominated counts' parenthetical names Appendix D.9, the table of those counts in both regimes (WP57c's D.9 default)"
+reader = "the reader who wants the stock regime's counts and shares"
+
+[[cut]]
+date = "2026-11-16"
+section = "Appendix C"
+words_removed = 460
+no_longer_did = "the Job block (it judged whether the case is a fair test and repeated two Section 7 sentences); C.8's 'What the case leaves out' paragraph and its five items (the case page's 'What the case leaves out' holds them, in its own words). C.5 prints one preview and the 17 pairs at |Spearman| 0.5 or above; the stock preview and all 78 pairs are paper/supplement/metric-associations.md. Typed prose 789 to 329"
+authority = "WP57c G3 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"
+
+[[cut]]
+date = "2026-11-16"
+section = "Appendix D"
+words_removed = 310
+no_longer_did = "the Job block (it judged the main text's summary and listed the appendix's contents); D.7's typed sentence (generated under D.17's second table); D.12's three paragraphs (the termination page's conditioning_ section); the narrating openers of D.13, D.15, D.18 and D.19; D.17's gloss of each column. D.1 and D.6 are paper/supplement/, D.2 and D.12's tables are D.8's. Added: the pair counted as one (D.4), the proposer's rule and the never-clipped rule (D.10), the ladder of the four limits (D.17), D.19's four rules and D.8's conditioning sentence. Typed prose 1,624 to 1,314"
+authority = "WP57c G2, G4 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"

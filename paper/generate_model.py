@@ -181,7 +181,7 @@ def conditioning(spec=None) -> Md:
     return Md("\n\n".join(parts))
 
 
-def metric_table(spec=None, n=5) -> Md:
+def metric_table(spec=None, n=5, regimes=None) -> Md:
     """The table of metrics, the method's input: its definition and its first rows per dataset.
 
     Parameters
@@ -189,6 +189,9 @@ def metric_table(spec=None, n=5) -> Md:
     spec : case.CaseSpec, optional
     n : int, default 5
         Rows shown per dataset.
+    regimes : sequence of str, optional
+        The regimes shown; default the first (the primary regime, Appendix C.5). The supplement
+        shows the others (``paper/supplement/metric-associations.md``).
 
     Returns
     -------
@@ -205,7 +208,7 @@ def metric_table(spec=None, n=5) -> Md:
         "one row per kept design and one column per metric, is where the model ends and the method "
         "begins."
     ]
-    for r in spec.regimes:
+    for r in list(spec.regimes)[:1] if regimes is None else regimes:
         st = case.load_study(r, spec)
         head = pd.DataFrame(st.M[:n], columns=st.names).rename_axis("design").reset_index()
         parts.append(
@@ -328,8 +331,17 @@ def _one_axis_sentence() -> str:
     )
 
 
-def metric_associations() -> Md:
-    """Every pair of traded metrics over the feasible designs, both datasets side by side.
+SHOWN_ASSOCIATION = 0.5
+"""Appendix C.5 prints the pairs at |Spearman| this or above in a regime; the supplement, all."""
+
+
+def metric_associations(at_least=SHOWN_ASSOCIATION) -> Md:
+    """The pairs of traded metrics over the feasible designs, both datasets side by side.
+
+    Parameters
+    ----------
+    at_least : float, default ``SHOWN_ASSOCIATION``
+        The pairs shown: |Spearman| at least this in some regime (0 shows every pair).
 
     Returns
     -------
@@ -347,6 +359,8 @@ def metric_associations() -> Md:
         for r in regimes:
             x = tables[r].loc[(a, b)]
             row += [f"{x['spearman']:+.3f}", f"{x['pearson']:+.3f}"]
+        if max(abs(float(tables[r].loc[(a, b), "spearman"])) for r in regimes) < at_least:
+            continue
         named = [DATASET_LABELS[r] for r in regimes if tables[r].loc[(a, b), "one axis"]]
         row.append(", ".join(named) or "no")
         rows.append(row)
@@ -354,4 +368,10 @@ def metric_associations() -> Md:
     for r in regimes:
         headers += [f"Spearman, {DATASET_LABELS[r]}", f"Pearson, {DATASET_LABELS[r]}"]
     headers.append("one axis")
-    return Md(md_table(headers, rows) + "\n\n" + _one_axis_sentence())
+    lead = (
+        f"The {len(rows)} of {len(first)} pairs at |Spearman| {at_least:g} or above in a "
+        "regime:\n\n"
+        if at_least > 0
+        else ""
+    )
+    return Md(lead + md_table(headers, rows) + "\n\n" + _one_axis_sentence())

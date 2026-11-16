@@ -183,7 +183,10 @@ and the case reads the four requirements after it (`case.requirements_table`, `c
 
 ### What the case leaves out
 "Verification" on this page is a solver checking a requirement on a configuration, not a hardware test. The model is a
-demonstration.
+demonstration and its numbers are illustrative. It has no schedule or qualification, no fault tolerance, no thermal or
+communications model, no mass or power growth allowance and a constant 12 W load, and its controller gains are trade variables
+though a flight project would tune them in software. Four requirement limits are read from the data's pass fractions and two are
+cost budgets; none is flowed down from a mission.
 - **Cost beyond a lower bound.** The unit cost and the fleet cost cover the bus, the attitude-control parts, assembly and test,
   and wholesale launch, and leave out the payload, communications, flight software, licensing, operations and the rest of the
   full costing. The fleet cost requirement holds the covered cost under 6,000,000 USD, inside the sponsor's full budget of
@@ -194,11 +197,12 @@ demonstration.
   torque is not accumulated over an orbit and no desaturation device exists, so the small wheel's
   feasibility is a one-slew reading and not a sizing.
 - **Launch slot.** The 50 kg minimum slot (350,000 USD) is a note in the model and not a cost: a fleet of one to three pays it, so
-  the launch cost is understated by 3.1 to 4.2 times at one satellite and the low end of the fleet-size axis is underpriced.
+  the launch cost is understated by 3.1 to 4.2 times at one satellite, 1.5 to 2.1 at two and at most 1.4 at three, each the slot
+  over the reported launch cost, and the low end of the fleet-size axis is underpriced.
 - **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
 - **One scenario.** One 30 degree slew in a 600 s horizon under a saturating proportional-derivative law (both choices of the case), and one fixed 0.6 h eclipse in a low Earth orbit of about 95 minutes.
-
-The full list is Appendix C.8 of the supporting material.
+- **Structure.** The solar wings are rigid, up to 1.0 m a side, with no hinge mass. The mass axis is a trim, 1.3 to 5.7 kg of
+  traded parts on about 10.6 kg of fixed bus (structure, antenna and inertial unit), so the total mass spans 11.9 to 16.3 kg.
 
 ### Coverage: every swap and tune reaches a metric
 

@@ -72,12 +72,14 @@ The smallest eigenvalue of the restricted Hessian over the participating
 exponents (above 1e-3), one per term. A small value marks a nearly flat direction. It is `nan` at infinite
 temperature and for a term with fewer than two participating exponents.
 
-Along a flat direction many exponent vectors fit almost equally well, so the reported
+The exponents of a term minimize a convex loss, and `conditioning_` is that loss's curvature along its flattest
+direction: where it is small, moving the exponents along that direction barely changes the loss, so the reported
 exponents and the contending set are not pinned by the data. Two metrics that move together in log space
 cause it. How it is computed: the Hessian of the loss at the fit is the temperature times the
 support-weighted covariance of the log-metrics, restricted to the participating exponents and to
 directions that keep their sum fixed. The smallest eigenvalue is read off. On
-your own problem, read `conditioning_` after `fit`, comparing fits at one temperature because the value
+your own problem, read `conditioning_` after `fit`
+(`HyperbolicTradeSpace(temperature=50.0).fit(M).conditioning_` for a strictly positive array `M`), comparing fits at one temperature because the value
 scales with it. A value far below a comparable fit's is a prompt to rework the metrics: drop or combine
 the metrics that move together, change the [conditioning](conditioning.md), refit and see whether it rises.
 A floor of `min_exponent=0.1` keeps the duplicate in the fit. At the default of zero the fit gives it a zero exponent and `conditioning_` prints 12.4.

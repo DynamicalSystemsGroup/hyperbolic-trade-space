@@ -110,3 +110,13 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   the constants as assumptions and does not report the movement.
 - **Record:** `work-packages/WP56-rounds/ternary/readout.md`, "The decision's stability";
   `examples/adcs/spikes/fleet_performance.py`.
+
+## OQ-14. The decision's unused picks
+
+- **Left:** Appendix D.19 (WP57c), with the rules of the two-stakeholder decision and the nondominance sentence on
+  pointing error and fleet cost.
+- **Open:** `generate_findings.decision` still computes the picks of the retired rules (the operator's least pointing
+  error, the pick between pointing error and fleet cost, the design balanced between the terms, the cheapest
+  fine-tracker design) and the nondominated marks on pointing error; no sentence or table prints them now, and the
+  stability record keeps their entries. Whether they leave the generator and the record is not decided.
+- **Record:** `work-packages/WP57c-review.md`, "Left for the driver"; `paper/stability_extra.json`.

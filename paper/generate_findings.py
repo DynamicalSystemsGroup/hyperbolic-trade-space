@@ -20,13 +20,13 @@ from hyperbolic_trade_space.estimator import PARTICIPATION_THRESHOLD
 _D3 = appendix_link("sub-d-3", "Appendix D.3")
 _D5 = appendix_link("sub-d-5", "Appendix D.5")
 _D8 = appendix_link("sub-d-8", "Appendix D.8")
+_D9 = appendix_link("sub-d-9", "Appendix D.9")
 _D11 = appendix_link("sub-d-11", "Appendix D.11")
 _D14 = appendix_link("sub-d-14", "Appendix D.14")
 _C5 = appendix_link("sub-c-5", "Appendix C.5")
 _E = appendix_link("appendix-e", "Appendix E")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
 _D17 = appendix_link("sub-d-17", "Appendix D.17")
-_C8 = appendix_link("sub-c-8", "Appendix C.8")
 _D19 = appendix_link("sub-d-19", "Appendix D.19")
 
 
@@ -93,12 +93,12 @@ def nondominated_sentence(study) -> Md:
     runs = _NUMBER_WORDS.get(len(summary()["seeds"]), len(summary()["seeds"]))
     if any(" to " in p for p in parts):
         tail = (
-            f"(a range is the spread over {runs} regenerations of the data under rounding-level "
-            f"perturbation, {_D11})"
+            f"({_D9}; a range is the spread over {runs} regenerations of the data under "
+            f"rounding-level perturbation, {_D11})"
         )
     else:
         tail = (
-            f"(counts that hold over {runs} regenerations of the data under rounding-level "
+            f"({_D9}; counts that hold over {runs} regenerations of the data under rounding-level "
             f"perturbation; a number that moves over them is printed as a range, {_D11})"
         )
     return Md(
@@ -351,8 +351,9 @@ def participation_sentence() -> Md:
     return Md(
         f"Of the {_NUMBER_WORDS.get(len(names), len(names))} traded metrics, "
         f"{_NUMBER_WORDS.get(len(out), len(out))}, "
-        f"{_and('the ' + n for n in out)}, enter no contending set at K = 1 to {depth} in either "
-        f"regime: each moves with a metric that does (|Spearman| at least {low:.2f}, below the "
+        f"{_and('the ' + n for n in out)}, enter no contending set (the support of a term's "
+        f"exact-maximum fit) at K = 1 to {depth} in either regime: "
+        f"each moves with a metric that does (|Spearman| at least {low:.2f}, below the "
         f"{case.ONE_AXIS:g} at which {_C5} names a pair one axis). At K = 1 in the {regs[0]} "
         f"regime {_NUMBER_WORDS.get(len(zero), len(zero))} "
         f"carry no exponent at the fit temperature; {_NUMBER_WORDS.get(len(later), len(later))} "
@@ -378,9 +379,9 @@ def _scaler_variant_sentence(study) -> str:
     base_set = {m.strip() for m in base["contending set"].split(",")}
     rob_set = {m.strip() for m in rob["contending set"].split(",")}
     if rob_set == base_set and rob["largest exponent at"] == base["largest exponent at"]:
-        return " The robust scaler leaves the K = 1 contending set unchanged."
+        return " The `RobustScaler` variant leaves the K = 1 contending set unchanged."
     return (
-        f" The robust scaler changes the K = 1 contending set: {len(rob_set)} metrics, "
+        f" The `RobustScaler` variant changes the K = 1 contending set: {len(rob_set)} metrics, "
         f"{len(rob_set & base_set)} of the baseline's {len(base_set)} among them, the largest "
         f"exponent on {rob['largest exponent at']}."
     )
