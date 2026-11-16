@@ -80,6 +80,8 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 66c | The composer, the abstract page and the docs' keys built (site.yml, pages-deploy.yml, the slot per mode, the abstract page, paper_keys from the manifest) | approved as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
 | 66a | The software model built (release.yml with the merge as the release and the site-only path, the clean-up script, test.yml without the paper tests, pages.yml removed, the records) | approved as proxy on his three answers; unit dispatched | pending | not landed | in place (not landed or in flight) |
 | 70 | The iron triangle as an HTS study: the probe (metric mapping, open-data survey, synthetic design, a bounded case study, the pitch) | delivered, his read and choice pending (too sparse for a programme; option A first) | a08e5e47 | 4bf40d31 | in place (not landed or in flight) |
+| 71 | Broadbalk: the level V against biomass (a bounded update to the wheat page) | approved as proxy; runs after the level-set figure lands | pending | not landed | in place (not landed or in flight) |
+| 72 | Learning the invariant rather than the trade (a research spike: the two-sided estimator; planted tests; wheat; a Uniswap v2 pool) | approved as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
 
 ## Notes, spike outputs and supporting content removed from the tree
 
