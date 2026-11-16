@@ -136,3 +136,15 @@ supporting notebook at or below dev on every count. No attribution line. CI 4386
 letter here; the supporting page's table numbers after E moved by three. For WP58: E.3 links `WP57c-review.md`,
 `WP56-rounds/ternary/readout.md` and `WP36-decisions.md`, which need the archived hash when those documents leave
 the tree.
+
+## WP57e approved as proxy (07:50 EST)
+
+`WP57e-scope-of-work.md` (re-lettering once, last, by his rule of first mention as the map's call 4 records it; the
+order recomputed on the paper as it stands; subsections renumbered consecutively; every anchor, id, label, pointer,
+register anchor, ledger key, baseline key, test literal and docs link following; dated records left as written; no
+other change) is approved by the driver under his mandate, after WP57d's landing at c8f8407b. On the paper at
+c8f8407b the rule gives G, D, H, A, B, C, E, F: the register of prior art becomes A (Section 2 names it beside Table
+1), the case tables B, the HoroPCA comparison C, notation D, the proofs E, the case model F, the assumptions section G,
+reproduction H. Every letter changes; the result goes to him with his read, where the rule is his to revise, and the
+package is rerunnable. One unit on branch `wp57e`; the driver soft-confirms on its captures before landing. After it
+lands: the parent's D-3, a read of the whole supporting material, then WP58.
