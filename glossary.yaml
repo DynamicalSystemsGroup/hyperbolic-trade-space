@@ -166,7 +166,7 @@ entries:
     register: 'binding term'
     formal: 'at a point, the term k with the largest value a_k + s * sum_j w_kj log c_j (plotting._ternary_region_of); exact at the exact maximum (infinite temperature), where the surface follows that term''s piece, an active constraint; at a finite temperature the term carries the largest weight, and the surface lies within 1/tau of the binding piece. The designs so assigned are the term''s cell'
     not: 'a cluster of designs'
-    defined_in: 'WP51-decisions.md (the supervisor, 2026-11-14 night)'
+    defined_in: 'plotting._ternary_region_of (docstring)'
 
   - id: 'characteristic-point'
     term: 'characteristic point'
@@ -174,7 +174,7 @@ entries:
     register: 'characteristic point'
     formal: 'by the weighted inequality of the means, among points with the same total of the metrics (each in units of its typical size) a term''s monomial is largest where the shares equal its exponents; equivalently, on the term''s piece of the surface it is the point with the smallest total. The ternary''s numbered markers sit at these shares (star, diamond, square for terms 1, 2, 3)'
     not: 'a design of the table; a balanced point (the dual-weighted mean)'
-    defined_in: 'WP51-decisions.md (the supervisor, 2026-11-14 night)'
+    defined_in: 'plot_ternary (docstring, Notes)'
 
   - id: 'term'
     term: 'monomial term'
@@ -497,7 +497,7 @@ entries:
     layer: 'decision'
     used_in: 'decision analysis, multi-objective optimization'
     elsewhere: 'optimization and machine learning call the function a solver minimizes the objective; here that function is the loss'
-    defined_in: 'WP11-decisions.md (the supervisor, 2026-11-14, 11:50, 15:50)'
+    defined_in: 'Preliminaries and notation'
     aliases:
       - 'objectives'
     avoid:
@@ -670,7 +670,7 @@ entries:
     layer: 'method'
     used_in: 'machine learning (scikit-learn)'
     elsewhere: 'optimization texts call it the objective; here that word is reserved for the decision layer'
-    defined_in: 'WP11-decisions.md (the supervisor, 2026-11-14, 15:50); Section 3'
+    defined_in: 'Preliminaries and notation'
     avoid:
       - phrase: 'solver objective'
         reason: 'the function the solver minimizes is the loss'
@@ -822,7 +822,7 @@ entries:
     register: 'launch cost'
     formal: 'rate times total mass, increasing in mass'
     not: 'a traded metric or a dataset column; a cited launch price'
-    defined_in: 'cubesat_r2.sysml (calc def LaunchCost, LaunchBudgetRequirement); WP23-decisions.md OD1, OD2'
+    defined_in: 'model_v2/cubesat.sysml (calc def LaunchCost, LaunchBudgetRequirement); case-model.md, The requirements and what each reads'
 
 assumed:
   - term: 'convex program'

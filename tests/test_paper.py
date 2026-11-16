@@ -785,16 +785,24 @@ def test_no_withdrawn_appendices():
     assert not [p for p in PAPER.glob("*audit*")]
 
 
-def test_each_appendix_opens_with_its_job_and_three_tiers():
-    """R-25: each appendix opens with its job and the three tiers; none is empty."""
+JOB_BLOCKS = {"C", "D", "E", "H"}
+"""The appendices that still open with a Job block and the three tiers (R-25), until WP57c and
+WP57d tighten them; WP57a and WP57b cut the blocks of A, F, G and B (the rule on metanarration)."""
+
+
+def test_job_blocks_remain_only_in_the_appendices_not_yet_tightened():
     sections = _appendix_cells(_nb(SUPPORT_NB))
     assert list(sections) == list(APPENDICES)
     for letter, cells in sections.items():
-        job = _src(cells[1])
-        assert job.startswith("**Job.** To "), letter
-        for tier in TIERS:
-            assert tier in job, (letter, tier)
-        assert len(job.split()) > 40, letter
+        text = "\n".join(_src(c) for c in cells if c.cell_type == "markdown")
+        if letter in JOB_BLOCKS:
+            job = _src(cells[1])
+            assert job.startswith("**Job.** To "), letter
+            for tier in TIERS:
+                assert tier in job, (letter, tier)
+        else:
+            assert "**Job.**" not in text, letter
+            assert not any(tier in text for tier in TIERS), letter
 
 
 def test_appendix_e_job_block_types_no_gap_range():
@@ -837,11 +845,21 @@ def test_appendix_cells_import_from_the_generators():
 # -- A: the register table is compiled from glossary.yaml
 
 
-def test_register_table_equals_the_glossary():
-    entries = yaml.safe_load((ROOT / "glossary.yaml").read_text(encoding="utf-8"))["entries"]
+def test_register_table_equals_the_glossary_entries_in_use():
+    """WP57a: one row per glossary entry the paper or the appendices use, by the vocabulary
+    checker's rule, in the glossary's order; an unused entry stays in the glossary and off the page;
+    no Layer column."""
+    all_entries = yaml.safe_load((ROOT / "glossary.yaml").read_text(encoding="utf-8"))["entries"]
+    used = generate_register.used_entry_ids()
+    entries = [e for e in all_entries if e["id"] in used]
+    assert 0 < len(all_entries) - len(entries) < len(all_entries) // 4
     headers, rows = generate_register.register_rows()
     assert len(rows) == len(entries)
+    assert "Layer" not in headers
     text = str(generate_register.register_table())
+    for e in all_entries:
+        if e["id"] not in used:
+            assert f"| {e['register']} |" not in text, e["id"]
     for e, row in zip(entries, rows, strict=True):
         assert row[0] == e["register"] and row[2] == e["formal"] and row[3] == e["not"]
         assert e["register"] in text and e["formal"] in text
@@ -2031,9 +2049,15 @@ def test_the_source_map_names_the_hypothesis_table_and_its_record():
     assert "def horopca_hypothesis_table" in source
 
 
-def test_register_opens_by_saying_it_is_not_exhaustive():
+def test_appendix_g_is_the_register_and_one_line_citing_the_reading_pass():
+    """WP57a: the heading, G.1's heading, the register, one line naming the reading pass's file;
+    no Job block, no scope sentence (queued for WP57d), no pointer cell, no G.2."""
     cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
-    assert "not exhaustive" in _src(cells[2])
+    assert [c.id for c in cells] == ["app-G", "app-G-1", "tab-G-register", "app-G-reading-pass"]
+    text = "\n".join(_src(c) for c in cells if c.cell_type == "markdown")
+    assert "not exhaustive" not in text and "G.2" not in text and "tested by experiment" not in text
+    assert "paper/supplement/reading-pass.md" in _src(cells[-1])
+    assert len(_src(cells[-1]).split()) <= 30
 
 
 # ---- the main text: prose-dependent checks (WP10) -----------------------------------------------
@@ -2403,8 +2427,8 @@ def test_reader_depth_anchors_are_all_present():
                   "case-construction", "case-analysis", "discussion", "future",
                   "process"):  # fmt: skip
         assert f"<sect-{label}>`" in roadmap, label  # every section after the first
-    companion = _src(_nb(SUPPORT_NB).cells[0])
-    assert "for readers who check the proofs" in companion and "case model" in companion
+    front = _src(_nb(SUPPORT_NB).cells[0])  # WP57a: the title block alone; the headings route
+    assert front.strip().endswith("---") and "Companion" not in front
 
 
 def test_simplifying_assumptions_are_named_where_made():
@@ -2743,11 +2767,13 @@ def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
     steps = sum(len(lem["steps"]) for lem in record.values())
     assert f"{results} results in {len(record)} files and {steps} steps" in text
     last = max(lem["number"] for lem in record.values())  # derived from the record, never typed
-    assert f"(L12 to L{last})" in text and "L15. descent" in _proof_text()
+    assert "L15. descent" in _proof_text()
     heading = (
         f"### B.2 The several-term fit, its levels of guarantee and the tension (L12 to L{last})"
     )
     assert heading in _src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-B-2"))
+    # WP57b: the rule and the kinds; no list of the appendix's parts, no repeat of Section 9
+    assert "two parts" not in text and "human validation" not in text
 
 
 def test_the_claims_of_c1_have_their_true_basis():
@@ -2938,6 +2964,7 @@ def test_regime_names_a_gain_box_dataset_and_the_terms_are_terms():
 
 import generate_reading_pass  # noqa: E402
 import generate_results  # noqa: E402
+import generate_supplement  # noqa: E402
 
 
 def test_reading_pass_yaml_matches_the_markdown_table_verbatim():
@@ -2968,29 +2995,19 @@ def test_reading_pass_rows_carry_what_the_paper_does_and_resolve_in_the_bibliogr
     assert own["status"] == "supervisor"
 
 
-def _g2_cells(cells):
-    """The cells of G.2: from its heading to the next subsection of Appendix G, if any."""
-    start = next(
-        i for i, c in enumerate(cells)
-        if c.cell_type == "markdown" and "### G.2 " in _src(c)
-    )  # fmt: skip
-    out = []
-    for c in cells[start:]:
-        if out and c.cell_type == "markdown" and _unlabel(_src(c)).lstrip().startswith("### "):
-            break
-        out.append(c)
-    return out
-
-
-def test_reading_pass_table_is_in_appendix_g_and_current():
-    cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
-    headings = [_unlabel(_src(c)) for c in cells if c.cell_type == "markdown"]
-    assert any(h.startswith("### G.2 ") for h in headings)
-    cell = next(c for c in cells if c.cell_type == "code" and c.id == "tab-G-reading_pass_table")
-    assert _out_text(cell) == str(generate_reading_pass.reading_pass_table()), STALE
-    text = _out_text(cell)
-    # Supervisor, 7257053: G.2 lets a reader check what was taken from where; no machine verdict
-    lines = [ln for ln in text.splitlines() if ln.startswith("| ")]
+def test_reading_pass_supplement_equals_its_generator_and_g1_cites_it():
+    """WP57a (the supervisor, WP38: keep the YAML for our own checking, drop the table from the
+    supporting material): paper/supplement/reading-pass.md is render('reading-pass.md'), the plain
+    reading_pass_table from the record; G.1's last cell links it; the table keeps the three columns
+    the supervisor set at 7257053 (what we say, the source, where in it; no verdict, why or status),
+    one row per citing sentence."""
+    path = PAPER / "supplement" / "reading-pass.md"
+    text = path.read_text(encoding="utf-8")
+    assert text == generate_supplement.render("reading-pass.md"), STALE
+    assert generate_supplement.stale() == []
+    table = str(generate_reading_pass.reading_pass_table(plain=True))
+    assert table in text
+    lines = [ln for ln in table.splitlines() if ln.startswith("| ")]
     assert lines[0] == "| What we say | Source | Where in it |"
     assert all(ln.count(" | ") == 2 for ln in lines)  # three columns, no verdict, why or status
     removed = generate_reading_pass.REMOVED
@@ -3002,17 +3019,24 @@ def test_reading_pass_table_is_in_appendix_g_and_current():
         for r in generate_reading_pass.rows()
         if r["n"] in removed
     )
-    g2 = "\n".join(
-        _unlabel(_src(c)) if c.cell_type == "markdown" else _out_text(c) for c in _g2_cells(cells)
-    )
-    assert not re.search(r"verdict|supported", g2, re.I)
-    assert "Verdict" not in text and "rows (" not in text
-    # The view gives the paper's own sentence and the source's own link, not the record's
-    # disposition or the address of the fetch (the supervisor's return on G.2, 2026-11-12)
-    cells = [ln.split(" | ")[0].removeprefix("| ") for ln in lines[2:]]
-    assert not any(re.sub(r"<[^>]+>", "", c).lstrip().startswith("Cited now") for c in cells)
+    assert not re.search(r"verdict|supported|Cited now|rows \(", text, re.I)
     assert "api.crossref.org" not in text and "api.semanticscholar.org" not in text
-    assert "was read, the verdict" not in g2
+    assert "<div" not in text and "style=" not in text  # Markdown only, for the repository's viewer
+    assert all(f"({generate_reading_pass.PAPER_PAGE}#cite-" in ln for ln in lines[2:])
+    g1 = _appendix_cells(_nb(SUPPORT_NB))["G"][-1]
+    assert "blob/main/paper/supplement/reading-pass.md" in _src(g1)
+    assert not any(c.id == "tab-G-reading_pass_table" for c in _nb(SUPPORT_NB).cells)
+
+
+def test_generate_supplement_writes_what_its_generators_return(tmp_path):
+    """The script writes render(name) for each file and --check reports a stale one."""
+    names = generate_supplement.write_all(tmp_path)
+    assert names == list(generate_supplement.FILES) == ["reading-pass.md"]
+    for name in names:
+        assert (tmp_path / name).read_text(encoding="utf-8") == generate_supplement.render(name)
+    assert generate_supplement.stale(tmp_path) == []
+    (tmp_path / "reading-pass.md").write_text("stale\n", encoding="utf-8")
+    assert generate_supplement.stale(tmp_path) == ["reading-pass.md"]
 
 
 # ---- the driver's change requests of WP10, round 2 (the cold reads of 2026-11-09) ----------------
@@ -4501,14 +4525,20 @@ def test_the_statements_of_the_theorems_carry_what_their_scripts_prove():
     assert "c_k=e^{-\\kappa\\beta_k}" in defs and "a_k=\\kappa w_k" in defs  # WP55: the GP bridge
 
 
-def test_the_polish_and_the_unused_lemma_are_named_in_appendix_b2():
-    """138: the status refers to the polished point; L19 is used by no result of the paper."""
+def test_appendix_b2_is_the_restart_stop_and_polish_rules():
+    """138, then WP57b: B.2 is the paragraph Section 5's "steps: Appendix B.2" and Section 6's
+    "Newton steps that close the gap the solver leaves" point at: the restart rule, the stop rule,
+    the polish with G-16, the status at the polished point; no restatement of the alternation's
+    program, no commentary on the lemmas, nothing about what the paper does not use."""
     b2 = " ".join(_cell_src("app-B-2", SUPPORT_NB).split())
     assert "five reduced Newton steps (the polish)" in b2 and "G-16" in b2
-    assert (
-        "L19 bounds the noise shift of the offset, and no result or table of this paper uses it"
-        in b2
-    )
+    assert "random centres in the chart" in b2 and "restart whose mean slack is smallest" in b2
+    assert "if the mean slack rose, stop with the previous state" in b2
+    assert "the status refers to the polished point" in b2
+    cut = ("L19", "does not prove", "no result or table of this paper", "softmax", "L17 treats")
+    for gone in cut:
+        assert gone not in b2, gone
+    assert len(b2.split()) <= 160
     results = " ".join(_section("Results").split())
     assert "the returned point is polished" in results
 
