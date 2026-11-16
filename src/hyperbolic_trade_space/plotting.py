@@ -144,7 +144,135 @@ def _fitted_chart(estimator, d_required=None):
     return W, np.asarray(estimator.log_offset_, dtype=float).ravel()
 
 
-def plot_log_plane(estimator, X, color=None, band=None, ax=None):
+_LEVEL_COLOR = "0.5"  # the level sets other than the frontier: mid grey, legible on light and dark
+_LEVEL_LABEL = "lines of equal V"
+
+
+def _envelope(W, bk, u):
+    """``Phi_K(u)``: the hard maximum of the term planes ``W_k.u - b_k`` at the rows of ``u``."""
+    return np.max(u @ W.T - bk, axis=1)
+
+
+def _round_levels(estimator, X, n):
+    """About ``n`` round values of ``V`` over the data's range (5th percentile to maximum)."""
+    from matplotlib.ticker import MaxNLocator
+
+    v = np.exp(estimator.score_samples(X))
+    v = v[np.isfinite(v) & (v > 0)]
+    lo, hi = np.quantile(v, 0.05), max(v.max(), 1.0)
+    n, sets = int(n), []
+    for bins in range(1, 4 * n + 1):  # round steps; keep the set whose size is nearest n
+        ticks = MaxNLocator(nbins=bins, steps=[1, 2, 2.5, 5, 10]).tick_values(lo, hi)
+        values = [float(t) for t in ticks if lo <= t <= hi and t > 0]
+        sets.append((abs(len(values) - n), len(values), values))
+    return min(sets)[2]
+
+
+def _level_values(estimator, X, levels):
+    """The levels as sorted distinct positive values of ``V``, with ``V = 1`` among them."""
+    if isinstance(levels, (int, np.integer)) and not isinstance(levels, bool):
+        if levels < 1:
+            raise ValueError("levels as an integer must be at least 1")
+        values = _round_levels(estimator, X, levels)
+    else:
+        values = [float(v) for v in np.ravel(levels)]
+    if any(not np.isfinite(v) or v <= 0 for v in values):
+        raise ValueError("levels are values of V and must be positive")
+    return sorted({round(v, 12) for v in values} | {1.0})
+
+
+def _label_spots(paths, u, frame, inset=0.1):
+    """Where to label each level set: its left or right end inside the frame, one side for all.
+
+    The side is the one whose ends lie farther from the designs, so the labels stack beside the
+    cloud, one per line, at the spacing of the lines.
+    """
+    (x0, x1), (y0, y1) = frame
+    span = np.array([x1 - x0, y1 - y0])
+    lo, hi = np.array([x0, y0]) + inset * span, np.array([x1, y1]) - inset * span
+    step = max(len(u) // 2000, 1)
+    ends = {"left": [], "right": []}
+    for path in paths:
+        inside = path[np.all((path >= lo) & (path <= hi), axis=1)] if len(path) else path
+        if not len(inside):
+            ends["left"].append(None)
+            ends["right"].append(None)
+            continue
+        ends["left"].append(inside[np.argmin(inside[:, 0])])
+        ends["right"].append(inside[np.argmax(inside[:, 0])])
+
+    def clearance(side):
+        pts = np.array([e for e in ends[side] if e is not None])
+        if not len(pts):
+            return -np.inf
+        d = ((pts[:, None, :] - u[None, ::step, :]) / span) ** 2
+        return float(np.sqrt(d.sum(axis=2).min(axis=1)).sum())
+
+    side = max(("right", "left"), key=clearance)
+    return ends[side]
+
+
+def _level_sets(ax, estimator, W, bk, u, levels, band):
+    """Draw labelled level sets of ``V`` (``Phi_K = log v``) over the designs ``u`` (log m)."""
+    from matplotlib.lines import Line2D
+
+    values = _level_values(estimator, np.exp(u), levels)
+    ok = W.min(axis=1) > PARTICIPATION if len(W) > 1 else np.ones(len(W), dtype=bool)
+    if not ok.any():
+        return []
+    W, bk = W[ok], bk[ok]
+    logs = np.log(values)
+    # the frame: the designs, and the diagonal projections (m / V) of those between the extreme
+    # levels onto each of them, so every drawn level crosses the frame where the designs are
+    phi = _envelope(W, bk, u)
+    near = u[(phi >= logs[0]) & (phi <= logs[-1])]
+    pts = [u]
+    for t in (logs[0], logs[-1]):
+        if len(near):
+            shift = np.min((t - (near @ W.T - bk)) / W.sum(axis=1), axis=1)
+            pts.append(near + shift[:, None])
+    pts = np.vstack(pts)
+    pad = 0.04 * (pts.max(axis=0) - pts.min(axis=0) + 1e-9)
+    (x0, y0), (x1, y1) = pts.min(axis=0) - pad, pts.max(axis=0) + pad
+    gx, gy = np.linspace(x0, x1, 300), np.linspace(y0, y1, 300)
+    GX, GY = np.meshgrid(gx, gy)
+    grid = np.column_stack([GX.ravel(), GY.ravel()])
+    if band is not None:
+        ax.contourf(
+            GX, GY, _envelope(W, bk, grid).reshape(GX.shape), levels=[-band, 0.0],
+            colors=[BAND_COLOR], alpha=0.5, zorder=1,
+        )  # fmt: skip
+    frontier = np.isclose(values, 1.0)
+    cs = ax.contour(
+        GX,
+        GY,
+        _envelope(W, bk, grid).reshape(GX.shape),
+        levels=logs,
+        colors=[FRONTIER_COLOR if f else _LEVEL_COLOR for f in frontier],
+        linewidths=[1.6 if f else 0.9 for f in frontier],
+        zorder=4,
+    )
+    fmt = {lv: f"V = {v:g}" for lv, v in zip(cs.levels, values, strict=True)}
+    longest = [max(segs, key=len) if segs else np.empty((0, 2)) for segs in cs.allsegs]
+    spots = [p for p in _label_spots(longest, u, ((x0, x1), (y0, y1))) if p is not None]
+    ax.clabel(cs, fmt=fmt, manual=spots, inline=True, fontsize=9, inline_spacing=4)
+    for t in cs.labelTexts:
+        t.set_zorder(5)
+    ax.set_xlim(x0, x1)
+    ax.set_ylim(y0, y1)
+    handles = [Line2D([], [], color=FRONTIER_COLOR, linewidth=1.6, label="frontier V = 1")]
+    if len(values) > 1:
+        handles.append(Line2D([], [], color=_LEVEL_COLOR, linewidth=0.9, label=_LEVEL_LABEL))
+    if band is not None:
+        from matplotlib.patches import Patch
+
+        handles.append(
+            Patch(color=BAND_COLOR, alpha=0.5, linewidth=0, label=f"band (log V >= -{band:.3g})")
+        )
+    return handles
+
+
+def plot_log_plane(estimator, X, color=None, band=None, ax=None, levels=None):
     """Two metrics in the log plane: data, the frontier line and the near-frontier band.
 
     Parameters
@@ -164,7 +292,18 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
         the black line is the envelope ``Phi_K = 0`` (the hard maximum of the term lines) and the
         band the strip down to ``Phi_K = -band``; a term is drawn only where it has weight on
         both plotted metrics (exponents above ``PARTICIPATION``), and no envelope is drawn if none.
+        With ``levels`` the band is drawn only when ``band`` is given.
     ax : matplotlib Axes, default=None
+    levels : sequence of float or int, default=None
+        Level sets of ``V`` to draw instead of the single frontier line. A sequence gives the
+        values of ``V`` (positive); an integer ``n`` picks about ``n`` round values from the
+        data's range of ``V`` (its 5th percentile to its maximum). ``V = 1`` is always drawn, as
+        the frontier in ``FRONTIER_COLOR``; the other levels are thinner grey lines. Each line
+        is labelled with its value at its end inside the frame, on the side (left or right) whose
+        ends lie farther from the designs, and the designs are drawn smaller and translucent so
+        the lines read through them. A level set is the straight line ``w.u = beta + log v``;
+        for ``n_terms > 1`` it is the envelope ``Phi_K = log v`` (the hard maximum, as the
+        frontier is drawn) over the terms that have weight on both metrics.
 
     Returns
     -------
@@ -180,6 +319,12 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     >>> ax = plot_log_plane(HyperbolicTradeSpace().fit(X), X)
     >>> ax.get_xlabel()
     'log m0'
+
+    Level sets of ``V`` labelled with their values:
+
+    >>> ax = plot_log_plane(HyperbolicTradeSpace().fit(X), X, levels=(0.5, 0.8, 1.0))
+    >>> sorted(t.get_text() for t in ax.texts)
+    ['V = 0.5', 'V = 0.8', 'V = 1']
     """
     W, bk = _fitted_chart(estimator, 2)
     w, beta = W[0], bk[0]
@@ -190,7 +335,10 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     color = _cell_option(estimator, X, color)
     b = _band(estimator, band)
     ax = _axes(ax)
-    if len(W) > 1:
+    handles = None
+    if levels is not None:
+        handles = _level_sets(ax, estimator, W, bk, u, levels, None if band is None else b)
+    elif len(W) > 1:
         # envelope Phi_K = 0: the lowest term line m1(m0), over terms that bound m1 from above
         g, ok = np.linspace(u[:, 0].min(), u[:, 0].max(), 200), W.min(axis=1) > PARTICIPATION
 
@@ -220,13 +368,18 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
         )
         ax.plot([lo[0], hi[0]], [lo[1], hi[1]], color=FRONTIER_COLOR, label="frontier V = 1")
     cols, cats = _point_colors(color, len(u))
-    ax.scatter(u[:, 0], u[:, 1], c=cols, s=14, zorder=3)
+    if levels is None:
+        ax.scatter(u[:, 0], u[:, 1], c=cols, s=14, zorder=3)
+    else:  # lighter designs, so the level sets read through the cloud
+        ax.scatter(u[:, 0], u[:, 1], c=cols, s=8, alpha=0.45, linewidths=0, zorder=3)
     ax.set_xlabel("log m0")
     ax.set_ylabel("log m1")
-    if cats is None:
-        ax.legend(frameon=False)
-    else:
+    if cats is not None:
         _category_legend(ax, cats)
+    elif levels is not None:
+        ax.legend(handles=handles, frameon=False)
+    else:
+        ax.legend(frameon=False)
     return ax
 
 

@@ -44,16 +44,16 @@ pre = LogAffinePreconditioner(
 M = pre.fit_transform(raw)
 tau = select_temperature(M, target_frac_above=0.1, bounds=(3.0, 1e4))
 fit = HyperbolicTradeSpace(temperature=tau, random_state=0).fit(M)
-ax = plot_log_plane(fit, M, band=1 / tau)
+ax = plot_log_plane(fit, M, levels=(0.1, 0.25, 0.5, 1.0, 1.5))
 ax.set_xlabel("log grain, standardized")
 ax.set_ylabel("log straw, standardized")
 print(round(tau, 1), fit.exponents_.round(2))
 ```
 
 <figure markdown>
-![Log plane of standardized grain against straw yields: a cloud of plot-years with the fitted frontier as a falling straight line above it and a grey band of near-frontier plot-years under the line.](../generated/figures/wheat-log-plane-light.png#only-light)
-![Log plane of standardized grain against straw yields: a cloud of plot-years with the fitted frontier as a falling straight line above it and a grey band of near-frontier plot-years under the line.](../generated/figures/wheat-log-plane-dark.png#only-dark)
-<figcaption>Figure 10. Broadbalk plot-years in the log plane of grain and straw: the line is the fitted frontier and the grey band, 0.12 wide in log V, holds the plot-years nearest to it.</figcaption>
+![Log plane of standardized grain against straw yields: a cloud of plot-years crossed by parallel falling straight lines of equal V, labelled 0.1, 0.25, 0.5, 1 and 1.5; the line V = 1, the fitted frontier, is drawn heavier and runs through the top of the dense part of the cloud.](../generated/figures/wheat-log-plane-light.png#only-light)
+![Log plane of standardized grain against straw yields: a cloud of plot-years crossed by parallel falling straight lines of equal V, labelled 0.1, 0.25, 0.5, 1 and 1.5; the line V = 1, the fitted frontier, is drawn heavier and runs through the top of the dense part of the cloud.](../generated/figures/wheat-log-plane-dark.png#only-dark)
+<figcaption>Figure 10. Broadbalk plot-years in the log plane of grain and straw, with lines of equal V, a weighted geometric mean of both yields; the heavy line V = 1 is the fitted frontier. Along each line the model trades grain for straw.</figcaption>
 </figure>
 
 At two terms, at the same temperature, the terms carry shares of 0.57 and 0.43 of the near-frontier rows and the fit is certified. The mean level below the frontier falls from 0.859 to 0.748. The second term has grain alone as its contending set, a limit on grain with straw free, which one term cannot show; it holds in 7 of the 15 rows of the conditioning ladder, so it is read as conditional.

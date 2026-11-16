@@ -526,3 +526,66 @@ def test_tensions_a_report_without_a_count_is_drawn_in_full():
     )
     ax = P.plot_association(r)
     assert sum(bool(re.fullmatch(r"-?\d\.\d\d", t.get_text())) for t in ax.texts) == 4
+
+
+def _level_set(ax):
+    """The contour set of a log-plane drawn with ``levels`` (the level sets of V)."""
+    from matplotlib.contour import ContourSet
+
+    sets = [c for c in ax.collections if isinstance(c, ContourSet) and not c.filled]
+    assert len(sets) == 1
+    return sets[0]
+
+
+def test_log_plane_levels_k1_draws_labelled_straight_level_sets():
+    # WP63-decisions.md: level sets of V, labelled, instead of the single line read as a fit line
+    X, _ = make_frontier_data(100, 2, random_state=0)
+    hts = HyperbolicTradeSpace(np.inf).fit(X)
+    ax = P.plot_log_plane(hts, X, levels=(0.5, 0.8))  # V = 1 is added: the frontier is drawn
+    cs = _level_set(ax)
+    np.testing.assert_allclose(cs.levels, np.log([0.5, 0.8, 1.0]))
+    assert sorted(t.get_text() for t in ax.texts) == ["V = 0.5", "V = 0.8", "V = 1"]
+    w, beta = hts.exponents_[0], hts.log_offset_[0]
+    for lv, segs in zip(cs.levels, cs.allsegs, strict=True):
+        assert len(segs) >= 1
+        for seg in segs:  # each level set is the straight line w.u = beta + log v
+            np.testing.assert_allclose(seg @ w, beta + lv, atol=1e-9)
+    edge = [matplotlib.colors.to_hex(c) for c in cs.get_edgecolor()]
+    assert edge[-1] == matplotlib.colors.to_hex(P.FRONTIER_COLOR)
+    assert edge[0] != edge[-1] and len(ax.lines) == 0 and len(ax.patches) == 0  # no band
+    labels = [t.get_text() for t in ax.get_legend().get_texts()]
+    assert labels == ["frontier V = 1", "lines of equal V"]
+
+
+def test_log_plane_levels_count_picks_round_values_and_validates():
+    X, _ = make_frontier_data(100, 2, random_state=0)
+    hts = HyperbolicTradeSpace(temperature=8.0, random_state=0).fit(X)
+    v = np.exp(_level_set(P.plot_log_plane(hts, X, levels=4)).levels)
+    assert 3 <= len(v) <= 7 and np.isclose(v, 1.0).any()
+    assert np.allclose(v * 100, np.round(v * 100))  # round values
+    ax = P.plot_log_plane(hts, X, levels=(0.5, 1.0), band=0.1)  # the band only when asked
+    assert any(c.filled for c in ax.collections if hasattr(c, "filled"))
+    with pytest.raises(ValueError, match="positive"):
+        P.plot_log_plane(hts, X, levels=(0.0, 1.0))
+    with pytest.raises(ValueError, match="at least 1"):
+        P.plot_log_plane(hts, X, levels=0)
+
+
+def test_log_plane_levels_k3_draws_the_envelope_at_each_level():
+    X, hts = _k3(2)
+    ax = P.plot_log_plane(hts, X, levels=(0.5, 1.0))
+    cs = _level_set(ax)
+    W, b = hts.exponents_, hts.log_offset_
+    ok = W.min(axis=1) > P.PARTICIPATION
+    for lv, segs in zip(cs.levels, cs.allsegs, strict=True):
+        pts = np.vstack(segs)
+        phi = np.max(pts @ W[ok].T - b[ok], axis=1)
+        np.testing.assert_allclose(phi, lv, atol=1e-2)  # the grid's envelope, to its resolution
+    assert sorted(t.get_text() for t in ax.texts) == ["V = 0.5", "V = 1"]
+    assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
+
+
+def test_log_plane_default_draws_no_level_sets():
+    X, _ = make_frontier_data(80, 2, random_state=0)
+    ax = P.plot_log_plane(HyperbolicTradeSpace().fit(X), X)
+    assert not any(hasattr(c, "allsegs") for c in ax.collections) and len(ax.texts) == 0
