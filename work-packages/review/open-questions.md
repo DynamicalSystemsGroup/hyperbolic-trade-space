@@ -12,6 +12,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   it holds are derived.
 - **Record:** `work-packages/WP36-decisions.md`, "The search's outer loop" (the supervisor, 2026-11-14, 12:20);
   `work-packages/WP41-rounds/spike/readout.md`, sections 1 and 5; `docs/bridge.md`, "The outer loop, and what is open".
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-2. A convergence result when the expected progress ceases
 
@@ -20,6 +21,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   and the theory treats variables as continuous within a category.
 - **Record:** `work-packages/WP36-decisions.md` (same entry); the gaps ledger row that names it
   (`docs/superpowers/notes/abstraction-gaps.md`).
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-3. Ascent may reach only the log-convex part of the Pareto boundary
 
@@ -28,6 +30,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   built to reach a predicted improvement need not follow it, which only the check finds out.
 - **Record:** `work-packages/WP41-rounds/spike/readout.md`, sections 3 and 5 (one run each on three targets, a record
   and not a rate; the rule that reaches farthest and the confirmation rate are not established).
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-4. How a sampling strategy enters the nested loops
 
@@ -35,6 +38,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
 - **Open:** how a sampling strategy enters the search loops is not studied; the method itself assumes nothing about how
   a table's designs were drawn.
 - **Record:** `paper/length_ledger.toml`, the raise row of 2026-11-11 (the supervisor, 12:25).
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-5. Global convergence of the several-term alternation (Q1)
 
@@ -44,6 +48,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   practical bound. Section 6 keeps the sentence that stationarity of the stop and convergence otherwise are not claimed.
 - **Record:** gaps ledger G-14 (`docs/superpowers/notes/abstraction-gaps.md`; Appendix E of the paper);
   `work-packages/external-review-2026-11.md`, item E-10.
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-6. Statistical consistency under noise and refitting (Q2)
 
@@ -52,6 +57,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   L20 the first-order size of the noise shift of the minimizer of the expected noisy loss; neither is a statement about
   one noisy fit.
 - **Record:** gaps ledger G-11; `work-packages/external-review-2026-11.md`, item E-10.
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-7. Identifiability of the active metrics under finite, biased observations (Q3)
 
@@ -59,6 +65,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
 - **Open:** whether the contending set is identified from a finite, biased sample. It is identified only where the
   restricted Hessian is positive definite (R3) and the term's frontier rows determine its plane.
 - **Record:** gaps ledger G-12; `work-packages/external-review-2026-11.md`, item E-10.
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-8. When the fitted reference surface recovers the Pareto boundary (Q4)
 
@@ -66,6 +73,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
 - **Open:** the conditions under which the fitted reference surface recovers the Pareto boundary and not the supporting
   envelope of the sample. Recovery is measurable only where the boundary is planted; real data have no known boundary.
 - **Record:** gaps ledger G-13; `work-packages/external-review-2026-11.md`, item E-10.
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-9. The tie at the exact maximum for several terms
 
@@ -73,6 +81,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
 - **Open:** when several terms are fitted at the exact maximum the solver resolves a tie by a fixed tie rule; that the
   contending sets do not depend on the rule is checked on the case, not proved.
 - **Record:** gaps ledger G-10 (`docs/superpowers/notes/abstraction-gaps.md`; Appendix E of the paper).
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-10. A log-convex surface only
 
@@ -81,6 +90,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   terms K represents structure that is not log-convex.
 - **Record:** Appendix B, L10 (the posynomial extension); `work-packages/review/open-questions.md` is its place until
   WP57 decides the appendix section "Assumptions, limitations and open questions".
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-11. The manufacturer is the decision's stakeholder, not the SysML v2 model's
 
@@ -100,6 +110,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   data of record give 65.6 % (`baseline_requirement_sentence`, D.17's pass column). Editing the comment moves the
   file's hash the data-of-record ledger holds (`tests/test_mutation_v2.py`), so it waits for the next model change.
 - **Record:** `WP56-review.md`, R-1 row 12; register C403's note.
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-13. The decision's design-level pick under the coverage constants
 
@@ -110,6 +121,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   the constants as assumptions and does not report the movement.
 - **Record:** `work-packages/WP56-rounds/ternary/readout.md`, "The decision's stability";
   `examples/adcs/spikes/fleet_performance.py`.
+- **Listed:** Appendix E.3 of the supporting material (WP57d).
 
 ## OQ-14. The decision's unused picks
 
@@ -123,3 +135,4 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   failure) and feeds the same stability record through `paper_perturb.py` (`sentence num-recovery`); it leaves with
   the picks when the record is regenerated.
 - **Record:** `work-packages/WP57c-review.md`, "Left for the driver"; `paper/stability_extra.json`.
+- **Listed:** Appendix E.3 of the supporting material (WP57d).

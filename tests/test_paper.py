@@ -81,7 +81,7 @@ APPENDICES = {
     "B": "Proofs, step for step with their scripts",
     "C": "The case's model: how the table of metrics came to be",
     "D": "Extended results: what the method found in the table",
-    "E": "Assumptions and abstraction gaps",
+    "E": "Assumptions, limitations and open questions",
     "F": "Computational reproducibility",
     "G": "Register of prior art",
     "H": "HoroPCA beside this work: a tested hypothesis",
@@ -787,34 +787,15 @@ def test_no_withdrawn_appendices():
     assert not [p for p in PAPER.glob("*audit*")]
 
 
-JOB_BLOCKS = {"E", "H"}
-"""The appendices that still open with a Job block and the three tiers (R-25), until WP57d
-tightens them; WP57a, WP57b and WP57c cut the blocks of A, F, G, B, C and D (the rule on
-metanarration)."""
-
-
-def test_job_blocks_remain_only_in_the_appendices_not_yet_tightened():
+def test_no_appendix_opens_with_a_job_block():
+    """WP57a to WP57d cut the Job block and its three tiers (R-25) from every appendix (the rule on
+    metanarration): no appendix says what it carries or what the main text keeps."""
     sections = _appendix_cells(_nb(SUPPORT_NB))
     assert list(sections) == list(APPENDICES)
     for letter, cells in sections.items():
         text = "\n".join(_src(c) for c in cells if c.cell_type == "markdown")
-        if letter in JOB_BLOCKS:
-            job = _src(cells[1])
-            assert job.startswith("**Job.** To "), letter
-            for tier in TIERS:
-                assert tier in job, (letter, tier)
-        else:
-            assert "**Job.**" not in text, letter
-            assert not any(tier in text for tier in TIERS), letter
-
-
-def test_appendix_e_job_block_types_no_gap_range():
-    """The ledger sets how many gaps the table has: the job block of Appendix E states no range
-    (it said G-1 to G-17 while the table ran to G-18), and the ids are G-1 to G-n in order."""
-    ids = [r["id"] for r in generate_gaps.gap_rows()]
-    assert ids == [f"G-{i}" for i in range(1, len(ids) + 1)]
-    job = _src(_appendix_cells(_nb(SUPPORT_NB))["E"][1])
-    assert not re.search(r"G-\d+ to G-\d+", job)
+        assert "**Job.**" not in text, letter
+        assert not any(tier in text for tier in TIERS), letter
 
 
 def test_no_appendix_is_a_stub():
@@ -871,7 +852,107 @@ def test_register_committed_output_is_current():
     assert _out_text(cell) == str(generate_register.register_table()), STALE
 
 
-# -- E: the abstraction gaps
+# -- E: assumptions, limitations and open questions
+
+
+def _e_cells():
+    return _appendix_cells(_nb(SUPPORT_NB))["E"]
+
+
+def test_appendix_e_has_its_three_parts_in_order():
+    """WP57d G1: E.1 assumptions, E.2 limitations, E.3 open questions, anchored ``sub-e-1`` to
+    ``sub-e-3``; each part is tables, the typed parts no prose outside them but their captions."""
+    heads = [_src(c).splitlines()[:2] for c in _e_cells() if _src(c).startswith("(sub-e-")]
+    assert heads == [
+        ["(sub-e-1)=", "### E.1 Assumptions"],
+        ["(sub-e-2)=", "### E.2 Limitations"],
+        ["(sub-e-3)=", "### E.3 Open questions"],
+    ]
+    ids = [c.id for c in _e_cells()]
+    assert ids.index("tab-E-assumptions") < ids.index("app-E-2") < ids.index("tab-E-gaps")
+    assert ids.index("tab-E-gaps") < ids.index("app-E-3")
+    for cid in ("app-E-2", "app-E-3"):
+        body = _src(next(c for c in _e_cells() if c.id == cid)).split("\n", 3)[3]
+        assert all(ln.startswith("|") for ln in body.splitlines()), cid
+
+
+def test_the_assumptions_tables_are_the_ledger_of_the_derivation():
+    """WP57d G5, R-4: one row per entry of ``derivation/axioms.py``, A and R in the first table and
+    I and F in the second, each with the ledger's statement in one line, the citation, and the
+    results whose scripts import it by the proof map's record; nothing typed."""
+    from derivation.axioms import AXIOMS
+
+    def rows(text):  # a cell may hold an escaped pipe (I9's norms)
+        lines = [ln for ln in text.splitlines() if ln.startswith("|")][2:]
+        return [[x.strip() for x in re.split(r"(?<!\\)\|", ln.strip("|"))] for ln in lines]
+
+    first = rows(str(generate_gaps.assumptions_table()))
+    second = rows(str(generate_gaps.cited_table()))
+    names = [r[0].strip("*") for r in first + second]
+    assert sorted(names) == sorted(AXIOMS) and len(names) == len(set(names))
+    assert [n[0] for n in names[: len(first)]] == ["A"] * 12 + ["R"] * 3
+    record = json.loads((ROOT / "derivation" / "proof_map_record.json").read_text(encoding="utf-8"))
+    for row in first + second:
+        name = row[0].strip("*")
+        users = sorted(lem["number"] for lem in record["lemmas"].values() if name in lem["imports"])
+        shown = [int(n) for n in re.findall(r"\[L(\d+)\]\(#proof-l\1\)", row[-1])]
+        assert shown == users, name
+        assert generate_gaps.one_line(AXIOMS[name].statement)[:20] in row[1].replace("\\", "")
+    for row in second:
+        name = row[0].strip("*")
+        assert " ".join(AXIOMS[name].citation.split())[:30] in row[2].replace("\\", ""), name
+    stated = {r[0].strip("*"): r[2] for r in first}
+    assert stated["A1"] == stated["A2"] == stated["A3"] == "Section 3"
+    assert stated["A4"] == stated["A6"] == stated["A8"] == "Section 5"
+    assert all(stated[n] == "Section 6" for n in ("A5", "A7", "A9", "A10", "A11", "R1", "R2", "R3"))
+    for cid, fn in (("tab-E-assumptions", "assumptions_table"), ("tab-E-cited", "cited_table")):
+        cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == cid)
+        assert _out_text(cell) == str(getattr(generate_gaps, fn)()), STALE
+
+
+def _open_question_ids() -> tuple[list[str], list[str]]:
+    """The ledger's open and closed entries, by their headings and a "Closed" line."""
+    text = (ROOT / "work-packages" / "review" / "open-questions.md").read_text(encoding="utf-8")
+    entries = re.split(r"^## ", text, flags=re.M)[1:]
+    ids = [re.match(r"(OQ-\d+)\.", e).group(1) for e in entries]
+    closed = [i for i, e in zip(ids, entries, strict=True) if "**Closed" in e]
+    return [i for i in ids if i not in closed], closed
+
+
+def test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one():
+    """WP57d G1, G5: each open OQ is one row of E.3, in the ledger's order; no closed entry is
+    listed; the two research questions of Section 9 point at their records in the repository."""
+    open_ids, closed = _open_question_ids()
+    assert closed == ["OQ-11"] and "OQ-14" in open_ids
+    text = _src(next(c for c in _e_cells() if c.id == "app-E-3"))
+    listed = re.findall(r"\[(OQ-\d+)\]", text)
+    assert listed == open_ids
+    assert not any(f"[{c}]" in text for c in closed)
+    assert "notes/directions/wp43-kernel-direction.md" in text
+    assert "successive trade-offs" in text
+    rows = [ln for ln in text.splitlines() if ln.startswith("| ") and "---" not in ln][1:]
+    assert len(rows) == len(open_ids) + 2
+
+
+def test_e2_places_every_line_of_the_queue_and_names_records_that_resolve():
+    """WP57d G2, R-1: every queue line of ``WP57-rounds/assumptions-queue.md`` is marked with where
+    it landed; every G-id in E.2 is a row of the gaps table, every OQ-id an open entry of the
+    ledger, every L-id a lemma of the proof map."""
+    queue = (ROOT / "work-packages" / "WP57-rounds" / "assumptions-queue.md").read_text(
+        encoding="utf-8"
+    )
+    rows = [ln for ln in queue.splitlines() if ln.startswith("| ") and "---" not in ln][1:]
+    assert len(rows) == 9 and all("E.2" in r or "E.3" in r for r in rows)
+    text = _src(next(c for c in _e_cells() if c.id == "app-E-2"))
+    gaps = {r["id"] for r in generate_gaps.gap_rows()}
+    assert set(re.findall(r"\bG-\d+", text)) <= gaps
+    assert set(re.findall(r"\bOQ-\d+", text)) <= set(_open_question_ids()[0])
+    record = json.loads((ROOT / "derivation" / "proof_map_record.json").read_text(encoding="utf-8"))
+    lemmas = {f"L{lem['number']}" for lem in record["lemmas"].values()}
+    assert set(re.findall(r"\bL\d+\b", text)) <= lemmas
+    for line in [ln for ln in text.splitlines() if ln.startswith("| ")][1:]:
+        assert line.count("|") == 4, line  # section, what is not established, record
+    assert "| Section" not in text.split("---|", 1)[1]  # a section is named by a role, not typed
 
 
 def test_gaps_table_has_every_ledger_row():
@@ -896,8 +977,7 @@ def test_gaps_table_typesets_its_mathematics_on_the_page():
     """The page shows a notebook's HTML output as given and typesets no ``$...$`` in it, so the
     table writes each span of the ledger's columns as MathML: one ``<math>`` per span, no literal
     dollar sign left, and no emphasis made of an underscore inside a span."""
-    cols = ("Formal object", "Bridging assumption", "What cannot be proved",
-            "Sensitivity evidence", "Interpretive consequence")  # fmt: skip
+    cols = ("title", *generate_gaps.GAP_COLUMNS)
     spans = [m for r in generate_gaps.gap_rows() for c in cols
              for m in re.findall(r"\$[^$]+\$", r[c])]  # fmt: skip
     page = generate_gaps.gaps_table()._repr_html_()
@@ -917,6 +997,21 @@ def test_register_table_typesets_its_mathematics_on_the_page():
     assert page.count("<math>") == len(spans)
     assert "$" not in re.sub(r"<[^>]+>", "", page)
     assert str(table) == table.raw
+
+
+def test_gaps_table_keeps_four_columns_and_links_each_row_of_the_ledger():
+    """WP57d G1: the gap, the bridging assumption, what cannot be proved and the interpretive
+    consequence; the formal object and the sensitivity evidence stay in the ledger, whose row each
+    gap links by its line."""
+    table = str(generate_gaps.gaps_table())
+    assert table.splitlines()[0] == (
+        "| Gap | Bridging assumption | What cannot be proved | Interpretive consequence |"
+    )
+    lines = (NOTES / "abstraction-gaps.md").read_text(encoding="utf-8").splitlines()
+    for r in generate_gaps.gap_rows():
+        assert f"abstraction-gaps.md?plain=1#L{r['line']})" in table
+        assert lines[r["line"] - 1].startswith(f"| **{r['id']}.")
+    assert "Formal object" not in table and "Sensitivity evidence" not in table
 
 
 def test_gaps_table_gives_every_column_a_width_hint():
@@ -1878,6 +1973,14 @@ def test_the_design_constants_of_appendix_h_are_the_pre_registered_ones():
     assert all(p in _src(h2) for p in ("Four metrics, 300 rows", "six tables per setting"))
 
 
+H5_NOTE = "notes/directions/wp35-horopca-formalism-and-solvers.md"
+H5_NOTE_URL = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/" + H5_NOTE
+
+
+def _h5_note() -> str:
+    return " ".join((ROOT / H5_NOTE).read_text(encoding="utf-8").split())
+
+
 def _appendix_h_cells():
     return _appendix_cells(_nb(SUPPORT_NB))["H"]
 
@@ -1894,32 +1997,35 @@ def _appendix_h_prose() -> str:
     return "\n\n".join(parts)
 
 
-def test_appendix_h_has_its_five_sections_in_the_supervisors_order():
+def test_appendix_h_has_its_four_sections_in_the_supervisors_order():
     """WP35 RA-1: hypothesis (with its refutation conditions), experiment, results, what the table
-    shows, how the formalism and the solvers differ."""
+    shows; how the formalism and the solvers differ is a note of the repository (WP57d), cited in
+    one line at the end of H.4."""
     heads = [
         _src(c).split("\n")[1] if _src(c).startswith("(sub-h-") else None
         for c in _appendix_h_cells()
         if c.cell_type == "markdown"
     ]
     heads = [h for h in heads if h]
-    assert [h.split(" ", 2)[0:2] for h in heads] == [["###", f"H.{i}"] for i in range(1, 6)]
-    assert [h.split(" ", 2)[2].split()[0] for h in heads] == [
-        "The",
-        "The",
-        "Results",
-        "What",
-        "How",
-    ]
-    assert heads[0].endswith("what would refute it") and heads[4].endswith("solvers differ")
+    assert [h.split(" ", 2)[0:2] for h in heads] == [["###", f"H.{i}"] for i in range(1, 5)]
+    assert [h.split(" ", 2)[2].split()[0] for h in heads] == ["The", "The", "Results", "What"]
+    assert heads[0].endswith("what would refute it")
+    last = _src(_appendix_h_cells()[-1])
+    assert last.rstrip().endswith(f"({H5_NOTE_URL}).") and last.count(H5_NOTE_URL) == 1
+    assert (ROOT / H5_NOTE).is_file()
+
+
+H_CEILING = 920 - 169
+"""Appendix H's ceiling after WP57d's cut row (``paper/length_ledger.toml``)."""
 
 
 def test_appendix_h_is_within_its_ledger_ceiling():
     """WP35 amendment 1: the visible prose (Markdown, the caption, the generated sentences; not the
-    table) is at most the ceiling the ledger fixes, 920 words (900, raised by the wording unit's row
-    on the assistant's word, 3fb77e6), raised again only by a new row and the assistant's word."""
+    table) is at most the ceiling the ledger fixes: 920 words (900, raised by the wording unit's row
+    on the assistant's word, 3fb77e6), lowered by WP57d's cut row (the Job block, H.1's sentence
+    about the appendix, H.5), raised again only by a new row and the assistant's word."""
     _, ceilings = ledger_ceilings()
-    assert ceilings["Appendix H"] == 920
+    assert ceilings["Appendix H"] == H_CEILING
     assert rendered_words(_appendix_h_prose()) <= ceilings["Appendix H"]
 
 
@@ -1951,16 +2057,17 @@ def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
     assert "(|cos|, agreement of directions ignoring sign)" in text
     assert first("|cos|") < first("threshold")
     assert "distance R from the centre" in text and first("R from") < first("R = 3")
+    note = _h5_note()  # H.5's terms moved with it (WP57d)
     assert (
-        "frame, k orthonormal directions" in text
-        and "horospheres (the curved counterparts of hyperplanes" in text
+        "frame, k orthonormal directions" in note
+        and "horospheres (the curved counterparts of hyperplanes" in note
     )
     assert "{ref}`Appendix D.16 <sub-d-16>`" in " ".join(_src(c) for c in _appendix_h_cells())
     assert "was not run" in text
     assert "second embedding was not run" in text and "not tree-like" in text
     assert "The embedding is part of the treatment" in text  # decision 1862491, boundary (a)
     assert text.index("(a) The embedding") < text.index("(b) The tables") < text.index("(c) Six")
-    assert "every 6/6 is a count" in text and "not a performance benchmark" in text
+    assert "every 6/6 is a count" in text and "not a performance benchmark" not in text  # C591
     assert "variance ranking alone does not identify" in text
     assert "cannot pick" not in text and "not a rescue" not in text
 
@@ -1992,11 +2099,10 @@ def test_appendix_h_wording_unit_defines_its_terms_and_states_counts():
     )  # FW-19, the second boundary with its number
     assert "(its fourth)" in text and "analyst with other domain" not in text  # FW-13, FW-20
     assert "linear program" not in text and "sequential quadratic" not in text  # FW-17
-    assert "shortfall from the best value" in text and "how far its loss is" in text  # FW-16
-    assert (
-        "the paper [@chami2021horopca] (its loss)" in text
-        and "c9a9996 (Adam, random starts)" in text
-    )
+    note = _h5_note()  # H.5 moved to the repository's note (WP57d), its wording kept
+    assert "shortfall from the best value" in note and "how far its loss is" in note  # FW-16
+    assert "chami2021horopca" in note and "its loss)" in note
+    assert "c9a9996 (Adam, random starts)" in note
     conditions = str(generate_prior_art.horopca_conditions())
     n = _record_h()["cells"]["A/rho4.0"]["n"]
     assert n == 6 and "refuted by any cell under 6/6" in conditions  # FW-6
@@ -2284,11 +2390,11 @@ def _reference_targets():
 
 def _subsection_labels() -> dict[str, str]:
     """``sub-d-3`` -> its heading, from the ``(sub-d-3)=`` line of each subsection of the supporting
-    material (Appendices B to G); the number in the label must be the heading's own."""
+    material (Appendices B to H); the number in the label must be the heading's own."""
     out = {}
     for c in _nb(SUPPORT_NB).cells:
         m = (
-            re.match(r"^\((sub-[b-g]-\d+)\)=\n### ([B-G]\.\d+) ", _src(c))
+            re.match(r"^\((sub-[b-h]-\d+)\)=\n### ([B-H]\.\d+) ", _src(c))
             if c.cell_type == "markdown"
             else None
         )
@@ -2303,7 +2409,7 @@ def test_every_subsection_heading_carries_a_label():
     """Cross-references land on the subsection (D.3, F.2), not the top of the appendix (G-12)."""
     headings = [
         h for c in _nb(SUPPORT_NB).cells if c.cell_type == "markdown"
-        for h in re.findall(r"^### ([B-G]\.\d+) ", _unlabel(_src(c)), re.M)
+        for h in re.findall(r"^### ([B-H]\.\d+) ", _unlabel(_src(c)), re.M)
     ]  # fmt: skip
     assert headings and sorted(_subsection_labels().values()) == sorted(headings)
 
@@ -4447,10 +4553,10 @@ def test_the_one_axis_rule_is_stated_with_its_threshold_in_section_8():
 
 
 def test_appendix_e_rows_agree_with_appendix_d():
-    """143: G-7's and G-13's counts are D.14's, G-7's errors are D.13's, G-17's are D.11's."""
-    e = " ".join(
-        _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-E-gaps")).split()
-    )
+    """143: G-7's and G-13's counts are D.14's, G-7's errors are D.13's, G-17's are D.11's (the
+    ledger's rows, which Appendix E's gaps table links)."""
+    e = " ".join(" ".join(str(v) for v in r.values()) for r in generate_gaps.gap_rows())
+    e = " ".join(e.split())
     d11 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-stability"))
     d13 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit"))
     d14 = _out_text(

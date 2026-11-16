@@ -33,6 +33,10 @@ READS = {
 }
 READS_BY_CALL = {
     "horopca_hypothesis_table()": "work-packages/WP35-rounds/spike-h/results.json",
+    "assumptions_table()": (
+        "derivation/axioms.py, derivation/proof_map_record.json, paper/paper.ipynb"
+    ),
+    "cited_table()": "derivation/axioms.py, derivation/proof_map_record.json",
 }
 CASE_DATA = "examples/adcs/data/v2/ (the regimes' CSV files named by the case module)"
 

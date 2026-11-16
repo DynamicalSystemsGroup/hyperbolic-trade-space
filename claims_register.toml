@@ -5152,68 +5152,6 @@ source = "WP35 amendment 1"
 note = "k = 1 in the table, the repository's defaults, Adam at learning rate 0.05, 500 steps (readout sections 2 and 7)."
 
 [[claim]]
-id = "C585"
-fragment = "HoroPCA optimizes a frame, k orthonormal directions, so that points projected along horospheres (the curved counterparts of hyperplanes in flat space) keep the most variance"
-file = "paper/supporting_material.ipynb"
-anchor = "H.5 How the formalism and the solvers differ"
-kind = "L"
-backing = [
-  "bib:chami2021horopca",
-  "file:work-packages/WP35-rounds/spike-h/readout.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 amendment 1"
-note = "The authors' paper, Section 3 (three generalizations: the subspace, the projection, the variance), and readout section 5 (learning/pca.py, compute_variance, gram_schmidt)."
-
-[[claim]]
-id = "C586"
-fragment = "That loss is not convex: the authors' code runs Adam from random starts, and nothing bounds how far its loss is from the best frame's"
-file = "paper/supporting_material.ipynb"
-anchor = "H.5 How the formalism and the solvers differ"
-kind = "S"
-backing = [
-  "file:work-packages/WP35-rounds/spike-h/readout.md",
-  "file:work-packages/WP35-rounds/spike-h/experiment_methods.py",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 amendment 1"
-note = "The non-convexity is the readout's reading of the authors' repository (a Stiefel-type parameter space, no convexity argument), not a statement of the paper, which H.5 cites for the objective (frame, horospherical projection, variance) alone. readout section 5: Adam (pca.py L123), random normal start (L23), no convergence test, no certificate; the repository gives no argument for convexity. Section 3e of the readout records different restarts ending in different optima."
-
-[[claim]]
-id = "C587"
-fragment = "This work minimizes a soft maximum (log-mean-exp) of weighted log-metrics over the simplex, which for one term is convex"
-file = "paper/supporting_material.ipynb"
-anchor = "H.5 How the formalism and the solvers differ"
-kind = "M"
-backing = [
-  "lemma:L4",
-  "func:src/hyperbolic_trade_space/solvers.py::log_mean_exp",
-  "func:src/hyperbolic_trade_space/solvers.py::loss_and_grad",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 amendment 1"
-note = "Lemma 4 (J_tau is convex on the simplex; the second directional derivative is tau times a weighted variance, checked in derivation/lemma_04_convexity.py)."
-
-[[claim]]
-id = "C588"
-fragment = "and returns a gap bounding the result's shortfall from the best value"
-file = "paper/supporting_material.ipynb"
-anchor = "H.5 How the formalism and the solvers differ"
-kind = "S"
-backing = [
-  "func:src/hyperbolic_trade_space/solvers.py::solve_lp",
-  "func:src/hyperbolic_trade_space/solvers.py::solve_slsqp",
-  "func:src/hyperbolic_trade_space/solvers.py::simplex_gap",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 amendment 1"
-note = "tau = inf: solve_lp; finite tau: solve_slsqp warm-started from it; simplex_gap gives 0 <= f(w) - f* <= G by convexity (readout section 5)."
-
-[[claim]]
 id = "C590"
 fragment = "Six tables per cell establish separation, not population recovery rates; every 6/6 is a count"
 file = "paper/supporting_material.ipynb"
@@ -5227,22 +5165,6 @@ status = "backed"
 disposition = "keep"
 source = "WP35 amendment 1"
 note = "n = 6 per cell in results.json; the reviewer's boundary (c), recorded at 1862491: a count, not a reliability claim."
-
-[[claim]]
-id = "C591"
-fragment = "a prospectively specified follow-up to an exploratory spike that informed its design, a bounded synthetic experiment supporting the positioning, not a performance benchmark"
-file = "paper/supporting_material.ipynb"
-anchor = "H.1 The hypothesis and what would refute it"
-kind = "S"
-backing = [
-  "test:tests/test_paper.py::test_the_pre_registered_rates_are_those_of_the_hypothesis_file",
-  "file:work-packages/WP35-decisions.md",
-  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 amendment 1"
-note = "The first spike (docs/superpowers/notes/spike-horopca/) informed the design; hypothesis.md and the rules were committed at 830cf54 before results.json; the reviewer's framing, recorded at 1862491."
 
 [[claim]]
 id = "C592"
@@ -9346,3 +9268,814 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP57c (Appendices C and D), the second unit (D.2's and D.12's tables merged into D.8)"
+
+[[claim]]
+id = "C997"
+fragment = "Dominance stops discriminating as metrics are added: read on this case's counts"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::nondominated_sentence",
+  "test:tests/test_paper.py::test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_apart",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 2. As C064 (Section 2), with D.9's counts."
+
+[[claim]]
+id = "C998"
+fragment = "The HoroPCA comparison: its reading limits (a) to (c)"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+  "file:work-packages/WP35-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 2. A pointer to H.4's three reading limits, C582, C583 and C590; not repeated."
+
+[[claim]]
+id = "C999"
+fragment = "The energy differential is a level by analogy with a potential, neither a physical energy nor a Euclidean distance"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "glossary:energy-differential",
+  "glossary:level-offset",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 4. As C006 (Section 4)."
+
+[[claim]]
+id = "C1000"
+fragment = "A tension is a rate along the fitted reference surface, not the effect of changing a design variable"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L21",
+  "glossary:tension",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 4. As C796 (Section 4)."
+
+[[claim]]
+id = "C1001"
+fragment = "The conditioning choices define the question: a stable fitted direction answers it as the metrics were conditioned, and rescaling one metric changes which term is tangent"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L9",
+  "file:docs/user-guide/conditioning.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 5. Section 5's conditioning paragraph; A4 is the conditioning's form."
+
+[[claim]]
+id = "C1002"
+fragment = "The target fraction of designs above $V=1$, about a tenth, is a convention, checked at half and double"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/tuning.py::select_temperature",
+  "test:tests/test_case.py::test_sensitivity_and_refits_on_frozen_primary",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 5. As C962 (Section 5); D.5 prints the halved and doubled fractions."
+
+[[claim]]
+id = "C1003"
+fragment = "The three thresholds that read an exponent, $10^{-12}$, $10^{-9}$ and $10^{-3}$, are conventions: numerically zero is not mathematically zero"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 5. Section 5, thresholds and ties; G-2."
+
+[[claim]]
+id = "C1004"
+fragment = "The analyst chooses $K$; the package's checks inform the choice, none deciding alone"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "file:docs/user-guide/choosing-k.md",
+  "test:tests/test_paper.py::test_e2_places_every_line_of_the_queue_and_names_records_that_resolve",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 5. Section 5 and D.15's checks; no check decides K alone."
+
+[[claim]]
+id = "C1005"
+fragment = "The mean slack is not convex, so the several-term alternation is a heuristic that returns a local fit with no global guarantee"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L16",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 5. Section 5; L16 part i shows F is not convex; G-14."
+
+[[claim]]
+id = "C1006"
+fragment = "R1 does not imply that the finite-$\\tau$ minimizer is interior"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L3",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6's commentary on L3; G-2."
+
+[[claim]]
+id = "C1007"
+fragment = "The fit is convex, not claimed strictly: which of a nearly coincident pair of metrics carries the exponent is not read as a finding"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L4",
+  "file:paper/supporting_material.ipynb",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6 (L4) and D.4's pair rule (C988)."
+
+[[claim]]
+id = "C1008"
+fragment = "The Gaussian cumulant is a population identity, with no consistency claim"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L6",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6's commentary on L6; G-3, G-11."
+
+[[claim]]
+id = "C1009"
+fragment = "The noise ridge is the shift of the minimizer of the expected loss, not of one noisy fit, and does not say whether the elasticities are right"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L20",
+  "test:tests/test_noise_ridge.py::test_the_noisy_fit_no_longer_follows_the_ridge_at_large_tau_and_noise",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. As C462 (Section 6)."
+
+[[claim]]
+id = "C1010"
+fragment = "The elasticities and improvement factors are read for metrics with sizeable exponents, and are the fit's own only where $w_j>0$ at the fit temperature"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L7",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6's commentary on L7; G-2."
+
+[[claim]]
+id = "C1011"
+fragment = "The tension does not say that the fitted reference surface is the right one, nor give the tension at a seam"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L21",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6's commentary on L21."
+
+[[claim]]
+id = "C1012"
+fragment = "A maximizer of $V$ is weakly efficient; the converse is not claimed"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L11",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. As C927 (Section 6)."
+
+[[claim]]
+id = "C1013"
+fragment = "The bound of $K^N+1$ iterations is a pigeonhole count, not a practical stopping guarantee; stationarity of the stop, and convergence otherwise, are not claimed"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L15",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6's commentary on L15; D.14 records fits at the cap; G-14."
+
+[[claim]]
+id = "C1014"
+fragment = "The stable radius is a sufficient condition, not tight"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L13",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6 (L13, a sufficient condition); D.8's margin reading says not tight."
+
+[[claim]]
+id = "C1015"
+fragment = "The approximate certificate is for the returned run, not across restarts"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L14",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6's commentary on the approximate certificate; G-15."
+
+[[claim]]
+id = "C1016"
+fragment = "Certified is a status at the returned point, set by tolerances: whether a fit is stationary within tolerance is measured, not proved"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "test:tests/test_estimator.py::test_termination_record_for_k_terms",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6, the stopping declaration; G-16."
+
+[[claim]]
+id = "C1017"
+fragment = "On the case, which term a design within the band of a seam falls to is not a finding"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::margin_sentence",
+  "test:tests/test_paper.py::test_cr9_the_margin_and_the_radius_are_read_against_the_band_and_the_median_margin",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 6. Section 6's generated margin sentence (37 designs on the primary regime at K = 2)."
+
+[[claim]]
+id = "C1018"
+fragment = "The exponents' stability under resampling of the rows is not assessed at $K=1$; the movement of an exponent vector is read from $K=2$"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::temperature_variants_sentence",
+  "test:tests/test_paper.py::test_the_k1_exponents_stability_is_not_assessed_in_the_record_and_the_text_says_so",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 7. Queue line 9 (WP56, Section 7); D.5 prints the sentence (C627)."
+
+[[claim]]
+id = "C1019"
+fragment = "The position along the surface, the first principal direction of the near-frontier designs, is a reading of the sampled designs and not part of the model"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "gen:paper/figures/chart_level.py::leading_direction",
+  "test:tests/test_paper.py::test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 8. Figure 7's caption (Section 8) and D.16."
+
+[[claim]]
+id = "C1020"
+fragment = "Term 1's elasticity is read across the alternatives of the swapped parts, not along one continuous trade"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::elasticity_sentence",
+  "test:tests/test_paper.py::test_the_terms_and_elasticity_sentences_agree_with_the_tension_figure",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 8. Section 8's generated elasticity sentence."
+
+[[claim]]
+id = "C1021"
+fragment = "Propose, predict, check is a check on three proposals, which fail the depth-of-discharge feasibility condition; turning a predicted level into a bounded outcome can fail while the fit is certified"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::predict_reading",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+  "file:examples/adcs/data/v2/check_designs_cubesat.csv",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 8. As C404 (Section 8) and D.10's never-clipped rule (C990)."
+
+[[claim]]
+id = "C1022"
+fragment = "The collapse of the three objectives to one trade-off holds for this cost model; a cost that scales differently with the fleet size enters as a new table"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::fleet_refit_sentence",
+  "test:tests/test_paper.py::test_the_fleet_refit_sentence_reads_the_identity_and_both_fits",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 8. Section 8, Three stakeholders: a revised cost model enters as a new table."
+
+[[claim]]
+id = "C1023"
+fragment = "Machine verification shows that a formula follows from its hypotheses and that the code agrees, not that the hypotheses suit a table; the line of a proof step cannot say that a sentence means what the line computes"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "file:derivation/proofmap.py",
+  "file:notes/proof-conventions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Queue line 8 (WP56); Section 9's human validation and Appendix B's 'What the scripts establish'."
+
+[[claim]]
+id = "C1024"
+fragment = "One term is tangent at one place and conservative off it"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L7",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Section 9's limits; G-1."
+
+[[claim]]
+id = "C1025"
+fragment = "The exponents and elasticities describe how the sampled designs trade, not a causal exchange that changing a variable would reproduce; they depend on the conditioning, and a small sample determines them weakly"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "file:docs/user-guide/limitations.md",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Section 9's limits; G-3, G-12."
+
+[[claim]]
+id = "C1026"
+fragment = "Designed samples, such as grids, are not independent observations: the exponents describe the sample and are not estimates with a sampling error"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+  "file:docs/user-guide/limitations.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Section 9's limits; G-11."
+
+[[claim]]
+id = "C1027"
+fragment = "The certificate covers a local minimizer: with the cells held fixed for a sharp fit, a strict local minimizer where the first-order conditions hold exactly for a soft fit. That the surface describes the observed designs is read from the table's figures; that the fit holds for designs outside the table, or supports a decision, needs its own validation"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L14",
+  "lemma:L17",
+  "file:docs/user-guide/termination.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Queue line 3 (WP56, Three claims; C039 retired then, C040 kept in Section 9)."
+
+[[claim]]
+id = "C1028"
+fragment = "The case's hardware values are illustrative and its costs a lower bound on a full costing; the case has no schedule, no payload and a flat launch price"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "file:examples/adcs/case-model.md",
+  "file:paper/supporting_material.ipynb",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Section 9's limits; C.8 and the case's model page (C994)."
+
+[[claim]]
+id = "C1029"
+fragment = "Trade-offs the sampling never exercised cannot appear"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Section 9's limits; G-12, G-13."
+
+[[claim]]
+id = "C1030"
+fragment = "Novelty $V-1$ is a relative improvement, meaningful against the band $1/\\tau$: it says how far beyond the fitted reference surface a design lies, not whether anyone wants it; white space is an opportunity only where the trade space is log-convex around it, which the data cannot prove"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "M"
+backing = [
+  "lemma:L1",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Queue line 6 (WP56, Novelty and white space); Section 9's white-space clause; G-1."
+
+[[claim]]
+id = "C1031"
+fragment = "An answer far from the fitted reference surface is hard to justify, and configuration management needs the analysis rerun on empirical data"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "file:examples/adcs/case-model.md",
+  "test:tests/test_paper.py::test_e2_places_every_line_of_the_queue_and_names_records_that_resolve",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Section 9. Queue line 4 (WP56, Why a surface); the case's attributes come from simulation (C.2)."
+
+[[claim]]
+id = "C1032"
+fragment = "A requirement's price is a feature of the fitted model on this table, not a causal exchange"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "gen:paper/generate_results.py::requirements_at_the_frontier",
+  "file:paper/supporting_material.ipynb",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Appendix D.17. D.17's price paragraph."
+
+[[claim]]
+id = "C1033"
+fragment = "The conditioning is refitted on each noisy table, which L18 does not cover, and eight draws are few"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::injected_noise",
+  "test:tests/test_paper.py::test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Appendix D.18. D.18's reading."
+
+[[claim]]
+id = "C1034"
+fragment = "Results reproduce byte for byte only inside the image of record; elsewhere values agree within stated tolerances"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Appendix F. As C024 (F.2)."
+
+[[claim]]
+id = "C1035"
+fragment = "The register of prior art is not exhaustive: the bibliographic records of the cited works were verified, and what each work says was read only in part"
+file = "paper/supporting_material.ipynb"
+anchor = "E.2 Limitations"
+kind = "S"
+backing = [
+  "file:paper/supplement/reading-pass.md",
+  "test:tests/test_paper.py::test_reading_pass_rows_carry_what_the_paper_does_and_resolve_in_the_bibliography",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Appendix G. Queue line 1 (WP57a, Appendix G's scope sentence)."
+
+[[claim]]
+id = "C1036"
+fragment = "The outer loop of the search: outward in expectation"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "S"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-1 of the ledger (Section 10); the title in the ledger's words."
+
+[[claim]]
+id = "C1037"
+fragment = "A convergence result when the expected progress ceases"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "S"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-2 of the ledger (Section 10); the title in the ledger's words."
+
+[[claim]]
+id = "C1038"
+fragment = "Ascent may reach only the log-convex part of the Pareto boundary"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "S"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-3 of the ledger (Section 10); the title in the ledger's words."
+
+[[claim]]
+id = "C1039"
+fragment = "How a sampling strategy enters the nested loops"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "S"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-4 of the ledger (Section 10); the title in the ledger's words."
+
+[[claim]]
+id = "C1040"
+fragment = "Global convergence of the several-term alternation"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-5 of the ledger (Section 6); the title in the ledger's words."
+
+[[claim]]
+id = "C1041"
+fragment = "Statistical consistency under noise and refitting"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-6 of the ledger (Section 6); the title in the ledger's words."
+
+[[claim]]
+id = "C1042"
+fragment = "Identifiability of the active metrics under finite, biased observations"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-7 of the ledger (Section 6); the title in the ledger's words."
+
+[[claim]]
+id = "C1043"
+fragment = "When the fitted reference surface recovers the Pareto boundary"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-8 of the ledger (Section 6); the title in the ledger's words."
+
+[[claim]]
+id = "C1044"
+fragment = "The tie at the exact maximum for several terms"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-9 of the ledger (Section 5); the title in the ledger's words."
+
+[[claim]]
+id = "C1045"
+fragment = "A log-convex surface only ... sect-methods ... sect-discussion ... L10"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-10 of the ledger (Sections 5 and 9); the title in the ledger's words."
+
+[[claim]]
+id = "C1046"
+fragment = "A stale share in the SysML v2 model's header"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "S"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-12 of the ledger (the SysML v2 model); the title in the ledger's words."
+
+[[claim]]
+id = "C1047"
+fragment = "The decision's design-level pick under the coverage constants"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "S"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-13 of the ledger (Section 9); the title in the ledger's words."
+
+[[claim]]
+id = "C1048"
+fragment = "The decision's unused picks ... {ref}`D.19 <sub-d-19>`"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "S"
+backing = [
+  "file:work-packages/review/open-questions.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "OQ-14 of the ledger ({ref}`D.19 <sub-d-19>`); the title in the ledger's words."
+
+[[claim]]
+id = "C1049"
+fragment = "A search for successive trade-offs, each found after removing the last, as PCA extracts components: neither that it works nor that the trade-offs are orthogonal is claimed"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:notes/2026-11-07-posynomial-invariant-form-design.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Queue line 5 (WP56, Trade-offs beyond the first, and PCA)."
+
+[[claim]]
+id = "C1050"
+fragment = "Which kernel expansions keep the fit a geometric program in the exponents and the model a generalized geometric program in the metrics; nothing is built"
+file = "paper/supporting_material.ipynb"
+anchor = "E.3 Open questions"
+kind = "M"
+backing = [
+  "file:notes/directions/wp43-kernel-direction.md",
+  "test:tests/test_paper.py::test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57d (Appendix E, assumptions, limitations and open questions)"
+note = "Queue line 7 (WP56, The kernel direction)."

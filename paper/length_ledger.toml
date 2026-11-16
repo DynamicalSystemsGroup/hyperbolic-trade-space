@@ -51,6 +51,8 @@ total = 5900
 # And Appendices A and F (WP57a: the Job blocks cut).
 "Appendix A" = 0
 "Appendix F" = 0
+# And Appendix E (WP57d: assumptions, limitations and open questions).
+"Appendix E" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -2114,3 +2116,21 @@ section = "Appendix D"
 words_removed = 310
 no_longer_did = "the Job block (it judged the main text's summary and listed the appendix's contents); D.7's typed sentence (generated under D.17's second table); D.12's three paragraphs (the termination page's conditioning_ section); the narrating openers of D.13, D.15, D.18 and D.19; D.17's gloss of each column. D.1 and D.6 are paper/supplement/, D.2 and D.12's tables are D.8's. Added: the pair counted as one (D.4), the proposer's rule and the never-clipped rule (D.10), the ladder of the four limits (D.17), D.19's four rules and D.8's conditioning sentence. Typed prose 1,624 to 1,314"
 authority = "WP57c G2, G4 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"
+
+# WP57d: Appendices E and H (WP57d-review.md). No main-text edit; the supporting material is outside
+# the count, and the rows record what changed and why (typed prose by WP57-rounds/map_counts.py; H's
+# rendered prose as tests/test_paper.py counts it against its ceiling).
+
+[[raise]]
+date = "2026-11-16"
+section = "Appendix E"
+words_added = 1545
+job = "Appendix E becomes 'Assumptions, limitations and open questions': the assumptions generated from the derivation's ledger (two tables, their captions typed), the limitations one line each by the section they left with their record, the gaps table in four columns, and every open question of the review ledger with its record, the nine queued sentences of WP56, WP57a and WP57b placed among them. The Job block (92 words) is cut. Typed Markdown 92 to 1,637 words by map_counts.py, links and roles counted as written"
+reader = "the reader who asks what the paper assumes, what it does not establish and what is open, and wants each answer once with its record"
+
+[[cut]]
+date = "2026-11-16"
+section = "Appendix H"
+words_removed = 169
+no_longer_did = "the Job block (it said what the appendix carries and what the main text keeps); H.1's sentence describing the appendix as a follow-up experiment, not a benchmark (C591); H.5, how the formalism and the solvers differ, now notes/directions/wp35-horopca-formalism-and-solvers.md, cited in one line at the end of H.4 (G.1's HoroPCA entry carries the same contrast). Rendered prose 916 to 751"
+authority = "WP57d G3 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md; the driver's call 3)"
