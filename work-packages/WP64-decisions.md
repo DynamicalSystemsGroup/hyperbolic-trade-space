@@ -62,3 +62,15 @@ from the notebooks; the paper's tests in the software gate; the strict paper bui
 artefact; one version and tag space). Three paper designs (pointer branch; the paper owns its branch; tags only), two
 site compositions, three software designs. R-1 to R-5 met. His six questions go to him one at a time from here; the
 design stage WP65 is scoped from his answers.
+
+## His answers to the spike's questions (popups, one at a time; verbatim)
+
+**Q1, where the paper's sources live (15:14 EST):** "i think that once i have a stable release the paper can cite
+whichever release was active when that paper version was shipped. for now i don't have a stable release. i think going
+forward we may want paper and dev to be two different branches. that said, you can reference dev for now since my goal
+is to get dev merged into main for an 0.1 release as soon is as reasonable"
+
+The driver's reading: now, the paper builds from `dev` (its sources stay there) and nothing waits on a paper branch;
+the design keeps the step to a separate `paper` branch open for after a stable release, where each paper version pins
+the software release that was current when it shipped. The priority is `dev` merged into `main` for 0.1 as soon as
+reasonable.
