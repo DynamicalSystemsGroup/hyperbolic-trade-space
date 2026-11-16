@@ -133,3 +133,22 @@ so i am expecting to need to do that configuration and release work soon."
 
 The driver's reading: the build (WP66a to c) and integration (WP68) stages are the priority after the design lands;
 the target state is `dev` merged into `main` as 0.1 with `/paper/` the abstract page.
+
+## WP65 design delivered and accepted as proxy (15:47 EST)
+
+`work-packages/WP65-design/specification.md`, `build-plan.md` and `his-items.md` landed as 44c22443 (rebased onto the
+records head; nothing outside the folder; no attribution line). The specification cites eleven GitHub, PyPI and
+Zenodo rules it relies on, maps every element of his answers to its section, and places all 23 couplings (10
+bridged, 7 cut, 6 left). Three build units with disjoint file sets: WP66b the paper model (19 files), WP66c the
+composer, the abstract page and the docs' keys (11), WP66a the software model (20); landing order b, c, a.
+
+The driver's calls on the twelve adjustments the decided design forced: all accepted as the design's (quality control
+by pushes to `qc/**` branches since no dispatch exists before the first merge to `main`; PyPI as the last
+irreversible step with the clean-up refusing after it and the retry a re-run; the PyPI jobs inside `release.yml`
+since trusted publishing refuses a reusable workflow; the mode file's extra fields; the author from `myst.yml`; the
+root card's line per mode, its wording for his read; staging from a local artefact; the execution test's platform
+question settled at the first paper run; the `pypi` environment without a reviewer since the merge is the decision).
+A fourth drift (`docs/code-owners.md` asking `dev` for a pull request) is corrected in WP66a. Three questions remain
+his and wait for his return (posed one at a time): the review rule on `main` for a sole code owner; what a merge
+without a new version does; whether a paper tag's publication waits for his approval. WP66c and WP66b can start
+before those answers (WP66b with the paper-release environment as a one-line switch); WP66a waits on the second.
