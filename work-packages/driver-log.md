@@ -2634,3 +2634,4 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 - **His three design answers recorded; WP66a scoped, approved as proxy and dispatched (15:56).** Review rule with him as bypass; site-only redeploy on a merge without a new version; a code owner approves a paper tag's publication (the paper-release environment). WP66a lands last.
 - **Register repaired at 2e01b23c (15:58).** 39 rows re-anchored, two perovskite sentences narrowed to their backing with their rows restored (WP63-decisions.md); CI dispatched.
 - **Autonomous until the evening (15:59).** His words in release-candidate.md: the first release is the goal; WP66a to c, then WP67 and WP68 as far as his keyboard items allow. The wheat figure unit dispatched on `wp63-figure`.
+- **His grain, straw, biomass question (16:03).** Run in scratch: biomass exponent 0, raw ternary a segment; queued as a wheat-page addition after the level-set figure lands (WP63-decisions.md).

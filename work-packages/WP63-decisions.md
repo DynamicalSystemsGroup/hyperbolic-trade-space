@@ -84,3 +84,20 @@ collect", which the abstract read in the WP45 record backs, and C873 is re-ancho
 can return with a verification entry if he wants it (WP58). Register: 748 rows, no id added or reused. The driver's
 run: register 21 passed; fast suite 2,096 passed on the repair; the record, budget and table tests on the two
 narrowed sentences green; lint and format clean. CI dispatched.
+
+## His question on grain, straw and biomass (16:03 EST, verbatim)
+
+"i am a bit curious what the the 3-way ternary plot looks like for straw, grain and bio-mass, it seems like straw and
+grain both rise in biomass but then for fixed biomass they trade off. that seems like something there should be a way
+to detect and reason about" ... "i am curious what we would need to do with our tools to \"learn\" that shape from
+data" ... "seems like a nice intuitive example"
+
+The driver's run on the wheat table (scratch, not in the tree): with biomass as a third metric the fit at tau 8.3
+puts the exponents 0.446, 0.554, 0.000 on grain, straw and biomass; the contending set is grain and straw; the
+near-frontier association grain to straw -0.87, grain to biomass +0.65, straw to biomass -0.22. The raw-share ternary
+is a segment (biomass = grain + straw, so its share is one half on every row); the conditioned ternary bends that
+segment into a band with the exponent vector on the grain-straw edge. Queued as an addition to the wheat page (a
+derived metric's ternary beside the level sets; the level-set figure unit holds the page now, so it follows that
+landing), and the "learn the shape" question answered in chat: the level V is the size and the chart the shape, the
+derived metric's zero exponent is the detection, and a dependence screen among metrics at conditioning is the tool
+the package lacks and the docs could carry as a recipe.
