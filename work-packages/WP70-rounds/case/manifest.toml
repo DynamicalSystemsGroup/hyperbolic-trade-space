@@ -1,0 +1,17 @@
+# Source record of the WP70 case study (the Kitchenham-CSC project table). Record read 2026-11-16.
+# Open download, no form. `kitchenham.py --fetch` downloads it into case/data/ (git-ignored) and
+# checks size and hashes; the file is not committed (the WP70 scope commits no dataset), though the
+# licence of the record would allow a derived table with attribution.
+name = "kitchenham (Kitchenham, Pfleeger, McColl and Eagan 2005; uploaded to Zenodo by Tsunoda 2017)"
+doi = "10.5281/zenodo.268457"
+landing_page = "https://zenodo.org/records/268457"
+url = "https://zenodo.org/records/268457/files/kitchenham.arff?download=1"
+publisher = "Zenodo (SEACRAFT / PROMISE tera-PROMISE collection)"
+licence = "CC BY 4.0"
+licence_url = "https://creativecommons.org/licenses/by/4.0/"
+paper = "B. Kitchenham, S. L. Pfleeger, B. McColl and S. Eagan, An empirical study of maintenance and development estimation accuracy, Journal of Systems and Software 64(1), 57-77, 2002, doi:10.1016/S0164-1212(02)00021-3"
+attribution = "Kitchenham et al. (2002), project table uploaded by M. Tsunoda (2017), Zenodo, doi:10.5281/zenodo.268457"
+file = "kitchenham.arff"
+size = 7877
+md5 = "8945f95d3bbfc40df4687089767aae16"
+sha256 = "0832342b248418cca324cebe77d86d2f90ae223c1119af9360783bdbad0b2ac0"
