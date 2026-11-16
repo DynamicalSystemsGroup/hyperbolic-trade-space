@@ -96,13 +96,16 @@ package CubesatViews {
     // ------------------------------------------------------------------------------------------
     view stakeholders : GeneralView {
         doc /* "who cares" (WP27, the supervisor: "to trace all the back to "who cares" via this
-               tool"): the sponsor and the operator, the concerns each holds, the engineers'
-               requirements each concern is decomposed into, the verification cases that verify
-               them with the pointers to their evidence, and the sponsor's roll-ups. */
+               tool"): the sponsor, the manufacturer and the operator, the concerns each holds, the
+               engineers' requirements each concern is decomposed into, the verification cases that
+               verify them with the pointers to their evidence, and the roll-ups. */
         expose CubesatStakeholders::sponsor;
+        expose CubesatStakeholders::manufacturer;
         expose CubesatStakeholders::operator;
         expose CubesatStakeholders::lowCost;
         expose CubesatStakeholders::lowCost::*;
+        expose CubesatStakeholders::lowUnitCost;
+        expose CubesatStakeholders::lowUnitCost::*;
         expose CubesatStakeholders::longLife;
         expose CubesatStakeholders::longLife::*;
         expose CubesatStakeholders::pointingAndSlewing;

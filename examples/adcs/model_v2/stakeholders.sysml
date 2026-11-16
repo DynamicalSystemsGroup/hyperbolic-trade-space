@@ -4,13 +4,15 @@
  * so the model's bytes, and the hash the ledger records, do not move for it.
  *
  * Read top to bottom:
- *   1. who cares       two stakeholders: a sponsor (price) and an operator (performance in operation)
+ *   1. who cares       three stakeholders, one for each objective of the decision: a sponsor (price:
+ *                      the fleet cost and the launch budget), a manufacturer (the unit cost) and an
+ *                      operator (performance in operation: the coverage probability and the pointing)
  *   2. their needs     concerns framing the cubesat, each held by its stakeholder and decomposed into
  *                      the engineers' requirements of cubesat.sysml that serve it; the verdict of
  *                      each named configuration on each of those requirements, engine-checked
- *   3. roll-ups        the sponsor's measures derived from the engineers': the launch cost, the
- *                      unit cost and the fleet cost (in the model, WP30), and two ILLUSTRATIVE
- *                      roll-ups, cost to build and effective life
+ *   3. roll-ups        the sponsor's and the manufacturer's measures derived from the engineers':
+ *                      the launch cost, the unit cost and the fleet cost (in the model, WP30), and
+ *                      two ILLUSTRATIVE roll-ups, cost to build and effective life
  *   4. evidence        verification cases that verify the concerns' requirements and point at where
  *                      the evidence is logged and the environment that produced it
  *   5. coverage        the operator's measure of the fleet (WP56): the coverage probability, a
@@ -33,15 +35,20 @@ package CubesatStakeholders {
     // 1. WHO CARES
     // ==========================================================================================
     part def Sponsor {
-        doc /* Pays for the mission and answers for it. Cares about price: what the cubesat costs to
-               build and to launch (down), and how long it serves (up). Reads rolled-up measures,
-               not the engineers' detail. */
+        doc /* Pays for the mission and answers for it. Cares about price: what the fleet costs to
+               build and to launch, within the launch budget (down), and how long it serves (up).
+               Reads rolled-up measures, not the engineers' detail. */
+    }
+    part def Manufacturer {
+        doc /* Builds the satellites. Cares about the unit cost: the cost of one satellite, built and
+               launched, at the fleet size it is built in (down). */
     }
     part def Operator {
         doc /* Flies the cubesat. Cares about how it performs during its operational life: that it
                slews, settles and points as asked, and that its power and energy hold up. */
     }
     part sponsor : Sponsor;
+    part manufacturer : Manufacturer;
     part operator : Operator;
 
     // ==========================================================================================
@@ -52,6 +59,11 @@ package CubesatStakeholders {
         subject c : Cubesat;
         stakeholder s : Sponsor;
     }
+    concern def ManufacturingConcern {
+        doc /* A need of the manufacturer about the cost of building the satellites. */
+        subject c : Cubesat;
+        stakeholder s : Manufacturer;
+    }
     concern def PerformanceConcern {
         doc /* A need of the operator about the cubesat's performance during its operational life. */
         subject c : Cubesat;
@@ -59,13 +71,13 @@ package CubesatStakeholders {
     }
 
     concern lowCost : PriceConcern {
-        doc /* The cubesat costs little to build and to launch, alone and as a fleet. The launch
-               cost (the MoE on the total mass) is bounded by the launch budget requirement; the
-               unit cost and the fleet cost (the two traded cost metrics of the cost model, WP30)
-               by a requirement each, 350,000 USD a satellite and 6,000,000 USD a fleet; the cost to
-               build is an illustrative roll-up with no requirement on it (section 3).
-               The sponsor's full fleet budget is 8,000,000 USD. The two cost limits are on the
-               covered cost, a lower bound on a full costing: the bus block (structure, power, radios
+        doc /* The fleet costs little to build and to launch. The launch cost (the MoE on the total
+               mass) is bounded by the launch budget requirement; the fleet cost (a traded cost
+               metric of the cost model, WP30) by the fleet cost requirement, 6,000,000 USD a fleet;
+               the unit cost, the other traded cost metric, is the manufacturer's (lowUnitCost); the
+               cost to build is an illustrative roll-up with no requirement on it (section 3).
+               The sponsor's full fleet budget is 8,000,000 USD. The two cost limits, on the fleet
+               and on the unit, are on the covered cost, a lower bound on a full costing: the bus block (structure, power, radios
                and computer), the attitude-control parts, assembly, integration and test, and
                wholesale launch. The covered cost is held under 6,000,000 USD, and the remaining
                2,000,000 USD is the allowance for what the assessment does not scope, in this order:
@@ -77,8 +89,16 @@ package CubesatStakeholders {
         subject :>> c;
         stakeholder :>> s = sponsor;
         requirement launchBudget : LaunchBudgetRequirement;
-        requirement unitCost : UnitCostRequirement;
         requirement fleetCost : FleetCostRequirement;
+    }
+    concern lowUnitCost : ManufacturingConcern {
+        doc /* Each satellite costs little to build and to launch at the fleet size it is built in:
+               the unit cost (a traded cost metric of the cost model, WP30, the fleet cost over the
+               fleet size) is bounded by the unit cost requirement, 350,000 USD a satellite, on the
+               covered cost as lowCost states it. It falls as the fleet grows. */
+        subject :>> c;
+        stakeholder :>> s = manufacturer;
+        requirement unitCost : UnitCostRequirement;
     }
     concern longLife : PriceConcern {
         doc /* The cubesat serves long. The battery's cycle life falls as its eclipse depth of
@@ -116,9 +136,10 @@ package CubesatStakeholders {
     // The baseline configuration's verdict on each concern's requirements, as the model computes them
     // (the toolkit's engine checks each statement; they restate, per concern, the satisfy statements
     // of cubesat.sysml): the baseline fails the pointing-error requirement (0.0155 against 0.0085
-    // degree), so the operator's pointing concern is not met by it.
+    // degree), so the operator's pointing concern is not met by it, and, as a single satellite,
+    // the unit cost limit (461,360 against 350,000 USD), so the manufacturer's is not met either.
     satisfy lowCost.launchBudget by cubesatBaseline;
-    not satisfy lowCost.unitCost by cubesatBaseline;
+    not satisfy lowUnitCost.unitCost by cubesatBaseline;
     satisfy lowCost.fleetCost by cubesatBaseline;
     satisfy longLife.depthOfDischarge by cubesatBaseline;
     not satisfy pointingAndSlewing.pointingError by cubesatBaseline;
@@ -141,8 +162,8 @@ package CubesatStakeholders {
     // cost and two of the operator's requirements. The compact configuration fails the pointing
     // error (0.008533 against 0.008495 degree), the operator's pointing concern.
     // Each of the three, as a single satellite, fails the unit cost limit (461,360, 371,455 and
-    // 636,380 USD against 350,000); the limit is read at a design's own fleet size, and a fleet
-    // brings the baseline under it.
+    // 636,380 USD against 350,000), the manufacturer's low unit cost; the limit is read at a
+    // design's own fleet size, and a fleet brings the baseline under it.
     part agileMeasurement : SlewMeasurement {
         doc /* The agile configuration's slew integrated by adcs_sim.simulate_adcs (600 s horizon,
                0.5 s step, 30 degree slew), recorded as the baseline's is in cubesat.sysml, to
@@ -162,7 +183,7 @@ package CubesatStakeholders {
         :>> torqueSquaredIntegral = 5.839661452972206e-06;
     }
     not satisfy lowCost.launchBudget by cubesatAgile;
-    not satisfy lowCost.unitCost by cubesatAgile;
+    not satisfy lowUnitCost.unitCost by cubesatAgile;
     satisfy lowCost.fleetCost by cubesatAgile;
     satisfy longLife.depthOfDischarge by cubesatAgile {
         in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
@@ -194,7 +215,7 @@ package CubesatStakeholders {
         in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
     }
     satisfy lowCost.launchBudget by cubesatCompact;
-    not satisfy lowCost.unitCost by cubesatCompact;
+    not satisfy lowUnitCost.unitCost by cubesatCompact;
     satisfy lowCost.fleetCost by cubesatCompact;
     satisfy longLife.depthOfDischarge by cubesatCompact {
         in torqueSquaredIntegral = compactMeasurement.torqueSquaredIntegral;
@@ -286,8 +307,8 @@ package CubesatStakeholders {
                (v2-primary@12), the data of record. */
         objective {
             verify lowCost.launchBudget;
-            verify lowCost.unitCost;
             verify lowCost.fleetCost;
+            verify lowUnitCost.unitCost;
             verify pointingAndSlewing.pointingError;
             verify powerAndEnergy.power;
         }

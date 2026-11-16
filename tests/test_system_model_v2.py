@@ -716,7 +716,7 @@ REQUIREMENT_DEFS = {
     "PowerMarginRequirement", "EnergyBalanceRequirement",
     "UnitCostRequirement", "FleetCostRequirement",
 }  # fmt: skip
-STAKEHOLDER_PARTS = {"sponsor": "Sponsor", "operator": "Operator"}
+STAKEHOLDER_PARTS = {"sponsor": "Sponsor", "manufacturer": "Manufacturer", "operator": "Operator"}
 
 
 @pytest.fixture(scope="module")
@@ -751,9 +751,9 @@ def test_stakeholders_file_loads_strictly_and_its_names_resolve(who_cares):
     """WP27 R-1: the three files load as one model strictly; the stakeholders, the concerns, the
     verification cases, the roll-ups and the stakeholder view are found; a misspelt name fails."""
     assert who_cares.ok
-    for name in ("sponsor", "operator", "lowCost", "longLife", "pointingAndSlewing",
-                 "powerAndEnergy", "configurationEvidence", "slewEvidence", "CostToBuild",
-                 "EffectiveLife", "EvidenceCase"):  # fmt: skip
+    for name in ("sponsor", "manufacturer", "operator", "lowCost", "lowUnitCost", "longLife",
+                 "pointingAndSlewing", "powerAndEnergy", "configurationEvidence", "slewEvidence",
+                 "CostToBuild", "EffectiveLife", "EvidenceCase"):  # fmt: skip
         assert who_cares.find(f"{S}::{name}") is not None, name
     assert who_cares.find("CubesatViews::stakeholders") is not None
     broken = STAKEHOLDERS.read_text(encoding="utf-8").replace(
@@ -764,13 +764,19 @@ def test_stakeholders_file_loads_strictly_and_its_names_resolve(who_cares):
 
 
 def test_the_trace_from_who_cares_to_every_requirement_is_complete(who_cares):
-    """WP27 R-2: every concern is held by a stakeholder (bound to the sponsor or the operator) and
-    is decomposed into at least one requirement; every one of the model's thirteen requirement defs
-    serves at least one concern (so every traded metric's requirement reaches one); and every
+    """WP27 R-2: every concern is held by a stakeholder (bound to the sponsor, the manufacturer or
+    the operator; OQ-11: one stakeholder per objective of the decision, the unit cost the
+    manufacturer's) and is decomposed into at least one requirement; every one of the model's
+    thirteen requirement defs serves at least one concern (so every traded metric's requirement
+    reaches one); and every
     requirement a concern holds is verified by a verification case with evidence pointers."""
     stk = STAKEHOLDERS.read_text(encoding="utf-8")
     concerns = _concerns(who_cares)
-    assert set(concerns) == {"lowCost", "longLife", "pointingAndSlewing", "powerAndEnergy"}
+    assert set(concerns) == {
+        "lowCost", "lowUnitCost", "longLife", "pointingAndSlewing", "powerAndEnergy"
+    }  # fmt: skip
+    assert [r for r, _ in concerns["lowUnitCost"]] == ["unitCost"]
+    assert "unitCost" not in [r for r, _ in concerns["lowCost"]]
     holder = r"concern\s+(\w+)\s*:\s*\w+\s*\{.*?stakeholder\s*:>>\s*s\s*=\s*(\w+);"
     held_by = dict(re.findall(holder, stk, flags=re.S))
     assert set(held_by) == set(concerns)
@@ -832,8 +838,8 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
 
 CONTRAST_NEGATED = {  # WP27-decisions.md (16:20): the contrasts' verdicts, as the engine finds them
     "not satisfy lowCost::launchBudget by cubesatAgile",
-    "not satisfy lowCost::unitCost by cubesatAgile",
-    "not satisfy lowCost::unitCost by cubesatCompact",
+    "not satisfy lowUnitCost::unitCost by cubesatAgile",
+    "not satisfy lowUnitCost::unitCost by cubesatCompact",
     "not satisfy pointingAndSlewing::controlEffort by cubesatAgile",
     "not satisfy powerAndEnergy::peakSlewPower by cubesatAgile",
     "not satisfy pointingAndSlewing::pointingError by cubesatCompact",
@@ -857,7 +863,7 @@ def test_the_baselines_verdict_on_each_concern_is_checked_by_the_engine(who_care
             "not satisfy baselinePointingError by cubesatBaseline",
             "not satisfy pointingAndSlewing::pointingError by cubesatBaseline",
             "not satisfy baselineUnitCost by cubesatBaseline",
-            "not satisfy lowCost::unitCost by cubesatBaseline",
+            "not satisfy lowUnitCost::unitCost by cubesatBaseline",
         }
         | CONTRAST_NEGATED
     )
