@@ -198,3 +198,18 @@ seven, no glossary entry; older than WP56 and spread over the generators, so a v
 generated datasets sentence says "3,000" twice and "thirteen attributes" a third time; Figures 5 and 8 keep the
 first unit's long captions (230 and 194 words). D.19's rule paragraph names the old rules until WP57c lands, its
 first commit.
+
+## The supervisor, on OQ-11 (01:02 EST)
+
+Asked, before he went to bed, whether the manufacturer (the decision's holder of the unit cost) should be added to the
+SysML v2 model, whose `stakeholders.sysml` names only the sponsor and the operator. His choice, verbatim from the
+popup: "Add the manufacturer to the model". A small driver unit adds the stakeholder with the unit cost as its
+measure of effectiveness, the tests following; the paper's wording stands; OQ-11 closes with the commit.
+
+## The supervisor, on the second regime's name (01:04 EST)
+
+Asked which of the two names in Sections 7 and 8 ("stock regime", nine times; "baseline regime", seven) goes into
+the glossary and everywhere else. His choice, verbatim from the popup: "baseline regime". A driver unit renames
+("stock" goes from the paper, the generators, the captions and the tests; a glossary entry `baseline regime`) after
+WP57c lands, since WP57c holds the notebooks; it runs with the OQ-11 model edit's landing or just after.
+
