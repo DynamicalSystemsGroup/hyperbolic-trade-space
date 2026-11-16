@@ -90,6 +90,7 @@ One entry per item: the section it left, what is open, and its record. WP57 deci
   cost to a manufacturer. Adding a `Manufacturer` part and a concern for the unit cost would bring the model in line;
   it is model detail beyond the coverage attribute, a WP56 non-goal.
 - **Record:** `WP56-review.md`, R-1 row 15.
+- **Closed (2026-11-16, his choice "Add the manufacturer to the model", `WP56-decisions.md`):** `stakeholders.sysml` names three stakeholders, one per objective of the decision; the `Manufacturer` part holds the unit-cost requirement through the `lowUnitCost` concern, and the sponsor's `lowCost` keeps the launch budget and the fleet cost (commit 1033910).
 
 ## OQ-12. A stale share in the SysML v2 model's header
 
