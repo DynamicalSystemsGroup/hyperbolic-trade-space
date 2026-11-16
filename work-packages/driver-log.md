@@ -2630,3 +2630,4 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 - **WP65 design landed at 44c22443 (15:47).** Specification, build plan and his items accepted as proxy (WP64-decisions.md); the twelve adjustments accepted; three questions held for his return.
 - **WP66b and WP66c scoped, approved as proxy and dispatched in parallel (15:48).** Disjoint file sets from the build plan; WP66a waits on his second question.
 - **His direction on the wheat figure (15:51).** Labeled level sets of V in place of the single V = 1 line (WP63-decisions.md, verbatim). A redraw unit through the figure loop, dispatched after the register repair lands.
+- **His follow-on on the plotting method (15:51).** If the level sets work well: the method itself and every use of it (the paper included) follow in a second unit (WP63-decisions.md).

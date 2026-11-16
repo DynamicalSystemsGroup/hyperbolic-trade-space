@@ -60,3 +60,11 @@ V = 1 among them, so the picture is the fitted surface's field and not one line;
 figure loop run on the redraw (cold read, the sentence test, ink as data, legibility, shows and does not show); the
 caption and alt text follow; a small unit after the register repair lands, since both touch the wheat page's
 register rows.
+
+**His follow-on (15:51 EST, verbatim):** "if this works well i suspect you should update the plotting method and also
+the use of the same plot method in other places such as the paper"
+
+The driver's reading: two steps. First the wheat figure redrawn with level sets through the figure loop, as a
+`levels` option of `plot_log_plane` that leaves every existing call unchanged; if it works well on his read, a second
+unit makes the level sets the method's drawing and updates every use of the method (the paper's notebooks, the docs'
+pages, the examples), each use re-judged by the figure loop, the register and the paper tests following.
