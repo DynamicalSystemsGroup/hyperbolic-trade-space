@@ -1,0 +1,8 @@
+schema = 1
+mode = "abstract"   # abstract | working | submitted | revision
+pin = ""            # the paper tag served; empty in abstract mode
+venue = ""          # slug; submitted and revision only
+round = 0           # revision only, from 1
+date = ""           # YYYY-MM-DD of the pin
+doi = ""            # 10.5281/zenodo.<n>, minted for the pin's release
+sha256 = ""         # SHA-256 of the pin's paper-html.tar.gz

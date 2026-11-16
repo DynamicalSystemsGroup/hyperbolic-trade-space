@@ -8,6 +8,7 @@ The rule: notes/vocabulary-review.md.
     uv run python scripts/check_vocabulary.py --baseline scripts/vocabulary_baseline.toml
     uv run python scripts/check_vocabulary.py --emit-baseline # TOML of the current violations
     uv run python scripts/check_vocabulary.py --root DIR      # check another tree (tests use this)
+    uv run python scripts/check_vocabulary.py --surface software   # or paper, or all (the default)
 
 Fails on four kinds of violation:
 
@@ -44,6 +45,10 @@ A baseline file (TOML, ``[[violation]]`` with ``kind``, ``file``, ``phrase``, ``
 it. On the repository itself (no ``--root``) the baseline defaults to
 ``scripts/vocabulary_baseline.toml``; ``--no-baseline`` reads none. Baseline entries no longer
 violated are reported as stale, not failed.
+
+``--surface`` splits the gate, not the glossary: a violation in a file under ``paper/`` belongs to
+the ``paper`` surface (checked in the paper's workflow), every other one, a dead glossary entry
+included, to ``software``; ``all`` is both. Stale baseline rows are reported within the surface.
 """
 
 from __future__ import annotations
@@ -63,6 +68,17 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_BASELINE = ROOT / "scripts" / "vocabulary_baseline.toml"
+SURFACES = ("software", "paper", "all")
+
+
+def surface_of(file: str) -> str:
+    """The surface a violation's file belongs to.
+
+    >>> surface_of("paper/paper.ipynb"), surface_of("docs/index.md"), surface_of("glossary.yaml")
+    ('paper', 'software', 'software')
+    """
+    return "paper" if file.startswith("paper/") else "software"
+
 
 STOP = set(
     """a an the this that these those each every any no some all both either neither one two three
@@ -522,10 +538,21 @@ def main(argv=None) -> int:
     ap.add_argument(
         "--emit-baseline", action="store_true", help="print the baseline TOML and exit 0"
     )
+    ap.add_argument(
+        "--surface",
+        choices=SURFACES,
+        default="all",
+        help="software (everything outside paper/), paper (files under paper/), or all",
+    )
     args = ap.parse_args(argv)
     root = Path(args.root)
     res = analyse(root)
     vs = res["violations"]
+
+    def in_surface(file: str) -> bool:
+        return args.surface == "all" or surface_of(file) == args.surface
+
+    vs = [v for v in vs if in_surface(v.file)]
     if args.emit_baseline:
         print(emit_baseline(vs))
         return 0
@@ -535,7 +562,7 @@ def main(argv=None) -> int:
     base = load_baseline(Path(baseline)) if baseline else {}
     new = [v for v in vs if v.key not in base]
     known = [v for v in vs if v.key in base]
-    stale = [k for k in base if k not in {v.key for v in vs}]
+    stale = [k for k in base if in_surface(k[1]) and k not in {v.key for v in vs}]
     for v in new:
         print(f"FAIL {v.kind}: {v.file} [{v.where}] {v.phrase!r}  ...{v.context}")
     if known:
@@ -559,7 +586,7 @@ def main(argv=None) -> int:
         print("\ndensest paragraphs")
         for dens, _t, _w, p in res["dense_paras"][:15]:
             print(f"{dens:6.1f}  {p.file} [{p.section}] {' '.join(p.text.split())[:140]}")
-    print(f"{len(new)} new violation(s), {len(known)} known")
+    print(f"{len(new)} new violation(s), {len(known)} known (surface {args.surface})")
     return 1 if new else 0
 
 

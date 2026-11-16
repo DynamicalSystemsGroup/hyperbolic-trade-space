@@ -6,6 +6,9 @@ from pathlib import Path
 
 import pytest
 
+# The paper's tests run in the paper's workflow, not in the software's gate (tests/conftest.py).
+pytestmark = pytest.mark.paper
+
 ROOT = Path(__file__).resolve().parent.parent
 DOCKERFILE = (ROOT / "Dockerfile").read_text(encoding="utf-8")
 RECORD = ROOT / "paper" / "container" / "RECORD.md"

@@ -184,3 +184,46 @@ def test_every_prose_file_of_the_repository_is_inventoried():
     expected |= {p.relative_to(ROOT).as_posix() for p in ROOT.glob("docs/user-guide/*.md")}
     expected |= {"site/index.html", "site/history.html"}
     assert expected <= files
+
+
+def _paper_tree(tree):
+    """The fixture tree with a paper notebook beside the README and the docs page."""
+    (tree / "paper").mkdir()
+    text = "# The paper\n\nThe fit converged. It is robust.\n"
+    cell = {"cell_type": "markdown", "source": [text]}
+    nb = {"cells": [cell], "metadata": {}, "nbformat": 4, "nbformat_minor": 5}
+    (tree / "paper" / "paper.ipynb").write_text(json.dumps(nb), encoding="utf-8")
+    return tree
+
+
+def test_views_filter_limits_the_report_and_the_compare(tree, tmp_path_factory, capsys):
+    root = _paper_tree(tree)
+    whole = cr.report(root)
+    assert {v["kind"] for v in whole["surfaces"].values()} >= {"paper", "readme", "docs"}
+    only = cr.report(root, frozenset({"paper", "appendix"}))
+    assert only["surfaces"] and {v["kind"] for v in only["surfaces"].values()} == {"paper"}
+    assert set(only["documents"]) == {"paper/paper.ipynb"}
+    base = tmp_path_factory.mktemp("base") / "base.json"
+    assert cr.main(["--root", str(root), "--write-baseline", str(base)]) == 0
+    # a rise outside the views is not compared; a rise inside them is
+    (root / "README.md").write_text(PLANTED + PATHS + "\nIt is very very robust.\n", "utf-8")
+    views = ["--views", "paper,appendix"]
+    assert cr.main(["--root", str(root), "--compare", str(base), "--strict", *views]) == 0
+    assert cr.main(["--root", str(root), "--compare", str(base), "--strict"]) == 1
+    nb = json.loads((root / "paper" / "paper.ipynb").read_text(encoding="utf-8"))
+    nb["cells"][0]["source"] = ["# The paper\n\nThe fit is very robust and very crucial.\n"]
+    (root / "paper" / "paper.ipynb").write_text(json.dumps(nb), encoding="utf-8")
+    capsys.readouterr()
+    assert cr.main(["--root", str(root), "--compare", str(base), "--strict", *views]) == 1
+    out = capsys.readouterr().out
+    assert "paper/paper.ipynb: intensifiers" in out and "README.md" not in out
+    with pytest.raises(SystemExit) as exc:
+        cr.main(["--root", str(root), "--views", "nope"])
+    assert exc.value.code == 2
+
+
+@pytest.mark.paper
+def test_paper_residual_counts_do_not_rise(capsys):
+    code = cr.main(["--compare", str(BASELINE), "--strict", "--views", "paper,appendix"])
+    out = capsys.readouterr().out
+    assert code == 0, out[out.find("against the baseline") :]

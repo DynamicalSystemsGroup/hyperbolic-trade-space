@@ -29,6 +29,9 @@ import pytest
 import yaml
 from _env import ENV_VAR, REFERENCE_FILE, VALUES_FILE, exact_only, listed
 
+# The paper's tests run in the paper's workflow, not in the software's gate (tests/conftest.py).
+pytestmark = pytest.mark.paper
+
 # GENERAL RULE (the driver's, WP10): every test that compares a committed notebook output with a
 # re-run goes through the environment of record (tests/_env.py, paper/environment_values.toml):
 # exact only there (``_current``), and elsewhere the reproducible content, which is the text with

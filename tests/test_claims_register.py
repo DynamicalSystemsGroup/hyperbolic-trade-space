@@ -3,7 +3,9 @@
 ``claims_register.toml`` at the repository root has one row per claim a reader can rely on. These
 tests keep it from going stale silently: a sentence that is edited no longer matches its fragment
 and fails here; a backing that is renamed or removed fails here. The checker is a function
-(``check_register``) so that it is itself tested against deliberately broken registers.
+(``check_register``) so that it is itself tested against deliberately broken registers. The register
+is checked by surface: the rows whose ``file`` is under ``paper/`` in the paper's workflow (marked
+``paper``), the rest in the software's gate.
 """
 
 import ast
@@ -190,10 +192,33 @@ def check_register(rows, root=ROOT):
     return problems
 
 
-def test_the_register_holds():
-    rows = load_register()
-    assert rows, "the register is empty"
+def is_paper_row(row) -> bool:
+    """A row of the paper's surface: its sentence is in a file under ``paper/``."""
+    return str(row.get("file", "")).startswith("paper/")
+
+
+def test_the_register_holds_for_the_software_surfaces():
+    rows = [r for r in load_register() if not is_paper_row(r)]
+    assert rows, "the register has no row outside paper/"
     assert check_register(rows) == []
+
+
+@pytest.mark.paper
+def test_the_register_holds_for_the_paper():
+    rows = [r for r in load_register() if is_paper_row(r)]
+    assert rows, "the register has no row under paper/"
+    assert check_register(rows) == []
+
+
+def test_every_row_is_in_exactly_one_surface():
+    """The two filters partition the register, and an id is used once across both."""
+    rows = load_register()
+    paper = [r for r in rows if is_paper_row(r)]
+    software = [r for r in rows if not is_paper_row(r)]
+    assert len(paper) + len(software) == len(rows)
+    assert not {id(r) for r in paper} & {id(r) for r in software}
+    ids = [r.get("id") for r in rows]
+    assert len(ids) == len(set(ids)), "an id is used twice"
 
 
 def test_the_notes_table_rows_are_migrated():

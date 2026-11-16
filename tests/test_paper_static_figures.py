@@ -6,6 +6,9 @@ from pathlib import Path
 
 import pytest
 
+# The paper's tests run in the paper's workflow, not in the software's gate (tests/conftest.py).
+pytestmark = pytest.mark.paper
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 

@@ -217,16 +217,54 @@ def test_report_has_density_and_once_used(tmp_path, capsys):
 BASELINE = ROOT / "scripts" / "vocabulary_baseline.toml"
 
 
-def test_real_repo_has_no_new_vocabulary_violation(capsys):
-    """Against the committed baseline: passes now, fails on a new violation."""
-    code = cv.main(["--root", str(ROOT), "--baseline", str(BASELINE)])
+def test_real_repo_has_no_new_vocabulary_violation_on_the_software_surfaces(capsys):
+    """Against the committed baseline: passes now, fails on a new violation outside paper/."""
+    code = cv.main(["--root", str(ROOT), "--baseline", str(BASELINE), "--surface", "software"])
     out = capsys.readouterr().out
     assert code == 0, out
     base = cv.load_baseline(BASELINE)
     assert all(r["owner"] and r["reason"] for r in base.values())
 
 
+@pytest.mark.paper
+def test_real_repo_has_no_new_vocabulary_violation_in_the_paper(capsys):
+    code = cv.main(["--root", str(ROOT), "--baseline", str(BASELINE), "--surface", "paper"])
+    assert code == 0, capsys.readouterr().out
+
+
+def test_surface_filter_selects_by_path(tmp_path, capsys):
+    """A violation under paper/ is the paper's; one in the docs and a dead glossary entry are the
+    software's (the glossary belongs to the software side)."""
+    paper = ["## M\n\nA **tile** at the exchange rate, the **elasticity**.\n"]
+    root = make_tree(tmp_path, paper=paper, docs={"a.md": "# A\n\nThe working temperature.\n"})
+    found = {(v.kind, v.file, v.phrase) for v in cv.analyse(root)["violations"]}
+    assert ("avoid", "paper/paper.ipynb", "exchange rate") in found
+    assert ("stem", "docs/a.md", "working temperature") in found
+    assert ("dead-entry", "glossary.yaml", "fit-temperature") in found
+
+    def failures(surface):
+        code = run(root, "--no-baseline", "--surface", surface)
+        lines = [ln for ln in capsys.readouterr().out.splitlines() if ln.startswith("FAIL")]
+        return code, " ".join(lines)
+
+    code, out = failures("paper")
+    assert code == 1 and "exchange rate" in out
+    assert "working temperature" not in out and "fit-temperature" not in out
+    code, out = failures("software")
+    assert code == 1 and "working temperature" in out and "fit-temperature" in out
+    assert "exchange rate" not in out
+    code, out = failures("all")
+    assert all(p in out for p in ("exchange rate", "working temperature", "fit-temperature"))
+    (tmp_path / "only-paper").mkdir()
+    only_paper = ["## M\n\nA **tile**, the **elasticity**, the **fit temperature**; exchange rate."]
+    root2 = make_tree(tmp_path / "only-paper", paper=only_paper)
+    assert run(root2, "--no-baseline", "--surface", "software") == 0  # the paper's debt only
+    assert run(root2, "--no-baseline", "--surface", "paper") == 1
+
+
+@pytest.mark.paper
 def test_the_documented_bare_command_exits_zero_on_the_repository(capsys):
-    """`CLAUDE.md` gives the bare command: it reads the committed baseline by default."""
+    """`CLAUDE.md` gives the bare command: it reads the committed baseline by default and covers
+    both surfaces, so it runs with the paper's tests."""
     assert cv.main([]) == 0, capsys.readouterr().out
     assert cv.main(["--no-baseline"]) == 1

@@ -28,6 +28,10 @@ glossary or notation link) is in that paragraph. The project's own terms are che
     uv run python scripts/check_residuals.py --compare ... --strict   # exit 1 if a count rose
     uv run python scripts/check_residuals.py --write-baseline scripts/residuals_baseline.json
     uv run python scripts/check_residuals.py --root DIR         # another tree (tests use this)
+    uv run python scripts/check_residuals.py --views paper,appendix --compare ... --strict
+
+``--views`` limits the report and the comparison to the surfaces of the named views
+(``scripts/prose_surfaces.py``, ``VIEWS``): the paper's workflow compares ``paper,appendix``.
 """
 
 from __future__ import annotations
@@ -341,8 +345,10 @@ def document_report(blocks: list[tuple[str, ps.Block]], glossary: dict[str, list
 # ------------------------------------------------------------------ the report
 
 
-def report(root: Path = ROOT) -> dict:
+def report(root: Path = ROOT, views: frozenset[str] | None = None) -> dict:
     surfaces = ps.collect(root)
+    if views is not None:
+        surfaces = [s for s in surfaces if s.kind in views]
     glossary = _glossary_phrases(root)
     rep_surfaces = {s.id: {"file": s.file, "kind": s.kind, **surface_counts(s)} for s in surfaces}
     by_file: dict[str, list[tuple[str, ps.Block]]] = {}
@@ -389,6 +395,25 @@ def file_totals(rep: dict) -> dict:
         t["acronyms_undefined_at_first_use"] = d["acronyms_undefined_at_first_use"]
         t["terms_undefined_at_first_use"] = d["terms_undefined_at_first_use"]
     return out
+
+
+def restrict(rep: dict, views: frozenset[str]) -> dict:
+    """A report (or a baseline) cut to the surfaces of ``views`` and the documents they hold."""
+    surfaces = {k: v for k, v in rep["surfaces"].items() if v["kind"] in views}
+    files = {v["file"] for v in surfaces.values()}
+    documents = {f: d for f, d in rep["documents"].items() if f in files}
+    return {**rep, "surfaces": surfaces, "documents": documents}
+
+
+def parse_views(text: str) -> frozenset[str]:
+    """``paper,appendix`` as a set of view names; an unknown name is a usage error."""
+    names = frozenset(v.strip() for v in text.split(",") if v.strip())
+    unknown = sorted(names - ps.VIEWS.keys())
+    if not names or unknown:
+        raise argparse.ArgumentTypeError(
+            f"unknown view(s) {unknown or text!r}; the views are {', '.join(ps.VIEWS)}"
+        )
+    return names
 
 
 RISE_KEYS = (*COUNT_KEYS, "acronyms_undefined_at_first_use", "terms_undefined_at_first_use")
@@ -473,9 +498,16 @@ def main(argv=None) -> int:
     ap.add_argument("--compare", help="baseline JSON; print the counts that rose")
     ap.add_argument("--strict", action="store_true", help="with --compare, exit 1 if a count rose")
     ap.add_argument("--write-baseline", help="write the report, with the head, to this JSON file")
+    ap.add_argument(
+        "--views",
+        type=parse_views,
+        help="comma-separated views (paper, appendix, docs, ...); report and compare only these",
+    )
     args = ap.parse_args(argv)
+    if args.views is not None and args.write_baseline:
+        ap.error("--write-baseline writes the whole report; it takes no --views")
     root = Path(args.root)
-    rep = report(root)
+    rep = report(root, args.views)
     if args.write_baseline:
         head = _head(root)
         note = f"taken at the dev head {head}; taken again when the pass starts"
@@ -489,6 +521,8 @@ def main(argv=None) -> int:
         print_table(rep)
     if args.compare:
         base = json.loads(Path(args.compare).read_text(encoding="utf-8"))
+        if args.views is not None:
+            base = restrict(base, args.views)
         rises = compare(rep, base)
         print(f"\nagainst the baseline (head {base.get('head', '?')}): {len(rises)} count(s) rose")
         for r in rises:

@@ -1,0 +1,223 @@
+name: Paper
+
+# The paper's release control (specification 2.2). A push to `paper` or `qc/paper/**` builds the
+# paper and runs every paper test; a `paper-*` tag, pushed by a person, also publishes the built
+# paper and its key manifest as a GitHub release (Zenodo archives it). A dispatch builds and tests
+# the dispatched ref and publishes nothing. This workflow never deploys Pages and never writes to a
+# branch.
+on:
+  push:
+    branches: [paper, "qc/paper/**"]
+    tags: ["paper-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paper-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type == 'branch' }}
+
+env:
+  HTS_PAPER_TESTS: "1"
+  PAPER_EXECUTE: "1"
+  PAPER_BUILD: "1"
+  REQUIRE_OPENSYSML: "1"
+  BASE_URL: /hyperbolic-trade-space/paper
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+      - name: No AI attribution lines in commit messages (project rule)
+        run: |
+          hits=$(git log --format=%B | grep -ciE '\bco-authored-by\b|\bgenerated with\b|🤖' || true)
+          if [ "$hits" != "0" ]; then
+            echo "::error::$hits commit message(s) carry an AI attribution line; the project forbids them."
+            git log --format='%h %s%n%b' | grep -iE -B2 '\bco-authored-by\b|\bgenerated with\b|🤖' || true
+            exit 1
+          fi
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: The tag is on paper and the mode file names it
+        if: github.ref_type == 'tag'
+        run: |
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/paper
+          uv run --no-project python scripts/paper_mode.py check --stage tag --tag "$GITHUB_REF_NAME"
+      - name: The mode file is consistent
+        if: github.ref_type == 'branch'
+        run: uv run --no-project python scripts/paper_mode.py check --stage tag
+      - name: Check the lockfile is current
+        run: uv lock --check
+      - name: Install (locked)
+        run: uv sync --locked
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: "22"
+      - name: Locked opensysml version
+        id: opensysml
+        run: |
+          v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+      - name: Cache the opensysml runtime (downloaded on first use)
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.opensysml
+          key: opensysml-${{ runner.os }}-${{ steps.opensysml.outputs.version }}
+      - name: Restore the pinned sysml-toolkit
+        id: toolkit-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/hyperbolic-trade-space
+          key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
+      - name: Provision the pinned sysml-toolkit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch; then exit 0; fi
+          read -r repo tag asset < <(PYTHONPATH=examples/adcs uv run python -m experiments.toolkit pin)
+          gh release download "$tag" --repo "$repo" --pattern "$asset" --dir "$RUNNER_TEMP"
+          PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch --archive "$RUNNER_TEMP/$asset"
+      - name: Save the pinned sysml-toolkit
+        if: steps.toolkit-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/hyperbolic-trade-space
+          key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
+      - name: The generated pages the paper's build reads
+        run: uv run python scripts/build_generated.py
+      - name: The paper's tests
+        run: uv run pytest -q -n auto --dist loadgroup -m paper
+      - name: Build the paper
+        working-directory: paper
+        run: uv run myst build --html
+      - name: The key manifest equals the notebooks' labels and the built paper's identifiers
+        run: uv run python paper/build_keys.py --check --xref paper/_build/html/myst.xref.json
+      - name: Point the repository links at the tag
+        if: github.ref_type == 'tag'
+        run: uv run python paper/pin_links.py --ref "$GITHUB_REF_NAME" paper/_build/html
+      - name: Pack the release assets
+        run: |
+          tar -czf paper-html.tar.gz -C paper/_build/html .
+          cp paper/paper-keys.json .
+          {
+            echo '### The paper-release artefact'
+            echo '```'
+            sha256sum paper-html.tar.gz paper-keys.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: paper-release
+          path: |
+            paper-html.tar.gz
+            paper-keys.json
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    # His answer to the design's third question keeps it: a code owner approves a paper tag's publication.
+    environment: paper-release
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: paper-release
+      - name: Release notes
+        run: |
+          uv run --no-project python scripts/paper_mode.py show --json > mode.json
+          software=$(git describe --tags --match 'v*' --abbrev=12 2>/dev/null || git rev-parse HEAD)
+          lock=$(sha256sum uv.lock | cut -d' ' -f1)
+          {
+            echo "Paper release $TAG"
+            echo
+            echo "- mode: $(jq -r .mode mode.json)"
+            echo "- venue: $(jq -r '.venue // ""' mode.json)"
+            echo "- round: $(jq -r .round mode.json)"
+            echo "- date: $(jq -r .date mode.json)"
+            echo "- built with the software at: $software"
+            echo "- uv.lock SHA-256: $lock"
+            section=$(awk -v tag="$TAG" '/^## /{p = (index($0, "## " tag " ") == 1)} p' paper/CHANGES.md)
+            if [ -n "$section" ]; then
+              echo
+              echo "$section"
+            fi
+          } > notes.md
+          cat notes.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Create the draft release
+        run: |
+          gh release create "$TAG" paper-html.tar.gz paper-keys.json --draft --verify-tag \
+            --title "$TAG" --notes-file notes.md --latest=false
+      - name: Check both assets, then publish
+        run: |
+          for f in paper-html.tar.gz paper-keys.json; do
+            want=$(stat -c %s "$f")
+            got=$(gh release view "$TAG" --json assets --jq ".assets[] | select(.name == \"$f\") | .size")
+            if [ "$got" != "$want" ]; then
+              echo "::error::the release holds $f with size '${got}', uploaded $want"
+              exit 1
+            fi
+          done
+          gh release edit "$TAG" --draft=false
+
+  on-failure:
+    needs: [build, release]
+    if: always() && (failure() || cancelled()) && github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      issues: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Name the failed jobs and steps
+        run: |
+          gh run view "$GITHUB_RUN_ID" --json jobs --jq '.jobs[]
+            | select(.conclusion == "failure" or .conclusion == "cancelled")
+            | "Failed: job `\(.name)`, step `\(([.steps[] | select(.conclusion == "failure")][0].name) // "-")`"' \
+            > failed.md
+          cat failed.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Clean up the tag and the draft
+        run: |
+          rc=0
+          uv run --no-project python scripts/release_cleanup.py --tag "$TAG" \
+            --run-id "$GITHUB_RUN_ID" --report cleanup.md || rc=$?
+          touch cleanup.md
+          echo "release_cleanup exit $rc" >> cleanup.md
+          cat cleanup.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Open or comment the failure issue
+        run: |
+          title="Paper release $TAG failed"
+          {
+            echo "Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo
+            cat failed.md
+            echo
+            cat cleanup.md
+          } > body.md
+          gh label create release-failure --force --color B60205
+          n=$(gh issue list --state open --label release-failure --search "\"$title\" in:title" \
+            --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -1)
+          if [ -n "$n" ]; then
+            gh issue comment "$n" --body-file body.md
+          else
+            gh issue create --title "$title" --label release-failure --body-file body.md
+          fi
