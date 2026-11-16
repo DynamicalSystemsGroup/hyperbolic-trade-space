@@ -138,7 +138,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   approach actionable: what was built, how, and where the thread to code and data runs. Figures that carry the
   narrative; not every figure the repository has.
 - **Must not hold:** stale sentences about an earlier model; apparatus the repository already documents.
-- **State:** open (WP56, with its prework spikes).
+- **State:** soft-confirmed by the driver on the unit's captures of the rendered page, landed with WP56 (bdd06c5), *not yet read by him*.
 
 ## Section 8, Case analysis
 
@@ -151,7 +151,7 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   collapse to one trade-off, that on this model they do because fleet cost is unit cost times fleet size, why, and
   that a revised cost scaling is checked by refitting; no equation in the figure, the measure named by its name;
   the decision section uses the same mapping (WP56-decisions.md, his choice).
-- **Figure 7, the tension matrix:** one triangle in the paper (the plotting routine keeps both as an option); the
+- **Figure 9 (Figure 7 before the renumbering), the tension matrix:** one triangle in the paper (the plotting routine keeps both as an option); the
   reader is not left to work out the reciprocal; which triangle and the row order are settled by the figure loop
   on the actual values, and any statement about the values' range is derived and checked numerically first; the
   sign and reciprocal convention is one across matrix, caption and prose (WP56-decisions.md).
@@ -160,14 +160,14 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   paper presents the selected measure and its decision-relevant consequences, with references to those definitions
   and checks; it does not reproduce their detail. Not selected for the ternary's appearance (the metamanager's
   amended instruction, confirmed by him, 2026-11-15 afternoon).
-- **State:** open (WP56).
+- **State:** soft-confirmed by the driver on the unit's captures of the rendered page, landed with WP56 (bdd06c5), *not yet read by him*.
 
 ## Section 9, Discussion
 
 - **Holds:** the value proposition of the abstract and Section 1 answered; the three layers of Section 2 revisited;
   interpretation as human validation; limits stated once; leads into Future work.
 - **Must not hold:** only the case; caveat stacking.
-- **State:** open (WP56).
+- **State:** soft-confirmed by the driver on the unit's captures of the rendered page, landed with WP56 (bdd06c5), *not yet read by him*.
 
 ## Section 10, Future work
 

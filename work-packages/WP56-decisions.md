@@ -161,3 +161,40 @@ status was read, not pytest's; recorded in the driver log). The rerun on dev's h
 renamed label `fig-tension`; after a fresh build the test passes. The unit's own runs: fast 2,088, slow paper 28.
 The worktree's other failures were not reproduced on dev and are left to CI's verdict. The second unit now rewrites
 the prose of Sections 7 to 9 on these figures.
+
+## The prose of Sections 7 to 9 read at depth three and landed (00:50 EST)
+
+Read on the second unit's captures of its build (port 8857, branch `wp56p` at 23f7e17; the pane was hidden, so the
+captures in `WP56-rounds/prose/` and the page's text stand as the record) against the register's rows for Sections 7
+to 9. Section 7 opens with the fleet and the SysML v2 model named, the CADRE precedent, the problem as a displayed
+triple; Table 2 (new, generated) holds the thirteen metrics with their marks, requirements and the stage each is
+applied, and the derived coverage probability as the fourth MoE; provenance in one paragraph; the baseline
+configuration carried to Table 3's first row. Section 8 goes from the nondominated opener to the decision: the four
+cold-read defects fixed (contending sets 8 and 7 with total mass drawn outside its set; peak slew power "carries the
+largest exponent"; -0.9 per percent set against the matrix's -2.8 per unit; the alpha ratio as math; "Theorem 7" was
+the wrong number and the generator now counts it from the notebook, Theorem 8); the requirements after the fit with
+their excluded counts (178 of 238 jointly); the three-stakeholder paragraph in his sentences with the identity and the
+two-term refit printed beside their call; the decision with one stakeholder per objective (manufacturer and operator
+both pick the fleet of 25 at 5.85 M USD and coverage 0.98; the sponsor the fleet of 4 at 1.13 M USD and 0.46; between
+them the fleet of 10 at 2.88 M USD and 0.76, one of 17 nondominated on fleet cost and coverage of the 28 shortlisted);
+Table 3 with five rows; the closing sentence naming the calls and what no rerun supplies. Section 9: human
+validation with the case's own check of the collapse, what the case showed against Section 1's contribution, the
+three layers, the limits once at the end (a new test holds that). R-1 (21 sentences about the model, each with its
+record), R-4 and R-6 met; R-5 met on the scope's measure (typed Markdown 3,320 to 2,562; the rendered count with the
+generated sentences is 3,638, recorded). Soft-confirmed as proxy.
+
+Landing: `dev` fast-forwarded to bdd06c5 (23f7e17 plus one landing edit). The landing edit: CI 43798043201's slow jobs
+failed on both platforms on one doctest, `coverage_probability(1, 0.0)` printing 0.19999999999999996 against an
+expected 0.2 (the first unit's docstring; the slow-marked docstring test was in neither unit's run nor the driver's);
+the example now rounds. The driver's checks on the branch, exit codes captured: fast suite 2,091 passed (exit 0);
+slow paper tests and the docstring test (exit 0, below); lint, format, lock, proof map (22 files, 549 steps),
+vocabulary 0 new, attribution grep empty, derivations and the data of record untouched; residuals exit 1 as on dev
+with `paper.ipynb` at or below dev on every count. Register: C972 to C987 added, 30 retired, 15 re-anchored; next free
+C988. Open questions OQ-11 to OQ-13 added by the unit (the manufacturer absent from `stakeholders.sysml`; the stale
+pass rate in `cubesat.sysml`'s header, 63.7 against 65.6 %; the pick moves with the coverage constants).
+
+Noted for his read, not changed: the two names for the second regime ("stock regime" nine times, "baseline regime"
+seven, no glossary entry; older than WP56 and spread over the generators, so a vocabulary item for WP58); the
+generated datasets sentence says "3,000" twice and "thirteen attributes" a third time; Figures 5 and 8 keep the
+first unit's long captions (230 and 194 words). D.19's rule paragraph names the old rules until WP57c lands, its
+first commit.

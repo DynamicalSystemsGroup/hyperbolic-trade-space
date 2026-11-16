@@ -58,3 +58,12 @@ rerun after the edit 206 passed; lint, format, lock, vocabulary clean. Landed on
 Queued for WP57d: `WP57-rounds/assumptions-queue.md`. For WP58: the dead glossary entry termination-status; five
 `defined_in` fields naming repository records; the live lists that still say "Appendix G.2"; the stale myst.yml
 comment "(Appendices A to G)".
+
+## WP57c approved as proxy (00:50 EST)
+
+`WP57c-scope-of-work.md` (Appendices C and D) is approved by the driver under his mandate, after WP56's landing at
+bdd06c5. Its first commit lands what WP56 moved (`WP56-rounds/moved-to-appendix.md`) and rewrites D.19's rule
+paragraph to Section 8's four rules, which D.19 contradicts until then; the rest follows the map's dispositions with
+every "pending WP56" row re-read against the pointers as WP56 leaves them (C.5, C.8 and D.17's typed pointers and the
+old C.8 slot sentence left Sections 7 to 9; D.9 is reached by a default; D.18 gets Corollary 1's pointer by call 1).
+Ids from C988. One unit on branch `wp57c`; the driver soft-confirms C and D on its captures before landing.

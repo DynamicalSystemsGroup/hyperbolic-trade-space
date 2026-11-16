@@ -67,8 +67,8 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 53 | Integrate his review batch of 2026-11-15 (abstract, Sections 1 to 3) | landed, his read pending | 0dd4e79 | da8d57a | in place until his read; then in history |
 | 54 | The paper's skeleton (Section 7 into Future work; AI acknowledgement and Reproducibility) | landed, his read pending | 65624d3 | e435e4a | in place until his read; then in history |
 | 55 | The mathematics builds up (Section 3's fitting problem, Sections 4 to 6) | landed, his read pending | 022c4d2 | 98d9753 | in place until his read; then in history |
-| 56 | Sections 7 to 9 from the current model; the decision-maker's ternary | in progress (the figure phase landed at c1a886d; the prose unit running) | 37ed0b9 | not landed | in place (not landed or in flight) |
-| 57 | The appendices (a planning package and its children) | in progress (the map accepted; a and b landed at 07842b7; c after WP56, then d, e) | c89843a | not landed | in place (not landed or in flight) |
+| 56 | Sections 7 to 9 from the current model; the decision-maker's ternary | landed, his read pending (figures c1a886d, prose bdd06c5) | 37ed0b9 | bdd06c5 | in place until his read; then in history |
+| 57 | The appendices (a planning package and its children) | in progress (the map accepted; a and b landed at 07842b7; c approved as proxy and running; then d, e) | c89843a | not landed | in place (not landed or in flight) |
 | 58 | The docsite, root page and README swept; the reviewer's guide at the new head | directed (no documents yet) | - | not landed | in place (not landed or in flight) |
 | 59 | Conditioning and feature engineering on the three public cases (spike) | landed, accepted by the driver, his read pending | a2533ca | a9cfb60 | in place until his read; `examples/*/variants.py` stay (code) |
 | 60 | The three example pages | landed, his read pending | 022c4d2 | 65b0683 | in place until his read; then in history |
