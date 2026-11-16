@@ -88,3 +88,6 @@ only in links.
 
 **Q3, a DOI per pinned version (15:22 EST):** "Zenodo via GitHub integration" (the popup's option: every GitHub release
 archived with a DOI, the software's as well as the paper's; one switch in Zenodo, no token in the repository).
+
+**Q4, earlier pins on the site (15:23 EST):** "Only the current one" (the popup's option: `/paper/` serves the current
+pin; earlier pins remain as tags, GitHub releases and their Zenodo DOIs, not as pages).
