@@ -181,3 +181,25 @@ rule his to revise, the package rerunnable from `WP57-rounds/e/reletter.py`; the
 follow page order (HoroPCA Table 1, the assumptions Table 2, cited Table 3, gaps Table 4); C's table caption names its
 own appendix in plain text, a wording edit for WP58. Next: the parent's D-3, a read of the whole supporting material,
 then WP58.
+
+## WP57 D-3 delivered and landed (10:46 EST): the whole supporting material read at five depths
+
+On his go-ahead ("Yes, start D-3"), one unit read the paper and the supporting material as served at c2b80421, cold
+first and against the children's records second; `WP57-review.md` and 70 captures under `WP57-rounds/review/` landed
+at 2dbd8dd8 (the branch rebased onto the records head; lint and format clean; no attribution line; nothing outside the
+review and its folder). 85 pointers followed; 34 findings: 3 that block the read, 17 that cost the reader, 14 cosmetic;
+20 new, 14 with an earlier record. R-1, R-3, R-4 and R-5 met; R-2 met by the checker and not by the read (two
+sentences about the paper's text the checker misses).
+
+The driver's calls. The three blocking findings are verified on the served page: F-1, every one of the paper's 49
+"Appendix E, Ln" pointers lands on E's preamble, the proof up to fifty screens below (the proof headings are output
+cells, so they carry no site anchor a role can target; the fix is a design step of WP58, not a retarget alone); F-2,
+the three generated links on the supporting page itself (B.1, B.3, B.10) are written page-relative for the paper's
+page by `paper_common.appendix_link` and 404 from the supporting page (a one-line generator fix, WP58); F-3, the 178
+repository links point at `blob/main`, 2,011 commits behind dev, so each 404s on the staged site until main catches up
+or the links pin a commit (his call). Of the seven items the review lists for his read, F-3 is his now; the other six
+(one home per caveat, F-7 and F-8; Section 6 and B.13's overshoot, F-15; the feasibility order and the source of the
+verdicts, F-5 and F-31; the table numbering, F-4; the proposal count, F-14; the proof pointers, F-1) go to him with the
+parent's record and are worked in WP58 after his word where they touch the main text. The review's seventeen WP58 items
+are adopted into WP58's scope as proposed. The parent WP57's good enough is met (map accepted, five children landed and
+soft-confirmed, re-lettered once, R-1 to R-5 per the review); its done waits on his read.
