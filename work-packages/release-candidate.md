@@ -190,3 +190,14 @@ sentence stands. Until then G.2 is worded to what has been done.
 
 The supervisor's own tasks, his word and the ones done together at a keyboard, are kept apart in `supervisor-tasks.md`;
 the two-milestone board is `milestones.md`.
+
+## Autonomous until the evening (15:59 EST, 2026-11-16; the supervisor, verbatim)
+
+"you are free to run autonomously; i should be around later this evening to check in on progress. i am looking
+forward to getting a first release in place so future work can be more incremental. initial conditions!"
+
+The driver's reading: the first release (0.1 of the software, `dev` merged into `main`, the paper route holding the
+abstract) is the goal the day's work serves; the build units WP66a to c land in order as they verify, quality
+control (WP67) and integration (WP68) are scoped and run as far as his keyboard items allow, with those items ready
+for him as exact steps; the example work (WP63's figure, WP70's probe) lands behind the release work; nothing merges
+to `main`, tags or publishes before his word. Tick updates continue in the fixed shape.
