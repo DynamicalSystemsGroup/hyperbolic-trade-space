@@ -7946,7 +7946,7 @@ note = "Fixed across the ladder."
 
 [[claim]]
 id = "C907"
-fragment = "The harvest index displaces grain, whose exponent falls to 0.00, and the second term goes."
+fragment = "Biomass, a function of grain and straw, takes exponent 0.00 and leaves the fit unchanged. ... The harvest index displaces grain, whose exponent falls to 0.00"
 file = "docs/examples/wheat.md"
 anchor = "The fit"
 kind = "S"

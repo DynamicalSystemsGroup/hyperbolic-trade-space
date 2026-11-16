@@ -154,7 +154,10 @@ def test_wheat_record_quotes_the_results():
     for v in (c["rows_in_table"], c["grain_present"], c["straw_present"], c["both_positive"]):
         assert f"{v:,}" in text
     assert f"{p['tau_selected']:.1f}" in text
-    assert f"{p['corr_log_v_log_biomass']:.2f}" in text
+    page = (Path(__file__).resolve().parents[1] / "docs/examples/wheat.md").read_text(
+        encoding="utf-8"
+    )
+    assert f"{p['corr_log_v_log_biomass']:.2f}" in page
     for label, run in r["runs"].items():
         assert run["n_lemma"] == 2, label
         assert run["association"]["grain|straw"] < 0, label
