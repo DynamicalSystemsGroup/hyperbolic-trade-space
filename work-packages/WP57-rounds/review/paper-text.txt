@@ -1,0 +1,5794 @@
+Skip to article content
+Scaling Decision Analysis with Hyperbolic Trade Space Identification
+Michael Zargham
+IN THIS ARTICLE
+Abstract¶
+
+A trade study must produce an answer and a justification an accountable decision-maker can follow. Machine learning techniques can make principled scientific workflows scalable, reproducible and interpretable. For example, principal component analysis (PCA) identifies basis vectors which explain the variance in a dataset. Our method, hyperbolic trade space (HTS), explains trade-offs in a dataset of designs and measurements of their performance on real-valued attributes. Trade-offs trace piecewise hyperbolic frontiers: in order to get more of one objective, we must tolerate less of another. When supplied with a dataset we first condition the attributes into metrics that are strictly positive and “all else being equal, more is better.” We do not assume the design space is well behaved, as it is often a mix of categorical and numerical values, on different scales and with different units. While we apply conditioning to ensure the solvers behave in practice, we do not make strong assumptions about the sampling distribution, only that the frontier is log-convex. To discover trade-offs among many designs and many metrics, we define the family of hyperbolic trade spaces by the level sets of a posynomial function of the metrics. The monomial case is a convex optimization problem, and the posynomial case is compatible with generalized geometric programming. Like PCA, HTS is an unsupervised learning method: PCA fits a subspace and projects the data onto it; HTS fits a surface one dimension below the data and places each design by its position on it and its level above or below that surface. By assuming this hyperbolic shape and solving for the “energy” level sets, the resulting fit describes the trade-off space. Expanding on the concept of a dilemma or trilemma, a monomial term in n metrics characterizes an n-lemma (“nye-LEM-uh”). Pareto improvements increase energy, and a design that maximizes energy is Pareto-efficient. White space within an occupied level set may be an under-explored region of the design space. The paper provides a literature review, formal results and a worked example to demonstrate HTS’s applicability to decision analysis. Our proofs are scripted with SymPy, and HTS is implemented with a scikit-learn-compatible API, so it integrates with existing pipelines and tools. The worked example is a cubesat design optimization problem. The underlying design problem is characterized by a SysML v2 model, and a simulation study scores each design on thirteen metrics. High-dimensional n-lemmas are detected and used to inform a design decision by stakeholders who care primarily about cost and performance, without losing the thread back to the source designs. A point of the trade space pulls back to the design that produced it; a point without data is a conjecture about a design, proposed by a rule and settled by building and measuring it. Future work has three thrusts: (1) searching the design space for designs that push the frontier outward, (2) finding and filling the holes within it by topological data analysis, and (3) formal verification and performance, moving beyond Python into Rust and using theorem provers.
+
+Keywords:decision analysistrade studiestrade spaceposynomialgeometric programmingunsupervised learningmodel-based systems engineeringopen source software¶
+1The decision problem¶
+
+Decision analysis has two products: an answer, and a justification an accountable executive can follow and defend. It seeks responsible choice among conflicting objectives (the measures the decision-maker wants more of) Keeney & Raiffa, 1993 and clear conversation with the decision-maker Howard, 1988. The justification is the hard product: the process turning much data into little must be recognized, rigorous and reproducible.
+
+A trade study is a document: a grid, a table, a ranking by weighted criteria; surveys compare them Baker & Whalen, 2012. The weights are human judgments, susceptible to bias in trade studies Smith et al., 2007Chilli et al., 2026. Systems engineering is moving from document-based Henderson & Salado, 2021 to model-based practice Madni & Sievers, 2018. But the computational alternatives are bespoke and opaque. To displace the document, a method must handle real data’s scale, complexity and noise while remaining interpretable.
+
+Techniques from machine learning such as feature engineering and dimensionality reduction provide interpretability at scale. For example, principal component analysis (PCA) identifies basis vectors which explain the variance in a dataset Jolliffe & Cadima, 2016. However, identifying how linearly independent vectors explain variance tells a decision-maker very little to judge a trade-off.
+
+Objectives may align in one region and oppose in another. The fitted reference surface, a posynomial fitted to the data underlying the table, gives them a coordinate system. The chart is a reversible rewriting of the metrics as a position along the surface and a level relative to it. Each monomial term, a piece of the surface and not a set of designs, names the metrics that contend on it with elasticities: an n-lemma (by analogy with dilemma and trilemma). The workflow has two uses: design optimization, the setting of multidisciplinary design analysis and optimization Martins & Lambe, 2013Martins & Ning, 2021, and configuration management, where a system in service is changed in response to a changed context Fulcoly et al., 2012. In both, a configuration is evaluated into attributes whose trade-offs the fit reads. Our contribution is interpretability at scale, and reuse of the decision analysis pipeline via unsupervised learning.
+
+The paper proceeds as follows. Section 2 places the method among the families it borrows from, Pareto methods, data envelopment analysis, geometric programming and PCA. Section 3 fixes notation and Section 4 defines the objects: the invariant value, the reference surface, the chart, the term and the n-lemma. Section 5 states the conditions of the theory and the fitting procedure, and Section 6 gives the results: the one-term fit as a convex program with elasticities and a reversible chart, Pareto efficiency of a maximizer, the several-term fit with its levels of guarantee, and the open questions, with scripted proofs. Section 7 builds the cubesat case from its SysML v2 model and Section 8 reads it: what contends, with what elasticities, where designs sit, and the decision the executives make. Section 9 discusses interpretation and limits, Section 10 gives future work, and Section 11 closes with the use of AI assistance and the reproduction of every result.
+
+2Prior art¶
+
+A trade study asks which objectives trade and ends in a choice that can be defended; decision analysis Howard, 1988Keeney & Raiffa, 1993Parnell, 2016, model-based systems engineering Madni & Sievers, 2018, multidisciplinary design analysis and optimization Martins & Lambe, 2013 and multiobjective optimization Miettinen, 1999 are the forms that question takes. Answering it at the scale of a generated table calls for a recognized, rigorous and reproducible technique, which is what unsupervised learning offers: dimensionality reduction and kernel methods Jolliffe & Cadima, 2016Schölkopf et al., 1998 reduce a table to a structure a person can read, and data envelopment analysis Charnes et al., 1978 scores each design against the edge of the table. A method that finds trade-offs must then be fitted, and the convergence and performance of the fit rest on convex optimization and generalized geometric programming Boyd et al., 2007Hoburg & Abbeel, 2014. Figure 1 separates two uses of the optimization literature: as the solver beneath an unsupervised learning technique, and as a method of decision analysis. Table 1 places each family in its layer. The table summarizes the register of prior art in Appendix A.
+
+Figure 1:The three layers of prior art this work draws on: the decision problem it serves, the learning technique it is, and the optimization its fit rests on. Each layer consumes capabilities provided by the one below it.
+
+Table 1:The families of prior art closest to this work: what each produces, what it shares with this work, how this work differs, and the sources.
+
+Family and sources	Produces	Shares	Differs
+Decision analysis and multiple-criteria methods
+Howard 1988; Keeney and Raiffa 1993; Baker and Whalen 2012; Parnell 2016	Decision analysis with a normative versus descriptive distinction	The weights are trade-off rates	This work fits its weights from the data's edge
+Model-based systems engineering
+Madni and Sievers 2018; Henderson and Salado 2021	MBSE centred on the system model as the sole source of truth	The trade space as a model rather than a document	This work is a model-based trade analysis, not an MBSE methodology
+Multidisciplinary design analysis and optimization (MDAO)
+Sobieszczanski-Sobieski and Haftka 1997; Martins and Lambe 2013; Lambe and Martins 2012; Gray et al. 2019; Martins and Ning 2021	solves the coupled system inside an optimizer	a configuration is evaluated by coupled disciplinary models into attributes	This work fits the table the evaluations leave behind
+Tradespace exploration
+Ross et al. 2004; Ross and Hastings 2005; Ross et al. 2010; Stump et al. 2003; Simpson et al. 2008; Stump et al. 2009; Spero et al. 2014	Value-focused broad exploration of design alternatives	The setting, a table of evaluated designs	This work fits and reports a coordinate system and a score
+Pareto and multiobjective optimization
+Miettinen 1999; Ehrgott 2005; Zitzler and Thiele 1999; Deb et al. 2002	Returns a nondominated set of designs	A maximizer of a weighted geometric mean with positive exponents is Pareto-efficient	This work returns a coordinate system and exponents
+Principal component analysis (PCA)
+Jolliffe and Cadima 2016	Finds uncorrelated components that successively maximize variance	an unsupervised summary in a few directions	This work's criterion is a one-sided soft maximum, not variance
+Compositional and log-ratio PCA
+Aitchison 1983; Aitchison 1986; Egozcue et al. 2003	PCA of compositional data	an isometric logratio chart	This work's criterion is one-sided; its weights lie on the simplex
+Kernel PCA
+Schölkopf et al. 1998	PCA in an implicit feature space	the feature-engineering kin of the kernel direction	This work builds no kernel and maximizes no variance
+HoroPCA (PCA in hyperbolic space)
+Chami et al. 2021	PCA components carried into hyperbolic space	The closest existing analog in setting	This work estimates a one-sided edge, not a variance over frames
+Data envelopment analysis (DEA)
+Charnes et al. 1978; Banker et al. 1984; Andersen and Petersen 1993; Färe et al. 1994; Allen et al. 1997; Dyson et al. 2001	Evaluates the relative efficiency of each decision-making unit	A one-sided envelope of the data, a score per unit	This work fits global exponents per term, not per-unit weights
+Production and distance functions
+Cobb and Douglas 1928; Shephard 1970; Färe and Primont 1995; Farrell 1957	The Cobb-Douglas production form, and the Shephard distance function	the constant-returns Cobb-Douglas form	This work takes attributes in place of inputs
+Deterministic and stochastic frontiers
+Aigner and Chu 1968; Afriat 1972; Richmond 1974; Greene 1980; Aigner et al. 1977; Battese 1992	Estimates frontier production functions	A one-sided criterion on log-linear residuals	This work uses a smooth soft maximum over a simplex-constrained geometric mean
+Geometric programming and max-affine fitting
+Boyd et al. 2007; Hoburg and Abbeel 2014; Hoburg et al. 2016; Magnani and Boyd 2009; Candès et al. 2008	Geometric programming with generalized posynomials	The K > 1 refit scheme and the sparsity option	This work fits an envelope, the one-sided boundary of the data
+
+Pareto methods. Pareto methods return a nondominated set and find its members by scalarization, for example the weighting method Miettinen, 1999Ehrgott, 2005; evolutionary algorithms generate such sets Zitzler & Thiele, 1999Deb et al., 2002. A nondominated set says which designs survive. The fit says what trades against what. Dominance is a hard comparison that stops discriminating, on this case, as metrics are added. The two meet in one result: a design that maximizes the fitted value is Pareto-efficient (Theorem 10).
+
+Data envelopment analysis. DEA is the closer relative Charnes et al., 1978Banker et al., 1984. It scores each unit against the data by mathematical programming, with weights obtained from the data rather than set in advance Banker et al., 1984. We fit one weight vector for the whole table, or one per piece of the surface, where DEA obtains weights unit by unit. Our surface is piecewise log-linear, and our boundary is a softened maximum rather than one set by extreme units.
+
+HoroPCA. HoroPCA Chami et al., 2021 is the closest existing analog in setting: unsupervised, with a table in and coordinates out. It is the farthest in what is estimated: it extends the components of PCA to hyperbolic space with horospherical projections, maximizing a variance. This work fits the one-sided edge of a table and is not a PCA of any kind. We borrow that setting and the estimator interface of scikit-learn, and use PCA as a downstream step (Appendix B.11). In a prospectively specified test, on an embedding of ours, the authors’ code, at its defaults and one direction at a time, recovered the planted trade-offs only where they were the direction of largest spread; the tables are clean, so it demonstrates a mechanism and does not measure how often recovery succeeds (Appendix C).
+
+Lineage. The weighted geometric mean with exponents summing to one has the constant-returns Cobb-Douglas form Cobb & Douglas, 1928. Reading the fitted value as the factor that scales a design to the boundary is our distance-function reading, after Shephard’s characterization of a technology by its distance function Shephard, 1970Färe & Primont, 1995Farrell, 1957. The family of one-sided fits, frontier estimation by programming, corrected least squares and one-sided error, is reviewed in Battese, 1992 after Aigner & Chu, 1968Afriat, 1972Aigner et al., 1977. Our coordinates are in the spirit of log-ratio coordinates for compositional data Aitchison, 1983Egozcue et al., 2003. The model class and refit scheme come from geometric programming and max-affine fitting Boyd et al., 2007Hoburg et al., 2016Magnani & Boyd, 2009; the soft maximum is an entropic risk functional Föllmer, n.d.. Kernel PCA is the feature-engineering relative of the kernel direction in Section 9 Schölkopf et al., 1998.
+
+3Preliminaries and notation¶
+
+Mathematical notation follows Boyd and Vandenberghe Boyd & Vandenberghe, 2004 and estimator terms follow the scikit-learn documentation Pedregosa et al., 2011Buitinck et al., 2013; Appendix D is the full register of symbols and terms.
+
+The pipeline (Figure 2). A configuration 
+𝑐
+c, the design variables, is evaluated into attributes 
+𝑎
+a, the evaluation outcomes. The evaluation is a black box to the method: a simulator behind a system model, a physical test, or a human assessment. A feature engineering step is applied to condition the attributes into metrics 
+𝑚
+m, strictly positive and larger is better. Identification fits the trade-offs, and the analysis reads them into a decision.
+
+Figure 2:The pipeline, left to right: the stages as boxes, the data between them on the arrows.
+
+The data. There are 
+𝑁
+N designs and 
+𝑑
+d metrics. 
+𝑀
+∈
+𝑅
+>
+0
+𝑁
+×
+𝑑
+M∈R
+>0
+N×d
+	​
+
+ is the table of metrics, one row per design, and 
+𝑈
+=
+log
+⁡
+𝑀
+U=logM is its natural logarithm, taken entrywise, with rows 
+𝑢
+𝑖
+∈
+𝑅
+𝑑
+u
+i
+	​
+
+∈R
+d
+. Vectors are columns, 
+1
+1 is the vector of ones and 
+Δ
+=
+{
+𝑤
+∈
+𝑅
+𝑑
+:
+𝑤
+≥
+0
+,
+ 
+1
+⊤
+𝑤
+=
+1
+}
+Δ={w∈R
+d
+:w≥0, 1
+⊤
+w=1} is the probability simplex.
+
+A model is a function of the metrics. A monomial term has parameters 
+𝑤
+∈
+Δ
+w∈Δ, its exponents, and 
+𝛽
+∈
+𝑅
+β∈R, its reach. For 
+𝑚
+∈
+𝑅
+>
+0
+𝑑
+m∈R
+>0
+d
+	​
+
+ write 
+𝑚
+𝑤
+=
+∏
+𝑗
+=
+1
+𝑑
+𝑚
+𝑗
+𝑤
+𝑗
+m
+w
+=∏
+j=1
+d
+	​
+
+m
+j
+w
+j
+	​
+
+	​
+
+, the power-law notation of geometric programming Hoburg & Abbeel, 2014. Then
+
+𝑉
+(
+𝑚
+;
+ 
+𝑤
+,
+𝛽
+)
+=
+𝑒
+−
+𝛽
+ 
+𝑚
+𝑤
+,
+log
+⁡
+𝑉
+(
+𝑚
+;
+ 
+𝑤
+,
+𝛽
+)
+=
+𝑤
+⋅
+𝑢
+−
+𝛽
+,
+𝑢
+=
+log
+⁡
+𝑚
+,
+V(m;w,β)=e
+−β
+m
+w
+,logV(m;w,β)=w⋅u−β,u=logm,
+(1)
+
+and 
+𝑉
+:
+𝑅
+>
+0
+𝑑
+→
+𝑅
+>
+0
+V:R
+>0
+d
+	​
+
+→R
+>0
+	​
+
+ is the function; 
+𝑉
+(
+𝑚
+)
+V(m) is its value at a design, a positive number. The level set 
+{
+𝑚
+:
+𝑉
+(
+𝑚
+)
+=
+1
+}
+{m:V(m)=1} is a surface in the space of metrics. A model with 
+𝐾
+K terms has parameters 
+(
+𝑤
+𝑘
+,
+𝛽
+𝑘
+)
+(w
+k
+	​
+
+,β
+k
+	​
+
+) for 
+𝑘
+=
+1
+,
+…
+,
+𝐾
+k=1,…,K.
+
+The soft maximum. For scores 
+𝑠
+1
+,
+…
+,
+𝑠
+𝑁
+s
+1
+	​
+
+,…,s
+N
+	​
+
+ and a temperature 
+𝜏
+>
+0
+τ>0,
+
+lme
+⁡
+𝜏
+(
+𝑠
+)
+=
+1
+𝜏
+log
+⁡
+(
+1
+𝑁
+∑
+𝑖
+=
+1
+𝑁
+𝑒
+𝜏
+𝑠
+𝑖
+)
+,
+lme
+τ
+	​
+
+(s)=
+τ
+1
+	​
+
+log(
+N
+1
+	​
+
+i=1
+∑
+N
+	​
+
+e
+τs
+i
+	​
+
+),
+(2)
+
+the log-mean-exp; it increases to 
+max
+⁡
+𝑖
+𝑠
+𝑖
+max
+i
+	​
+
+s
+i
+	​
+
+ as 
+𝜏
+→
+∞
+τ→∞, and we write 
+𝜏
+=
+∞
+τ=∞ for that exact maximum. Two temperatures appear: 
+𝜏
+τ softens a maximum over designs, 
+𝜅
+κ one over terms.
+
+The fitting problem. The parameters are the decision variables of the fit, written 
+𝜃
+θ, and a loss 
+𝐽
+(
+𝜃
+;
+𝑈
+)
+J(θ;U) scores them against the table. The fit is
+
+𝜃
+∗
+∈
+arg
+⁡
+min
+⁡
+𝜃
+∈
+Θ
+𝐽
+(
+𝜃
+;
+𝑈
+)
+,
+θ
+∗
+∈arg
+θ∈Θ
+min
+	​
+
+J(θ;U),
+(3)
+
+with 
+Θ
+Θ the feasible set (
+𝑤
+∈
+Δ
+w∈Δ for every term). Loss is scikit-learn’s word for the function a solver minimizes; objective is kept for what the decision-maker maximizes. For one term the fit is the problem
+
+minimize
+	
+𝐽
+𝜏
+(
+𝑤
+)
+=
+lme
+⁡
+𝜏
+(
+𝑈
+𝑤
+)
+
+
+subject to
+	
+𝑤
+≥
+0
+,
+1
+⊤
+𝑤
+=
+1
+,
+minimize
+subject to
+	​
+
+J
+τ
+	​
+
+(w)=lme
+τ
+	​
+
+(Uw)
+w≥0,1
+⊤
+w=1,
+	​
+
+(4)
+
+with variable 
+𝑤
+∈
+𝑅
+𝑑
+w∈R
+d
+. The loss 
+𝐽
+𝜏
+(
+𝑤
+)
+J
+τ
+	​
+
+(w) is the soft maximum of the scores 
+𝑤
+⋅
+𝑢
+𝑖
+w⋅u
+i
+	​
+
+ of the 
+𝑁
+N designs, the constraints say 
+𝑤
+∈
+Δ
+w∈Δ, and the optimal value is 
+𝛽
+=
+𝐽
+𝜏
+(
+𝑤
+∗
+)
+β=J
+τ
+	​
+
+(w
+∗
+), the reach, for a minimizer 
+𝑤
+∗
+w
+∗
+. Under the log change of variables 
+𝑢
+=
+log
+⁡
+𝑚
+u=logm the monomial 
+𝑚
+𝑤
+m
+w
+ is the linear function 
+𝑤
+⋅
+𝑢
+w⋅u, so the scores are linear in 
+𝑤
+w and 
+𝐽
+𝜏
+J
+τ
+	​
+
+ is a log-mean-exp of linear functions, convex in 
+𝑤
+w (Appendix E, L4).
+
+Three assumptions hold throughout. A1: the metrics are strictly positive. A2: the exponents lie on the simplex, 
+𝑤
+∈
+Δ
+w∈Δ. A3: the fit temperature is positive, 
+𝜏
+>
+0
+τ>0; 
+𝜏
+=
+∞
+τ=∞, the exact maximum, is the limit and is named where it is used.
+
+4Definitions¶
+Definition 1 (The fitted reference surface)
+
+The fitted reference surface is the level set 
+𝑉
+=
+1
+V=1 of the fit at its fit temperature 
+𝜏
+τ; some designs lie beyond it.
+
+Definition 2 (The supporting envelope)
+
+The supporting envelope is the surface of the exact-maximum fit (
+𝜏
+=
+∞
+τ=∞); no row of the table lies beyond it.
+
+Definition 3 (The Pareto boundary)
+
+The Pareto boundary is the nondominated set of the attainable set, all realisable designs. It is a property of the system, not of the table or of the fit.
+
+The invariant value 
+𝑉
+V is a weighted geometric mean of the metrics; doubling every metric doubles it. It stays the same along a trade-off, hence invariant. In two metrics its level curves are 
+𝑚
+1
+𝑤
+1
+𝑚
+2
+𝑤
+2
+=
+const
+m
+1
+w
+1
+	​
+
+	​
+
+m
+2
+w
+2
+	​
+
+	​
+
+=const; when 
+𝑤
+1
+=
+𝑤
+2
+w
+1
+	​
+
+=w
+2
+	​
+
+ they are the rectangular hyperbola 
+𝑚
+1
+𝑚
+2
+=
+const
+m
+1
+	​
+
+m
+2
+	​
+
+=const, the title’s word.
+
+Definition 4 (Invariant form)
+
+For 
+𝑤
+∈
+Δ
+w∈Δ and the reach 
+𝛽
+β of (4), the invariant value of a design with metrics 
+𝑚
+m is 
+𝑉
+(
+𝑚
+)
+=
+𝑒
+−
+𝛽
+𝑚
+𝑤
+V(m)=e
+−β
+m
+w
+. It is the weighted geometric mean of the metrics, scaled so that 
+𝑉
+=
+1
+V=1 on the fitted reference surface, and 
+log
+⁡
+𝑉
+=
+𝑤
+⋅
+𝑢
+−
+𝛽
+logV=w⋅u−β.
+
+Designs of equal 
+𝑉
+V stand at the same level, by analogy with a potential.
+
+Definition 5 (Energy differential)
+
+The energy differential is 
+log
+⁡
+𝑉
+logV, a design’s level relative to the fitted reference surface 
+𝑉
+=
+1
+V=1: negative inside, positive beyond.
+
+A difference of levels is the same along every path between two designs. It is neither a physical energy nor a Euclidean distance.
+
+Where several trade-offs are active at once, the fit is a sum of such terms, one per trade-off. In the notation of the geometric programming tutorial Boyd et al., 2007, Section 2.1, term 
+𝑘
+k is the monomial 
+𝑐
+𝑘
+𝑚
+𝑎
+𝑘
+c
+k
+	​
+
+m
+a
+k
+	​
+
+ with 
+𝑐
+𝑘
+=
+𝑒
+−
+𝜅
+𝛽
+𝑘
+c
+k
+	​
+
+=e
+−κβ
+k
+	​
+
+ and 
+𝑎
+𝑘
+=
+𝜅
+𝑤
+𝑘
+a
+k
+	​
+
+=κw
+k
+	​
+
+, and their sum is a posynomial.
+
+Definition 6 (Posynomial)
+
+For 
+𝑤
+𝑘
+∈
+Δ
+w
+k
+	​
+
+∈Δ and reaches 
+𝛽
+𝑘
+β
+k
+	​
+
+, 
+𝑉
+𝐾
+(
+𝑚
+)
+=
+(
+∑
+𝑘
+=
+1
+𝐾
+𝑒
+−
+𝜅
+𝛽
+𝑘
+𝑚
+𝜅
+𝑤
+𝑘
+)
+1
+/
+𝜅
+V
+K
+	​
+
+(m)=(∑
+k=1
+K
+	​
+
+e
+−κβ
+k
+	​
+
+m
+κw
+k
+	​
+
+)
+1/κ
+. 
+𝑉
+𝐾
+V
+K
+	​
+
+ is the 
+1
+/
+𝜅
+1/κ power of a posynomial, a sum of monomials (Appendix E, L10), the one in brackets; 
+𝑒
+𝜅
+Φ
+𝐾
+e
+κΦ
+K
+	​
+
+ is that posynomial, where 
+Φ
+𝐾
+(
+𝑢
+)
+=
+1
+𝜅
+log
+⁡
+∑
+𝑘
+𝑒
+𝜅
+(
+𝑤
+𝑘
+⋅
+𝑢
+−
+𝛽
+𝑘
+)
+Φ
+K
+	​
+
+(u)=
+κ
+1
+	​
+
+log∑
+k
+	​
+
+e
+κ(w
+k
+	​
+
+⋅u−β
+k
+	​
+
+)
+ is the logarithm of 
+𝑉
+𝐾
+V
+K
+	​
+
+. For each term, the designs whose largest term it is form its cell.
+
+Two temperatures say how soft each maximum is, over designs and over terms; at infinity each is exact.
+
+Definition 7 (Temperatures and band)
+
+The fit temperature 
+𝜏
+>
+0
+τ>0 sets how hard the maximum over designs is; 
+𝜏
+=
+∞
+τ=∞ is exact. The term temperature 
+𝜅
+>
+0
+κ>0 sets how sharply terms meet; 
+𝜅
+=
+∞
+κ=∞ is exact. The near-frontier band is 
+∣
+log
+⁡
+𝑉
+∣
+<
+1
+/
+𝜏
+∣logV∣<1/τ.
+
+Definition 8 (Reach and share)
+
+The reach 
+𝛽
+𝑘
+β
+k
+	​
+
+ of term 
+𝑘
+k is how far the data extend in direction 
+𝑤
+𝑘
+w
+k
+	​
+
+: the soft maximum of their scores along it, 
+𝛽
+𝑘
+=
+𝐽
+𝜏
+(
+𝑤
+𝑘
+)
+β
+k
+	​
+
+=J
+τ
+	​
+
+(w
+k
+	​
+
+) (a design’s score along 
+𝑤
+𝑘
+w
+k
+	​
+
+ is 
+𝑤
+𝑘
+⋅
+𝑢
+w
+k
+	​
+
+⋅u), the largest score at 
+𝜏
+=
+∞
+τ=∞. The term share is the fraction of near-frontier designs in the cell of term 
+𝑘
+k. It shows which terms carry most of the near-frontier designs and depends on the band.
+
+The chart rewrites the log-metrics 
+𝑢
+=
+log
+⁡
+𝑚
+u=logm as a position along the surface and a level.
+
+Definition 9 (The chart)
+
+𝑍
+=
+𝐵
+𝑢
+Z=Bu, with 
+𝐵
+B of size 
+(
+𝑑
+−
+1
+)
+×
+𝑑
+(d−1)×d, 
+𝐵
+𝐵
+⊤
+=
+𝐼
+BB
+⊤
+=I and 
+𝐵
+1
+=
+0
+B1=0, is the position along the surface, free of overall scale. 
+(
+𝑍
+,
+log
+⁡
+𝑉
+)
+(Z,logV) is the chart, a reversible rewriting of the metrics; 
+log
+⁡
+𝑉
+logV is the energy differential (level offset).
+
+A term trades a few metrics against one another, and their number names the n-lemma.
+
+Definition 10 (The n-lemma)
+
+The contending set of term 
+𝑘
+k is the support of the exact-maximum (
+𝜏
+=
+∞
+τ=∞) fit to the term’s cell, centred on the cell’s mean log-metric: 
+𝑓
+𝑘
+f
+k
+	​
+
+ of (5) on the cell’s rows alone. Its size 
+𝜈
+𝑘
+ν
+k
+	​
+
+ names the n-lemma. It is found, not assumed.
+
+Figure 3:The n-lemma on the simplex, for three metrics (a synthetic table with three planted terms, which its generator builds in). The three dots are the terms of one fitted posynomial, each one piece of the fitted reference surface; a term’s exponent vector at the fit temperature is a point of the triangle. The face names the term’s n-lemma. It is read from the term’s contending set (Definition 10: the support of the exact-maximum fit to its cell), and the point drawn, from the fit temperature, may lie a little inside that face. A corner, one metric contends alone; an edge, a dilemma of the two metrics at its ends; the interior, a trilemma.
+
+The contending set names the n-lemma (Figure 3). A member whose exponent at the fit temperature is negligible contends in the limit and is not read there.
+
+Definition 11 (Elasticity)
+
+Along term 
+𝑘
+k, for 
+𝑖
+≠
+𝑗
+i
+
+=j with 
+𝑤
+𝑘
+𝑗
+>
+0
+w
+kj
+	​
+
+>0, 
+d
+log
+⁡
+𝑚
+𝑗
+/
+d
+log
+⁡
+𝑚
+𝑖
+=
+−
+𝑤
+𝑘
+𝑖
+/
+𝑤
+𝑘
+𝑗
+dlogm
+j
+	​
+
+/dlogm
+i
+	​
+
+=−w
+ki
+	​
+
+/w
+kj
+	​
+
+, the percent change of 
+𝑗
+j per percent change of 
+𝑖
+i.
+
+Definition 12 (Tension)
+
+Along term 
+𝑘
+k, for 
+𝑖
+≠
+𝑗
+i
+
+=j, the tension of 
+𝑗
+j against 
+𝑖
+i is the derivative of 
+𝑚
+𝑗
+m
+j
+	​
+
+ with respect to 
+𝑚
+𝑖
+m
+i
+	​
+
+ along the term, the other metrics held, in the conditioned metrics: 
+𝑇
+𝑖
+𝑗
+=
+d
+𝑚
+𝑗
+/
+d
+𝑚
+𝑖
+=
+−
+(
+𝑤
+𝑘
+𝑖
+/
+𝑤
+𝑘
+𝑗
+)
+(
+𝑚
+𝑗
+/
+𝑚
+𝑖
+)
+T
+ij
+	​
+
+=dm
+j
+	​
+
+/dm
+i
+	​
+
+=−(w
+ki
+	​
+
+/w
+kj
+	​
+
+)(m
+j
+	​
+
+/m
+i
+	​
+
+). The elasticity is its log-log form, 
+(
+𝑚
+𝑖
+/
+𝑚
+𝑗
+)
+𝑇
+𝑖
+𝑗
+(m
+i
+	​
+
+/m
+j
+	​
+
+)T
+ij
+	​
+
+, constant on the term; the tension adds the factor 
+𝑚
+𝑗
+/
+𝑚
+𝑖
+m
+j
+	​
+
+/m
+i
+	​
+
+. It is negative where 
+𝑤
+𝑘
+𝑖
+,
+𝑤
+𝑘
+𝑗
+>
+0
+w
+ki
+	​
+
+,w
+kj
+	​
+
+>0, zero where 
+𝑤
+𝑘
+𝑖
+=
+0
+<
+𝑤
+𝑘
+𝑗
+w
+ki
+	​
+
+=0<w
+kj
+	​
+
+ and blank (undefined, not zero) where 
+𝑤
+𝑘
+𝑗
+=
+0
+w
+kj
+	​
+
+=0; 
+𝑇
+𝑖
+𝑗
+𝑇
+𝑗
+𝑖
+=
+1
+T
+ij
+	​
+
+T
+ji
+	​
+
+=1 where both are nonzero. With several terms there is one matrix per term. The term’s tension matrix is read from the fit, at the term’s balanced point (the mean log-metric of its rows under the softmax weights at the fit temperature); a design’s tensions are read from the data, at the design’s own metric ratios on its term, whatever its level. A tension is a rate along the fitted reference surface, not the effect of changing a design variable.
+
+Definition 13 (Ascent direction)
+
+On term 
+𝑘
+k the tangent space 
+{
+𝑣
+:
+𝑤
+𝑘
+⋅
+𝑣
+=
+0
+}
+{v:w
+k
+	​
+
+⋅v=0} trades contending metrics at constant 
+𝑉
+V; the normal 
+𝑤
+𝑘
+w
+k
+	​
+
+, the ascent direction, is the gradient of 
+log
+⁡
+𝑉
+logV in 
+𝑢
+u.
+
+5Methods¶
+
+The one-term fit. At 
+𝐾
+=
+1
+K=1 the fit is problem (4), and the fitted reference surface is the unit level set of 
+𝑉
+V at its minimizer. The problem asks for the nonnegative combination of log-metrics along which the data have the smallest upper extent, under an entropic soft maximum. Its optimal value 
+𝛽
+β is the log-mean-exp, not the unnormalized log-sum-exp (Appendix E, L5): the factor 
+1
+/
+𝑁
+1/N leaves the minimizer unchanged and moves the reach by 
+(
+log
+⁡
+𝑁
+)
+/
+𝜏
+(logN)/τ. At 
+𝜏
+=
+∞
+τ=∞ the fit is a linear program. At finite 
+𝜏
+τ one term is a geometric program in 
+𝑥
+=
+𝑒
+𝑤
+x=e
+w
+, convex in 
+𝑤
+w (Appendix E, L4). 
+𝑉
+𝐾
+V
+K
+	​
+
+ is a generalized posynomial, the term maximum at the default 
+𝜅
+=
+∞
+κ=∞ Boyd et al., 2007. The several-term fit alternates weights with one program for all terms (Appendix E, L16).
+
+The temperature rule. 
+𝜏
+τ puts a target fraction of designs above 
+𝑉
+=
+1
+V=1: about a tenth, by convention, which keeps one extreme design from setting the surface. Halving or doubling that fraction leaves the contending sets unchanged, and a different scaler does not (Appendix B.3). The fit weighs every design in its soft maximum, and one inside the near-frontier band weighs within a factor 
+𝑒
+e of the weight a design on the surface would have (Appendix E, L5.25).
+
+Conditioning (stage 2). Conditioning is the analyst’s step: it turns attributes into metrics before the fit.
+
+Assumption (A4, log-affine conditioning)
+
+Conditioning is log-affine and invertible: 
+log
+⁡
+𝑚
+𝑗
+=
+𝛼
+𝑗
+log
+⁡
+(
+𝑎
+𝑗
++
+𝑠
+𝑗
+)
++
+𝑏
+𝑗
+logm
+j
+	​
+
+=α
+j
+	​
+
+log(a
+j
+	​
+
++s
+j
+	​
+
+)+b
+j
+	​
+
+ with 
+𝛼
+𝑗
+≠
+0
+α
+j
+	​
+
+
+=0, on 
+𝑎
+𝑗
++
+𝑠
+𝑗
+>
+0
+a
+j
+	​
+
++s
+j
+	​
+
+>0.
+
+A negative 
+𝛼
+𝑗
+α
+j
+	​
+
+ marks smaller-is-better; the shift 
+𝑠
+𝑗
+s
+j
+	​
+
+ places the origin; a scaler (scikit-learn’s word for a per-metric rescaling) equalizes log-spread so one 
+𝜏
+τ serves every metric. These choices define the question. Rescaling one metric changes which term is tangent (touches the edge of the data there), so a stable fitted direction answers the question as the metrics were conditioned. Negative values are rejected, and the pull-back to attribute units is exact (Appendix E, L9). The case’s conditioning rule is Appendix F.4's.
+
+Thresholds and ties. Three thresholds read an exponent, each a convention: at or below 10-12 it is numerically zero, not mathematically so; above 10-9 in the exact-maximum fit it is in the contending set of Definition 10; above the participation threshold (10-3), read at the fit temperature, it participates and carries an elasticity. They nest in size, and the last two read different fits. A member of the contending set below the participation threshold contends in the limit and carries no elasticity at the fit temperature. The exact-maximum support is checked under rounding-level jitter (Appendix B.7); at 
+𝐾
+=
+1
+K=1 its optimum is one point on the two regimes, and for several terms the solver resolves a tie by the fixed tie rule. Terms are numbered by share, largest first (ties by cell size, then by the first exponent).
+
+Several terms. The analyst chooses 
+𝐾
+K, as the number of retained components is chosen for PCA. With 
+𝐾
+K terms the fit is the posynomial of Definition 6, with parameters 
+𝑊
+=
+(
+𝑤
+1
+,
+…
+,
+𝑤
+𝐾
+)
+W=(w
+1
+	​
+
+,…,w
+K
+	​
+
+) and reaches 
+𝛽
+𝑘
+=
+𝐽
+𝜏
+(
+𝑤
+𝑘
+)
+β
+k
+	​
+
+=J
+τ
+	​
+
+(w
+k
+	​
+
+), the soft maximum of the term’s scores over all rows.
+
+Assumption (A6, terms on the simplex)
+
+𝜅
+>
+0
+κ>0 and every 
+𝑤
+𝑘
+w
+k
+	​
+
+ lies on the simplex, 
+𝑘
+=
+1
+,
+…
+,
+𝐾
+k=1,…,K; 
+𝜅
+=
+∞
+κ=∞, the exact maximum over terms, is the limit and is named where it is used.
+
+The fit minimizes the mean slack (how far the surface lies above a design, negative for a design beyond it) 
+𝐹
+(
+𝑊
+)
+=
+−
+1
+𝑁
+∑
+𝑖
+Φ
+𝐾
+(
+𝑢
+𝑖
+)
+F(W)=−
+N
+1
+	​
+
+∑
+i
+	​
+
+Φ
+K
+	​
+
+(u
+i
+	​
+
+). 
+𝐹
+F is not convex (Appendix E, L16, part i), so the estimator adapts the alternation of Magnani & Boyd (2009), stated as a heuristic: it returns a local fit and carries no global guarantee.
+
+Algorithm 1 (Alternation for several terms (a heuristic))
+
+Given terms 
+𝑊
+W and reaches 
+𝛽
+𝑘
+β
+k
+	​
+
+, repeat until the weights stop changing or the iteration cap is reached.
+
+Weights: 
+𝛼
+𝑖
+𝑘
+=
+s
+o
+f
+t
+m
+a
+x
+𝑘
+(
+𝜅
+ 
+𝑠
+𝑖
+𝑘
+)
+α
+ik
+	​
+
+=softmax
+k
+	​
+
+(κs
+ik
+	​
+
+), 
+𝑠
+𝑖
+𝑘
+=
+𝑤
+𝑘
+⋅
+𝑢
+𝑖
+−
+𝛽
+𝑘
+s
+ik
+	​
+
+=w
+k
+	​
+
+⋅u
+i
+	​
+
+−β
+k
+	​
+
+; at 
+𝜅
+=
+∞
+κ=∞ the sharp weights are the label 
+𝑘
+(
+𝑖
+)
+=
+arg
+⁡
+max
+⁡
+𝑘
+𝑠
+𝑖
+𝑘
+k(i)=argmax
+k
+	​
+
+s
+ik
+	​
+
+ of each design.
+
+Terms: with the weights held, refit the terms and reset 
+𝛽
+𝑘
+=
+𝐽
+𝜏
+(
+𝑤
+𝑘
+)
+β
+k
+	​
+
+=J
+τ
+	​
+
+(w
+k
+	​
+
+): at 
+𝜅
+=
+∞
+κ=∞ each 
+𝑤
+𝑘
+w
+k
+	​
+
+ minimizes 
+𝑓
+𝑘
+f
+k
+	​
+
+ of (5) over the simplex; at finite 
+𝜅
+κ one program fits all terms (Appendix E, L16, parts ii and iii).
+
+The package fits with sharp weights at the default term temperature (infinity), with kinks on the seams where terms meet, and with soft weights at a finite one; for given terms a finite 
+𝜅
+κ moves the score by at most 
+(
+log
+⁡
+𝐾
+)
+/
+𝜅
+(logK)/κ (Appendix E, L10) and, by construction, leaves the terms unchanged. Write 
+𝑛
+𝑘
+n
+k
+	​
+
+ for the designs labelled 
+𝑘
+k and 
+𝑢
+ˉ
+𝑘
+u
+ˉ
+k
+	​
+
+ for their mean log-metric:
+
+𝑓
+𝑘
+(
+𝑤
+)
+	
+=
+𝐽
+𝜏
+(
+𝑤
+)
+−
+𝑢
+ˉ
+𝑘
+⋅
+𝑤
+,
+
+
+𝐹
+(
+𝑊
+)
+	
+=
+1
+𝑁
+∑
+𝑖
+(
+𝛽
+𝑘
+(
+𝑖
+)
+−
+𝑤
+𝑘
+(
+𝑖
+)
+⋅
+𝑢
+𝑖
+)
+
+
+	
+=
+∑
+𝑘
+𝑛
+𝑘
+𝑁
+𝑓
+𝑘
+(
+𝑤
+𝑘
+)
+,
+f
+k
+	​
+
+(w)
+F(W)
+	​
+
+=J
+τ
+	​
+
+(w)−
+u
+ˉ
+k
+	​
+
+⋅w,
+=
+N
+1
+	​
+
+i
+∑
+	​
+
+(β
+k(i)
+	​
+
+−w
+k(i)
+	​
+
+⋅u
+i
+	​
+
+)
+=
+k
+∑
+	​
+
+N
+n
+k
+	​
+
+	​
+
+f
+k
+	​
+
+(w
+k
+	​
+
+),
+	​
+
+(5)
+
+with 
+𝑓
+𝑘
+f
+k
+	​
+
+ convex (Appendix E, L4). On centred log-metrics, as the case’s conditioning makes them, 
+𝑓
+1
+=
+𝐽
+𝜏
+f
+1
+	​
+
+=J
+τ
+	​
+
+ and (5) at 
+𝐾
+=
+1
+K=1 is (4); otherwise they differ by 
+𝑢
+ˉ
+1
+⋅
+𝑤
+u
+ˉ
+1
+	​
+
+⋅w. The labels are the alternation’s weights at infinite term temperature, the limit of the soft weights. They are an implementation choice of the fit, not an assumption that a design belongs to one term.
+
+Assumption (A8, cells)
+
+The rows split into nonempty cells, one per term.
+
+For a sharp fit the label 
+𝑘
+(
+𝑖
+)
+k(i), the design’s cell and the partition of the rows into cells coincide: the argmax cells of 
+𝑊
+W, ties by the fixed tie rule. A design’s cell, the term that scores it highest in the fit (Definition 6), is read after the fit (steps: Appendix E.2). The refit of record is 
+𝑓
+𝑘
+f
+k
+	​
+
+ over all rows, centred at the cell’s mean; refitting a term on its own rows alone does not recover planted terms (Appendix B.8). The contending set is a third fit, read after the fit: 
+𝑓
+𝑘
+f
+k
+	​
+
+ at 
+𝜏
+=
+∞
+τ=∞ on the cell’s rows alone, centred on their own mean (Definition 10).
+
+The certificate of the heuristic is three levels of guarantee, each proved in Appendix E: descent, the mean slack does not rise at an accepted iteration (L15); numerical stationarity, the term gap bounds the distance of each term’s loss to its minimum (L12); and local optimality with the cells held fixed, where the assignment margin is positive (L13, L14). A soft fit is certified by a second-order test (L17).
+
+The estimator. The fit is a scikit-learn transformer of the decomposition family: fit identifies exponents and reaches, transform returns the chart, inverse_transform reverses it, score_samples returns the energy differential. It has no predict: prediction composes a supervised regressor with the chart. The loss minimized is 
+𝐽
+𝜏
+J
+τ
+	​
+
+ at one term and the mean slack 
+𝐹
+F at several (loss_). The package’s term_aggregation is the sum of Definition 6 by default; its "mean" (
+𝜅
+=
+∞
+κ=∞: the maximum) subtracts the constant 
+(
+log
+⁡
+𝐾
+)
+/
+𝜅
+(logK)/κ from every level and changes neither exponents nor minimizers. trade_off_report reads the terms into their trade-offs, tension_matrix gives the tension matrix of each term, and plot_association draws the association among a cell’s designs. In its names 
+𝑁
+N and 
+𝑑
+d are n_samples and n_features, 
+𝜏
+τ is temperature, 
+𝜅
+κ is term_temperature, 
+𝐾
+K is n_terms and the exponents are exponents_.
+
+6Results¶
+
+Hypotheses marked I are results of the literature, taken as given; 
+L
+𝑛
+Ln is the lemma script that proves a result, and the proof is in Appendix E.
+
+6.1The fit and its geometry¶
+Theorem 1 (Homogeneity and the invariant form (L1))
+
+Let 
+𝑤
+∈
+Δ
+w∈Δ and 
+𝑉
+(
+𝑚
+)
+=
+𝑚
+𝑤
+V(m)=m
+w
+, the case 
+𝛽
+=
+0
+β=0 of Definition 4. Assume A1 and A2. Then for 
+𝜆
+>
+0
+λ>0 and 
+𝛽
+∈
+𝑅
+β∈R
+
+𝑉
+(
+𝜆
+𝑚
+)
+=
+𝜆
+𝑉
+(
+𝑚
+)
+,
+𝑉
+(
+𝑚
+/
+𝑉
+(
+𝑚
+)
+)
+=
+1
+,
+𝑉
+(
+𝑚
+𝑒
+−
+𝛽
+)
+=
+𝑒
+−
+𝛽
+𝑉
+(
+𝑚
+)
+.
+V(λm)=λV(m),V(m/V(m))=1,V(me
+−β
+)=e
+−β
+V(m).
+(6)
+
+Proof: Appendix E, L1.
+
+Scaling every metric by 
+𝜆
+λ scales 
+𝑉
+V by 
+𝜆
+λ, as for any geometric mean, and dividing a design by its own 
+𝑉
+V carries it along its ray to the surface 
+𝑉
+=
+1
+V=1.
+
+Proposition 1 (Uniform shift (L2))
+
+Let 
+𝑈
+∈
+𝑅
+𝑁
+×
+𝑑
+U∈R
+N×d
+, 
+𝑤
+∈
+Δ
+w∈Δ and 
+𝑐
+∈
+𝑅
+c∈R. Assume A1, A2 and A3. Then, with 
+𝑐
+c added to every entry of 
+𝑈
+U,
+
+𝐽
+𝜏
+(
+𝑤
+;
+𝑈
++
+𝑐
+)
+=
+𝐽
+𝜏
+(
+𝑤
+;
+𝑈
+)
++
+𝑐
+,
+J
+τ
+	​
+
+(w;U+c)=J
+τ
+	​
+
+(w;U)+c,
+(7)
+
+so 
+𝛽
+β moves by 
+𝑐
+c and the minimizers are unchanged. Proof: Appendix E, L2.
+
+Adding 
+𝑐
+c to every log-metric multiplies every metric by 
+𝑒
+𝑐
+e
+c
+, a change of units. The reach absorbs it and the exponents do not move.
+
+Assumption (R1, a positive facet normal)
+
+At the exact-maximum (
+𝜏
+=
+∞
+τ=∞) fit, with 
+𝑝
+p some optimal dual weight vector, the balanced point 
+𝑈
+⊤
+𝑝
+U
+⊤
+p lies in the relative interior of a facet of the convex hull of the rows, whose normal is positive; the components of 
+𝑈
+⊤
+𝑝
+U
+⊤
+p on the support of 
+𝑤
+w are equal.
+
+Theorem 2 (Gradient and the simplex KKT conditions (L3))
+
+Let 
+𝑤
+w minimize 
+𝐽
+𝜏
+J
+τ
+	​
+
+ on 
+Δ
+Δ, 
+𝑝
+=
+s
+o
+f
+t
+m
+a
+x
+(
+𝜏
+𝑈
+𝑤
+)
+p=softmax(τUw), 
+𝑔
+=
+∇
+𝐽
+𝜏
+(
+𝑤
+)
+g=∇J
+τ
+	​
+
+(w) and 
+𝜆
+=
+𝑤
+⋅
+𝑔
+λ=w⋅g. Assume A2, A3 and I10 (the first-order conditions) and, for the facet-normal reading of R1 (R1, a positive facet normal), 
+𝑤
+𝑗
+>
+0
+w
+j
+	​
+
+>0 for every 
+𝑗
+j at the fit temperature, taken on its own (Appendix E, L3.9). Then 
+𝑔
+=
+𝑈
+⊤
+𝑝
+g=U
+⊤
+p and
+
+𝑔
+𝑗
+≥
+𝜆
+,
+𝑤
+𝑗
+(
+𝑔
+𝑗
+−
+𝜆
+)
+=
+0
+,
+𝑗
+=
+1
+,
+…
+,
+𝑑
+,
+g
+j
+	​
+
+≥λ,w
+j
+	​
+
+(g
+j
+	​
+
+−λ)=0,j=1,…,d,
+(8)
+
+so 
+𝑈
+⊤
+𝑝
+U
+⊤
+p has equal components on the support of 
+𝑤
+w. Proof: Appendix E, L3.
+
+These are the optimality conditions of minimization over the probability simplex Boyd & Vandenberghe, 2004, Section 4.2.3: a metric with a positive exponent sits at the smallest gradient component. R1 is a statement about the exact-maximum geometry, and it does not imply that the finite-
+𝜏
+τ minimizer is interior.
+
+Theorem 3 (Convexity of the fit (L4))
+
+Let 
+𝑤
+,
+𝑣
+∈
+𝑅
+𝑑
+w,v∈R
+d
+ and 
+𝑝
+=
+s
+o
+f
+t
+m
+a
+x
+(
+𝜏
+𝑈
+𝑤
+)
+p=softmax(τUw). Assume A1, A3 (
+𝜏
+τ finite) and I11 (convex on every line is convex). Then
+
+d
+2
+d
+𝑡
+2
+𝐽
+𝜏
+(
+𝑤
++
+𝑡
+𝑣
+)
+∣
+𝑡
+=
+0
+=
+𝜏
+ 
+V
+a
+r
+𝑝
+(
+𝑣
+⋅
+𝑢
+)
+≥
+0
+,
+dt
+2
+d
+2
+	​
+
+J
+τ
+	​
+
+(w+tv)
+∣
+∣
+	​
+
+t=0
+	​
+
+=τVar
+p
+	​
+
+(v⋅u)≥0,
+(9)
+
+so 
+𝐽
+𝜏
+J
+τ
+	​
+
+ is convex, not claimed strictly. Proof: Appendix E, L4.
+
+𝐽
+𝜏
+J
+τ
+	​
+
+ is the log-sum-exp, convex Boyd & Vandenberghe, 2004, Section 3.1.5, composed with a linear map and shifted by a constant, which preserves convexity Boyd & Vandenberghe, 2004, Section 3.2.2; the second derivative is 
+𝜏
+τ times a 
+𝑝
+p-weighted variance.
+
+Theorem 4 (Log-mean-exp against log-sum-exp (L5))
+
+Let 
+𝑠
+1
+,
+…
+,
+𝑠
+𝑁
+s
+1
+	​
+
+,…,s
+N
+	​
+
+ be scores, 
+𝑠
+ˉ
+=
+1
+𝑁
+∑
+𝑖
+𝑠
+𝑖
+s
+ˉ
+=
+N
+1
+	​
+
+∑
+i
+	​
+
+s
+i
+	​
+
+, 
+L
+S
+E
+𝜏
+=
+1
+𝜏
+log
+⁡
+∑
+𝑖
+𝑒
+𝜏
+𝑠
+𝑖
+LSE
+τ
+	​
+
+=
+τ
+1
+	​
+
+log∑
+i
+	​
+
+e
+τs
+i
+	​
+
+ and 
+L
+M
+E
+𝜏
+=
+1
+𝜏
+log
+⁡
+1
+𝑁
+∑
+𝑖
+𝑒
+𝜏
+𝑠
+𝑖
+LME
+τ
+	​
+
+=
+τ
+1
+	​
+
+log
+N
+1
+	​
+
+∑
+i
+	​
+
+e
+τs
+i
+	​
+
+. Assume A3. Then 
+L
+S
+E
+𝜏
+=
+L
+M
+E
+𝜏
++
+(
+log
+⁡
+𝑁
+)
+/
+𝜏
+LSE
+τ
+	​
+
+=LME
+τ
+	​
+
++(logN)/τ and
+
+𝑠
+ˉ
+≤
+L
+M
+E
+𝜏
+≤
+max
+⁡
+𝑖
+𝑠
+𝑖
+≤
+L
+M
+E
+𝜏
++
+log
+⁡
+𝑁
+𝜏
+,
+s
+ˉ
+≤LME
+τ
+	​
+
+≤
+i
+max
+	​
+
+s
+i
+	​
+
+≤LME
+τ
+	​
+
++
+τ
+logN
+	​
+
+,
+(10)
+
+and 
+L
+M
+E
+𝜏
+LME
+τ
+	​
+
+ tends to 
+𝑠
+ˉ
+s
+ˉ
+ as 
+𝜏
+→
+0
++
+τ→0
++
+ and to the maximum as 
+𝜏
+→
+∞
+τ→∞. Proof: Appendix E, L5.
+
+The bounds on 
+L
+S
+E
+𝜏
+LSE
+τ
+	​
+
+ are the log-sum-exp’s own approximation of the maximum Boyd & Vandenberghe, 2004, Section 3.1.5; the factor 
+1
+/
+𝑁
+1/N makes the soft maximum a mean at small 
+𝜏
+τ and leaves the minimizer of the fit unchanged.
+
+Assumption (A5, independent noise)
+
+The noise 
+𝜀
+ε added to the log-metrics, where used, has independent 
+𝑁
+(
+0
+,
+𝜎
+2
+)
+N(0,σ
+2
+) entries.
+
+Proposition 2 (Gaussian cumulant (L6))
+
+Let 
+𝑤
+∈
+Δ
+w∈Δ and 
+𝜀
+∈
+𝑅
+𝑑
+ε∈R
+d
+ as in A5. Assume A2, A3, A5 and I5 (moment generating functions multiply). Then
+
+1
+𝜏
+log
+⁡
+𝐸
+ 
+𝑒
+𝜏
+𝑤
+⋅
+𝜀
+=
+𝜏
+𝜎
+2
+∥
+𝑤
+∥
+2
+2
+.
+τ
+1
+	​
+
+logEe
+τw⋅ε
+=
+2
+τσ
+2
+∥w∥
+2
+	​
+
+.
+(11)
+
+Proof: Appendix E, L6.
+
+A population identity: the Gaussian moment generating function evaluated at 
+𝜏
+𝑤
+τw, with no consistency claim.
+
+Assumption (A9, row noise)
+
+Each row’s noise is Gaussian with mean zero and one covariance 
+Σ
+Σ; the rows need not be independent. A5 is the case 
+Σ
+=
+𝜎
+2
+𝐼
+Σ=σ
+2
+I.
+
+Assumption (A10, multiplicative measurement error)
+
+An attribute’s measurement error is multiplicative, log-normal and independent across attributes; Appendix E, L18 maps it to the noise of A9.
+
+Assumption (A11, independent weighted noise)
+
+The noise that a row’s weighted metrics carry is independent across rows and 
+𝑁
+(
+0
+,
+𝑣
+2
+)
+N(0,v
+2
+) with 
+𝑣
+>
+0
+v>0 (
+𝑣
+2
+=
+𝜎
+2
+∥
+𝑤
+∥
+2
+v
+2
+=σ
+2
+∥w∥
+2
+ under A5, 
+𝑤
+⊤
+Σ
+𝑤
+w
+⊤
+Σw under A9); Appendix E, L19 uses it.
+
+Assumption (R3, a positive definite covariance)
+
+At the clean fit (the fit of the noise-free table) the zero exponents have gradient strictly above the nonzero exponents’ common value, and 
+𝐶
+=
+C
+o
+v
+𝑝
+(
+𝑢
+)
+C=Cov
+p
+	​
+
+(u), the covariance of the log-metrics under the softmax weights 
+𝑝
+=
+s
+o
+f
+t
+m
+a
+x
+(
+𝜏
+𝑈
+𝑤
+)
+p=softmax(τUw) at the fit, is positive definite on the sum-zero vectors that vanish where 
+𝑤
+w does.
+
+Corollary 1 (Noise moves the exponents by a ridge (L20))
+
+Let 
+𝜀
+𝑖
+ε
+i
+	​
+
+ be the noise of row 
+𝑖
+i, 
+𝐽
+𝑅
+(
+𝑤
+)
+=
+1
+𝜏
+log
+⁡
+𝐸
+ 
+1
+𝑁
+∑
+𝑖
+𝑒
+𝜏
+𝑤
+⋅
+(
+𝑢
+𝑖
++
+𝜀
+𝑖
+)
+J
+R
+(w)=
+τ
+1
+	​
+
+logE
+N
+1
+	​
+
+∑
+i
+	​
+
+e
+τw⋅(u
+i
+	​
+
++ε
+i
+	​
+
+)
+, 
+𝐶
+C as in R3 and 
+𝑃
+P the orthogonal projector onto the vectors that sum to zero and vanish where 
+𝑤
+w does (
+𝑃
+=
+𝐼
+−
+1
+1
+⊤
+/
+𝑑
+P=I−11
+⊤
+/d when every exponent is positive). Assume A1, A3, R3 and A9 (A10 is not used), with the noise small. Then, from Proposition 2 and Theorem 3,
+
+𝐽
+𝑅
+(
+𝑤
+)
+=
+𝐽
+𝜏
+(
+𝑤
+)
++
+𝜏
+2
+ 
+𝑤
+⊤
+Σ
+𝑤
+,
+𝛿
+=
+−
+(
+𝑃
+𝐶
+𝑃
+)
++
+𝑃
+Σ
+𝑤
+,
+J
+R
+(w)=J
+τ
+	​
+
+(w)+
+2
+τ
+	​
+
+w
+⊤
+Σw,δ=−(PCP)
++
+PΣw,
+(12)
+
+where 
+𝛿
+δ is the first-order shift of the minimizer (
++
++
+ the pseudoinverse; 
+−
+𝜎
+2
+(
+𝑃
+𝐶
+𝑃
+)
++
+𝑃
+𝑤
+−σ
+2
+(PCP)
++
+Pw when 
+Σ
+=
+𝜎
+2
+𝐼
+Σ=σ
+2
+I), at most 
+∥
+𝑃
+Σ
+𝑤
+∥
+/
+𝜆
+min
+⁡
+∥PΣw∥/λ
+min
+	​
+
+ with 
+𝜆
+min
+⁡
+λ
+min
+	​
+
+ the smallest eigenvalue of 
+𝐶
+C on that space. Proof: Appendix E, L20.
+
+Gaussian noise of covariance 
+Σ
+Σ on the log-metrics adds a ridge to the loss; zero exponents stay zero, and to first order the shift lowers 
+𝑤
+⊤
+Σ
+𝑤
+w
+⊤
+Σw. It is the shift of the minimizer of 
+𝐽
+𝑅
+J
+R
+, not of one noisy fit, and it does not say whether the elasticities are right. Appendix B.13 sets it against noise injected into the case’s data.
+
+Theorem 5 (Elasticities and improvement factors (L7))
+
+Let 
+𝐾
+=
+1
+K=1, so that the fitted reference surface 
+{
+𝑉
+=
+1
+}
+{V=1} is the hyperplane 
+{
+𝑤
+⋅
+𝑢
+=
+𝛽
+}
+{w⋅u=β} (Definition 4), and let 
+𝑤
+𝑗
+>
+0
+w
+j
+	​
+
+>0 for the metric 
+𝑗
+j whose rate or factor is read. Assume A1 and A2. Then for every 
+𝑖
+≠
+𝑗
+i
+
+=j
+
+d
+log
+⁡
+𝑚
+𝑗
+d
+log
+⁡
+𝑚
+𝑖
+=
+−
+𝑤
+𝑖
+𝑤
+𝑗
+,
+dlogm
+i
+	​
+
+dlogm
+j
+	​
+
+	​
+
+=−
+w
+j
+	​
+
+w
+i
+	​
+
+	​
+
+,
+(13)
+
+and a design with 
+𝑉
+<
+1
+V<1 reaches 
+𝑉
+=
+1
+V=1 by improving metric 
+𝑗
+j alone by the factor 
+𝑉
+−
+1
+/
+𝑤
+𝑗
+V
+−1/w
+j
+	​
+
+, or every metric by the factor 
+1
+/
+𝑉
+1/V. Proof: Appendix E, L7.
+
+The hyperplane is the convex form of the monomial constraint 
+𝑚
+𝑤
+=
+𝑒
+𝛽
+m
+w
+=e
+β
+ Boyd & Vandenberghe, 2004, Section 4.5.3, and the elasticity its slope in log-log axes. A small exponent makes the first factor large (
+𝑤
+𝑗
+=
+0.02
+w
+j
+	​
+
+=0.02 at 
+𝑉
+=
+0.9
+V=0.9 gives about 190), so the reading is for metrics with sizeable exponents; the positive exponents of the reading rest on R1 (R1, a positive facet normal), and the rates are the fit’s own only where Theorem 2’s hypothesis holds (
+𝑤
+𝑗
+>
+0
+w
+j
+	​
+
+>0 at the fit temperature).
+
+Theorem 6 (Tension (L21))
+
+Let term 
+𝑘
+k of the fitted reference surface be the hyperplane 
+{
+𝑤
+𝑘
+⋅
+𝑢
+=
+𝛽
+𝑘
+}
+{w
+k
+	​
+
+⋅u=β
+k
+	​
+
+} (Definition 4), with the other metrics held. Assume A1 and A4; for the sign, 
+𝑤
+𝑘
+𝑖
+>
+0
+w
+ki
+	​
+
+>0 and 
+𝑤
+𝑘
+𝑗
+>
+0
+w
+kj
+	​
+
+>0; for the sign in attribute units, 
+𝑐
+𝑖
+,
+𝑐
+𝑗
+>
+0
+c
+i
+	​
+
+,c
+j
+	​
+
+>0 the sizes of 
+𝛼
+𝑖
+,
+𝛼
+𝑗
+α
+i
+	​
+
+,α
+j
+	​
+
+. Then
+
+d
+𝑚
+𝑗
+d
+𝑚
+𝑖
+=
+−
+𝑤
+𝑘
+𝑖
+𝑤
+𝑘
+𝑗
+ 
+𝑚
+𝑗
+𝑚
+𝑖
+,
+d
+𝑠
+𝑗
+d
+𝑠
+𝑖
+=
+−
+𝑤
+𝑘
+𝑖
+𝛼
+𝑖
+𝑤
+𝑘
+𝑗
+𝛼
+𝑗
+ 
+𝑎
+𝑗
++
+𝑠
+𝑗
+𝑎
+𝑖
++
+𝑠
+𝑖
+,
+dm
+i
+	​
+
+dm
+j
+	​
+
+	​
+
+=−
+w
+kj
+	​
+
+w
+ki
+	​
+
+	​
+
+m
+i
+	​
+
+m
+j
+	​
+
+	​
+
+,
+ds
+i
+	​
+
+ds
+j
+	​
+
+	​
+
+=−
+w
+kj
+	​
+
+α
+j
+	​
+
+w
+ki
+	​
+
+α
+i
+	​
+
+	​
+
+a
+i
+	​
+
++s
+i
+	​
+
+a
+j
+	​
+
++s
+j
+	​
+
+	​
+
+,
+(14)
+
+the second in attribute units, with sign minus the sign of 
+𝛼
+𝑖
+𝛼
+𝑗
+α
+i
+	​
+
+α
+j
+	​
+
+; a design on the level set 
+𝑉
+=
+𝑣
+V=v has the same tension at its own metric ratios, since that set is the surface scaled by 
+𝑣
+v (Theorem 1). Proof: Appendix E, L21.
+
+The log-log form of the first is the elasticity 
+−
+𝑤
+𝑘
+𝑖
+/
+𝑤
+𝑘
+𝑗
+−w
+ki
+	​
+
+/w
+kj
+	​
+
+ (Theorem 5), with the cases of Definition 12. The attribute-unit form follows by the chain rule on the tension and, independently, by the implicit derivative of the surface written in the attributes (Appendix E, L9); it is negative for two attributes of one orientation and positive for mixed, so “negative where both contend” is a statement in the metrics only. It does not say the fitted reference surface is the right one, or give the tension at a seam.
+
+Assumption (A7, orthonormal chart basis)
+
+𝐵
+B is any matrix with 
+𝐵
+𝐵
+⊤
+=
+𝐼
+BB
+⊤
+=I and 
+𝐵
+1
+=
+0
+B1=0, an orthonormal basis of the sum-zero space; the code uses the Helmert basis.
+
+Theorem 7 (The chart (L8))
+
+Let 
+𝑢
+∈
+𝑅
+𝑑
+u∈R
+d
+, 
+𝑍
+=
+𝐵
+𝑢
+Z=Bu and 
+ℓ
+=
+1
+𝑑
+1
+⊤
+𝑢
+ℓ=
+d
+1
+	​
+
+1
+⊤
+u. Assume A2, A7 and I6 (
+𝑄
+𝑄
+⊤
+=
+𝐼
+QQ
+⊤
+=I implies 
+𝑄
+⊤
+𝑄
+=
+𝐼
+Q
+⊤
+Q=I); for the 
+𝐾
+>
+1
+K>1 clause, A6 and the shift property of Appendix E, L10. Then 
+𝑍
+(
+𝑢
++
+𝑐
+1
+)
+=
+𝑍
+(
+𝑢
+)
+Z(u+c1)=Z(u),
+
+𝑢
+=
+𝐵
+⊤
+𝑍
++
+ℓ
+ 
+1
+,
+log
+⁡
+𝑉
+=
+𝑤
+⋅
+𝐵
+⊤
+𝑍
++
+ℓ
+−
+𝛽
+,
+u=B
+⊤
+Z+ℓ1,logV=w⋅B
+⊤
+Z+ℓ−β,
+(15)
+
+so the map between 
+𝑢
+u and (position, log-scale) is a bijection, 
+𝑄
+=
+[
+𝐵
+;
+1
+⊤
+/
+𝑑
+]
+Q=[B;1
+⊤
+/
+d
+	​
+
+] is orthogonal, and 
+(
+𝑍
+,
+log
+⁡
+𝑉
+)
+(Z,logV) is a bijection too; at 
+𝐾
+>
+1
+K>1 with 
+Φ
+𝐾
+Φ
+K
+	​
+
+, 
+Φ
+𝐾
+(
+𝑢
+)
+=
+Φ
+𝐾
+(
+𝐵
+⊤
+𝑍
+)
++
+ℓ
+Φ
+K
+	​
+
+(u)=Φ
+K
+	​
+
+(B
+⊤
+Z)+ℓ, so 
+ℓ
+ℓ is recovered from 
+𝑍
+Z and 
+Φ
+𝐾
+Φ
+K
+	​
+
+. Proof: Appendix E, L8.
+
+The chart is an orthogonal change of coordinates of the log-metrics, from the sum-zero space and its normal; nothing is lost when 
+𝑑
+d metrics become 
+𝑑
+−
+1
+d−1 positions and one level.
+
+Theorem 8 (Pull-back to attributes (L9))
+
+Let conditioning be 
+log
+⁡
+𝑚
+𝑗
+=
+𝛼
+𝑗
+log
+⁡
+(
+𝑎
+𝑗
++
+𝑠
+𝑗
+)
++
+𝑏
+𝑗
+logm
+j
+	​
+
+=α
+j
+	​
+
+log(a
+j
+	​
+
++s
+j
+	​
+
+)+b
+j
+	​
+
+ with 
+𝛼
+𝑗
+≠
+0
+α
+j
+	​
+
+
+=0, on 
+𝑎
+𝑗
++
+𝑠
+𝑗
+>
+0
+a
+j
+	​
+
++s
+j
+	​
+
+>0. Assume A2 and A4. Then
+
+𝑉
+=
+𝑒
+𝑤
+⋅
+𝑏
+−
+𝛽
+∏
+𝑗
+(
+𝑎
+𝑗
++
+𝑠
+𝑗
+)
+𝑤
+𝑗
+𝛼
+𝑗
+,
+V=e
+w⋅b−β
+j
+∏
+	​
+
+(a
+j
+	​
+
++s
+j
+	​
+
+)
+w
+j
+	​
+
+α
+j
+	​
+
+,
+(16)
+
+and conditioning is invertible; a negative 
+𝛼
+𝑗
+α
+j
+	​
+
+ marks a cost attribute (smaller is better), whose factor has the negative power 
+𝑤
+𝑗
+𝛼
+𝑗
+w
+j
+	​
+
+α
+j
+	​
+
+ wherever 
+𝑤
+𝑗
+>
+0
+w
+j
+	​
+
+>0. Proof: Appendix E, L9.
+
+In attribute units 
+𝑉
+V is a monomial of the shifted attributes, in the form of the geometric programming tutorial Boyd et al., 2007, Section 2.1, and 
+∑
+𝑗
+𝑤
+𝑗
+=
+1
+∑
+j
+	​
+
+w
+j
+	​
+
+=1 lets it be scaled by 
+𝑒
+−
+𝛽
+e
+−β
+ as in Theorem 1.
+
+Theorem 9 (The posynomial extension (L10))
+
+Let 
+𝐾
+≥
+1
+K≥1, 
+𝑤
+𝑘
+∈
+Δ
+w
+k
+	​
+
+∈Δ, 
+𝜅
+>
+0
+κ>0 and 
+𝑠
+𝑘
+=
+𝑤
+𝑘
+⋅
+𝑢
+−
+𝛽
+𝑘
+s
+k
+	​
+
+=w
+k
+	​
+
+⋅u−β
+k
+	​
+
+ the score on term 
+𝑘
+k. Assume A1, A6 and I15 (a maximum of posynomials is admissible in geometric programming). Then 
+Φ
+𝐾
+(
+𝑢
++
+𝑐
+1
+)
+=
+Φ
+𝐾
+(
+𝑢
+)
++
+𝑐
+Φ
+K
+	​
+
+(u+c1)=Φ
+K
+	​
+
+(u)+c, 
+Φ
+1
+=
+𝑤
+1
+⋅
+𝑢
+−
+𝛽
+1
+Φ
+1
+	​
+
+=w
+1
+	​
+
+⋅u−β
+1
+	​
+
+ and
+
+max
+⁡
+𝑘
+𝑠
+𝑘
+≤
+Φ
+𝐾
+≤
+max
+⁡
+𝑘
+𝑠
+𝑘
++
+log
+⁡
+𝐾
+𝜅
+,
+k
+max
+	​
+
+s
+k
+	​
+
+≤Φ
+K
+	​
+
+≤
+k
+max
+	​
+
+s
+k
+	​
+
++
+κ
+logK
+	​
+
+,
+(17)
+
+so 
+Φ
+𝐾
+→
+max
+⁡
+𝑘
+𝑠
+𝑘
+Φ
+K
+	​
+
+→max
+k
+	​
+
+s
+k
+	​
+
+ as 
+𝜅
+→
+∞
+κ→∞; 
+𝑒
+𝜅
+Φ
+𝐾
+e
+κΦ
+K
+	​
+
+ is a posynomial in 
+𝑚
+m, and at 
+𝜅
+=
+∞
+κ=∞ the fit is the maximum of the 
+𝐾
+K monomials 
+𝑒
+𝑠
+𝑘
+e
+s
+k
+	​
+
+. Proof: Appendix E, L10.
+
+The bounds are the log-sum-exp’s own with 
+𝑛
+=
+𝐾
+n=K Boyd & Vandenberghe, 2004, Section 3.1.5, and 
+Φ
+𝐾
+Φ
+K
+	​
+
+ is the log-sum-exp of affine functions of 
+𝑢
+u, convex; its exponential is the posynomial in the convex form of a geometric program Boyd & Vandenberghe, 2004, Section 4.5.3.
+
+Theorem 10 (A maximizer of V is weakly Pareto-efficient (L11))
+
+Let 
+𝑆
+S be a set of designs and 
+𝑚
+∗
+m
+∗
+ a maximizer of 
+𝑉
+V over 
+𝑆
+S. Assume A2. Then 
+𝑚
+∗
+m
+∗
+ is weakly efficient,
+
+∄
+ 
+𝑚
+∈
+𝑆
+:
+ 
+𝑚
+𝑗
+>
+𝑚
+𝑗
+∗
+ for every 
+𝑗
+,
+∄m∈S: m
+j
+	​
+
+>m
+j
+∗
+	​
+
+ for every j,
+(18)
+
+and efficient (no design is at least as good in every metric and better in one) when every 
+𝑤
+𝑗
+>
+0
+w
+j
+	​
+
+>0. At 
+𝐾
+>
+1
+K>1 and 
+𝜅
+=
+∞
+κ=∞ a maximizer of 
+Φ
+𝐾
+Φ
+K
+	​
+
+ is likewise weakly efficient, by a term active at the maximizer, one attaining the maximum there. Proof: Appendix E, L11.
+
+Maximizing 
+𝑉
+V maximizes 
+𝑤
+⋅
+𝑢
+w⋅u, a weighted sum of the log-metrics; this is scalarization, and positive weights give Pareto-optimal points Boyd & Vandenberghe, 2004, Section 4.7.4. The converse, that every weakly efficient point maximizes 
+𝑉
+V for some 
+𝑤
+∈
+Δ
+w∈Δ, is not claimed.
+
+6.2The guarantees of the several-term fit¶
+Theorem 11 (Soft-weight alternation (L16))
+
+Let 
+𝛼
+𝑖
+𝑘
+=
+s
+o
+f
+t
+m
+a
+x
+𝑘
+(
+𝜅
+ 
+𝑠
+𝑖
+𝑘
+)
+α
+ik
+	​
+
+=softmax
+k
+	​
+
+(κs
+ik
+	​
+
+) be the weights of the current terms, 
+𝑛
+𝑘
+=
+∑
+𝑖
+𝛼
+𝑖
+𝑘
+n
+k
+	​
+
+=∑
+i
+	​
+
+α
+ik
+	​
+
+ and 
+𝑛
+𝑘
+𝑢
+ˉ
+𝑘
+=
+∑
+𝑖
+𝛼
+𝑖
+𝑘
+𝑢
+𝑖
+n
+k
+	​
+
+u
+ˉ
+k
+	​
+
+=∑
+i
+	​
+
+α
+ik
+	​
+
+u
+i
+	​
+
+. Let 
+𝐺
+𝛼
+(
+𝑊
+)
+=
+∑
+𝑘
+𝑛
+𝑘
+𝑁
+(
+𝛽
+𝑘
+−
+𝑢
+ˉ
+𝑘
+⋅
+𝑤
+𝑘
+)
+G
+α
+	​
+
+(W)=∑
+k
+	​
+
+N
+n
+k
+	​
+
+	​
+
+(β
+k
+	​
+
+−
+u
+ˉ
+k
+	​
+
+⋅w
+k
+	​
+
+) be the fixed-weight loss (the weights held at their current values), and 
+𝐸
+=
+1
+𝜅
+𝑁
+∑
+𝑖
+𝐻
+𝑖
+E=
+κN
+1
+	​
+
+∑
+i
+	​
+
+H
+i
+	​
+
+ the mean entropy 
+𝐻
+𝑖
+=
+−
+∑
+𝑘
+𝛼
+𝑖
+𝑘
+log
+⁡
+𝛼
+𝑖
+𝑘
+H
+i
+	​
+
+=−∑
+k
+	​
+
+α
+ik
+	​
+
+logα
+ik
+	​
+
+ of the weights over 
+𝜅
+κ, a constant of 
+𝑊
+W. Assume A1, A2, A3, A6, I14 (Jensen’s inequality) and I15 (generalized posynomial). Then
+
+𝐹
+(
+𝑊
+)
+≤
+𝐺
+𝛼
+(
+𝑊
+)
+−
+𝐸
+,
+F(W)≤G
+α
+	​
+
+(W)−E,
+(19)
+
+with equality at the weights’ own terms; 
+𝑒
+𝐺
+𝛼
+e
+G
+α
+	​
+
+ is a generalized posynomial in 
+𝑒
+𝑤
+e
+w
+; and 
+𝐹
+F is symmetric in the terms (a cyclic shift leaves it unchanged) and not convex: in an instance (Appendix E, L16) it is lower at a point 
+𝑊
+W with distinct terms than at the average of 
+𝑊
+W’s cyclic shifts, where a convex symmetric 
+𝐹
+F would be at most 
+𝐹
+(
+𝑊
+)
+F(W). Proof: Appendix E, L16.
+
+The inequality is the descent condition of the soft-weight alternation: refitting under fixed weights lowers 
+𝐺
+𝛼
+G
+α
+	​
+
+, and so 
+𝐹
+F, by Jensen’s inequality Boyd & Vandenberghe, 2004, Section 3.1.8. Its certificate is the second-order test of Appendix E, L17, beside the three levels of the sharp fit.
+
+Theorem 12 (Level 1, descent (L15))
+
+Let each term be refit by 
+𝑓
+𝑘
+f
+k
+	​
+
+ (its support over all rows less its cell’s mean), unpenalized, with reaches 
+𝛽
+𝑘
+=
+𝐽
+𝜏
+(
+𝑤
+𝑘
+)
+β
+k
+	​
+
+=J
+τ
+	​
+
+(w
+k
+	​
+
+) (the soft maximum over all rows) and an exact minimizer of 
+𝑓
+𝑘
+f
+k
+	​
+
+ at each refit. Assume A8 (a partition into nonempty cells, one per term); for the finite stop, unique term minimizers (Theorem 3 does not supply them) and a fixed tie rule. Then one accepted iteration (one that leaves no cell empty) does not raise the mean slack,
+
+𝐹
+(
+𝑊
++
+)
+≤
+𝐹
+(
+𝑊
+)
+,
+F(W
++
+)≤F(W),
+(20)
+
+and the sharp alternation stops after finitely many iterations, at most 
+𝐾
+𝑁
++
+1
+K
+N
++1 iterations. Proof: Appendix E, L15.
+
+Reassigning each row to the cell of its maximizing term lowers or keeps 
+𝐹
+F, and refitting each term by 
+𝑓
+𝑘
+f
+k
+	​
+
+ does likewise. A repeated partition pins both drops to zero, so the loop stops; the bound is a pigeonhole count over the partitions, not a practical stopping guarantee, and Appendix B.9 records fits that reach the iteration cap first. A fit that stops with an empty cell is reported as stationary without margin, never certified (Appendix B.4). Stationarity of the stop, and convergence otherwise, are not claimed.
+
+Lemma 1 (Level 2, numerical stationarity: the term gap (L12))
+
+Let 
+𝑔
+=
+∇
+𝑓
+𝑘
+(
+𝑤
+)
+g=∇f
+k
+	​
+
+(w) for 
+𝑤
+∈
+Δ
+w∈Δ, 
+𝑓
+𝑘
+f
+k
+	​
+
+ convex (Theorem 3) and 
+𝑓
+𝑘
+∗
+=
+min
+⁡
+𝑤
+∈
+Δ
+𝑓
+𝑘
+(
+𝑤
+)
+f
+k
+∗
+	​
+
+=min
+w∈Δ
+	​
+
+f
+k
+	​
+
+(w). Assume A2, A3 (
+𝜏
+>
+0
+τ>0) and I8 (the first-order convexity inequality). Then the term gap
+
+𝐺
+𝑘
+(
+𝑤
+)
+=
+𝑔
+⋅
+𝑤
+−
+min
+⁡
+𝑗
+𝑔
+𝑗
+=
+∑
+𝑗
+𝑤
+𝑗
+(
+𝑔
+𝑗
+−
+min
+⁡
+𝑙
+𝑔
+𝑙
+)
+≥
+0
+G
+k
+	​
+
+(w)=g⋅w−
+j
+min
+	​
+
+g
+j
+	​
+
+=
+j
+∑
+	​
+
+w
+j
+	​
+
+(g
+j
+	​
+
+−
+l
+min
+	​
+
+g
+l
+	​
+
+)≥0
+(21)
+
+satisfies 
+0
+≤
+𝑓
+𝑘
+(
+𝑤
+)
+−
+𝑓
+𝑘
+∗
+≤
+𝐺
+𝑘
+(
+𝑤
+)
+0≤f
+k
+	​
+
+(w)−f
+k
+∗
+	​
+
+≤G
+k
+	​
+
+(w), and 
+𝐺
+𝑘
+=
+0
+G
+k
+	​
+
+=0 exactly when the simplex KKT conditions of Theorem 2 hold for 
+𝑓
+𝑘
+f
+k
+	​
+
+, whose gradient is 
+𝑈
+⊤
+𝑝
+−
+𝑢
+ˉ
+𝑘
+U
+⊤
+p−
+u
+ˉ
+k
+	​
+
+ (
+𝑝
+p the softmax weights). Proof: Appendix E, L12.
+
+𝐺
+𝑘
+G
+k
+	​
+
+ is the Frank-Wolfe gap of 
+𝑓
+𝑘
+f
+k
+	​
+
+ over the simplex, and the bound is the first-order condition for convexity Boyd & Vandenberghe, 2004, Section 3.1.3; the linear term only shifts the gradient.
+
+Assumption (R2, a positive assignment margin)
+
+For 
+𝐾
+≥
+2
+K≥2, the assignment margin 
+𝛾
+=
+min
+⁡
+𝑖
+[
+𝑠
+𝑖
+,
+𝑘
+(
+𝑖
+)
+−
+max
+⁡
+𝑘
+≠
+𝑘
+(
+𝑖
+)
+𝑠
+𝑖
+𝑘
+]
+γ=min
+i
+	​
+
+[s
+i,k(i)
+	​
+
+−max
+k
+
+=k(i)
+	​
+
+s
+ik
+	​
+
+] is positive, with 
+𝑠
+𝑖
+𝑘
+=
+𝑤
+𝑘
+⋅
+𝑢
+𝑖
+−
+𝛽
+𝑘
+s
+ik
+	​
+
+=w
+k
+	​
+
+⋅u
+i
+	​
+
+−β
+k
+	​
+
+ the score of design 
+𝑖
+i on term 
+𝑘
+k, its level against that term alone.
+
+Lemma 2 (Assignment margin and stable radius (L13))
+
+Let every design’s term scores change by at most 
+𝛿
+δ. Assume R2 (
+𝛾
+>
+0
+γ>0) and I9 (Cauchy-Schwarz). Then if 
+2
+𝛿
+<
+𝛾
+2δ<γ each row’s maximizing term is unchanged and unique, which holds whenever every 
+(
+𝑤
+𝑘
+,
+𝛽
+𝑘
+)
+(w
+k
+	​
+
+,β
+k
+	​
+
+) moves by less than the stable radius
+
+𝑟
+=
+𝛾
+2
+max
+⁡
+𝑖
+∥
+(
+𝑢
+𝑖
+,
+−
+1
+)
+∥
+2
+r=
+2max
+i
+	​
+
+∥(u
+i
+	​
+
+,−1)∥
+2
+	​
+
+γ
+	​
+
+(22)
+
+in the Euclidean norm (a sufficient condition). Proof: Appendix E, L13.
+
+The vector 
+(
+𝑢
+𝑖
+,
+−
+1
+)
+(u
+i
+	​
+
+,−1) makes the score 
+𝑤
+𝑘
+⋅
+𝑢
+𝑖
+−
+𝛽
+𝑘
+w
+k
+	​
+
+⋅u
+i
+	​
+
+−β
+k
+	​
+
+ linear in the parameters 
+(
+𝑤
+𝑘
+,
+𝛽
+𝑘
+)
+(w
+k
+	​
+
+,β
+k
+	​
+
+), so Cauchy-Schwarz bounds a score change by the radius times the row norm.
+
+Proposition 3 (Level 3, conditional local optimality (L14, the proposition’s steps))
+
+Let 
+𝑊
+W have its partition taken to be the argmax cells of 
+𝑊
+W (ties by the fixed rule), every 
+𝑤
+𝑘
+w
+k
+	​
+
+ minimizing 
+𝑓
+𝑘
+f
+k
+	​
+
+ over 
+Δ
+Δ. Assume A8 and R2. Then within the radius 
+𝑟
+r of Lemma 2, with the cells held at those of 
+𝑊
+W and reaches 
+𝛽
+𝑘
+′
+=
+𝐽
+𝜏
+(
+𝑤
+𝑘
+′
+)
+β
+k
+′
+	​
+
+=J
+τ
+	​
+
+(w
+k
+′
+	​
+
+),
+
+𝐹
+(
+𝑊
+′
+)
+−
+𝐹
+(
+𝑊
+)
+=
+∑
+𝑘
+𝑛
+𝑘
+𝑁
+(
+𝑓
+𝑘
+(
+𝑤
+𝑘
+′
+)
+−
+𝑓
+𝑘
+(
+𝑤
+𝑘
+)
+)
+≥
+0
+,
+F(W
+′
+)−F(W)=
+k
+∑
+	​
+
+N
+n
+k
+	​
+
+	​
+
+(f
+k
+	​
+
+(w
+k
+′
+	​
+
+)−f
+k
+	​
+
+(w
+k
+	​
+
+))≥0,
+(23)
+
+so 
+𝑊
+W is a local minimizer of the mean slack. Proof: Appendix E, L14.
+
+R2 keeps each row’s maximizing term, so the loss equals 
+𝐹
+F there and the sum regroups by cell with each summand nonnegative.
+
+Corollary 2 (Approximate certificate (L14, the corollary’s steps))
+
+Let 
+𝑊
+W have its partition taken to be the argmax cells of 
+𝑊
+W, 
+𝑤
+𝑘
+∈
+Δ
+w
+k
+	​
+
+∈Δ arbitrary, 
+𝛽
+𝑘
+=
+𝐽
+𝜏
+(
+𝑤
+𝑘
+)
+β
+k
+	​
+
+=J
+τ
+	​
+
+(w
+k
+	​
+
+), the cells held at 
+𝑊
+W’s, and 
+𝐺
+𝑘
+G
+k
+	​
+
+ the term gaps of Lemma 1. Assume A8. Then, with 
+𝐹
+fixed
+∗
+=
+∑
+𝑘
+𝑛
+𝑘
+𝑁
+𝑓
+𝑘
+∗
+F
+fixed
+∗
+	​
+
+=∑
+k
+	​
+
+N
+n
+k
+	​
+
+	​
+
+f
+k
+∗
+	​
+
+ the least mean slack with the cells held fixed,
+
+0
+≤
+𝐹
+(
+𝑊
+)
+−
+𝐹
+fixed
+∗
+≤
+∑
+𝑘
+𝑛
+𝑘
+𝑁
+𝐺
+𝑘
+(
+𝑤
+𝑘
+)
+.
+0≤F(W)−F
+fixed
+∗
+	​
+
+≤
+k
+∑
+	​
+
+N
+n
+k
+	​
+
+	​
+
+G
+k
+	​
+
+(w
+k
+	​
+
+).
+(24)
+
+Proof: Appendix E, L14.
+
+The bound applies 
+𝑓
+𝑘
+−
+𝑓
+𝑘
+∗
+≤
+𝐺
+𝑘
+f
+k
+	​
+
+−f
+k
+∗
+	​
+
+≤G
+k
+	​
+
+ of Lemma 1 termwise with the weights 
+𝑛
+𝑘
+/
+𝑁
+n
+k
+	​
+
+/N; it is for the returned run, not across restarts.
+
+Theorem 13 (Soft-fit certificate (L17))
+
+Let 
+𝑊
+=
+(
+𝑤
+1
+,
+…
+,
+𝑤
+𝐾
+)
+W=(w
+1
+	​
+
+,…,w
+K
+	​
+
+) be a feasible point of the soft-weight fit at which the first-order (KKT) conditions hold exactly, with finite 
+𝜏
+τ and 
+𝜅
+κ, and let 
+𝐻
+=
+𝐷
+−
+𝜅
+𝑀
+H=D−κM be the Hessian, in the exponents 
+𝑊
+W and not in 
+𝑒
+𝑤
+e
+w
+, of the soft loss 
+𝐹
+(
+𝑊
+)
+=
+−
+1
+𝑁
+∑
+𝑖
+Φ
+𝐾
+(
+𝑢
+𝑖
+)
+F(W)=−
+N
+1
+	​
+
+∑
+i
+	​
+
+Φ
+K
+	​
+
+(u
+i
+	​
+
+), 
+Φ
+𝐾
+=
+1
+𝜅
+log
+⁡
+∑
+𝑘
+𝑒
+𝜅
+(
+𝑤
+𝑘
+⋅
+𝑢
+−
+𝛽
+𝑘
+)
+Φ
+K
+	​
+
+=
+κ
+1
+	​
+
+log∑
+k
+	​
+
+e
+κ(w
+k
+	​
+
+⋅u−β
+k
+	​
+
+)
+, 
+𝛽
+𝑘
+=
+𝐽
+𝜏
+(
+𝑤
+𝑘
+)
+β
+k
+	​
+
+=J
+τ
+	​
+
+(w
+k
+	​
+
+). Assume A1, A2, A3, A6 and I16 (second-order sufficient conditions). Then if 
+𝐻
+H is positive definite on the tangent space of the active face (positive-multiplier bounds fixed, the rest free; it contains the critical cone, Appendix E, L17.19), the point is a strict local minimizer. Both 
+𝐷
+D and 
+𝑀
+M are positive semidefinite:
+
+𝐷
+=
+b
+l
+o
+c
+k
+d
+i
+a
+g
+(
+𝑛
+𝑘
+𝑁
+ 
+𝜏
+ 
+C
+o
+v
+𝑝
+𝑘
+(
+𝑢
+)
+)
+,
+𝑉
+⊤
+𝑀
+𝑉
+=
+1
+𝑁
+∑
+𝑖
+V
+a
+r
+𝛼
+𝑖
+(
+𝑦
+𝑖
+⋅
+)
+,
+D=blockdiag(
+N
+n
+k
+	​
+
+	​
+
+τCov
+p
+k
+	​
+
+	​
+
+(u)),V
+⊤
+MV=
+N
+1
+	​
+
+i
+∑
+	​
+
+Var
+α
+i
+	​
+
+	​
+
+(y
+i⋅
+	​
+
+),
+(25)
+
+with 
+𝑝
+𝑘
+p
+k
+	​
+
+ the support weights of term 
+𝑘
+k, 
+𝑛
+𝑘
+=
+∑
+𝑖
+𝛼
+𝑖
+𝑘
+n
+k
+	​
+
+=∑
+i
+	​
+
+α
+ik
+	​
+
+ as in Theorem 11, and 
+𝑦
+𝑖
+𝑘
+y
+ik
+	​
+
+ the change of design 
+𝑖
+i’s score on term 
+𝑘
+k along 
+𝑉
+V (Appendix E, L17.13). Proof: Appendix E, L17.
+
+𝐷
+D is the weighted within-term curvature and 
+𝜅
+𝑀
+κM the designs’ ambiguity between terms, which lowers it. The test is the second-order sufficient condition for a constrained minimum Nocedal & Wright, 2006, Theorem 12.6, applied to the loss’s own Hessian since the simplex conditions are affine.
+
+The stopping declaration. Each returned fit carries the levels it meets (Appendix B.4). For a sharp fit, certified means that the assignment is fixed, the residuals and the term gaps are within tolerance, no cell is empty and the margin is positive, so Corollary 2 bounds the remaining improvement with the cells held fixed and Proposition 3 applies to the exact minimizers the fit approximates. For a soft fit, certified means that the second-order test holds (Theorem 13), and stationary that the term gaps hold and the Hessian is not positive definite on the tangent space of the active face. Certified is a status at the returned point, set by tolerances, and the returned point is polished: at finite 
+𝜏
+τ each term’s refit is followed by Newton steps that close the gap the solver leaves (Appendix E.2); Proposition 3 and Theorem 13 hold at the exact point that the fit approximates. Whether a fit is stationary within tolerance, and so its status, is measured, not proved.
+
+On the primary regime the fits of record are sharp; the solver declares the status certified at K = 2 and 3, with the largest term gap below 1e-12.
+
+On the cubesat case of Section 7 (primary regime, 2,134 feasible designs), at K = 2 the margin, a gap between term scores, is 0.0003768, against a band 1/tau of 0.0088 and a median best-minus-second-best score of 0.352: a margin below the band puts at least one design within the band of a seam, here 37 of the 2,134. For the two-term split: the local optimality certified covers changes of the term scores under half the margin, about 47 times smaller than the band, so which term those 37 designs fall to is not a finding; the contending sets themselves hold under rounding-level jitter (Appendix B.7). In the parameters the same condition is the stable radius, 2.552e-05: the certificate covers moves of each term's exponents and reach under it.
+
+Appendix G records what the results leave open.
+
+7Case construction¶
+
+The case is a fleet of identical 12U-class cubesats whose power, mass and attitude control are coupled, described by a SysML v2 system model in the repository (Appendix F). Its precedent is the CubeSat design problem among the applications of OpenMDAO Gray et al., 2019, which couples attitude, solar power, energy storage and communication to maximize the data downloaded; here the configurations are sampled and evaluated, not optimized. The problem is
+
+maximize
+	
+𝑚
+(
+𝑐
+)
+(the thirteen metrics, componentwise)
+
+
+with respect to
+	
+𝑐
+=
+(
+wheel class
+,
+ tracker grade
+,
+ panel span
+,
+ battery capacity
+,
+ 
+𝐾
+𝑝
+,
+ 
+𝐾
+𝑑
+,
+ 
+𝑛
+)
+
+
+subject to
+	
+four feasibility conditions and six requirements.
+maximize
+with respect to
+subject to
+	​
+
+m(c)(the thirteen metrics, componentwise)
+c=(wheel class, tracker grade, panel span, battery capacity, K
+p
+	​
+
+, K
+d
+	​
+
+, n)
+four feasibility conditions and six requirements.
+	​
+
+(26)
+
+A configuration swaps the reaction wheel and the star tracker for one of their alternatives and tunes the panel span, the battery capacity and the controller gains 
+𝐾
+𝑝
+K
+p
+	​
+
+ and 
+𝐾
+𝑑
+K
+d
+	​
+
+ (Figure 4). It also sets the fleet size 
+𝑛
+n, a count that is no part, so Figure 4 does not draw it. The fleet size is drawn from 1 to 30: the unit cost falls as the fleet grows and the fleet cost, the unit cost times the fleet size, rises, so the two costs are not collinear.
+
+Figure 4:The assembly view of the cubesat model: its parts and how they assemble (filled diamond: part of; open arrow: an alternative of an abstract part). A configuration swaps a part for one of its alternatives (swap: the wheel class, the tracker grade) and tunes a parameter of a part within a range (tune: panel span, battery capacity and the controller gains Kp and Kd). Every name is read from the system model; so are the ranges, which the view does not draw (Appendix F.1).
+
+Each configuration is evaluated once into thirteen attributes: controls (settling time, pointing error, control effort and momentum headroom), power and energy (power margin, energy balance, peak slew power, depth of discharge, available power and battery peak power ratio), mass (total mass) and cost (unit cost and fleet cost).
+
+The SysML v2 model states thirteen requirements, one for each traded metric, and the case applies them in the order of Table 2. Four feasibility conditions remove the designs that do not settle, saturate the momentum budget, run short of power or discharge the battery too deeply; six requirements are read after the fit; three filter nothing. A measure of effectiveness (MoE) is read by a stakeholder and a measure of performance (MoP) off the subsystems: the pointing error, the unit cost and the fleet cost are MoEs, the other ten traded metrics MoPs. A fourth MoE, the fleet’s coverage probability, is derived from the fleet size and the pointing error and is not traded. Figure 5 traces each traded metric to its requirement and to what supplies it.
+
+Table 2:The traded metrics of the SysML v2 model in the order the case applies their requirements, each with its mark, measure of effectiveness (MoE) or of performance (MoP), and the derived coverage probability.
+
+metric	measure	requirement	applied
+settling time	MoP	Settled	1. feasibility condition, before the fit
+depth of discharge	MoP	DepthOfDischarge	1. feasibility condition, before the fit
+momentum headroom	MoP	Momentum	1. feasibility condition, before the fit
+available power	MoP	Power	1. feasibility condition, before the fit
+pointing error	MoE	PointingError	2. after the fit: at most 0.008495 degree
+total mass	MoP	LaunchBudget	2. after the fit: launch cost at most 105,770 USD (7,000 USD per kg of total mass)
+control effort	MoP	ControlEffort	2. after the fit: at most 0.05922 N.m.s
+peak slew power	MoP	PeakSlewPower	2. after the fit: at most 2.6 W
+unit cost	MoE	UnitCost	2. after the fit: at most 350,000 USD per satellite
+fleet cost	MoE	FleetCost	2. after the fit: at most 6,000,000 USD per fleet
+power margin	MoP	PowerMargin	3. met by every feasible design
+energy balance	MoP	EnergyBalance	3. met by every feasible design
+battery peak power ratio	MoP	BatteryPeakPower	3. met by every feasible design
+coverage probability (derived)	MoE	none	the operator's objective in the decision
+
+Figure 5:The behavioural view of the cubesat model: its requirements by functional subsystem (controls, power and energy, cost, mass; MoE, a measure of effectiveness, read by the stakeholder, and MoP, a measure of performance, read off the subsystems), an orange line from each to the metric it reads (thirteen metrics are traded), and grey lines from what supplies each metric. Eleven arrows leave the slew experiment’s box: nine for the metrics it computes, three of them (the pointing error, the total mass and the available power) from the configuration alone, and two, to the unit cost and the fleet cost, for an analysis each, drawn from the same box. The box’s own count, ten of thirteen, adds the control effort, which the experiment passes on from the measured slew (that arrow runs from the measurement). The settling time comes from the measured slew directly, not through the experiment. The tags say when a requirement can be checked: ConfigurationVerification from the configuration alone, before simulation, and SlewVerification after the slew is measured. The pointing-error and unit-cost requirements’ boxes say that the baseline configuration does not satisfy them. The launch budget requirement reads the launch cost (yellow: derived, not traded), which is computed from the total mass (dashed arrow). Names are read from the system model; the placement of a requirement in a subsystem is the analyst’s reading.
+
+Each configuration is evaluated by the case’s oracle: the slew is integrated in Python, and every other attribute and the four feasibility verdicts are computed by the SysML v2 model’s calcs and requirements. The data of record hold two regimes that differ in the gains’ sampled range: the proportional gain 
+𝐾
+𝑝
+K
+p
+	​
+
+ from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the baseline regime. Appendix F.6 names each table with the command that wrote it. Conditioning orients each attribute, shifts and scales it to unit log-spread and keeps the map invertible and the count: thirteen attributes make thirteen metrics. This conditioning centres each log-metric (the standard scaler). The fit temperature is selected by the rule of Section 5 (Figure 6).
+
+The SysML v2 model's baseline configuration, the first row of the decision's table, is a fleet of one with a medium wheel, a medium tracker, a panel span of 0.6 m, an 80 Wh battery and gains Kp = 0.03 and Kd = 0.3. Evaluated, its pointing error is 0.0155 degree and its unit cost 461,360 USD, so it fails the pointing-error requirement (0.0085 degree) and the unit-cost requirement (350,000 USD), which 65.6 % and 75.8 % of the baseline regime's feasible designs pass.
+
+The primary regime evaluates 3,000 designs and keeps 2,134 as feasible; the baseline regime evaluates 3,000 and keeps 2,355. Each design carries thirteen attributes. The designs are drawn at random, 3,000 per regime: a design choice of the case, since the method assumes nothing about how they were drawn.
+
+Figure 6:The K = 1 fit against the fit temperature tau (the temperature of the soft maximum in the fit), primary regime (the dataset drawn with aggressive controller gains). Top: the fraction of designs above V = 1 (V is the invariant value; above 1 is beyond the fitted reference surface) with the target 0.1 (dashed), and the effective sample size with its value at the fit temperature. The vertical line is the fit temperature, the temperature at which the fraction is within 0.01 of the target (a convention, Section 5). Bottom: the K = 1 exponent w of each metric against the temperature of the sweep (the axis lists the sweep’s values, evenly spaced on a log scale, not to scale), one line per metric, the last position the tau = infinity limit; the exponents sum to one, and the rings mark the sweep point nearest the fit temperature, which is not the fit itself. Five metrics are at most 0.001 (the glossary’s participation threshold) at every temperature and are not drawn. full-size figure
+
+The fit temperature is tau = 41.7: a fraction 0.098 of designs lies above V = 1 (the target is 0.10), the band 1/tau is 0.0240 and the effective sample size is 73.6 designs. The effective sample size is the inverse sum of squares of the support weights, the softmax weights of the designs in the fit: the designs the soft maximum weighs as if equally, so the exponents at the fit temperature rest on about that many of the 2,134 designs. The contending set holds with the target fraction halved or doubled (Appendix B.3).
+
+8Case analysis¶
+
+Of 2,134 feasible cubesat designs, the nondominated set (on the conditioned metrics, larger is better) holds 236 on 4 attributes (settling time, pointing error, control effort and total mass) and 2,134 on all 13 (Appendix B.5; counts that hold over five regenerations of the data under rounding-level perturbation; a number that moves over them is printed as a range, Appendix B.7).
+
+Nondominance keeps every feasible design on the thirteen metrics and so does not narrow the choice; the fit reads what contends, at what rates, and where each design sits (Appendix B holds the tables, B.7 the digits that hold).
+
+One term. At K = 1 the fit reports one trade-off at the balanced point (Figure 7).
+
+At K = 1 the exact-maximum fit has a 7-lemma across controls, power and energy, plus cost: unit cost, available power, pointing error, fleet cost, momentum headroom, settling time and depth of discharge contend, with exponents at the fit temperature from 0.04 to 0.26. At the fit temperature total mass also carries 0.02 and is not in the contending set, which is the exact maximum's support (Definition 6). The exact-maximum optimum is one point, checked by a test of the repository on both regimes, so the support is not a solver's choice.
+
+Figure 7:Log-metric plane of the K = 1 fit (primary regime) in its two heaviest metrics, available power and unit cost; the slope of the line is their elasticity, the ratio of their exponents. The line is the surface, V = 1, in this plane. Each design is moved vertically by what its other eleven metrics add, weighed by their exponents, so that the line is the surface for every design: the distance below it is the design’s level, log V divided by the unit-cost exponent, and a tenth of all designs lie above it, by the fit’s convention.
+
+Two terms. The package's checks for choosing K (Appendix B.10) point to K = 2 on the primary regime and the baseline regime, none deciding alone: the mean slack (in log V), read at the K = 1 temperature, drops most at K = 2 (0.08 and 0.05) and less at K = 3 (0.02 and 0.03), the largest drop read against the other two checks. The thinnest term holds 0.26 and 0.25 of the near-frontier designs at K = 2 and 0.06 and 0.06 at K = 3, the step where a thin term appears.
+
+At K = 2 the trade-off separates into two terms with different contending sets (Figure 8 and Figure 9); the margin, gap and status of this fit are in Section 6 and Appendix B.4. Where the answer must be known it is planted, with the generator of Appendix F.7.
+
+The fit recovers all three terms on 16 of 20 planted tables of 400 rows, 4 metrics and 3 terms each (Appendix B.9).
+
+Figure 8:The chart of the K = 2 fit, the K the package’s checks point to (Appendix B.10): each design’s energy differential (log 
+𝑉
+V of the 
+𝐾
+=
+2
+K=2 fit, the level; 
+𝑉
+V is the invariant value, Definition 4) against its position along the surface. The position is measured along the direction in which the near-frontier designs spread the most, the first principal direction of the near-frontier chart of the K = 1 fit. It is a reading of the sampled designs and not part of the model (Appendix B.11 gives its share of the spread and its loadings; the axis names the metrics it improves, and the percentage there is the share of the near-frontier spread that lies along it). The surface is the flat line log V = 0 whatever the position, by construction; about a tenth of the designs lie above it, the fit’s convention; grey: the near-frontier band, 
+∣
+log
+⁡
+𝑉
+∣
+<
+1
+/
+𝜏
+∣logV∣<1/τ of the K = 1 fit, on both sides of the line (the legend gives its width); a design above the line lies beyond the surface (V > 1) and one below it inside (V < 1).
+
+Figure 9:The tension matrix of each term of the K = 2 fit at its balanced point (Definition 12), for the metrics with an exponent w on the term, the others named below each panel. A cell is the change in the column metric per unit rise of the row metric’s conditioned value; the metrics run from the one whose unit is worth most on the term to the least. Every drawn value is therefore -1 or less, from -1.1 to -17 on term 1 and from -1.0 to -30 on term 2; each undrawn cell is the reciprocal of its mirror image. full-size figure
+
+The K = 2 terms have contending sets (exact-maximum supports) of 8 and 7 metrics; peak slew power, absent from the K = 1 set, carries the largest exponent of term 1 (0.43). At the fit temperature total mass also carries 0.0064 on term 2, so it is drawn in that term's tension matrix without being in its contending set. The term shares are 0.74 and 0.26 for terms 1 and 2 (Appendix B.1).
+
+The terms add what a clustering with per-cluster correlations would not: each term’s exponents give the elasticities at which its contending metrics trade (Theorem 5) and a level against which every design is read. A metric’s unit is worth most on a term where its exponent over its conditioned value at the balanced point is largest, which orders the rows of Figure 9.
+
+On term 2 the elasticity between unit cost and available power is -0.9, the ratio of their exponents: along the term, one percent gained in available power is 0.9 percent given up in unit cost. The tension matrix states the same trade per unit of the conditioned metrics at the term's balanced point, not per percent, so its cell for the pair reads -2.8. In the attributes' own units Theorem 8 multiplies each rate by 
+𝛼
+𝑖
+/
+𝛼
+𝑗
+, the ratio of the two conditioning exponents. Term 1's two leading metrics, peak slew power and pointing error, are stepped by the swaps of the tracker grade and the wheel class, so its elasticity is read across the swapped parts' alternatives rather than along one continuous trade.
+
+Two regimes. The same pipeline on the baseline regime, whose gains were sampled over a lower range, separates the problem’s contribution from the gains’ (Appendix B.2).
+
+The regimes return a 7-lemma and an 8-lemma sharing 7 metrics (available power, depth of discharge, fleet cost, momentum headroom, pointing error, settling time and unit cost); the primary set lies inside the baseline set, which adds total mass. The baseline set spans controls, power and energy, mass, plus cost: mass enters only in the baseline regime.
+
+Propose, predict, check. A regressor from configuration to chart coordinates predicts where proposals in the white space of the four-metric chart fall, and the proposals are then measured (Appendix B.6).
+
+Of 3 proposals, the predicted energy differential lies within the regressor's own band 1/tau = 0.0935 (its four-metric fit's, not the case's) of the measured one for 3, and the predicted position within that band for 3; position errors run from 0.2 to 0.8 bands.
+
+The proposals fail the depth-of-discharge feasibility condition: they reached the four-metric fitted reference surface by spending the battery.
+
+Requirements after the fit. Fitting first and reading the requirements after is the unconstrained-then-constrained reading of a trade study.
+
+Applied after the K = 1 fit as constraints on the solution space, the six requirements exclude 178 of its 238 near-frontier designs jointly; one at a time: peak slew power 108, control effort 95, unit cost 64, fleet cost 57, total mass 12 and pointing error 8 (Appendix B.12).
+
+With every design set conditioned as the fit of record is, removing the infeasible designs or imposing the four performance thresholds before the fit leaves the one-term contending set of the primary regime (seven metrics) unchanged and changes that of the baseline regime by at most two of its eight metrics (Appendix B.12).
+
+Three stakeholders. The decision gives each of three objectives to one stakeholder: the fleet cost to the sponsor, the unit cost to the manufacturer and the coverage probability to the operator, the probability that at least one satellite of the fleet covers a target in the planning period. The SysML v2 model defines it and its two constants (CoverageProbability), and a script of the case compares it with two other measures. The three objectives were not guaranteed to collapse to one trade-off. On this case they do (Figure 10): fleet cost is unit cost times fleet size, so the sponsor’s objective rides on the manufacturer’s and the fleet size, and the fit names the dilemma between fleet cost and coverage probability, with unit cost nearly flat.
+
+Figure 10:The decision’s three objectives, one per stakeholder, fitted with one term over the primary regime’s 2,134 feasible designs, each at its shares of the three conditioned objectives. The star is the term’s exponent vector, not a design; it lies on the edge from fleet cost (0.39) to coverage probability (0.61), with 0.006 on unit cost. full-size figure
+
+On all 2,134 feasible designs fleet cost over unit cost times fleet size is one to within 6e-09. The two-term refit puts on fleet cost and coverage probability 0.14 and 0.86 in term 1 and 0.54 and 0.46 in term 2, and 0.000 on unit cost in both, so both terms lie on the one-term fit's edge.
+
+Whether a manufacturing cost that scales differently with the fleet size pulls designs toward the middle of the triangle is checked by refitting: such a revision of the cost model enters as a new table, and the same calls test whether the collapse holds.
+
+The decision. The requirements and the fits cut 2,134 feasible designs to a shortlist of 28 that pass all six requirements and lie in the near-frontier band of both fits (Appendix B.14). On it the manufacturer and the operator pick the same fleet: 25 medium-wheel, medium-tracker satellites at 234,000 USD each, 5.85 M USD for the fleet and a coverage probability of 0.98. The unit cost falls and the coverage probability rises with the fleet size. The sponsor picks 4 small-wheel, medium-tracker satellites at 1.13 M USD, with a coverage probability of 0.46. What remains is the question the fit names, and it is the executives': how much fleet cost a gain in coverage probability is worth. Of the 17 shortlisted designs that no other beats on both, the fleet of 10 small-wheel, medium-tracker satellites at 2.88 M USD, with a coverage probability of 0.76, has the smallest larger shortfall on the two, each scaled from its best to its worst on the shortlist.
+
+Table 3:The baseline configuration and the designs the three stakeholders’ rules pick from the shortlist, with the three objectives and the level of each (log V at K = 2, positive beyond the fitted reference surface); the manufacturer’s and the operator’s rules pick one design. The picks’ levels lie inside the near-frontier band that the shortlist uses and do not rank them; the baseline’s level is outside it. The picks’ other design variables are in Appendix B.14.
+
+rule	configuration	fleet cost (USD)	unit cost (USD)	coverage probability	level
+baseline configuration	medium wheel, medium tracker, fleet 1	461,360	461,360	0.032	-0.330
+sponsor: least fleet cost	small wheel, medium tracker, fleet 4	1,127,465	281,866	0.456	+0.016
+manufacturer: least unit cost	medium wheel, medium tracker, fleet 25	5,846,300	233,852	0.979	-0.022
+operator: largest coverage probability	medium wheel, medium tracker, fleet 25	5,846,300	233,852	0.979	-0.022
+between sponsor and operator	small wheel, medium tracker, fleet 10	2,882,089	288,209	0.762	+0.001
+
+The decision and Table 3 are reproduced from the primary regime’s table of the data of record by two calls. The fits are case.k_fits; the shortlist, the picks and the table are decision of the paper’s findings generator. Appendix H.3 gives the commands; outside the environment of record values differ in the last digits (Appendix H.2). What no rerun supplies is the executives’ answer.
+
+9Discussion¶
+
+Interpretation is human validation. The fit reports what contends; whether that is an explicable trade-off is for an engineer to decide. Machine verification shows that a formula follows from its hypotheses and that the code agrees; it does not show that the hypotheses suit a table. That is human validation, which remains for a human: the conditioning, the choice of K and the reading of every finding. On the case, the reading that the fleet’s three objectives reduce to one trade-off was not taken from the figure: it was traced to the SysML v2 model’s definition of the fleet cost and checked on every row of the data.
+
+What the case showed. The contribution claimed in Section 1 is interpretability at scale, and reuse of the decision analysis pipeline via unsupervised learning. On the case, a table that nondominance leaves whole was read as two terms with their contending metrics, a tension matrix per term and a level for every design. The requirements, applied after the fit, cut it to a shortlist on which each stakeholder’s pick and the one question left to the executives can be stated. The pipeline was reused rather than rebuilt: the second regime and the fleet’s three objectives went through the same calls, and so would a revised SysML v2 model or attributes measured on a fielded system, because the evaluation is a black box to the method.
+
+The three layers. The case used each layer of Section 2. The decision problem is the SysML v2 model’s requirements and measures of effectiveness, with one stakeholder per objective of the decision. The unsupervised learning is the fit, which reduced the table to terms and levels without a weight elicited from anyone. The solver is the convex program of the one-term fit and the alternation of the several-term fit, whose guarantees Section 6 states.
+
+Limits. The fitted reference surface is log-convex, and one term is tangent at one place and conservative off it. The exponents and elasticities are features of the conditioned table: they depend on the conditioning, describe how the sampled designs trade and not a causal exchange that changing a variable would reproduce, and a small sample determines them weakly. Designed samples, such as grids, are not independent observations: the exponents describe the sample and are not estimates with a sampling error. The certificate is local, and that the fit holds for designs outside the table, or supports a decision, is a further claim that needs its own validation. The case’s hardware values are illustrative and its costs a lower bound on a full costing; the case has no schedule, no payload and a flat launch price, and the coverage probability’s two constants are mission assumptions the operator supplies (Appendix G). Trade-offs the sampling never exercised cannot appear, and white space in the chart is an opportunity only where the trade space is log-convex around it, which the data cannot prove.
+
+10Future work¶
+
+This release delivers the method as a scikit-learn-compatible estimator, the theory of the one-term fit with scripted proofs, the several-term fit with its guarantees, the cubesat case carried to a decision, and the method’s record on three public datasets.
+
+Searching the design space. A chart point without a datum pulls back to a proposal: a configuration chosen by a selection rule, a conjecture until it is built and measured. Ascent directions chained back through the conditioning and the evaluation steer the proposals, and an outer loop evaluates them, appends the rows and refits. The next release scopes the proposal and its check as functions of the regressor.
+
+Holes. Persistent homology on the chart’s distances would name candidate holes, regions the sample encloses and no design occupies, each a hypothesis until a design is sampled there; a spike located and settled a planted one. The next release builds the definition as code on planted tables, with the choice of topology library left open.
+
+Formal verification and performance. The Lean theorem prover would prove the log-mean-exp bounds and the convexity of the loss over the reals, which backs the mathematics and not the floating-point computation. A Rust core compiled to WebAssembly would serve performance, its verification tools addressing crashes and overflow, not numerical accuracy. Governance checks written as requirements with verification cases would gate each release.
+
+11AI acknowledgement and Reproducibility¶
+
+Claude Code (Anthropic) drafted code, derivation scripts and text in supervisor-gated work packages: a written scope the author approved before execution, and a review afterwards, in a process modelled on the harness of Zargham, 2026. No claim enters without a lemma step, a generated value, a test or a verified source. The author takes responsibility for the work.
+
+The derivations are plain SymPy scripts that the tests run, with a proof map from each result to its steps; they are scripted checks in place of pencil and paper.
+
+Every figure, table and reported number comes from a call into a tested module. The pinned toolchain, the environment of record and the commands are in Appendix H. To run your own table, supply the configurations, the attributes and a conditioning rule, and make the same calls; the docsite’s Getting started page is where to begin.
+
+12Works cited¶
+
+The list holds the sources of the main text and of the register of Appendix A.
+
+Show All
+References¶
+Keeney, R. L., & Raiffa, H. (1993). Decisions with Multiple Objectives. Cambridge University Press. 10.1017/CBO9781139174084
+Howard, R. A. (1988). Decision Analysis: Practice and Promise. Management Science, 34(6), 679–695. 10.1287/mnsc.34.6.679
+Baker, P. J., & Whalen, J. T. (2012). Survey of Trade Study Methods for Practical Decision-Making. Poster, NASA Independent Verification and Validation Facility Annual Workshop. https://www.nasa.gov/wp-content/uploads/2016/10/survey_of_trade_study_methods_-_baker.pdf
+Smith, E. D., Son, Y. J., Piattelli-Palmarini, M., & Terry Bahill, A. (2007). Ameliorating Mental Mistakes in Tradeoff Studies. Systems Engineering, 10(3), 222–240. 10.1002/sys.20072
+Chilli, M., Roedler, G., Parnell, G., & Jackson, S. (2026). Decision Management. Guide to the Systems Engineering Body of Knowledge (SEBoK), v. 2.14. https://sebokwiki.org/wiki/Decision_Management
+Henderson, K., & Salado, A. (2021). Value and Benefits of Model-Based Systems Engineering (MBSE): Evidence from the Literature. Systems Engineering, 24(1), 51–66. 10.1002/sys.21566
+Madni, A. M., & Sievers, M. (2018). Model-Based Systems Engineering: Motivation, Current Status, and Research Opportunities. Systems Engineering, 21(3), 172–190. 10.1002/sys.21438
+Jolliffe, I. T., & Cadima, J. (2016). Principal Component Analysis: A Review and Recent Developments. Philosophical Transactions of the Royal Society A, 374(2065), 20150202. 10.1098/rsta.2015.0202
+Martins, J. R. R. A., & Lambe, A. B. (2013). Multidisciplinary Design Optimization: A Survey of Architectures. AIAA Journal, 51(9), 2049–2075. 10.2514/1.J051895
+Martins, J. R. R. A., & Ning, A. (2021). Engineering Design Optimization. Cambridge University Press. 10.1017/9781108980647
+Fulcoly, D. O., Ross, A. M., & Rhodes, D. H. (2012). Evaluating System Change Options and Timing Using the Epoch Syncopation Framework. Procedia Computer Science, 8, 22–30. 10.1016/j.procs.2012.01.009
+Parnell, G. S. (2016). Trade-off Analytics: Creating and Exploring the System Tradespace. Wiley. https://www.wiley.com/en-us/Trade+off+Analytics%253A+Creating+and+Exploring+the+System+Tradespace-p-9781119237532
+Miettinen, K. (1999). Nonlinear Multiobjective Optimization. Springer US. 10.1007/978-1-4615-5563-6
+Schölkopf, B., Smola, A., & Müller, K.-R. (1998). Nonlinear Component Analysis as a Kernel Eigenvalue Problem. Neural Computation, 10(5), 1299–1319. 10.1162/089976698300017467
+Charnes, A., Cooper, W. W., & Rhodes, E. (1978). Measuring the Efficiency of Decision Making Units. European Journal of Operational Research, 2(6), 429–444. 10.1016/0377-2217(78)90138-8
+Show all 65 references
+Scaling Decision Analysis with Hyperbolic Trade Space Identification
+Supporting material
