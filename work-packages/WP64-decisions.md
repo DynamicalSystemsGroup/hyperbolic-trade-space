@@ -85,3 +85,6 @@ The driver's reading, Q1 and Q2 together: one site; a `paper` branch where the p
 runs; on `dev` the `/paper/` slot is the title, the author and the abstract; the paper's release event is the merge of
 `paper` into `dev` and then of `dev` into `main`, which rebuilds the site; conflicts between the branches are expected
 only in links.
+
+**Q3, a DOI per pinned version (15:22 EST):** "Zenodo via GitHub integration" (the popup's option: every GitHub release
+archived with a DOI, the software's as well as the paper's; one switch in Zenodo, no token in the repository).
