@@ -7753,6 +7753,18 @@ source = "WP60, the perovskite page"
 note = "runs.primary.association."
 
 [[claim]]
+id = "C869"
+fragment = "All three metrics contend in each of the four conditioning fits, so the signs carry the reading, not the set or one exponent."
+file = "docs/examples/perovskite.md"
+anchor = "What the fit says"
+kind = "S"
+backing = ["gen:examples/perovskite/variants.py::main", "file:examples/perovskite/variants.json"]
+status = "backed"
+disposition = "keep"
+source = "WP60, the perovskite page"
+note = "Three metrics in all four rows, each contending set of size 3."
+
+[[claim]]
 id = "C870"
 fragment = "Five rows have Voc above 2 V or Jsc above 40 mA/cm2, probably module or unit entries."
 file = "docs/examples/perovskite.md"
@@ -7787,6 +7799,18 @@ status = "backed"
 disposition = "keep"
 source = "WP60, the perovskite page"
 note = "ladder.pce_added.exponents: PCE 0.503, FF 2e-19."
+
+[[claim]]
+id = "C873"
+fragment = "In the detailed-balance limit the band gap sets both the voltage a cell can reach and the current it can collect"
+file = "docs/examples/perovskite.md"
+anchor = "What the fit is asked"
+kind = "L"
+backing = ["bib:shockley1961detailed"]
+status = "backed"
+disposition = "keep"
+source = "WP60, the perovskite page"
+note = "Abstract of Shockley and Queisser 1961, read 2026-11-14 (WP45 record, section 1)."
 
 [[claim]]
 id = "C896"

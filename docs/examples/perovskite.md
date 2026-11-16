@@ -26,7 +26,7 @@ All three come from the current-voltage scan the authors called default. Rows wi
 
 ## What the fit is asked
 
-In the detailed-balance limit the band gap sets both the voltage a cell can reach and the current it can collect: a wider gap raises the first and lowers the second [@shockley1961detailed]. Among the best reported devices, does Voc trade against Jsc, with a negative association near the frontier, or does the fill factor carry the trade?
+In the detailed-balance limit the band gap sets both the voltage a cell can reach and the current it can collect [@shockley1961detailed]. Among the best reported devices, does Voc trade against Jsc, with a negative association near the frontier, or does the fill factor carry the trade?
 
 ## The fit
 
@@ -86,7 +86,7 @@ report.contending_set, report.association, fit.exponents_
 
 ## What the fit says
 
-Near the frontier of reported devices, voltage is gained at the cost of current under every conditioning choice: the pair the detailed-balance limit names is traded. It is not the only trade, nor the strongest in the standard-scaler fit, and its size depends on five suspect rows. All three metrics contend in every fit, so the signs carry the reading, not the set or one exponent.
+Near the frontier of reported devices, voltage is gained at the cost of current under every conditioning choice: the pair the detailed-balance limit names is traded. It is not the only trade, nor the strongest in the standard-scaler fit, and its size depends on five suspect rows. All three metrics contend in each of the four conditioning fits, so the signs carry the reading, not the set or one exponent.
 
 ## What the example cannot show
 
