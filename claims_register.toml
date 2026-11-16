@@ -1163,18 +1163,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "V(km)=kV(m) and V(m/V(m))=1 give m = V(m) * (m/V(m)) with m/V on the frontier"
 
 [[claim]]
-id = "C131"
-fragment = "compiled from `glossary.yaml` and never typed"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["gen:paper/generate_register.py::register_table", "test:tests/test_paper.py::test_register_table_equals_the_glossary", "test:tests/test_paper.py::test_register_committed_output_is_current"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "register_table builds the table from glossary.yaml; tests check rows equal entries and the committed output is current; appendix cell only imports from the generator (test_appendix_cells_import_from_the_generators)"
-
-[[claim]]
 id = "C132"
 fragment = "every term is fitted against every design, each offset"
 file = "paper/supporting_material.ipynb"
@@ -1521,18 +1509,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "pca_directions flips the sign so the largest-magnitude loading is positive; the test asserts '+' on the first listed loading"
-
-[[claim]]
-id = "C161"
-fragment = "with its dropped candidates and the bibliography of all adopted sources"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_paper_sources.py::test_the_six_snapshots_and_the_move_table_exist", "file:docs/superpowers/notes/paper-sources/literature.md", "file:docs/references.bib"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "literature.md exists (test) with Appendix A \"candidates dropped or limited\"; references.bib holds the adopted sources (test_references checks hygiene)."
 
 [[claim]]
 id = "C162"
@@ -9795,3 +9771,36 @@ status = "backed"
 disposition = "keep"
 source = "WP55 (work-packages/WP55-review.md)"
 note = "As the retired C929. As the retired C020. Section 6.2; as stated in their boxes."
+
+[[claim]]
+id = "C1101"
+fragment = "The reading pass, one row per sentence of the paper that rests on a cited work, with the source and the place in it that was read, is"
+file = "paper/supporting_material.ipynb"
+anchor = "G.1 The register"
+kind = "S"
+backing = [
+  "gen:paper/generate_supplement.py::render",
+  "gen:paper/generate_reading_pass.py::reading_pass_table",
+  "test:tests/test_paper.py::test_reading_pass_supplement_equals_its_generator_and_g1_cites_it",
+  "file:paper/supplement/reading-pass.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57a (G.2 moved to the repository; WP57-decisions.md call 2 on the supervisor's WP38 words)"
+note = "The one line at the end of G.1. reading_pass_table(plain=True) writes one row per citing sentence (citing_rows: the record's rows less REMOVED) with the source and the place read; the test compares the file with render('reading-pass.md') and finds the link in G.1."
+
+[[claim]]
+id = "C1102"
+fragment = "the table is `generate_reading_pass.reading_pass_table`'s, written by `uv run python paper/generate_supplement.py`"
+file = "paper/supplement/reading-pass.md"
+anchor = ""
+kind = "S"
+backing = [
+  "gen:paper/generate_supplement.py::write_all",
+  "test:tests/test_paper.py::test_generate_supplement_writes_what_its_generators_return",
+  "test:tests/test_paper.py::test_reading_pass_supplement_equals_its_generator_and_g1_cites_it",
+]
+status = "backed"
+disposition = "keep"
+source = "WP57a"
+note = "generate_supplement.write_all writes render(name) for each file of FILES; the two tests compare the committed file with render and a fresh write in a temporary directory with it."

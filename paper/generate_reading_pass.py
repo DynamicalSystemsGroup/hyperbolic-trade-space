@@ -1,13 +1,14 @@
-"""Appendix G.2: what the paper took from where, from the reading pass of its attributions.
+"""The reading pass: what the paper took from where, from the record of its attributions.
 
 ``reading_pass.yaml`` holds the fifty-six rows of the reading pass
 (``work-packages/WP10-reading-pass.md``, read-only here): the sentence as it was read, the key, the
 place read, the verdict and the reason, each verbatim, plus what the paper now does with the
 sentence (``status`` and ``now``). The file is the record and is made from the Markdown table by
 ``uv run python paper/generate_reading_pass.py`` (which keeps the ``status`` and ``now`` already in
-it); a test compares the two. The table of the appendix shows only what a reader needs to check a
-citation: what we say (the paper's own sentence), the source, the place in it with the source's own
-link. The record's verdict, reason, disposition and fetch addresses are not shown.
+it); a test compares the two. The table shows only what a reader needs to check a citation: what
+we say (the paper's own sentence), the source, the place in it with the source's own link. The
+record's verdict, reason, disposition and fetch addresses are not shown. The table is written to
+``paper/supplement/reading-pass.md`` by ``paper/generate_supplement.py`` and cited from Appendix G.1.
 """
 
 # ruff: noqa: E501
@@ -17,7 +18,7 @@ import re
 import sys
 
 import yaml
-from generate_prior_art import BIB, cite
+from generate_prior_art import BIB, author_year, cite
 from generate_proofs import _esc
 from paper_common import Md, md_table
 from paper_paths import PAPER, ROOT
@@ -241,14 +242,38 @@ def _place_cell(key: str, place: str) -> str:
     return _left(f'{_esc(place)}; <a href="{href}">{_esc(label)}</a>', 18, small=True)
 
 
-def reading_pass_table() -> Md:
+PAPER_PAGE = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/"
+"""The published paper, whose reference list the plain table's source links open."""
+
+
+def reading_pass_table(plain: bool = False) -> Md:
     """What the paper took from where: the sentence, the source, the place in it.
+
+    Parameters
+    ----------
+    plain : bool, default False
+        The notebook's cells carry HTML for column widths and the site's link style, and cite a
+        source by its anchor on the paper's page. ``True`` writes Markdown only, for a file read
+        in the repository: the source is a link to its entry in the published paper's reference
+        list (``PAPER_PAGE``) and the place read ends with the source's own link.
 
     Returns
     -------
     Md
         One row per citing sentence still in the paper, for the reader to check against the source.
     """
+    if plain:
+        rows_ = []
+        for r in citing_rows():
+            href, label = _bib_link(r["key"])
+            rows_.append(
+                [
+                    _esc(r["say"]),
+                    f"[{author_year(r['key'])}]({PAPER_PAGE}#cite-{r['key']})",
+                    f"{_esc(r['place'])}; [{_esc(label)}]({href})",
+                ]
+            )
+        return Md(md_table(["What we say", "Source", "Where in it"], rows_))
     return Md(
         md_table(
             ["What we say", "Source", "Where in it"],

@@ -48,6 +48,9 @@ total = 5900
 "Appendix H" = 0
 # And the top of the supporting material, before Appendix A (its audience line).
 "Supporting material" = 0
+# And Appendices A and F (WP57a: the Job blocks cut).
+"Appendix A" = 0
+"Appendix F" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -1979,3 +1982,55 @@ section = "Methods"
 words_added = 522
 job = "states the one-term fit as Section 3's problem, the thresholds and ties moved from the n-lemma definition, the assumptions A4, A6 and A8 each displayed where used, the several-term alternation as a numbered heuristic with its three levels of guarantee as certificate, and the estimator's code names (the algorithm text moved here from Results, 853 words left that section)"
 reader = "the reader at calculus, linear algebra and convex optimization who follows Section 3's kit into the method"
+
+# WP57a: the front matter and Appendices A, F and G tightened to the step deeper their citing sentences need
+# (WP57-decisions.md; the map work-packages/WP57-rounds/map.md, section 1). Words by map_counts.py, prose of the cells.
+
+[[cut]]
+date = "2026-11-15"
+section = "Supporting material"
+words_removed = 38
+no_longer_did = "the companion paragraph under the title told the reader which appendix is for whom (check the proofs, reproduce the results, read the case model, see the analog tested); the appendix headings carry it"
+authority = "WP57a (the supervisor's direction in WP57-decisions.md: the appendices tightened, no metanarration); the standing rule on metanarration (2026-11-14); map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix A"
+words_removed = 83
+no_longer_did = "the Job block said what the main text, the appendix and the repository each keep, and that the table is compiled from the glossary and never typed; the heading and the table say it, and the register row C131 that rested on the sentence retires"
+authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix F"
+words_removed = 116
+no_longer_did = "the Job block said what Section 11 keeps, what the appendix carries and what the repository keeps; F.1 to F.4 carry it under their headings"
+authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix G"
+words_removed = 186
+no_longer_did = "the Job block argued with an objection ('answer in advance the objection that this work is just some existing method'), counted Section 2's words and listed the appendix's own contents; the scope sentence ('This register is not exhaustive ... read only in part') is queued for the assumptions, limitations and open questions section (work-packages/WP57-rounds/assumptions-queue.md, WP57d); the register row C161 that rested on the Job block retires"
+authority = "WP57a (the supervisor: 'the appendices job IS NOT to opine on the text of the paper'); map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix G"
+words_removed = 12
+no_longer_did = "the pointer cell under the register said that the HoroPCA entry above is tested in Appendix H; the entry's own text cites Appendix H"
+authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix G"
+words_removed = 54
+no_longer_did = "G.2 'What the paper took from where' printed, inside the paper, a 53-row table whose rows quote the paper's own sentences beside the source and the place read, with an introduction saying so; the table is now paper/supplement/reading-pass.md, written by the same function from paper/reading_pass.yaml (the supervisor, WP38: 'keep it in its yaml form for our own checking ... drop it from the supporting materials')"
+authority = "WP57a, the driver's call 2 in WP57-decisions.md on the supervisor's WP38 words; map_counts.py before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Appendix G"
+words_added = 29
+job = "one line at the end of G.1 names the reading pass (one row per citing sentence, the source, the place read) and links its file in the repository"
+reader = "the reader of the register who wants to check what the paper took from a source"

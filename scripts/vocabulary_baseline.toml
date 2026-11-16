@@ -464,3 +464,10 @@ file = "paper/paper.ipynb"
 phrase = "reference surface"
 owner = "WP53 (his review text)"
 reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "dead-entry"
+file = "glossary.yaml"
+phrase = "termination-status"
+owner = "WP57a"
+reason = "BASELINE for the driver: the entry's only use was the register table of Appendix A, which the checker counted as prose because its section tracking misses a heading under an anchor line; the table now lists the entries in use (WP57a), so the entry is dead in every surface; a use in docs/user-guide/termination.md or the entry's deletion is the driver's call"
