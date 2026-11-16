@@ -2632,3 +2632,4 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 - **His direction on the wheat figure (15:51).** Labeled level sets of V in place of the single V = 1 line (WP63-decisions.md, verbatim). A redraw unit through the figure loop, dispatched after the register repair lands.
 - **His follow-on on the plotting method (15:51).** If the level sets work well: the method itself and every use of it (the paper included) follow in a second unit (WP63-decisions.md).
 - **His three design answers recorded; WP66a scoped, approved as proxy and dispatched (15:56).** Review rule with him as bypass; site-only redeploy on a merge without a new version; a code owner approves a paper tag's publication (the paper-release environment). WP66a lands last.
+- **Register repaired at 2e01b23c (15:58).** 39 rows re-anchored, two perovskite sentences narrowed to their backing with their rows restored (WP63-decisions.md); CI dispatched.

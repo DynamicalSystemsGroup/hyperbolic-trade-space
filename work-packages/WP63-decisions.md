@@ -68,3 +68,19 @@ The driver's reading: two steps. First the wheat figure redrawn with level sets 
 `levels` option of `plot_log_plane` that leaves every existing call unchanged; if it works well on his read, a second
 unit makes the level sets the method's drawing and updates every use of the method (the paper's notebooks, the docs'
 pages, the examples), each use re-judged by the figure loop, the register and the paper tests following.
+
+## The register repaired after the redraft (15:58 EST)
+
+CI on the WP63 head failed `test_the_register_holds`: 41 rows anchored to the example pages' old sentences and
+headings. Landed at 2e01b23c: 39 rows re-anchored to the sentences and headings that now carry their claims (21 by
+heading only, 18 by new wording; three kept where part of the original sentence was cut and the surviving part
+means the same: C845, C846, C906, the last now scoped to the thirteen grain-and-straw rows, -0.62 to -0.90, which
+the variants file confirms). The unit's two calls to the driver, decided by the claims rule (narrow, never widen the
+backing): the perovskite answer "All three metrics contend in every fit" overclaimed, since the no-scaler fit's set
+is Voc and FF; it now reads "in each of the four conditioning fits" and C869 is re-anchored to it. The question's
+physics sentence carried a directional claim ("a wider gap raises the first and lowers the second") that no verified
+source in the record backs; it now reads "the band gap sets both the voltage a cell can reach and the current it can
+collect", which the abstract read in the WP45 record backs, and C873 is re-anchored to it. The directional sentence
+can return with a verification entry if he wants it (WP58). Register: 748 rows, no id added or reused. The driver's
+run: register 21 passed; fast suite 2,096 passed on the repair; the record, budget and table tests on the two
+narrowed sentences green; lint and format clean. CI dispatched.
