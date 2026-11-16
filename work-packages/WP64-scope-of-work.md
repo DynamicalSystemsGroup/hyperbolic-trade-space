@@ -1,97 +1,93 @@
-# WP64 — Scope of work: the paper's lifecycle mode, apart from the software's release
+# WP64 — Scope of work: two release control models (stage 1, the research spike)
 
 | | |
 |---|---|
-| **Status** | DRAFT, approved by the driver as his proxy on his direction of 2026-11-16 (quoted in `WP64-decisions.md`) |
+| **Status** | DRAFT, approved by the driver as his proxy on his direction of 2026-11-16 (quoted in `WP64-decisions.md`); stage 1 of the six-stage lifecycle (research spike, decide, build, quality control, integrate, review the cascade) |
 | **Supervisor (accountable)** | mzargham |
-| **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`, branch `dev`; `scripts/assemble_site.py`, `scripts/stage_site.py`, `scripts/paper_keys.py`, `site/`, `tests/test_site.py`, `work-packages/WP8b-release-checklist.md`, `work-packages/release-candidate.md`, `CHANGELOG.md`, `README.md` |
+| **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; reads `.github/workflows/`, `scripts/assemble_site.py`, `scripts/stage_site.py`, `scripts/paper_keys.py`, `paper/`, `site/`, `pyproject.toml`, `work-packages/WP8b-release-checklist.md`, `work-packages/release-candidate.md` |
 | **Approval record** | The driver's approval under his mandate, quoted in `WP64-decisions.md` |
-| **Acceptance record** | The driver's soft-confirm on captures of the assembled site in each mode; his read afterwards |
+| **Acceptance record** | The driver's acceptance of the readout against this scope; the design stage's scope goes to him with his decisions |
 
 ## Purpose
 
-His direction (`WP64-decisions.md`, verbatim there): the paper gets "a simple life cycle mode": first the abstract
-only, "then its a working paper, while i am iterating on it", then pinned to a submission, then pinned again for
-revisions; "the paper should get a paper lifecycle and the package should get an open source software lifecycle"; "at
-release of the software i think the abstract is sufficient and the abstract is approved"; and, since the repository is
-open source and anyone who pulls it can build the paper, the site does not call the paper forthcoming: "we can just say
-we're iterating towards a paper release".
+His direction (`WP64-decisions.md`, verbatim there): two separate release control models, "one for the paper which is
+triggered event driven and probably builds from its own branch", and "the flow for the documentation and pypi release
+which we gate around merging to main"; the paper on a four-mode lifecycle (the abstract only; working paper;
+submitted, pinned; revision, pinned again), the abstract approved and sufficient for the software's release; the
+repository is open source, so the site says the paper is iterated towards release and builds from the repository, not
+"forthcoming"; "a significant reconfiguration", so a spike first, then design, implement, test, integrate, test again.
 
 ## Goals
 
-- G1. **One declared mode in one place**, read by the site assembly: `abstract` (the abstract only), `working` (the
-  whole paper, iterated), `submitted` (pinned to a commit or tag for a submission) and `revision` (pinned again). The
-  mode carries the pin where one applies. Changing the mode is one edit; nothing else moves.
-- G2. **The paper slot of the site per mode.** In `abstract` mode `/paper/` is one page: the paper's title, the
-  author, the approved abstract (read from `paper/paper.ipynb`'s front matter at build time, so the page cannot drift
-  from it), one or two sentences that the paper is being iterated towards release and builds from the repository, with
-  the command, and the links to the documentation and the project home. In `working` mode the whole paper as today,
-  with the mode stated once on the article (working paper, the commit). In the pinned modes the whole paper built from
-  the pin, the pin stated once.
-- G3. **The root page's card for the paper per mode**: in `abstract` mode it names the abstract and the iteration
-  towards release; in the other modes as now.
-- G4. **The docs' `paper:` citations in `abstract` mode** resolve as today at build time (the keys exist in the
-  notebooks) and render as links to the abstract page, so no docs sentence changes and no link breaks; in the other
-  modes as today.
-- G5. **Two release checklists.** `WP8b-release-checklist.md` split: the software's (version, changelog, lock; local
-  checks; CI on both platforms; the docs' reader round; the staged site in `abstract` mode; merge, tag, PyPI; after the
-  tag) and the paper's (the container regression and re-pinning, the cold reproduction from the reproducibility
-  appendix, the paper's reader round, the pin per mode, the repository links to `blob/main` at release per his answer of
-  2026-11-16). `release-candidate.md` gains a dated section stating the two lifecycles; `CHANGELOG.md` and `README.md`
-  say the paper's mode where they name the paper.
+- G1. **A map of the machinery as it is:** every workflow in `.github/workflows/` with its triggers, branches,
+  environments and artefacts (tests, Pages deploy, TestPyPI and PyPI release, the PR gates); the site assembly and
+  staging (`assemble_site.py`, `stage_site.py`, the root page, the paper slot and its placeholder); the docs' `paper:`
+  citations (`paper_keys.py`: keys read from the notebooks at build time); the paper's build (`paper/`, mystmd, the
+  container of record, `RECORD.md`); what the paper reads from the software side (the package, `examples/adcs`, the
+  datasets, the generators) and what the software side reads from the paper (the docs' links, the root page, the
+  reviewer's guide, the tests under `tests/test_paper.py`, the CI job `docs-paper`); the release checklist's rows by
+  which side they serve.
+- G2. **The couplings and the constraints:** everything that today forces the two releases to move together, each
+  with the mechanism that couples it and what it would take to cut or to bridge it (for example: the docs' keys
+  resolved against the paper's notebooks; the paper's data regenerated from the package; the suite running the paper's
+  tests; one site build serving both; one version).
+- G3. **Candidate designs, two or three, for each control model,** each with: the branch or branches (the paper on its
+  own branch, as he expects; what lives there, how it takes software changes, how it feeds back); the events that
+  trigger a build or a release (a push, a tag of a given shape, a manual dispatch, a mode change); the gates (what
+  must be green; who approves; where the record lands); the artefacts (the paper's HTML and where it is served; the
+  docs site; the wheel and sdist; the tags and versions; Zenodo or arXiv if the paper's lifecycle wants a DOI per
+  pin); how the four paper modes map onto the events; and the failure modes (a paper build on the software's head
+  that no longer matches; a docs link to a paper key the paper branch renamed; a Pages deploy that needs both). State
+  for each design what it costs to build and what it costs the reader, the author and the maintainer.
+- G4. **The decisions that are his,** each as a question with plain options and what each option implies, in the
+  decision loop's form (one at a time, no recommended tag); the driver's own calls listed apart.
+- G5. **The package sequence after the spike:** the design package (stage 2, scoped from the readout and his
+  answers), build, quality control, integrate and the cascade review, each with its deliverable and its gate, and what
+  of the release candidate (`release-candidate.md`, the checklist, the reviewer's guide) each one amends.
 
 ## Non-goals
 
-No change to the paper's content, build or tests; no change to the package; no deploy, tag or PyPI step; no change to
-the docs' prose beyond what G4 requires (none expected); no removal of the `docs-paper` CI job (the repository still
-guards the paper); the mode for 0.1 is `abstract` and the switch to `working` is his.
+No change to any workflow, script, page, test, checklist or record in this package; no deploy, tag or publish; no
+opinion on the paper's content; the abstract page and the mode file are designed here and built in the build stage.
 
 ## Deliverables
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | The mode file and its reader in `scripts/` (default: `paper/lifecycle.toml` with `mode` and `pin`), `assemble_site.py` and `stage_site.py` rendering the slot per mode; the stale placeholder page replaced by the abstract page's template | G1, G2 |
-| D-2 | The root page's card per mode | G3 |
-| D-3 | `scripts/paper_keys.py` rendering per mode; tests | G4 |
-| D-4 | `work-packages/WP8b-release-checklist.md` split into `release-checklist-software.md` and `release-checklist-paper.md` (the old file's rows kept with their states, each row in one of the two); the dated section in `release-candidate.md`; `CHANGELOG.md`; `README.md` | G5 |
-| D-5 | `work-packages/WP64-readout.md` with captures under `work-packages/WP64-rounds/`: the root page and `/paper/` in `abstract` mode, a docs link landing there, and `/paper/` in `working` mode | acceptance |
+| D-1 | `work-packages/WP64-rounds/readout.md`: the map (G1), the couplings (G2), the candidate designs (G3), his decisions (G4), the sequence (G5); diagrams as text tables or ASCII where a picture is shorter than prose | G1 to G5 |
+| D-2 | `work-packages/WP64-rounds/machinery.toml` (or `.md`): the inventory of G1 in a form the design package can diff against after the build | G1 |
 
 ## Requirements and checks
 
 | ID | Requirement | Check |
 |---|---|---|
-| R-1 | In `abstract` mode `stage_site.py` exits 0 without building the paper and without a kernel; in `working` mode it builds the paper as today | the two runs' exit codes and the staged tree |
-| R-2 | The abstract on the page equals the notebook's front-matter abstract, the title the notebook's title | a test in `tests/test_site.py` that reads `paper/paper.ipynb` |
-| R-3 | Every `paper:` key in the docs resolves in every mode; the docs build passes | `uv run mkdocs build -q` in each mode; a test |
-| R-4 | The site's existing tests hold (the root-page register, the phone rule, word budgets, figure numbers) | `uv run pytest -q tests/test_site.py tests/test_docs.py` |
-| R-5 | No metanarration; the page says the paper is iterated towards release and builds from the repository, never "forthcoming" or a date | `scripts/check_residuals.py --compare scripts/residuals_baseline.json --strict` with no new rise; `check_vocabulary.py` 0 new; a read |
-| R-6 | Lint, format, lock; fast suite; no attribution line; nothing outside the named files | `uv run ruff check .`; `uv run ruff format --check .`; `uv lock --check`; `uv run pytest -q -m "not slow" -n auto`; `git diff --stat dev` |
-| R-7 | Each checklist row of the old file appears in exactly one of the two new files with its state | a diff of the row ids |
+| R-1 | Every workflow, script and coupling named in the readout exists at the commit read, cited by path and line | a grep of each citation |
+| R-2 | Each candidate design states its events, branches, gates, artefacts, the mode mapping and its failure modes; none is left implicit | the readout's design tables have no empty cell |
+| R-3 | Each question for him has two to four plain options with their implications and no recommendation | a read |
+| R-4 | The readout is under about 4,000 words with the inventory apart; no metanarration | `wc -w`; a read |
+| R-5 | Nothing outside `work-packages/WP64-rounds/` changes; no attribution line | `git diff --stat dev` |
 
 ## Definition of good
 
-A reader of the public site at 0.1 reads the paper's abstract, learns the paper is being iterated towards release and
-builds from the repository, and reaches the docs in one click; the paper's mode changes by one value; each lifecycle
-has its own checklist and neither waits on the other.
+The design stage can be scoped from the readout alone: the author decides the questions that are his, and a builder
+knows what to change, in what order, with what tests, to give the paper an event-driven release from its own branch
+and the software a release gated on the merge to main, with neither waiting on the other.
 
 ## Definition of good enough
 
-D-1 to D-5 delivered; R-1 to R-7 met; the mode set to `abstract`; the driver's soft-confirm on the captures; landed on
-`dev` for his read.
+D-1 and D-2 delivered; R-1 to R-5 met; the driver's acceptance recorded; his questions posed to him one at a time from
+the readout.
 
 ## Definition of done
 
-Good enough met, no open item, his read recorded in `WP64-decisions.md`.
+Good enough met; the design package scoped and approved; his decisions recorded in `WP64-decisions.md`.
 
 ## Open decisions
 
-None for him before the delivery; the abstract page's wording and the split checklists go to his read.
+None before the readout; the readout produces them.
 
 ## Agent's defaults
 
-- Mode names `abstract`, `working`, `submitted`, `revision`; the file `paper/lifecycle.toml`; `pin` a commit or tag,
-  required for the pinned modes and refused otherwise.
-- The abstract page is served at `/paper/` in the root page's style (`site/` templates), not the article theme.
-- In `abstract` mode the `paper:` citation renders `/paper/` without an anchor; the supporting material's keys the same.
-- One unit on branch `wp64`, worktree prepared by the driver; captures by headless Playwright at 1,280 px from a stage
-  served on a port above 8880, stopped after.
+- One unit on branch `wp64` in the prepared worktree; it reads GitHub's workflow docs with WebFetch where a trigger's
+  semantics matter (tags on a commit of main; `pull_request_target`; Pages environments) and cites them.
+- The paper's own branch is assumed to be named `paper` in the candidates, as a placeholder he can rename.

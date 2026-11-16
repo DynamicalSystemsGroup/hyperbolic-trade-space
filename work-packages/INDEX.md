@@ -74,7 +74,7 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 60 | The three example pages | landed, his read pending | 022c4d2 | 65b0683 | in place until his read; then in history |
 | 61 | The work-packages directory indexed and thinned | landed | 48d1e39 | a1a73ab | in place (the protocol) |
 | 63 | The examples with an arc (spike: a template, the four example pages redrafted) | scoped and approved as proxy; unit dispatched | 059132d3 | not landed | in place (not landed or in flight) |
-| 64 | The paper's lifecycle mode apart from the software's release (abstract page for 0.1; checklists split) | scoped and approved as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
+| 64 | Two release control models: the paper event-driven from its own branch, the software gated on the merge to main (stage 1, the research spike) | re-scoped as the spike and approved as proxy; unit dispatched | pending | not landed | in place (not landed or in flight) |
 
 ## Notes, spike outputs and supporting content removed from the tree
 
