@@ -471,7 +471,8 @@ def readopt(root: Path, ledger: Path, note: str = READOPT_NOTE) -> list[dict]:
     """Append ``<id>@<n>`` superseding each current entry whose code or model file changed while
     its output did not (a frozen output); return the new entries.
 
-    The new entry copies the old one, records the files' present hashes, names the changed files
+    The new entry copies the old one, records the files' present hashes (and the toolkit runtime of
+    the superseded entry, since nothing is re-run), names the changed files
     and ``note``, and points its parents at their current entries. An entry whose output also
     differs from the recorded hash is left alone, so ``verify`` still reports it.
     """
@@ -505,7 +506,11 @@ def readopt(root: Path, ledger: Path, note: str = READOPT_NOTE) -> list[dict]:
             git_commit=commit,
             git_dirty=dirty,
             code=lg.hash_files(root, tuple(e.get("code", {}))),
-            versions=lg.versions(),
+            # the toolkit runtime that produced the frozen output stays: nothing is re-run
+            versions={
+                **lg.versions(),
+                **{k: v for k, v in e["versions"].items() if k == "runtime"},
+            },
             platform=lg.platform_string(),
         )
         if e.get("model_path"):
