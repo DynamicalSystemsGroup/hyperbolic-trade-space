@@ -30,15 +30,15 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 29
+contract_version = 30
 
 [package]
-import_name = "hyperbolic_trade_space"
-distribution_name = "hyperbolic-trade-space"
-src_dir = "src/hyperbolic_trade_space/"
+import_name = "tradespace"
+distribution_name = "tradespace"
+src_dir = "src/tradespace/"
 version = "0.1.0"
 version_format = "PEP 440, MAJOR.MINOR.PATCH"
-version_sources = ["pyproject.toml [project].version", "hyperbolic_trade_space.__version__"]
+version_sources = ["pyproject.toml [project].version", "tradespace.__version__"]
 version_changed_by = "WP8b"
 public_names = [
   "HyperbolicTradeSpace",
@@ -98,7 +98,7 @@ methods = [
 # Constructor keyword of the term aggregation (version 9, WP21 D-1): default and the values fit accepts.
 term_aggregation_default = "sum"
 term_aggregation_values = ["sum", "mean"]
-termination_class = "hyperbolic_trade_space.solvers.Termination"
+termination_class = "tradespace.solvers.Termination"
 termination_fields = [
   "status", "reason", "n_iter", "sum_residual", "floor_residual", "offset_residual", "max_gap",
   "bound", "loss_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
@@ -108,8 +108,8 @@ termination_statuses = [
   "certified", "stationary_without_margin", "stationary", "uncertified", "guard_stop",
   "iteration_cap", "not_applicable",
 ]
-# Per-term report: the fields of hyperbolic_trade_space.tensions.TradeOffReport.
-report_class = "hyperbolic_trade_space.tensions.TradeOffReport"
+# Per-term report: the fields of tradespace.tensions.TradeOffReport.
+report_class = "tradespace.tensions.TradeOffReport"
 report_fields = [
   "participating", "exponents", "elasticities", "association", "association_kind",
   "closure_note", "spread_directions", "spread_loadings", "explained_spread", "contending_set",
@@ -145,7 +145,7 @@ sources_satisfying = ["simulator", "physical test", "human assessment"]
 forbidden_words = "defined in tests/test_interface_contract.py (the two modeling-tool words and tool-version strings); not repeated here; this manifest is not scanned because two ownership paths are model files whose names contain the word"
 scan_files = [
   "work-packages/interface-contract.md",
-  "src/hyperbolic_trade_space/__init__.py",
+  "src/tradespace/__init__.py",
 ]
 
 [boundary.oracle]
@@ -301,7 +301,7 @@ root_index_source = "site/index.html"
 root_index_out = "_site/index.html"
 site_dir = "_site/"
 public_paths = ["/", "/docs/", "/paper/"]
-public_url = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
+public_url = "https://dynamicalsystemsgroup.github.io/tradespace/"
 workflow = ".github/workflows/release.yml"
 site_workflow = ".github/workflows/site.yml"
 pages_deploy_workflow = ".github/workflows/pages-deploy.yml"

@@ -292,8 +292,8 @@ def richness(
     pass the four flags (``dod_ok`` with them since the close-out; on the frozen frames it removes
     exactly the rows the reserve's positivity removed) and have every attribute positive.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace
-    from hyperbolic_trade_space import solvers as S
+    from tradespace import HyperbolicTradeSpace
+    from tradespace import solvers as S
 
     attrs = [a for a in ORIENTATION if a in df.columns] if attrs is None else list(attrs)
     power = [a for a in POWER if a in attrs]

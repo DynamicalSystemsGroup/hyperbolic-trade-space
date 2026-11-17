@@ -94,7 +94,7 @@ def clean(obj):
 
 def read(M, names, extra=None):
     """The record's reading of one variant: fit_read plus elasticities and the spread direction."""
-    from hyperbolic_trade_space import HyperbolicTradeSpace, trade_off_report
+    from tradespace import HyperbolicTradeSpace, trade_off_report
 
     res = fitkit.fit_read(M, names, taus=(), k2=True, seed=SEED)
     res.pop("by_temperature", None)
@@ -137,7 +137,7 @@ def build(x):
     )
     yield PRIMARY, primary_rule, len(x), condition(x), gs, {}
 
-    from hyperbolic_trade_space import LogAffinePreconditioner
+    from tradespace import LogAffinePreconditioner
 
     yield (
         "no_scaler",

@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | DRAFT. Approved only by the recorded act below. Nothing in this package is executed before then. |
 | **Supervisor (accountable)** | mzargham |
-| **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space` (local: `/Users/z/Documents/GitHub/posynomial-invariant-form`); work on `dev` |
+| **Repository** | `DynamicalSystemsGroup/tradespace` (local: `/Users/z/Documents/GitHub/posynomial-invariant-form`); work on `dev` |
 | **Approval record** | The driver's approval under the mandate (`release-candidate.md`), quoted verbatim in `work-packages/WP25-decisions.md` |
 | **Acceptance record** | The driver's acceptance under the mandate, quoted verbatim in `work-packages/WP25-decisions.md`, after `work-packages/WP25-review.md` |
 

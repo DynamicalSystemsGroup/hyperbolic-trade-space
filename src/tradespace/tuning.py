@@ -67,8 +67,8 @@ def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, 
 
     Examples
     --------
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-    >>> from hyperbolic_trade_space import select_temperature
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace import select_temperature
     >>> X, _ = make_frontier_data(300, 3, noise=0.05, random_state=0)
     >>> tau = select_temperature(X, 0.10)
     >>> est = HyperbolicTradeSpace(temperature=tau).fit(X)

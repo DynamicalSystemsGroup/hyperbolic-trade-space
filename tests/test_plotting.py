@@ -12,8 +12,8 @@ import numpy as np
 import pytest
 from matplotlib.axes import Axes
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-from hyperbolic_trade_space import plotting as P
+from tradespace import HyperbolicTradeSpace, make_frontier_data
+from tradespace import plotting as P
 
 
 @pytest.fixture(autouse=True)
@@ -122,12 +122,12 @@ def test_module_does_not_import_matplotlib_at_import_time():
     import subprocess
     import sys
 
-    code = "import sys, hyperbolic_trade_space.plotting; sys.exit('matplotlib' in sys.modules)"
+    code = "import sys, tradespace.plotting; sys.exit('matplotlib' in sys.modules)"
     assert subprocess.run([sys.executable, "-c", code], check=False).returncode == 0
 
 
 def test_plot_tensions_with_real_report():
-    from hyperbolic_trade_space import tensions
+    from tradespace import tensions
 
     X, _ = make_frontier_data(500, 3, random_state=0)
     hts = HyperbolicTradeSpace().fit(X)
@@ -484,7 +484,7 @@ def test_ternary_marker_values_needs_three_metrics():
 
 
 def _planted_k3_reports(band):
-    from hyperbolic_trade_space import trade_off_report
+    from tradespace import trade_off_report
 
     W = [[0.5, 0.5, 0, 0], [0, 0.5, 0.5, 0], [0, 0, 0.5, 0.5]]
     X, _ = make_frontier_data(900, 4, exponents=W, n_terms=3, random_state=0)

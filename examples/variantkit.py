@@ -47,7 +47,7 @@ def fit_variant(M, names, k2=True, target=0.10, seed=0):
     of the first spread direction, and K = 2 (shares, exponents per term, mean slack, the sets).
     A failure is recorded under ``error``; nothing is written to stderr.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace, select_temperature, trade_off_report
+    from tradespace import HyperbolicTradeSpace, select_temperature, trade_off_report
 
     M = np.asarray(M, float)
     names = list(names)

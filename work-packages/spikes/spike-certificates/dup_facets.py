@@ -1,8 +1,8 @@
 """Are the tau = inf guard stops duplicate facets (two identical planes)?"""
 import numpy as np
 from sklearn.utils import check_random_state
-from hyperbolic_trade_space.datasets import make_frontier_data
-from hyperbolic_trade_space.solvers import _solve_terms_once
+from tradespace.datasets import make_frontier_data
+from tradespace.solvers import _solve_terms_once
 kw = {"min_exponent": 0.0, "penalty": None, "alpha": 0.0, "tol": 1e-10, "max_iter": 500}
 seeds5 = check_random_state(0).randint(0, 2**31 - 1, size=5)
 for s, j in [(0, 0), (0, 3), (1, 3), (3, 2), (8, 2), (9, 1), (9, 3), (16, 1), (17, 4)]:

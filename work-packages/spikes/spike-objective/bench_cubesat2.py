@@ -20,7 +20,7 @@ from k_terms import DATA, NAMES, REGIMES, load_metrics  # noqa: E402
 from methods import match, refit_B, refit_D, solver_init, support_beta  # noqa: E402
 from objectives import MINIMIZE, OBJECTIVES, alternate_traced, make_refit_G  # noqa: E402
 
-from hyperbolic_trade_space import select_temperature  # noqa: E402
+from tradespace import select_temperature  # noqa: E402
 
 feasible, M = load_metrics(DATA / REGIMES["primary"])
 U = np.log(M)

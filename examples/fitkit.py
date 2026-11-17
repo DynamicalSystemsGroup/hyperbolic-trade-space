@@ -103,7 +103,7 @@ def fit_read(M, names, target=0.10, taus=(3.0, 10.0, 30.0, 100.0, np.inf), k2=Tr
         JSON-ready: counts, selected temperature, K = 1 exponents, contending set at tau = inf,
         the near-frontier association, the table over temperatures, and the K = 2 terms.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace, select_temperature, trade_off_report
+    from tradespace import HyperbolicTradeSpace, select_temperature, trade_off_report
 
     M = np.asarray(M, float)
     names = list(names)

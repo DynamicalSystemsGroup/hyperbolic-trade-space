@@ -20,7 +20,7 @@ sys.path[:0] = [str(ROOT / "examples" / "adcs"), str(ROOT / "src")]
 
 import case  # noqa: E402
 
-import hyperbolic_trade_space as hts  # noqa: E402
+import tradespace as hts  # noqa: E402
 
 study = case.load_study("primary")
 U = np.log(study.M)

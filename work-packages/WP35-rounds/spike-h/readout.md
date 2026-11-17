@@ -329,7 +329,7 @@ HoroPCA (R = 0.25, 1) follows the spread of the rows; this work follows the edge
 spread, and then they part: so they do different things. That makes them complementary: a PCA of a table says along
 which combinations the sampled designs spread; this work says where the table stops. The paper already chains them:
 Appendix D.16 runs a principal component analysis on the chart coordinates of the near-frontier designs in a term's
-cell (`orient_by_pca`, `tension_report`, `src/hyperbolic_trade_space/gaps.py`, `tensions.py`), which reads the trade-offs
+cell (`orient_by_pca`, `tension_report`, `src/tradespace/gaps.py`, `tensions.py`), which reads the trade-offs
 the sampling exercised, "a reading and not a result". A HoroPCA of the chart is the same kind of chain and has not been
 run here. What is not established: that HoroPCA is "worse" at anything it was built for, that no embedding of
 the log-metrics gives it the edge, or anything about the cubesat beyond context.

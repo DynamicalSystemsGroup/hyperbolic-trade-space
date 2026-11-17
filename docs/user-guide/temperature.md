@@ -13,12 +13,12 @@ and above.
 <!-- vocab-exempt: select temperature; plot temperature -->
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
     select_temperature,
 )
-from hyperbolic_trade_space.plotting import (
+from tradespace.plotting import (
     plot_temperature_path,
     temperature_path,
 )

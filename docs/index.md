@@ -1,4 +1,4 @@
-# hyperbolic-trade-space
+# tradespace
 
 For an analyst with a table of evaluated designs. The [paper](paper:sect-problem) makes the argument for the method; the [project page](../) links it, these docs and the package.
 
@@ -9,7 +9,7 @@ For an analyst with a table of evaluated designs. The [paper](paper:sect-problem
 - [See the worked case](examples.md): a cubesat trade study, a synthetic satellite demonstrator.
 - [Pick a point on the chart and get a design](bridge.md): the route back, the conjecture it is and how to check it.
 
-`hyperbolic_trade_space` learns the shape of a design trade space from evaluated designs. Give it a
+`tradespace` learns the shape of a design trade space from evaluated designs. Give it a
 table of designs, each scored on several metrics where larger is better, and it fits a frontier
 model in the posynomial invariant form: a sum of terms, where a term (a product of
 powers of the metrics) is one trade-off. It then tells you which metrics contend, with what
@@ -18,12 +18,12 @@ elasticity, where each design sits relative to the fitted reference surface, and
 A first fit, on a synthetic table of 300 designs scored on 3 metrics:
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
     trade_off_report,
 )
-from hyperbolic_trade_space.plotting import plot_log_plane
+from tradespace.plotting import plot_log_plane
 
 X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)

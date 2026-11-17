@@ -69,7 +69,7 @@ In flight and not part of the release decision: WP8b (its checklist is `release-
 
 - The release run watched to its end: the tag, PyPI, the site, the GitHub release.
 - `git branch paper dev && git push origin paper`; the `paper` ruleset applied.
-- `danlessa` (and Rohan, once his GitHub login is in `CODEOWNERS`) added as Owner of `hyperbolic-trade-space` on PyPI
+- `danlessa` (and Rohan, once his GitHub login is in `CODEOWNERS`) added as Owner of `tradespace` on PyPI
   and TestPyPI (Manage, Collaborators), by him in his signed-in session: the project exists only after the first
   publish, and trusted publishing creates it under the account that registered the pending publisher.
 - The punch list's post-release checks loaded live (`work-packages/release-punch-list.md`).

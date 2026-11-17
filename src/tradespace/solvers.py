@@ -93,7 +93,7 @@ class SolveResult:
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space.solvers import SolveResult
+    >>> from tradespace.solvers import SolveResult
     >>> r = SolveResult(np.array([1.0]), 0.0, np.array([1.0]), 0.0, 1, True, "ok")
     >>> r.success, r.w.tolist()
     (True, [1.0])
@@ -1377,7 +1377,7 @@ def solve_terms(
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space.datasets import make_frontier_data
+    >>> from tradespace.datasets import make_frontier_data
     >>> U = np.log(make_frontier_data(60, 3, random_state=0)[0])
     >>> r = solve_terms(U, 1, 20.0)
     >>> r.W.shape, r.labels.tolist() == [0] * 60

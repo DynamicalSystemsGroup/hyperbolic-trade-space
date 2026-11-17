@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "hyperbolic-trade-space"
+title: "tradespace"
 abstract: >-
   Learn the shape of a design trade space: a scikit-learn-compatible posynomial (monomial first)
   frontier model with an invertible log-ratio chart, SymPy-verified derivations, and an ADCS
@@ -11,8 +11,8 @@ authors:
     given-names: Michael
     orcid: "https://orcid.org/0000-0001-5279-690X"
     affiliation: Dynamical Systems Group
-repository-code: "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
-url: "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
+repository-code: "https://github.com/DynamicalSystemsGroup/tradespace"
+url: "https://dynamicalsystemsgroup.github.io/tradespace/"
 license: MIT
 # Set with pyproject.toml's version by the release package; the date is the release's.
 version: 0.1.0

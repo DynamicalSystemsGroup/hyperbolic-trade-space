@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path.cwd() / "examples" / "adcs"))
 from certificates import termination_report  # noqa: E402
 from k_terms import DATA, REGIMES, load_metrics, select_tau  # noqa: E402
 
-from hyperbolic_trade_space.solvers import solve_terms  # noqa: E402
+from tradespace.solvers import solve_terms  # noqa: E402
 
 # the taus of the spike's own run, recorded in docs/superpowers/notes/k3-cubesat.md (deleted; last
 # version at 4409920); recomputed below if --select is given

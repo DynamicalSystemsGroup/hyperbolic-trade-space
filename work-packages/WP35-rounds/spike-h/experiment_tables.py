@@ -16,7 +16,7 @@ import warnings
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+from tradespace import HyperbolicTradeSpace, make_frontier_data
 
 D, N = 4, 300
 SEEDS = range(100, 106)

@@ -24,7 +24,7 @@ All notable changes to this project are recorded here, in the format of
   when the release workflow calls it (WP67).
 - Windows as a third platform for the fast and slow test shards, run on dispatch and at gates; the paper's tests
   run in the paper's workflow (WP34).
-- The package `hyperbolic_trade_space` (alias `hts`): the posynomial invariant form for a trade
+- The package `tradespace` (alias `hts`): the posynomial invariant form for a trade
   space, with the scikit-learn estimator `HyperbolicTradeSpace` (fit, `transform`,
   `inverse_transform`, `score_samples`), the frontier chart (Helmert and additive-log-ratio
   coordinates) and the entropic (log-mean-exp) soft maximum (WP2).
@@ -97,10 +97,12 @@ All notable changes to this project are recorded here, in the format of
 
 ### Changed
 
+- The package is named `tradespace` (import name `tradespace`, distribution name `tradespace`); it was
+  `hyperbolic-trade-space` during development and was never released under that name (WP77).
 - The case study moves onto the model of record: the nine-attribute datasets, the settling time by
   event detection, and the K = 1, 2, 3 record and the paper's numbers regenerated on them inside
   the container of record; every moved number is listed with its cause in
-  [`work-packages/swap-evidence.md`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/4f81a4ea3649ff844cff2acdf9d447285cbb0fc5/work-packages/swap-evidence.md), and the earlier data stays as the cited comparison (WP16,
+  [`work-packages/swap-evidence.md`](https://github.com/DynamicalSystemsGroup/tradespace/blob/4f81a4ea3649ff844cff2acdf9d447285cbb0fc5/work-packages/swap-evidence.md), and the earlier data stays as the cited comparison (WP16,
   WP23).
 - The word "facet" is gone from every surface, including the package's public names: the model's
   objects are monomial terms (term assignment, distinct terms, per-term shares), the paper, the

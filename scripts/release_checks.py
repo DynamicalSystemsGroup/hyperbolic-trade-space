@@ -42,7 +42,7 @@ PINNED = re.compile(r"^[\w.-]+/[\w.-]+(?:/[\w./-]+)?@[0-9a-f]{40}$")
 # The files whose change needs a new version; a merge that leaves them unchanged since the tag
 # redeploys the site only.
 PACKAGE_FILES = ("src", "pyproject.toml", "uv.lock")
-PYPI_JSON = "https://pypi.org/pypi/hyperbolic-trade-space/{version}/json"
+PYPI_JSON = "https://pypi.org/pypi/tradespace/{version}/json"
 
 
 def changelog_section(text: str, version: str) -> str | None:

@@ -3,7 +3,7 @@ version: 1
 # (hc-scipy-2026/papers/michael_zargham/myst.yml); the outline and development follow the IEEE
 # structure recorded in work-packages/WP10-decisions.md. Standalone: it does not extend a shared file.
 project:
-  id: hyperbolic-trade-space-paper
+  id: tradespace-paper
   # paper.ipynb is the paper (the notebook is the paper); supporting_material.ipynb is published
   # beside it as the lettered appendices (Appendices A to H).
   index: paper.ipynb
@@ -17,7 +17,7 @@ project:
   description: |
     A scikit-learn-compatible posynomial frontier model that identifies the trade-offs in a table of
     evaluated designs, with every claim backed by computationally verifiable supporting material.
-  github: https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
+  github: https://github.com/DynamicalSystemsGroup/tradespace
   authors:
     - name: Michael Zargham
       orcid: 0000-0001-5279-690X

@@ -29,12 +29,12 @@ The [temperature](../generated/glossary.md) is the one that puts a tenth of the 
 
 ```python {.runnable}
 import pandas as pd
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     select_temperature,
 )
-from hyperbolic_trade_space.plotting import plot_log_plane
+from tradespace.plotting import plot_log_plane
 
 path = "examples/wheat/derived/grain_straw.csv"
 raw = pd.read_csv(path)[["grain", "straw"]].to_numpy()

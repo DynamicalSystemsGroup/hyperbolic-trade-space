@@ -54,7 +54,7 @@ def derive(df, grain, straw, year=None, plot=None, treatment=None, cultivar=None
 
 def condition(x):
     """Grain and straw as larger-is-better metrics (orientation +1, standard log scaler)."""
-    from hyperbolic_trade_space import LogAffinePreconditioner
+    from tradespace import LogAffinePreconditioner
 
     pre = LogAffinePreconditioner(orientation=1, shift=0.0, scaler="standard")
     return pre.fit_transform(x[["grain", "straw"]].to_numpy(float))
@@ -69,7 +69,7 @@ def level_biomass_correlation(x, tau, seed=0):
     """Correlation of log V (K = 1 at ``tau``) with log biomass (grain + straw), two decimals."""
     import numpy as np
 
-    from hyperbolic_trade_space import HyperbolicTradeSpace
+    from tradespace import HyperbolicTradeSpace
 
     est = HyperbolicTradeSpace(temperature=tau, random_state=seed).fit(condition(x))
     log_v = est.score_samples(condition(x))

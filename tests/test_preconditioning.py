@@ -14,7 +14,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import MinMaxScaler
 
 from derivation.run import run_chain
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     frontier_in_original_units,

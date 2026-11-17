@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 
 from derivation import axioms
-from hyperbolic_trade_space import HyperbolicTradeSpace, coordinates, datasets, solvers
+from tradespace import HyperbolicTradeSpace, coordinates, datasets, solvers
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"

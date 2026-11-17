@@ -9,7 +9,7 @@ supplies `LogAffinePreconditioner`, which implements the family of maps the meth
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
 )

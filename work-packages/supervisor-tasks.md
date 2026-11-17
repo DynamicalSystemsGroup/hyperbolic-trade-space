@@ -27,7 +27,7 @@ question he answers.
 | # | Task | What he does | What the assistant prepares | When |
 |---|---|---|---|---|
 | K3 | PyPI and TestPyPI accounts | signs in or creates the accounts, enables two-factor authentication | nothing to prepare; his credentials are never typed by the assistant | before W11 |
-| K4 | Pending trusted publishers on TestPyPI and PyPI | adds a pending publisher for `DynamicalSystemsGroup/hyperbolic-trade-space` with the workflow file name and the environment names WP47 delivers | the exact names in `WP47-rounds/pypi-checklist.md` | when WP47 delivers |
+| K4 | Pending trusted publishers on TestPyPI and PyPI | adds a pending publisher for `DynamicalSystemsGroup/tradespace` with the workflow file name and the environment names WP47 delivers | the exact names in `WP47-rounds/pypi-checklist.md` | when WP47 delivers |
 | K5 | GitHub environments `testpypi` and `pypi` | creates them on the repository with himself as required reviewer, so no publish runs without his click | the names and the reviewer rule | with K4 |
 | K6 | Branch protection | `main`: require a pull request, require the test workflow, require review from code owners, restrict who can merge; `dev`: require the test workflow | the checklist in `docs/code-owners.md` with exact setting names | when WP47 delivers |
 | K7 | CODEOWNERS enforcement and the maintainers' team | confirms the `CODEOWNERS` file names him; creates the organisation team if he wants onboarding to be one line later | the file and the page | with K6 |

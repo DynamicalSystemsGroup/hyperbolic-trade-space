@@ -34,7 +34,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-PYPI_JSON = "https://pypi.org/pypi/hyperbolic-trade-space/{version}/json"
+PYPI_JSON = "https://pypi.org/pypi/tradespace/{version}/json"
 
 
 def _version_pattern() -> re.Pattern:

@@ -9,8 +9,8 @@ The package is installed from source for now. It needs Python 3.12 and uses
 
 ```bash
 git clone \
-  https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
-cd hyperbolic-trade-space
+  https://github.com/DynamicalSystemsGroup/tradespace
+cd tradespace
 uv sync
 ```
 
@@ -20,7 +20,7 @@ The table below is synthetic: 300 designs scored on 3 metrics, all positive and 
 with a planted frontier.
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
     trade_off_report,
@@ -39,7 +39,7 @@ The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`. `temperature` is t
 The idea is easiest to see with two of the metrics, where the model is a line. The grey band is up to 0.5 below the frontier in log V:
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import plot_log_plane
+from tradespace.plotting import plot_log_plane
 
 X2 = X[:, :2]
 ts2 = HyperbolicTradeSpace(temperature=20.0).fit(X2)

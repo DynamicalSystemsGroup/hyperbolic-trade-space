@@ -1588,7 +1588,7 @@ def test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice
     import case
     from scipy.optimize import linprog
 
-    from hyperbolic_trade_space import solvers
+    from tradespace import solvers
 
     st = case.load_study(regime)
     U = np.log(st.M)
@@ -1999,7 +1999,7 @@ def test_the_design_constants_of_appendix_h_are_the_pre_registered_ones():
 
 
 H5_NOTE = "notes/directions/wp35-horopca-formalism-and-solvers.md"
-H5_NOTE_URL = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/" + H5_NOTE
+H5_NOTE_URL = "https://github.com/DynamicalSystemsGroup/tradespace/blob/main/" + H5_NOTE
 
 
 def _h5_note() -> str:
@@ -3023,10 +3023,10 @@ def test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect
         part = out.split(f"Dataset {generate_model.DATASET_LABELS[r]}:")[1]
         row = next(x for x in part.splitlines() if x.startswith("| 1 |"))
         assert row.rstrip(" |").endswith(f"[{value}]"), row
-    assert "def _conditioning" in (
-        ROOT / "src" / "hyperbolic_trade_space" / "estimator.py"
-    ).read_text(encoding="utf-8")
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    assert "def _conditioning" in (ROOT / "src" / "tradespace" / "estimator.py").read_text(
+        encoding="utf-8"
+    )
+    from tradespace import HyperbolicTradeSpace, make_frontier_data
 
     call = re.search(
         r"`(HyperbolicTradeSpace\(temperature=50\.0\)\.fit\(M\)\.conditioning_)`", text
@@ -4312,7 +4312,7 @@ def test_the_geometric_programming_row_places_its_sparsity_citation():
     so."""
     row = next(e for e in generate_prior_art.entries() if e["id"] == "gp-maxaffine")
     assert "candes2008enhancing" in row["cites"] and "the sparsity option" in row["short"]["shares"]
-    src = (ROOT / "src" / "hyperbolic_trade_space" / "solvers.py").read_text(encoding="utf-8")
+    src = (ROOT / "src" / "tradespace" / "solvers.py").read_text(encoding="utf-8")
     assert 'penalty not in (None, "reweighted_l1")' in src
     assert "Candes, Wakin and Boyd (2008)" in src
 
@@ -4479,7 +4479,7 @@ def test_terms_are_numbered_by_share_and_the_estimator_orders_them_so():
         "Terms are numbered by share, largest first (ties by cell size, then by the first "
         "exponent)" in _cell_src("sec-methods-thresholds")
     )
-    src = (ROOT / "src" / "hyperbolic_trade_space" / "estimator.py").read_text(encoding="utf-8")
+    src = (ROOT / "src" / "tradespace" / "estimator.py").read_text(encoding="utf-8")
     assert "descending term share, ties by cell size" in src
 
 
@@ -4519,7 +4519,7 @@ def test_a_zero_metric_row_is_left_out_without_a_warning():
     """57: the package tolerates a zero metric (the row has no weight) and says nothing."""
     import warnings
 
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    from tradespace import HyperbolicTradeSpace, make_frontier_data
 
     X, _ = make_frontier_data(120, 3, n_terms=1, random_state=0)
     Xz = np.vstack([X, [0.0, 1.0, 1.0]])
@@ -4724,7 +4724,7 @@ def test_the_tension_and_fleet_ternary_captions_state_the_fits_values():
     objectives, read from ``case.fleet_ternary_study``."""
     import case
 
-    from hyperbolic_trade_space import tension_matrix
+    from tradespace import tension_matrix
 
     study = case.load_study("primary")
     fit = case.fit_study(study, K=case.CASE_K)
@@ -4816,7 +4816,7 @@ def test_the_terms_and_elasticity_sentences_agree_with_the_tension_figure():
     import case
     import generate_findings as gf
 
-    from hyperbolic_trade_space import tension_matrix
+    from tradespace import tension_matrix
 
     study = case.load_study("primary")
     fits = case.k_fits(study, (1, 2))

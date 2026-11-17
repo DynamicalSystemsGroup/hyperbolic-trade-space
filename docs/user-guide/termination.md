@@ -3,7 +3,7 @@
 Every fit records how it stopped.
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
 )
@@ -63,7 +63,7 @@ A soft fit, one with finite `term_temperature`, weighs every term: no assignment
 - `min_curvature`: a soft fit's smallest curvature; `nan` otherwise.
   A soft fit leaves `gamma`, `radius` and `bound` `nan`.
 
-The tolerances are module constants of `hyperbolic_trade_space.solvers`, not parameters: `EPS_KKT` =
+The tolerances are module constants of `tradespace.solvers`, not parameters: `EPS_KKT` =
 1e-8, `EPS_FEAS` = 1e-9, `GUARD_TOL` = 1e-12, `POLISH_STEPS` = 5.
 
 ## `conditioning_`
@@ -86,7 +86,7 @@ A floor of `min_exponent=0.1` keeps the duplicate in the fit. At the default of 
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
 )

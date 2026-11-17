@@ -15,7 +15,7 @@ sys.path.insert(0, str(HERE))
 from methods import evaluate, match, refit_B, solver_init
 from objectives import alternate_traced
 
-from hyperbolic_trade_space.datasets import make_frontier_data
+from tradespace.datasets import make_frontier_data
 
 for s in [1, 3, 8, 16]:
     X, info = make_frontier_data(400, 4, n_terms=3, random_state=s)

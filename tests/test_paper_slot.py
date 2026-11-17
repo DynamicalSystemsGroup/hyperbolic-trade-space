@@ -25,7 +25,7 @@ import paper_abstract  # noqa: E402
 import paper_keys  # noqa: E402
 import stage_site  # noqa: E402
 
-REPO = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
+REPO = "https://github.com/DynamicalSystemsGroup/tradespace"
 MODES = {
     "working": {
         "pin": "paper-working-20261120",

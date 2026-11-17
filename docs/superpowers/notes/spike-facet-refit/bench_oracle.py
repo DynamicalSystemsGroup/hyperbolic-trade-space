@@ -22,7 +22,7 @@ from methods import (  # noqa: E402
     refit_D,
 )
 
-from hyperbolic_trade_space.datasets import make_frontier_data  # noqa: E402
+from tradespace.datasets import make_frontier_data  # noqa: E402
 
 METHODS = {
     "A": refit_A, "B": refit_B, "C_hard": make_refit_C_hard(0.2),

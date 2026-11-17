@@ -3,7 +3,7 @@
 A scikit-learn estimator that fits a posynomial frontier to a table of conditioned metrics and
 reports which of them trade off and how steeply.
 
-Documentation: https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/
+Documentation: https://dynamicalsystemsgroup.github.io/tradespace/docs/
 """
 
 from .datasets import make_configured_frontier_data, make_frontier_data

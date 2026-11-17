@@ -4,9 +4,9 @@ import numpy as np
 import pytest
 from scipy.optimize import check_grad, linear_sum_assignment
 
-from hyperbolic_trade_space.coordinates import helmert_basis
-from hyperbolic_trade_space.datasets import make_frontier_data
-from hyperbolic_trade_space.solvers import (
+from tradespace.coordinates import helmert_basis
+from tradespace.datasets import make_frontier_data
+from tradespace.solvers import (
     SolveResult,
     log_mean_exp,
     loss_and_grad,
@@ -245,8 +245,8 @@ import warnings  # noqa: E402
 
 from scipy.optimize import linprog  # noqa: E402
 
-from hyperbolic_trade_space import solvers as S  # noqa: E402
-from hyperbolic_trade_space.solvers import (  # noqa: E402
+from tradespace import solvers as S  # noqa: E402
+from tradespace.solvers import (  # noqa: E402
     EPS_FEAS,
     EPS_KKT,
     GUARD_TOL,
@@ -509,7 +509,7 @@ def test_margin_and_radius_are_nan_at_one_term_not_infinite():
     Termination page say (WP10 item 22)."""
     import math
 
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    from tradespace import HyperbolicTradeSpace, make_frontier_data
 
     X, _ = make_frontier_data(100, 3, random_state=0)
     t = HyperbolicTradeSpace(temperature=20.0).fit(X).termination_

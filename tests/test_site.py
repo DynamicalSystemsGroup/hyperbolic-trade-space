@@ -310,7 +310,7 @@ def test_no_table_needs_columns_on_a_phone(mkdocs_config):
 
 def test_api_reference_names_equal_the_contract():
     text = (DOCS / "api-reference.md").read_text(encoding="utf-8")
-    names = re.findall(r"^::: hyperbolic_trade_space\.(\w+)\s*$", text, re.M)
+    names = re.findall(r"^::: tradespace\.(\w+)\s*$", text, re.M)
     assert sorted(names) == sorted(CONTRACT["package"]["public_names"])
     assert len(names) == len(set(names))
 
@@ -474,7 +474,7 @@ def test_unknown_key_fails_in_both_slots():
 
 def _resolve_site_href(page_url: str, href: str) -> str:
     """Resolve ``href`` against the public path of a page, returning an absolute site path."""
-    base = urlparse(PUBLIC_URL).path  # /hyperbolic-trade-space/
+    base = urlparse(PUBLIC_URL).path  # /tradespace/
     page_path = base.rstrip("/") + page_url
     return urlparse(urljoin(f"http://x{page_path}", href)).path
 
@@ -505,7 +505,7 @@ def test_root_and_paper_links_classified():
     """Every link on the two hand-written pages is internal and resolvable, or external and
     either the repository or a punch-list URL."""
     expected = punch_list_urls()
-    repo = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
+    repo = "https://github.com/DynamicalSystemsGroup/tradespace"
     for rel, page_url in (("index.html", "/"), ("paper/abstract.html", "/paper/")):
         for href in html_links(SITE / rel):
             if href.startswith("data:"):
@@ -566,7 +566,7 @@ def test_root_index_is_thin_and_routes_by_need():
     hrefs = html_links(SITE / "index.html")
     for href in ("paper/", "docs/getting-started/"):
         assert href in hrefs
-    assert any(h.endswith("hyperbolic-trade-space") for h in hrefs), "repository link"
+    assert any(h.endswith("tradespace") for h in hrefs), "repository link"
     footer = re.search(r"<footer>(.*?)</footer>", text, re.S).group(1)
     assert re.findall(r">([^<]+)</a>", footer) == [
         "Source code", "Documentation", "PyPI", "Release notes", "History and acknowledgements",
@@ -584,7 +584,7 @@ def test_root_index_is_thin_and_routes_by_need():
         assert stale not in text.lower(), stale
     # the supervisor, 2026-11-14 night: "this should also have a placeholder link for pypi"; the
     # project page answers 404 until the first publish (the punch list marks it expected-at-release)
-    assert "https://pypi.org/project/hyperbolic-trade-space/" in html_links(SITE / "index.html")
+    assert "https://pypi.org/project/tradespace/" in html_links(SITE / "index.html")
     paper = (SITE / "paper" / "abstract.html").read_text(encoding="utf-8")
     assert "The paper is iterated towards release" in paper
     assert "../docs/getting-started/" in html_links(SITE / "paper" / "abstract.html")
@@ -1407,7 +1407,7 @@ def test_citations_render_and_further_reading_lists_the_references(assembled):
 def test_api_reference_renders_every_public_name(assembled):
     html = (assembled / "docs" / "api-reference" / "index.html").read_text(encoding="utf-8")
     for name in CONTRACT["package"]["public_names"]:
-        assert f"hyperbolic_trade_space.{name}" in html, name
+        assert f"tradespace.{name}" in html, name
     assert "doc-class" in html and "doc-function" in html
 
 
@@ -1938,7 +1938,7 @@ def test_why_image_is_drawn_by_the_package_function(why_fit, monkeypatch):
     """WP18 R-3: one implementation, two consumers; no second projection in the script."""
     import matplotlib.pyplot as plt
 
-    from hyperbolic_trade_space import plotting
+    from tradespace import plotting
 
     bsf, fit = why_fit
     text = (ROOT / "scripts" / "build_site_figures.py").read_text(encoding="utf-8")
@@ -1965,7 +1965,7 @@ def test_slices_figure_is_drawn_from_the_one_fit_of_fit_why(monkeypatch, tmp_pat
     sys.path.insert(0, str(ROOT / "scripts"))
     import build_site_figures as bsf
 
-    import hyperbolic_trade_space as hts
+    import tradespace as hts
 
     fit = bsf.fit_why()
 

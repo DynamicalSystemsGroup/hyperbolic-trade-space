@@ -45,11 +45,11 @@ import sys
 
 sys.path.insert(0, ".")
 from examples.perovskite import run
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     select_temperature,
 )
-from hyperbolic_trade_space.plotting import plot_ternary
+from tradespace.plotting import plot_ternary
 
 M = run.condition(run.feasible(run.load()))
 tau = select_temperature(M, 0.10, bounds=(3, 1e4))
@@ -74,7 +74,7 @@ Voc, Jsc and FF are all in the [contending set](../generated/glossary.md), so th
 **The check on your own dataset.** Refit with one conditioning choice changed. If the contending set or a sign of the near-frontier association moves, the choice decided the result, and the analysis states it.
 
 ```python
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     trade_off_report,
 )

@@ -79,7 +79,7 @@ the same contending sets and leading metrics.
 ## Order and ownership
 
 After the first push of WP10 Amendment 4 (which renames a field in `tensions.py`). This package owns
-`src/hyperbolic_trade_space/solvers.py` and `estimator.py` and their tests; the lemma step and the
+`src/tradespace/solvers.py` and `estimator.py` and their tests; the lemma step and the
 words are coordinated by the PM with the owners of the derivations and of the paper.
 
 ## Agent's defaults

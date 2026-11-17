@@ -457,8 +457,8 @@ def own_rows_refit() -> Md:
         Per temperature: the terms, the terms each refit recovers to within
         :data:`OWN_ROWS_TOLERANCE` and the largest exponent error of each.
     """
-    from hyperbolic_trade_space import make_frontier_data
-    from hyperbolic_trade_space.solvers import solve_slsqp
+    from tradespace import make_frontier_data
+    from tradespace.solvers import solve_slsqp
 
     rows = []
     for tau in (np.inf, 50.0):
@@ -529,7 +529,7 @@ def recovery_runs() -> tuple:
         term gap at termination), ``tol`` (the solver tolerance it is read against) and
         ``recovered``.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    from tradespace import HyperbolicTradeSpace, make_frontier_data
 
     out = []
     for tau in RECOVERY_TAUS:

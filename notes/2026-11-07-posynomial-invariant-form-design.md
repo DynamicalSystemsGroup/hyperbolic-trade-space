@@ -1,4 +1,4 @@
-# Design spec: hyperbolic-trade-space (the posynomial invariant form)
+# Design spec: tradespace (the posynomial invariant form)
 
 Date: 2026-11-07. Supervisor and author of the method: Michael Zargham (`mzargham`). This document
 is the persisted form of the approved plan. Executing agents read it together with the notes in
@@ -99,13 +99,13 @@ proposed configuration would fall, and reading the frontier's shape back in desi
 - **Docs and site.** Markdown + LaTeX; GitHub Pages site as executable specification paired with
   narrative, framed by the supervisor's SciPy 2026 paper (Tall's three worlds); literature review
   and BibTeX as their own package.
-- **Tooling.** uv for reproducibility; Python 3.12; src layout; package `hyperbolic_trade_space`.
+- **Tooling.** uv for reproducibility; Python 3.12; src layout; package `tradespace`.
 - **Process.** Gated work packages per `github.com/mzargham/claude-skills`; Sonnet 5.5 as project
   manager and implementer from WP1 on; verbal approvals for now, release controls after the first
   release; no AI attribution lines on commits, PRs or documents.
 
 Agent defaults (changeable at the relevant scope gate): MkDocs Material for the site; estimator
-class name `HyperbolicTradeSpace` and package `hyperbolic_trade_space` (decided by the supervisor
+class name `HyperbolicTradeSpace` and package `tradespace` (decided by the supervisor
 at the WP2 gate, 2026-11-08; the method keeps the name "posynomial invariant form"); Z oriented for plots and hole detection by ordinary PCA of near-frontier Z (for K = 1
 only w is learned, Z is a canonical basis); demo physics additions in §8.
 
@@ -229,7 +229,7 @@ examine. Open: choosing S from p_i, local normals θ_i, roles of τ and κ, over
 hull, survival of novelty/white-space semantics. API implication now: Φ-based definitions so any
 term set {(θ_k, β_k)} plugs in; kernel PCA is the feature-engineering kin to cite.
 
-## 5. Package (src/hyperbolic_trade_space/)
+## 5. Package (src/tradespace/)
 
 - `solvers.py` (numpy/scipy): `log_mean_exp(s, tau)` (τ=inf → max), `support_weights(s, tau)`
   (softmax; τ=inf → argmax, ties averaged), `loss_and_grad(w, U, tau)`, `solve_lp(U,

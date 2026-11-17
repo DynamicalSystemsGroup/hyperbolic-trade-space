@@ -48,7 +48,7 @@ def feasible(df, cols=ATTR):
 
 def condition(x, scaler="standard", cols=ATTR):
     """Orientation +1 for every column: the metrics are the attributes, standardized in log."""
-    from hyperbolic_trade_space import LogAffinePreconditioner
+    from tradespace import LogAffinePreconditioner
 
     pre = LogAffinePreconditioner(orientation=1, shift=0.0, scaler=scaler)
     return pre.fit_transform(x[cols].to_numpy(float))

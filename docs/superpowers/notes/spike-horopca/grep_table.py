@@ -6,7 +6,7 @@ files = ["paper/paper.ipynb","paper/supporting_material.ipynb","docs/index.md","
          "paper/prior_art.yaml","paper/reading_pass.yaml","paper/myst.yml","mkdocs.yml"]
 files += [str(p.relative_to(root)) for p in sorted((root/"docs/user-guide").glob("*.md"))]
 files += [str(p.relative_to(root)) for p in sorted((root/"docs").glob("overview*.md"))]
-ident = re.compile(r"hyperbolic[_-]trade[_-]space|HyperbolicTradeSpace|hyperbolic-trade-space", re.I)
+ident = re.compile(r"hyperbolic[_-]trade[_-]space|HyperbolicTradeSpace|tradespace", re.I)
 for f in files:
     p = root/f
     if not p.exists(): continue

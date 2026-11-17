@@ -12,8 +12,8 @@ from sklearn.exceptions import ConvergenceWarning
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-from hyperbolic_trade_space import solvers as _solvers
+from tradespace import HyperbolicTradeSpace, make_frontier_data
+from tradespace import solvers as _solvers
 
 INF = np.inf
 
@@ -497,7 +497,7 @@ def test_n_restarts_default_and_validation():
 
 
 # ------------------------------------------------ WP13 (E-1, E-5, E-7): record, warning, limit
-from hyperbolic_trade_space import estimator as _est  # noqa: E402
+from tradespace import estimator as _est  # noqa: E402
 
 
 def _k3(seed, tau=INF, **kw):
@@ -657,7 +657,7 @@ def test_conditioning_is_the_restricted_hessian_eigenvalue():
 
 
 def _coords_helmert(d):
-    from hyperbolic_trade_space.coordinates import helmert_basis
+    from tradespace.coordinates import helmert_basis
 
     return helmert_basis(d)
 

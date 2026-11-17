@@ -10,7 +10,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "examples" / "adcs"))
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data  # noqa: E402
+from tradespace import HyperbolicTradeSpace, make_frontier_data  # noqa: E402
 import case as C  # noqa: E402
 
 warnings.simplefilter("ignore")

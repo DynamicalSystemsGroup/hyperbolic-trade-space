@@ -12,6 +12,6 @@ from random starts, and nothing bounds how far its loss is from the best frame's
 result's shortfall from the best value.
 
 Sources: the paper (Chami, Gu, Nguyen and Ré 2021, `docs/references.bib` key `chami2021horopca`; its loss); the
-authors' repository at commit c9a9996 (Adam, random starts); `src/hyperbolic_trade_space/solvers.py`;
+authors' repository at commit c9a9996 (Adam, random starts); `src/tradespace/solvers.py`;
 `derivation/lemma_04_convexity.py`. The readout that read the authors' code is
 `work-packages/WP35-rounds/spike-h/readout.md`, section 5.

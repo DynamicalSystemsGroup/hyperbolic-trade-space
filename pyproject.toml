@@ -1,5 +1,5 @@
 [project]
-name = "hyperbolic-trade-space"
+name = "tradespace"
 version = "0.1.0"
 description = "Learn the shape of a design trade space: a scikit-learn-compatible posynomial (monomial first) frontier model with an invertible log-ratio chart, SymPy-verified derivations, and an ADCS trade-study case."
 readme = "README.md"
@@ -28,11 +28,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
-Documentation = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/"
-Repository = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
-Issues = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/issues"
-Changelog = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/CHANGELOG.md"
+Homepage = "https://dynamicalsystemsgroup.github.io/tradespace/"
+Documentation = "https://dynamicalsystemsgroup.github.io/tradespace/docs/"
+Repository = "https://github.com/DynamicalSystemsGroup/tradespace"
+Issues = "https://github.com/DynamicalSystemsGroup/tradespace/issues"
+Changelog = "https://github.com/DynamicalSystemsGroup/tradespace/blob/main/CHANGELOG.md"
 
 [dependency-groups]
 dev = [
@@ -56,11 +56,11 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/hyperbolic_trade_space"]
+packages = ["src/tradespace"]
 
 # The sdist carries the package, the tests, the licence, the readme and the changelog, and nothing else.
 [tool.hatch.build.targets.sdist]
-include = ["/src/hyperbolic_trade_space", "/tests", "/LICENSE", "/README.md", "/CHANGELOG.md", "/pyproject.toml"]
+include = ["/src/tradespace", "/tests", "/LICENSE", "/README.md", "/CHANGELOG.md", "/pyproject.toml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src"]

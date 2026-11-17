@@ -136,13 +136,13 @@ jobs:
         run: uv run --locked --only-group dev python -m twine check dist/*
       - name: The wheel holds the package and the licence and nothing else
         run: |
-          unzip -Z1 dist/*.whl | grep -vE '^hyperbolic_trade_space(-[^/]*\.dist-info)?/' \
+          unzip -Z1 dist/*.whl | grep -vE '^tradespace(-[^/]*\.dist-info)?/' \
             && { echo "::error::unexpected file in the wheel"; exit 1; } || true
           unzip -Z1 dist/*.whl | grep -q 'licenses/LICENSE'
       - name: The built version is the checked version
         env:
           VERSION: ${{ needs.check.outputs.version }}
-        run: ls dist/hyperbolic_trade_space-"$VERSION"-py3-none-any.whl dist/hyperbolic_trade_space-"$VERSION".tar.gz
+        run: ls dist/tradespace-"$VERSION"-py3-none-any.whl dist/tradespace-"$VERSION".tar.gz
       - name: Software bill of materials from the locked resolution (CycloneDX)
         run: |
           mkdir sbom
@@ -188,7 +188,7 @@ jobs:
         if: needs.check.outputs.tag_state == 'new'
         run: |
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            tag -a "$TAG" -m "hyperbolic-trade-space $VERSION" "$GITHUB_SHA"
+            tag -a "$TAG" -m "tradespace $VERSION" "$GITHUB_SHA"
           git push origin "refs/tags/$TAG"
       - name: Release notes from the changelog
         run: uv run --no-project python scripts/release_checks.py changelog --version "$VERSION" --final --notes notes.md
@@ -220,7 +220,7 @@ jobs:
     runs-on: ubuntu-24.04
     environment:
       name: pypi
-      url: https://pypi.org/p/hyperbolic-trade-space
+      url: https://pypi.org/p/tradespace
     permissions:
       contents: read
       id-token: write
@@ -246,7 +246,7 @@ jobs:
     runs-on: ubuntu-24.04
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/hyperbolic-trade-space
+      url: https://test.pypi.org/p/tradespace
     permissions:
       id-token: write
     steps:

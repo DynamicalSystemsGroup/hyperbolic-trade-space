@@ -1,18 +1,18 @@
-# hyperbolic-trade-space
+# tradespace
 
 For analysts with a table of evaluated designs, to learn which metrics trade. See the
-[docs](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/),
-[the paper](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/) and `examples/adcs/` for a
+[docs](https://dynamicalsystemsgroup.github.io/tradespace/docs/),
+[the paper](https://dynamicalsystemsgroup.github.io/tradespace/paper/) and `examples/adcs/` for a
 case study.
 
 ```bash
-git clone https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
-cd hyperbolic-trade-space && uv sync
+git clone https://github.com/DynamicalSystemsGroup/tradespace
+cd tradespace && uv sync
 # package only: uv sync --no-default-groups; uv run --no-default-groups
 ```
 
 ```python
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     make_frontier_data,
@@ -28,7 +28,7 @@ print(trade_off_report(ts, M).exponents.round(2))
 
 ## Layout
 
-- `src/hyperbolic_trade_space/`: the Python package (fit a frontier, read its trade-offs).
+- `src/tradespace/`: the Python package (fit a frontier, read its trade-offs).
 - `docs/`: the user guide and API reference, built into the docs site.
 - `paper/`: the paper as two notebooks and what rebuilds them; `site/` is the root page that links the docs and the paper.
 - `examples/adcs/`: the cubesat attitude-control case study the paper uses: model, data, experiments, system model.

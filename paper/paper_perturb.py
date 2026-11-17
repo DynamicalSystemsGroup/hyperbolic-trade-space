@@ -19,7 +19,7 @@ import paper_paths  # noqa: F401  (puts the repository on sys.path)
 
 
 def _shift_restarts(shift: int) -> None:
-    from hyperbolic_trade_space import HyperbolicTradeSpace
+    from tradespace import HyperbolicTradeSpace
 
     fit = HyperbolicTradeSpace.fit
 

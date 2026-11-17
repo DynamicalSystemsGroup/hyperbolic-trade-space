@@ -1,7 +1,7 @@
 # WP48 D-3: readout. Governance checks as verification cases, drafted against this repository
 
 Written 2026-11-14 against dev `070cc54` (the worktree base) and the repository's GitHub settings read the same day at
-about 15:15 EST with `gh api` (read-only GET requests on `DynamicalSystemsGroup/hyperbolic-trade-space`). Sources are
+about 15:15 EST with `gh api` (read-only GET requests on `DynamicalSystemsGroup/tradespace`). Sources are
 in `wiki-notes.md` (D-1) and `governance-checks-notes.md` (D-2); their commits and read dates apply here. Nothing in
 this readout was run through the SysML engine: the model text below is drafted, not parsed. The repository state below
 was read, not assumed. The release workflow of WP47 (`.github/workflows/release.yml`, with `CODEOWNERS`, templates,

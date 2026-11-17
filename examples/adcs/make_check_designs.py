@@ -109,13 +109,13 @@ def predict() -> pd.DataFrame:
     from sklearn.gaussian_process.kernels import RBF, ConstantKernel, WhiteKernel
     from sklearn.pipeline import make_pipeline
 
-    from hyperbolic_trade_space import (
+    from tradespace import (
         HyperbolicTradeSpace,
         LogAffinePreconditioner,
         TradeSpaceRegressor,
         select_temperature,
     )
-    from hyperbolic_trade_space.gaps import find_holes
+    from tradespace.gaps import find_holes
 
     ranges = model_ranges()
     fe = feasible_primary()

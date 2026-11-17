@@ -1,8 +1,8 @@
-site_name: hyperbolic-trade-space
+site_name: tradespace
 site_description: Posynomial invariant form for design trade spaces
-site_url: https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/
-repo_url: https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
-repo_name: DynamicalSystemsGroup/hyperbolic-trade-space
+site_url: https://dynamicalsystemsgroup.github.io/tradespace/docs/
+repo_url: https://github.com/DynamicalSystemsGroup/tradespace
+repo_name: DynamicalSystemsGroup/tradespace
 docs_dir: docs
 # A bare `mkdocs build` must never wipe the tracked root page in site/ (assemble_site.py and
 # stage_site.py pass -d explicitly).

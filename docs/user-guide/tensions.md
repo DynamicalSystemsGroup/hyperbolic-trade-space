@@ -5,7 +5,7 @@ how they trade. The model looks for the binding constraint, so the report descri
 principal component analysis would describe spread.
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
     trade_off_report,
@@ -21,7 +21,7 @@ print(report.elasticities.round(2))
 `plot_association` draws the report as a heatmap:
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import plot_association
+from tradespace.plotting import plot_association
 
 plot_association(report, names=["m0", "m1", "m2"])
 ```
@@ -75,7 +75,7 @@ one metric along the term as another rises, the others held: `T[i, j] = -(w_i / 
 `design_tensions` gives each design's own, from the data.
 
 ```python {.runnable}
-from hyperbolic_trade_space import design_tensions, tension_matrix
+from tradespace import design_tensions, tension_matrix
 
 T = tension_matrix(ts, X)
 print(T.shape, T[0].round(2))

@@ -11,7 +11,7 @@ Give `design_tensions` the fitted preconditioner and the raw attributes and it r
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     design_tensions,

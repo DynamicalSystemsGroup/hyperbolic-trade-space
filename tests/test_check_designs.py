@@ -71,7 +71,7 @@ def _small_regressor():
     from sklearn.gaussian_process.kernels import RBF, ConstantKernel, WhiteKernel
     from sklearn.pipeline import make_pipeline
 
-    from hyperbolic_trade_space import (
+    from tradespace import (
         HyperbolicTradeSpace,
         LogAffinePreconditioner,
         TradeSpaceRegressor,

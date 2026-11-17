@@ -15,8 +15,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from certificates import termination_report  # noqa: E402
 
-from hyperbolic_trade_space.datasets import make_frontier_data  # noqa: E402
-from hyperbolic_trade_space.solvers import _solve_terms_once, solve_terms  # noqa: E402
+from tradespace.datasets import make_frontier_data  # noqa: E402
+from tradespace.solvers import _solve_terms_once, solve_terms  # noqa: E402
 
 
 def exponent_error(W, W_true):

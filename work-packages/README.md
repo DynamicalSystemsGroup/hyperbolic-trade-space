@@ -42,7 +42,7 @@ The reader-run directories `WP28-inventory/` and `WP28-retest/` stay.
 ## Roles and records
 
 - **Supervisor (accountable):** Michael Zargham, GitHub `mzargham`. Remote:
-  `https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space`.
+  `https://github.com/DynamicalSystemsGroup/tradespace`.
 - **Approval and acceptance records:** verbal, in chat, quoted verbatim by the agent in
   `work-packages/WPn-decisions.md` (supervisor: "we can do verbal approvals for now"; release
   controls, e.g. PR-merge records, come after the first release).
@@ -101,7 +101,7 @@ other two clearly in the roadmap".
 |---|---|---|---|
 | The paper | `paper/paper.ipynb` and `supporting_material.ipynb` with mystmd, modelled on the SciPy proceedings article | WP10 (writing), WP11 (readability loops), WP8 (deployment) | the current focus; WP9 and the external-review triage precede it |
 | The docsite | `docs/*.md`, the generated derivation ledger and verification pages | WP8 | MkDocs Material, as first approved; a root index page splits to the MkDocs docsite under `/docs/` and the mystmd paper under `/paper/` (`WP8-decisions.md`, "Amendment 1 revised") |
-| The PyPI release | `src/hyperbolic_trade_space/`, `pyproject.toml`, `uv.lock` | WP8 (version 0.1.0; TestPyPI dry run was the approved first step) | blocked on the supervisor configuring the publisher; PyPI proper is a later decision of his |
+| The PyPI release | `src/tradespace/`, `pyproject.toml`, `uv.lock` | WP8 (version 0.1.0; TestPyPI dry run was the approved first step) | blocked on the supervisor configuring the publisher; PyPI proper is a later decision of his |
 
 Supervisor, 2026-11-08, verbatim: "please make sure our plan is up to date. with clear work packages
 so we can work to get a working draft of the paper, code and documentation up (pypi deferred for

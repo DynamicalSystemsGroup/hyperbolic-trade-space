@@ -19,7 +19,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures
 
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     TradeSpaceRegressor,
     make_configured_frontier_data,

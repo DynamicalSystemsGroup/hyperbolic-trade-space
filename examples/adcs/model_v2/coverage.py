@@ -625,7 +625,7 @@ def requirement_reasons(graph: ModelGraph, metrics: list[Metric], data_dir=None)
     sys.path.insert(0, str(ADCS_DIR))
     import case
 
-    from hyperbolic_trade_space.plotting import PARTICIPATION
+    from tradespace.plotting import PARTICIPATION
 
     data_dir = pathlib.Path(data_dir or case.CUBESAT.data_dir)
     out = []

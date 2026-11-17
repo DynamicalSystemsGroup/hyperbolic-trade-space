@@ -9,8 +9,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-from hyperbolic_trade_space.gaps import find_holes, frontier_targets, knn_gap_scores, orient_by_pca
+from tradespace import HyperbolicTradeSpace, make_frontier_data
+from tradespace.gaps import find_holes, frontier_targets, knn_gap_scores, orient_by_pca
 
 
 class _Stand:
@@ -128,7 +128,7 @@ def test_frontier_targets_with_preconditioner_stand_in():
 
 def test_frontier_targets_with_real_preconditioner():
     LogAffinePreconditioner = pytest.importorskip(
-        "hyperbolic_trade_space.preconditioning"
+        "tradespace.preconditioning"
     ).LogAffinePreconditioner
     rng = np.random.default_rng(0)
     A = np.exp(rng.normal(size=(300, 3)))

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-import hyperbolic_trade_space
+import tradespace
 from derivation.axioms import AXIOMS
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -71,7 +71,7 @@ def test_lemma_tags_and_ledger_ids_in_range(page):
 
 def test_every_exported_name_appears_in_api():
     text = _guide_text()
-    missing = [n for n in hyperbolic_trade_space.__all__ if n not in text]
+    missing = [n for n in tradespace.__all__ if n not in text]
     assert missing == []
 
 

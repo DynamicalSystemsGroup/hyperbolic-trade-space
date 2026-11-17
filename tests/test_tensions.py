@@ -20,7 +20,7 @@ import numpy as np
 import pytest
 from scipy.optimize import brentq
 
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     design_tensions,
@@ -28,12 +28,12 @@ from hyperbolic_trade_space import (
     tension_matrix,
     trade_off_report,
 )
-from hyperbolic_trade_space.coordinates import (
+from tradespace.coordinates import (
     from_frontier_coordinates,
     helmert_basis,
 )
-from hyperbolic_trade_space.gaps import orient_by_pca
-from hyperbolic_trade_space.tensions import TradeOffReport
+from tradespace.gaps import orient_by_pca
+from tradespace.tensions import TradeOffReport
 
 INF = np.inf
 BETA = 0.3
@@ -301,7 +301,7 @@ def test_first_report_at_several_terms_names_a_workable_band():
     message names a band (and the matching temperature) that works."""
     import re
 
-    from hyperbolic_trade_space import make_frontier_data
+    from tradespace import make_frontier_data
 
     X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
     est = HyperbolicTradeSpace(n_terms=2, temperature=50.0, random_state=0).fit(X)

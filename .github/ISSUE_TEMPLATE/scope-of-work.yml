@@ -7,7 +7,7 @@ body:
       value: |
         An issue is a scope of work: what will be delivered, what the work aims at, and what a reviewer will check.
         It does not say how the work is done. Every field below is read by the admissibility check; see
-        [the issue admissibility conditions](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/dev/.github/ISSUE_ADMISSIBILITY.md).
+        [the issue admissibility conditions](https://github.com/DynamicalSystemsGroup/tradespace/blob/dev/.github/ISSUE_ADMISSIBILITY.md).
   - type: textarea
     id: scope
     attributes:

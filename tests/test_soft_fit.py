@@ -16,8 +16,8 @@ from _env import of_record
 from scipy.linalg import eigh
 from scipy.optimize import linear_sum_assignment
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-from hyperbolic_trade_space import solvers as S
+from tradespace import HyperbolicTradeSpace, make_frontier_data
+from tradespace import solvers as S
 
 # Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
 pytestmark = pytest.mark.slow

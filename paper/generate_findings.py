@@ -15,7 +15,7 @@ import pandas as pd
 from paper_common import Md, MdMath, appendix_link, md_table, thousands
 from paper_stability import cell, entry, stable, summary
 
-from hyperbolic_trade_space.estimator import PARTICIPATION_THRESHOLD
+from tradespace.estimator import PARTICIPATION_THRESHOLD
 
 _B1 = appendix_link("sub-b-1", "Appendix B.1")
 _B3 = appendix_link("sub-b-3", "Appendix B.3")
@@ -935,7 +935,7 @@ def elasticity_sentence(study, fits) -> Md:
         if swaps
         else ""
     )
-    from hyperbolic_trade_space import tension_matrix
+    from tradespace import tension_matrix
 
     cell = float(tension_matrix(fits[case.CASE_K].estimator, study.M)[live, ja, jb])
     assert cell < -1, "premise: the pair's drawn cell is in the upper triangle (tension order)"

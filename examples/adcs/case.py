@@ -320,8 +320,8 @@ def _lib():
     """The heavy imports, taken when first needed."""
     import k_terms
 
-    import hyperbolic_trade_space as hts
-    from hyperbolic_trade_space import plotting
+    import tradespace as hts
+    from tradespace import plotting
 
     return hts, k_terms, plotting
 
@@ -418,7 +418,7 @@ def conditioner_for(attrs, spec=CUBESAT, scaler="standard"):
     from sklearn.compose import ColumnTransformer
     from sklearn.preprocessing import OrdinalEncoder
 
-    from hyperbolic_trade_space import LogAffinePreconditioner
+    from tradespace import LogAffinePreconditioner
 
     parts = [
         (
@@ -1712,7 +1712,7 @@ def white_space_targets(study, n=3, resolution=30, threshold=2.0):
     pandas.DataFrame
         ``white-space score`` and one column per attribute in attribute units.
     """
-    from hyperbolic_trade_space.gaps import find_holes, frontier_targets
+    from tradespace.gaps import find_holes, frontier_targets
 
     fit = fit_study(study)
     chart = fit.estimator.transform(study.M)
@@ -1766,7 +1766,7 @@ def fit_regressor(study, view=None):
     from sklearn.gaussian_process.kernels import RBF, ConstantKernel, WhiteKernel
     from sklearn.pipeline import make_pipeline
 
-    from hyperbolic_trade_space import (
+    from tradespace import (
         HyperbolicTradeSpace,
         LogAffinePreconditioner,
         TradeSpaceRegressor,
@@ -2311,7 +2311,7 @@ def tension_order(T, keep, order="exponent"):
     Parameters
     ----------
     T : ndarray of shape (n_features, n_features)
-        One term's tension matrix (``hyperbolic_trade_space.tension_matrix(...)[k]``).
+        One term's tension matrix (``tradespace.tension_matrix(...)[k]``).
     keep : sequence of int
         The metrics that carry an exponent on the term, sorted by exponent, largest first.
     order : {"exponent", "tension"}, default="exponent"
@@ -2360,7 +2360,7 @@ def tension_matrix_figure(study, fit, triangle="both", order="exponent"):
     carry an exponent on the term.
 
     A cell is the change in the column metric per one unit of the row metric's conditioned value,
-    along the term: ``hyperbolic_trade_space.tension_matrix``. The metrics with no exponent on the
+    along the term: ``tradespace.tension_matrix``. The metrics with no exponent on the
     term are not drawn and the line under the panel names them, so a zero or a blank cell is not
     shown. The two halves are reciprocals (``T[i, j] * T[j, i] = 1``), so one half carries the
     matrix; ``triangle`` picks the half. With ``"both"`` the grey diagonal is a metric against

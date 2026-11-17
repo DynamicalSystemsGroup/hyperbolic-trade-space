@@ -21,7 +21,7 @@ FAKE_COLLECT = (
     "tests/test_derivation.py::test_a\n"
     "tests/test_estimator.py::test_b\n"
     "tests/test_sklearn_compat.py::test_sklearn_compatible_estimator[x-check_a]\n"
-    "src/hyperbolic_trade_space/solvers.py::hyperbolic_trade_space.solvers.f\n"
+    "src/tradespace/solvers.py::tradespace.solvers.f\n"
     "\n3 tests collected in 0.1s\n"
 )
 

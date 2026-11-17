@@ -7,7 +7,7 @@ mandate"). Nothing is tagged, published or merged.
 
 The candidate is the `dev` branch at the head `a63d390` (commits after it on `dev` are records: this guide, the
 driver log and the cleanup manifest). It holds the Python package
-`hyperbolic_trade_space`, the paper with its supporting material, the docsite, the root page with the history page, the
+`tradespace`, the paper with its supporting material, the docsite, the root page with the history page, the
 derivations, the cubesat case study, and the release engineering for the first publication (workflows, code owners,
 contributing page, covenant, templates). The package is at version 0.0.1 on `dev`: a candidate for 0.1, not 0.1 until the
 merge to `main` is being done; 0.1.0 is the first release's version and is set in that workflow, on your word, before
@@ -40,7 +40,7 @@ port if 8791 is taken.
 |---|---|---|
 | [1](sitting-1-paper.md) | the paper and its appendices | http://127.0.0.1:8791/paper/ |
 | [2](sitting-2-docsite.md) | the root page, the docsite, the history page | http://127.0.0.1:8791/ |
-| [3](sitting-3-code.md) | the code, the derivations and the release engineering | `src/hyperbolic_trade_space/`, `derivation/`, `.github/` (files, not a page) |
+| [3](sitting-3-code.md) | the code, the derivations and the release engineering | `src/tradespace/`, `derivation/`, `.github/` (files, not a page) |
 | [4](sitting-4-calls.md) | the calls made for you, every changed number, what waits on you | `work-packages/supervisor-review-list.md` (a file) |
 
 The close read you announced (the five entry surfaces: the root page, the README, the abstract, the history page and

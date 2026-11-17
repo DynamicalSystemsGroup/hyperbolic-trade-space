@@ -30,7 +30,7 @@ def test_every_mapped_test_file_exists():
         ("docs/theory.md", "tests/test_docs.py"),
         ("site/index.html", "tests/test_site.py"),
         ("scripts/assemble_site.py", "tests/test_build_generated.py"),
-        ("src/hyperbolic_trade_space/estimator.py", "tests/test_estimator.py"),
+        ("src/tradespace/estimator.py", "tests/test_estimator.py"),
         ("examples/adcs/experiments/runner.py", "tests/test_experiments.py"),
         ("examples/adcs/model_v2/diagnostic_pair.py", "tests/test_diagnostic_pair.py"),
         ("work-packages/interface-contract.toml", "tests/test_interface_contract.py"),
@@ -58,7 +58,7 @@ def test_a_changed_test_file_runs_itself_and_unmapped_paths_have_no_mapping():
 )
 def test_unmapped_paths_fall_back_to_the_fast_suite(path, monkeypatch, capsys):
     assert check.unmapped([path]) == [path]
-    assert check.unmapped(["src/hyperbolic_trade_space/estimator.py"]) == []
+    assert check.unmapped(["src/tradespace/estimator.py"]) == []
     monkeypatch.setattr(check, "changed_paths", lambda base="origin/dev": [path])
     assert check.main(["--changed", "--dry-run"]) == 0
     assert "-m not slow" in capsys.readouterr().out

@@ -14,7 +14,7 @@ REPO = Path("/Users/z/Documents/GitHub/posynomial-invariant-form")
 sys.path.insert(0, str(REPO / "docs/superpowers/notes/spike-facet-refit"))
 from methods import band_of, refit_B, support_beta  # noqa: E402
 
-from hyperbolic_trade_space.solvers import _simplex_min, log_mean_exp  # noqa: E402
+from tradespace.solvers import _simplex_min, log_mean_exp  # noqa: E402
 
 TOUCH_TOL = 1e-9
 

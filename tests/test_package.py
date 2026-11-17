@@ -1,6 +1,6 @@
 """WP0 placeholder: the package imports and carries a version."""
 
-import hyperbolic_trade_space as hts
+import tradespace as hts
 
 
 def test_version_is_a_string() -> None:

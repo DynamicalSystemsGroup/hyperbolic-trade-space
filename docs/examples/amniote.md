@@ -44,11 +44,11 @@ import sys
 
 sys.path.insert(0, ".")
 from examples.amniote import run
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     select_temperature,
 )
-from hyperbolic_trade_space.plotting import plot_ternary
+from tradespace.plotting import plot_ternary
 
 x = run.complete(run.load())
 cols = [run.COLS[i] for i in (0, 3, 2)]

@@ -40,7 +40,7 @@ the target.
 ```python {.runnable}
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     TradeSpaceRegressor,
     make_configured_frontier_data,

@@ -54,7 +54,7 @@ class TradeSpaceRegressor(RegressorMixin, BaseEstimator):
 
     See Also
     --------
-    hyperbolic_trade_space.HyperbolicTradeSpace : the chart this regressor composes with.
+    tradespace.HyperbolicTradeSpace : the chart this regressor composes with.
     sklearn.compose.TransformedTargetRegressor : the generic pattern this specializes.
 
     Notes
@@ -74,7 +74,7 @@ class TradeSpaceRegressor(RegressorMixin, BaseEstimator):
     --------
     >>> import numpy as np
     >>> from sklearn.linear_model import LinearRegression
-    >>> from hyperbolic_trade_space import (
+    >>> from tradespace import (
     ...     HyperbolicTradeSpace, TradeSpaceRegressor,
     ...     make_configured_frontier_data)
     >>> C, Y, info = make_configured_frontier_data(

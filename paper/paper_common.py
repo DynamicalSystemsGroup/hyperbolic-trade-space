@@ -17,7 +17,7 @@ LINK_STYLE = "color:inherit;text-decoration:underline"
 """A link in an output cell takes the text colour and is underlined, so it reads in both themes."""
 
 
-REPO_BLOB = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/"
+REPO_BLOB = "https://github.com/DynamicalSystemsGroup/tradespace/blob/main/"
 """Where the repository's files are read on the web: the one place a moved folder is updated."""
 _PATH_TOKEN = re.compile(
     r"`((?:(?:docs|paper|src|scripts|tests|examples|derivation|site|work-packages|data)/[\w./-]+"

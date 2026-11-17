@@ -30,7 +30,7 @@ import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.patches import FancyArrowPatch
 
-from hyperbolic_trade_space.plotting import CATEGORY_COLORS, FRONTIER_COLOR
+from tradespace.plotting import CATEGORY_COLORS, FRONTIER_COLOR
 
 HERE = pathlib.Path(__file__).resolve().parent
 SEED = 20261108

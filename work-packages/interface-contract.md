@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 29. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 30. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,9 +27,9 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 29
-package.import_name = "hyperbolic_trade_space"
-package.distribution_name = "hyperbolic-trade-space"
+contract_version = 30
+package.import_name = "tradespace"
+package.distribution_name = "tradespace"
 package.version = "0.1.0"
 package.version_changed_by = "WP8b"
 package.public_names = ["HyperbolicTradeSpace", "LogAffinePreconditioner", "TradeSpaceRegressor", "__version__", "design_tensions", "frontier_in_original_units", "make_configured_frontier_data", "make_frontier_data", "select_temperature", "tension_matrix", "trade_off_report"]
@@ -140,7 +140,7 @@ and is not part of this contract.
 
 ## 4. R-1 Package surface
 
-Pinned: import name `hyperbolic_trade_space`; distribution name `hyperbolic-trade-space`; the
+Pinned: import name `tradespace`; distribution name `tradespace`; the
 public names of `__all__` (floor, section 2); the importable submodules (section 2); per submodule
 the importable names (manifest `package.submodule_names`), including the certificate functions
 `simplex_gap`, `term_gap`, `assignment_margin`, `fixed_assignment_bound`, the `Termination` record
@@ -201,7 +201,7 @@ amendment.
 
 ## 5. R-2 Version string
 
-One authority: `pyproject.toml` `[project].version`, mirrored by `hyperbolic_trade_space.__version__`.
+One authority: `pyproject.toml` `[project].version`, mirrored by `tradespace.__version__`.
 Format: PEP 440, `MAJOR.MINOR.PATCH`. Current value: `0.1.0` (section 2). Only WP8b (the release
 machinery) changes it, and it changes both places together; a bump therefore edits the manifest value
 in the same commit. The presentation layer reads the version and never writes it.
@@ -314,7 +314,7 @@ Presentation-owned: `mkdocs.yml`, `glossary.yaml`, the pages above, `docs/genera
   deploys; `dev` and `paper` never deploy. `.github/workflows/test.yml` stays the technical side's CI
   (pull requests into `main`, called by the release, dispatch)
 - branches: `dev`, `main`, `paper`
-- public paths: `/`, `/docs/`, `/paper/` (under `https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/`), stable
+- public paths: `/`, `/docs/`, `/paper/` (under `https://dynamicalsystemsgroup.github.io/tradespace/`), stable
 - dependency groups: `docs` and `paper` belong to the presentation side, `dev`, `case`, `notebooks` to
   the technical side; `default-groups` is `["dev", "case", "docs"]`; `pyproject.toml` itself is edited by the
   driver on request
@@ -376,13 +376,14 @@ the last row of the change log.
 | 20 | 2026-11-11 | Thirteen traded metrics, a fleet size and a larger sample (WP30; `WP30-decisions.md`, "Scope gate", "No floating requirements" and "Sampling", the supervisor's words verbatim there): `case.v2.traded_metrics` grows from eight to thirteen, in the order of the oracle's attributes: after `dod_eclipse` come `momentum_headroom` (the wheel's momentum capacity over the slew's peak momentum), `available_power_w` (W; an auxiliary column before, now a traded metric, the quantity the power requirement bounds), `battery_peak_power_ratio` (the pack's rated power over the eclipse peak load, the quantity the battery peak power requirement bounds), `unit_cost_usd` and `fleet_cost_usd` (USD, build and launch at the configuration's own fleet size); every requirement of the model now reads a traded metric. The seventh configuration variable `fleet_size` (float column of whole numbers 1 to 30) enters the headers of `case.v2.data` (after `Kd` in the main files and the check designs, after `st_grade` in the predictions) and the oracle's configuration names. `case.v2.data` rows: the two regime files have 3,000 designs each (`experiments.definitions.SAMPLE_PER_REGIME`; design i depends only on the seed and i, so the first 1,000 are the earlier sample and the feasible sets of those rows stay 706 and 780); the check designs (6) and predictions (3) are unchanged in count. Not additive: a pinned list grows by five and the pinned headers change order and gain columns. The frozen files and their `case.data` manifests are unchanged | technical (the paper's and the docs' numbers regenerate in the same package) | the supervisor and the driver, `WP30-decisions.md` ("Scope gate"; "No floating requirements"; "Sampling") |
 | 21 | 2026-11-12 | One API page (WP33 "D-2 rulings" item 5, Q3 "merge where the map shows a page serves no path"): `docs/api.md` is removed and `docs/api-reference.md` (nav title "API") opens with its overview of the public names, then the generated reference. `docs.pages` loses `api.md`; `api_overview_page` leaves the manifest; `presentation_pages` loses `docs/api.md` and `ownership.wp8a.paths` loses `docs/api.md`; `api_reference_page` is unchanged. What `api.md` no longer does: it was a second entry in the navigation that only linked to the reference page. No number changes | presentation (the docs pages; `mkdocs.yml`; `tests/test_site.py`, `tests/test_docs.py`; `claims_register.toml` file paths) | `WP33-decisions.md`, "D-2 rulings, items 5 and 6" (the assistant's rulings) |
 | 22 | 2026-11-12 | A router page (WP33 "D-2 rulings" item 6, the typed address `/docs/user-guide/`): `docs/user-guide/index.md` is added to `docs.pages` and `presentation_pages`, so that the address of the user guide's directory lands on one line pointing to the Overview instead of a directory listing. The page is a router and carries no content; it is not a navigation entry (`mkdocs.yml` `nav` unchanged). No number changes | presentation (the docs pages; `tests/test_site.py`, `tests/test_docs.py`) | `WP33-decisions.md`, "D-2 rulings, items 5 and 6" (the assistant's rulings) |
-| 23 | 2026-11-12 | The known gap on the package docstring is closed (WP33 review F-5, the task of the closing round): the docstring of `src/hyperbolic_trade_space/__init__.py` now says in one sentence what the package is and names the documentation site; the gaps row leaves section 17 and `gaps.init_docstring` leaves the manifest. No number changes | technical (`src/hyperbolic_trade_space/__init__.py`, docstring only) | `WP33-review.md`, F-5 |
+| 23 | 2026-11-12 | The known gap on the package docstring is closed (WP33 review F-5, the task of the closing round): the docstring of `src/tradespace/__init__.py` now says in one sentence what the package is and names the documentation site; the gaps row leaves section 17 and `gaps.init_docstring` leaves the manifest. No number changes | technical (`src/tradespace/__init__.py`, docstring only) | `WP33-review.md`, F-5 |
 | 24 | 2026-11-14 | The code owners' page (WP47 D-4): `docs/code-owners.md` is added to `docs.pages` and `presentation_pages` and to the navigation under a "Project" heading (`mkdocs.yml` `nav`). No number changes | presentation (the docs pages; `tests/test_site.py`) | `WP47-scope-of-work.md`, D-4 |
 | 25 | 2026-11-14 | Tension, the glossary's layers and the loss (WP42 Amendment 1, the build after the spike): the package renames `tension_report`, `TensionReport` and its module member to `trade_off_report` and `TradeOffReport`, the report fields `tension_directions` and `tension_loadings` to `spread_directions` and `spread_loadings`, `plotting.plot_tensions` to `plot_association`; it gains `tension_matrix`, `design_tensions` and `DesignTensions` (public names and `tensions` members); the solver's function is the loss everywhere: the estimator attribute `objective_` is `loss_`, the `Termination` field `objective_change` is `loss_change`, and the `solvers` names `objective_and_grad`, `soft_objective` and `term_objective` are `loss_and_grad`, `soft_loss` and `term_loss`, with no alias since nothing is released. The glossary schema gains the entry fields `layer`, `used_in` and `elsewhere` and the file key `preamble` (`docs.glossary_entry_field_names`, `docs.glossary_file_key_names`); the Glossary page opens with the preamble. No number changes | both | `WP42-decisions.md` ("Scope A, all of it"; "Rename all"; "Compact tension matrix"; "Accept as drafted"), `WP11-decisions.md` (15:50, loss for the solver's function everywhere) |
 | 26 | 2026-11-15 | The bridge page (WP41 D-1): `docs/bridge.md` is added to `docs.pages` and `presentation_pages` after the Examples page and linked from the Home page's journeys and the paper's Section 7; no symbol changes. |
 | 27 | 2026-11-15 | A page on the fit temperature (WP46 D-4, the supervisor's "In the 0.1 candidate", `WP46-decisions.md`): `docs.pages` and `docs.presentation_pages` gain `user-guide/temperature.md` between Fitting and Choosing K; `plotting.py` gains `temperature_path` and `plot_temperature_path`; the derivation chain gains L22. Additive on the manifest (floor rule); no number changes | presentation (the docsite page) and technical (`plotting.py`, `derivation/lemma_22_small_temperature.py`) | `WP46-decisions.md`, "Placement and approval" |
 | 28 | 2026-11-15 | The three example pages (WP60): `docs/examples/perovskite.md`, `docs/examples/amniote.md` and `docs/examples/wheat.md` are added to `docs.pages` and `presentation_pages` after the Examples page, under Examples in the navigation; `docs/examples/` joins WP8a's ownership paths; no symbol changes | presentation (the docs pages; `tests/test_site.py`) | `WP60-scope-of-work.md`, D-1 and D-3 |
 | 29 | 2026-11-16 | The two release lifecycles (WP65 specification 6.1, built by WP66a to c): a merge of the pull request from `dev` into `main` is the software's release; `.github/workflows/pages.yml` is removed and `build.workflow` is `.github/workflows/release.yml`, which composes the site through `site.yml` and deploys it through `pages-deploy.yml` (new `build.site_workflow`, `build.pages_deploy_workflow`; `build.workflow_deploys_on` rewritten); `build.branches` gains `paper`; the paper builds and publishes on its own branch through `paper.yml` (new `build.paper_workflow`, `paper_branch`, `paper_artefacts`, `paper_tag_prefix`, `paper_mode_file`, `paper_modes`, `paper_slot`) and `build.paper_out` becomes the built directory published as `paper-html.tar.gz`; the docs' reference keys come from the manifest `paper/paper-keys.json` (`docs.reference_key_sources`; new `reference_key_manifest_generator`, `reference_key_slot_variable`, `reference_key_abstract_target`); `build.stage.release_control` says the release pull request's review includes the staged site, recorded in the release issue, and `build.stage.paper_slot` is new. Ownership: `pages.yml` leaves WP8a, `site.yml`, `pages-deploy.yml` and `tests/test_paper_slot.py` join it; `paper.yml`, `tests/test_paper_model.py`, `scripts/paper_mode.py` and `scripts/paper_pin.py` join WP10; `CITATION.cff`, `scripts/release_cleanup.py`, `tests/test_release_workflows.py` and `tests/test_release_cleanup.py` join WP8b. Not additive: a pinned workflow is removed, pinned values change. The public paths are unchanged; no number changes | both | `WP64-decisions.md`, his approval of the plan (15:31) and his three answers (15:53 to 15:56); `WP66a-scope-of-work.md`, approved by the driver as his proxy |
+| 30 | 2026-11-17 | The package is renamed `tradespace` (WP77; the supervisor's decision of 2026-11-17, the GitHub repository renamed the same day): `package.import_name` is `tradespace` (was `hyperbolic_trade_space`), `package.distribution_name` is `tradespace` (was `hyperbolic-trade-space`), `package.src_dir` is `src/tradespace/`, `package.version_sources` reads `tradespace.__version__`, `build.public_url` is `https://dynamicalsystemsgroup.github.io/tradespace/` and the paper's base path is `/tradespace/paper`; the ownership paths under `src/` follow. No alias and no deprecation period (section 14's deprecation clause is not invoked): nothing was released under the old name. The public names, the `hts_*` identifiers and the phrase "hyperbolic trade space" where it names the concept are unchanged; no number changes | both | the supervisor, 2026-11-17, the rename to `tradespace` (WP77; quote recorded by the PM in `WP77-decisions.md`) |
 
 ## 15. Consumers: may assume, must not touch
 

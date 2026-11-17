@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, select_temperature
+from tradespace import HyperbolicTradeSpace, make_frontier_data, select_temperature
 
 
 def planted(seed, n=400, d=3):
@@ -81,7 +81,7 @@ def test_step_function_gives_warning_when_tol_unreachable():
 def test_several_terms_unreachable_target_says_what_to_try():
     """WP10 item 21: at K > 1 the terms are not supporting planes, so frac_above_ levels off
     above zero; the default target is out of reach here and the message says what to try."""
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    from tradespace import HyperbolicTradeSpace, make_frontier_data
 
     X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
     with pytest.raises(ValueError, match="not bracketed") as err:

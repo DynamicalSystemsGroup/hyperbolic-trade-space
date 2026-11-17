@@ -9,7 +9,7 @@ Visual vocabulary (module constants, shared by every function)
 * **Near-frontier band** (``-band <= log V <= 0``, default ``1/tau``, ``0.1`` at ``tau = inf``):
   grey (``BAND_COLOR``), a shaded strip or region; where no region can be shaded, the points
   inside it are grey.
-* **Holes** (white space found by ``hyperbolic_trade_space.gaps``): red (``HOLE_COLOR``).
+* **Holes** (white space found by ``tradespace.gaps``): red (``HOLE_COLOR``).
 * **Targets** (frontier points to aim for): open markers (no fill, black edge).
 * **Data and categories**: the first colour of one qualitative, colour-blind-safe palette
   (``CATEGORY_COLORS``) for plain data, successive colours for categories. The designs are one
@@ -29,8 +29,8 @@ Examples
 --------
 >>> import matplotlib
 >>> matplotlib.use("Agg")
->>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
->>> from hyperbolic_trade_space.plotting import plot_frontier_coordinates
+>>> from tradespace import HyperbolicTradeSpace, make_frontier_data
+>>> from tradespace.plotting import plot_frontier_coordinates
 >>> X, _ = make_frontier_data(100, 3, random_state=0)
 >>> hts = HyperbolicTradeSpace().fit(X)
 >>> Z = hts.transform(X)
@@ -314,7 +314,7 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None, levels=None):
     --------
     >>> import matplotlib
     >>> matplotlib.use("Agg")
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
     >>> X, _ = make_frontier_data(80, 2, random_state=0)
     >>> ax = plot_log_plane(HyperbolicTradeSpace().fit(X), X)
     >>> ax.get_xlabel()
@@ -415,7 +415,7 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     --------
     >>> import matplotlib
     >>> matplotlib.use("Agg")
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
     >>> X, _ = make_frontier_data(80, 3, random_state=0)
     >>> ax = plot_frontier_surface_3d(HyperbolicTradeSpace().fit(X), X)
     >>> ax.name
@@ -649,7 +649,7 @@ def _association_panel(report, names=None, ax=None):
     Parameters
     ----------
     report : TradeOffReport
-        From ``hyperbolic_trade_space.tensions.trade_off_report``. Only these attributes are
+        From ``tradespace.tensions.trade_off_report``. Only these attributes are
         used: ``participating`` (bool per metric), ``exponents`` (per metric), ``association``
         (``d x d``), ``contending_set`` (metric indices), ``n_lemma`` (int), and, when present,
         ``n_near_frontier`` (int). The principal
@@ -1039,8 +1039,8 @@ def ternary_marker_values(estimator, X, names=None):
 
     Examples
     --------
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-    >>> from hyperbolic_trade_space.plotting import ternary_marker_values
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace.plotting import ternary_marker_values
     >>> X, _ = make_frontier_data(300, 3, n_terms=3, random_state=11)
     >>> ts = HyperbolicTradeSpace(n_terms=3, temperature=50.0, random_state=0).fit(X)
     >>> table = ternary_marker_values(ts, X)
@@ -1143,8 +1143,8 @@ def plot_ternary(
     >>> import matplotlib
     >>> matplotlib.use("Agg")
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-    >>> from hyperbolic_trade_space.plotting import plot_ternary
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace.plotting import plot_ternary
     >>> X, _ = make_frontier_data(300, 3, n_terms=3, random_state=11)
     >>> ts = HyperbolicTradeSpace(n_terms=3, temperature=50.0, random_state=0).fit(X)
     >>> ax = plot_ternary(ts, X, lines=True)
@@ -1322,8 +1322,8 @@ def temperature_path(estimator, X, temperatures=None):
 
     Examples
     --------
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-    >>> from hyperbolic_trade_space.plotting import temperature_path
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace.plotting import temperature_path
     >>> X, _ = make_frontier_data(150, 3, noise=0.05, random_state=0)
     >>> est = HyperbolicTradeSpace(temperature=20.0, random_state=0).fit(X)
     >>> path = temperature_path(est, X, temperatures=[5.0, 20.0, 80.0])
@@ -1396,8 +1396,8 @@ def plot_temperature_path(
     --------
     >>> import matplotlib
     >>> matplotlib.use("Agg")
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-    >>> from hyperbolic_trade_space.plotting import plot_temperature_path
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace.plotting import plot_temperature_path
     >>> X, _ = make_frontier_data(150, 3, noise=0.05, random_state=0)
     >>> est = HyperbolicTradeSpace(temperature=20.0, random_state=0).fit(X)
     >>> axs = plot_temperature_path(est, X, temperatures=[5.0, 20.0, 80.0])

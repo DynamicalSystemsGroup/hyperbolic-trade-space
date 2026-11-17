@@ -14,8 +14,8 @@ import pytest
 import sympy as sp
 
 from derivation.run import run_chain
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, solvers
-from hyperbolic_trade_space.coordinates import (
+from tradespace import HyperbolicTradeSpace, make_frontier_data, solvers
+from tradespace.coordinates import (
     from_frontier_coordinates,
     helmert_basis,
     to_frontier_coordinates,

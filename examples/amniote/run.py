@@ -63,7 +63,7 @@ def condition(x, cols=COLS, orient=ORIENT, partial_out=False, scaler="standard")
     """
     from sklearn.preprocessing import StandardScaler
 
-    from hyperbolic_trade_space import LogAffinePreconditioner
+    from tradespace import LogAffinePreconditioner
 
     A = x[cols].to_numpy(float)
     if not partial_out:

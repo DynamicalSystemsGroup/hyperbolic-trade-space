@@ -29,8 +29,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, trade_off_report
-from hyperbolic_trade_space import solvers as S
+from tradespace import HyperbolicTradeSpace, trade_off_report
+from tradespace import solvers as S
 
 DATA = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs" / "data"
 CSV = DATA / "adcs_designs_cubesat.csv"  # the 30 degree baseline (kept, never altered)

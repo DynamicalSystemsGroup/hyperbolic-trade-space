@@ -253,13 +253,13 @@ def test_build_keys_writes_checks_and_names_the_difference(tmp_path, capsys):
 def test_build_keys_xref_names_each_miss(tmp_path, capsys):
     xref = tmp_path / "myst.xref.json"
     refs = [
-        {"identifier": "thm-a", "url": "/hyperbolic-trade-space/paper/"},
-        {"identifier": "appendix-c", "url": "/hyperbolic-trade-space/paper/supporting-material"},
-        {"identifier": "sec-b", "url": "/hyperbolic-trade-space/paper/supporting-material"},
+        {"identifier": "thm-a", "url": "/tradespace/paper/"},
+        {"identifier": "appendix-c", "url": "/tradespace/paper/supporting-material"},
+        {"identifier": "sec-b", "url": "/tradespace/paper/supporting-material"},
     ]
     xref.write_text(json.dumps({"references": refs}), encoding="utf-8")
     keys = {"thm-a": "paper/", "appendix-c": "paper/supporting-material/", "sec-b": "paper/"}
-    misses = build_keys.xref_misses(keys, xref, "/hyperbolic-trade-space/paper")
+    misses = build_keys.xref_misses(keys, xref, "/tradespace/paper")
     assert misses == ["sec-b: on paper/ by the manifest, '/supporting-material' in the built paper"]
     assert build_keys.xref_misses({"gone": "paper/"}, xref)[0].startswith("gone: ")
 
@@ -338,7 +338,7 @@ def test_paper_workflow_triggers_and_tag_filter(workflow):
         "PAPER_EXECUTE": "1",
         "PAPER_BUILD": "1",
         "REQUIRE_OPENSYSML": "1",
-        "BASE_URL": "/hyperbolic-trade-space/paper",
+        "BASE_URL": "/tradespace/paper",
     }
     build = workflow["jobs"]["build"]
     runs = _runs(build)

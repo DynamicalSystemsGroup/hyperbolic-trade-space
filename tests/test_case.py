@@ -233,7 +233,7 @@ def test_the_tension_matrix_figure_draws_the_terms_that_carry_an_exponent(small,
     the others named under the panel, every off-diagonal cell a negative tension."""
     import matplotlib.pyplot as plt
 
-    from hyperbolic_trade_space import tension_matrix
+    from tradespace import tension_matrix
 
     fits = case.k_fits(small, Ks=(1, 2))
     fit = fits[2]
@@ -266,7 +266,7 @@ def test_the_tension_matrix_figure_draws_one_triangle(small, triangle, order):
     cell right of the diagonal at -1 or below; an unknown option raises."""
     import matplotlib.pyplot as plt
 
-    from hyperbolic_trade_space import tension_matrix
+    from tradespace import tension_matrix
 
     fit = case.k_fits(small, Ks=(2,))[2]
     T = tension_matrix(fit.estimator, small.M)
@@ -944,7 +944,7 @@ def test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_name
     import matplotlib
     from matplotlib.text import Text
 
-    from hyperbolic_trade_space import plotting
+    from tradespace import plotting
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt

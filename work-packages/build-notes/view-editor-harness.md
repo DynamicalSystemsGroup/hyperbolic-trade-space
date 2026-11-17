@@ -27,7 +27,7 @@ appended after it. The editor's project holds one file, so the two are joined th
 apart).
 
 ```js
-const raw = "https://raw.githubusercontent.com/DynamicalSystemsGroup/hyperbolic-trade-space";
+const raw = "https://raw.githubusercontent.com/DynamicalSystemsGroup/tradespace";
 window.__cub = await (await fetch(`${raw}/<commit>/examples/adcs/model_v2/cubesat.sysml`)).text();
 window.__views = await (await fetch(`${raw}/<commit>/examples/adcs/model_v2/views.sysml`)).text();
 const v = document.querySelector(".cm-content").cmTile.view;

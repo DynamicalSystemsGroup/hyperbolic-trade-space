@@ -17,7 +17,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from hyperbolic_trade_space import make_frontier_data
+from tradespace import make_frontier_data
 
 HERE = Path(__file__).resolve().parent
 TABLE = HERE / "plain_table.csv"

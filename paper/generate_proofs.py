@@ -22,7 +22,7 @@ from paper_paths import ROOT
 
 RECORD = ROOT / "derivation" / "proof_map_record.json"
 DERIVATION = ROOT / "derivation"
-BLOB = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/derivation"
+BLOB = "https://github.com/DynamicalSystemsGroup/tradespace/blob/main/derivation"
 CHECK_COMMAND = "uv run python -m derivation.proofmap"
 PARTS = (
     ("The fit and its geometry", 1, 11),

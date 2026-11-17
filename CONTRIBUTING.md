@@ -1,4 +1,4 @@
-# Contributing to hyperbolic-trade-space
+# Contributing to tradespace
 
 This page says who owns a change here, how tools fit, and how a change moves from an idea to a release. Conduct
 between people is the [code of conduct](CODE_OF_CONDUCT.md), the Contributor Covenant, which this project adopts

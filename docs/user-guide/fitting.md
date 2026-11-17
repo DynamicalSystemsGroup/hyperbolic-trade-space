@@ -6,7 +6,7 @@ problem and returns the minimizer.
 ## One term
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
 )
@@ -42,7 +42,7 @@ reference surface and a few designs beyond V = 1. The near-frontier band is the 
 `select_temperature` picks tau so that a target fraction of designs lies above V = 1:
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     make_frontier_data,
     select_temperature,
 )
@@ -62,7 +62,7 @@ One term is flat in log space, with constant elasticities. When the rates vary b
 `n_terms=K` [terms](paper:thm-extension), where you choose K ([Choosing K](choosing-k.md)):
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
 )
@@ -104,7 +104,7 @@ level-off.
 designs and the matching `temperature`.
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import plot_log_plane
+from tradespace.plotting import plot_log_plane
 
 X2, _ = make_frontier_data(300, 2, n_terms=3, random_state=0)
 ts2 = HyperbolicTradeSpace(

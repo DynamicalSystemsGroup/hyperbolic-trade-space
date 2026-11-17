@@ -242,7 +242,7 @@ def _place_cell(key: str, place: str) -> str:
     return _left(f'{_esc(place)}; <a href="{href}">{_esc(label)}</a>', 18, small=True)
 
 
-PAPER_PAGE = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/"
+PAPER_PAGE = "https://dynamicalsystemsgroup.github.io/tradespace/paper/"
 """The published paper, whose reference list the plain table's source links open."""
 
 

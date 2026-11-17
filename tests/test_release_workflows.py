@@ -169,7 +169,7 @@ def test_pypi_jobs_are_jobs_of_release_yml():
         assert job["permissions"]["id-token"] == "write"
         steps = _steps(job)
         assert PUBLISH_ACTION in steps and extra in steps, job_id
-    assert JOBS["publish-pypi"]["environment"]["url"] == "https://pypi.org/p/hyperbolic-trade-space"
+    assert JOBS["publish-pypi"]["environment"]["url"] == "https://pypi.org/p/tradespace"
     steps = JOBS["publish-pypi"]["steps"]
     publish = next(i for i, s in enumerate(steps) if PUBLISH_ACTION in s.get("uses", ""))
     hashes = next(i for i, s in enumerate(steps) if "release_checks.py pypi" in s.get("run", ""))

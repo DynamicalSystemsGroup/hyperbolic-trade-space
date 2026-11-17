@@ -71,7 +71,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import LogAffinePreconditioner
+    >>> from tradespace import LogAffinePreconditioner
     >>> X = np.array([[1.0, 10.0], [2.0, 5.0], [4.0, 2.5], [8.0, 1.25]])
     >>> pre = LogAffinePreconditioner(orientation=[1, -1]).fit(X)
     >>> M = pre.transform(X)
@@ -159,7 +159,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import LogAffinePreconditioner
+        >>> from tradespace import LogAffinePreconditioner
         >>> X = np.array([[1.0, 2.0], [2.0, 4.0], [4.0, 8.0]])
         >>> LogAffinePreconditioner().fit(X).log_scale_.shape
         (2,)
@@ -201,7 +201,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import LogAffinePreconditioner
+        >>> from tradespace import LogAffinePreconditioner
         >>> X = np.array([[0.0, 2.0], [2.0, 4.0], [4.0, 8.0]])
         >>> M = LogAffinePreconditioner().fit(X).transform(X)
         >>> M[0].tolist()[0]
@@ -232,7 +232,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import LogAffinePreconditioner
+        >>> from tradespace import LogAffinePreconditioner
         >>> X = np.array([[1.0, 2.0], [2.0, 4.0], [4.0, 8.0]])
         >>> pre = LogAffinePreconditioner(shift=0.5).fit(X)
         >>> bool(np.allclose(pre.inverse_transform(pre.transform(X)), X))
@@ -281,7 +281,7 @@ def frontier_in_original_units(estimator, preconditioner):
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import (
+    >>> from tradespace import (
     ...     HyperbolicTradeSpace, LogAffinePreconditioner,
     ...     frontier_in_original_units)
     >>> rng = np.random.RandomState(0)

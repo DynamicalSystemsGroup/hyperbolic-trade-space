@@ -29,7 +29,7 @@ the binary is then checked to report the pinned version, and the standard librar
 a sparse git clone whose HEAD must equal the pinned commit. An unverified file is never executed.
 
 Where the binary is looked for, first hit wins: ``SYSML_TOOLKIT_BIN`` (the legacy ``SYSMLV2_BIN``),
-the cache directory (``SYSML_TOOLKIT_CACHE``, default ``~/.cache/hyperbolic-trade-space/
+the cache directory (``SYSML_TOOLKIT_CACHE``, default ``~/.cache/tradespace/
 sysml-toolkit``), then ``sysmlv2`` on ``PATH``. The library directory: ``SYSML_TOOLKIT_LIB`` (legacy
 ``SYSMLV2_LIB``), then the cache. ``z3`` must be on ``PATH`` for ``verify --solve`` (the ``case``
 dependency group installs it into the environment).
@@ -100,9 +100,7 @@ def cache_dir(pin: dict | None = None) -> Path:
     """The cache directory for the pinned release (outside the repository)."""
     pin = pin or load_pin()
     root = os.environ.get("SYSML_TOOLKIT_CACHE")
-    base = (
-        Path(root) if root else Path.home() / ".cache" / "hyperbolic-trade-space" / "sysml-toolkit"
-    )
+    base = Path(root) if root else Path.home() / ".cache" / "tradespace" / "sysml-toolkit"
     return base / pin["toolkit"]["tag"]
 
 
@@ -251,7 +249,7 @@ def _download(url: str, dest: Path, headers: dict | None = None, opener=None) ->
 
 
 def _api_headers(accept: str) -> dict:
-    h = {"Accept": accept, "User-Agent": "hyperbolic-trade-space-toolkit-fetch"}
+    h = {"Accept": accept, "User-Agent": "tradespace-toolkit-fetch"}
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     if token:
         h["Authorization"] = f"Bearer {token}"

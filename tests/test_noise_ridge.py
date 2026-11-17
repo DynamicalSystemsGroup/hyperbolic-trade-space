@@ -23,10 +23,10 @@ from scipy.optimize import minimize
 
 from derivation import lemma_20_noise_ridge as face
 from derivation.run import run_chain
-from hyperbolic_trade_space import HyperbolicTradeSpace
-from hyperbolic_trade_space import coordinates as coords
-from hyperbolic_trade_space.datasets import make_frontier_data
-from hyperbolic_trade_space.solvers import loss_and_grad
+from tradespace import HyperbolicTradeSpace
+from tradespace import coordinates as coords
+from tradespace.datasets import make_frontier_data
+from tradespace.solvers import loss_and_grad
 
 W = np.array([0.4, 0.3, 0.2, 0.1])
 N = 20000

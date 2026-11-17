@@ -5,7 +5,7 @@ import inspect
 import numpy as np
 from sklearn.utils.estimator_checks import parametrize_with_checks
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+from tradespace import HyperbolicTradeSpace, make_frontier_data
 
 # Bare check name -> written reason. The goal is an empty dict.
 EXPECTED_FAILURES: dict[str, str] = {}
@@ -73,7 +73,7 @@ def test_fitted_attributes_end_in_underscore_and_n_iter_positive():
 
 
 # --- WP3 preconditioner ---
-from hyperbolic_trade_space import LogAffinePreconditioner  # noqa: E402
+from tradespace import LogAffinePreconditioner  # noqa: E402
 
 PRECONDITIONER_EXPECTED_FAILURES: dict[str, str] = {}
 
@@ -113,7 +113,7 @@ def test_preconditioner_conformance_surface():
 # --- WP3 regressor ---
 from sklearn.linear_model import LinearRegression  # noqa: E402
 
-from hyperbolic_trade_space import TradeSpaceRegressor  # noqa: E402
+from tradespace import TradeSpaceRegressor  # noqa: E402
 
 # Bare check name -> written reason. The goal is an empty dict.
 REGRESSOR_EXPECTED_FAILURES: dict[str, str] = {

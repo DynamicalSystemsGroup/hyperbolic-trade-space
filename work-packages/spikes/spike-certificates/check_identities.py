@@ -15,8 +15,8 @@ import numpy as np
 sys.path.insert(0, __file__.rsplit("/", 1)[0])
 from certificates import facet_gap, facet_objective, lp_gap_uniform_ties, simplex_gap  # noqa: E402
 
-from hyperbolic_trade_space.datasets import make_frontier_data  # noqa: E402
-from hyperbolic_trade_space.solvers import (  # noqa: E402
+from tradespace.datasets import make_frontier_data  # noqa: E402
+from tradespace.solvers import (  # noqa: E402
     _refit,
     log_mean_exp,
     objective_and_grad,

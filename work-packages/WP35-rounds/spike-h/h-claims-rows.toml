@@ -82,7 +82,7 @@ anchor = "H.1 The hypothesis and what would refute it"
 kind = "M"
 backing = [
   "glossary:fitted-reference-surface",
-  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "func:src/tradespace/estimator.py::HyperbolicTradeSpace",
 ]
 status = "backed"
 disposition = "keep"
@@ -177,7 +177,7 @@ anchor = "H.4 What the table shows"
 kind = "M"
 backing = [
   "glossary:fitted-reference-surface",
-  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+  "func:src/tradespace/tensions.py::tension_report",
   "file:work-packages/WP35-rounds/spike-h/readout.md",
 ]
 status = "backed"
@@ -193,7 +193,7 @@ anchor = "H.4 What the table shows"
 kind = "S"
 backing = [
   "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
-  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+  "func:src/tradespace/tensions.py::tension_report",
 ]
 status = "backed"
 disposition = "keep"
@@ -300,8 +300,8 @@ anchor = "H.5 How the formalism and the solvers differ"
 kind = "M"
 backing = [
   "lemma:L4",
-  "func:src/hyperbolic_trade_space/solvers.py::log_mean_exp",
-  "func:src/hyperbolic_trade_space/solvers.py::objective_and_grad",
+  "func:src/tradespace/solvers.py::log_mean_exp",
+  "func:src/tradespace/solvers.py::objective_and_grad",
 ]
 status = "backed"
 disposition = "keep"
@@ -315,9 +315,9 @@ file = "paper/supporting_material.ipynb"
 anchor = "H.5 How the formalism and the solvers differ"
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/solvers.py::solve_lp",
-  "func:src/hyperbolic_trade_space/solvers.py::solve_slsqp",
-  "func:src/hyperbolic_trade_space/solvers.py::simplex_gap",
+  "func:src/tradespace/solvers.py::solve_lp",
+  "func:src/tradespace/solvers.py::solve_slsqp",
+  "func:src/tradespace/solvers.py::simplex_gap",
 ]
 status = "backed"
 disposition = "keep"

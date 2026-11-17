@@ -3,7 +3,7 @@
 His word (2026-11-17): "i need to do a full review of the documentation and top level static site for me to click
 through." The site at the head of `dev` (the commit that adds this file, named in `driver-log.md`) is staged with `scripts/stage_site.py --slot abstract` and served
 on `http://127.0.0.1:8797/`. It is the site the Release run deploys at the merge, with three local differences:
-it is served at the root rather than under `/hyperbolic-trade-space/`; the docs theme's lookup of the latest GitHub
+it is served at the root rather than under `/tradespace/`; the docs theme's lookup of the latest GitHub
 release prints one console error (404 until a release exists); and the two external links in the root page's footer
 (the releases page, the PyPI project page) go live only with the release. The paper slot is the abstract page in
 every case until a paper pin exists.

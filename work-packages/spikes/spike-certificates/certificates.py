@@ -10,7 +10,7 @@ from dataclasses import dataclass, asdict
 
 import numpy as np
 
-from hyperbolic_trade_space.solvers import (
+from tradespace.solvers import (
     log_mean_exp,
     objective_and_grad,
     solve_lp,

@@ -23,7 +23,7 @@ hosted-runner links are the release pull request's checks and the `qc/release` d
 | B5 | Docs build, strict, pin slot | `HTS_PAPER_SLOT=pin uv run --group docs mkdocs build --strict` | 0 | `INFO    -  Documentation built in 1.03 seconds` |
 | B1 (rerun) | The contract, index and release tests after the manifest fix, on the final tree | `uv run pytest -q tests/test_interface_contract.py tests/test_index.py tests/test_release_version.py tests/test_release_checks.py` | 0 | `121 passed in 64.42s (0:01:04)`; the rest of the suite was not re-run: the manifest edit is read by these tests only |
 | (index) | The index test (every hash and path in `INDEX.md` dereferences; no bare mention of a removed path) | `uv run pytest -q tests/test_index.py` | 0 | 5 passed in 3.66s |
-| R-1 | The version in the four places | `grep -rn "0\.0\.1" pyproject.toml CITATION.cff src CHANGELOG.md`; `uv run python -c "import hyperbolic_trade_space as h; print(h.__version__)"` | 1 (no match) / 0 | (no match); `0.1.0` |
+| R-1 | The version in the four places | `grep -rn "0\.0\.1" pyproject.toml CITATION.cff src CHANGELOG.md`; `uv run python -c "import tradespace as h; print(h.__version__)"` | 1 (no match) / 0 | (no match); `0.1.0` |
 | A2 | The changelog gate as `release.yml` runs it | `uv run python scripts/release_checks.py changelog --version 0.1.0`; the same with `--final --notes <file>` | 0 / 0 | (silent); the notes file begins at `### Added` |
 
 Reading of the rows: the suite's one failure was the version itself and is fixed above; the one count above zero is the scope's attribution grep, which has no word boundaries and

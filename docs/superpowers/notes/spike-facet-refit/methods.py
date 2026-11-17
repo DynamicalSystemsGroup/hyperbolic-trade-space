@@ -12,8 +12,8 @@ from scipy.optimize import linear_sum_assignment
 from scipy.special import logsumexp
 from sklearn.utils import check_random_state
 
-from hyperbolic_trade_space.coordinates import helmert_basis
-from hyperbolic_trade_space.solvers import (
+from tradespace.coordinates import helmert_basis
+from tradespace.solvers import (
     _simplex_min,
     log_mean_exp,
     solve_lp,

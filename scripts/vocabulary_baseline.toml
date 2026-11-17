@@ -26,7 +26,7 @@ reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-tr
 
 [[violation]]
 kind = "avoid"
-file = "src/hyperbolic_trade_space/tensions.py"
+file = "src/tradespace/tensions.py"
 phrase = "working temperature"
 owner = "package docstrings"
 reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
@@ -306,91 +306,91 @@ reason = "BASELINE: margin short for the assignment margin inside the terminatio
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/estimator.py"
+file = "src/tradespace/estimator.py"
 phrase = "finite temperature"
 owner = "package docstrings"
 reason = "BASELINE: finite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/estimator.py"
+file = "src/tradespace/estimator.py"
 phrase = "parameter temperature"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc Parameters entry of a docstring (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/gaps.py"
+file = "src/tradespace/gaps.py"
 phrase = "knn gap"
 owner = "package docstrings"
 reason = "BASELINE: code identifier knn_gap_scores in a docstring (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/plotting.py"
+file = "src/tradespace/plotting.py"
 phrase = "wireframe surface"
 owner = "package docstrings"
 reason = "BASELINE: ordinary plotting term in a docstring (the V = 1 wireframe) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
+file = "src/tradespace/solvers.py"
 phrase = "duality gap"
 owner = "package docstrings"
 reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
+file = "src/tradespace/solvers.py"
 phrase = "float temperature"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc type line \"tau : float\" in a docstring (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
+file = "src/tradespace/solvers.py"
 phrase = "max gap"
 owner = "package docstrings"
 reason = "BASELINE: record field max_gap (code identifier or table column header); the prose name is the term gap (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
+file = "src/tradespace/solvers.py"
 phrase = "order gap"
 owner = "package docstrings"
 reason = "BASELINE: first-order gap: the definition wording of the term gap itself (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
+file = "src/tradespace/solvers.py"
 phrase = "recovery rate"
 owner = "package docstrings"
 reason = "BASELINE: ordinary statistic: the share of planted terms recovered in the experiments (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
+file = "src/tradespace/solvers.py"
 phrase = "return gap"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc Returns entry of a docstring (a variable name) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
+file = "src/tradespace/solvers.py"
 phrase = "smallest gap"
 owner = "package docstrings"
 reason = "BASELINE: ordinary word gap inside the definition of the assignment margin (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/tensions.py"
+file = "src/tradespace/tensions.py"
 phrase = "working temperature"
 owner = "package docstrings"
 reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/tuning.py"
+file = "src/tradespace/tuning.py"
 phrase = "return temperature"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc Returns entry of a docstring (WP10 re-triage 2026-11-09)"

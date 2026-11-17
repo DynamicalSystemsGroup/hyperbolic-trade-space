@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-from hyperbolic_trade_space.plotting import plot_temperature_path, temperature_path
+from tradespace import HyperbolicTradeSpace, make_frontier_data
+from tradespace.plotting import plot_temperature_path, temperature_path
 
 
 @pytest.fixture(autouse=True)
@@ -137,7 +137,7 @@ def test_the_helper_reproduces_the_case_figure_lines_to_the_printed_exponents():
 
 @pytest.fixture(scope="module")
 def page():
-    from hyperbolic_trade_space import select_temperature
+    from tradespace import select_temperature
 
     X, _ = make_frontier_data(
         300, 5, exponents=[0.45, 0.3, 0.15, 0.1, 0.0], noise=0.05, random_state=0
@@ -177,7 +177,7 @@ def test_page_the_price_in_effective_sample_size(page):
 
 
 def test_page_a_higher_target_gives_a_lower_temperature_and_more_designs_in_the_fit(page):
-    from hyperbolic_trade_space import select_temperature
+    from tradespace import select_temperature
 
     X, _, _ = page
     rows = []

@@ -14,8 +14,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from certificates import assignment_margin, facet_gap, facet_objective  # noqa: E402
 
-from hyperbolic_trade_space.datasets import make_frontier_data  # noqa: E402
-from hyperbolic_trade_space.solvers import (  # noqa: E402
+from tradespace.datasets import make_frontier_data  # noqa: E402
+from tradespace.solvers import (  # noqa: E402
     _refit,
     _simplex_min,
     _solve_terms_once,

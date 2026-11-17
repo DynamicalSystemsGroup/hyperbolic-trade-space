@@ -22,7 +22,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from hyperbolic_trade_space.plotting import CATEGORY_COLORS
+from tradespace.plotting import CATEGORY_COLORS
 
 HERE = pathlib.Path(__file__).resolve().parent
 PLANTED = [[0.0, 0.35, 0.65], [0.5, 0.25, 0.25], [0.7, 0.3, 0.0]]
@@ -50,7 +50,7 @@ def nlemma_data():
         ``fitted`` (K, 3) and ``planted`` (K, 3) exponent vectors, matched term by term;
         ``support`` a list of index arrays (the exact-maximum support); ``lemma`` the names.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, trade_off_report
+    from tradespace import HyperbolicTradeSpace, make_frontier_data, trade_off_report
 
     X, _ = make_frontier_data(exponents=PLANTED, **TABLE)
     est = HyperbolicTradeSpace(**FIT).fit(X)

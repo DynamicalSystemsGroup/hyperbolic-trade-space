@@ -120,7 +120,7 @@ def pages_with_figures(docs=DOCS):
 def _apply(scheme):
     import matplotlib.pyplot as plt
 
-    from hyperbolic_trade_space import plotting
+    from tradespace import plotting
 
     spec = SCHEMES[scheme]
     plotting.FRONTIER_COLOR = spec["frontier"]
@@ -136,7 +136,7 @@ def build_page(path, out, schemes=("light", "dark")):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    from hyperbolic_trade_space import plotting
+    from tradespace import plotting
 
     path, out = Path(path), Path(out)
     out.mkdir(parents=True, exist_ok=True)

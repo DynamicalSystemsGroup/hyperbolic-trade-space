@@ -176,13 +176,13 @@ def trade_off_report(
     -----
     For ``d = 1`` the report is trivial (``w = [1]``, a monolemma, no directions). The report is
     deterministic. Part 3 equals ``orient_by_pca(Z, |log V| < band)`` on the same rows
-    (``hyperbolic_trade_space.gaps.orient_by_pca``). The closure effect is stated in
+    (``tradespace.gaps.orient_by_pca``). The closure effect is stated in
     ``closure_note`` and in the module docstring.
 
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import (
+    >>> from tradespace import (
     ...     HyperbolicTradeSpace, make_frontier_data, trade_off_report)
     >>> X, _ = make_frontier_data(400, 3, random_state=0)
     >>> est = HyperbolicTradeSpace(temperature=np.inf).fit(X)
@@ -396,7 +396,7 @@ def tension_matrix(estimator, X, threshold=1e-3):
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import (
+    >>> from tradespace import (
     ...     HyperbolicTradeSpace, make_frontier_data, tension_matrix)
     >>> X, _ = make_frontier_data(300, 3, random_state=0)
     >>> est = HyperbolicTradeSpace(temperature=20.0).fit(X)
@@ -506,7 +506,7 @@ def design_tensions(estimator, X, preconditioner=None, attributes=None, threshol
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import (
+    >>> from tradespace import (
     ...     HyperbolicTradeSpace, design_tensions, make_frontier_data)
     >>> X, _ = make_frontier_data(300, 3, random_state=0)
     >>> est = HyperbolicTradeSpace(temperature=20.0).fit(X)

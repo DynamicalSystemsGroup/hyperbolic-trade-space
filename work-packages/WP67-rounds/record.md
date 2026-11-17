@@ -48,10 +48,10 @@ root card reads "its abstract; the paper is iterated towards release"; the docs'
 ## G6 the clean-up script by hand
 
 ```
-release_cleanup: v0.0.0 in DynamicalSystemsGroup/hyperbolic-trade-space
+release_cleanup: v0.0.0 in DynamicalSystemsGroup/tradespace
 found: no tag v0.0.0; no release
 nothing to remove            (exit 0)
-release_cleanup: paper-working-20000101 in DynamicalSystemsGroup/hyperbolic-trade-space
+release_cleanup: paper-working-20000101 in DynamicalSystemsGroup/tradespace
 found: no tag paper-working-20000101; no release
 nothing to remove            (exit 0)
 ```
@@ -105,11 +105,11 @@ the DOI linked, and the docs page's eight citations carrying their anchors (`../
 But the paper's pages rendered unstyled: 38 requests on `/paper/` and 25 on the supporting material returned 404
 (`build/root-*.js`, `build/_assets/app-*.css`, `myst-theme.css`, the figures), and the 375 px pages overflowed
 sideways by 414 and 156 px. The cause is the local build again: `paper.yml` builds with
-`BASE_URL=/hyperbolic-trade-space/paper` (its line 26; specification 5.3), and the local `myst build` ran without
+`BASE_URL=/tradespace/paper` (its line 26; specification 5.3), and the local `myst build` ran without
 `BASE_URL`, so the page asked for its assets at the server's root. The paper was rebuilt with `BASE_URL=/paper`
 (the path the staging server serves it at), repacked without forks, and the four cases run a third time. Two things
 this leaves: a local review of a hosted `paper-release` artefact serves it under `/paper/` while its assets point at
-`/hyperbolic-trade-space/paper/`, so `stage_site.py --serve` would need to serve under the Pages prefix for that
+`/tradespace/paper/`, so `stage_site.py --serve` would need to serve under the Pages prefix for that
 review to render (an item for the staging script, not the release path); and whether the overflow at 375 px belongs
 to the paper's own theme is read from the third attempt.
 

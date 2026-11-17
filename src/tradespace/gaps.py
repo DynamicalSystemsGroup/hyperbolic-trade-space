@@ -5,7 +5,7 @@ metrics, so a *gap* in ``Z`` is a ratio profile no design has explored, whatever
 functions find such gaps (``knn_gap_scores``, ``find_holes``), place frontier targets over
 them (``frontier_targets``, using ``V = 1`` and the inverse chart, and the pull-back
 to attributes through a preconditioner when one is given), and orient the near-frontier spread
-(``orient_by_pca``, shared with ``hyperbolic_trade_space.tensions.trade_off_report``).
+(``orient_by_pca``, shared with ``tradespace.tensions.trade_off_report``).
 """
 
 from __future__ import annotations
@@ -147,7 +147,7 @@ def frontier_targets(Z_points, estimator, preconditioner=None):
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
     >>> X, _ = make_frontier_data(100, 3, random_state=0)
     >>> est = HyperbolicTradeSpace(temperature=np.inf).fit(X)
     >>> out = frontier_targets(np.zeros((1, 2)), est)

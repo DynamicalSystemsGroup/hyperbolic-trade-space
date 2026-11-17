@@ -8,7 +8,7 @@ Spike head: see the commit that adds this file. Code, scripts and results: `docs
 
 Found by `docs/superpowers/notes/spike-horopca/grep_table.py` over the paper notebook, the supporting material,
 `docs/`, `glossary.yaml`, `README.md`, `claims_register.toml`, `paper/prior_art.yaml`, `paper/reading_pass.yaml`,
-`paper/myst.yml`, `mkdocs.yml`, and a plain grep of `src/` (the package name `hyperbolic_trade_space`,
+`paper/myst.yml`, `mkdocs.yml`, and a plain grep of `src/` (the package name `tradespace`,
 `HyperbolicTradeSpace` and the repository URL are identifiers and are not counted).
 
 | # | File and place | The sentence | Reads as |

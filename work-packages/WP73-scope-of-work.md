@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | DRAFT, approved by the driver as his proxy under his answer of 2026-11-16 ("Before 0.1") and his rule on repository, history and index (CLAUDE.md, 2026-11-15) |
 | **Supervisor (accountable)** | mzargham |
-| **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; branch `dev`, after WP67 lands and before WP68's pull request |
+| **Repository** | `DynamicalSystemsGroup/tradespace`; branch `dev`, after WP67 lands and before WP68's pull request |
 | **Approval record** | His answer "Before 0.1" to the question when the process record leaves the tree (asked with the external review's disposition), quoted in `WP64-decisions.md` |
 | **Acceptance record** | The driver's independent run and read of the index; his read of `supervisor-review-list.md` before WP68's pull request |
 

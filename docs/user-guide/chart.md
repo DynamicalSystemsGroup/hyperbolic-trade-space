@@ -6,7 +6,7 @@ free of overall scale. Together they are a reversible rewriting of the metrics.
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
 )
@@ -28,7 +28,7 @@ row with a zero metric has `nan` coordinates and no inverse.
 With two metrics the chart is the log plane itself:
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import plot_log_plane
+from tradespace.plotting import plot_log_plane
 
 X2, _ = make_frontier_data(300, 2, random_state=0)
 ts2 = HyperbolicTradeSpace(temperature=20.0).fit(X2)
@@ -72,7 +72,7 @@ Regions of the position coordinates that no design occupies are white space. The
 The white space of a three-metric fit, most isolated first:
 
 ```python {.runnable}
-from hyperbolic_trade_space.gaps import find_holes
+from tradespace.gaps import find_holes
 
 X3, _ = make_frontier_data(300, 3, random_state=0)
 ts3 = HyperbolicTradeSpace(temperature=20.0).fit(X3)
@@ -87,7 +87,7 @@ The surface is also convex in log space, so structure that is not convex there i
 
 ## Plots
 
-`hyperbolic_trade_space.plotting` provides six plots:
+`tradespace.plotting` provides six plots:
 
 - `plot_log_plane`: two metrics, the data, the frontier and its band.
 - `plot_frontier_surface_3d`: three metrics, the frontier surface.

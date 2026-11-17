@@ -31,7 +31,7 @@ every K ([Fitting](fitting.md#choosing-the-temperature); [the path against tau](
 
 <!-- vocab-exempt: select temperature -->
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     make_frontier_data,
     select_temperature,
 )
@@ -49,7 +49,7 @@ below for all three (26.5 and 38.1 on the other two planted tables); real data m
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import HyperbolicTradeSpace
+from tradespace import HyperbolicTradeSpace
 
 
 def fit_k(M, K, tau, seed=0):

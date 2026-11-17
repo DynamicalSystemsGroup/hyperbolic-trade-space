@@ -2,7 +2,7 @@
 
     uv run python paper/pin_links.py --ref paper-working-20261120 paper/_build/html
 
-The committed notebooks link files as ``.../hyperbolic-trade-space/blob/main/<path>`` (and
+The committed notebooks link files as ``.../tradespace/blob/main/<path>`` (and
 ``tree/main`` for folders), which is true once ``main`` carries the release. The artefact a pin
 publishes links the files as they were at the pin: every ``blob/main/`` and ``tree/main/`` in each
 ``.html`` and ``.json`` file under the directory becomes ``blob/<ref>/`` and ``tree/<ref>/``. Prints
@@ -16,7 +16,7 @@ import argparse
 import sys
 from pathlib import Path
 
-REPO = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
+REPO = "https://github.com/DynamicalSystemsGroup/tradespace"
 KINDS = ("blob", "tree")
 SUFFIXES = (".html", ".json")
 

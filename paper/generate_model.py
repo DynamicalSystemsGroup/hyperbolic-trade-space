@@ -45,7 +45,7 @@ def planted_table():
     tuple
         ``(X, info)`` as returned by ``make_frontier_data`` with the settings of :data:`PLANTED`.
     """
-    from hyperbolic_trade_space import make_frontier_data
+    from tradespace import make_frontier_data
 
     return make_frontier_data(**PLANTED)
 

@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | DRAFT, approved by the driver as his proxy under his approval of the plan (2026-11-16, `WP64-decisions.md`); the pull request and the merge are his alone |
 | **Supervisor (accountable)** | mzargham |
-| **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; `dev` after WP67, WP73 and WP74 land; the pull request from `dev` into `main` |
+| **Repository** | `DynamicalSystemsGroup/tradespace`; `dev` after WP67, WP73 and WP74 land; the pull request from `dev` into `main` |
 | **Approval record** | The driver's approval under his mandate, quoted in `WP64-decisions.md`; his word for the pull request, quoted there when given |
 | **Acceptance record** | The merge of the pull request by him; the release run green; `driver-log.md` |
 
@@ -17,7 +17,7 @@ request on his word, and the steps after the merge (`WP65-design/build-plan.md`,
 
 ## Goals
 
-- G1. Version 0.1.0 in `pyproject.toml`, `uv.lock`, `src/hyperbolic_trade_space/__init__.py` and `CITATION.cff`
+- G1. Version 0.1.0 in `pyproject.toml`, `uv.lock`, `src/tradespace/__init__.py` and `CITATION.cff`
   (with `date-released`), the last change before the pull request (A1); `uv lock --check` passes (A6).
 - G2. `CHANGELOG.md`: `[Unreleased] - target 0.1.0` becomes `[0.1.0] - <date>`; nothing reads "Unreleased" or
   "target"; every package that changed what a user sees since WP19 is named (A2, A3); `scripts/release_checks.py`'s
@@ -64,7 +64,7 @@ an agent; no edit to `CLAUDE.md`'s Branching line (his file, on his read).
 
 | ID | Requirement | Check |
 |---|---|---|
-| R-1 | The version is written in the four places and nowhere reads 0.0.1 | `grep -rn "0\.0\.1" pyproject.toml CITATION.cff src/ CHANGELOG.md` empty; `uv run python -c "import hyperbolic_trade_space as h; print(h.__version__)"` |
+| R-1 | The version is written in the four places and nowhere reads 0.0.1 | `grep -rn "0\.0\.1" pyproject.toml CITATION.cff src/ CHANGELOG.md` empty; `uv run python -c "import tradespace as h; print(h.__version__)"` |
 | R-2 | Admissibility passes on the head before the pull request | the `qc/release` dry run at the head: `admissibility`, `test`, `build`, `site` green, the rest skipped |
 | R-3 | Nothing outward before his word | `gh pr list`, `gh issue list`, `git ls-remote --tags` unchanged until his word is quoted in `WP64-decisions.md` |
 | R-4 | No attribution line | the step in `test.yml`; `git log --format=%B e7fd1165.. \| grep -ciE "co-authored-by\|generated with"` is 0 |

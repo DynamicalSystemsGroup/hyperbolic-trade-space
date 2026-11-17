@@ -23,7 +23,7 @@ sys.path.insert(0, str(HERE))
 from methods import evaluate, flipped_init, refit_B, refit_D, solver_init  # noqa: E402
 from objectives import alternate_traced, better, make_refit_G  # noqa: E402
 
-from hyperbolic_trade_space.datasets import make_frontier_data  # noqa: E402
+from tradespace.datasets import make_frontier_data  # noqa: E402
 
 BAD = {1, 3, 8, 16}
 TAUS = [np.inf, 50.0]

@@ -85,7 +85,7 @@ jobs:
         id: toolkit-cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ~/.cache/hyperbolic-trade-space
+          path: ~/.cache/tradespace
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
       - name: Provision the pinned sysml-toolkit
         env:
@@ -102,7 +102,7 @@ jobs:
         if: steps.toolkit-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ~/.cache/hyperbolic-trade-space
+          path: ~/.cache/tradespace
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
       # fast + slow + docs = every software test: unmarked; marked slow outside the docs modules;
       # marked slow inside them. `not paper` in each (belt and braces: the conftest deselects them too).

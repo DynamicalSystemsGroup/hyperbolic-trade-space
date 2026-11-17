@@ -198,10 +198,9 @@ def _pkg():
 
 
 def test_r1_names_and_distribution():
-    assert (
-        PKG["import_name"] == "hyperbolic_trade_space"
-        and PKG["distribution_name"] == "hyperbolic-trade-space"
-    ), msg("R-1", "import and distribution names are pinned")
+    assert PKG["import_name"] == "tradespace" and PKG["distribution_name"] == "tradespace", msg(
+        "R-1", "import and distribution names are pinned"
+    )
     assert (ROOT / PKG["src_dir"] / "__init__.py").is_file(), msg(
         "R-1", f"{PKG['src_dir']} holds the package"
     )
@@ -292,7 +291,7 @@ def test_r1_estimator_methods_and_fitted_attributes():
     for attr in est_spec["fitted_attributes"]:
         assert hasattr(fitted, attr), msg("R-1", f"fitted attribute {attr!r} must exist after fit")
     assert isinstance(
-        fitted.termination_, importlib.import_module("hyperbolic_trade_space.solvers").Termination
+        fitted.termination_, importlib.import_module("tradespace.solvers").Termination
     ), msg("R-1", "termination_ is a Termination record")
 
 
@@ -1213,7 +1212,7 @@ def test_r1_distinct_terms_field_and_names_pinned():
     import numpy as np
 
     pkg = _pkg()
-    solvers = importlib.import_module("hyperbolic_trade_space.solvers")
+    solvers = importlib.import_module("tradespace.solvers")
     assert "n_distinct_terms" in PKG["estimator"]["termination_fields"], msg(
         "R-1", "the manifest pins Termination.n_distinct_terms"
     )

@@ -43,7 +43,7 @@ DynamicalSystemsGroup". PyPI is deferred.
 | D-2 | `CHANGELOG.md`, section 0.1.0 (fde5fc0, ce80b39; retroactive); dated at the candidate, no tag | G1, G4 |
 | D-3 | `work-packages/release-punch-list.md` brought up to date (ce80b39; retroactive), items ticked or decided | G1, G4 |
 | D-4 | The archive cleared: the retired WP7 notebook no longer shipped, with `tests/test_notebook.py` and `work-packages/interface-contract.toml` (and `.md`) amended together | G1, G4 |
-| D-5 | Version 0.1.0 in `pyproject.toml`, `uv.lock` and `__version__` in `src/hyperbolic_trade_space/__init__.py` (driver-owned) | G1 |
+| D-5 | Version 0.1.0 in `pyproject.toml`, `uv.lock` and `__version__` in `src/tradespace/__init__.py` (driver-owned) | G1 |
 | D-6 | Stable reference keys: a key registry resolved at build time; docsite pages cite the paper by key | G2 |
 | D-7 | The reviewer's guide, `work-packages/reviewers-guide/`: four sittings (the paper; the docsite and root page; the code and derivations; the calls made for him), each with a short checklist and its own localhost entry point | G3 |
 
@@ -55,7 +55,7 @@ DynamicalSystemsGroup". PyPI is deferred.
 | R-2 | `CHANGELOG.md` has a 0.1.0 section; every entry names its package; nothing claims the data swap unless it is done | read the file; `grep -n -i swap CHANGELOG.md` against `driver-log.md` |
 | R-3 | The punch list has no stale line: each item is ticked, or marked deferred with the supervisor's quoted reason | read `release-punch-list.md` beside the decisions files it cites |
 | R-4 | No archived notebook or archive folder remains; no test, manifest line or doc points at it; the suite passes | `git ls-files examples/adcs \| grep -i -E "archive\|adcs_trade_study"` is empty; `uv run pytest`; contract test passes |
-| R-5 | The version reads 0.1.0 in all three places and the lock is consistent | `grep -n version pyproject.toml`; `uv run python -c "import hyperbolic_trade_space as h; print(h.__version__)"`; `uv lock --check` |
+| R-5 | The version reads 0.1.0 in all three places and the lock is consistent | `grep -n version pyproject.toml`; `uv run python -c "import tradespace as h; print(h.__version__)"`; `uv lock --check` |
 | R-6 | Every docsite citation of the paper goes through a key; a renamed or moved section fails the build, not the reader | `uv run mkdocs build --strict`; rename a key in a scratch copy and see the build fail |
 | R-7 | The guide has four sittings; each has a checklist of at most about ten lines and a localhost entry point that opens | open each entry point after the one-command staging (`scripts/stage_site.py`) |
 | R-8 | The calls sitting lists every call in `driver-log.md` with its evidence, every changed number with its reason, and what is known weak | compare against `driver-log.md` and the data-swap record |

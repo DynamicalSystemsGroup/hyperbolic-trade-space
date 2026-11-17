@@ -2,7 +2,7 @@
 
 ## Where the cubesat designs come from
 
-The case is a fleet of identical 12U-class cubesats whose power, mass and attitude control are coupled, described by a [SysML v2 system model](paper:sect-case-construction). A [configuration](generated/glossary.md) swaps the reaction wheel and the star tracker, tunes the panel span, the battery capacity and the controller gains Kp and Kd, and sets the fleet size; the slew is simulated and the model computes the rest. A row is one synthetic design. Two regimes of 3,000 designs differ in the sampled gains. The model and the data are in [`examples/adcs/`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/tree/main/examples/adcs/):
+The case is a fleet of identical 12U-class cubesats whose power, mass and attitude control are coupled, described by a [SysML v2 system model](paper:sect-case-construction). A [configuration](generated/glossary.md) swaps the reaction wheel and the star tracker, tunes the panel span, the battery capacity and the controller gains Kp and Kd, and sets the fleet size; the slew is simulated and the model computes the rest. A row is one synthetic design. Two regimes of 3,000 designs differ in the sampled gains. The model and the data are in [`examples/adcs/`](https://github.com/DynamicalSystemsGroup/tradespace/tree/main/examples/adcs/):
 
 ```bash
 uv run python examples/adcs/k_terms.py
@@ -62,7 +62,7 @@ The [choosing-K checks](user-guide/choosing-k.md) on both regimes, each at its K
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import HyperbolicTradeSpace
+from tradespace import HyperbolicTradeSpace
 
 
 def fit_k(M, K, tau, seed=0):
@@ -189,7 +189,7 @@ case.ternary_pair_figure(fits)
 A numbered marker is a term's exponent vector, where its V, the invariant value, is largest for a fixed total, not where V = 1. A region is where one term is largest: an analysis of the fit, not a label on a design.
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import ternary_marker_values
+from tradespace.plotting import ternary_marker_values
 
 for name, (study, est) in fits.items():
     print(name, study.names)
@@ -218,7 +218,7 @@ The [root page](index.md)'s two figures come from one constructed table, so the 
 by an exponential depth of mean 0.25 in log V, and the surface rows scatter by 0.07 in log V.
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     make_frontier_data,
 )
@@ -251,7 +251,7 @@ print(
 numbered marker's shares equal its term's exponents.
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import ternary_marker_values
+from tradespace.plotting import ternary_marker_values
 
 print(ternary_marker_values(ts, X).round(2).to_string(index=False))
 ```

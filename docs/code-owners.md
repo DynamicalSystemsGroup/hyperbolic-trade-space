@@ -59,7 +59,7 @@ Settings, Environments:
 
 Settings, Actions, General, Workflow permissions: read repository contents; each job declares what it needs.
 
-PyPI and TestPyPI: a pending trusted publisher for `hyperbolic-trade-space`, owner `DynamicalSystemsGroup`, workflow
+PyPI and TestPyPI: a pending trusted publisher for `tradespace`, owner `DynamicalSystemsGroup`, workflow
 `release.yml`, environment `pypi` (TestPyPI: `testpypi`). No token is stored anywhere.
 
 Zenodo: off until the paper's first full draft is approved (decided 2026-11-17). Once the repository is

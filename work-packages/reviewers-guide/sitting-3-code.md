@@ -1,6 +1,6 @@
 # Sitting 3: the code, the derivations and the release engineering
 
-Entry point: files, no page. Package `src/hyperbolic_trade_space/`; derivations `derivation/` (start at
+Entry point: files, no page. Package `src/tradespace/`; derivations `derivation/` (start at
 `derivation/PROOF_MAP_FINDINGS.md`); case study `examples/adcs/` (start at `examples/adcs/case-model.md`); release
 engineering `.github/`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `docs/code-owners.md`. Commands are
 `uv run ...`.

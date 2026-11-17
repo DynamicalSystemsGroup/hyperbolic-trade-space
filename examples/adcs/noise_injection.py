@@ -27,7 +27,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import case
 
-from hyperbolic_trade_space import HyperbolicTradeSpace
+from tradespace import HyperbolicTradeSpace
 
 REPS = 8
 DELTAS = (0.005, 0.02, 0.05, 0.10)

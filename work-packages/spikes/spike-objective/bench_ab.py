@@ -25,7 +25,7 @@ from objectives import (  # noqa: E402
     planted_state,
 )
 
-from hyperbolic_trade_space.datasets import make_frontier_data  # noqa: E402
+from tradespace.datasets import make_frontier_data  # noqa: E402
 
 BAD = [1, 3, 8, 16]
 TAUS = [np.inf, 50.0]

@@ -25,96 +25,96 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
 
 Submodules are used by import path:
 
-- `hyperbolic_trade_space.coordinates`: `helmert_basis`, `alr_basis`, `to_frontier_coordinates`,
+- `tradespace.coordinates`: `helmert_basis`, `alr_basis`, `to_frontier_coordinates`,
   `from_frontier_coordinates`, the chart's bases and its two maps ([fitting](user-guide/fitting.md)).
-- `hyperbolic_trade_space.gaps`: `knn_gap_scores`, `find_holes`, `frontier_targets`, `orient_by_pca`
+- `tradespace.gaps`: `knn_gap_scores`, `find_holes`, `frontier_targets`, `orient_by_pca`
   ([chart](user-guide/chart.md)).
-- `hyperbolic_trade_space.tensions`: `TradeOffReport`, `DesignTensions`: what the functions return.
-- `hyperbolic_trade_space.plotting`: `plot_association`, `plot_log_plane`, `plot_frontier_surface_3d`,
+- `tradespace.tensions`: `TradeOffReport`, `DesignTensions`: what the functions return.
+- `tradespace.plotting`: `plot_association`, `plot_log_plane`, `plot_frontier_surface_3d`,
   `plot_frontier_coordinates`, `plot_v_by_variable`, `plot_ternary`, `ternary_marker_values`,
   `cell_labels`, `plot_temperature_path`, `temperature_path` ([the fit temperature](user-guide/temperature.md)).
-- `hyperbolic_trade_space.estimator`: `EPS_ZERO_EXPONENT` (`1e-12`). An exponent at or below it is
+- `tradespace.estimator`: `EPS_ZERO_EXPONENT` (`1e-12`). An exponent at or below it is
   numerically zero, so `score_samples` reads a zero metric there as `0 log 0 := 0`.
   `PARTICIPATION_THRESHOLD` (`1e-3`). An exponent above it participates. It is the threshold of
   `trade_off_report` and of `conditioning_`.
-- `hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the
+- `tradespace.solvers`: the multi-term solver, the `Termination` record and the
   certificate functions ([Reading termination](user-guide/termination.md)).
 
 ## Reference
 
 ### `HyperbolicTradeSpace`
 
-::: hyperbolic_trade_space.HyperbolicTradeSpace
+::: tradespace.HyperbolicTradeSpace
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `LogAffinePreconditioner`
 
-::: hyperbolic_trade_space.LogAffinePreconditioner
+::: tradespace.LogAffinePreconditioner
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `TradeSpaceRegressor`
 
-::: hyperbolic_trade_space.TradeSpaceRegressor
+::: tradespace.TradeSpaceRegressor
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `design_tensions`
 
-::: hyperbolic_trade_space.design_tensions
+::: tradespace.design_tensions
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `frontier_in_original_units`
 
-::: hyperbolic_trade_space.frontier_in_original_units
+::: tradespace.frontier_in_original_units
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `make_configured_frontier_data`
 
-::: hyperbolic_trade_space.make_configured_frontier_data
+::: tradespace.make_configured_frontier_data
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `make_frontier_data`
 
-::: hyperbolic_trade_space.make_frontier_data
+::: tradespace.make_frontier_data
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `select_temperature`
 
-::: hyperbolic_trade_space.select_temperature
+::: tradespace.select_temperature
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `tension_matrix`
 
-::: hyperbolic_trade_space.tension_matrix
+::: tradespace.tension_matrix
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `trade_off_report`
 
-::: hyperbolic_trade_space.trade_off_report
+::: tradespace.trade_off_report
     options:
       show_root_heading: false
       heading_level: 4
 
 ### `__version__`
 
-::: hyperbolic_trade_space.__version__
+::: tradespace.__version__
     options:
       show_root_heading: false
       heading_level: 4

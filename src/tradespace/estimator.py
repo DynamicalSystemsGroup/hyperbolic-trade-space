@@ -190,7 +190,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
     See Also
     --------
-    hyperbolic_trade_space.make_frontier_data : Synthetic data with a planted frontier.
+    tradespace.make_frontier_data : Synthetic data with a planted frontier.
 
     Notes
     -----
@@ -215,7 +215,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
     >>> X, info = make_frontier_data(300, 3, random_state=0)
     >>> hts = HyperbolicTradeSpace(temperature=np.inf).fit(X)
     >>> np.allclose(hts.exponents_[0], info["exponents"], atol=1e-3)
@@ -336,7 +336,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
         Examples
         --------
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(100, 2, random_state=1)
         >>> HyperbolicTradeSpace().fit(X).exponents_.shape
         (1, 2)
@@ -566,7 +566,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
         Examples
         --------
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(50, 3, random_state=0)
         >>> HyperbolicTradeSpace().fit(X).transform(X[:2]).shape
         (2, 3)
@@ -591,7 +591,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(50, 3, random_state=0)
         >>> hts = HyperbolicTradeSpace().fit(X)
         >>> bool(np.allclose(hts.inverse_transform(hts.transform(X)), X))
@@ -621,7 +621,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
         Examples
         --------
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(30, 2, random_state=0)
         >>> hts = HyperbolicTradeSpace(coordinates="alr").fit(X)
         >>> hts.get_feature_names_out().tolist()
@@ -657,7 +657,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
         Examples
         --------
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(60, 3, random_state=0)
         >>> HyperbolicTradeSpace().fit(X).score_samples(X).shape
         (60,)
@@ -678,7 +678,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
         Examples
         --------
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(60, 3, random_state=0)
         >>> bool((HyperbolicTradeSpace(temperature=float("inf")).fit(X)
         ...       .invariant_value(X) <= 1 + 1e-9).all())
@@ -701,7 +701,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(60, 3, random_state=0)
         >>> hts = HyperbolicTradeSpace().fit(X)
         >>> bool(np.allclose(hts.invariant_value(hts.project(X)), 1.0))
@@ -730,7 +730,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
         Examples
         --------
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(150, 4, n_terms=3, random_state=0)
         >>> est = HyperbolicTradeSpace(n_terms=3, random_state=0).fit(X)
         >>> bool((est.assign_cells(X) == est.cell_).all())
@@ -755,7 +755,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(60, 3, random_state=0)
         >>> hts = HyperbolicTradeSpace().fit(X)
         >>> x = X[:1].copy()
@@ -800,7 +800,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(80, 3, random_state=0)
         >>> hts = HyperbolicTradeSpace().fit(X)
         >>> hts.novelty_score(X[:3]).shape, hts.novelty_score(
@@ -834,7 +834,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Examples
         --------
         >>> import numpy as np
-        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> from tradespace import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(60, 3, random_state=0)
         >>> hts = HyperbolicTradeSpace().fit(X)
         >>> M = hts.level_set(np.zeros((1, 2)), value=0.5)

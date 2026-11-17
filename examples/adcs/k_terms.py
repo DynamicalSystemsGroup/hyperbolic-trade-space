@@ -12,12 +12,12 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OrdinalEncoder
 
-from hyperbolic_trade_space import (
+from tradespace import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     select_temperature,
 )
-from hyperbolic_trade_space.plotting import PARTICIPATION
+from tradespace.plotting import PARTICIPATION
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "data" / "v2"  # the data of record (WP23)

@@ -3,8 +3,8 @@
 import numpy as np
 import pytest
 
-from hyperbolic_trade_space.coordinates import to_frontier_coordinates
-from hyperbolic_trade_space.datasets import make_configured_frontier_data, make_frontier_data
+from tradespace.coordinates import to_frontier_coordinates
+from tradespace.datasets import make_configured_frontier_data, make_frontier_data
 
 
 def test_frontier_info_and_planting():

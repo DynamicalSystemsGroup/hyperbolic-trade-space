@@ -33,8 +33,8 @@ from pathlib import Path
 
 import numpy as np
 
-from hyperbolic_trade_space import plotting as _tern
-from hyperbolic_trade_space.plotting import plot_ternary
+from tradespace import plotting as _tern
+from tradespace.plotting import plot_ternary
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = ROOT / "build" / "site-figures"
@@ -69,7 +69,7 @@ def fit_why(exponents=None, **plant):
     ``exponents`` (default: the package's seeded draw) sets the planted exponent vectors; ``plant``
     passes ``frontier_fraction``, ``interior_scale``, ``noise`` and the like to the generator.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    from tradespace import HyperbolicTradeSpace, make_frontier_data
 
     X, _ = make_frontier_data(
         N_ROWS,

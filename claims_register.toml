@@ -28,7 +28,7 @@ kind = "S"
 backing = [
   "test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak",
   "test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors",
-  "func:src/hyperbolic_trade_space/plotting.py::plot_ternary",
+  "func:src/tradespace/plotting.py::plot_ternary",
 ]
 status = "backed"
 disposition = "keep"
@@ -807,7 +807,7 @@ fragment = "At $\\tau=\\infty$ the fit is a linear program."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
-backing = ["lemma:L5.24", "lemma:L12.31", "func:src/hyperbolic_trade_space/solvers.py::solve_lp", "test:tests/test_solvers.py::test_lp_gap_equals_duality_gap_and_uniform_ties_is_a_valid_bound"]
+backing = ["lemma:L5.24", "lemma:L12.31", "func:src/tradespace/solvers.py::solve_lp", "test:tests/test_solvers.py::test_lp_gap_equals_duality_gap_and_uniform_ties_is_a_valid_bound"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1028,7 +1028,7 @@ fragment = "For each restart the package starts from random centres in the chart
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::solve_terms"]
+backing = ["func:src/tradespace/solvers.py::solve_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1052,7 +1052,7 @@ fragment = "`certified`: the assignment is fixed, residuals and gaps are within 
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "file:work-packages/interface-contract.md"]
+backing = ["func:src/tradespace/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "file:work-packages/interface-contract.md"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1064,7 +1064,7 @@ fragment = "`stationary_without_margin`: the same with a zero margin or an empty
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms"]
+backing = ["func:src/tradespace/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1076,7 +1076,7 @@ fragment = "`uncertified`, `guard_stop` and `iteration_cap`: level 1 only, repor
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_solvers.py::test_guard_stop_returns_the_consistent_previous_state", "test:tests/test_estimator.py::test_convergence_warning_at_the_cap_while_the_objective_still_moves", "test:tests/test_estimator.py::test_iteration_cap_warns_only_when_not_stationary_to_tol"]
+backing = ["func:src/tradespace/solvers.py::Termination", "test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_solvers.py::test_guard_stop_returns_the_consistent_previous_state", "test:tests/test_estimator.py::test_convergence_warning_at_the_cap_while_the_objective_still_moves", "test:tests/test_estimator.py::test_iteration_cap_warns_only_when_not_stationary_to_tol"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43; estimator unit 18d0064"
@@ -1088,7 +1088,7 @@ fragment = "`not_applicable`: a penalty, the tangent step or a single term; the 
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_solvers.py::test_not_applicable_statuses", "test:tests/test_soft_fit.py::test_r7_a_soft_fit_at_infinite_tau_is_not_applicable"]
+backing = ["func:src/tradespace/solvers.py::Termination", "test:tests/test_solvers.py::test_not_applicable_statuses", "test:tests/test_soft_fit.py::test_r7_a_soft_fit_at_infinite_tau_is_not_applicable"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1100,7 +1100,7 @@ fragment = "The record also holds the largest term gap, the Corollary bound, the
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "file:work-packages/interface-contract.toml", "test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields"]
+backing = ["func:src/tradespace/solvers.py::Termination", "file:work-packages/interface-contract.toml", "test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1304,7 +1304,7 @@ fragment = "summing to one. `report.contending_set` lists the metrics that"
 file = "docs/getting-started.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report"]
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "func:src/tradespace/tensions.py::trade_off_report"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1388,7 +1388,7 @@ fragment = "[`frontier_in_original_units`](user-guide/conditioning.md), a functi
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "func:src/hyperbolic_trade_space/preconditioning.py::frontier_in_original_units"]
+backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "func:src/tradespace/preconditioning.py::frontier_in_original_units"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1448,7 +1448,7 @@ fragment = "[`select_temperature`](user-guide/fitting.md), a function: chooses t
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/hyperbolic_trade_space/tuning.py::select_temperature"]
+backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/tradespace/tuning.py::select_temperature"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1505,11 +1505,11 @@ note = "predict (metrics), predict_coordinates and predict_novelty from configur
 
 [[claim]]
 id = "C190"
-fragment = "`hyperbolic_trade_space.tensions`: `TradeOffReport`, `DesignTensions`: what the functions return."
+fragment = "`tradespace.tensions`: `TradeOffReport`, `DesignTensions`: what the functions return."
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report"]
+backing = ["test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields", "func:src/tradespace/tensions.py::trade_off_report"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1517,7 +1517,7 @@ note = "TradeOffReport is in tensions and trade_off_report returns it (test_tens
 
 [[claim]]
 id = "C191"
-fragment = "`hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the"
+fragment = "`tradespace.solvers`: the multi-term solver, the `Termination` record and the"
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
@@ -2004,7 +2004,7 @@ fragment = "which implements the family of maps the method allows,"
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction", "func:src/tradespace/preconditioning.py::LogAffinePreconditioner"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2016,7 +2016,7 @@ fragment = "`frontier_in_original_units`, which reports the fitted reference sur
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "func:src/hyperbolic_trade_space/preconditioning.py::frontier_in_original_units"]
+backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "func:src/tradespace/preconditioning.py::frontier_in_original_units"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2052,7 +2052,7 @@ fragment = "`shift` moves the argument to `a + shift`; it must keep every"
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_preconditioning.py::test_negative_after_shift_raises", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+backing = ["test:tests/test_preconditioning.py::test_negative_after_shift_raises", "func:src/tradespace/preconditioning.py::LogAffinePreconditioner"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2076,7 +2076,7 @@ fragment = "The reference point is the attribute value that maps to metric 1; it
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction", "func:src/tradespace/preconditioning.py::LogAffinePreconditioner"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2100,7 +2100,7 @@ fragment = "a scaler is fitted per column. `scaler=\"standard\"` gives each metr
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "func:src/tradespace/preconditioning.py::LogAffinePreconditioner"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2208,7 +2208,7 @@ fragment = "After `\"standard\"` scaling, `np.log(M).std(axis=0)` is one in ever
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "func:src/tradespace/preconditioning.py::LogAffinePreconditioner"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2376,7 +2376,7 @@ fragment = "This table has 30 percent of its rows on the planted frontier, hence
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "R"
-backing = ["gen:src/hyperbolic_trade_space/datasets.py::make_frontier_data", "test:tests/test_datasets.py::test_frontier_info_and_planting"]
+backing = ["gen:src/tradespace/datasets.py::make_frontier_data", "test:tests/test_datasets.py::test_frontier_info_and_planting"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2724,7 +2724,7 @@ fragment = "`improvement_factors(X)` gives, per metric, the factor on that metri
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_project_and_improvement_factors_land_on_frontier", "lemma:L7.7", "func:src/hyperbolic_trade_space/estimator.py::improvement_factors"]
+backing = ["test:tests/test_estimator.py::test_project_and_improvement_factors_land_on_frontier", "lemma:L7.7", "func:src/tradespace/estimator.py::improvement_factors"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2772,7 +2772,7 @@ fragment = "`knn_gap_scores(Z, k=5)`: mean distance to the k nearest neighbours,
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/gaps.py::knn_gap_scores", "test:tests/test_gaps.py::test_knn_flags_isolated_point"]
+backing = ["func:src/tradespace/gaps.py::knn_gap_scores", "test:tests/test_gaps.py::test_knn_flags_isolated_point"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2784,7 +2784,7 @@ fragment = "`find_holes(Z, resolution=50, threshold=2.0)`: grid points inside th
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/gaps.py::find_holes", "test:tests/test_gaps.py::test_find_holes_restricts_to_hull", "test:tests/test_gaps.py::test_find_holes_2d_planted_disc"]
+backing = ["func:src/tradespace/gaps.py::find_holes", "test:tests/test_gaps.py::test_find_holes_restricts_to_hull", "test:tests/test_gaps.py::test_find_holes_2d_planted_disc"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2904,7 +2904,7 @@ fragment = "colours them by cell, the term that scores each highest"
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_plotting.py::test_surface_k3_one_colour_by_default_and_coordinates_cell_colouring", "func:src/hyperbolic_trade_space/plotting.py::cell_labels"]
+backing = ["test:tests/test_plotting.py::test_surface_k3_one_colour_by_default_and_coordinates_cell_colouring", "func:src/tradespace/plotting.py::cell_labels"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2916,7 +2916,7 @@ fragment = "where would a configuration without measurements fall? It composes t
 file = "docs/user-guide/prediction.md"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_clones_leave_parameters_untouched"]
+backing = ["func:src/tradespace/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_clones_leave_parameters_untouched"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2940,7 +2940,7 @@ fragment = "- `predict_coordinates(X_config)`: the pair `(Z, log_v)`."
 file = "docs/user-guide/prediction.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor"]
+backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "func:src/tradespace/predictive.py::TradeSpaceRegressor"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -3176,7 +3176,7 @@ note = "asserts np.isnan([bound, gamma, radius]).all() on soft fits"
 
 [[claim]]
 id = "C336"
-fragment = "The tolerances are module constants of `hyperbolic_trade_space.solvers`, not parameters: `EPS_KKT` ="
+fragment = "The tolerances are module constants of `tradespace.solvers`, not parameters: `EPS_KKT` ="
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -3444,7 +3444,7 @@ fragment = "replacement for it, and the two chain: the tension report already ru
 file = "site/index.html"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report"]
+backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions", "func:src/tradespace/tensions.py::trade_off_report"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -3490,7 +3490,7 @@ anchor = "The fields"
 kind = "S"
 backing = [
   "test:tests/test_estimator.py::test_n_distinct_terms_falls_below_k_where_terms_repeat",
-  "func:src/hyperbolic_trade_space/solvers.py::distinct_terms",
+  "func:src/tradespace/solvers.py::distinct_terms",
   "test:tests/test_interface_contract.py::test_r1_distinct_terms_field_and_names_pinned",
 ]
 status = "backed"
@@ -3550,7 +3550,7 @@ anchor = "A cap can hide a slope"
 kind = "S"
 backing = [
   "test:tests/test_tensions.py::test_monolemma_and_names",
-  "func:src/hyperbolic_trade_space/tensions.py::trade_off_report",
+  "func:src/tradespace/tensions.py::trade_off_report",
 ]
 status = "backed"
 disposition = "keep"
@@ -3830,8 +3830,8 @@ file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/plotting.py::plot_ternary",
-  "func:src/hyperbolic_trade_space/plotting.py::ternary_marker_values",
+  "func:src/tradespace/plotting.py::plot_ternary",
+  "func:src/tradespace/plotting.py::ternary_marker_values",
   "test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle",
   "test:tests/test_plotting.py::test_ternary_marker_table_matches_the_drawn_markers_and_levels",
 ]
@@ -3955,7 +3955,7 @@ file = "paper/paper.ipynb"
 anchor = "Results"
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/solvers.py::Termination",
+  "func:src/tradespace/solvers.py::Termination",
   "test:tests/test_estimator.py::test_termination_record_for_k_terms",
   "file:work-packages/interface-contract.md",
 ]
@@ -3986,7 +3986,7 @@ file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/tuning.py::select_temperature",
+  "func:src/tradespace/tuning.py::select_temperature",
 ]
 status = "backed"
 disposition = "keep"
@@ -4043,7 +4043,7 @@ fragment = "The contending set is a third fit, read after the fit: $f_k$ at $\\t
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::_refit", "func:src/hyperbolic_trade_space/tensions.py::trade_off_report", "file:paper/supporting_material.ipynb"]
+backing = ["func:src/tradespace/solvers.py::_refit", "func:src/tradespace/tensions.py::trade_off_report", "file:paper/supporting_material.ipynb"]
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (CR-15)"
@@ -4072,7 +4072,7 @@ file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
 backing = [
-  "func:src/hyperbolic_trade_space/estimator.py::_conditioning",
+  "func:src/tradespace/estimator.py::_conditioning",
   "glossary:conditioning-of-the-exponents",
   "test:tests/test_paper.py::test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it",
 ]
@@ -4284,7 +4284,7 @@ fragment = "The planted K0 is known there; your table's is not."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_k_terms_recovers_planted_terms", "func:src/hyperbolic_trade_space/datasets.py::make_frontier_data"]
+backing = ["test:tests/test_estimator.py::test_k_terms_recovers_planted_terms", "func:src/tradespace/datasets.py::make_frontier_data"]
 status = "backed"
 disposition = "keep"
 source = "WP31 review G-1, G-3, G-4"
@@ -4308,7 +4308,7 @@ fragment = "tau = select_temperature(M, 0.10, bounds=(3, 1000))"
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/tuning.py::select_temperature", "func:examples/adcs/case.py::fit_study", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+backing = ["func:src/tradespace/tuning.py::select_temperature", "func:examples/adcs/case.py::fit_study", "test:tests/test_docs.py::test_runnable_blocks_execute"]
 status = "backed"
 disposition = "keep"
 source = "WP31 task-reader fix (1)"
@@ -4392,7 +4392,7 @@ fragment = "A region is where one term is largest: an analysis of the fit, not a
 file = "docs/examples.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "func:src/hyperbolic_trade_space/plotting.py::plot_ternary"]
+backing = ["test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "func:src/tradespace/plotting.py::plot_ternary"]
 status = "backed"
 disposition = "keep"
 source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
@@ -4746,7 +4746,7 @@ anchor = "Prior art"
 kind = "M"
 backing = [
   "glossary:fitted-reference-surface",
-  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "func:src/tradespace/estimator.py::HyperbolicTradeSpace",
   "file:work-packages/WP35-decisions.md",
 ]
 status = "backed"
@@ -4763,7 +4763,7 @@ kind = "S"
 backing = [
   "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator",
   "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
-  "func:src/hyperbolic_trade_space/tensions.py::trade_off_report",
+  "func:src/tradespace/tensions.py::trade_off_report",
 ]
 status = "backed"
 disposition = "keep"
@@ -4941,7 +4941,7 @@ anchor = "Limitations"
 kind = "L"
 backing = [
   "file:work-packages/WP36-rounds/spike/readout.md",
-  "func:src/hyperbolic_trade_space/solvers.py::soft_certificate",
+  "func:src/tradespace/solvers.py::soft_certificate",
 ]
 status = "backed"
 disposition = "keep"
@@ -5002,7 +5002,7 @@ anchor = "C.1 The hypothesis and what would refute it"
 kind = "M"
 backing = [
   "glossary:fitted-reference-surface",
-  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "func:src/tradespace/estimator.py::HyperbolicTradeSpace",
 ]
 status = "backed"
 disposition = "keep"
@@ -5097,7 +5097,7 @@ anchor = "C.4 What the table shows"
 kind = "S"
 backing = [
   "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
-  "func:src/hyperbolic_trade_space/tensions.py::trade_off_report",
+  "func:src/tradespace/tensions.py::trade_off_report",
 ]
 status = "backed"
 disposition = "keep"
@@ -5532,7 +5532,7 @@ file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "func:src/tradespace/estimator.py::HyperbolicTradeSpace",
   "test:tests/test_estimator.py::test_terms_are_ordered_by_descending_share_and_every_attribute_carries_it",
 ]
 status = "backed"
@@ -5664,7 +5664,7 @@ file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/solvers.py::_newton_polish",
+  "func:src/tradespace/solvers.py::_newton_polish",
   "test:tests/test_solvers.py::test_polish_never_increases_the_term_objective_and_closes_the_gap",
 ]
 status = "backed"
@@ -5679,7 +5679,7 @@ file = "paper/paper.ipynb"
 anchor = "Results"
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/solvers.py::_newton_polish",
+  "func:src/tradespace/solvers.py::_newton_polish",
 ]
 status = "backed"
 disposition = "keep"
@@ -5783,7 +5783,7 @@ file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "func:src/tradespace/estimator.py::HyperbolicTradeSpace",
   "glossary:attributes",
 ]
 status = "backed"
@@ -6015,7 +6015,7 @@ kind = "M"
 backing = [
   "lemma:L9",
   "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples",
-  "func:src/hyperbolic_trade_space/preconditioning.py::frontier_in_original_units",
+  "func:src/tradespace/preconditioning.py::frontier_in_original_units",
 ]
 status = "backed"
 disposition = "keep"
@@ -7068,7 +7068,7 @@ fragment = "A point with a datum is a row of your table, so its configuration is
 file = "docs/bridge.md"
 anchor = "Two routes back"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
+backing = ["func:src/tradespace/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
 status = "backed"
 disposition = "keep"
 source = "WP41 D-2"
@@ -7080,7 +7080,7 @@ fragment = "`TradeSpaceRegressor` is the prediction half. It maps a configuratio
 file = "docs/bridge.md"
 anchor = "Propose and predict"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
+backing = ["func:src/tradespace/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
 status = "backed"
 disposition = "keep"
 source = "WP41 D-2"
@@ -7212,7 +7212,7 @@ fragment = "`temperature_path` refits at each temperature of a sweep, twelve log
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_temperature_path.py::test_the_default_sweep_is_twelve_log_spaced_temperatures_and_the_limit", "test:tests/test_temperature_path.py::test_the_fit_temperature_is_inserted_unless_a_grid_point_is_within_two_percent", "func:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+backing = ["test:tests/test_temperature_path.py::test_the_default_sweep_is_twelve_log_spaced_temperatures_and_the_limit", "test:tests/test_temperature_path.py::test_the_fit_temperature_is_inserted_unless_a_grid_point_is_within_two_percent", "func:src/tradespace/plotting.py::temperature_path"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7224,7 +7224,7 @@ fragment = "`temperature_path` refits at each temperature of a sweep ... `plot_t
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_temperature_path.py::test_the_figure_draws_one_line_per_participating_metric_and_marks_the_fit", "test:tests/test_temperature_path.py::test_the_helper_reproduces_the_case_figure_lines_to_the_printed_exponents", "func:src/hyperbolic_trade_space/plotting.py::plot_temperature_path"]
+backing = ["test:tests/test_temperature_path.py::test_the_figure_draws_one_line_per_participating_metric_and_marks_the_fit", "test:tests/test_temperature_path.py::test_the_helper_reproduces_the_case_figure_lines_to_the_printed_exponents", "func:src/tradespace/plotting.py::plot_temperature_path"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7248,7 +7248,7 @@ fragment = "The fifth metric has a small exponent at low tau and falls to numeri
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "R"
-backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88", "gen:src/tradespace/plotting.py::temperature_path"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7308,7 +7308,7 @@ fragment = "Their exponents move by less than 0.09 across the whole sweep, with 
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "R"
-backing = ["test:tests/test_temperature_path.py::test_page_the_contending_set_and_how_far_its_exponents_move", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+backing = ["test:tests/test_temperature_path.py::test_page_the_contending_set_and_how_far_its_exponents_move", "gen:src/tradespace/plotting.py::temperature_path"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7320,7 +7320,7 @@ fragment = "The fifth metric participates at the fit temperature (its exponent i
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "R"
-backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88", "test:tests/test_temperature_path.py::test_page_the_contending_set_and_how_far_its_exponents_move", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path", "glossary:participation-threshold"]
+backing = ["test:tests/test_temperature_path.py::test_page_a_metric_leaves_the_support_between_tau_83_and_88", "test:tests/test_temperature_path.py::test_page_the_contending_set_and_how_far_its_exponents_move", "gen:src/tradespace/plotting.py::temperature_path", "glossary:participation-threshold"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7344,7 +7344,7 @@ fragment = "`n_eff_` is 162 at tau = 3 of 300 designs, 5.3 at the convention's f
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "R"
-backing = ["test:tests/test_temperature_path.py::test_page_the_price_in_effective_sample_size", "gen:src/hyperbolic_trade_space/plotting.py::temperature_path"]
+backing = ["test:tests/test_temperature_path.py::test_page_the_price_in_effective_sample_size", "gen:src/tradespace/plotting.py::temperature_path"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7356,7 +7356,7 @@ fragment = "The convention, 10 percent of designs above V = 1, is one point on t
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_temperature_path.py::test_page_a_higher_target_gives_a_lower_temperature_and_more_designs_in_the_fit", "func:src/hyperbolic_trade_space/tuning.py::select_temperature"]
+backing = ["test:tests/test_temperature_path.py::test_page_a_higher_target_gives_a_lower_temperature_and_more_designs_in_the_fit", "func:src/tradespace/tuning.py::select_temperature"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7368,7 +7368,7 @@ fragment = "A higher target gives a lower tau, a softer maximum, more designs be
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "R"
-backing = ["test:tests/test_temperature_path.py::test_page_a_higher_target_gives_a_lower_temperature_and_more_designs_in_the_fit", "gen:src/hyperbolic_trade_space/tuning.py::select_temperature"]
+backing = ["test:tests/test_temperature_path.py::test_page_a_higher_target_gives_a_lower_temperature_and_more_designs_in_the_fit", "gen:src/tradespace/tuning.py::select_temperature"]
 status = "backed"
 disposition = "keep"
 source = "WP46 D-4"
@@ -7544,7 +7544,7 @@ kind = "S"
 backing = [
   "glossary:loss",
   "glossary:objective",
-  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "func:src/tradespace/estimator.py::HyperbolicTradeSpace",
 ]
 status = "backed"
 disposition = "keep"
@@ -7589,7 +7589,7 @@ anchor = "Preliminaries and notation"
 kind = "S"
 backing = [
   "file:work-packages/interface-contract.toml",
-  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "func:src/tradespace/estimator.py::HyperbolicTradeSpace",
 ]
 status = "backed"
 disposition = "keep"
@@ -8154,7 +8154,7 @@ fragment = "A chart point without a datum pulls back to a proposal: a configurat
 file = "paper/paper.ipynb"
 anchor = "Future work"
 kind = "S"
-backing = ["glossary:proposal", "glossary:selection-rule", "file:work-packages/WP41-rounds/spike/readout.md", "func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor"]
+backing = ["glossary:proposal", "glossary:selection-rule", "file:work-packages/WP41-rounds/spike/readout.md", "func:src/tradespace/predictive.py::TradeSpaceRegressor"]
 status = "backed"
 disposition = "keep"
 source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
@@ -8418,7 +8418,7 @@ fragment = "centred on the cell's mean log-metric: $f_k$ of ... on the cell's ro
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/tensions.py::trade_off_report", "test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports"]
+backing = ["func:src/tradespace/tensions.py::trade_off_report", "test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports"]
 status = "backed"
 disposition = "keep"
 source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
@@ -8430,7 +8430,7 @@ fragment = "The labels are the alternation's weights at infinite term temperatur
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::soft_weights", "test:tests/test_soft_fit.py::test_r3_the_limit_kappa_to_infinity_is_the_label_fit", "file:derivation/lemma_16_soft_fit_alternation.py", "file:paper/supporting_material.ipynb"]
+backing = ["func:src/tradespace/solvers.py::soft_weights", "test:tests/test_soft_fit.py::test_r3_the_limit_kappa_to_infinity_is_the_label_fit", "file:derivation/lemma_16_soft_fit_alternation.py", "file:paper/supporting_material.ipynb"]
 status = "backed"
 disposition = "keep"
 source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
@@ -8442,7 +8442,7 @@ fragment = "A design's cell, the term that scores it highest in the fit ... is r
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/estimator.py::assign_cells", "file:work-packages/interface-contract.md", "glossary:cell"]
+backing = ["func:src/tradespace/estimator.py::assign_cells", "file:work-packages/interface-contract.md", "glossary:cell"]
 status = "backed"
 disposition = "keep"
 source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
@@ -8454,7 +8454,7 @@ fragment = "On centred log-metrics, as the case's conditioning makes them, $f_1=
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "M"
-backing = ["lemma:L14.14", "lemma:L14.15", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner", "func:examples/adcs/case.py::conditioner_for", "glossary:conditioning", "glossary:log-metrics"]
+backing = ["lemma:L14.14", "lemma:L14.15", "func:src/tradespace/preconditioning.py::LogAffinePreconditioner", "func:examples/adcs/case.py::conditioner_for", "glossary:conditioning", "glossary:log-metrics"]
 status = "backed"
 disposition = "keep"
 source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
@@ -8526,7 +8526,7 @@ fragment = "A fit that stops with an empty cell is reported as stationary withou
 file = "paper/paper.ipynb"
 anchor = "Results"
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::_termination", "file:src/hyperbolic_trade_space/solvers.py"]
+backing = ["func:src/tradespace/solvers.py::_termination", "file:src/tradespace/solvers.py"]
 status = "backed"
 disposition = "keep"
 source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
@@ -8718,7 +8718,7 @@ fragment = "$\\tau$ puts a target fraction of designs above $V=1$: about a tenth
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "S"
-backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/hyperbolic_trade_space/tuning.py::select_temperature", "test:tests/test_case.py::test_sensitivity_and_refits_on_frozen_primary"]
+backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/tradespace/tuning.py::select_temperature", "test:tests/test_case.py::test_sensitivity_and_refits_on_frozen_primary"]
 status = "backed"
 disposition = "keep"
 source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
@@ -8860,7 +8860,7 @@ anchor = "Case analysis"
 kind = "M"
 backing = [
   "lemma:L21.12",
-  "func:src/hyperbolic_trade_space/tensions.py::tension_matrix",
+  "func:src/tradespace/tensions.py::tension_matrix",
   "test:tests/test_tensions.py::test_the_cases_of_the_definition",
 ]
 status = "backed"
@@ -9263,7 +9263,7 @@ kind = "S"
 backing = [
   "gen:paper/generate_results.py::termination_records",
   "test:tests/test_paper.py::test_appendix_d8_prints_the_conditioning_of_the_exponents",
-  "func:src/hyperbolic_trade_space/estimator.py::_conditioning",
+  "func:src/tradespace/estimator.py::_conditioning",
 ]
 status = "backed"
 disposition = "keep"
@@ -9351,7 +9351,7 @@ file = "paper/supporting_material.ipynb"
 anchor = "G.2 Limitations"
 kind = "S"
 backing = [
-  "func:src/hyperbolic_trade_space/tuning.py::select_temperature",
+  "func:src/tradespace/tuning.py::select_temperature",
   "test:tests/test_case.py::test_sensitivity_and_refits_on_frozen_primary",
 ]
 status = "backed"

@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | DRAFT, approved by the driver as his proxy under the external review's disposition (2026-11-16) |
 | **Supervisor (accountable)** | mzargham |
-| **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; branch `dev`, after WP73 and before 0.1 |
+| **Repository** | `DynamicalSystemsGroup/tradespace`; branch `dev`, after WP73 and before 0.1 |
 | **Approval record** | Finding 7 of `work-packages/review/external-review-2026-11-16.md` and its disposition ("accept both type names wherever the type is matched"), recorded in `driver-log.md` (2026-11-16, 17:40) |
 | **Acceptance record** | The driver's run of the checks below and read of the diff, as proxy |
 

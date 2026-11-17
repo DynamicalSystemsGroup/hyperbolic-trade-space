@@ -10,10 +10,10 @@ through with the decision that moved it, or labelled post-release.
 
 The root and paper pages are checked live under "Post-release live checks".
 
-- https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases (release notes; linked from the package card on the root page)
-- https://pypi.org/project/hyperbolic-trade-space/ (PyPI project page; a placeholder link in the root page's footer until the first publish, 404 before it: "this should also have a placeholder link for pypi", 2026-11-14 night)
-- https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/ (root; the public URL and `site_url` base)
-- https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/ (paper page; `/paper/` serves the mode named in `paper/mode.toml`, which is `abstract` for 0.1.0: the title, the author and the abstract; the pinned paper's artefact once the mode names a pin (WP66c, `bf823f22`; WP65 specification 3.4, `git show 4f81a4ea:work-packages/WP65-design/specification.md`))
+- https://github.com/DynamicalSystemsGroup/tradespace/releases (release notes; linked from the package card on the root page)
+- https://pypi.org/project/tradespace/ (PyPI project page; a placeholder link in the root page's footer until the first publish, 404 before it: "this should also have a placeholder link for pypi", 2026-11-14 night)
+- https://dynamicalsystemsgroup.github.io/tradespace/ (root; the public URL and `site_url` base)
+- https://dynamicalsystemsgroup.github.io/tradespace/paper/ (paper page; `/paper/` serves the mode named in `paper/mode.toml`, which is `abstract` for 0.1.0: the title, the author and the abstract; the pinned paper's artefact once the mode names a pin (WP66c, `bf823f22`; WP65 specification 3.4, `git show 4f81a4ea:work-packages/WP65-design/specification.md`))
 
 ## Not linked yet
 
@@ -25,7 +25,7 @@ The root and paper pages are checked live under "Post-release live checks".
 
 
 After the first tag deployment, each URL loads and shows its page (base
-`https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/`):
+`https://dynamicalsystemsgroup.github.io/tradespace/`):
 
 - [ ] GitHub releases page (release notes) loads and lists 0.1.0 (post-release)
 - [ ] `/` root, two cards (the paper, getting started) and the footer links work; the Why triangle (light and dark scheme) and the What slices load and open at full size on click. Both images are generated at build time from the planted table (`scripts/build_site_figures.py`; WP51, `01ad0839`): confirm the triangle's three region labels read "all three trade", "metric 3 trades against metric 1", "metric 3 trades against metric 2" on the deployed build, as the build on this Mac printed them at WP68's checks (labels come from the fit and could differ by platform)

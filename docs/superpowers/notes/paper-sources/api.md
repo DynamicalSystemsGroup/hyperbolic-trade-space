@@ -25,10 +25,10 @@ validation in `fit`, fitted attributes ending in an underscore.
 | `TradeSpaceRegressor` | regressor | metrics, coordinates and novelty from configuration | 4 |
 | `__version__` | string | package version | |
 
-Submodules used by import path: `hyperbolic_trade_space.gaps` (`knn_gap_scores`, `find_holes`,
-`frontier_targets`, `orient_by_pca`), `hyperbolic_trade_space.tensions` (`TradeOffReport`) and
-`hyperbolic_trade_space.plotting` (the plotting helpers). They are stage 4 tools.
-`hyperbolic_trade_space.solvers` holds the solvers and the certificate functions of stage 3
+Submodules used by import path: `tradespace.gaps` (`knn_gap_scores`, `find_holes`,
+`frontier_targets`, `orient_by_pca`), `tradespace.tensions` (`TradeOffReport`) and
+`tradespace.plotting` (the plotting helpers). They are stage 4 tools.
+`tradespace.solvers` holds the solvers and the certificate functions of stage 3
 ([Stopping record](#stopping-record-conditioning-and-conventions)).
 
 ## Stage 2: conditioning
@@ -85,7 +85,7 @@ above.
 
 ### Stopping record, conditioning and conventions
 
-**`termination_`.** A frozen `hyperbolic_trade_space.solvers.Termination` holding the stopping
+**`termination_`.** A frozen `tradespace.solvers.Termination` holding the stopping
 declaration of the chosen run; the levels it reports are stated in
 [Mathematics](method.md#three-levels-of-guarantee) (Lemma 1, L12; Lemma 2, L13; Proposition 3 and
 Corollary 4, L14). Its fields:
@@ -111,13 +111,13 @@ a residual or the gap above its tolerance), `"guard_stop"` (an iteration raised 
 more than `guard_tol`), `"iteration_cap"` (`max_iter` reached) and `"not_applicable"`
 (`refit_step="tangent"`, a `penalty`, or the $K=1$, $d=1$, $N<K$ shortcut, where the gaps are
 read-only diagnostics). The last two stops are never reported as `"certified"`. The tolerances
-are module constants of `hyperbolic_trade_space.solvers`, re-exported by
-`hyperbolic_trade_space.estimator`, and not parameters: `EPS_KKT` $=10^{-8}$, `EPS_FEAS` $=10^{-9}$,
+are module constants of `tradespace.solvers`, re-exported by
+`tradespace.estimator`, and not parameters: `EPS_KKT` $=10^{-8}$, `EPS_FEAS` $=10^{-9}$,
 `GUARD_TOL` $=10^{-12}$, `POLISH_STEPS` $=5$ (reduced-Newton steps after each finite-$\tau$ term
 refit). `fit` raises a scikit-learn `ConvergenceWarning` naming the status and the largest gap for
 `"uncertified"`, `"guard_stop"` and `"iteration_cap"`.
 
-**The certificate functions** (`hyperbolic_trade_space.solvers`): `simplex_gap(g, w,
+**The certificate functions** (`tradespace.solvers`): `simplex_gap(g, w,
 min_exponent=0.0)`, the gap $g\cdot w-\min_jg_j$ of a gradient $g$ at a feasible $w$ (with the
 floor, the gap to the floored simplex); `term_loss(U, w, ubar, tau)`, $f_k$;
 `term_gap(U, w, ubar, tau, min_exponent=0.0, p=None)`, $G_k$ (at $\tau=\infty$ the LP duality gap
@@ -148,7 +148,7 @@ the exponent is 1.
 
 ## Stage 4: analysis
 
-### Gaps and white space (`hyperbolic_trade_space.gaps`)
+### Gaps and white space (`tradespace.gaps`)
 
 - `knn_gap_scores(Z, k=5)`: mean distance to the $k$ nearest neighbours, normalized by its median.
 - `find_holes(Z, resolution=50, threshold=2.0)`: grid cells inside the convex hull of $Z$ scored by
@@ -230,7 +230,7 @@ for $d=3$ and $d=1$. The dict is run with `xfail_strict=True`, so the entry woul
 check ever started passing. `LogAffinePreconditioner` and `HyperbolicTradeSpace` have empty
 expected-failure dicts.
 
-### Plotting (`hyperbolic_trade_space.plotting`)
+### Plotting (`tradespace.plotting`)
 
 `plot_log_plane`, `plot_frontier_surface_3d`, `plot_frontier_coordinates`, `plot_v_by_variable` and
 `plot_association` each accept an optional `ax`, return a matplotlib `Axes`, and share one visual
@@ -258,7 +258,7 @@ $\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa w_{kj}}$, the shi
 $\Phi_K(u+c\mathbf 1)=\Phi_K(u)+c$ that carries homogeneity, projection and novelty over, and the
 bounds $\max_kx_k\le\Phi_K\le\max_kx_k+(\log K)/\kappa$ are proved in L10 (A2, A6, F10). It is built
 for small $K$: `n_terms=K` fits the terms by partition and refit
-(`hyperbolic_trade_space.solvers.solve_terms`; the algorithm, what is proved and inherited (I7)
+(`tradespace.solvers.solve_terms`; the algorithm, what is proved and inherited (I7)
 and the simplifying assumptions are in [Mathematics](method.md#the-solver-for-small-k)).
 Nothing is claimed about global optimality; scalability and performance are future work.
 

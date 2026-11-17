@@ -59,8 +59,8 @@ unless GitHub Actions is a bypass actor, which GitHub's pages do not state.
 ## 4. Trusted publishers
 
 **PyPI**: pypi.org, signed in, Your account, Publishing, Add a new pending publisher, GitHub tab:
-PyPI Project Name `hyperbolic-trade-space`; Owner `DynamicalSystemsGroup`; Repository name
-`hyperbolic-trade-space`; Workflow name `release.yml`; Environment name `pypi`; Add. (If the project already exists
+PyPI Project Name `tradespace`; Owner `DynamicalSystemsGroup`; Repository name
+`tradespace`; Workflow name `release.yml`; Environment name `pypi`; Add. (If the project already exists
 there: the project, Manage, Publishing, the same fields.) The project is created by the first publish.
 
 **TestPyPI**: test.pypi.org, the same form with Environment name `testpypi`.
@@ -75,7 +75,7 @@ paper is approved, before the first pinned paper mode (a pin needs a DOI in `pap
 
 zenodo.org, Log in with GitHub (authorise the Zenodo application; if the organisation `DynamicalSystemsGroup`
 restricts third-party applications, grant Zenodo under the organisation's Settings, Third-party access), your
-profile menu, GitHub, **Sync now**, then switch **On** for `DynamicalSystemsGroup/hyperbolic-trade-space`. Before the
+profile menu, GitHub, **Sync now**, then switch **On** for `DynamicalSystemsGroup/tradespace`. Before the
 first release: the first archive is of `v0.1.0`.
 
 ## 6. Nothing else

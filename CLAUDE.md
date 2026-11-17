@@ -1,4 +1,4 @@
-# hyperbolic-trade-space (the posynomial invariant form) — conventions for agents
+# tradespace (the posynomial invariant form) — conventions for agents
 
 Method and author: Michael Zargham (`mzargham`), who is the accountable supervisor. Read
 `work-packages/README.md` and `work-packages/PM-BRIEF.md` before doing anything substantial; the
@@ -28,7 +28,7 @@ readouts of the research spikes that define the future directions are in `notes/
 - uv only. Every command is `uv run ...`; install with `uv sync` (`uv sync --locked` in CI);
   `uv.lock` and `.python-version` (3.12) are committed; `uv lock --check` must pass.
 - `uv run pytest` (doctests enabled), `uv run ruff check .`, `uv run ruff format .`.
-- src layout: package `src/hyperbolic_trade_space/`; tests in `tests/`; derivations in
+- src layout: package `src/tradespace/`; tests in `tests/`; derivations in
   `derivation/`; case study in `examples/adcs/`; docs in `docs/` (MkDocs in WP8).
 
 ## Vocabulary and mathematics
