@@ -27,6 +27,13 @@ All notable changes to this project are recorded here, in the format of
   `scripts/check_repo_settings.py` in a `controls` job that runs first in the Tests and Release workflows, and
   attested in each release's notes; `GOVERNANCE.md` states the release rules, the two reviews and the repository's
   secondary rules (WP78).
+- The paper's own contribution route: a `/paper/` line in `.github/CODEOWNERS` names the paper's approvers apart from
+  the code owners, a pull request into `paper` is merged by an approver who is not its author, the pull request
+  template has a paper section, and "Contributing to the paper" in `CONTRIBUTING.md` and "The paper's route" in
+  `GOVERNANCE.md` say how the paper is edited, approved, published and reaches the site (WP79).
+- Public-link metadata on every page of the site: a description, a canonical address, Open Graph and Twitter card
+  fields with a preview image, structured data for the software and the site, `robots.txt` and a sitemap, from
+  one source of values (WP80).
 - Windows as a third platform for the fast and slow test shards, run on dispatch and at gates; the paper's tests
   run in the paper's workflow (WP34).
 - The package `tradespace` (alias `hts`): the posynomial invariant form for a trade

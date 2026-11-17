@@ -724,3 +724,19 @@ and the link previews carry it), the current line or one naming the invariant fo
 them equal) become: "Learns the shape of a design trade space from evaluated designs, with estimators that work in
 scikit-learn pipelines." The title keeps "posynomial invariant form" as the formal basis; the how stays off the
 description.
+
+## 0.2's governance items pair a declaration change with a GitHub change (2026-11-17, 21:30 EST)
+
+Verbatim:
+
+> the governance changes are v0.2 not blocking release, correct?
+
+> the v0.2 todo list needs to include changes in github or the ci will fail
+
+**Applied as.** The 0.2 board lists each governance item as a pair, the declaration's edit and the setting's edit on
+GitHub, with the order and who does each, since the `controls` job compares the two and fails CI while they differ:
+the `main-review` bypass (local-only field: the local check and the ruleset page, CI unaffected); the default
+workflow permissions write to read (local-only likewise); a governance ruleset or CODEOWNERS path lines for the
+governed files (a new ruleset is compared on the runner: the declaration and the setting must change together, or
+the checker gains a transition state, a question for the 0.2 scope); `controls` as a required check on `main`
+(the `main-checks` ruleset's list and the declaration together).

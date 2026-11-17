@@ -17,8 +17,20 @@ His release line (`WP64-decisions.md`, "His release line"): 0.1 merged on his by
 request into `dev` reviewed by a code owner other than the author, and together the 0.2 release approved under
 the review rule without the bypass:
 
-- The bypass removed from `main-review`: the governance declaration first (WP78's file), then the setting; named in
-  the 0.2 changelog.
+- Governance items, each a pair (his word, 2026-11-17 21:30: "the v0.2 todo list needs to include changes in github or
+  the ci will fail"); the `controls` job compares the declaration with the live settings and fails CI while they
+  differ, so each pair is done together, declaration first:
+  - the `main-review` bypass removed: `.github/governance.toml` (`bypass_actors = []`) in its own pull request, and
+    he removes the bypass actor on the ruleset page; the field is local-only on the runner, so CI does not fail in
+    between and the pair is checked by a code owner's local run; named in the 0.2 changelog;
+  - default workflow permissions write to read: the declaration's `[actions]` section and Settings, Actions, General;
+    local-only likewise;
+  - a tighter control on the governed files (the gaps readout's question: a push ruleset, CODEOWNERS path lines, or a
+    review-from-teams rule): a new ruleset is compared on the runner, so the declaration's pull request merges and
+    he creates the ruleset within the same sitting, or the 0.2 scope gives the checker a transition state
+    (a declared change that is accepted in either state until a date); decided at scoping;
+  - `controls` added to the required checks on `main`: the `main-checks` ruleset's list and the declaration together,
+    same rule.
 - WP76, the iron-triangle example, from branch `claude/iron-triangle-example-12a7c6` (accepted in its session at
   9657a0f0; one rebase; his review of the interpretation).
 - The docs' references to the paper cleaned up: 22 `paper:` links on nine docs pages and "the paper" in prose on
