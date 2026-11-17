@@ -584,3 +584,42 @@ rules about how its rules are made, changed and enforced; H. L. A. Hart's term),
 each specified executably where it can be (the declaration and the checker) and as a guideline where it cannot,
 with the readout saying which is which. The set is enumerated in the declaration and in `GOVERNANCE.md`, and
 adding a file to it is itself a governed change.
+
+## The root page carries the repository's and the package's name (2026-11-17, 14:30 EST)
+
+Looking at the staged site (the copy on screen was the head before the rename), verbatim:
+
+> honestly i think the top level index needs to have the same name as the repo and the package
+> "hyperbolic-trade-space". we can keep the statement about the posynomial invariant form in the short description
+> since it remains the formal basis for the approach and
+
+Asked which name, since he wrote the old one (the popup's options: `tradespace`, the morning's decision; or
+`hyperbolic-trade-space`, reverting the rename). His answer: "tradespace". So the morning's decision stands and
+the head already satisfies the ask: the root heading and `site_name` read `tradespace`, the title
+"tradespace: posynomial invariant form", the short description keeps the posynomial invariant form as the formal
+basis. Nothing to change.
+
+The sentence's end, verbatim (14:32 EST):
+
+> and worry about changes if when the package ships more features that expand what shaped trade spaces it supports
+
+So the short description names the posynomial invariant form as today's formal basis, and changes when the model
+family broadens (the question WP75's readout opens); the name `tradespace` is the stable one.
+
+## The root page's closing sentence (2026-11-17, 15:05 EST)
+
+His paragraph for the root page, verbatim:
+
+> "Trade studies are usually decided from documents and tables, where the detail of the evaluated designs is lost,
+> and the alternatives are bespoke or opaque. Computers can help in ways that are scalable, reproducible and
+> interpretable, but a model-based method must meet three conditions before a decision-maker can trust it: it has
+> to show its reasoning, say where the data do not reach, and let the analysis be rerun. Once these criteria are
+> met, design space exploration and design optimization can be accelerated by automated loops without loss of human
+> interpretability."
+
+> i know the extra sentence is a bit sales-pitchy but it is true and i think it will impact interest levels in the
+> package and encourage it to be used how we intend it to be used
+
+**Applied as.** The sentence is appended to the root page's third paragraph as he wrote it, with one word: "these
+conditions" for "these criteria", since the paragraph's earlier sentence says "three conditions" and the glossary
+rule is one object, one name. Registered as C1104, kind P (the author's judgement, stated as a possibility).

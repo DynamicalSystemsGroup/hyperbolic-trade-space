@@ -10091,3 +10091,15 @@ status = "backed"
 disposition = "keep"
 source = "examples/wheat/results.json, runs.primary.corr_log_v_log_biomass (K = 1 at the selected temperature, standardized-log conditioning, 3,753 plot-years; biomass = grain + straw)"
 note = "WP71: the level V against biomass."
+
+[[claim]]
+id = "C1104"
+fragment = "Once these conditions are met, design space"
+file = "site/index.html"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "the supervisor's sentence for the root page, 2026-11-17 (WP64-decisions.md, \"The root page's closing sentence\")"
+note = "Position claim, the author's judgement: once a model-based method shows its reasoning, says where the data do not reach and can be rerun, automated loops can accelerate exploration and optimization without loss of interpretability. Stated as a possibility (\"can be\"), not a result of the package."
