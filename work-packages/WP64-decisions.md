@@ -710,3 +710,17 @@ His word for the TestPyPI rehearsal (19:20 EST), verbatim:
 
 Dispatched: `release.yml` on `dev` at 263681b0 with the target `testpypi` (the first thing to leave the
 repository: a `tradespace` 0.1.0 build to the test index through the `testpypi` environment).
+
+## The one-line description (2026-11-17, 20:50 EST)
+
+Asked which line ships as the project's description (one source, `pyproject.toml`; PyPI, the root page, the docs
+and the link previews carry it), the current line or one naming the invariant form. His answer, verbatim:
+
+> rewrite. this contains a bunch of details that do not belong on the project description. give me a clean
+> description that simply describes that it fits tradespaces and is compatible with scikit-learn pipelines. the
+> sympy scripts and even the form factor are how not what, they don't belong at this level of zoom out
+
+**Applied as.** `pyproject.toml` `[project].description` and `CITATION.cff`'s `abstract` (the metadata test holds
+them equal) become: "Learns the shape of a design trade space from evaluated designs, with estimators that work in
+scikit-learn pipelines." The title keeps "posynomial invariant form" as the formal basis; the how stays off the
+description.
