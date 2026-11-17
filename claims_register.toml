@@ -762,7 +762,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43; re-pointed by WP35"
+source = "P5 claims pass, WP10 Amendment 5 R-43; re-pointed by WP35; reworded by WP81 (the link into the paper replaced by the difference in one clause, from the WP35 readout: HoroPCA fits a frame by a non-convex loss from random starts; this work minimizes a convex soft maximum over the simplex)"
 note = "Replaces the 'unrelated to hyperbolic PCA' clause (WP35 Q3 (a), Q4 (a)). reading_pass row 44 supported: HoroPCA is the components of PCA generalized to hyperbolic space. 'Closest in setting' is the readout's section 2 ('what each is good for') and section 4 (shared: an unsupervised fit, a table in, coordinates out); 'farthest in what is estimated' is a variance over frames against a one-sided edge."
 
 [[claim]]
