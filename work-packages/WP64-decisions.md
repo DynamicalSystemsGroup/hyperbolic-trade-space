@@ -336,3 +336,20 @@ vocabulary; the strict docs build in the abstract slot (after `build_generated`,
 `build_site_figures`); no attribution line. Left for WP58: WP25's eight files, WP21's scope and WP12's decisions
 (kept by index state), the README's stale WP28 sentence, and the retained-by-decision files the index names.
 
+## WP68, G1 to G6 done (2026-11-17, 06:20 EST); G7 to G9 wait on him
+
+Landed on `dev`: 6b487929 (the changelog's `[0.1.0] - 2026-11-17`, the punch list, `WP68-rounds/checks.md`) and
+ab8fc0f9 (version 0.1.0 in `pyproject.toml`, `__version__`, `CITATION.cff` with `date-released`, `uv.lock` by
+`uv lock` with the project's own line the only change, and the interface contract's manifest value, which R-2 of
+the contract has the bump edit in the same commit; contract version 29 unchanged). The unit's full software suite
+found that fifth copy of the version (one failure, then fixed); the driver's checks on the landed head: the
+contract, release, index and site tests 200 passed; register; fast suite 1,991; lint, format, lock; the changelog
+check exit 0; `__version__` reads 0.1.0. The staged site at 7e6839a0 looked at (G5, `WP68-rounds/record.md`); the
+release issue's text drafted (G6, `WP68-rounds/release-issue.md`), to be opened with the pull request on his word.
+The changelog's date is provisional: the merge's day is written when he says the word. The `qc/release` dry run
+at ab8fc0f9 is the last run before the pull request (R-2); its result goes in `driver-log.md`.
+
+**What waits on him:** the keyboard items of `WP65-design/his-items.md` (G7), his word for the pull request from
+`dev` into `main` (G8), his merge, then the after-merge steps (G9). Nothing outward has been done: no pull request,
+no issue, no tag, no release.
+
