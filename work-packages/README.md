@@ -24,7 +24,7 @@ This repository is built as supervisor-gated work packages, following the superv
 - `work-packages/archive/` is git-ignored: a place for local copies of removed documents, never committed.
 - Notes and spike outputs follow the same protocol. The live guidance is in `notes/` at the repository root (the
   checks and `CLAUDE.md` cite it); the readouts that define the future directions are in `notes/directions/`, one file
-  per spike. A note or spike output that stops being read by code, a test, the register or the guidance is removed at
+  per spike, indexed with the planned items in `notes/directions/README.md`. A note or spike output that stops being read by code, a test, the register or the guidance is removed at
   the commit that retires its reader, and `INDEX.md`'s second table gets a row: path, the commit that holds it, its
   purpose in one clause, and the `git show <commit>:<path>` command. Spike scripts stay in the tree only while a
   notebook, a test or the register reads them; the row names the reader until then.
