@@ -1,0 +1,103 @@
+# Governance
+
+How this repository's rules are made, enforced and changed: the two release lifecycles, the two reviews, who holds
+authority, the files that carry the rules, and the check that runs first in every workflow.
+
+## The two lifecycles
+
+The software (the package `tradespace`, the docs and the root page) is released by the merge of a pull request from
+`dev` into `main`. Candidates are pull requests into `dev`; `main` holds releases only. The merge starts the Release
+workflow (`.github/workflows/release.yml`): it checks the settings against their declaration, checks admissibility,
+runs the suite, builds the wheel and the sdist with a software bill of materials, composes the site, creates the tag
+`v<version>` and a draft release, publishes to PyPI by trusted publishing, deploys the site and publishes the release.
+A merge whose version is already released and whose package files are unchanged since its tag redeploys the site only.
+The conditions are `.github/RELEASE_ADMISSIBILITY.md`.
+
+The paper is edited on the `paper` branch and published by a `paper-*` tag there, which `paper.yml` builds, tests and
+publishes as a GitHub release once one of the paper's approvers (`jshorish`, `mzargham`) approves the `paper-release`
+environment; the one who pushed the tag does not approve it. The paper reaches the site when `paper` is merged into
+`dev` and `dev` into `main`. Its change record is `paper/CHANGES.md`, its tests run in its own workflow, and its
+contribution route is kept apart from the software's.
+
+## The two reviews
+
+Two decisions, by two people, with two questions.
+
+Into `dev`, a review of the work. A code owner who is not the pull request's author asks: does this do what its
+issue says, and is each good-enough item met (conformance by running the check, fitness by looking)? The conditions
+are `.github/PR_ADMISSIBILITY.md`; the review is recorded in the pull request, the merge under the merger's name.
+
+Into `main`, a review of the release. A code owner who is not the pull request's author asks: is this candidate the
+release? They read the changelog entry, the release issue the pull request closes and the staged site, and merge.
+The merge is the decision; the `pypi` environment waits for nobody else. A pull request's author cannot approve it,
+so for the 0.1 release the `main-review` ruleset carries a bypass for repository administrators on pull requests
+(decided 2026-11-17), and the release is merged on that bypass. The bypass is removed after 0.1 by a change to the
+declaration first, then to the ruleset, in a pull request of its own, named in the 0.2 changelog; the 0.2 release is
+the first through the review rule without it, and its attestation shows the rule in effect.
+
+## Authority
+
+`.github/CODEOWNERS` is the source of truth for authority in the repository: the logins on its `*` line are the
+code owners, the people who approve drafts, review and merge candidates, and release. Every check that asks who may
+do something reads that file; no other list exists. Each code owner is a collaborator with at least the access the
+declaration names, which the settings check verifies. The paper's approvers are set in the `paper-release`
+environment and are not thereby code owners.
+
+## The secondary rules
+
+The files that say how the repository's rules are made, changed and enforced are its secondary rules (rules about
+rules). The set is small and enumerated; adding a file to it is itself a governed change. Each is executable (a
+script or a test checks it) or a guideline (a named role judges it):
+
+- `.github/CODEOWNERS` — executable: `scripts/check_repo_settings.py` checks each code owner's access; the merge check (`scripts/admissibility.py`) reads it.
+- `.github/governance.toml` — executable: the declaration of the settings; `scripts/check_repo_settings.py` in the `controls` job, `tests/test_repo_settings.py`.
+- `.github/workflows/*.yml` — executable: `scripts/release_checks.py pins` and the workflow tests (`tests/test_release_workflows.py`, `tests/test_ci_shards.py`, `tests/test_release_checks.py`, `tests/test_paper_model.py`).
+- `GOVERNANCE.md` — guideline: a code owner judges a change to it at review; its list of secondary rules is tested against the declaration.
+- `.github/ISSUE_ADMISSIBILITY.md` — guideline: the code owner who removes the `draft` label judges the fitness rows; the machine rows run in the issue workflows.
+- `.github/PR_ADMISSIBILITY.md` — guideline: the code owner who reviews and merges judges the fitness rows; the machine rows run in the pull request workflows and the test workflow.
+- `.github/RELEASE_ADMISSIBILITY.md` — guideline: the code owner who merges the release judges the fitness row; the machine rows run in the release workflow.
+- `.github/ISSUE_TEMPLATE/*.yml` — executable: `tests/test_admissibility.py` checks that the scope-of-work template carries the fields the checks read.
+- `.github/pull_request_template.md` — executable: `tests/test_admissibility.py` checks that it carries the sections the pull request check reads.
+
+Today each is edited like any other file: a pull request into `dev`, or a direct commit to `dev` by a code owner.
+A tighter control on editing them is an open decision (`work-packages/WP78-rounds/gaps.md`); the declaration's
+`control` field records the answer.
+
+## The declaration and the check
+
+`.github/governance.toml` declares the settings that enforce the release rules: the four rulesets (`main-review`,
+`main-checks`, `dev`, `paper`) with their rules, parameters and bypass actors; the four environments
+(`github-pages`, `pypi`, `testpypi`, `paper-release`) with their reviewers and branch or tag policies; the Pages
+build; the code owners' minimum access; the default workflow permissions. `scripts/check_repo_settings.py` reads
+the live settings through the GitHub API, compares them with the declaration field by field, prints each
+difference and exits non-zero on any; an endpoint it cannot read fails the check by name, never silently.
+
+The `controls` job runs it first in the Tests and Release workflows; every other job needs it, so no test, build or
+publish runs while a setting differs from its declaration. Its report is the job summary. A change to a setting
+starts with the declaration: the declaration changes, then the setting, and the next run checks them.
+
+Attestation: a release's run summary and its GitHub release notes carry the line
+`Controls: .github/governance.toml@<hash> checked at <merge commit>: conforming`, so the release states which
+rules were declared, at which commit, and that they were in effect when it was made.
+
+## How the repository is organised
+
+- `src/tradespace/`: the package; `tests/`: its suite, the docs and site checks, and the checks of the rules on this page.
+- `derivation/`: the method's results as SymPy lemma scripts; `examples/adcs/`: the cubesat case study.
+- `docs/`: the user guide and API reference; `site/`: the root page; `paper/`: the paper's notebooks and build.
+- `scripts/`: build, check and release tools, among them `admissibility.py`, `release_checks.py` and `check_repo_settings.py`.
+- `work-packages/`: each package's scope, decisions and review; `notes/`: the live guidance.
+- `.github/`: the secondary rules, the workflows and the dependency bot.
+
+Issues are templated: a scope of work (`.github/ISSUE_TEMPLATE/scope-of-work.yml`, labelled `draft` until a code
+owner approves it), a bug report and a question; blank issues are off, and security reports go to the private
+advisory form. Pull requests have one template (`.github/pull_request_template.md`), target `dev`, and name the
+issue they resolve or carry the `small-fix` label.
+
+Criteria are of two kinds. Executable: the rows marked machine in the three admissibility documents, run by the
+issue and pull request workflows, the test workflow (lint, format, lock, the three test shards, the attribution
+check) and the release workflow (version, tag, changelog, pins, bill of materials, merge, the PyPI hash check), and
+the `controls` job. Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
+in `CONTRIBUTING.md` ("Review is against the scope") and the code owners' page (`docs/code-owners.md`, "Reviewing a
+candidate" and "Cutting a release"). A check with no row, or a judged criterion with no guideline, is a gap, listed
+for decision in `work-packages/WP78-rounds/gaps.md`.
