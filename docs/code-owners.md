@@ -62,8 +62,9 @@ Settings, Actions, General, Workflow permissions: read repository contents; each
 PyPI and TestPyPI: a pending trusted publisher for `hyperbolic-trade-space`, owner `DynamicalSystemsGroup`, workflow
 `release.yml`, environment `pypi` (TestPyPI: `testpypi`). No token is stored anywhere.
 
-Zenodo: the repository switched on in Zenodo's GitHub settings; every published GitHub release, the software's and
-the paper's, is archived with a DOI. `CITATION.cff` is the metadata it reads.
+Zenodo: off until the paper's first full draft is approved (decided 2026-11-17). Once the repository is
+switched on in Zenodo's GitHub settings, every GitHub release published from then on, the software's and the
+paper's, is archived with a DOI. `CITATION.cff` is the metadata it reads.
 
 ## What the workflows check
 
@@ -111,7 +112,7 @@ conformance by running the check, fitness by looking and signing the judgement. 
 5. Watch the run. On the merge commit it checks admissibility again, runs the suite, and builds and checks the
    wheel, the sdist and the software bill of materials (CycloneDX, from the lock). It composes the site, creates
    the tag `v<version>` and a draft release, and publishes to PyPI, the one step that cannot be undone. Last, it
-   deploys the site and publishes the release, which Zenodo archives.
+   deploys the site and publishes the release (archived by Zenodo once the repository is switched on there).
 6. On failure, read the issue the run opens (label `release-failure`). It names the failed job and step, what the
    clean-up removed or kept, and the retry. Before PyPI holds the version, the clean-up removes the tag and the
    draft: a re-run of the whole run, or a new pull request after a fix, starts clean. After PyPI holds it, the

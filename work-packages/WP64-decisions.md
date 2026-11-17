@@ -353,3 +353,38 @@ at ab8fc0f9 is the last run before the pull request (R-2); its result goes in `d
 `dev` into `main` (G8), his merge, then the after-merge steps (G9). Nothing outward has been done: no pull request,
 no issue, no tag, no release.
 
+## Zenodo stays off; his site review comes before the pull request (2026-11-17, 09:05 EST)
+
+To the driver's release walkthrough (the status, the pros and cons, what he reviews to get there), his two
+decisions, verbatim:
+
+> i want to keep the zenodo publication step turned off until we have a first full draft approved.
+
+> i need to do a full review of the documentation and top level static site for me to click through.
+
+**Applied as.** Zenodo is a switch in Zenodo's own GitHub settings and nothing in the workflows, so no workflow
+changes: his keyboard list (`WP65-design/his-items.md`, section 5) now says the switch stays off; the release
+issue's text, `docs/code-owners.md`, the software checklist's R1 and WP68's G7 and G9 (amendment 1 in the scope)
+no longer count a Zenodo archive among 0.1's outputs. The 0.1 GitHub release is therefore not archived and mints
+no DOI; `CITATION.cff` carries no DOI. A consequence for the paper line: a pinned paper mode needs a DOI in
+`paper/mode.toml` (`scripts/paper_mode.py`), so no working-paper pin is published before Zenodo is on, which by his
+word is when a first full draft is approved; `/paper/` holds the abstract until then. The pull request from `dev`
+into `main` waits on his click-through of the documentation and the top-level site: the site at the head
+(814853ad) is served on 127.0.0.1:8797 and the route map is `WP68-rounds/his-site-review.md`, where his findings
+are collected. Nothing outward has been done.
+
+## Two more code owners; no solo owner on PyPI (2026-11-17, 09:40 EST)
+
+Verbatim, mid-morning:
+
+> for the release i would like you include danilo and rohan as codeowners and at least danilo ( danlessa) has a pypi
+> account so we don't end up with a solo owner package. by the way i am logged in to pypi as mzargham in my browser ow
+
+**Applied as.** `@danlessa` added to the `*` line of `.github/CODEOWNERS` (he is already a repository admin, so
+the write access CODEOWNERS needs exists); Rohan's GitHub login is asked for and added when given. The procedure
+is the one `docs/code-owners.md` states under "Adding a code owner": collaborator with write access; Owner or
+Maintainer on PyPI and TestPyPI; required approver of `paper-release` with "Prevent self-review" on; the bypass
+removed from the first `main` ruleset. The PyPI project does not exist yet (the first publish creates it under the
+account that registered the pending publisher), so the PyPI step is an after-merge item in the release issue, done
+by him in his signed-in session. Open for him: whether the 0.1 pull request is approved by a second code owner
+under the review rule, or merged by his bypass as Q1 of the release models decided while he was the only one.

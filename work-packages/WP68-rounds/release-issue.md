@@ -2,8 +2,8 @@
 
 The first merge of `dev` into `main` since e7fd1165 (2026-11-08). The merge is the release
 (`work-packages/WP65-design/specification.md`, section 1): `release.yml` tags `v0.1.0`, publishes the package to
-PyPI, composes and deploys the site with the abstract page at `/paper/`, publishes the GitHub release and, through
-the GitHub integration, Zenodo's first archive. This issue is closed by the pull request.
+PyPI, composes and deploys the site with the abstract page at `/paper/`, publishes the GitHub release. Zenodo stays off (his word, 2026-11-17: until a first full draft of the paper is
+approved), so this release is not archived and mints no DOI. This issue is closed by the pull request.
 
 ## What the merge carries
 
@@ -62,13 +62,16 @@ In flight and not part of the release decision: WP8b (its checklist is `release-
       `test (docs)`, `admissibility`; merge commits only; no force push, no deletion); `dev` and `paper` (no
       force push, no deletion)
 - [ ] Trusted publishers: PyPI and TestPyPI pending publishers for `release.yml`, environments `pypi` and `testpypi`
-- [ ] Zenodo switched on for the repository
+- [x] Zenodo stays off (his word, 2026-11-17)
 - [ ] The driver reads the settings back with `gh api` and records them in `WP68-rounds/record.md`
 
 ## After the merge
 
-- The release run watched to its end: the tag, PyPI, the site, the GitHub release, Zenodo's record.
+- The release run watched to its end: the tag, PyPI, the site, the GitHub release.
 - `git branch paper dev && git push origin paper`; the `paper` ruleset applied.
+- `danlessa` (and Rohan, once his GitHub login is in `CODEOWNERS`) added as Owner of `hyperbolic-trade-space` on PyPI
+  and TestPyPI (Manage, Collaborators), by him in his signed-in session: the project exists only after the first
+  publish, and trusted publishing creates it under the account that registered the pending publisher.
 - The punch list's post-release checks loaded live (`work-packages/release-punch-list.md`).
 - The paper branch's first items filed in `release-checklist-paper.md`: the three paper tests that fail on hosted
   runners (the residual-count baseline; the clean-kernel notebook check's tab-F-datasets drift; the myst build's

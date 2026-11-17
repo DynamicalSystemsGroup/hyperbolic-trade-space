@@ -27,13 +27,18 @@ Settings, Environments.
   type Branch, pattern `dev`. No reviewers, no secrets.
 - **`paper-release`** (only if question 3 is answered with an approval): New environment, name `paper-release`.
   Deployment branches and tags, Selected branches and tags, rule type Tag, pattern `paper-*`. Required reviewers:
-  `mzargham`; **Prevent self-review off** (you push the tag, so with it on you could not approve). No secrets.
+  the code owners, `mzargham` and `danlessa` (and Rohan once his login is in `CODEOWNERS`; his word of
+  2026-11-17, `WP64-decisions.md`, "Two more code owners"); with a second code owner, **Prevent self-review on**
+  (`docs/code-owners.md`, "Adding a code owner"). No secrets.
 
 ## 3. Rulesets
 
 Settings, Rules, Rulesets, New ruleset, New branch ruleset. For each: Enforcement status **Active**.
 
 **`main`** (target: Add target, Include default branch). Bypass list and the review rule per question 1.
+  Since 2026-11-17 a second code owner exists (`danlessa`): question 1's answer kept the bypass only "while they
+  are one person". Whether the 0.1 pull request is approved by a second code owner or merged by your bypass is
+  your call (asked 2026-11-17); the bypass list follows it.
 - Restrict deletions: on.
 - Require a pull request before merging: on. Required approvals and "Require review from Code Owners" per
   question 1. Allowed merge methods: **Merge** only.
@@ -62,7 +67,11 @@ there: the project, Manage, Publishing, the same fields.) The project is created
 
 No token is stored anywhere.
 
-## 5. Zenodo
+## 5. Zenodo: stays off for 0.1
+
+His word (2026-11-17): "i want to keep the zenodo publication step turned off until we have a first full draft
+approved." The 0.1 release is not archived and mints no DOI. The step below is done when a first full draft of the
+paper is approved, before the first pinned paper mode (a pin needs a DOI in `paper/mode.toml`).
 
 zenodo.org, Log in with GitHub (authorise the Zenodo application; if the organisation `DynamicalSystemsGroup`
 restricts third-party applications, grant Zenodo under the organisation's Settings, Third-party access), your

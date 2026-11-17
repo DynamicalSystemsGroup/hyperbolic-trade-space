@@ -95,3 +95,9 @@ uses the day of the dry run and is rewritten).
   so the tree it versions is the tree the pull request carries; the driver does G5 to G9.
 - The release issue text names packages by their index rows, newest first, in one line each.
 - The `qc/release` dry run at the head is the last run before the pull request; its branch is deleted afterwards.
+
+## Amendments
+
+- Amendment 1 (2026-11-17, his word in `WP64-decisions.md`, "Zenodo stays off"): Zenodo leaves G7 and G9; the 0.1
+  release is not archived and mints no DOI. G8 waits, besides his settings and his word, on his click-through of
+  the documentation and the top-level site (`WP68-rounds/his-site-review.md`).
