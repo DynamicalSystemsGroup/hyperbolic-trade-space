@@ -209,3 +209,11 @@ limitations, termination and further reading; "the paper" in prose on the home, 
 README) reworded for a working paper whose abstract alone is published, with the full paper buildable from the
 repository on its own branch. (2) A documentation-improvement package as 0.2's scope. Passed to the driver session,
 which owns `dev` and the release board; a scoping session proposed to him.
+
+### His second item for 0.2 (2026-11-17, verbatim)
+
+On the docs home's first-fit figure (one frontier line with the grey band): "here is another place: we upgraded these
+plots to have several level sets marked so it doesn't look like a fit line". Where the log-plane plot still draws one
+line: `docs/index.md` and `docs/getting-started.md` (the shared first-fit figure, `band=0.5`), `docs/user-guide/chart.md`,
+`docs/user-guide/fitting.md`; the wheat page draws labelled level sets (WP63's follow-on, "Plotting step two" in
+`notes/directions/README.md`). He chose to scope the 0.2 documentation package in this session ("Do this task here").
