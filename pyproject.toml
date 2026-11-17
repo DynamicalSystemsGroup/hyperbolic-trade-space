@@ -1,7 +1,7 @@
 [project]
 name = "tradespace"
 version = "0.1.0"
-description = "Learn the shape of a design trade space: a scikit-learn-compatible posynomial (monomial first) frontier model with an invertible log-ratio chart, SymPy-verified derivations, and an ADCS trade-study case."
+description = "Learns the shape of a design trade space from evaluated designs, with estimators that work in scikit-learn pipelines."
 readme = "README.md"
 authors = [{ name = "Michael Zargham" }]
 requires-python = ">=3.12,<3.13"

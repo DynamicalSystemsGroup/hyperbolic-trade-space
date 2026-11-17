@@ -3,9 +3,7 @@ message: "If you use this software, please cite it as below."
 type: software
 title: "tradespace"
 abstract: >-
-  Learn the shape of a design trade space: a scikit-learn-compatible posynomial (monomial first)
-  frontier model with an invertible log-ratio chart, SymPy-verified derivations, and an ADCS
-  trade-study case.
+  Learns the shape of a design trade space from evaluated designs, with estimators that work in scikit-learn pipelines.
 authors:
   - family-names: Zargham
     given-names: Michael
