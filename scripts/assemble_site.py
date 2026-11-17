@@ -18,8 +18,11 @@ published HTML of the pin that ``paper/mode.toml`` names.
    ``HTS_PAPER_SLOT`` set to ``pin`` or ``abstract`` (a fallback is ``abstract``), so the docs'
    citations of the paper match what ``/paper/`` holds.
 3. Copy the root page, with the paper card's line for the slot; write the history page and the
-   root page's figures.
-4. Place the slot at ``<out>/paper/``; a pinned slot carries one banner line per page.
+   root page's figures and the preview image. The root page, the history page and the abstract
+   page get their public-link metadata (``scripts/site_metadata.py``: description, canonical
+   address, Open Graph, Twitter card, JSON-LD) in ``<head>`` here, from one source of values.
+4. Place the slot at ``<out>/paper/``; a pinned slot carries one banner line per page. Write
+   ``robots.txt`` and the whole site's ``sitemap.xml``.
 5. Print ``assemble_site: slot <slot> <pin or -> <reason or ->``; ``--summary FILE`` appends it as
    Markdown; a fallback also prints a GitHub warning annotation.
 
@@ -58,6 +61,7 @@ import build_site_figures  # noqa: E402
 import history_record  # noqa: E402
 import paper_abstract  # noqa: E402
 import paper_keys  # noqa: E402
+import site_metadata  # noqa: E402
 
 DEFAULT_OUT = ROOT / "_site"
 GENERATED_DIR = build_generated.DEFAULT_OUT  # outside docs/: the paper's own build reads it
@@ -325,14 +329,22 @@ def place_slot(out, slot: Slot, renderer=None) -> Path:
 
 
 def root_page(slot: Slot, source=None) -> str:
-    """The root page with the paper card's line for ``slot`` (step 3)."""
+    """The root page with the paper card's line for ``slot`` and its public-link metadata
+    (step 3)."""
     text = Path(source or ROOT_INDEX).read_text(encoding="utf-8")
     pinned = ROOT_CARD.format(ROOT_CARD_LINE_PINNED)
     if text.count(pinned) != 1:
         raise ValueError(f"{ROOT_INDEX.name}: the paper card is not {pinned!r} exactly once")
-    if slot.slot == "pin":
-        return text
-    return text.replace(pinned, ROOT_CARD.format(ROOT_CARD_LINE_ABSTRACT))
+    if slot.slot != "pin":
+        text = text.replace(pinned, ROOT_CARD.format(ROOT_CARD_LINE_ABSTRACT))
+    return site_metadata.apply(text, "")
+
+
+def history_page(source=None) -> str:
+    """The stand-alone history page (WP37): its prose alone (``history_record.build_page_file``)
+    with its public-link metadata (step 3)."""
+    text = history_record.build_page_file(source or ROOT_HISTORY)
+    return site_metadata.apply(text, Path(source or ROOT_HISTORY).name)
 
 
 def report(slot: Slot, summary=None) -> None:
@@ -445,14 +457,13 @@ def assemble(
     if not ROOT_INDEX.is_file():
         raise FileNotFoundError(f"missing root index: {ROOT_INDEX}")
     (out / "index.html").write_text(root_page(resolved), encoding="utf-8")
-    # the stand-alone history page (WP37): its prose with the dated list of history.yaml inserted
-    (out / "history.html").write_text(
-        history_record.build_page_file(ROOT_HISTORY), encoding="utf-8"
-    )
+    (out / "history.html").write_text(history_page(), encoding="utf-8")
     for asset in sorted(ROOT_INDEX.parent.glob("*.webp")):  # figures the root index uses
         shutil.copy2(asset, out / asset.name)
-    (site_figures_builder or build_site_figures.build_all)(out)  # the story and the fan figures
+    # the story and the slices figures, and the preview image the metadata names
+    (site_figures_builder or build_site_figures.build_all)(out)
     place_slot(out, resolved, renderer)
+    site_metadata.write_robots_and_sitemap(out)
     return out, resolved
 
 

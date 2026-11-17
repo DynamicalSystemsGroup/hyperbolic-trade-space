@@ -1,5 +1,6 @@
 site_name: tradespace
-site_description: Posynomial invariant form for design trade spaces
+# The description is pyproject.toml's, set by the scripts/site_metadata.py hook (one source of
+# values with the root pages); the hook also puts the public-link metadata on every page.
 site_url: https://dynamicalsystemsgroup.github.io/tradespace/docs/
 repo_url: https://github.com/DynamicalSystemsGroup/tradespace
 repo_name: DynamicalSystemsGroup/tradespace
@@ -40,6 +41,7 @@ markdown_extensions:
 # undefined key (scripts/paper_keys.py).
 hooks:
   - scripts/paper_keys.py
+  - scripts/site_metadata.py
 
 extra_css:
   - stylesheets/extra.css

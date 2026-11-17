@@ -5,7 +5,9 @@
 The title and the abstract come from the YAML front matter of the first cell of
 ``paper/paper.ipynb``; the author, with the affiliation, from ``project.authors`` of
 ``paper/myst.yml`` (the front matter has no author field). The page is the template
-``site/paper/abstract.html`` with those values filled in, escaped as text. The abstract is plain
+``site/paper/abstract.html`` with those values filled in, escaped as text, and its public-link
+metadata (``scripts/site_metadata.py``) in ``<head>``, the abstract's first sentence as the
+description. The abstract is plain
 text: a ``$``, a MyST role, a link, an HTML tag or a backtick in it fails the render, so an abstract
 with markup is a deliberate change to this script. The fallback form, used by the composer when a
 pinned paper cannot be served, adds one line before the abstract naming the pin and the reason.
@@ -23,11 +25,16 @@ from pathlib import Path
 
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import site_metadata
+
 ROOT = Path(__file__).resolve().parent.parent
 NOTEBOOK = ROOT / "paper" / "paper.ipynb"
 MYST_CONFIG = ROOT / "paper" / "myst.yml"
 TEMPLATE = ROOT / "site" / "paper" / "abstract.html"
-FIELDS = ("title", "description", "author", "fallback", "abstract")
+PATH = "paper/"  # the page's address under the site's
+FIELDS = ("title", "author", "fallback", "abstract")
 
 # Markup the abstract may not carry: the page renders it as text, not as MyST.
 MARKUP = {
@@ -112,7 +119,6 @@ def render(
     data = front_matter(notebook)
     values = {
         "title": html.escape(" ".join(data["title"].split())),
-        "description": html.escape(first_sentence(data["abstract"])),
         "author": html.escape(authors(config)),
         "fallback": fallback_line(*fallback) if fallback else "",
         "abstract": "\n".join(
@@ -125,7 +131,7 @@ def render(
     left = re.findall(r"\{\{\w+\}\}", page)
     if left:
         raise ValueError(f"{template}: unfilled fields {left}")
-    return page
+    return site_metadata.apply(page, PATH, description=first_sentence(data["abstract"]))
 
 
 def main(argv=None):
