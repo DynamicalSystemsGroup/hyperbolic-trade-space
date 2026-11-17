@@ -126,3 +126,15 @@ offers "New push ruleset" here (else CODEOWNERS lines alone, or a review rule on
 The branch stands as built. The reviewer's other findings (the ordered settings list on the code owners' page as the
 scope asks; three `GOVERNANCE.md` sentences; the index row's columns; the checker's branch test by target) are fixed in
 the review's second pass, `WP82-review.md`.
+
+## Acceptance (2026-11-17)
+
+Asked whether he accepts WP82, delivered on `governance-bypass-removal` at a99e2ca2 with `WP82-review.md` recommending
+acceptance (the declaration with the bypass removal and his four items; the fixture and the runner mode conforming; the
+live run's five lines his post-merge settings account for; the fast suite 2,036 passed; the independent read's findings
+fixed or dispositioned; the code owners' page captured). His answer, verbatim:
+
+> Accepted
+
+The pull request into `dev` opens after `dev` is in `main` for 0.1, for `danlessa` to review and merge; then his five
+settings changes in the order under "Execution".
