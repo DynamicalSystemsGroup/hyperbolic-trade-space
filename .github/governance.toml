@@ -31,6 +31,16 @@ build_type = "workflow"
 file = ".github/CODEOWNERS"
 minimum_permission = "write"
 
+# The paper's approvers: the logins on the `paper/` line of the same file (decided 2026-11-17,
+# 13:05: "paper PRs are approved by mzargham or jshorish"), who review and merge pull requests into
+# `paper` and are the `paper-release` environment's reviewers; a login on this line is not thereby a
+# code owner. Approval needs no write access, so the minimum is read; GitHub asks write of a login
+# on a CODEOWNERS line before it requests their review, and both hold it today (maintain, admin).
+[paper_approvers]
+file = ".github/CODEOWNERS"
+pattern = "paper/"
+minimum_permission = "read"
+
 # ---------------------------------------------------------------------------------------- rulesets
 # Settings, Rules, Rulesets. Every ruleset the repository has is listed here; one the repository has
 # and this file does not is a difference.
@@ -180,9 +190,9 @@ can_admins_bypass = false
 
 [[governed_files]]
 path = ".github/CODEOWNERS"
-rule = "who holds authority: the code owners"
+rule = "who holds authority: the code owners (the * line) and the paper's approvers (the paper/ line)"
 check = "executable"
-by = "scripts/check_repo_settings.py (each code owner's access); scripts/admissibility.py and tests/test_admissibility.py (the merge row)"
+by = "scripts/check_repo_settings.py (each code owner's and each paper approver's access); scripts/admissibility.py and tests/test_admissibility.py (the merge row, into dev and into paper)"
 control = "pull request into dev, or a direct commit to dev by a code owner"
 
 [[governed_files]]

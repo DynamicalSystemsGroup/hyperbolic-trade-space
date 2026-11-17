@@ -1,10 +1,11 @@
 """Compare the repository's live settings on GitHub with their declaration.
 
 The declaration is ``.github/governance.toml`` (``GOVERNANCE.md``): the rulesets, the environments
-and their deployment policies, the Pages build, the code owners' access and the default workflow
-permissions. The checker reads each through ``gh api`` (the user's login locally, the workflow
-token on a runner), compares field by field, prints each difference as ``path: expected X, found
-Y`` and exits 1 on any. An endpoint that cannot be read is named and exits 2, never skipped.
+and their deployment policies, the Pages build, the code owners' access, the paper approvers'
+access and the default workflow permissions. The checker reads each through ``gh api`` (the
+user's login locally, the workflow token on a runner), compares field by field, prints each
+difference as ``path: expected X, found Y`` and exits 1 on any. An endpoint that cannot be read is
+named and exits 2, never skipped.
 
     uv run python scripts/check_repo_settings.py
     uv run python scripts/check_repo_settings.py --report report.md
@@ -93,6 +94,11 @@ def code_owners(path: Path) -> set[str]:
     return _code_owners_module().code_owners(path)
 
 
+def paper_approvers(path: Path) -> set[str]:
+    """The logins on the ``paper/`` line of CODEOWNERS (the same reader as the merge check)."""
+    return _code_owners_module().paper_approvers(path)
+
+
 # ---------------------------------------------------------------------------------------- sources
 
 
@@ -164,10 +170,18 @@ def _branch_policy_word(found: dict | None) -> str | None:
 class Comparison:
     """The rows of one run: every compared field, and the endpoints that could not be read."""
 
-    def __init__(self, declaration: dict, fetch: Fetch, owners: set[str], runner: bool = False):
+    def __init__(
+        self,
+        declaration: dict,
+        fetch: Fetch,
+        owners: set[str],
+        runner: bool = False,
+        approvers: set[str] = frozenset(),
+    ):
         self.decl = declaration
         self.fetch = fetch
         self.owners = owners
+        self.approvers = approvers
         self.runner = runner
         self.rows: list[Row] = []
         self.unreadable: list[str] = []
@@ -211,6 +225,7 @@ class Comparison:
         self.environments()
         self.pages()
         self.code_owners()
+        self.paper_approvers()
         self.actions()
         return self
 
@@ -299,20 +314,29 @@ class Comparison:
             self.eq("pages.build_type", self.decl["pages"]["build_type"], pages.get("build_type"))
 
     def code_owners(self) -> None:
+        """The code owners (the ``*`` line): at least one, each with the declared minimum access."""
         if self.local_only_section(self.decl["code_owners"], ["code_owners"]):
             return
-        minimum = self.decl["code_owners"]["minimum_permission"]
-        self.rows.append(
-            Row("code_owners", "at least one login", sorted(self.owners), bool(self.owners))
-        )
-        for login in sorted(self.owners):
+        self.access_rows("code_owners", self.owners, self.decl["code_owners"])
+
+    def paper_approvers(self) -> None:
+        """The paper's approvers (the ``paper/`` line), when the declaration has the section."""
+        section = self.decl.get("paper_approvers")
+        if section is None or self.local_only_section(section, ["paper_approvers"]):
+            return
+        self.access_rows("paper_approvers", self.approvers, section)
+
+    def access_rows(self, label: str, logins: set[str], section: dict) -> None:
+        minimum = section["minimum_permission"]
+        self.rows.append(Row(label, "at least one login", sorted(logins), bool(logins)))
+        for login in sorted(logins):
             answer = self.read(f"collaborators/{login}/permission")
             if answer is None:
                 continue
             found = answer.get("permission")
             self.rows.append(
                 Row(
-                    f"code_owners.{login}.permission",
+                    f"{label}.{login}.permission",
                     f"{minimum} or more",
                     found,
                     RANK.get(found, -1) >= RANK[minimum],
@@ -399,6 +423,7 @@ def load_declaration(path: Path) -> dict:
     """The declaration; each section's ``checked_on`` is ``both`` (the default) or ``local``."""
     decl = tomllib.loads(path.read_text(encoding="utf-8"))
     sections = [decl["actions"], decl["pages"], decl["code_owners"]]
+    sections += [decl["paper_approvers"]] if "paper_approvers" in decl else []
     sections += decl.get("rulesets", []) + decl.get("environments", [])
     for section in sections:
         for scope in (section, *(section.get("fields") or {}).values()):
@@ -427,8 +452,11 @@ def main(argv: list[str] | None = None) -> int:
     repo = args.repo or decl["repository"]
     owners_file = args.codeowners or (ROOT / decl["code_owners"]["file"])
     owners = code_owners(owners_file)
+    approvers: set[str] = set()
+    if "paper_approvers" in decl:
+        approvers = paper_approvers(args.codeowners or (ROOT / decl["paper_approvers"]["file"]))
     fetch = dict_fetch(load_fixture(args.fixture)) if args.fixture else gh_fetch(repo, args.record)
-    result = Comparison(decl, fetch, owners, runner=args.runner).run()
+    result = Comparison(decl, fetch, owners, runner=args.runner, approvers=approvers).run()
     for line in result.lines():
         print(line)
     print(f"check_repo_settings: {result.verdict}")

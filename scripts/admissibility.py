@@ -8,8 +8,11 @@ as a command and calls no network service; the workflows do the commenting and t
     issue          an issue labelled ``draft`` carries every field of the scope-of-work template
     label-gate     the ``draft`` label was removed by a code owner, else it must be restored
     linked-issue   a pull request names the issue it resolves or has the ``small-fix`` label
-    pr-fields      a pull request's description fields are present and non-empty
-    merge          a pull request merged into ``dev`` was merged by a code owner, not its author
+    pr-fields      a pull request's description fields are present and non-empty (into ``paper``,
+                   the ``Paper`` section too)
+    merge          a pull request merged into ``dev`` was merged by a code owner, not its author;
+                   one merged into ``paper``, by a paper approver (the ``paper/`` line), not its
+                   author
 
     uv run --no-project python scripts/admissibility.py issue --event e.json --report r.md
 """
@@ -34,6 +37,9 @@ ISSUE_FIELDS = (
     "Open decisions",
 )
 PR_FIELDS = ("What changed", "What backs it", "Tests", "Defaults", "Tools used")
+PAPER_FIELDS = ("Paper",)  # required as well on a pull request into ``paper``
+PAPER_BRANCH = "paper"
+PAPER_PATTERNS = ("paper/", "/paper/")  # the CODEOWNERS line of the repository's paper directory
 CLOSING = re.compile(
     r"\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s*:?\s+(?:[\w.-]+/[\w.-]+)?#\d+", re.I
 )
@@ -41,21 +47,47 @@ KIND_MARK = re.compile(r"\b(conformance|fitness)\b", re.I)
 EMPTY = {"", "_no response_", "no response"}
 
 
-def code_owners(path: Path) -> set[str]:
-    """Logins on the ``*`` line of a CODEOWNERS file (users only; a team is not expanded).
+def owners_of(path: Path, patterns: tuple[str, ...]) -> set[str]:
+    """Logins on the lines of a CODEOWNERS file whose pattern is one of ``patterns``.
+
+    Users only (a team is not expanded); a comment is dropped; another line's logins are not read.
 
     >>> import tempfile, pathlib
     >>> p = pathlib.Path(tempfile.mkdtemp()) / "CODEOWNERS"
-    >>> _ = p.write_text("# c\\n*   @Ada @org/team\\n/docs @bob\\n", encoding="utf-8")
-    >>> sorted(code_owners(p))
-    ['ada']
+    >>> _ = p.write_text("# c\\n*   @Ada @org/team\\n/paper/ @bob @Ada\\n", encoding="utf-8")
+    >>> sorted(owners_of(p, ("*",))), sorted(owners_of(p, ("paper/", "/paper/")))
+    (['ada'], ['ada', 'bob'])
     """
     owners: set[str] = set()
     for line in path.read_text(encoding="utf-8").splitlines():
         parts = line.split("#")[0].split()
-        if parts and parts[0] == "*":
+        if parts and parts[0] in patterns:
             owners |= {o[1:].lower() for o in parts[1:] if o.startswith("@") and "/" not in o}
     return owners
+
+
+def code_owners(path: Path) -> set[str]:
+    """The code owners: the logins on the ``*`` line (a ``paper/`` line adds none).
+
+    >>> import tempfile, pathlib
+    >>> p = pathlib.Path(tempfile.mkdtemp()) / "CODEOWNERS"
+    >>> _ = p.write_text("*   @Ada @org/team\\n/paper/ @bob\\n", encoding="utf-8")
+    >>> sorted(code_owners(p))
+    ['ada']
+    """
+    return owners_of(path, ("*",))
+
+
+def paper_approvers(path: Path) -> set[str]:
+    """The paper's approvers: the logins on the ``paper/`` line (``/paper/`` anchors it at root).
+
+    >>> import tempfile, pathlib
+    >>> p = pathlib.Path(tempfile.mkdtemp()) / "CODEOWNERS"
+    >>> _ = p.write_text("*   @Ada @carol\\n/paper/ @bob @Ada\\n", encoding="utf-8")
+    >>> sorted(paper_approvers(p))
+    ['ada', 'bob']
+    """
+    return owners_of(path, PAPER_PATTERNS)
 
 
 def sections(body: str, marker: str) -> dict[str, str]:
@@ -122,10 +154,13 @@ def linked_issue_problems(event: dict) -> list[str]:
 
 
 def pr_field_problems(event: dict) -> list[str]:
-    found = sections(event["pull_request"].get("body") or "", "## ")
+    """The template's sections, and the ``Paper`` section on a pull request into ``paper``."""
+    pr = event["pull_request"]
+    found = sections(pr.get("body") or "", "## ")
+    fields = PR_FIELDS + (PAPER_FIELDS if pr["base"]["ref"] == PAPER_BRANCH else ())
     return [
         f"the section `{f}` is missing or empty"
-        for f in PR_FIELDS
+        for f in fields
         if found.get(f, "").strip().lower() in EMPTY
     ]
 
@@ -138,13 +173,30 @@ def merge_row(root: Path = ROOT) -> str:
     return f"{cells[0]} ({cells[1]}): {cells[2]}"
 
 
-def merge_problems(event: dict, owners: set[str], root: Path = ROOT) -> tuple[list[str], list[str]]:
-    """Return (problems, notices) for a closed pull request."""
+def merge_problems(
+    event: dict, owners: set[str], root: Path = ROOT, approvers: set[str] = frozenset()
+) -> tuple[list[str], list[str]]:
+    """Return (problems, notices) for a closed pull request.
+
+    Into ``dev``: merged by a code owner who is not the author (a notice while the code owners
+    are one person). Into ``paper``: merged by a paper approver who is not the author; the
+    approvers are two, so there is no notice. Any other base is not checked.
+    """
     pr = event["pull_request"]
-    if event.get("action") != "closed" or not pr.get("merged") or pr["base"]["ref"] != "dev":
+    if event.get("action") != "closed" or not pr.get("merged"):
         return [], []
     author = pr["user"]["login"].lower()
     merger = ((pr.get("merged_by") or {}).get("login") or "").lower()
+    if pr["base"]["ref"] == PAPER_BRANCH:
+        if not approvers:
+            return ["no `paper/` line of CODEOWNERS names the paper's approvers"], []
+        if merger not in approvers:
+            return [f"merged by @{merger or 'unknown'}, who is not a paper approver"], []
+        if merger == author:
+            return ["merged by its own author; another paper approver merges it"], []
+        return [], []
+    if pr["base"]["ref"] != "dev":
+        return [], []
     if not (owners - {author}):
         return [], [f"merged without a second code owner; the row says: {merge_row(root)}"]
     if merger not in owners:
@@ -191,7 +243,9 @@ def main(argv: list[str] | None = None) -> int:
     elif args.check == "pr-fields":
         problems = pr_field_problems(event)
     else:
-        problems, notices = merge_problems(event, owners, args.root)
+        problems, notices = merge_problems(
+            event, owners, args.root, paper_approvers(args.codeowners)
+        )
     for notice in notices:
         print(f"::notice::{notice}")
     for p in problems:

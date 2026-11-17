@@ -22,6 +22,9 @@ spec.loader.exec_module(crs)
 
 DECLARATION = crs.load_declaration(crs.DECLARATION)
 OWNERS = crs.code_owners(ROOT / ".github" / "CODEOWNERS")
+APPROVERS = crs.paper_approvers(ROOT / ".github" / "CODEOWNERS")
+# the fixture's fields: 61 at WP78; 64 with the paper approvers (WP79: their row and two logins)
+FIELDS = 64
 
 
 @pytest.fixture
@@ -29,8 +32,10 @@ def payloads():
     return copy.deepcopy(crs.load_fixture(FIXTURE))
 
 
-def compare(payloads, declaration=DECLARATION, owners=OWNERS):
-    return crs.Comparison(declaration, crs.dict_fetch(payloads), owners).run()
+def compare(payloads, declaration=DECLARATION, owners=OWNERS, approvers=APPROVERS, runner=False):
+    return crs.Comparison(
+        declaration, crs.dict_fetch(payloads), owners, runner=runner, approvers=approvers
+    ).run()
 
 
 def ruleset(payloads, name):
@@ -47,10 +52,13 @@ def test_the_conforming_fixture_passes(tmp_path, capsys):
     code = crs.main(["--fixture", str(FIXTURE), "--report", str(report)])
     assert code == 0
     out = capsys.readouterr().out
-    assert out.strip().endswith("conforming (61 fields)")
+    assert out.strip().endswith(f"conforming ({FIELDS} fields)")
     text = report.read_text(encoding="utf-8")
-    assert "**conforming (61 fields)**" in text and "differs" not in text
+    assert f"**conforming ({FIELDS} fields)**" in text and "differs" not in text
     assert "| `environments.paper-release.reviewers` |" in text
+    approvers = '| `paper_approvers` | `"at least one login"` | `["jshorish", "mzargham"]` | ok |'
+    assert approvers in text
+    assert '| `paper_approvers.jshorish.permission` | `"read or more"` | `"write"` | ok |' in text
 
 
 def test_a_missing_required_check_is_named(payloads):
@@ -120,6 +128,31 @@ def test_a_code_owner_without_write_access_is_named(payloads):
     assert compare(payloads).exit_code == 0
 
 
+def test_a_paper_approver_without_read_access_is_named(payloads):
+    """The paper/ line of CODEOWNERS (WP79): read is enough to approve; none is a difference, and
+    the code owners' minimum (write) is not asked of an approver who is not a code owner."""
+    assert DECLARATION["paper_approvers"]["minimum_permission"] == "read"
+    payloads["collaborators/jshorish/permission"]["permission"] = "none"
+    result = compare(payloads)
+    assert result.exit_code == 1
+    assert result.lines() == [
+        'paper_approvers.jshorish.permission: expected "read or more", found "none"'
+    ]
+    payloads["collaborators/jshorish/permission"]["permission"] = "read"
+    assert compare(payloads).exit_code == 0
+    # the approvers are read from the paper/ line, not the * line, and jshorish is no code owner
+    assert {"mzargham", "jshorish"} == APPROVERS and "jshorish" not in OWNERS
+    assert compare(payloads, approvers=set()).lines() == [
+        'paper_approvers: expected "at least one login", found []'
+    ]
+    # a declaration without the section checks no approver
+    without = copy.deepcopy(DECLARATION)
+    del without["paper_approvers"]
+    result = compare(payloads, declaration=without)
+    assert result.exit_code == 0 and len(result.rows) == FIELDS - 3
+    assert not any(r.path.startswith("paper_approvers") for r in result.rows)
+
+
 def test_an_extra_or_missing_ruleset_or_environment_is_named(payloads):
     payloads["rulesets"].append({"id": 1, "name": "stray"})
     payloads["environments"]["environments"].pop()
@@ -136,7 +169,7 @@ def test_an_unreadable_endpoint_exits_2_and_is_named(payloads, tmp_path, capsys)
     assert result.exit_code == 2
     assert result.lines() == ["unreadable: actions/permissions/workflow (no recorded response)"]
     # every other field is still compared, so one unreadable endpoint hides nothing
-    assert len(result.rows) == 59 and not result.differences
+    assert len(result.rows) == FIELDS - 2 and not result.differences
     # the same through the command line, from a fixture directory missing the file
     for path in FIXTURE.glob("*.json"):
         if path.name != "actions__permissions__workflow.json":
@@ -163,13 +196,13 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     """The actions section is checked_on = "local": absent from the fixture it does not fail in
     runner mode; present and differing it is not reported there, and is reported locally."""
     assert DECLARATION["actions"]["checked_on"] == "local"
-    others = [DECLARATION["pages"], DECLARATION["code_owners"]]
+    others = [DECLARATION["pages"], DECLARATION["code_owners"], DECLARATION["paper_approvers"]]
     others += DECLARATION["rulesets"] + DECLARATION["environments"]
     assert all(s.get("checked_on", "both") == "both" for s in others)
     del payloads["actions/permissions/workflow"]
-    result = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
+    result = compare(payloads, runner=True)
     assert result.exit_code == 0 and not result.unreadable
-    assert result.verdict == "conforming (55 fields on the runner; 6 local-only)"
+    assert result.verdict == f"conforming ({FIELDS - 6} fields on the runner; 6 local-only)"
     assert [f for f, _ in result.local_only] == [
         "rulesets.main-review.bypass_actors",
         "rulesets.main-checks.bypass_actors",
@@ -187,14 +220,14 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     # present and differing: not read in runner mode, reported in a local run
     differing = copy.deepcopy(crs.load_fixture(FIXTURE))
     differing["actions/permissions/workflow"]["default_workflow_permissions"] = "read"
-    runner = crs.Comparison(DECLARATION, crs.dict_fetch(differing), OWNERS, runner=True).run()
+    runner = compare(differing, runner=True)
     assert runner.exit_code == 0 and runner.differences == []
     local = compare(differing)
     assert local.exit_code == 1
     assert local.lines() == ['actions.default_workflow_permissions: expected "write", found "read"']
     # a readable endpoint that is missing still exits 2 in runner mode
     del payloads["pages"]
-    result = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
+    result = compare(payloads, runner=True)
     assert result.exit_code == 2
     assert result.verdict == "1 endpoint(s) unreadable; 6 local-only"
     # the command line
@@ -206,7 +239,7 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     assert (
         "local-only: actions.default_workflow_permissions (GET actions/permissions/workflow" in out
     )
-    assert out.strip().endswith("conforming (55 fields on the runner; 6 local-only)")
+    assert out.strip().endswith(f"conforming ({FIELDS - 6} fields on the runner; 6 local-only)")
 
 
 def test_bypass_actors_are_local_only_on_the_runner_and_compared_locally(payloads):
@@ -215,7 +248,7 @@ def test_bypass_actors_are_local_only_on_the_runner_and_compared_locally(payload
     for r in DECLARATION["rulesets"]:
         assert r["fields"]["bypass_actors"]["checked_on"] == "local", r["name"]
     ruleset(payloads, "main-review")["bypass_actors"] = []
-    runner = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
+    runner = compare(payloads, runner=True)
     assert runner.exit_code == 0 and runner.differences == []
     assert not any(r.path.endswith(".bypass_actors") for r in runner.rows)
     listed = dict(runner.local_only)
@@ -292,6 +325,8 @@ def test_the_declaration_names_this_repository_and_codeowners():
     assert DECLARATION["repository"] == "DynamicalSystemsGroup/tradespace"
     assert DECLARATION["code_owners"]["file"] == ".github/CODEOWNERS"
     assert (ROOT / DECLARATION["code_owners"]["file"]).is_file()
+    assert DECLARATION["paper_approvers"]["file"] == ".github/CODEOWNERS"
+    assert DECLARATION["paper_approvers"]["pattern"] == "paper/"
     assert {r["name"] for r in DECLARATION["rulesets"]} == {
         "main-review",
         "main-checks",

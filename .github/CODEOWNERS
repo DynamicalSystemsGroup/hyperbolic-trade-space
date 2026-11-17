@@ -1,3 +1,8 @@
-# Every path is owned by the code owners named on this line. To add a code owner, append their GitHub login
+# Every path is owned by the code owners named on the `*` line. To add a code owner, append their GitHub login
 # (a user, not a team: the admissibility checks read this line and do not expand teams).
 *   @mzargham @danlessa @rororowyourboat
+# The paper's approvers, set apart from the code owners (decided 2026-11-17: "paper PRs are approved by mzargham
+# or jshorish"; "rohan and danilo are for the code and documentation"). The logins on this line review and merge
+# pull requests into `paper` and approve the `paper-release` environment; a login here is not thereby a code owner.
+# The leading slash anchors the pattern to the repository's `paper/` directory (`site/paper/` stays with the `*` line).
+/paper/   @mzargham @jshorish

@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 spec = importlib.util.spec_from_file_location(
@@ -200,8 +201,83 @@ def test_merge_into_another_branch_or_unmerged_is_ignored(tmp_path):
     assert run(tmp_path, "merge", ev, "*   @alice @bob\n")[0] == 0
 
 
-def test_this_repository_codeowners_names_at_least_one_user():
-    assert adm.code_owners(ROOT / ".github" / "CODEOWNERS")
+# The paper's route (WP79 G3, R-1): a pull request into paper is merged by a paper approver, the
+# logins on the paper/ line of CODEOWNERS, who is not its author. The * line does not count.
+PAPER_OWNERS = "*   @alice @bob @carol\n/paper/   @alice @dana\n"
+
+
+def test_paper_pull_request_by_one_approver_merged_by_the_other_passes(tmp_path):
+    ev = pr_event("", action="closed", merged=True, base="paper", author="alice", merger="dana")
+    assert run(tmp_path, "merge", ev, PAPER_OWNERS)[0] == 0
+    ev = pr_event("", action="closed", merged=True, base="paper", author="dana", merger="Alice")
+    assert run(tmp_path, "merge", ev, PAPER_OWNERS)[0] == 0
+
+
+def test_paper_pull_request_merged_by_its_author_fails(tmp_path):
+    ev = pr_event("", action="closed", merged=True, base="paper", author="alice", merger="alice")
+    code, report = run(tmp_path, "merge", ev, PAPER_OWNERS)
+    assert code == 1 and "own author" in report and "paper approver" in report
+
+
+def test_paper_pull_request_merged_by_a_code_owner_who_is_not_an_approver_fails(tmp_path):
+    ev = pr_event("", action="closed", merged=True, base="paper", author="alice", merger="bob")
+    code, report = run(tmp_path, "merge", ev, PAPER_OWNERS)
+    assert code == 1 and "@bob, who is not a paper approver" in report
+
+
+def test_paper_pull_request_without_a_paper_line_fails_and_says_so(tmp_path, capsys):
+    ev = pr_event("", action="closed", merged=True, base="paper", author="alice", merger="bob")
+    code, report = run(tmp_path, "merge", ev, "*   @alice @bob\n")
+    assert code == 1 and "no `paper/` line" in report
+    assert "::notice::" not in capsys.readouterr().out  # no one-person notice on the paper's row
+
+
+def test_the_paper_line_does_not_make_a_code_owner_and_the_star_line_no_approver(tmp_path):
+    for line in ("/paper/   @alice @dana\n", "paper/ @alice @dana\n"):
+        p = tmp_path / "CODEOWNERS"
+        p.write_text("*   @alice @bob @carol\n" + line, encoding="utf-8")
+        assert adm.code_owners(p) == {"alice", "bob", "carol"}
+        assert adm.paper_approvers(p) == {"alice", "dana"}
+    # a stranger on the code owners' line still cannot merge into dev
+    ev = pr_event("", action="closed", merged=True, base="dev", author="alice", merger="dana")
+    assert run(tmp_path, "merge", ev, PAPER_OWNERS)[0] == 1
+
+
+def test_this_repository_codeowners_names_the_code_owners_and_the_paper_approvers():
+    path = ROOT / ".github" / "CODEOWNERS"
+    assert adm.code_owners(path) == {"mzargham", "danlessa", "rororowyourboat"}
+    assert adm.paper_approvers(path) == {"mzargham", "jshorish"}  # his word, 2026-11-17 13:05
+
+
+def test_the_merge_workflow_fires_on_pull_requests_into_dev_and_paper():
+    wf = yaml.safe_load(
+        (ROOT / ".github" / "workflows" / "merge-by-code-owner.yml").read_text(encoding="utf-8")
+    )
+    on = wf.get("on", wf.get(True))
+    assert on["pull_request_target"] == {"types": ["closed"], "branches": ["dev", "paper"]}
+
+
+# The template: one file, the software's sections and a Paper section (the pr-fields check reads
+# the Paper section on a pull request into paper only).
+GOOD_PAPER_PR = GOOD_PR.replace("## Issue\n\ncloses #12\n", "## Issue\n\nsmall fix\n") + (
+    "\n## Paper\n\nMethods, one sentence; residuals 0 rose; `myst build --html` exit 0.\n"
+)
+
+
+def test_pull_request_into_paper_with_the_paper_section_passes_the_fields_check(tmp_path):
+    assert run(tmp_path, "pr-fields", pr_event(GOOD_PAPER_PR, base="paper"))[0] == 0
+
+
+def test_pull_request_into_paper_without_the_paper_section_fails_and_names_it(tmp_path):
+    code, report = run(tmp_path, "pr-fields", pr_event(GOOD_PR, base="paper"))
+    assert code == 1 and "`Paper`" in report
+    empty = GOOD_PR + "\n## Paper\n\n<!-- the section or figure -->\n"
+    assert run(tmp_path, "pr-fields", pr_event(empty, base="paper"))[0] == 1
+
+
+def test_pull_request_into_dev_leaves_the_paper_section_empty(tmp_path):
+    empty = GOOD_PR + "\n## Paper\n\n<!-- a change to the paper only -->\n"
+    assert run(tmp_path, "pr-fields", pr_event(empty, base="dev"))[0] == 0
 
 
 def test_the_templates_carry_the_fields_the_checks_read():
@@ -209,4 +285,5 @@ def test_the_templates_carry_the_fields_the_checks_read():
     assert all(f"label: {f}" in text for f in adm.ISSUE_FIELDS)
     assert "labels: [draft]" in text
     pr = (ROOT / ".github" / "pull_request_template.md").read_text(encoding="utf-8")
-    assert all(f"## {f}\n" in pr for f in adm.PR_FIELDS)
+    assert all(f"## {f}\n" in pr for f in adm.PR_FIELDS + adm.PAPER_FIELDS)
+    assert "Target `dev`" in pr and "`paper`" in pr

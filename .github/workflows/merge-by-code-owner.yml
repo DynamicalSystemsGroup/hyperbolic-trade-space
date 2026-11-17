@@ -1,12 +1,14 @@
 name: Merge by a code owner
 
-# VC-5. Trigger: a pull request closed into dev. The merger must be a code owner other than the author; while
-# the code owners are one person the check passes with a notice that quotes the admissibility row. Branch
-# protection (docs/code-owners.md) refuses the merge up front; this records it when it happens.
+# VC-5. Trigger: a pull request closed into dev or into paper. Into dev the merger must be a code owner other
+# than the author; while the code owners are one person the check passes with a notice that quotes the
+# admissibility row. Into paper the merger must be a paper approver (the paper/ line of CODEOWNERS) other than
+# the author (WP79). Branch protection (docs/code-owners.md) refuses the merge up front; this records it when
+# it happens.
 on:
   pull_request_target:
     types: [closed]
-    branches: [dev]
+    branches: [dev, paper]
 
 permissions:
   contents: read
@@ -14,7 +16,7 @@ permissions:
 
 jobs:
   merged:
-    name: merged by a code owner, not the author
+    name: merged by a code owner (dev) or a paper approver (paper), not the author
     if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-24.04
     steps:

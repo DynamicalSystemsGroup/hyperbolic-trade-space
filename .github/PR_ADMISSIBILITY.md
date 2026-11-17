@@ -20,5 +20,16 @@ request is opened or edited and on each push; the reviewer's rows are recorded i
 | The scope was not widened: a change the issue does not cover went back to the issue as an amendment | fitness, a code owner | the reviewer compares the diff with the issue's blast radius |
 | It is merged by a code owner who is not its author | conformance, machine | branch protection (review from code owners, no self-approval) and the merge check. While the code owners are one person this row cannot hold and the check passes with a notice; the bypass ends the moment a second code owner is added, by design, and no setting restores it |
 
+A pull request into `paper` (a change to the paper; the route is "Contributing to the paper" on the contributing
+page) is read by the same checks with two rows in their `paper` form:
+
+| Condition | Kind | Enforced or recorded by |
+|---|---|---|
+| Its description's `Paper` section names the section or figure changed, the residual check's result and the build | conformance, machine | the template's `Paper` section present and non-empty, read on a pull request into `paper` only |
+| It is merged by a paper approver, a login on the `paper/` line of `CODEOWNERS`, who is not its author | conformance, machine | the merge check on a pull request closed into `paper`; the approvers are two, so the row holds and there is no notice. A code owner who is not on that line does not merge it |
+
+The paper's approvers read the pull request for the argument; the paper workflow runs the build, the tests, the
+residual comparison and the key manifest once the merge lands on `paper`.
+
 The template that asks for the fields is [`pull_request_template.md`](pull_request_template.md). What the review
 records, and how a reviewer separates the two kinds of items, is on the [contributing page](../CONTRIBUTING.md).
