@@ -691,3 +691,22 @@ Read back: `main-review` active on the default branch, one rule (`pull_request`)
 mode `pull_request` (his first save read "Always allow"; the driver asked for "For pull requests only" and he
 changed it before submitting). The declaration follows this once (the check was not yet in force when he changed
 the setting); from here on the declaration changes first. The 0.2 removal stands.
+
+## Danilo governs with him; adding him on PyPI (2026-11-17, 19:10 EST)
+
+Verbatim:
+
+> danilo (danlessa on pypi) confirmed he's willing to govern this with me. can you help me add him on pypi?
+
+**The fact.** A PyPI project has collaborators only once it exists, and `tradespace` exists on neither index until
+a first upload: the release run creates it on PyPI under the account that registered the pending publisher, and the
+TestPyPI rehearsal creates it on TestPyPI the same way. So the step is after each first upload: the project's
+Manage page, Collaborators, add `danlessa` with the role Owner. The release issue's after-merge list already carries
+it for PyPI; the TestPyPI rehearsal gives the first chance to do it today.
+
+His word for the TestPyPI rehearsal (19:20 EST), verbatim:
+
+> run the rehearsal. i want to get this v0.1 release in place
+
+Dispatched: `release.yml` on `dev` at 263681b0 with the target `testpypi` (the first thing to leave the
+repository: a `tradespace` 0.1.0 build to the test index through the `testpypi` environment).
