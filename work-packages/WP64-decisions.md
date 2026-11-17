@@ -740,3 +740,22 @@ workflow permissions write to read (local-only likewise); a governance ruleset o
 governed files (a new ruleset is compared on the runner: the declaration and the setting must change together, or
 the checker gains a transition state, a question for the 0.2 scope); `controls` as a required check on `main`
 (the `main-checks` ruleset's list and the declaration together).
+
+## The docs navigation heading "User guide, page by page" (2026-11-17, 22:40 EST)
+
+Verbatim, looking at the staged docs:
+
+> this page bypage comment sounds like an LLM, its okay for 0.1 but needs to be addressed in 0.2
+
+**Applied as.** Nothing for 0.1. On the 0.2 board, with WP81's documentation packages: the navigation section title
+in `mkdocs.yml` (`User guide, page by page`) becomes a plain name (`User guide`), and the same reading is applied to
+every navigation title and section heading of the docs (the no-metanarration rule extends to titles: a title names
+the thing, not the reader's path through it).
+
+Then (22:45 EST), verbatim:
+
+> i'd fix it now as a tiny patch if possible but not if it sets back our release
+
+**Applied as.** One line in `mkdocs.yml`: the navigation section is `User guide`. The docs tests and the strict build
+run on it; the pull request's own release run checks the final head, so no dry run is repeated for it. The wider
+reading of every title stays on the 0.2 board.

@@ -10,8 +10,14 @@ approved), so this release is not archived and mints no DOI. This issue is close
 2,094 commits since e7fd1165 and the packages below, newest first, by their rows in `work-packages/INDEX.md`
 (the documents of the landed ones are read at `git show 4f81a4ea:work-packages/<file>`, WP73).
 
-- WP78 governance as executable: the release rules declared in the tree, checked first in CI, attested in the
-  release notes (in flight, part of 0.1)
+- WP80 public-link metadata on every page of the site (description, canonical, Open Graph, Twitter card, JSON-LD,
+  a preview image, `robots.txt`, the sitemap), from one source of values
+- WP79 the paper's own route: the `/paper/` CODEOWNERS line (the paper's approvers apart from the code owners), the
+  merge row for pull requests into `paper`, the template's paper section, "Contributing to the paper"; the `paper`
+  branch cut from `dev` on 2026-11-17 and rehearsed (`WP79-rounds/rehearsal.md`)
+- WP78 governance as executable: `GOVERNANCE.md`, the declaration `.github/governance.toml`, the checker, the
+  `controls` job first in both workflows, the attestation line in these release notes (`WP78-rounds/gaps.md` holds
+  the decisions left for 0.2)
 - WP77 the package renamed `tradespace` (import, distribution, repository, Pages address; contract amendment 30)
 - WP74 both requirement-usage type names accepted (the external review's finding 7)
 - WP73 the process record left the tree; the index dereferences; `tests/test_index.py`
@@ -45,14 +51,17 @@ In flight and not part of the release decision: WP8b (its checklist is `release-
 
 ## Version, changelog, checks
 
-- Version 0.1.0 in `pyproject.toml`, `uv.lock`, `__version__` and `CITATION.cff` (commit: _to fill_).
+- Version 0.1.0 in `pyproject.toml`, `uv.lock`, `__version__`, `CITATION.cff` and the interface contract's manifest
+  (ab8fc0f9; the package renamed `tradespace` at 922520fd, WP77).
 - `CHANGELOG.md` `[0.1.0] - <merge day>`.
 - The checks at the head: `work-packages/WP68-rounds/checks.md` (the software suite with paper tests deselected,
   lint, format, lock, the lemma chain and the proof-map checker, the vocabulary and claims checks on the software
   surfaces, the strict docs build in both slots, the index test).
-- CI: the dispatched run at the head (_link to fill_: every shard on Linux, the Windows fast and slow shards); the
-  `qc/release` dry run at the head (_link to fill_: admissibility, test, build, site green; tag, publish, deploy,
-  release skipped; the summary names the slot `abstract`).
+- CI: the dispatched run with Windows at f305f548 (https://github.com/DynamicalSystemsGroup/tradespace/actions/runs/44133871912,
+  every shard on Linux and the Windows fast and slow shards green); the push runs at every later head green; the
+  `qc/release` dry runs at f305f548 (44134005344), 19c7e528 (44153489031, the first with `controls`) and at the
+  head (_the run at 320a7056, to fill_); the TestPyPI rehearsal at 19c7e528 (https://github.com/DynamicalSystemsGroup/tradespace/actions/runs/44153488933)
+  published `tradespace` 0.1.0 to https://test.pypi.org/project/tradespace/ by trusted publishing.
 - The staged site at the head looked at: `/`, `/paper/`, one docs page, 1,280 and 375 px, light and dark
   (`work-packages/WP68-rounds/record.md`); the pinned modes and the fallback in WP67's record.
 
@@ -71,7 +80,8 @@ In flight and not part of the release decision: WP8b (its checklist is `release-
 ## After the merge
 
 - The release run watched to its end: the tag, PyPI, the site, the GitHub release.
-- `git branch paper dev && git push origin paper`; the `paper` ruleset applied.
+- The `paper` branch exists since 2026-11-17 (cut from `dev` at c0e210cc; its ruleset binds); after the merge,
+  `dev` is merged into `paper` so the paper's tests carry the two fixes of WP79.
 - `danlessa` (and Rohan, once his GitHub login is in `CODEOWNERS`) added as Owner of `tradespace` on PyPI
   and TestPyPI (Manage, Collaborators), by him in his signed-in session: the project exists only after the first
   publish, and trusted publishing creates it under the account that registered the pending publisher.

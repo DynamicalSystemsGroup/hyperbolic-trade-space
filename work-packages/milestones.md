@@ -37,6 +37,9 @@ the review rule without the bypass:
   five surfaces, the paper being a working paper whose abstract alone is published (his direction relayed from the
   WP76 session, `WP64-decisions.md`).
 - Documentation improvements as 0.2's scope, scoped as their own package (his scoping card from the WP76 session).
+- Every navigation title and section heading of the docs read for metanarration (his word, 2026-11-17 22:40, on
+  "User guide, page by page", which 0.1 fixes as a one-line patch to `User guide`): the no-metanarration rule applied
+  to titles, under WP81's packages.
 - WP79 unit B if it does not land in 0.1: the paper's contribution route.
 - Deferred from 0.1 by his word: Zenodo (after a first full draft is approved); the paper's first pinned mode.
 - The directions backlog built and ordered with him (`notes/directions/README.md`), not 0.2 content by itself.

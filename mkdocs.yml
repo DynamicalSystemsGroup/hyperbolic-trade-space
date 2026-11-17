@@ -67,7 +67,7 @@ plugins:
 nav:
   - Home: index.md
   - Getting started: getting-started.md
-  - User guide, page by page:
+  - User guide:
       - "User guide: start here": user-guide/overview.md
       - Conditioning: user-guide/conditioning.md
       - Fitting: user-guide/fitting.md
