@@ -678,3 +678,16 @@ The issue: https://github.com/DynamicalSystemsGroup/tradespace/issues/1 (the sco
 `gh label create`, since the template needs them); and the issue, pull-request and label-gate workflows run from
 the default branch, which is still e7fd1165, so no admissibility check ran on this issue and none runs on any issue
 or pull request until `dev` is merged into `main`. Both go to WP78's gaps readout.
+
+## The `main-review` bypass is him by name, for pull requests only (2026-11-17, 18:50 EST)
+
+Verbatim:
+
+> i removed the role based bypass and changed it to me. we are still going to remove the bypass allowance in 0.2
+
+> okay i changed it and submitted it. check now
+
+Read back: `main-review` active on the default branch, one rule (`pull_request`), bypass `User:10465438` (mzargham),
+mode `pull_request` (his first save read "Always allow"; the driver asked for "For pull requests only" and he
+changed it before submitting). The declaration follows this once (the check was not yet in force when he changed
+the setting); from here on the declaration changes first. The 0.2 removal stands.
