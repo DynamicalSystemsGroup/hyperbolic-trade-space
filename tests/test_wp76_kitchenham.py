@@ -148,6 +148,38 @@ def test_model_loads_strictly_with_one_package_and_its_sections(model):
     assert text.count("doc /*") >= 30
 
 
+def test_every_constant_and_alternative_in_the_model_has_a_doc_rationale():
+    """R-8: each valued attribute and each named part opens with a doc, except the alternatives'
+    own `:>>` redefinitions, whose rationale is their part's."""
+    import re
+
+    text = (CASE / "kitchenham.sysml").read_text(encoding="utf-8")
+    body = re.sub(r"/\*.*?\*/", "", text, flags=re.S)  # strip every comment and doc body
+    heads = re.findall(
+        r"^\s*(?:attribute|part) (?!:>>)(\w+)[^;{=]*(?:=[^;{]*)?\{", body, flags=re.M
+    )
+    assert len(heads) >= 25, heads
+    for name in heads:
+        m = re.search(
+            rf"^\s*(?:attribute|part) {name}\b[^{{]*\{{\s*(.*?)$", text, flags=re.M | re.S
+        )
+        assert m and m.group(1).lstrip().startswith("doc /*"), f"{name} has no doc rationale"
+    bare = re.findall(r"^\s*attribute (?!:>>)(\w+)[^;{]*=[^;{]*;", body, flags=re.M)
+    assert bare == [], f"valued attributes without a doc block: {bare}"
+
+
+def test_verify_fails_loudly(tmp_path):
+    """R-7: a changed file of record is refused by the manifest's size and hashes."""
+    m = fitkit.load_manifest(CASE / "manifest.toml")
+    f = tmp_path / m["file"]
+    f.write_bytes(b"@relation kitchenham\n")
+    with pytest.raises(RuntimeError, match="size"):
+        fitkit.verify(f, m)
+    f.write_bytes(b"x" * m["size"])
+    with pytest.raises(RuntimeError, match="md5"):
+        fitkit.verify(f, m)
+
+
 def test_primary_rule_constants_equal_the_model(run, model):
     assert _ev(model, "primary.shift") == run.SHIFT
     assert str(_ev(model, "primary.scaler")).endswith(run.SCALER)

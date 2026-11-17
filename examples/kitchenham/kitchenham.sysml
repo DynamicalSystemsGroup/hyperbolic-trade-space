@@ -185,24 +185,28 @@ package KitchenhamIronTriangle {
     doc /* The ladder of WP70, kept as the sensitivity check of G3: each part changes one thing. */
 
     part robustScaler : Conditioning {
+        doc /* The robust scaler (unit interquartile range) in place of the standard one. */
         attribute :>> shift = 10.0;
         attribute :>> capOverrunAt = 0.0;
         attribute :>> planOverActual = false;
         attribute :>> scaler = Scaler::robust;
     }
     part noScaler : Conditioning {
+        doc /* No scaler: the pure logs, where scope's spread is ten times the slacks'. */
         attribute :>> shift = 10.0;
         attribute :>> capOverrunAt = 0.0;
         attribute :>> planOverActual = false;
         attribute :>> scaler = Scaler::none;
     }
     part shift20 : Conditioning {
+        doc /* Twice the primary shift, to see what the shift does to the exponents. */
         attribute :>> shift = 20.0;
         attribute :>> capOverrunAt = 0.0;
         attribute :>> planOverActual = false;
         attribute :>> scaler = Scaler::standard;
     }
     part shift40 : Conditioning {
+        doc /* Four times the primary shift. */
         attribute :>> shift = 40.0;
         attribute :>> capOverrunAt = 0.0;
         attribute :>> planOverActual = false;
@@ -236,10 +240,18 @@ package KitchenhamIronTriangle {
             doc /* The share of projects the fitted surface leaves above it; the rule every
                    example page uses, so the temperatures compare across cases. */
         }
-        attribute temperatureLowerBound : Real = 3.0;
-        attribute temperatureUpperBound : Real = 10000.0;
-        attribute seed : Integer = 0;
-        attribute twoTermRestarts : Integer = 5;
+        attribute temperatureLowerBound : Real = 3.0 {
+            doc /* The search bounds of select_temperature, the example pages' (3, 10^4). */
+        }
+        attribute temperatureUpperBound : Real = 10000.0 {
+            doc /* The upper search bound; a fit at it would be the exact maximum in all but name. */
+        }
+        attribute seed : Integer = 0 {
+            doc /* The random state of the fits, the example pages' 0, so a rerun is the run. */
+        }
+        attribute twoTermRestarts : Integer = 5 {
+            doc /* Restarts of the two-term fit, the example pages' five; the best of them is kept. */
+        }
     }
 
     // ==========================================================================================
@@ -259,7 +271,9 @@ package KitchenhamIronTriangle {
             doc /* The package's own guard: trade_off_report refuses an association from fewer
                    rows; left at its default. */
         }
-        attribute ladderCounts : Integer[4] = (10, 15, 20, 25);
+        attribute ladderCounts : Integer[4] = (10, 15, 20, 25) {
+            doc /* The band ladder: the report's guard (10), the rule (15), and two wider bands. */
+        }
     }
 
     calc def NearFrontierBand {
@@ -283,9 +297,18 @@ package KitchenhamIronTriangle {
                memo keeps ("Retain the project-type and client subset contrasts"). */
         attribute selection : String;
     }
-    part developmentOnly : Subset { attribute :>> selection = "kind == ProjectType::D"; }
-    part perfectiveOnly : Subset { attribute :>> selection = "kind == ProjectType::P"; }
-    part largestClientOnly : Subset { attribute :>> selection = "client == 2"; }
+    part developmentOnly : Subset {
+        doc /* The 50 development projects: new systems, the type the triangle is usually told about. */
+        attribute :>> selection = "kind == ProjectType::D";
+    }
+    part perfectiveOnly : Subset {
+        doc /* The 73 perfective-maintenance projects, the table's largest type. */
+        attribute :>> selection = "kind == ProjectType::P";
+    }
+    part largestClientOnly : Subset {
+        doc /* Client 2, 113 of the 141 projects: one client's portfolio inside the company's. */
+        attribute :>> selection = "client == 2";
+    }
 
     part influenceRule {
         doc /* Every project left out in turn, the temperature held at the primary's so the change

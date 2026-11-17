@@ -161,7 +161,8 @@ record above.
 - **The interface contract.** Amendment 30 (version 30): the page added to `docs.pages` and `presentation_pages`, as
   amendment 28 did for the three example pages; nothing else pinned.
 - **The bibliography.** One entry, `kitchenham2002empirical` (JSS 64(1), doi:10.1016/S0164-1212(02)00021-3), with a
-  `verified` field recording the Crossref read and the date; the Zenodo record is cited by DOI in the manifest and the
+  `verified` field recording the Crossref read and the date, and the key cited in `notes/paper-prior-art-sources.md`,
+  where `tests/test_references.py` requires every key to be cited *(added at the review, a detail)*; the Zenodo record is cited by DOI in the manifest and the
   page's first paragraph, as the other pages cite their data DOIs.
 - **The changelog** is untouched: the next release's entry is written by that release's package.
 - **Package defects** go in a section of `WP76-decisions.md` with the evidence, starting from WP70's three (the

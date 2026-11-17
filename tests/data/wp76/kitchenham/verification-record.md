@@ -139,7 +139,7 @@ tables above.
 
 Figure 11 (`kitchenham-pairs`): the three pairs of conditioned log-metrics with the 15 near-frontier projects
 marked and each pair's association in the panel title; the frame holds the projects from the 2nd percentile up and
-says how many lie beyond it (6, the worst overruns). Intent written first: shared movement in the slack pair,
+says how many lie beyond it (9, the worst overruns: 6 in each panel, 9 across the three). Intent written first: shared movement in the slack pair,
 substitution in the two scope pairs, read from the marked points. Figure 12 (`kitchenham-participation`): each
 metric's one-term exponent under the seven rules, hollow where the metric is outside the contending set. Intent:
 participation shown apart from association, and the exponents' movement with the rule. No ternary: its region label
@@ -183,7 +183,7 @@ participation shown apart from association, with the exponents' movement across 
 Both figures passed the sentence test (the intent was read from the image by all four before the caption) and the
 ink test; the disposition for each is the smallest change: Figure 11, the legend moved to the lower left of the first
 panel, where it no longer runs into the marked points, and the per-panel "6 beyond the frame" replaced by one line
-under the panels, "6 projects, the worst overruns, lie beyond the frames"; the caption says the association is a
+under the panels, "9 projects, the worst overruns, lie beyond the frames" (6 in each panel, 9 across the three); the caption says the association is a
 correlation. Figure 12, the legend title completed ("filled: in the contending set; hollow: outside it") and the
 caption rewritten to say what is read here and what from Figure 11. The terms the readers stopped at ("frontier",
 "contending set", "standardized", "exponent at one term") are the page's, defined or linked to the glossary in the
