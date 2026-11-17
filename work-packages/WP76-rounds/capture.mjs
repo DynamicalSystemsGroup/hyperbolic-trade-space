@@ -50,6 +50,11 @@ for (const [name, path] of PAGES) for (const width of WIDTHS) for (const scheme 
   const s = (m, p) => send(m, p, sessionId);
   await s("Page.enable"); await s("Runtime.enable"); await s("Log.enable");
   await s("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: scheme }] });
+  // Material for MkDocs applies a stored palette before the media query; seed it per scheme.
+  const palette = scheme === "dark"
+    ? { index: 1, color: { media: "(prefers-color-scheme: dark)", scheme: "slate", primary: "blue-grey", accent: "indigo" } }
+    : { index: 0, color: { media: "(prefers-color-scheme: light)", scheme: "default", primary: "blue-grey", accent: "indigo" } };
+  await s("Page.addScriptToEvaluateOnNewDocument", { source: `localStorage.setItem("/.__palette", ${JSON.stringify(JSON.stringify(palette))}); localStorage.setItem("__palette", ${JSON.stringify(JSON.stringify(palette))});` });
   await s("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width < 768 });
   events.length = 0;
   await s("Page.navigate", { url: base + path });
@@ -65,7 +70,7 @@ for (const [name, path] of PAGES) for (const width of WIDTHS) for (const scheme 
   const shot = await s("Page.captureScreenshot", { format: "png", captureBeyondViewport: true });
   const file = `${name}-${width}-${scheme}.png`;
   writeFileSync(join(out, file), Buffer.from(shot.data, "base64"));
-  const errors = events.filter((e) => (e.method === "Log.entryAdded" && e.params.entry.level === "error") || e.method === "Runtime.exceptionThrown").map((e) => JSON.stringify(e.params).slice(0, 160));
+  const errors = events.filter((e) => (e.method === "Log.entryAdded" && e.params.entry.level === "error") || e.method === "Runtime.exceptionThrown").map((e) => (e.params.entry ? `${e.params.entry.level}: ${e.params.entry.text} ${e.params.entry.url || ""}` : JSON.stringify(e.params)).slice(0, 200));
   rows.push({ file, width, scheme, height, sideways, matched, scheme_attr, figures, errors });
   await send("Target.closeTarget", { targetId });
 }

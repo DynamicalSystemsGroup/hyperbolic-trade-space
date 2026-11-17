@@ -393,7 +393,7 @@ def pairs_figure(x, est, tau, ax=None):
             f"{beyond} projects, the worst overruns, lie beyond the frames",
             ha="center",
             fontsize=7,
-            color="0.4",
+            color=plt.rcParams["axes.labelcolor"],
         )
     return axes
 
@@ -433,13 +433,14 @@ def participation_figure(variants=None, ax=None):
     ax.set_xlim(-0.03, 1.0)
     ax.set_xlabel("exponent at one term", fontsize=8)
     ax.tick_params(axis="x", labelsize=7)
-    ax.legend(
+    legend = ax.legend(
         fontsize=7,
         frameon=False,
         loc="lower right",
         title="filled: in the contending set; hollow: outside it",
         title_fontsize=7,
     )
+    legend.get_title().set_color(plt.rcParams["axes.labelcolor"])
     return ax
 
 

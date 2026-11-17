@@ -196,7 +196,53 @@ movement from substitution at a glance. Figure 12 shows each metric's exponent u
 the contending set; it does not show which way metrics move together or how far a project is from the frontier; it
 is good for seeing that participation holds while the exponents move with the conditioning.
 
-**The project-management cold read (R-5)** and **the captures (R-11)**: below, filled at the browser pass.
+**The project-management cold read (R-5, 2026-11-17).** A fresh-context reader in the persona of a PMP who runs
+a software portfolio, given the rendered page's visible text and the two figures and nothing else (a first run
+received the figures only, through a defect in the text extraction, and is discarded). The three answers, verbatim:
+
+1. "They looked at 145 finished software projects from one company (1994-99), keeping 141. For each they measured
+   schedule slack (how much sooner or later than planned), budget slack (effort hours against the first estimate)
+   and scope (function points delivered)."
+2. "Among the projects at the best edge of the portfolio, the ones that delivered more scope had less schedule slack
+   and less budget slack. That held under every setting they tried and with every single project removed. The two
+   slacks moved together in most cuts, but weakly, and that link flips or vanishes in some subsets. So the 'iron
+   triangle' shows up as scope against slack, not as a firm slack-versus-slack rule."
+3. "I would not use it to say that adding scope causes overruns, or that cutting scope buys schedule or budget. It
+   says nothing about why a project landed where it did. I would not use it to say anything about quality, because
+   none was measured. I would not generalise it to my portfolio or to a different decade, since it is one company
+   with effort hours standing in for money. I would not trust the dates fully either, because a quarter of the
+   projects end exactly on the estimate, which suggests some actuals were recorded as the plan. I would not read the
+   exponent numbers as 'how much each factor matters', because the page itself says the conditioning moves them."
+
+Match: all three. The measured quantities, the narrowed headline (the negative half firm, the positive half weak and
+reversing in subsets) and the decisions the evidence cannot support (cause, quality, generalisation, the dates, the
+exponents as weights) are the page's. Where the reader stopped, verbatim in part: "'frontier', 'near the frontier',
+'contending set': undefined in plain terms"; "'association': I only learned it is a correlation from a figure
+caption"; "Contradiction: the page says 'under every scaled rule, every band and every project removed', but
+earlier says 140 of 141 refits keep every sign"; "No headline sentence and no counts of how many projects were over
+or under budget or schedule"; "it gives me no threshold, no effect size in days or dollars". Acted on: the
+leave-one-out sentence now names the two sign groups apart ("scope's two signs hold in all 141 refits and the
+slacks' in 140; without project 16 theirs is -0.20"), so the negative half's "every project removed" and the positive
+half's one exception no longer read as a contradiction; "frontier" links to the glossary at its first use. Not acted
+on: the method terms are the page's and linked (the template's rule); the plain counts (63 percent on or under
+schedule, 67 percent on or under budget) are in section 3 of this record and `results.json`, not on the page, whose
+budget is 699 of 700 words; an effect size in days or dollars is what the memo says the evidence cannot give (the
+exponents move with the conditioning), and the page says so. "Would act on": "Not really. It confirms what I already
+believe ... I'd file it as interesting background and change nothing" — consistent with the memo's observational
+boundary.
+
+**The captures (R-11, 2026-11-17).** `work-packages/WP76-rounds/capture.mjs` drives Google Chrome headless over its
+debugging protocol against the strict build served locally; eight full-page captures in `WP76-rounds/captures/`
+(the page and the Examples index, at 1280 and 375 px, light and dark; `captures.json` records each capture's height,
+whether the page scrolls sideways, the applied scheme and the console errors). No sideways scroll at either width.
+The one console error on every capture is Material's request for the repository's latest GitHub release (404: no
+release yet), not the page's. Looked at by the author: the arc reads top to bottom (source, attributes, the
+question, the fit with its two figures, the ladder, the band and the influential projects, the subsets, the answer,
+the limits); both figures legible at the column width in both schemes after two fixes found in the dark capture
+(the legend title of Figure 12 and the line under Figure 11 were drawn in the light scheme's text colour and
+vanished on the dark page; both now take the axes' label colour); at 375 px the text block of the attributes
+scrolls inside its box as on the other example pages and the figures shrink below legibility, as the figure rule
+allows (`notes/figure-review.md`: a phone is not a requirement for figure text).
 
 ## 8. What this changes for the method
 

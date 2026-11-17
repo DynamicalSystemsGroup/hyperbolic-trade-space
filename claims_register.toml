@@ -10270,7 +10270,7 @@ note = "variants.json bands: 1/tau (12 rows) and the bands holding 10, 15, 20, 2
 
 [[claim]]
 id = "C1115"
-fragment = "Leaving each project out in turn, 140 of 141 refits keep every sign; without project 16 the slacks' association is −0.20. Without the largest project (18,137 function points) it is +0.10; without the worst schedule overrun schedule slack's exponent falls to 0.37."
+fragment = "Leaving each project out in turn, scope's two signs hold in all 141 refits and the slacks' in 140; without project 16 theirs is −0.20. Without the largest project (18,137 function points) it is +0.10; without the worst schedule overrun schedule slack's exponent falls to 0.37."
 file = "docs/examples/kitchenham.md"
 anchor = "The fit"
 kind = "R"

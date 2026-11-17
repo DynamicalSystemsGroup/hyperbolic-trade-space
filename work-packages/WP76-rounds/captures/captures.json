@@ -1,0 +1,190 @@
+[
+  {
+    "file": "kitchenham-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3500,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "kitchenham-pairs-light.png#only-light",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-pairs-dark.png#only-dark",
+        782,
+        "none"
+      ],
+      [
+        "kitchenham-participation-light.png#only-light",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-participation-dark.png#only-dark",
+        782,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "kitchenham-1280-dark.png",
+    "width": 1280,
+    "scheme": "dark",
+    "height": 3500,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "slate",
+    "figures": [
+      [
+        "kitchenham-pairs-light.png#only-light",
+        782,
+        "none"
+      ],
+      [
+        "kitchenham-pairs-dark.png#only-dark",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-participation-light.png#only-light",
+        782,
+        "none"
+      ],
+      [
+        "kitchenham-participation-dark.png#only-dark",
+        782,
+        "block"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "kitchenham-375-light.png",
+    "width": 375,
+    "scheme": "light",
+    "height": 4411,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "kitchenham-pairs-light.png#only-light",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-pairs-dark.png#only-dark",
+        782,
+        "none"
+      ],
+      [
+        "kitchenham-participation-light.png#only-light",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-participation-dark.png#only-dark",
+        782,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "kitchenham-375-dark.png",
+    "width": 375,
+    "scheme": "dark",
+    "height": 4411,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "slate",
+    "figures": [
+      [
+        "kitchenham-pairs-light.png#only-light",
+        782,
+        "none"
+      ],
+      [
+        "kitchenham-pairs-dark.png#only-dark",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-participation-light.png#only-light",
+        782,
+        "none"
+      ],
+      [
+        "kitchenham-participation-dark.png#only-dark",
+        782,
+        "block"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "examples-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 7944,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "examples-1280-dark.png",
+    "width": 1280,
+    "scheme": "dark",
+    "height": 7944,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "slate",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "examples-375-light.png",
+    "width": 375,
+    "scheme": "light",
+    "height": 9072,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "examples-375-dark.png",
+    "width": 375,
+    "scheme": "dark",
+    "height": 9072,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "slate",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  }
+]

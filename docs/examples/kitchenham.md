@@ -28,7 +28,7 @@ also kept            project type (D development, P perfective
 
 ## What the fit is asked
 
-Project managers speak of an iron triangle: time, cost and scope constrain one another, so a team protects two at the third's expense. Near this portfolio's frontier, did more delivered scope go with less schedule and budget slack, and did the two slacks move together or against each other?
+Project managers speak of an iron triangle: time, cost and scope constrain one another, so a team protects two at the third's expense. Near this portfolio's [frontier](../generated/glossary.md), did more delivered scope go with less schedule and budget slack, and did the two slacks move together or against each other?
 
 ## The fit
 
@@ -74,7 +74,7 @@ run.participation_figure()
 
 <!-- register: examples/kitchenham/variants.json bands, influence -->
 
-**Band and influential projects.** At bands holding ten to twenty-five projects the slacks' association runs from +0.67 to +0.17 and scope's from −0.53 to −0.95. Leaving each project out in turn, 140 of 141 refits keep every sign; without project 16 the slacks' association is −0.20. Without the largest project (18,137 function points) it is +0.10; without the worst schedule overrun schedule slack's exponent falls to 0.37.
+**Band and influential projects.** At bands holding ten to twenty-five projects the slacks' association runs from +0.67 to +0.17 and scope's from −0.53 to −0.95. Leaving each project out in turn, scope's two signs hold in all 141 refits and the slacks' in 140; without project 16 theirs is −0.20. Without the largest project (18,137 function points) it is +0.10; without the worst schedule overrun schedule slack's exponent falls to 0.37.
 
 <!-- register: examples/kitchenham/variants.json subsets -->
 
@@ -88,4 +88,4 @@ Near this portfolio's frontier, the projects that delivered more scope had less 
 
 ## What the example cannot show
 
-One company's projects of one decade, with effort standing for money. A quarter of the projects end exactly on the estimated date, so some dates may have been recorded as the actual. The table carries no quality measure, so the case says nothing about quality. Nothing here says why a project landed where it did.
+One company, one decade, effort standing for money. A quarter of the projects end exactly on the estimated date, so some dates may have been recorded as the actual. The table carries no quality measure, so the case says nothing about quality. Nothing here says why a project landed where it did.

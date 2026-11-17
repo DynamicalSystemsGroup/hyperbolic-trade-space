@@ -303,12 +303,13 @@ def test_page_states_the_headline_only_where_the_checks_hold():
     assert _neg(f"from {max(sc):.2f} to {min(sc):.2f}") in page
     loo = v["influence"]["leave_one_out"]
     assert loo["rows"] == 141
-    assert f"{loo['rows_holding_pattern']} of {loo['rows']} refits" in page
+    assert all(r["association"][SS] < 0 and r["association"][BS] < 0 for r in loo["per_row"])
+    assert (
+        f"hold in all {loo['rows']} refits and the slacks' in {loo['rows_holding_pattern']}" in page
+    )
     assert loo["rows_with_a_sign_flip"] == [16]
     flip = next(r for r in loo["per_row"] if r["project"] == 16)
-    assert (
-        _neg(f"without project 16 the slacks' association is {flip['association'][SB]:.2f}") in page
-    )
+    assert _neg(f"without project 16 theirs is {flip['association'][SB]:.2f}") in page
     ex = v["influence"]["extremes"]
     big = ex["without_largest_project"]
     assert (
