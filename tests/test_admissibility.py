@@ -247,6 +247,10 @@ def test_this_repository_codeowners_names_the_code_owners_and_the_paper_approver
     path = ROOT / ".github" / "CODEOWNERS"
     assert adm.code_owners(path) == {"mzargham", "danlessa", "rororowyourboat"}
     assert adm.paper_approvers(path) == {"mzargham", "jshorish"}  # his word, 2026-11-17 13:05
+    # the governed files' lines name the three code owners (his word, 2026-11-17, WP82)
+    governed = adm.governed_owners(path)
+    assert set(governed) == set(adm.GOVERNED_PATTERNS) and len(governed) == 9
+    assert all(owners == adm.code_owners(path) for owners in governed.values()), governed
 
 
 def test_the_merge_workflow_fires_on_pull_requests_into_dev_and_paper():

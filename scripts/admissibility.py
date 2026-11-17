@@ -40,6 +40,20 @@ PR_FIELDS = ("What changed", "What backs it", "Tests", "Defaults", "Tools used")
 PAPER_FIELDS = ("Paper",)  # required as well on a pull request into ``paper``
 PAPER_BRANCH = "paper"
 PAPER_PATTERNS = ("paper/", "/paper/")  # the CODEOWNERS line of the repository's paper directory
+# The governed files (GOVERNANCE.md, "The secondary rules"): each has its own anchored CODEOWNERS
+# line, whose logins approve a change to it (decided 2026-11-17: the three code owners);
+# .github/governance.toml names the same patterns in governed_files and restricts who pushes them.
+GOVERNED_PATTERNS = (
+    "/.github/CODEOWNERS",
+    "/.github/governance.toml",
+    "/.github/workflows/",
+    "/GOVERNANCE.md",
+    "/.github/ISSUE_ADMISSIBILITY.md",
+    "/.github/PR_ADMISSIBILITY.md",
+    "/.github/RELEASE_ADMISSIBILITY.md",
+    "/.github/ISSUE_TEMPLATE/",
+    "/.github/pull_request_template.md",
+)
 CLOSING = re.compile(
     r"\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s*:?\s+(?:[\w.-]+/[\w.-]+)?#\d+", re.I
 )
@@ -88,6 +102,19 @@ def paper_approvers(path: Path) -> set[str]:
     ['ada', 'bob']
     """
     return owners_of(path, PAPER_PATTERNS)
+
+
+def governed_owners(path: Path) -> dict[str, set[str]]:
+    """The approvers of each governed file: pattern -> the logins on its line (none if missing).
+
+    >>> import tempfile, pathlib
+    >>> p = pathlib.Path(tempfile.mkdtemp()) / "CODEOWNERS"
+    >>> _ = p.write_text("*   @Ada\\n/GOVERNANCE.md @Ada @bob\\n", encoding="utf-8")
+    >>> owners = governed_owners(p)
+    >>> sorted(owners["/GOVERNANCE.md"]), owners["/.github/CODEOWNERS"]
+    (['ada', 'bob'], set())
+    """
+    return {pattern: owners_of(path, (pattern,)) for pattern in GOVERNED_PATTERNS}
 
 
 def sections(body: str, marker: str) -> dict[str, str]:

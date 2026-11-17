@@ -6,3 +6,16 @@
 # pull requests into `paper` and approve the `paper-release` environment; a login here is not thereby a code owner.
 # The leading slash anchors the pattern to the repository's `paper/` directory (`site/paper/` stays with the `*` line).
 /paper/   @mzargham @jshorish
+# The governed files (GOVERNANCE.md, "The secondary rules"): a change to any of them is approved by the owners on
+# its line, the three code owners (decided 2026-11-17, WP82), and pushed by a Repository admin, directly to dev or as
+# the merge of a pull request: the governance-files push ruleset (.github/governance.toml) refuses any other push that
+# touches these paths. The leading slash anchors each pattern; a directory pattern covers the files in it.
+/.github/CODEOWNERS                 @mzargham @danlessa @rororowyourboat
+/.github/governance.toml            @mzargham @danlessa @rororowyourboat
+/.github/workflows/                 @mzargham @danlessa @rororowyourboat
+/GOVERNANCE.md                      @mzargham @danlessa @rororowyourboat
+/.github/ISSUE_ADMISSIBILITY.md     @mzargham @danlessa @rororowyourboat
+/.github/PR_ADMISSIBILITY.md        @mzargham @danlessa @rororowyourboat
+/.github/RELEASE_ADMISSIBILITY.md   @mzargham @danlessa @rororowyourboat
+/.github/ISSUE_TEMPLATE/            @mzargham @danlessa @rororowyourboat
+/.github/pull_request_template.md   @mzargham @danlessa @rororowyourboat
