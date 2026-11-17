@@ -17,7 +17,9 @@ documentation's examples call; this script supplies the planted table, the fit a
 ``ternary-planted-light.png`` and ``ternary-planted-dark.png``, on transparent backgrounds and with
 the colours of the root page's two schemes: the one figure of the root page (the plain image,
 ``why-regions-light.png`` and ``why-regions-dark.png`` from :func:`build`, left the page when the
-planted figure took its place).
+planted figure took its place). :func:`build_preview` writes the site's preview image, the one
+link handlers show: the planted triangle in the light scheme with the site's name, at the size
+``site/metadata.toml`` names.
 
 ``--lines`` (off by default, and off everywhere on the site) overlays lines of equal V at a fixed
 total: the shares are ``c_j = (m_j / typical_j)^(1/s) / L`` with ``s = 1`` and ``L`` their sum, the
@@ -29,6 +31,7 @@ colour, exactly where that term's V peaks at a fixed total.
 from __future__ import annotations
 
 import argparse
+import textwrap
 from pathlib import Path
 
 import numpy as np
@@ -347,10 +350,73 @@ def build_slices(out=DEFAULT_OUT, fit=None, quantile=0.5):
     return paths
 
 
+# ---------------------------------------------------------------------------------------------
+# The preview image: what a link handler shows beside a link to the site. The planted triangle in
+# the light scheme on the right, the site's name, tagline and address on the left; the size link
+# handlers take (site/metadata.toml names it: 1200 by 630 px), an opaque background.
+# ---------------------------------------------------------------------------------------------
+PREVIEW_DPI = 100
+PREVIEW_BACKGROUND = "#faf9f6"  # the root page's light background
+PREVIEW_INK, PREVIEW_MUTED = "#1c1c1c", "#5a5a5a"  # the root page's light text colours
+
+
+def draw_preview(fit, values):
+    """The preview figure, ``values["image_width"]`` by ``values["image_height"]`` px at
+    ``PREVIEW_DPI``."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    width, height = values["image_width"], values["image_height"]
+    fig = plt.figure(figsize=(width / PREVIEW_DPI, height / PREVIEW_DPI), dpi=PREVIEW_DPI)
+    fig.patch.set_facecolor(PREVIEW_BACKGROUND)
+    fig.patch.set_alpha(1.0)
+    side = 0.92 * height / width  # the triangle's axes, square in pixels, nearly the full height
+    ax = fig.add_axes([0.985 - side, 0.04, side, 0.92])
+    plot_ternary(fit["estimator"], fit["X"], names=NAMES, ax=ax, scheme="light")
+    left = 0.05
+    fig.text(left, 0.66, values["name"], fontsize=56, fontweight="bold", color=PREVIEW_INK,
+             va="baseline")  # fmt: skip
+    fig.text(left, 0.54, values["tagline"], fontsize=24, color=PREVIEW_INK, va="baseline")
+    lead = textwrap.fill(values["description"].split(":", 1)[0], 30)  # the description's lead
+    fig.text(left, 0.40, lead, fontsize=17, color=PREVIEW_MUTED, va="top", linespacing=1.5)
+    address = values["url"].removeprefix("https://").rstrip("/")
+    fig.text(left, 0.09, address, fontsize=15, color=PREVIEW_MUTED, va="baseline")
+    return fig
+
+
+def build_preview(out=DEFAULT_OUT, fit=None, values=None):
+    """Write the preview image into ``out`` under the name ``site/metadata.toml`` gives; returns
+    its path."""
+    import matplotlib.pyplot as plt
+    import site_metadata
+
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    fit = fit or fit_why()
+    values = values or site_metadata.load()
+    path = out / values["image"]
+    with plt.rc_context({"font.family": "DejaVu Sans", "font.size": 11}):
+        fig = draw_preview(fit, values)
+        fig.savefig(path, dpi=PREVIEW_DPI, facecolor=fig.get_facecolor())
+        plt.close(fig)
+    from PIL import Image  # Matplotlib's own image library: an opaque RGB file, no alpha channel
+
+    with Image.open(path) as image:
+        image.convert("RGB").save(path, optimize=True)
+    return path
+
+
 def build_all(out=DEFAULT_OUT):
-    """The root page's images: the story figure and the slices figure, from one fit."""
+    """The root page's images, the story figure and the slices figure, and the site's preview
+    image, from one fit."""
     fit = fit_why()
-    return {"story": build_story(out, fit=fit), "slices": build_slices(out, fit=fit)}
+    return {
+        "story": build_story(out, fit=fit),
+        "slices": build_slices(out, fit=fit),
+        "preview": build_preview(out, fit=fit),
+    }
 
 
 def main(argv=None):
@@ -370,6 +436,7 @@ def main(argv=None):
         print(f"story {scheme}: {path}")
     for scheme, path in build_slices(args.out, fit=fit).items():
         print(f"slices {scheme}: {path}")
+    print(f"preview: {build_preview(args.out, fit=fit)}")
     print("exponents", np.round(fit["W"], 2).tolist())
     print("labels", [says(w).replace("\n", " ") for w in fit["W"]])
     return 0

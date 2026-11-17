@@ -1,0 +1,14 @@
+# The site's public-link values that have no other home. scripts/site_metadata.py reads this file
+# with pyproject.toml (the description, the version, the licence, the repository address) and
+# CITATION.cff (the author, the ORCID, the affiliation); the composer and the docs build emit the
+# page metadata from that one reading, and tests/test_site_metadata.py checks the addresses here
+# against the interface contract, pyproject.toml and CITATION.cff.
+schema = 1
+name = "tradespace"
+tagline = "the posynomial invariant form"
+url = "https://dynamicalsystemsgroup.github.io/tradespace/"
+# The preview image link handlers show: written at compose time by scripts/build_site_figures.py
+# (the planted ternary, light scheme, with the name), never tracked.
+image = "preview.png"
+image_width = 1200
+image_height = 630
