@@ -53,6 +53,7 @@ NAV_PAGES = [
     "examples/perovskite.md",
     "examples/amniote.md",
     "examples/wheat.md",
+    "examples/kitchenham.md",
     "bridge.md",
     "theory.md",
     "generated/glossary.md",
@@ -87,10 +88,11 @@ BUDGETS = {
     "api-reference.md": 298,
     # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33; 671 until WP51 (+251,
     # the synthetic three-metric case, the root page's construction)
-    "examples.md": 990,  # 922 until WP60 (+68, the three datasets\' rows)
+    "examples.md": 1000,  # 922 until WP60 (+68, the three datasets' rows); 990 until WP76 (+10, the fourth)
     "examples/perovskite.md": 700,  # WP60, the three example pages
     "examples/amniote.md": 700,
     "examples/wheat.md": 700,
+    "examples/kitchenham.md": 700,  # WP76, the iron-triangle example page
     # 805 until the D-5 fresh read named tau, the level and the submartingale (2026-11-15)
     "bridge.md": 815,
     "theory.md": 700,
@@ -102,7 +104,7 @@ BUDGETS = {
 # page, 815); 7430 until the docs home took its figure and quickstart (his 350); 7237 until WP42;
 # 7472 until WP33
 TOTAL_BUDGET = (
-    11335  # 9167 until WP60 (+2,100, the three example pages; +68, their rows on Examples)
+    12045  # 11335 until WP76 (+700, the Kitchenham-CSC page; +10, its route on Examples)
 )
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
@@ -1588,7 +1590,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
     # the docs home repeats Getting started's Figure 1 as its preview (the supervisor, 2026-11-14:
     # "docs home needs a figure and a quickstart code block"); a repeated image is one figure
-    assert 1 <= len(set(names)) <= bf.MAX_FIGURES == 10  # 8 until WP60's three example pages
+    assert 1 <= len(set(names)) <= bf.MAX_FIGURES == 12  # 10 until WP76's two figures
     assert len(names) - len(set(names)) <= 1
     assert {"first-fit", "three-terms", "tension-report", "log-plane"} <= set(names)
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"

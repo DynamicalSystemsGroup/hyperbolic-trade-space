@@ -85,6 +85,7 @@ nav:
       - Perovskite solar cells: examples/perovskite.md
       - Amniote life histories: examples/amniote.md
       - Broadbalk wheat: examples/wheat.md
+      - Software projects (Kitchenham-CSC): examples/kitchenham.md
   - From the chart back to a design: bridge.md
   - Theory in brief: theory.md
   - Glossary: generated/glossary.md

@@ -332,6 +332,117 @@ def load_derived():
     return pd.read_csv(DERIVED)
 
 
+def load_variants():
+    """The committed sensitivity study (``variants.json``)."""
+    return json.loads((HERE / "variants.json").read_text(encoding="utf-8"))
+
+
+LADDER_LABELS = {
+    "primary": "primary rule",
+    "robust_scaler": "robust scaler",
+    "no_scaler": "no scaler",
+    "shift_20": "shift 20",
+    "shift_40": "shift 40",
+    "cap_3_shift_3": "cap at 3, shift 3",
+    "plan_over_actual": "plan over actual",
+}
+
+
+def pairs_figure(x, est, tau, ax=None):
+    """The three pairs of conditioned log-metrics, the near-frontier projects marked.
+
+    Each panel's title is the pair's near-frontier association at the band rule; the frame holds
+    the projects between the 2nd percentile and the maximum of each log-metric, and the panel says
+    how many lie beyond it (the worst overruns, far inside the frontier).
+    """
+    import matplotlib.pyplot as plt
+
+    M = condition(x)
+    U = np.log(M)
+    lv = est.training_log_v_
+    band = band_for(lv, tau)
+    near = np.abs(lv) < band
+    assoc = report_dict(est, M, NAMES, band)[0]["association"]
+    _fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.7), constrained_layout=True)
+    lo = np.percentile(U, 2, axis=0)
+    hi = U.max(axis=0)
+    pad = 0.08 * (hi - lo)
+    for ax_, (i, j) in zip(axes, [(0, 1), (0, 2), (1, 2)], strict=True):
+        ax_.scatter(U[~near, i], U[~near, j], s=9, color="0.65", label="inside the frontier")
+        ax_.scatter(
+            U[near, i],
+            U[near, j],
+            s=28,
+            color="C1",
+            edgecolor="0.2",
+            linewidth=0.4,
+            label=f"near the frontier ({near.sum()})",
+        )
+        ax_.set_xlim(lo[i] - pad[i], hi[i] + pad[i])
+        ax_.set_ylim(lo[j] - pad[j], hi[j] + pad[j])
+        beyond = int(((U[:, i] < lo[i]) | (U[:, j] < lo[j])).sum())
+        ax_.set_title(f"association {assoc[f'{NAMES[i]}|{NAMES[j]}']:+.2f}", fontsize=9)
+        ax_.set_xlabel(f"log {NAMES[i]}, standardized", fontsize=8)
+        ax_.set_ylabel(f"log {NAMES[j]}, standardized", fontsize=8)
+        ax_.tick_params(labelsize=7)
+        if beyond:
+            ax_.text(
+                0.03,
+                0.03,
+                f"{beyond} beyond the frame",
+                transform=ax_.transAxes,
+                fontsize=7,
+                color="0.4",
+            )
+    axes[0].legend(fontsize=7, loc="upper left", frameon=False)
+    return axes
+
+
+def participation_figure(variants=None, ax=None):
+    """Each metric's one-term exponent under the conditioning ladder's rules.
+
+    A filled marker is a metric in the contending set of that rule's fit; a hollow one is outside
+    it. The rules are categories, so no line joins them.
+    """
+    import matplotlib.pyplot as plt
+
+    v = variants or load_variants()
+    rules = list(LADDER_LABELS)
+    if ax is None:
+        _, ax = plt.subplots(figsize=(7.0, 2.9), constrained_layout=True)
+    ys = np.arange(len(rules))[::-1]
+    offsets = np.linspace(0.18, -0.18, len(NAMES))
+    for k, name in enumerate(NAMES):
+        for y, rule in zip(ys, rules, strict=True):
+            r = v["conditioning"][rule]
+            w = r["exponents_k1"][name]
+            inside = name in r["contending_set"]
+            ax.plot(
+                w,
+                y + offsets[k],
+                "o",
+                color=f"C{k}",
+                markerfacecolor=f"C{k}" if inside else "none",
+                markersize=6,
+                label=name if y == ys[0] else None,
+            )
+    for y in ys:
+        ax.axhline(y, color="0.85", lw=0.5, zorder=0)
+    ax.set_yticks(ys)
+    ax.set_yticklabels([LADDER_LABELS[r] for r in rules], fontsize=8)
+    ax.set_xlim(-0.03, 1.0)
+    ax.set_xlabel("exponent at one term", fontsize=8)
+    ax.tick_params(axis="x", labelsize=7)
+    ax.legend(
+        fontsize=7,
+        frameon=False,
+        loc="lower right",
+        title="filled: in the contending set",
+        title_fontsize=7,
+    )
+    return ax
+
+
 def check():
     """Refit from the committed derived table; compare with the committed results (R-1)."""
     x = load_derived()

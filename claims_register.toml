@@ -10103,3 +10103,261 @@ status = "backed"
 disposition = "keep"
 source = "the supervisor's sentence for the root page, 2026-11-17 (WP64-decisions.md, \"The root page's closing sentence\")"
 note = "Position claim, the author's judgement: once a model-based method shows its reasoning, says where the data do not reach and can be rerun, automated loops can accelerate exploration and optimization without loss of interpretability. Stated as a possibility (\"can be\"), not a result of the package."
+
+# ---- WP76: the Kitchenham-CSC example page (docs/examples/kitchenham.md) ----
+
+[[claim]]
+id = "C1104"
+fragment = "compiled 145 software projects that Computer Sciences Corporation finished between 1994 and 1999, to study its estimation accuracy"
+file = "docs/examples/kitchenham.md"
+anchor = "Where the projects come from"
+kind = "L"
+backing = ["bib:kitchenham2002empirical", "file:examples/kitchenham/manifest.toml"]
+status = "backed"
+disposition = "keep"
+source = "WP76, the Kitchenham-CSC page"
+note = "The Crossref record (title: an empirical study of maintenance and development estimation accuracy; JSS 64(1), 2002) and the Zenodo record's 145 rows; the company and the years are the WP70 record's reading of the table (projects dated 1994 to 1999). Full text not read."
+
+[[claim]]
+id = "C1105"
+fragment = "141 of the 145 projects are kept: three have no estimated completion date and one's precedes its start"
+file = "docs/examples/kitchenham.md"
+anchor = "The attributes"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::derive",
+  "test:tests/test_wp76_kitchenham.py::test_derived_table_is_the_record",
+  "file:examples/kitchenham/manifest.toml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "results.json describe: rows_in_table 145, rows_kept 141, no_estimated_completion 3; the fourth row's estimated completion precedes its start (planned duration negative)."
+
+[[claim]]
+id = "C1106"
+fragment = "Project managers speak of an iron triangle: time, cost and scope constrain one another, so a team protects two at the third's expense."
+file = "docs/examples/kitchenham.md"
+anchor = "What the fit is asked"
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "WP76; the supervisor's direction in work-packages/WP70-decisions.md (15:41 EST, 2026-11-16)"
+note = "The practitioners' statement of the triangle, as the supervisor and his team put it (WP70-decisions.md); worded as what project managers say, not as a finding."
+
+[[claim]]
+id = "C1107"
+fragment = "Both slack shares take the shift 10, the round number above the worst overrun (8.9 times the planned duration), so every metric is positive"
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::describe",
+  "test:tests/test_wp76_kitchenham.py::test_page_quotes_the_primary_fit",
+  "file:examples/kitchenham/kitchenham.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "results.json describe: worst_schedule_overrun_ratio 8.89, worst_budget_overrun_ratio 5.93, smallest_shifted_slack 2.1; the shift's rationale is the model's doc on primary.shift."
+
+[[claim]]
+id = "C1108"
+fragment = "that puts a tenth of the projects above the frontier is 22.8"
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::read",
+  "test:tests/test_wp76_kitchenham.py::test_page_quotes_the_primary_fit",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "results.json runs.primary: tau_selected 22.80, frac_above 0.092."
+
+[[claim]]
+id = "C1109"
+fragment = "At one term the exponents are 0.71 for schedule slack, 0.18 for budget slack and 0.11 for scope; all three are in the ... contending set"
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::read",
+  "test:tests/test_wp76_kitchenham.py::test_page_quotes_the_primary_fit",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "results.json runs.primary: exponents_k1, contending_set (n_lemma 3). Frontier participation, apart from the associations."
+
+[[claim]]
+id = "C1110"
+fragment = "The band is widened from 1/τ to the smallest that holds fifteen projects, 0.047 in log V. Among those fifteen the association of the two slacks is +0.43, of schedule slack with scope −0.71 and of budget slack with scope −0.92."
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::read",
+  "test:tests/test_wp76_kitchenham.py::test_page_quotes_the_primary_fit",
+  "file:examples/kitchenham/kitchenham.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "results.json runs.primary: band_1_over_tau 0.0439 (12 rows), band 0.0468, band_widened, n_near_frontier 15, association. The band rule is the model's bandRule. The positive pair (shared movement) and the two negative pairs (substitution)."
+
+[[claim]]
+id = "C1111"
+fragment = "At two terms the second term holds none of the near-frontier projects (shares 1.00 and 0.00) and the mean level below the frontier falls from 0.345 to 0.271"
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::read",
+  "test:tests/test_wp76_kitchenham.py::test_page_quotes_the_primary_fit",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "results.json runs.primary.k2: term_share [1.0, 0.0], mean_slack 0.271 against mean_slack_k1 0.345, status certified."
+
+[[claim]]
+id = "C1112"
+fragment = "Under the six scaled rules (Figure 12) scope's association is negative with both slacks, −0.48 to −0.92, and the slacks' is positive, +0.13 to +0.52. With no scaler scope's exponent is 0.00"
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/variants.py::main",
+  "test:tests/test_wp76_kitchenham.py::test_page_states_the_headline_only_where_the_checks_hold",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "variants.json conditioning: holds_pattern true on the six scaled rungs and false on no_scaler (scope exponent 0.000, contending set the two slacks)."
+
+[[claim]]
+id = "C1113"
+fragment = "Schedule slack's exponent runs from 0.35 to 0.71, scope's from 0.11 to 0.46."
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/variants.py::main",
+  "test:tests/test_wp76_kitchenham.py::test_page_states_the_headline_only_where_the_checks_hold",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "variants.json conditioning, exponents_k1 over the six scaled rungs."
+
+[[claim]]
+id = "C1114"
+fragment = "At bands holding ten to twenty-five projects the slacks' association runs from +0.67 to +0.17 and scope's from −0.53 to −0.95."
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/variants.py::band_ladder",
+  "test:tests/test_wp76_kitchenham.py::test_page_states_the_headline_only_where_the_checks_hold",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "variants.json bands: 1/tau (12 rows) and the bands holding 10, 15, 20, 25; the pattern holds at every one."
+
+[[claim]]
+id = "C1115"
+fragment = "Leaving each project out in turn, 140 of 141 refits keep every sign; without project 16 the slacks' association is −0.20. Without the largest project (18,137 function points) it is +0.10; without the worst schedule overrun schedule slack's exponent falls to 0.37."
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/variants.py::leave_one_out",
+  "gen:examples/kitchenham/variants.py::extremes",
+  "test:tests/test_wp76_kitchenham.py::test_page_states_the_headline_only_where_the_checks_hold",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "variants.json influence: leave_one_out rows_holding_pattern 140 of 141, rows_with_a_sign_flip [16]; extremes without_largest_project (project 102) +0.10, without_worst_schedule_overrun (project 32) schedule exponent 0.37; the pattern holds in all three extremes."
+
+[[claim]]
+id = "C1116"
+fragment = "In the 50 development projects the pattern holds (+0.27, −0.65, −0.70). In the 73 perfective-maintenance projects and the largest client's 113 the two slacks run against each other (−0.74 and −0.10) while scope stays against schedule slack."
+file = "docs/examples/kitchenham.md"
+anchor = "The fit"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/variants.py::subsets",
+  "test:tests/test_wp76_kitchenham.py::test_page_reports_the_subsets_openly",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "variants.json subsets: type_D (50) holds; type_P (73) and client_2 (113) do not; schedule slack against scope negative in all three."
+
+[[claim]]
+id = "C1117"
+fragment = "the projects that delivered more scope had less schedule and budget slack, under every scaled rule, every band and every project removed. The two slacks moved together in most readings, weakly or not in some: the association thins as the band widens, turns negative without one project, and reverses in two subsets."
+file = "docs/examples/kitchenham.md"
+anchor = "What the fit says"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/variants.py::main",
+  "test:tests/test_wp76_kitchenham.py::test_page_states_the_headline_only_where_the_checks_hold",
+  "test:tests/test_wp76_kitchenham.py::test_page_reports_the_subsets_openly",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76 (R-3: the headline narrowed to the checks)"
+note = "The negative pairs hold on every scaled rung, every band, every leave-one-out refit and every extreme; the positive pair fails on one leave-one-out refit (project 16), thins to +0.17 at 25 rows and +0.10 without the largest project, and is negative in type_P and client_2."
+
+[[claim]]
+id = "C1118"
+fragment = "All three sides bound the frontier; the trades are read from the associations, not the exponents, which the conditioning moves."
+file = "docs/examples/kitchenham.md"
+anchor = "What the fit says"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/variants.py::main",
+  "test:tests/test_wp76_kitchenham.py::test_page_states_the_headline_only_where_the_checks_hold",
+  "glossary:contending-set",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76 (R-2: participation apart from association)"
+note = "Contending set of three on every scaled rung; the exponents range 0.35 to 0.71 (schedule) and 0.11 to 0.46 (scope) across rungs while the signs hold."
+
+[[claim]]
+id = "C1119"
+fragment = "A quarter of the projects end exactly on the estimated date, so some dates may have been recorded as the actual."
+file = "docs/examples/kitchenham.md"
+anchor = "What the example cannot show"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::describe",
+  "test:tests/test_wp76_kitchenham.py::test_page_quotes_the_primary_fit",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76"
+note = "results.json describe: share_exactly_on_schedule 0.241; the second clause is the author's reading of that share, worded as a possibility."
+
+[[claim]]
+id = "C1120"
+fragment = "The table carries no quality measure, so the case says nothing about quality."
+file = "docs/examples/kitchenham.md"
+anchor = "What the example cannot show"
+kind = "R"
+backing = [
+  "gen:examples/kitchenham/run.py::read_arff",
+  "test:tests/test_wp76_kitchenham.py::test_page_makes_no_quality_or_causal_claim",
+  "file:examples/kitchenham/manifest.toml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP76 (OD1: the 3 + m idea not on the page)"
+note = "The ten columns of the ARFF carry no quality measure (manifest columns = 10; run.ARFF_COLUMNS)."
