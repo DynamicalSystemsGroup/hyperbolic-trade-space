@@ -623,3 +623,19 @@ His paragraph for the root page, verbatim:
 **Applied as.** The sentence is appended to the root page's third paragraph as he wrote it, with one word: "these
 conditions" for "these criteria", since the paragraph's earlier sentence says "three conditions" and the glossary
 rule is one object, one name. Registered as C1104, kind P (the author's judgement, stated as a possibility).
+
+## Public-link metadata on the root page and the docs (2026-11-17, 15:15 EST)
+
+Verbatim, three messages:
+
+> one other thing that comes to mind is that the top level index cite needs basic SEO and preview machinery
+
+> the doc site probably does too
+
+> formal metadata that other systems expect to see when handling public links
+
+**Applied as.** WP80 (`WP80-scope-of-work.md`), part of 0.1: on the root page, the history page, the abstract page
+and every docs page, the metadata that link handlers and search engines read: a description, a canonical address,
+Open Graph and Twitter card fields with an image, structured data (JSON-LD) for the software and the site, and a
+robots file and sitemap for the whole site; the composer and the docs theme emit them from one source of values;
+a test reads them off the staged site. Approved by the driver as his proxy under the mandate.
