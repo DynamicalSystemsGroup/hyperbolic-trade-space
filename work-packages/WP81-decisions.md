@@ -72,3 +72,7 @@ Folded into the scope as R-8 (the journeys of `notes/user-journeys.md` traced pe
 points at the paper, screenshots per step, findings per persona and pointer, competing preferences written out with
 the choice before any edit, the journeys re-traced after) and as the order of work in the defaults; it binds packages
 2 to 7 of the breakdown the same way. OD2 itself went back to him with this folded in.
+
+### OD2 (2026-11-17, his answer in the popup, as typed by the agent)
+
+Asked again with R-8 folded in: approve the defaults list, or change items. His answer, verbatim: "Approve the list".

@@ -112,8 +112,6 @@ record above.
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** Decided ("Remove until a pin", 2026-11-17; `WP81-decisions.md`): the links come out of the docs until a
-  pinned paper is served; each pointer becomes the docs' own statement of the result; one sentence on the home and
-  one in Further reading name the working paper and how to build it. Folded into G2, D-1, D-2, R-1, R-2 and the
-  defaults.
-- **OD2.** The Agent's defaults, as one item: approve the list, or change items.
+None. Every item was resolved through the decision loop (2 decided, 0 deferred, 1 raised and folded; `WP81-decisions.md`,
+"Scope gate"). OD1: the paper links come out of the docs until a pin is served ("Remove until a pin"); OD2: the
+Agent's defaults approved as one item ("Approve the list") after his review method was folded in as R-8.
