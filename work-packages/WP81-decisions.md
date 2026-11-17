@@ -76,3 +76,9 @@ the choice before any edit, the journeys re-traced after) and as the order of wo
 ### OD2 (2026-11-17, his answer in the popup, as typed by the agent)
 
 Asked again with R-8 folded in: approve the defaults list, or change items. His answer, verbatim: "Approve the list".
+
+## WP81 approved (2026-11-17, his answer in the popup, as typed by the agent)
+
+Asked whether he approves `WP81-scope-of-work.md` at d1aeba17 for execution on `v0.2`. His answer, verbatim:
+"Approved". Execution begins under `work-execution` in the scope's order of work: the inventory, the persona journeys
+traced with screenshots, the findings and competing preferences recorded, the dispositions, then the edits.
