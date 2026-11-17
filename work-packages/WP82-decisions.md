@@ -114,3 +114,15 @@ Decided during execution (the Agent's defaults, noted here): the bug and questio
 fields as their machine side and the triaging code owner as their judged side; the judged rows cite the paragraph of
 `CONTRIBUTING.md` or the section of `docs/code-owners.md` by name; the permissions test accepts a workflow whose own
 line reads contents and writes issues or pull requests for its one job.
+
+## The push ruleset on a public repository (2026-11-17, from the independent read)
+
+GitHub's documentation offers push rulesets for "a private or internal repository"; this repository is public, and
+the session could not tell from the API without creating one. Asked whether Settings, Rules, Rulesets, New ruleset
+offers "New push ruleset" here (else CODEOWNERS lines alone, or a review rule on `dev`). His answer, verbatim:
+
+> Yes, it is offered
+
+The branch stands as built. The reviewer's other findings (the ordered settings list on the code owners' page as the
+scope asks; three `GOVERNANCE.md` sentences; the index row's columns; the checker's branch test by target) are fixed in
+the review's second pass, `WP82-review.md`.

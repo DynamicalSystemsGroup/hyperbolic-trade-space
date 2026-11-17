@@ -246,7 +246,7 @@ class Comparison:
             p = f"rulesets.{name}"
             self.eq(f"{p}.target", d["target"], detail.get("target"))
             self.eq(f"{p}.enforcement", d["enforcement"], detail.get("enforcement"))
-            if "include" in d:  # a branch ruleset; a push ruleset has no ref condition
+            if d["target"] != "push":  # a push ruleset has no ref condition
                 cond = (detail.get("conditions") or {}).get("ref_name") or {}
                 self.eq(f"{p}.include", sorted(d["include"]), sorted(cond.get("include") or []))
                 self.eq(

@@ -36,6 +36,13 @@ code owners as the approvers of a change to them, and the `governance-files` pus
 touches one of them by anyone but a Repository admin; a pull request that changes a governed file is merged by an
 admin.
 
+After the merge of the 0.2 governance change (WP82), in this order: 1. `main-checks` gains the required check
+`controls`; 2. the push ruleset `governance-files` is created (active; the nine governed paths; bypass Repository
+admin, always); the `controls` job on the push to `dev` is red until these two are done, then re-run it; 3.
+`main-review` loses its bypass actor; 4. the workflow permissions become read, approving reviews off; 5. your local run
+reads `conforming (69 fields)`, and `uv run python scripts/check_repo_settings.py --record tests/data/wp78` re-records
+the fixture in a follow-up commit.
+
 Settings, Labels: create `draft` and `small-fix`. The scope-of-work template applies `draft`; a code owner removes it
 to turn a draft into an issue. `small-fix` stands in for an issue on a pull request that fixes a typo or a broken link.
 The label `release-failure` is created by the Release workflow.

@@ -33,7 +33,7 @@ The merge is the decision; the `pypi` environment waits for nobody else. A pull 
 so for the 0.1 release the `main-review` ruleset carried a bypass for one named user (`mzargham`) on pull requests
 (decided 2026-11-17; set by name that afternoon), and 0.1 was merged on it. The bypass is removed after 0.1 by a
 change to the declaration first, then to the ruleset, in a pull request of its own, named in the 0.2 changelog; the
-0.2 release is the first through the review rule without it, and its attestation shows the rule in effect.
+0.2 release is the first through the review rule without it, attested by a code owner's local run of the checker.
 
 ## The paper's route
 
@@ -92,8 +92,8 @@ field the declaration marks `checked_on = "local"` is not read on the runner: to
 permissions (their endpoint needs a permission the workflow token never has) and the rulesets' bypass actors (the
 API returns them to administrators only; the token sees an empty list). The job's report lists those fields as not
 checked there, with the reason, and a code owner's local run checks them; the removal of the `main-review` bypass
-after 0.1 is therefore attested by that local run and the ruleset page, not by the runner, and until the ruleset
-page is changed that local run reports the one difference.
+after 0.1 is therefore attested by that local run and the ruleset page, not by the runner, and until the settings
+a declaration change names are changed that local run reports each of them as a difference.
 
 The `controls` job runs it first in the Tests and Release workflows; every other job needs it, so no test, build or
 publish runs while a setting differs from its declaration. Its report is the job summary. A change to a setting
@@ -128,5 +128,5 @@ check) and the release workflow (version, tag, changelog, pins, bill of material
 the `controls` job. Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
 in `CONTRIBUTING.md` ("Review is against the scope") and the code owners' page (`docs/code-owners.md`, "Reviewing a
 candidate" and "Cutting a release"); each judged row names its guideline. A check with no row, or a judged criterion
-with no guideline, is a gap, listed for decision in `work-packages/WP78-rounds/gaps.md` (its items decided
-2026-11-17, WP82).
+with no guideline, is a gap, listed for decision in `work-packages/WP78-rounds/gaps.md` (the items he decided on
+2026-11-17 are WP82's; the local-only fields' item stays open there).
