@@ -5,7 +5,8 @@ rulesets on `main`); question 2, a merge without a new version redeploys the sit
 environment whose required reviewers are the code owners ("a code owner must approve it but it does not need to be
 me"), self-review allowed while he is the only one. The steps below read with those answers.
 
-Settings no agent can make: none exists today (WP64 readout, live state of 2026-11-16). Do them before the first
+Done by him on 2026-11-17 and read back (`WP68-rounds/record.md`, G7); WP78 turns the read-back into a declaration in the
+tree and a check that runs first in CI. Settings no agent can make: none existed before (WP64 readout, live state of 2026-11-16). Do them before the first
 pull request from `dev` into `main` (build plan, section 6); the driver reads each back with `gh api` afterwards.
 Where a setting depends on one of his three questions (the last section), the step names the question.
 
@@ -27,18 +28,17 @@ Settings, Environments.
   type Branch, pattern `dev`. No reviewers, no secrets.
 - **`paper-release`** (only if question 3 is answered with an approval): New environment, name `paper-release`.
   Deployment branches and tags, Selected branches and tags, rule type Tag, pattern `paper-*`. Required reviewers:
-  the code owners, `mzargham` and `danlessa` (and Rohan once his login is in `CODEOWNERS`; his word of
-  2026-11-17, `WP64-decisions.md`, "Two more code owners"); with a second code owner, **Prevent self-review on**
-  (`docs/code-owners.md`, "Adding a code owner"). No secrets.
+  the paper's reviewers, `jshorish` and `mzargham` (his word of 2026-11-17, `WP64-decisions.md`, "The paper's
+  reviewer is Jamsheed Shorish": the code owners are for the code and the documentation); **Prevent self-review
+  on**; "Allow administrators to bypass" off. No secrets.
 
 ## 3. Rulesets
 
 Settings, Rules, Rulesets, New ruleset, New branch ruleset. For each: Enforcement status **Active**.
 
 **`main`** (target: Add target, Include default branch). Bypass list and the review rule per question 1.
-  Since 2026-11-17 a second code owner exists (`danlessa`): question 1's answer kept the bypass only "while they
-  are one person". Whether the 0.1 pull request is approved by a second code owner or merged by your bypass is
-  your call (asked 2026-11-17); the bypass list follows it.
+  Two more code owners exist since 2026-11-17 (`danlessa`, `rororowyourboat`); his answer the same day: "Your
+  bypass, for 0.1" (`WP64-decisions.md`), removed after 0.1 by a change to the governance declaration first (WP78).
 - Restrict deletions: on.
 - Require a pull request before merging: on. Required approvals and "Require review from Code Owners" per
   question 1. Allowed merge methods: **Merge** only.

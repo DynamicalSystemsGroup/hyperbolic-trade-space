@@ -30,7 +30,10 @@ specification of its own release rules and that those release rules were in effe
 - G3. The checker tested on recorded API responses (fixtures), without network: a conforming set passes; each kind of
   drift (a missing check, an extra bypass actor, a changed reviewer, a policy on the wrong branch, a code owner
   without write access) is reported by name.
-- G4. `GOVERNANCE.md` at the repository root: what the release rules are in one page, where they are declared (G1),
+- G4. `GOVERNANCE.md` at the repository root: what the release rules are in one page, with the two reviews stated as
+  two decisions (into `dev`, a review of the work by a code owner other than the author; into `main`, a review of
+  the release by a code owner other than the pull request's author, reading the changelog, the release issue and
+  the staged site; his words of 2026-11-17, 13:30), where they are declared (G1),
   how they are checked (G2) and where the admissibility rows are; the code-owners page, `CONTRIBUTING.md`,
   `README.md` and `.github/RELEASE_ADMISSIBILITY.md` point at it instead of describing settings in prose.
 - G5. A first job `controls` in `test.yml` and `release.yml` that runs the checker; every other job `needs` it, so no
@@ -96,3 +99,18 @@ not a decision.
 - The job is named `controls` and its report is the step summary (default).
 - The attestation line's form: `Controls: <path>@<short hash> checked at <merge sha>: conforming` (default).
 - The unit starts after WP77 lands and rebases onto its head (default).
+
+## Amendments
+
+- Amendment 1 (2026-11-17, 12:50 EST; his words in `WP64-decisions.md`, "No read-through before the release"): G8, an
+  inventory of the repository's organisation against his list: how the code is organised (`src/`, `tests/`,
+  `derivation/`, `examples/`, `docs/`, `paper/`, `scripts/`, `work-packages/`, `notes/`), how issues and pull
+  requests are templated (`.github/ISSUE_TEMPLATE/`, the pull request template), which criteria are executable
+  checks (the admissibility rows marked machine, the `controls` job, the test suites) and which are judged
+  (the rows marked fitness, with the guideline each points at); `GOVERNANCE.md` names both kinds and where each is
+  read; a short readout lists the gaps found (a missing template, a criterion with no guideline, a check with no
+  row) for his decision, and fixes nothing beyond the pointers. D-8: the inventory as a section of `GOVERNANCE.md`
+  plus the gaps readout in `WP78-rounds/gaps.md`.
+- Amendment 2 (2026-11-17, 13:35 EST; his words in `WP64-decisions.md`): the gaps readout (D-8) carries one question for him, a ruleset for governance changes: the governance paths (`.github/CODEOWNERS`, the declaration, `.github/workflows/**`, `GOVERNANCE.md`) and, for each of GitHub's mechanisms (a push ruleset restricting pushes to those paths; CODEOWNERS path lines; a review-from-teams rule with file patterns), what it binds, who can bypass it, what it costs the driver's direct commits to `dev`, and whether the checker can read it. Plain options, no recommendation; nothing set before his word.
+- Amendment 3 (2026-11-17, 13:40 EST; his words in `WP64-decisions.md`): the principle written into G1 and G4: `.github/CODEOWNERS` is the source of truth for authority in the repository; the declaration lists the governed files (CODEOWNERS itself among them) and the controls on editing them; `GOVERNANCE.md` states both. The control's mechanism is amendment 2's question; the declaration's `governed_files` section exists from the first version, with the control field filled by his answer.
+- Amendment 4 (2026-11-17, 13:45 EST; his words in `WP64-decisions.md`): the governed files are named the repository's secondary rules (rules about rules) in `GOVERNANCE.md` and the declaration; the set is small and enumerated (CODEOWNERS, the declaration, the workflows, `GOVERNANCE.md`, the admissibility rows, the issue and pull request templates; nothing else without a governed change); each is marked executable (checked by the `controls` job or a test) or guideline (judged by a named role), and the readout lists the split.

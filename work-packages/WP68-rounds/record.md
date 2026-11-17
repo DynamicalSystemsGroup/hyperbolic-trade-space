@@ -29,7 +29,33 @@ G5 met at 7e6839a0. The version commit changes no page; the pass is not repeated
 
 ## G7 his settings, read back
 
-Pending his keyboard items.
+Done by him on 2026-11-17 (09:30 to 12:00 EST), one step at a time in chat with a screenshot per step, and read
+back through the API (`gh api repos/DynamicalSystemsGroup/tradespace/{pages,environments,rulesets}` and each
+environment's `deployment-branch-policies`). Zenodo stays off (his word). The read-back, verbatim from the calls:
+
+```
+## pages
+build_type=workflow url=https://dynamicalsystemsgroup.github.io/tradespace/ https=true
+## environments
+github-pages: reviewers= prevent_self_review= can_admins_bypass=true
+paper-release: reviewers=mzargham,jshorish prevent_self_review=true can_admins_bypass=false
+pypi: reviewers= prevent_self_review= can_admins_bypass=true
+testpypi: reviewers= prevent_self_review= can_admins_bypass=true
+github-pages rules: branch:main
+pypi rules: branch:main
+testpypi rules: branch:dev
+paper-release rules: tag:paper-*
+## pending publishers (his screenshots 2026-11-17): PyPI tradespace/release.yml/pypi; TestPyPI tradespace/release.yml/testpypi
+## rulesets
+dev: active; target=refs/heads/dev; bypass=; rules=non_fast_forward; deletion
+main-checks: active; target=~DEFAULT_BRANCH; bypass=; rules=deletion; required_status_checks(strict=true,checks=test (fast)|test (slow)|test (docs)|admissibility); non_fast_forward
+main-review: active; target=~DEFAULT_BRANCH; bypass=RepositoryRole:pull_request; rules=pull_request(approvals=1,codeowners=true,methods=merge)
+paper: active; target=refs/heads/paper; bypass=; rules=deletion; non_fast_forward
+```
+
+The `paper-release` reviewers are the paper's (`jshorish`, `mzargham`), not the code owners (his word, 12:05 EST);
+the `main-review` bypass is his for 0.1 (his answer, 11:25 EST). WP78 makes this read-back a declaration in the tree
+and a check that runs first in CI.
 
 ## G8 the pull request
 

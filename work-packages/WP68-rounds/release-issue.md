@@ -10,6 +10,9 @@ approved), so this release is not archived and mints no DOI. This issue is close
 2,094 commits since e7fd1165 and the packages below, newest first, by their rows in `work-packages/INDEX.md`
 (the documents of the landed ones are read at `git show 4f81a4ea:work-packages/<file>`, WP73).
 
+- WP78 governance as executable: the release rules declared in the tree, checked first in CI, attested in the
+  release notes (in flight, part of 0.1)
+- WP77 the package renamed `tradespace` (import, distribution, repository, Pages address; contract amendment 30)
 - WP74 both requirement-usage type names accepted (the external review's finding 7)
 - WP73 the process record left the tree; the index dereferences; `tests/test_index.py`
 - WP67 quality control of the two release control models: dry runs on `qc/**`, the browser pass per mode, the
@@ -55,15 +58,15 @@ In flight and not part of the release decision: WP8b (its checklist is `release-
 
 ## Before the merge (his keyboard; `work-packages/WP65-design/his-items.md`)
 
-- [ ] Pages: Source = GitHub Actions
-- [ ] Environments: `github-pages` (branch `main`), `pypi` (branch `main`, no reviewers), `testpypi` (branch
+- [x] Pages: Source = GitHub Actions
+- [x] Environments: `github-pages` (branch `main`), `pypi` (branch `main`, no reviewers), `testpypi` (branch
       `dev`), `paper-release` (tags `paper-*`, reviewer `mzargham`, self-review allowed)
-- [ ] Rulesets: `main` (the review rule with him as bypass; the four required checks `test (fast)`, `test (slow)`,
+- [x] Rulesets: `main-review` (the review rule with him as bypass for 0.1) and `main-checks` ( the four required checks `test (fast)`, `test (slow)`,
       `test (docs)`, `admissibility`; merge commits only; no force push, no deletion); `dev` and `paper` (no
       force push, no deletion)
-- [ ] Trusted publishers: PyPI and TestPyPI pending publishers for `release.yml`, environments `pypi` and `testpypi`
+- [x] Trusted publishers: PyPI and TestPyPI pending publishers for `release.yml`, environments `pypi` and `testpypi`
 - [x] Zenodo stays off (his word, 2026-11-17)
-- [ ] The driver reads the settings back with `gh api` and records them in `WP68-rounds/record.md`
+- [x] The driver reads the settings back with `gh api` and records them in `WP68-rounds/record.md` (G7, 2026-11-17)
 
 ## After the merge
 

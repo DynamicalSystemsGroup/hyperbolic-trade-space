@@ -1,4 +1,7 @@
-# His click-through of the site and the documentation (before the pull request)
+# His click-through of the site and the documentation
+
+No longer a gate on the pull request (his word, 2026-11-17 12:50: "i don't need to do a read through before the
+release"); the map stays for his reading after the release.
 
 His word (2026-11-17): "i need to do a full review of the documentation and top level static site for me to click
 through." The site at the head of `dev` (the commit that adds this file, named in `driver-log.md`) is staged with `scripts/stage_site.py --slot abstract` and served
@@ -50,4 +53,5 @@ into a question here, and nothing is opened on GitHub until the table is his.
 ## What the driver checked at the head
 
 Every route above answers 200 (`driver-log.md`, 2026-11-17); the rendering pass at 7e6839a0 (`record.md`, G5) and
-WP67's per-mode pass stand, since no page changed between 7e6839a0 and that commit except the Zenodo lines of `docs/code-owners.md`.
+WP67's per-mode pass stand, since no page changed between 7e6839a0 and that commit except the Zenodo lines of `docs/code-owners.md`. Restaged
+again at the rename's landing (WP77): the pages' links, headings and the install line read `tradespace`.

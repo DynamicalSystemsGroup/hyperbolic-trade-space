@@ -482,3 +482,105 @@ Added, verbatim, on the scope:
 
 So the bypass on `main-review` is removed by a commit to the declaration after 0.1, named in the 0.2 changelog, and
 the 0.2 release's attestation shows the rule without the bypass in effect at that merge.
+
+## No read-through before the release; the repository's organisation checked; the `paper` branch cut now (2026-11-17, 12:50 EST)
+
+Verbatim:
+
+> i don't need to do a read through before the release. i want to focus on getting the release out but i am making
+> sure our repo organization both in the repo and in github are all configured. that includes how code is organized,
+> how issues and PRs should templated, conformance and admissibility checks that can be executed but also guidelines
+> that are provided to handle criteria that cannot be reduced to prescripted checks. the flow for the software and
+> documentation has been cleaned up but i want to make sure we maintained a clean seperation for the paper work.
+> ultimately they merge into the same main but we went to some pains to keep the work separable. i think the best
+> move would be to create the paper branch, and do some exploration and testing to make sure we have what we need in
+> place to support parallel work.
+
+**The driver's reading and application.** (1) His click-through of the site (his word of 09:05) is no longer a
+gate on the pull request; the route map `WP68-rounds/his-site-review.md` stays for his reading after the release.
+The gates left are WP78 landing and his word for the pull request. (2) WP78 gains, by amendment 1 in its scope, an
+inventory of the repository's organisation (the code layout, the issue and pull request templates, the executable
+checks, and the guidelines for the criteria that are judged rather than checked, which `GOVERNANCE.md` names and
+points at) with a readout of gaps. (3) The `paper` branch is cut from `dev` now (c0e210cc, after the rename) and
+pushed, so the `paper` ruleset binds from its first push; the after-merge step of WP68 G9 that created it is done
+early. (4) A rehearsal of parallel work on the two branches (the paper built and tested from `paper` by `paper.yml`,
+a paper edit merged into `dev` to see where the branches touch, the pin flow from a `paper-*` tag through the
+composer, the three hosted-runner paper tests) is scoped as WP79, its own piece, not a gate on 0.1.
+
+## Contributing to the paper takes its own route (2026-11-17, 13:00 EST)
+
+Verbatim:
+
+> contributing to the paper should take a different route from contributing to code and documentation. we need to
+> make that clear and enable it in practice.
+
+**Applied as.** WP79 (`WP79-scope-of-work.md`): the paper's contribution route made clear (its own section of
+`GOVERNANCE.md` and `CONTRIBUTING.md`, a pull request template for the paper) and enabled (a `paper/` ownership line
+in `CODEOWNERS` naming the paper's approvers; the admissibility merge row extended to pull requests into `paper`;
+the `paper` branch's ruleset; the rehearsal of parallel work: the paper built and tested from `paper` by its
+workflow, an edit merged back into `dev`, the pin flow from a `paper-*` tag through the composer). Who approves a
+paper pull request is his open decision, asked 13:00.
+
+Answered, verbatim (13:05 EST):
+
+> paper PRs are approved by mzargham or jshorish
+
+WP79's OD-1 is option (a): the `paper/` line of `.github/CODEOWNERS` names `@mzargham @jshorish`; a pull request
+into `paper` is merged by one of them who is not its author. WP79 is approved by the driver as his proxy with
+this answer.
+
+## His release line: 0.1 on the bypass, then 0.2 through the preferred flow (2026-11-17, 13:20 EST)
+
+Verbatim:
+
+> so my plan to really make sure everything is working is to get the 0.1 release through on my bypass. then remove
+> the bypass and add the iron trangle example. then make a pull request for danilo to review. assuming he accepts
+> that work we get an 0.2 release and a test of our preferred release flow
+
+**Applied as.** The line after 0.1: the bypass removed by a change to WP78's declaration and then to the ruleset,
+named in the 0.2 changelog; the iron-triangle example (its session, branch `iron-triangle-example`) merged into
+`dev`; version 0.2.0 and its changelog entry; the pull request from `dev` into `main` approved by `danlessa` under
+the review rule (two of three, the author never counting) and merged; the 0.2 release's attestation shows the rule
+without the bypass. That release is the first live run of the preferred flow.
+
+Added, verbatim (13:30 EST), on the two reviews (into `dev`, of the work; into `main`, of the release):
+
+> i like it. as long as it is well documented. the 0.2 will test both parts. i might note that we may want to avoid
+> mixing the governance change PR with the content addition.
+
+**Applied as.** `GOVERNANCE.md` (WP78 G4) states the two reviews as two decisions with two questions, who makes each
+and what each reads. After 0.1 the bypass removal is its own pull request into `dev`, reviewed and merged apart
+from the iron-triangle pull request; both ride in 0.2.
+
+Added, verbatim (13:35 EST):
+
+> its possible we need a branch ruleset specifically for governance
+
+**Applied as.** A question for WP78's gaps readout, with GitHub's three mechanisms laid out for his choice: a push
+ruleset restricting pushes that touch the governance paths (`.github/CODEOWNERS`, the declaration,
+`.github/workflows/**`, `GOVERNANCE.md`) so they arrive by pull request even on `dev`; CODEOWNERS path lines for
+those files; a "review from specific teams" rule with file patterns, which needs an organisation team. The readout
+states what each binds and what it costs, and he decides; nothing is set before his word.
+
+Added, verbatim (13:40 EST), the principle:
+
+> i plan to use codeowners as the source of truth for authority in the repo, though that file itself will fall under
+> the list of governed files. editing governed files will have tighter controls.
+
+**Applied as (WP78).** `.github/CODEOWNERS` is the one record of who holds authority; the declaration names the
+governed files (CODEOWNERS itself, the declaration, the workflows, `GOVERNANCE.md`, the admissibility rows, the
+templates) and the controls on editing them; `GOVERNANCE.md` says so in those words. The exact tighter control is
+the question of amendment 2's readout (a push ruleset so governed files change only by pull request, CODEOWNERS
+path lines for them, or both), decided by him; the checker verifies that the live settings match whatever the
+declaration says about the governed files.
+
+Added, verbatim (13:45 EST), the vocabulary:
+
+> in econ and law we might call these "secondary rules" or "rules about rules". we need to keep rules about rules to
+> a small set files and specify them executably where possible so we can do conformance checks.
+
+**Applied as (WP78).** `GOVERNANCE.md` uses the term: the governed files are the repository's secondary rules (the
+rules about how its rules are made, changed and enforced; H. L. A. Hart's term), kept to a small enumerated set,
+each specified executably where it can be (the declaration and the checker) and as a guideline where it cannot,
+with the readout saying which is which. The set is enumerated in the declaration and in `GOVERNANCE.md`, and
+adding a file to it is itself a governed change.

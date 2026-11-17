@@ -53,9 +53,9 @@ Settings, Environments:
 - `pypi`: deployment branches, selected, `main`. No approval required: the merge into `main` is the release
   decision, recorded by the merger and the release issue.
 - `testpypi`: deployment branches, selected, `dev`. No approval required.
-- `paper-release`: deployment tags, selected, `paper-*`. Approval required from the code owners (today
-  `mzargham`); a code owner must approve a paper tag's publication, and it need not be the one who pushed the tag.
-  "Prevent self-review" stays off while the code owners are one person.
+- `paper-release`: deployment tags, selected, `paper-*`. Approval required from the paper's approvers
+  (`jshorish`, `mzargham`), who are set apart from the code owners; "Prevent self-review" on, so the one who pushed
+  the tag does not approve it; no administrator bypass.
 
 Settings, Actions, General, Workflow permissions: read repository contents; each job declares what it needs.
 
@@ -130,9 +130,10 @@ the wheel, the metadata and the bill of materials, compose the site, and publish
 ## Adding a code owner
 
 Add their login to the `*` line of `.github/CODEOWNERS`; add them as a collaborator with write access; add them as
-an Owner or Maintainer of the project on PyPI and TestPyPI (Manage, Collaborators); add them as a required approver
-of the `paper-release` environment and turn on "Prevent self-review" there; remove the bypass from the first `main`
-ruleset. Publishing needs no secret, so there is no token to hand over.
+an Owner or Maintainer of the project on PyPI and TestPyPI (Manage, Collaborators). The `paper-release`
+environment's required approvers are the paper's approvers, kept apart from the code owners, who approve, merge and
+release the code and the documentation. The bypass on the first `main` ruleset is removed after the 0.1 release.
+Publishing needs no secret, so there is no token to hand over.
 
 ## Where the records live
 
