@@ -134,3 +134,17 @@ Further reading, on the root page and in the README, the lemma scripts named now
 > Accepted
 
 The package merges into `dev` with the rest of `v0.2` after 0.1 is out, in the documentation pull request.
+
+## The documentation pull request's shape (2026-11-17, evening)
+
+Asked how the documentation pull request into `dev` opens after 0.1 (one pull request for the whole `v0.2` branch; one
+per accepted package; decide when 0.1 is out). His answer, verbatim:
+
+> One pull request for v0.2
+
+The branch merges into `dev` as one change, "the 0.2 documentation improvement", closing one issue in the scope-of-work
+template; the governance update (WP82, branch `governance-bypass-removal`) is its own pull request, apart from it, per
+his release line. Both open once `dev` is in `main` for 0.1; a code owner who is not the author merges each. The
+readiness note with the issue and pull request drafts is in the sessions' shared notes folder
+(`0.2-pull-requests-readiness.md`); the trial merge into `dev` 7973fbd1 found two conflicts (index rows; WP76's register
+ids `C1104` to `C1120` against `dev`'s `C1104`, to be renumbered at the rebase) and a green fast suite once resolved.
