@@ -19,7 +19,7 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 7 | ADCS case notebook (draft 3, two regimes of the SysML-modelled cubesat) | accepted | b1ba105 | 755bf5e | in history: `git show 755bf5e:work-packages/<file>` |
 | 8 | Site and first release | superseded (split into WP8a and WP8b) | 5b1d087 | not landed | in history: read from the commit before its removal (recipe above) |
 | 8a | Site skeleton up | landed, accepted | 96086cc | 2d2a751 | in history: `git show 2d2a751:work-packages/<file>` |
-| 8b | Release preparation for 0.1.0 | in flight (release preparation) | d4db0e5 | not landed | in place (not landed or in flight) |
+| 8b | Release preparation for 0.1.0 | in flight (release preparation); its checklist `WP8b-release-checklist.md` left the tree at WP66a's landing (last at 07c19028), replaced by `release-checklist-software.md` | d4db0e5 | not landed | in place (not landed or in flight) |
 | 9 | Posynomial solver for K > 1 | accepted | 3082200 | c4133c8 | in history: `git show c4133c8:work-packages/<file>`; `WP9-review.md` in place (read by paper/supporting_material.ipynb, docs/superpowers/notes/abstraction-gaps.md) |
 | 10 | The paper, working draft | landed, accepted | d3abf28 | 4ede5bd | in history: `git show 4ede5bd:work-packages/<file>`; `WP10-decisions.md` in place (read by paper/container/README.md, paper/myst.yml); `WP10-reading-pass.md` in place (read by paper/generate_reading_pass.py, paper/reading_pass.yaml); `WP10-vocabulary-review.md` in place (read by scripts/vocabulary_baseline.toml) |
 | 11 | Readability and correctness loops over the reader grid | in flight (reader-grid loops; WP11-final and WP11-round-1 are read by tests and the paper) | 94ff559 | not landed | in place (not landed or in flight) |
@@ -78,10 +78,11 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 65 | The two release control models, designed (stage 2: specification, build plan, his items) | delivered and accepted as proxy; three questions wait for him | d9e4922f | 44c22443 | in place (not landed or in flight) |
 | 66b | The paper model built (paper.yml, mode file, key manifest, pin tooling, the paper marker, splits by surface, the paper's checklist) | landed | 3980d7a5 | ea82a15e | in place (not landed or in flight) |
 | 66c | The composer, the abstract page and the docs' keys built (site.yml, pages-deploy.yml, the slot per mode, the abstract page, paper_keys from the manifest) | landed | 3980d7a5 | bf823f22 | in place (not landed or in flight) |
-| 66a | The software model built (release.yml with the merge as the release and the site-only path, the clean-up script, test.yml without the paper tests, pages.yml removed, the records) | approved as proxy on his three answers; unit dispatched | pending | not landed | in place (not landed or in flight) |
+| 66a | The software model built (release.yml with the merge as the release and the site-only path, the clean-up script, test.yml without the paper tests, pages.yml removed, the records; `WP8b-release-checklist.md` replaced by `release-checklist-software.md`) | landed | 5e85196b | 708ef565 | in place (not landed or in flight) |
 | 70 | The iron triangle as an HTS study: the probe (metric mapping, open-data survey, synthetic design, a bounded case study, the pitch) | delivered, his read and choice pending (too sparse for a programme; option A first) | a08e5e47 | 4bf40d31 | in place (not landed or in flight) |
 | 71 | Broadbalk: the level V against biomass (a bounded update to the wheat page) | landed, his read pending | 6b5931cd | b8254d71 | in place (not landed or in flight) |
 | 72 | Learning the invariant rather than the trade (a research spike: the two-sided estimator; planted tests; wheat; a Uniswap v2 pool) | delivered, his read and five questions pending | 6b5931cd | 468681d6 | in place (not landed or in flight) |
+| 67 | Quality control of the two release control models (stage 4: the dry runs on qc/** and qc/paper/**, the browser pass per mode, the machinery diff, lint and the fast shard on every push to dev) | approved as proxy; scoped | pending | not landed | in place (not landed or in flight) |
 
 ## Notes, spike outputs and supporting content removed from the tree
 

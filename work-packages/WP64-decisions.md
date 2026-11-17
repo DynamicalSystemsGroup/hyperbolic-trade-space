@@ -228,3 +228,21 @@ copies serve. For his read: the root lead sentence "The paper makes the argument
 abstract page's `tree/paper` link 404s until WP68 creates the branch; a missing or invalid mode file gives the
 fallback page rather than a failed build (the unit's literal reading of spec 3.4, `work-packages/WP66c-rounds/notes.md`).
 
+## WP66a landed (2026-11-16, 18:50), accepted as proxy; WP67 scoped and approved as proxy
+
+Landed at 708ef565 (the unit's 68f40db1 rebased on dev, the conflict in `release-candidate.md` resolved by keeping his
+"Autonomous until the evening" section before "The two lifecycles"; plus 708ef565, amendment 29's ownership of
+`scripts/paper_mode.py` and `scripts/paper_pin.py` by WP10, WP66b's request). WP66b's other two requests were already
+met in the delivery: the attribution step in `test.yml` is byte-identical to `paper.yml`'s, and `release_cleanup.py`
+knows the three paper tag shapes. The driver's checks on the rebased branch: lint, format, lock, vocabulary, the YAML
+parse of every workflow, `release_checks.py pins`, the unit's five test modules, the register test, the fast suite and
+the attribution grep, all exit 0. `pages.yml` is gone; `release.yml` runs on pull requests to `main`, pushes to `main`
+and `qc/**` (not `qc/paper/**`) and dispatch; `test.yml` on pull requests to `main`, by call and by dispatch.
+Follow-ups carried: `CONTRIBUTING.md` wording (WP58); `CITATION.cff` and `pyproject.toml` to 0.1.0 (WP68).
+
+WP67 (`WP67-scope-of-work.md`) is approved as proxy under his approval of the plan: the build plan's section 4 runs
+as pushes to `qc/**` and `qc/paper/**`, the browser pass per mode, the machinery diff, the clean-up script by hand,
+and one addition from the external review of 2026-11-16: lint and the fast shard on every push to `dev`, landed
+before the dry run. The paper build's known residual-baseline failure is recorded, not repaired (the paper branch's
+first item).
+
