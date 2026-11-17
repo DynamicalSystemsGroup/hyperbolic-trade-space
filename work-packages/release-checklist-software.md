@@ -38,7 +38,7 @@ reviewer). Paths are under `work-packages/` unless they start with `.github/`, `
 | C8 | macOS through the maintainer's tier 2 watcher on this Mac, verdict in `driver-log.md` at the head | the watcher's verdict at the named head | assistant | - | `PM-BRIEF.md`, "Verification in tiers" |
 | C9s | README states what runs where, for the software | read `README.md` | PM | - | `release-candidate.md`, "Windows" item (5); `WP65-design/specification.md`, 6.3 |
 | C10 | CI runs on the release pull request and when the release workflow calls it (every shard); a push to `dev` runs lint and the Linux fast shard only | n/a (rule) | PM | rule | `PM-BRIEF.md`, "Verification in tiers"; `WP65-design/specification.md`, 5.3 |
-| R2 | A dry run of the release on a `qc/` branch is green at the head: admissibility, the suite, the build and the site; nothing after them runs | `git push origin HEAD:qc/release`; the run's summary names the slot `abstract` | assistant | - | `WP65-design/specification.md`, 6.3 and section 9, item 1; `WP65-design/build-plan.md`, section 4 |
+| R2 | A dry run of the release on a `qc/` branch is green at the head: admissibility, the suite, the build and the site; nothing after them runs | `git push origin HEAD:qc/release`; the run's summary names the slot `abstract` | assistant | done at ab8fc0f9 (run 44069685478: admissibility, build, the three shards, the site compose green; tag, publish, deploy, release, on-failure skipped; the branch deleted) | `WP65-design/specification.md`, 6.3 and section 9, item 1; `WP65-design/build-plan.md`, section 4 |
 
 ## D. The grid
 
