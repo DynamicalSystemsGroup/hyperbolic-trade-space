@@ -658,3 +658,23 @@ from the repository on its own branch); documentation improvements as 0.2's scop
 (he has a scoping card for it from that session). Also on the WP76 branch at his word and outside its package: the
 docs home's and the README's first lines gained "or of observed cases: reported devices, species, plot-years,
 finished projects" (267b7866), with the site's word budget raised by ten; that lands with the branch.
+
+## macOS is not a CI platform; an issue for later (2026-11-17, 16:20 EST)
+
+Verbatim:
+
+> i realized that since i am developing on a mac we may have done linux and windows ci tests but not mac ones? if
+> this is the case i think we continue for now but actually write an issue for addressing in the future
+
+The fact: `test.yml` runs the three shards on `ubuntu-24.04` and the fast and slow shards on `windows-latest` by
+dispatch; `release.yml` and `paper.yml` run on Ubuntu only; no job runs on macOS. His Mac is the platform of every
+local check in the records (the full software suite, the lemma chain, the docs builds, the browser passes), so
+macOS is covered by hand at every gate and never by a hosted runner. **Applied as:** 0.1 continues; a draft issue
+in the repository's scope-of-work template is opened for a macOS shard (its cost, the toolkit cache on macOS
+runners, which shards) to be scoped after 0.1.
+
+The issue: https://github.com/DynamicalSystemsGroup/tradespace/issues/1 (the scope-of-work template, label `draft`). Two findings on the way: the labels `draft` and
+`small-fix` that `docs/code-owners.md` lists as set once by hand did not exist (created by the driver with
+`gh label create`, since the template needs them); and the issue, pull-request and label-gate workflows run from
+the default branch, which is still e7fd1165, so no admissibility check ran on this issue and none runs on any issue
+or pull request until `dev` is merged into `main`. Both go to WP78's gaps readout.

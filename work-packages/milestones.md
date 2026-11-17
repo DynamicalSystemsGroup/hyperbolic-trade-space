@@ -28,6 +28,14 @@ the review rule without the bypass:
 - WP79 unit B if it does not land in 0.1: the paper's contribution route.
 - Deferred from 0.1 by his word: Zenodo (after a first full draft is approved); the paper's first pinned mode.
 - The directions backlog built and ordered with him (`notes/directions/README.md`), not 0.2 content by itself.
+- Relayed from the WP76 session (2026-11-17, 16:40): a `v0.2` integration branch exists, cut at WP76's head over `dev`
+  c0e210cc; it takes each 0.2 package as accepted and merges into `dev` after 0.1 is out. His documentation
+  breakdown for 0.2, recorded in `WP81-decisions.md` on `v0.2`: 1 the paper as a working paper; 2 level sets on
+  every log-plane figure; 3 Home as quickstart, Getting started as the explained walk; 4 the reader's path;
+  5 vocabulary and disagreeing numbers; 6 more measured-data examples; 7 hygiene. WP81 (package 1) is at its scope
+  gate there. Within package 1: the abstract page at `/paper/` says the paper is a working paper whose full text
+  builds from `paper/` in the repository, since every docs `paper:` link lands there in abstract mode (not changed
+  for 0.1, by his direction not to disrupt the release).
 
 ## Current state (2026-11-15 13:28 EST; dev at 022c4d2; the section of 2026-11-14 22:56 kept below as history)
 
