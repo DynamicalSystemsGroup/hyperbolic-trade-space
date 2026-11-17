@@ -59,6 +59,7 @@ or an appendix it does not hold. The first package of the 0.2 documentation impr
 | R-4 | The docs build in both slots | `HTS_PAPER_SLOT=abstract uv run mkdocs build --strict` and `HTS_PAPER_SLOT=pin uv run mkdocs build --strict`, after `build_generated.py`, `build_figures.py` (with `MPLCONFIGDIR` set) and `build_site_figures.py` |
 | R-5 | The prose rules hold on every touched page | no metanarration (`scripts/check_residuals.py --compare scripts/residuals_baseline.json --strict` reports no new rise on a touched surface; the checker's patterns run over the touched example or root text where it is not a surface); `uv run python scripts/check_vocabulary.py` 0 new; `uv run pytest -q tests/test_site.py -k budget` (no page over its budget; a reworded sentence pays for itself) |
 | R-6 | The pages are read as rendered | each touched page served from the strict build and captured at 1280 and 375 px, light and dark (`WP81-rounds/capture.mjs`, the WP76 script moved or copied); a fresh cold reader given the home and the theory page says in one sentence each what the paper is, where it is, and what following a link gets them, and is right |
+| R-8 | The review is visual and by journey, and the choices are made before the edits (his direction, `WP81-decisions.md`, "The review method") | Before any edit: the twelve journeys of `notes/user-journeys.md` (personas P1 to P8, U1 to U4 of `notes/reader-grid.md`) traced through every page that points at the paper, each as a fresh-context reader of the rendered page with a screenshot per step, in `WP81-rounds/journeys.md`; the findings organised per persona and per pointer; where personas want different things (a P5 reader who wants the theorem's link against a U1 reader who wants no detour) the competing preferences are written out with the choice and its reason before the sentence changes; after the edits the same journeys re-traced with screenshots, the before and after side by side |
 | R-7 | The checks are green at the branch's head | `uv run ruff check .`; `uv run ruff format --check .`; `uv lock --check`; `MPLCONFIGDIR=<scratch> uv run pytest -q -m "not slow and not paper"`; the site, docs, register, references, contract and index tests; `grep -rn "Co-Authored-By\|Generated with" <the files of D-1 to D-4>` finds nothing; `git diff --name-only <WP81 base>..HEAD` names only D-1 to D-4's files |
 
 ## Definition of good
@@ -69,7 +70,7 @@ author of a later page has one rule to follow and a test that fails when they br
 
 ## Definition of good enough
 
-- R-1 to R-7 met on one commit of `v0.2`, with the evidence in `WP81-review.md` from a fresh-context reviewer.
+- R-1 to R-8 met on one commit of `v0.2`, with the evidence in `WP81-review.md` from a fresh-context reviewer.
 - The cold reader's two answers right.
 - His read of the reworded pages.
 
@@ -100,8 +101,12 @@ record above.
   `src/`); the note records it as a candidate for the package's next release.
 - **Budgets.** Every touched page stays within its budget; a longer sentence is paid for on the same page; the
   docsite total stays.
-- **Captures and reads** as in WP76: the capture script and eight-plus captures in `WP81-rounds/`; the cold reader a
-  fresh-context subagent; the review a fresh-context reviewer; `MPLCONFIGDIR` set for every build and test.
+- **The order of work.** The inventory (R-1); the journeys traced with screenshots and the findings organised per
+  persona and pointer, competing preferences written out, the disposition of every pointer recorded (R-8); only then
+  the edits; then the rendered review (R-6) and the journeys re-traced (R-8); then the fresh-context review.
+- **Captures and reads** as in WP76: the capture script and the captures in `WP81-rounds/`; the journey readers and
+  the cold reader fresh-context subagents, one persona each; the review a fresh-context reviewer; `MPLCONFIGDIR` set
+  for every build and test.
 - **The breakdown's row** on `work-packages/milestones.md` ("After 0.1") is proposed to the v0.1 session, which owns
   the board on `dev`; this branch does not edit `milestones.md`.
 

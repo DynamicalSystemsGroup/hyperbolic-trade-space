@@ -61,3 +61,14 @@ no anchor). Options: keep every link in a sentence naming the working paper and 
 pin is served, each pointer becoming the docs' own statement, with one naming sentence on the home and one in
 Further reading; keep a link only where a named result is cited. His answer, verbatim: "Remove until a pin". Folded
 into the scope (G2, D-1, D-2, R-1, R-2, the defaults).
+
+### The review method (2026-11-17, his answer to OD2, verbatim; a standing direction for every 0.2 documentation package)
+
+"since you are reviewing docs i would like to remind you that we need to do visual reviews so make sure you are doing
+screenshots and tracing user journeys with different personas. and organize your findings and explore potentially
+competing preferences before instituting changes"
+
+Folded into the scope as R-8 (the journeys of `notes/user-journeys.md` traced per persona through every page that
+points at the paper, screenshots per step, findings per persona and pointer, competing preferences written out with
+the choice before any edit, the journeys re-traced after) and as the order of work in the defaults; it binds packages
+2 to 7 of the breakdown the same way. OD2 itself went back to him with this folded in.
