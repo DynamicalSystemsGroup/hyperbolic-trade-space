@@ -53,3 +53,11 @@ told.
 ## Scope gate
 
 `WP81-scope-of-work.md` is drafted; his answers are recorded below as they come.
+
+### OD1 (2026-11-17, his answer in the popup, as typed by the agent)
+
+Asked for the rule for `paper:` links while the paper is in abstract mode (every link lands on the abstract page with
+no anchor). Options: keep every link in a sentence naming the working paper and its target; remove the links until a
+pin is served, each pointer becoming the docs' own statement, with one naming sentence on the home and one in
+Further reading; keep a link only where a named result is cited. His answer, verbatim: "Remove until a pin". Folded
+into the scope (G2, D-1, D-2, R-1, R-2, the defaults).
