@@ -180,3 +180,9 @@ section. Nothing on `dev` or `main`; no pull request. What waits on the merge of
 (it moved to f305f548 and beyond during execution), the merge itself (his review of the interpretation first), and
 after it the page's link to the case model resolving on `main`. The driver's `MPLCONFIGDIR` rule applies to any
 rerun in a fresh worktree.
+
+## WP76 accepted (2026-11-17, his answer in the popup, as typed by the agent)
+
+Asked whether he accepts WP76 on the branch at d25b4892, with the review's recommendation and the narrowed headline
+stated. His answer, verbatim: "Accepted". The index row moves to accepted; the branch waits for the merge of 0.1,
+then one rebase onto `dev` and his review of the interpretation before it merges into `dev`.
