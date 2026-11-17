@@ -178,6 +178,9 @@ from `estimator.py` and `solvers.py`:
   slower on these programs and less accurate). Scipy's constrained solvers (SLSQP with `S = L L'`) would make the
   program non-convex in `L` and lose Fact 1. Clarabel reported `optimal_inaccurate` with the objective unchanged to
   six digits under tighter settings (amendment 1); the build stage should record the status as the spike does.
+- **His ruling on the solver (2026-11-16, `candidates.md`):** cvxpy demonstrates feasibility and is never a dependency;
+  the package solves the program with its own routine on numpy and scipy, as the monomial does. The timings above are
+  the spike's cvxpy formulation, not the model's cost; the lock needs below are the spike's environment.
 - **Lock needs** (in this environment, `uv run --with cvxpy`): cvxpy 1.9.3 and, new to the lock, clarabel 0.11.1, scs
   3.3.1, osqp 1.1.3, qdldl 0.1.9.post1, highspy 1.16.0, sparsediffpy 0.6.1; numpy and scipy are already locked. As an
   optional extra (`[project.optional-dependencies]`), so the core install stays numpy, scipy and scikit-learn.

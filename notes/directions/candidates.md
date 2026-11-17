@@ -67,6 +67,21 @@ choice, as a kernel is: the package supplies the estimator and the diagnostics, 
 with the package's line that conditioning is the analyst's job and that kernel methods are documented extensions
 compatible with generalized geometric programming.
 
+## Solvers: cvxpy demonstrates feasibility, never a dependency (the supervisor, 2026-11-16 ~22:30 EST, verbatim)
+
+"they are slow because you are using cvx rather than a custom solver. cvx is good to demonstrate feasibility but not as
+a dependency"
+
+Applied as: the WP43 timings (40 to 80 s a log-quadratic fit, 200 to 260 s with the tau bisection) are the spike's
+cvxpy formulation, not the model's cost, and are not quoted as such. The pattern is the monomial's: a spike proves the
+program convex and feasible with cvxpy; the package then solves it with its own routine on numpy and scipy, as the
+monomial fit does with `solve_lp` and `solve_slsqp`. The log-quadratic fit is a smooth convex objective over a cone of
+small dimension (Q is d by d, 13 by 13 on the case), so a projected first-order or Newton method with the eigenvalue
+projection onto the semidefinite cone keeps Fact 1 and the core install (numpy, scipy, scikit-learn). The conic
+dependency list in the WP43 readout (cvxpy, clarabel, scs, osqp, qdldl, highspy) is the spike's environment, not a
+lock need; the readout's section 5 is read with this ruling. The same rule governs the separability estimator's affine
+side: the cone is written in cvxpy to find out what it admits and refuses, and the package gets its own solver.
+
 ## From the external review of 2026-11-16 (0.2 or later)
 
 Packaging: widen the Python range with a CI matrix; `plotting` as an extra behind a lazy import; sympy out of the runtime dependency set once `derivation/` has its own environment. Model: the standard library's MoE and MoP metadata in place of the `doc` first-word mark; `variation`/`variant` and the library's `TradeStudy` for the alternatives; both belong to the model-focused project (ADCS-lifecycle-demo) as much as to this one. Record: `work-packages/review/external-review-2026-11-16.md`.
