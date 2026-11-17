@@ -454,3 +454,24 @@ Verbatim:
 `main-review` ruleset as designed (one required approval, review from code owners; GitHub never counts the author),
 so any code owner's pull request approved by any other releases; the same holds for merges into `dev` under the
 admissibility check. His bypass stays for 0.1 and is removed after it.
+
+## Governance as executable: GOVERNANCE.md, the specification, the conformance check first in CI (2026-11-17, 12:05 EST)
+
+Verbatim, after his settings were read back:
+
+> are you able to use api access to verify my project configuration? per some of our earlier discussion i want the
+> code governance rules specified as executables and the repo configuration conformance checked
+
+> i think we may need a GOVERNANCE.md file and a pointer to the executable specifications and the conformance checks.
+> i also want my ci to include a first step that checks the controls are in place as specified before proceeding
+> with the rest of the checks. these metachecks make it clear that the repo contents includes a specification of its
+> own release rules and that those release rules were in effect as of the release
+
+**Applied as.** WP78 (`WP78-scope-of-work.md`), scoped from these words and approved by the driver as his proxy under
+the mandate: the expected repository configuration declared in one file in the tree; a checker that reads the
+live configuration through the GitHub API and fails on any difference; `GOVERNANCE.md` at the root pointing at
+the declaration, the checker and the admissibility rows; a first job `controls` in the Tests and Release workflows
+that every other job needs; the release run's summary and the release notes carrying the check's result at the
+merge commit, so a release attests that its own rules were in effect. It starts when WP77 (the rename) lands,
+since both touch the workflows and the code-owners page; it is part of 0.1 (the 0.1 release is the first to carry
+the attestation).
