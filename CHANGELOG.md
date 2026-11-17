@@ -14,6 +14,17 @@ All notable changes to this project are recorded here, in the format of
   merge, attested by a code owner's local run of `scripts/check_repo_settings.py`; the 0.2 release is the first
   merged under the review rule without it (`GOVERNANCE.md`).
 
+### Changed
+
+- The default workflow permissions are read and a workflow may not approve a pull request (the design's value; live
+  was write through 0.1), and `controls`, the settings check, is a required status check on `main` beside the three
+  shards and `admissibility`; both declared in `.github/governance.toml` and set on GitHub after the merge (WP82).
+- The governed files (the secondary rules of `GOVERNANCE.md`) are under a declared control: a `CODEOWNERS` line per
+  file naming the three code owners as the approvers of a change to it, and the `governance-files` push ruleset,
+  which refuses a push touching one of them by anyone but a Repository admin (WP82).
+- The admissibility documents: rows for a bug report and a question, the `controls` job in the pull request's
+  conformance row, and each judged row naming its guideline (WP82).
+
 ## [0.1.0] - 2026-11-17
 
 ### Added

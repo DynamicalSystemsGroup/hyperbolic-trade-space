@@ -10,14 +10,14 @@ request is opened or edited and on each push; the reviewer's rows are recorded i
 | It names the issue it resolves (`closes #n`), or carries the small-fix label | conformance, machine | the linked-issue check |
 | Its description states what changed, what backs it, which tests cover it, and the tools used | conformance, machine | the template's fields present and non-empty |
 | Its defaults, the details the scope did not settle, are listed for the reviewer | conformance, machine | the template's defaults field present (it may say none) |
-| It does one thing its title says | fitness, a code owner | the reviewer's judgement, recorded in the review |
+| It does one thing its title says | fitness, a code owner | the reviewer's judgement, recorded in the review (guideline: `CONTRIBUTING.md`, "A pull request delivers against its issue") |
 | Its history is readable: each commit builds and passes; no merge of `main` into the branch; no force-push to a shared branch | conformance, machine | the workflow runs the suite on the head; the branch rules refuse force-pushes; a merge-commit check |
-| The conformance checks pass: lint, format, lock, tests, the vocabulary and residual checks, both platforms | conformance, machine | the test workflow |
+| The conformance checks pass: lint, format, lock, tests, the vocabulary and residual checks, both platforms | conformance, machine | the test workflow: on the push to `dev` that the merge makes, its `controls` job (the settings against their declaration), lint and the Linux fast shard; on the release pull request, the full matrix |
 | No commit message names a tool as author or generator | conformance, machine | the attribution check in the test workflow |
 | Every conformance item of its issue's good-enough list passes | conformance, machine | the checks the items name, quoted in the review |
-| Every fitness item of its issue's good-enough list is validated: it does what the issue intends, reads as intended, renders right | fitness, a code owner | the reviewer looks at the thing and signs the judgement in the review |
-| No gap is left open: each is accepted with a reason, fixed before the merge, or made its own issue | fitness, a code owner | the review's gap list with a disposition per gap |
-| The scope was not widened: a change the issue does not cover went back to the issue as an amendment | fitness, a code owner | the reviewer compares the diff with the issue's blast radius |
+| Every fitness item of its issue's good-enough list is validated: it does what the issue intends, reads as intended, renders right | fitness, a code owner | the reviewer looks at the thing and signs the judgement in the review (guideline: `CONTRIBUTING.md`, "Review is against the scope"; `docs/code-owners.md`, "Reviewing a candidate") |
+| No gap is left open: each is accepted with a reason, fixed before the merge, or made its own issue | fitness, a code owner | the review's gap list with a disposition per gap (guideline: `CONTRIBUTING.md`, "Review is against the scope") |
+| The scope was not widened: a change the issue does not cover went back to the issue as an amendment | fitness, a code owner | the reviewer compares the diff with the issue's blast radius (guideline: `CONTRIBUTING.md`, "A pull request delivers against its issue") |
 | It is merged by a code owner who is not its author | conformance, machine | branch protection (review from code owners, no self-approval) and the merge check. While the code owners are one person this row cannot hold and the check passes with a notice; the bypass ends the moment a second code owner is added, by design, and no setting restores it |
 
 A pull request into `paper` (a change to the paper; the route is "Contributing to the paper" on the contributing

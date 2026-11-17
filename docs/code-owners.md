@@ -26,7 +26,15 @@ The rulesets, the environments, the Pages source, the code owners' access and th
 in `.github/governance.toml` and checked against the live repository by `uv run python
 scripts/check_repo_settings.py`, which runs first in every CI run as the `controls` job (`GOVERNANCE.md`). Set each
 on GitHub to match the declaration, then run the checker; to change one, change the declaration first, then the
-setting. The settings below are the ones the declaration does not hold.
+setting. A field the runner checks (a ruleset, a required check) turns the `controls` job red on the first push to
+`dev` after the merge until the setting follows: change it in the same sitting and re-run the job. A local-only
+field (the workflow permissions, a ruleset's bypass actors) is attested by your local run. The settings below are
+the ones the declaration does not hold.
+
+The governed files (`GOVERNANCE.md`, the secondary rules) each have their own `CODEOWNERS` line naming the three
+code owners as the approvers of a change to them, and the `governance-files` push ruleset refuses a push that
+touches one of them by anyone but a Repository admin; a pull request that changes a governed file is merged by an
+admin.
 
 Settings, Labels: create `draft` and `small-fix`. The scope-of-work template applies `draft`; a code owner removes it
 to turn a draft into an issue. `small-fix` stands in for an issue on a pull request that fixes a typo or a broken link.
@@ -109,7 +117,8 @@ the wheel, the metadata and the bill of materials, compose the site, and publish
 
 ## Adding a code owner
 
-Add their login to the `*` line of `.github/CODEOWNERS`, the source of truth for authority (`GOVERNANCE.md`); add
+Add their login to the `*` line and to each governed file's line of `.github/CODEOWNERS`, the source of truth for
+authority (`GOVERNANCE.md`); add
 them as a collaborator with the access the declaration requires (`.github/governance.toml`, `code_owners`), which
 the settings check verifies on the next run; add them as an Owner or Maintainer of the project on PyPI and TestPyPI
 (Manage, Collaborators). The paper's approvers are the logins on the `paper/` line of the same `CODEOWNERS` file

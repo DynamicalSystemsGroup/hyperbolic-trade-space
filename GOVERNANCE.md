@@ -73,14 +73,17 @@ script or a test checks it) or a guideline (a named role judges it):
 - `.github/ISSUE_TEMPLATE/*.yml` — executable: `tests/test_admissibility.py` checks that the scope-of-work template carries the fields the checks read.
 - `.github/pull_request_template.md` — executable: `tests/test_admissibility.py` checks that it carries the sections the pull request check reads.
 
-Today each is edited like any other file: a pull request into `dev`, or a direct commit to `dev` by a code owner.
-A tighter control on editing them is an open decision (`work-packages/WP78-rounds/gaps.md`); the declaration's
-`control` field records the answer.
+Each is changed by a pull request into `dev` or a direct commit to `dev`, approved by the owners on its own
+`.github/CODEOWNERS` line (the three code owners) and pushed by a Repository admin: the `governance-files` push
+ruleset refuses a push that touches one of these paths by anyone else, a pull request's merge included, so a
+candidate that changes a governed file is merged by an admin (decided 2026-11-17). The declaration's `codeowners`
+and `control` fields record both.
 
 ## The declaration and the check
 
-`.github/governance.toml` declares the settings that enforce the release rules: the four rulesets (`main-review`,
-`main-checks`, `dev`, `paper`) with their rules, parameters and bypass actors; the four environments
+`.github/governance.toml` declares the settings that enforce the release rules: the five rulesets (`main-review`,
+`main-checks`, `dev`, `paper`, and `governance-files`, the push ruleset on the governed files) with their rules,
+parameters and bypass actors; the four environments
 (`github-pages`, `pypi`, `testpypi`, `paper-release`) with their reviewers and branch or tag policies; the Pages
 build; the code owners' and the paper approvers' minimum access; the default workflow permissions. `scripts/check_repo_settings.py` reads
 the live settings through the GitHub API, compares them with the declaration field by field, prints each
@@ -94,7 +97,10 @@ page is changed that local run reports the one difference.
 
 The `controls` job runs it first in the Tests and Release workflows; every other job needs it, so no test, build or
 publish runs while a setting differs from its declaration. Its report is the job summary. A change to a setting
-starts with the declaration: the declaration changes, then the setting, and the next run checks them.
+starts with the declaration: the declaration changes, then the setting, and the next run checks them. For a field
+the runner checks (a ruleset, a required check) the `controls` job is red on the first push to `dev` after the
+merge until the setting follows, so the merger changes the setting in the same sitting and re-runs the job; a
+local-only field is attested by a code owner's local run.
 
 Attestation: a release's run summary and its GitHub release notes carry the line
 `Controls: .github/governance.toml@<hash> checked at <merge commit>: conforming (N fields on the runner; M
@@ -121,5 +127,6 @@ issue and pull request workflows, the test workflow (lint, format, lock, the thr
 check) and the release workflow (version, tag, changelog, pins, bill of materials, merge, the PyPI hash check), and
 the `controls` job. Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
 in `CONTRIBUTING.md` ("Review is against the scope") and the code owners' page (`docs/code-owners.md`, "Reviewing a
-candidate" and "Cutting a release"). A check with no row, or a judged criterion with no guideline, is a gap, listed
-for decision in `work-packages/WP78-rounds/gaps.md`.
+candidate" and "Cutting a release"); each judged row names its guideline. A check with no row, or a judged criterion
+with no guideline, is a gap, listed for decision in `work-packages/WP78-rounds/gaps.md` (its items decided
+2026-11-17, WP82).
