@@ -33,7 +33,9 @@ headline the page may state is decided by section 4, not by this expectation.
   licence allows; the source file itself is fetched into the git-ignored `examples/kitchenham/data/` and verified.
 - **Package and commit.** `results.json` records `package_version` 0.1.0 (`tradespace.__version__`) and
   the Git SHA of the run (`provenance.git_sha`, with `git_dirty`); the SHA is of the tree the run was made on, which
-  precedes the commit that carries the file.
+  precedes the commit that carries the file. The run of record was made on a clean tree at 76a63fd1 from the file
+  fetched afresh (`run.py --fetch` after deleting the cache: fetch, verify, derive, fit), and it changed nothing but
+  the provenance against the earlier run on the 0.1 candidate.
 - **Reproduction.** `uv run python examples/kitchenham/run.py --check` refits from the committed derived table and
   compares every key of `results.json` but the provenance with a fresh run: reproduced. The same run on the file of
   record (`--fetch`) rewrote the derived table and the results without a diff. The WP70 numbers of 2026-11-16
