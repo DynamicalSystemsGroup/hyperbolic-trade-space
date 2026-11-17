@@ -194,3 +194,18 @@ examples are ("i think we need a second clause for observed phenomena since seve
 that"). Asked where it lands, his answer, verbatim: "This branch". One commit after the acceptance, marked outside
 WP76's scope: `docs/index.md` and `README.md` first lines read "... a table of evaluated designs, or of observed
 cases: reported devices, species, plot-years, finished projects". No register row names either sentence.
+
+## His direction during his read of the site (2026-11-17, verbatim; for the 0.2 scope, not this branch)
+
+"i also want to clean up the references to the paper which is currently a working paper. only the abstract is
+published as a webpage but the full content can be built from the repo. per our recent changes the paper gets its own
+development path. my overall take is that the documentation site needs work but our goal is not to disrupt the 0.1
+release, instead to extend the scope of the 0.2 release to be documentation improvements"
+
+The driver's reading: two items for the 0.2 release board (`work-packages/milestones.md`, "v0.2 (tooling,
+documentation, more worked examples)"), nothing on this branch or on 0.1. (1) The docs' references to the paper
+(22 `paper:` links on nine pages: theory 7, bridge 5, temperature 4, one each on the home, examples, fitting,
+limitations, termination and further reading; "the paper" in prose on the home, bridge, theory, code owners and the
+README) reworded for a working paper whose abstract alone is published, with the full paper buildable from the
+repository on its own branch. (2) A documentation-improvement package as 0.2's scope. Passed to the driver session,
+which owns `dev` and the release board; a scoping session proposed to him.
