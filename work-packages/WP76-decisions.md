@@ -120,3 +120,8 @@ in the research note and the WP70 record.
 
 Asked: the Agent's defaults list, as one item: approve, or change items. His answer, verbatim: "Approve the list".
 Decided: every default stands as written.
+
+## WP76 approved (2026-11-17, his answer in the popup, as typed by the agent)
+
+Asked whether he approves `WP76-scope-of-work.md` at cf5c66f8 for execution on this branch. His answer, verbatim:
+"Approved". Execution begins under `work-execution`; nothing on `dev` or `main`.
