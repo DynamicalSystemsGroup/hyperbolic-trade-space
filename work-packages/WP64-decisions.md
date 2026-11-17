@@ -246,3 +246,13 @@ and one addition from the external review of 2026-11-16: lint and the fast shard
 before the dry run. The paper build's known residual-baseline failure is recorded, not repaired (the paper branch's
 first item).
 
+## His answer on the process record (2026-11-16, 20:58 EST), verbatim
+
+Asked, with the disposition of the external review of 2026-11-16, whether the process record leaves the tree before
+the 0.1 merge or after: **"Before 0.1"**.
+
+**Disposition.** WP73 (`WP73-scope-of-work.md`), approved as proxy: the landed packages' documents leave the tree
+after WP67 lands and before WP68's pull request, the index naming the hash each is read at; the references from
+the tests, the docs and the paper resolved; the material pending his read listed with its blob URLs in
+`supervisor-review-list.md`.
+

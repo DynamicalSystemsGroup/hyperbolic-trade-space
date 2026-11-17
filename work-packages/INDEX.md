@@ -83,6 +83,7 @@ Scope locked is the later of the commit that added the scope and the first commi
 | 71 | Broadbalk: the level V against biomass (a bounded update to the wheat page) | landed, his read pending | 6b5931cd | b8254d71 | in place (not landed or in flight) |
 | 72 | Learning the invariant rather than the trade (a research spike: the two-sided estimator; planted tests; wheat; a Uniswap v2 pool) | delivered, his read and five questions pending | 6b5931cd | 468681d6 | in place (not landed or in flight) |
 | 67 | Quality control of the two release control models (stage 4: the dry runs on qc/** and qc/paper/**, the browser pass per mode, the machinery diff, lint and the fast shard on every push to dev) | approved as proxy; scoped | pending | not landed | in place (not landed or in flight) |
+| 73 | The process record leaves the tree before 0.1 (his answer "Before 0.1"; the index names the hash each document is read at; references resolved; the pending reads listed with URLs) | approved as proxy; scoped; runs after WP67 | pending | not landed | in place (not landed or in flight) |
 
 ## Notes, spike outputs and supporting content removed from the tree
 
