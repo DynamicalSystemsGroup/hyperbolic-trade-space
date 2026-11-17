@@ -475,3 +475,10 @@ that every other job needs; the release run's summary and the release notes carr
 merge commit, so a release attests that its own rules were in effect. It starts when WP77 (the rename) lands,
 since both touch the workflows and the code-owners page; it is part of 0.1 (the 0.1 release is the first to carry
 the attestation).
+
+Added, verbatim, on the scope:
+
+> this will make the removal of the bypass rule explicit in the repo in release 0.2
+
+So the bypass on `main-review` is removed by a commit to the declaration after 0.1, named in the 0.2 changelog, and
+the 0.2 release's attestation shows the rule without the bypass in effect at that merge.
