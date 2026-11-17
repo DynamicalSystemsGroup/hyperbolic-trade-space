@@ -37,3 +37,43 @@ Record: `WP79-rounds/rehearsal.md`.
    be a link to nothing on every page).
 5. The fixes' home: the three are software-side files (`tests/`, `scripts/`), so either the paper's branch carries
    them to `dev` by the design's merge (2.1) or a software unit lands them on `dev` first and `paper` merges `dev` in.
+
+## Unit B (the route made clear and enabled, G2 to G4; the two test fixes), 2026-11-17
+
+Branch `wp79b`, cut from `dev` at 99b24b9f; nothing pushed, nothing opened on GitHub. OD-1 applied as answered:
+the paper's approvers are `mzargham` and `jshorish`.
+
+**Defaults applied by the unit.**
+
+- The CODEOWNERS line is written `/paper/   @mzargham @jshorish`, with the leading slash: GitHub reads `paper/` as
+  any directory of that name and the tree also has `site/paper/` (the abstract page the software composes), which
+  stays with the `*` line. Both readers (`scripts/admissibility.py`, and `scripts/check_repo_settings.py` through
+  it) accept `paper/` and `/paper/`; the prose calls it the `paper/` line. The `*` line's logins remain the code
+  owners alone: `jshorish` is a paper approver and not a code owner, `danlessa` and `rororowyourboat` are code
+  owners and not paper approvers, `mzargham` is both.
+- The declaration's `[paper_approvers]` section sets `minimum_permission = "read"` (approval needs no write);
+  the live check reads `write` (maintain) for `jshorish` and `admin` for `mzargham`, so it conforms with margin.
+  GitHub itself asks write access of a login on a CODEOWNERS line before it requests their review; the declaration
+  states the floor the route needs, not GitHub's.
+- The declaration's `governed_files` entry for CODEOWNERS now names both lines and both readers; no file was added
+  to the set of secondary rules.
+- One pull request template (the scope's default), with a `Paper` section at the end; the pr-fields check reads
+  that section on a pull request into `paper` only, and a pull request into `dev` leaves it empty. The paper's row
+  in `PR_ADMISSIBILITY.md` says so. The linked-issue check is unchanged and has no branch filter: a pull request into
+  `paper` names an issue or carries `small-fix`, as the software's does; whether the paper wants its own issue form
+  is not decided here.
+- The merge check on `paper` has no one-person notice (the approvers are two); with no `paper/` line at all it
+  fails and says so, rather than passing silently.
+- The merge workflow (`merge-by-code-owner.yml`) keeps its file name (the declaration names it) and fires on pull
+  requests closed into `dev` and `paper`; its job is renamed to say which role merges on which base.
+- `docs/code-owners.md` gains the one pointing sentence, and its "Adding a code owner" paragraph now says where the
+  paper's approvers are declared (the `paper/` line and the environment), since its old wording named the
+  environment alone.
+- The two test fixes are unit A's options 2(a) and 3(a), on `dev` (software-side files): the clean-kernel test
+  compares each cell with the helper the F-table tests already use (`_current`: byte-equal in the environment of
+  record, elsewhere the planted digest masked and numbers within `text_rtol`), and the myst build test takes
+  `BASE_URL` as the figure paths' prefix. `paper/environment_values.toml` names the clean-kernel test in the
+  `elsewhere` text. `scripts/residuals_baseline.json` is untouched (question 1 is his).
+- `CONTRIBUTING.md` says that `tests/` and `scripts/` are the software's even when the paper's tests read them, and
+  change on `dev`; this is the practice the two fixes follow and the answer to question 5 in practice, recorded here
+  for him to confirm or reverse.
