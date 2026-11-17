@@ -154,3 +154,29 @@ Decided: every default stands as written.
 
 Asked whether he approves `WP76-scope-of-work.md` at cf5c66f8 for execution on this branch. His answer, verbatim:
 "Approved". Execution begins under `work-execution`; nothing on `dev` or `main`.
+
+## The review's gaps (2026-11-17, his answers in the popups, as typed by the agent)
+
+`WP76-review.md`: two fresh-context passes (the first at ec8704fa found four fixable gaps, fixed in unit 6; the second
+at 70708ec7 reran every check). Two items went to him.
+
+- **G-1**, the residual check's strict exit, pre-existing on `dev` (131 counts rose repository-wide against a stale
+  baseline; the branch adds no rise on a surface it changes). Options: accept as is; fix before acceptance; follow-up
+  package. His answer, verbatim: "Accept as is".
+- **G-2**, the six observations as one item (the example pages are not residual surfaces; the model link resolves on
+  `main` after the merge; the figures shrink at 375 px as the rule allows; project 138 is in the record only; `dev`
+  moved on and the branch needs one more rebase at integration; the scope's grep matches its own text). His answer,
+  verbatim: "Accept all as is".
+
+The slow tests at the final page and figure code: `test_each_figure_is_produced_by_the_code_shown_above_it` and
+`test_runnable_blocks_execute` over every page, 18 passed (14 minutes); the earlier full slow run of the site and
+docs tests, 38 passed at ec8704fa.
+
+## Delivered (2026-11-17)
+
+The branch `claude/iron-triangle-example-12a7c6`, merge base `dev` c0e210cc, carries the package: the scope and its
+gate, six execution units, the run of record, the review report. Its head at delivery is the commit that adds this
+section. Nothing on `dev` or `main`; no pull request. What waits on the merge of 0.1: one more rebase onto `dev`
+(it moved to f305f548 and beyond during execution), the merge itself (his review of the interpretation first), and
+after it the page's link to the case model resolving on `main`. The driver's `MPLCONFIGDIR` rule applies to any
+rerun in a fresh worktree.

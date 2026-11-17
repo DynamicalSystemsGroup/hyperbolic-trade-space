@@ -30,7 +30,7 @@ evidence below is the second pass's, with the author's own runs where named. Eve
 
 | ID | Verdict | Evidence |
 |---|---|---|
-| R-1 | met | `run.py --check`: "results.json reproduced from derived/projects.csv (provenance keys excluded)"; `variants.py` leaves `git diff --stat -- examples/kitchenham/` empty; the author's end-to-end run on a clean tree at 76a63fd1 with the cache deleted (`run.py --fetch`: fetch, verify, derive, fit) moved only the provenance; `tests/test_wp76_kitchenham.py` 17 passed; the slow figure test and the runnable-block test: 38 slow site and docs tests passed at ec8704fa (29 minutes), and the two reruns at the final head are recorded in the decisions file when they finish |
+| R-1 | met | `run.py --check`: "results.json reproduced from derived/projects.csv (provenance keys excluded)"; `variants.py` leaves `git diff --stat -- examples/kitchenham/` empty; the author's end-to-end run on a clean tree at 76a63fd1 with the cache deleted (`run.py --fetch`: fetch, verify, derive, fit) moved only the provenance; `tests/test_wp76_kitchenham.py` 17 passed; the slow figure test and the runnable-block test: 38 slow site and docs tests passed at ec8704fa (29 minutes), and the two reran at the final page and figure code (`test_each_figure_is_produced_by_the_code_shown_above_it`, `test_runnable_blocks_execute` over every page): 18 passed (14 minutes) |
 | R-2 | met | Participation: "all three are in the contending set" (C1109) and "All three sides bound the frontier; the trades are read from the associations, not the exponents" (C1118); the positive pair "+0.43" and the negative pairs "−0.71 ... −0.92" (C1110); the project-management reader named the three apart |
 | R-3 | met | `variants.json` `headline`: six scaled rungs hold, no scaler fails, all five bands hold, 140 of 141 leave-one-out refits hold, all three extremes hold, type D alone of the subsets; the page states the negative half over "every scaled rule, every band and every project removed" and the positive half as "most readings, weakly or not in some", naming the band, project 16 and the two subsets; `test_page_states_the_headline_only_where_the_checks_hold` pins exactly those rows |
 | R-4 | met | The page names the subsets with 50, 73 and 113 rows and their signs; project 16 (the one sign flip) and the largest project and worst overrun by what they do; the record's influence table lists 16 and 138 (the exponent move of 0.05); `test_page_reports_the_subsets_openly` |
@@ -69,17 +69,15 @@ evidence below is the second pass's, with the author's own runs where named. Eve
 
 ## Open decisions (for the supervisor)
 
-- **G-1.** `check_residuals.py --compare --strict` exits 1 on this branch as on `dev` (131 counts rose repository-wide against a baseline that predates the paper's and the history page's later edits); the branch adds no rise on any surface it changes. Options: accept as is (pre-existing drift, outside this package) / fix before acceptance (rebaseline the residuals on this branch) / follow-up work package (the rebaseline with the next tidiness package).
-- **G-2.** The observations above, as one item: accept as is, or pick any to act on.
+None. Every item was resolved through the decision loop (2 decided, 0 deferred, 0 raised; `WP76-decisions.md`,
+"The review's gaps").
 
 ## Gap dispositions
 
-Filled from his answers, quoted in `WP76-decisions.md`.
-
 | Gap | Disposition | Reason or follow-up |
 |---|---|---|
-| G-1 | (his answer) | |
-| G-2 | (his answer) | |
+| G-1 (the residual check's strict exit, pre-existing on `dev`; the branch adds no rise on a surface it changes) | accept as is ("Accept as is", 2026-11-17) | repository-wide drift of the baseline, outside this package |
+| G-2 (the six observations, as one item) | accept as is ("Accept all as is", 2026-11-17) | each stays an observation in this report; the residual-surface gap and the rebase at integration are noted for the integrator |
 
 ## Recommendation
 
