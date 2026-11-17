@@ -388,3 +388,69 @@ removed from the first `main` ruleset. The PyPI project does not exist yet (the 
 account that registered the pending publisher), so the PyPI step is an after-merge item in the release issue, done
 by him in his signed-in session. Open for him: whether the 0.1 pull request is approved by a second code owner
 under the review rule, or merged by his bypass as Q1 of the release models decided while he was the only one.
+
+## The package is named `tradespace` (2026-11-17, 10:20 EST)
+
+Before the pending publisher was created, verbatim:
+
+> so this is our last chance to reconsider the name. one question. is just `trade-space` available?
+
+The driver's answer: nothing named `trade-space` or `tradespace` exists on PyPI or TestPyPI (the simple index 404s
+for both; PyPI treats the two as one name since 2024), and no repository of that name exists under the
+organisation; a rename touches 334 files, the import path, the repository name and the Pages address, and needs a
+new full verification. His decision:
+
+> i want the shorter name. tradespace, let's rename the package in github and take the tradespace name in pypi
+
+**Applied as.** The repository is renamed `DynamicalSystemsGroup/tradespace` on GitHub (the old address redirects);
+the distribution and the import are both `tradespace` (`src/tradespace/`); the Pages address becomes
+`https://dynamicalsystemsgroup.github.io/tradespace/`; the pending publishers name project `tradespace`, repository
+`tradespace`. The tree rename is one unit (WP77; WP76 is left to the iron-triangle example, in flight in its own
+session) with the full verification repeated: suite, lock, strict docs in both slots, the site looked at, a new
+`qc/release` dry run. Version 0.1.0 is unchanged, since nothing was released under the old name; the changelog's
+0.1.0 entry names the rename. Verbatim quotations and dated records (`*-decisions.md`, `driver-log.md`) keep the
+old name as history; live documents and every current-state file take the new one.
+
+## The paper's reviewer is Jamsheed Shorish; the code owners are for code and documentation (2026-11-17, 11:05 EST)
+
+While setting the `paper-release` environment, verbatim:
+
+> i want jamsheed shorish as a reviewer on the paper. rohan and danilo are for the code and documentation
+
+**Applied as.** The `paper-release` environment's required reviewers are `jshorish` (an organisation member with
+read access to the repository, so eligible) and `mzargham`, with "Prevent self-review" on: a paper tag he pushes is
+approved by Jamsheed; one pushed by anyone else, by either. This replaces the coupling in WP65's design that made
+the code owners the paper's approvers (his Q3 of 2026-11-16 said "a code owner must approve it but it does not
+need to be me"); the code owners (`mzargham`, `danlessa`, Rohan when his login is given) approve, merge and
+release the software. `WP65-design/his-items.md` and `docs/code-owners.md` ("Adding a code owner") are brought
+to this after WP77 lands, since the rename unit holds those files.
+
+## The `main` review rule for 0.1: his bypass (2026-11-17, 11:25 EST)
+
+Asked, now that a second code owner exists, who approves the 0.1 pull request (the popup's two options: Danilo
+approves under the review rule with no bypass; or his bypass for 0.1, removed afterwards). His answer, the popup's
+option as worded:
+
+> Your bypass, for 0.1
+
+**Applied as.** The first `main` ruleset (pull request required, one approval, review from code owners) carries
+Repository admin as bypass for pull requests; the second (the four required checks, merge commits only, no deletion,
+no force push) has no bypass. He merges 0.1 by ticking the bypass; the checks bind. After 0.1 the bypass is removed,
+as `docs/code-owners.md` ("Adding a code owner") says. His settings read back so far: Pages on the workflow;
+`github-pages` on `main`, `pypi` on `main`, `testpypi` on `dev`, `paper-release` on `paper-*` with reviewers
+`mzargham` and `jshorish`, self-review prevented, no admin bypass; the two pending publishers by his screenshots.
+
+## Rohan's login; a release needs two of three (2026-11-17, 11:35 EST)
+
+Verbatim:
+
+> do you have rohan in code owners? i want a release to only require 2 of 3. so it doesn't bind up if i am busy with
+> business stuff
+
+> rohan is "rororowyourboat"
+
+**Applied as.** `@rororowyourboat` (Rohan Mehta; an organisation member with write access) added to the `*` line of
+`.github/CODEOWNERS`: the code owners are `mzargham`, `danlessa`, `rororowyourboat`. "Two of three" is the
+`main-review` ruleset as designed (one required approval, review from code owners; GitHub never counts the author),
+so any code owner's pull request approved by any other releases; the same holds for merges into `dev` under the
+admissibility check. His bypass stays for 0.1 and is removed after it.
