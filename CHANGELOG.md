@@ -5,6 +5,15 @@ All notable changes to this project are recorded here, in the format of
 [Semantic Versioning](https://semver.org/). Entries are drawn from the work-package index
 (`work-packages/INDEX.md`) and the git history; the package that made each change is named in parentheses.
 
+## [Unreleased]
+
+### Removed
+
+- The `main-review` bypass carried for the 0.1 release (one user, `mzargham`, on pull requests): removed from the
+  governance declaration (`.github/governance.toml`) by this change and from the ruleset by a code owner after its
+  merge, attested by a code owner's local run of `scripts/check_repo_settings.py`; the 0.2 release is the first
+  merged under the review rule without it (`GOVERNANCE.md`).
+
 ## [0.1.0] - 2026-11-17
 
 ### Added

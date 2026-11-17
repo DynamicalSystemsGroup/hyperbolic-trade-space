@@ -244,10 +244,13 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
 
 def test_bypass_actors_are_local_only_on_the_runner_and_compared_locally(payloads):
     """The API returns bypass actors to administrators only (the first controls run on dev,
-    2026-11-17, saw [] for main-review): a field-level override marks them local."""
+    2026-11-17, saw [] for main-review): a field-level override marks them local. The 0.1
+    bypass (a user, on pull requests) put back in the fixture is a ruleset not yet changed."""
     for r in DECLARATION["rulesets"]:
         assert r["fields"]["bypass_actors"]["checked_on"] == "local", r["name"]
-    ruleset(payloads, "main-review")["bypass_actors"] = []
+    ruleset(payloads, "main-review")["bypass_actors"] = [
+        {"actor_id": 10465438, "actor_type": "User", "bypass_mode": "pull_request"}
+    ]
     runner = compare(payloads, runner=True)
     assert runner.exit_code == 0 and runner.differences == []
     assert not any(r.path.endswith(".bypass_actors") for r in runner.rows)
@@ -260,7 +263,7 @@ def test_bypass_actors_are_local_only_on_the_runner_and_compared_locally(payload
     local = compare(payloads)
     assert local.exit_code == 1
     assert local.lines() == [
-        'rulesets.main-review.bypass_actors: expected ["User:10465438:pull_request"], found []'
+        'rulesets.main-review.bypass_actors: expected [], found ["User:10465438:pull_request"]'
     ]
 
 

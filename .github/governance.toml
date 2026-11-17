@@ -46,17 +46,17 @@ minimum_permission = "read"
 # and this file does not is a difference.
 
 # The review on main: a pull request with one approval and a code owner's review, merged as a merge
-# commit. The bypass is one user, set by name on 2026-11-17 (User 10465438 is mzargham; for pull
-# requests only; the Repository admin role until that afternoon), for the 0.1 release (decided
-# 2026-11-17, 11:25) and removed after it by a change to this file first, then to the ruleset, named
-# in the 0.2 changelog (decided 2026-11-17, 12:05 and 13:20).
+# commit. No bypass. For the 0.1 release the ruleset carried a bypass for one user (User 10465438,
+# mzargham, pull requests only; decided 2026-11-17, 11:25, set by name that afternoon); it is removed
+# after 0.1 by this change first, then on the ruleset page by a code owner, whose local run of the
+# checker attests it (decided 2026-11-17, 12:05 and 13:20; named in the 0.2 changelog).
 [[rulesets]]
 name = "main-review"
 target = "branch"
 enforcement = "active"
 include = ["~DEFAULT_BRANCH"]
 exclude = []
-bypass_actors = [{ actor_type = "User", actor_id = 10465438, bypass_mode = "pull_request" }]
+bypass_actors = []
 # The API returns bypass actors to administrators only; the workflow token sees an empty list, so the
 # field is compared locally and listed as not checked on the runner (the first controls run, 2026-11-17).
 [rulesets.fields.bypass_actors]

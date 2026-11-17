@@ -85,7 +85,7 @@ conformance by running the check, fitness by looking and signing the judgement. 
    the merge is site-only, below), the changelog has the entry, the lock is current and every action is pinned; it
    also refuses while a Release run on `main` is queued or in progress. Stage the site, review it, and record the
    review in the release issue.
-4. Merge it (merge commit; for 0.1, on the bypass `GOVERNANCE.md` names). One release pull request at a
+4. Merge it (merge commit). One release pull request at a
    time, merged after the previous Release run has ended.
 5. Watch the run. On the merge commit it checks the settings against their declaration, checks admissibility again,
    runs the suite, and builds and checks the
