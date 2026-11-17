@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import assemble_site  # noqa: E402
 import paper_abstract  # noqa: E402
 import paper_keys  # noqa: E402
+import site_metadata  # noqa: E402
 import stage_site  # noqa: E402
 
 REPO = "https://github.com/DynamicalSystemsGroup/tradespace"
@@ -188,8 +189,11 @@ def test_abstract_page_has_the_docs_and_root_cards(abstract_page):
 
 
 def test_abstract_page_has_no_script_and_both_colour_schemes(abstract_page):
-    low = abstract_page.lower()
+    """No executable script: the one ``<script>`` is the JSON-LD data block of the metadata."""
+    low = re.sub(r'<script type="application/ld\+json">.*?</script>', "", abstract_page, flags=re.S)
+    low = low.lower()
     assert "<script" not in low and "javascript:" not in low and " on" + "click" not in low
+    assert abstract_page.count("<script") == 1
     assert "color-scheme: light dark" in abstract_page
     assert "@media (prefers-color-scheme: dark)" in abstract_page
     root = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
@@ -421,6 +425,7 @@ def test_root_card_line_per_mode():
     source = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
     card = r'<a class="card" href="paper/"><strong>Read the paper</strong><span>([^<]+)</span></a>'
     assert re.findall(card, source) == ["the argument and the proofs"]
+    source = site_metadata.apply(source, "")  # the composer's metadata block in the head
     pinned = assemble_site.root_page(assemble_site.Slot("pin", pin="paper-working-20261120"))
     assert pinned == source
     for slot in (assemble_site.Slot("abstract"), assemble_site.Slot("fallback", "p", "r")):

@@ -498,6 +498,7 @@ BUILT_IMAGES = {
     "site-slices-dark.png",
     "ternary-planted-light.png",
     "ternary-planted-dark.png",
+    "preview.png",  # the preview image the pages' metadata names
 }
 
 
@@ -1344,10 +1345,13 @@ def test_assembled_layout(assembled):
 
 def test_assembled_site_carries_the_history_page(assembled):
     """The assembled page is the hand-written prose alone; the record is not rendered (the
-    supervisor, 2026-11-15)."""
+    supervisor, 2026-11-15). The composer adds the public-link metadata to the head and nothing
+    to the body."""
     built = (assembled / "history.html").read_text(encoding="utf-8")
-    assert built == HISTORY_RECORD.build_page_file()
-    assert built == HISTORY.read_text(encoding="utf-8")
+    assert built == _script("assemble_site").history_page()
+    source = HISTORY.read_text(encoding="utf-8")
+    assert built.split("</head>", 1)[1] == source.split("</head>", 1)[1]
+    assert built.split("<style>", 1)[1] == source.split("<style>", 1)[1]
     assert HISTORY_RECORD.MARKER not in built and 'id="record"' not in built
 
 
@@ -1986,8 +1990,9 @@ def test_slices_figure_is_drawn_from_the_one_fit_of_fit_why(monkeypatch, tmp_pat
     monkeypatch.setattr(bsf, "fit_why", counted)
     monkeypatch.setattr(bsf, "build_story", lambda out, fit=None: seen.append(fit) or {})
     monkeypatch.setattr(bsf, "build_slices", lambda out, fit=None: seen.append(fit) or {})
+    monkeypatch.setattr(bsf, "build_preview", lambda out, fit=None: seen.append(fit) or {})
     bsf.build_all(tmp_path)
-    assert len(calls) == 1 and seen[0] is fit and seen[1] is fit
+    assert len(calls) == 1 and seen == [fit, fit, fit]
 
 
 def _pieces_at(bsf, fit, i, j, percentile):
