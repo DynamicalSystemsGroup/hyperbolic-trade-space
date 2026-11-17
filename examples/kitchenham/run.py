@@ -352,8 +352,8 @@ def pairs_figure(x, est, tau, ax=None):
     """The three pairs of conditioned log-metrics, the near-frontier projects marked.
 
     Each panel's title is the pair's near-frontier association at the band rule; the frame holds
-    the projects between the 2nd percentile and the maximum of each log-metric, and the panel says
-    how many lie beyond it (the worst overruns, far inside the frontier).
+    the projects between the 2nd percentile and the maximum of each log-metric, and a line under
+    the panels says how many lie beyond it (the worst overruns, far inside the frontier).
     """
     import matplotlib.pyplot as plt
 
@@ -380,21 +380,21 @@ def pairs_figure(x, est, tau, ax=None):
         )
         ax_.set_xlim(lo[i] - pad[i], hi[i] + pad[i])
         ax_.set_ylim(lo[j] - pad[j], hi[j] + pad[j])
-        beyond = int(((U[:, i] < lo[i]) | (U[:, j] < lo[j])).sum())
         ax_.set_title(f"association {assoc[f'{NAMES[i]}|{NAMES[j]}']:+.2f}", fontsize=9)
         ax_.set_xlabel(f"log {NAMES[i]}, standardized", fontsize=8)
         ax_.set_ylabel(f"log {NAMES[j]}, standardized", fontsize=8)
         ax_.tick_params(labelsize=7)
-        if beyond:
-            ax_.text(
-                0.03,
-                0.03,
-                f"{beyond} beyond the frame",
-                transform=ax_.transAxes,
-                fontsize=7,
-                color="0.4",
-            )
-    axes[0].legend(fontsize=7, loc="upper left", frameon=False)
+    axes[0].legend(fontsize=7, loc="lower left", frameon=False)
+    beyond = int((lo > U).any(axis=1).sum())
+    if beyond:
+        _fig.text(
+            0.5,
+            -0.04,
+            f"{beyond} projects, the worst overruns, lie beyond the frames",
+            ha="center",
+            fontsize=7,
+            color="0.4",
+        )
     return axes
 
 
@@ -437,7 +437,7 @@ def participation_figure(variants=None, ax=None):
         fontsize=7,
         frameon=False,
         loc="lower right",
-        title="filled: in the contending set",
+        title="filled: in the contending set; hollow: outside it",
         title_fontsize=7,
     )
     return ax

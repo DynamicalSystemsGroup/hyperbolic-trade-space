@@ -10194,7 +10194,7 @@ note = "results.json runs.primary: exponents_k1, contending_set (n_lemma 3). Fro
 
 [[claim]]
 id = "C1110"
-fragment = "The band is widened from 1/τ to the smallest that holds fifteen projects, 0.047 in log V. Among those fifteen the association of the two slacks is +0.43, of schedule slack with scope −0.71 and of budget slack with scope −0.92."
+fragment = "The band widens from 1/τ to hold fifteen projects, 0.047 in log V. Among them the association of the two slacks is +0.43, of schedule slack with scope −0.71 and of budget slack with scope −0.92."
 file = "docs/examples/kitchenham.md"
 anchor = "The fit"
 kind = "R"

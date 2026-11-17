@@ -99,15 +99,26 @@ and OD2 (the Agent's defaults as one item). His answers are recorded below as th
 
 ## Package defects met on the way (recorded, not fixed here)
 
-Carried from WP70 (`WP70-decisions.md`, "WP70 delivered and landed"), to be re-checked against the 0.1 candidate during
-execution:
+Carried from WP70 (`WP70-decisions.md`, "WP70 delivered and landed") and re-checked against the 0.1 candidate
+(814853ad, version 0.1.0) on 2026-11-17:
 
-1. `plot_ternary`'s region label names the two largest exponents as trading even where their near-frontier association
-   is positive (+0.43 on the WP70 primary fit).
-2. `trade_off_report` raises when fewer than ten rows fall inside the default band `1 / tau` (at about 141 rows a tenth
-   above the frontier can leave fewer); every portfolio study needs its band rule stated.
-3. The `tau = inf` contending set includes a planted non-participant at a fit-temperature exponent of 0.00 to 0.07 in
-   every synthetic run of WP70.
+1. **The ternary's region label reads the two largest exponents as trading.** Re-checked: on the primary fit
+   `plotting._ternary_says(fit.exponents_[0], names)` returns "schedule slack trades against budget slack", where the
+   near-frontier association of those two is +0.43. Not blocking: the page draws no ternary (R-10; the verification
+   record, section 5). A fix belongs to the plotting step's region-label rule (`notes/directions/README.md`, "Plotting
+   step two").
+2. **`trade_off_report` refuses an association from fewer than ten rows inside `1 / tau`.** Re-checked: at K = 1 the
+   primary fit's `1 / tau` holds 12 rows, so the report does not raise there; the case's band rule (15 rows) is
+   stated in the model and applied by `run.band_for`. At K = 2 at the same band the per-term report raises on the
+   first term (9 rows): recorded in the results as the message, not worked around. Not blocking; the band rule is the
+   analyst's and the example states it.
+3. **The `tau = inf` contending set and a non-participant.** Not re-checked here: the case has no planted
+   non-participant (all three metrics contend on every scaled rung). Carried as WP70 left it.
+4. **New: the two-term fit on the type-D subset reports both term shares as 0.00** (`variants.json`,
+   `subsets.type_D.k2.term_share`), with status certified: no near-frontier row is assigned to either term at the
+   K = 2 fit's own band, so the shares sum to zero rather than to one. Reported as returned (the verification record,
+   section 4); whether `term_share_` should carry a guard or a warning when no row is near the frontier is a question
+   for the estimator's owner. Not blocking: the page reads the subsets at K = 1.
 
 ### OD1 (2026-11-17, his answer in the popup, as typed by the agent)
 

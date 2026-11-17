@@ -4,7 +4,7 @@
 
 <!-- register: examples/kitchenham/results.json describe; manifest.toml -->
 
-Kitchenham, Pfleeger, McColl and Eagan compiled 145 software projects that Computer Sciences Corporation finished between 1994 and 1999, to study its estimation accuracy [@kitchenham2002empirical]. The table is on Zenodo as doi:10.5281/zenodo.268457 under CC BY 4.0. A row is one project: a plan and an actual for effort (hours) and duration (days), and the delivered size in function points. Fetch, derive and refit, then run the checks:
+Kitchenham, Pfleeger, McColl and Eagan compiled 145 software projects that Computer Sciences Corporation finished between 1994 and 1999, to study its estimation accuracy [@kitchenham2002empirical]. The table is on Zenodo as doi:10.5281/zenodo.268457 under CC BY 4.0. A row is one project: a plan and an actual for effort (hours) and duration (days), and the delivered size in function points. To reproduce:
 
 ```bash
 uv run python examples/kitchenham/run.py --fetch
@@ -34,7 +34,7 @@ Project managers speak of an iron triangle: time, cost and scope constrain one a
 
 <!-- register: examples/kitchenham/results.json describe (worst overruns), runs.primary -->
 
-Both slack shares take the shift 10, the round number above the worst overrun (8.9 times the planned duration), so every metric is positive; scope is unshifted; each log gets a standard scaler ([conditioning](../user-guide/conditioning.md)). The [temperature](../generated/glossary.md) that puts a tenth of the projects above the frontier is 22.8. At one term the exponents are 0.71 for schedule slack, 0.18 for budget slack and 0.11 for scope; all three are in the [contending set](../generated/glossary.md). The band is widened from 1/τ to the smallest that holds fifteen projects, 0.047 in log V. Among those fifteen the association of the two slacks is +0.43, of schedule slack with scope −0.71 and of budget slack with scope −0.92.
+Both slack shares take the shift 10, the round number above the worst overrun (8.9 times the planned duration), so every metric is positive; scope is unshifted; each log gets a standard scaler ([conditioning](../user-guide/conditioning.md)). The [temperature](../generated/glossary.md) that puts a tenth of the projects above the frontier is 22.8. At one term the exponents are 0.71 for schedule slack, 0.18 for budget slack and 0.11 for scope; all three are in the [contending set](../generated/glossary.md). The band widens from 1/τ to hold fifteen projects, 0.047 in log V. Among them the association of the two slacks is +0.43, of schedule slack with scope −0.71 and of budget slack with scope −0.92.
 
 ```python {.runnable}
 import sys
@@ -51,7 +51,7 @@ print(round(tau, 1), fit.exponents_.round(2))
 <figure markdown>
 ![Three scatter panels of the 141 projects in standardized log-metrics, each with the fifteen near-frontier projects marked in orange: schedule slack against budget slack, where the marked points rise together, association +0.43; schedule slack against scope, association −0.71; budget slack against scope, association −0.92, where the marked points fall as scope rises.](../generated/figures/kitchenham-pairs-light.png#only-light)
 ![Three scatter panels of the 141 projects in standardized log-metrics, each with the fifteen near-frontier projects marked in orange: schedule slack against budget slack, where the marked points rise together, association +0.43; schedule slack against scope, association −0.71; budget slack against scope, association −0.92, where the marked points fall as scope rises.](../generated/figures/kitchenham-pairs-dark.png#only-dark)
-<figcaption>Figure 11. Each pair of log-metrics with the fifteen projects nearest the frontier marked; the number is their association. Shared movement left, substitution centre and right.</figcaption>
+<figcaption>Figure 11. Each pair of log-metrics with the fifteen projects nearest the frontier marked; the number is their association, a correlation. Shared movement left, substitution centre and right.</figcaption>
 </figure>
 
 <!-- register: examples/kitchenham/results.json runs.primary.k2 -->
@@ -69,7 +69,7 @@ run.participation_figure()
 <figure markdown>
 ![Dot chart of seven conditioning rules against exponent from 0 to 1, three colours for schedule slack, budget slack and scope; schedule slack's dots lie between 0.35 and 0.71, budget slack's between 0.18 and 0.48, scope's between 0.11 and 0.46 except a hollow dot at zero for the no-scaler rule.](../generated/figures/kitchenham-participation-light.png#only-light)
 ![Dot chart of seven conditioning rules against exponent from 0 to 1, three colours for schedule slack, budget slack and scope; schedule slack's dots lie between 0.35 and 0.71, budget slack's between 0.18 and 0.48, scope's between 0.11 and 0.46 except a hollow dot at zero for the no-scaler rule.](../generated/figures/kitchenham-participation-dark.png#only-dark)
-<figcaption>Figure 12. Each metric's one-term exponent under the seven rules; a hollow marker is outside the contending set. Participation apart from association.</figcaption>
+<figcaption>Figure 12. Each metric's exponent at one term under the seven rules; hollow, outside the contending set. Which metrics bound the frontier is read here, how they move together from Figure 11.</figcaption>
 </figure>
 
 <!-- register: examples/kitchenham/variants.json bands, influence -->

@@ -156,9 +156,47 @@ rate of exchange between scope and slack, or anything beyond this portfolio.
 
 ## 7. The reads and the captures (R-5, R-10, R-11)
 
-Filled at the end of execution: the figure loop's cold reads (two readers per figure, image alone, then the
-caption), the project-management cold read (three answers, verbatim), and the captures of the rendered page at
-desktop width and 375 px in light and dark (`work-packages/WP76-rounds/captures/`).
+**The figure loop (2026-11-17).** Two fresh-context readers per figure, given the image alone, then the caption;
+one reader of each pair in the persona of a project manager. Intent written before the reads: Figure 11, shared
+movement in the slack pair and substitution in the two scope pairs, read from the marked points; Figure 12,
+participation shown apart from association, with the exponents' movement across the rules.
+
+- Figure 11, reader 1 (light image): "I take it that the highlighted points move together in the first pair and trade
+  off against each other in the other two, most strongly in budget vs scope." Ink as data "roughly 60 to 70 percent";
+  labels readable, "tick labels and legend text are small"; confused by "near the frontier", "association" and "6
+  beyond the frame"; the far point in the scope panels "unclear whether it is an outlier or meaningful". Caption:
+  "partly changed my reading ... positive means shared movement, negative means substitution."
+- Figure 11, reader 2 (dark image, PMP persona): "the pairs move together a bit in the first plot (+0.43) but trade
+  off against each other in the second and third (-0.71, -0.92)." Ink "most of it"; the pale text of the dark image
+  hard to read outside a dark page; "the legend text is cut off ('near the frontier (' ends abruptly)"; confused by
+  "standardized", "association", "6 beyond the frame", "frontier". Caption: "helped ... I now read the left plot as
+  'shared movement' and the other two as 'substitution'."
+- Figure 12, reader 1 (light): "the exponents change with the rule, and that scope drops to exactly 0 under 'no
+  scaler', where its marker is hollow." Ink "about 75 to 80 percent"; labels legible; the legend title "only a
+  fragment"; "participation apart from association is cryptic". Caption: confirmed the hollow marker, did not change
+  the substance.
+- Figure 12, reader 2 (dark, PMP persona): "the three project levers get different weights depending on the rule,
+  with schedule slack usually the largest and scope the smallest." Ink "about 75-80%"; the dark image's pale text
+  hard to read outside a dark page; "exponent at one term means nothing to me"; the legend title unexplained.
+  Caption: "mostly labels the chart rather than explaining it."
+
+Both figures passed the sentence test (the intent was read from the image by all four before the caption) and the
+ink test; the disposition for each is the smallest change: Figure 11, the legend moved to the lower left of the first
+panel, where it no longer runs into the marked points, and the per-panel "6 beyond the frame" replaced by one line
+under the panels, "6 projects, the worst overruns, lie beyond the frames"; the caption says the association is a
+correlation. Figure 12, the legend title completed ("filled: in the contending set; hollow: outside it") and the
+caption rewritten to say what is read here and what from Figure 11. The terms the readers stopped at ("frontier",
+"contending set", "standardized", "exponent at one term") are the page's, defined or linked to the glossary in the
+paragraph above each figure, not the figure's to define. The pale text of the dark images is the site's dark scheme
+(light text on the dark page; the images are transparent), judged on the rendered page below. No redraw.
+
+**Shows, does not show, good for.** Figure 11 shows how each pair of metrics moves among the fifteen projects
+nearest the frontier; it does not show the frontier itself, the exponents, or a cause; it is good for telling shared
+movement from substitution at a glance. Figure 12 shows each metric's exponent under each rule and whether it is in
+the contending set; it does not show which way metrics move together or how far a project is from the frontier; it
+is good for seeing that participation holds while the exponents move with the conditioning.
+
+**The project-management cold read (R-5)** and **the captures (R-11)**: below, filled at the browser pass.
 
 ## 8. What this changes for the method
 

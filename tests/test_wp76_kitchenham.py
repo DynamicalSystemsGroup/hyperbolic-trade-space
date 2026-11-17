@@ -261,7 +261,7 @@ def test_page_quotes_the_primary_fit():
     )
     assert set(p["contending_set"]) == set(p["metrics"]) and p["n_lemma"] == 3
     assert p["band_widened"] and p["n_near_frontier"] == 15
-    assert f"holds fifteen projects, {p['band']:.3f} in log V" in page
+    assert f"fifteen projects, {p['band']:.3f} in log V" in page
     a = p["association"]
     assert (
         _neg(
