@@ -36,16 +36,22 @@ minimum_permission = "write"
 # and this file does not is a difference.
 
 # The review on main: a pull request with one approval and a code owner's review, merged as a merge
-# commit. The bypass (RepositoryRole 5 is Repository admin, for pull requests only) is for the 0.1
-# release (decided 2026-11-17, 11:25) and is removed after it by a change to this file first, then to
-# the ruleset, named in the 0.2 changelog (decided 2026-11-17, 12:05 and 13:20).
+# commit. The bypass is one user, set by name on 2026-11-17 (User 10465438 is mzargham; for pull
+# requests only; the Repository admin role until that afternoon), for the 0.1 release (decided
+# 2026-11-17, 11:25) and removed after it by a change to this file first, then to the ruleset, named
+# in the 0.2 changelog (decided 2026-11-17, 12:05 and 13:20).
 [[rulesets]]
 name = "main-review"
 target = "branch"
 enforcement = "active"
 include = ["~DEFAULT_BRANCH"]
 exclude = []
-bypass_actors = [{ actor_type = "RepositoryRole", actor_id = 5, bypass_mode = "pull_request" }]
+bypass_actors = [{ actor_type = "User", actor_id = 10465438, bypass_mode = "pull_request" }]
+# The API returns bypass actors to administrators only; the workflow token sees an empty list, so the
+# field is compared locally and listed as not checked on the runner (the first controls run, 2026-11-17).
+[rulesets.fields.bypass_actors]
+checked_on = "local"
+local_reason = "the API returns a ruleset's bypass actors to administrators only; the workflow token sees an empty list"
 
 [[rulesets.rules]]
 type = "pull_request"
@@ -68,6 +74,11 @@ enforcement = "active"
 include = ["~DEFAULT_BRANCH"]
 exclude = []
 bypass_actors = []
+# The API returns bypass actors to administrators only; the workflow token sees an empty list, so the
+# field is compared locally and listed as not checked on the runner (the first controls run, 2026-11-17).
+[rulesets.fields.bypass_actors]
+checked_on = "local"
+local_reason = "the API returns a ruleset's bypass actors to administrators only; the workflow token sees an empty list"
 
 [[rulesets.rules]]
 type = "deletion"
@@ -90,6 +101,11 @@ enforcement = "active"
 include = ["refs/heads/dev"]
 exclude = []
 bypass_actors = []
+# The API returns bypass actors to administrators only; the workflow token sees an empty list, so the
+# field is compared locally and listed as not checked on the runner (the first controls run, 2026-11-17).
+[rulesets.fields.bypass_actors]
+checked_on = "local"
+local_reason = "the API returns a ruleset's bypass actors to administrators only; the workflow token sees an empty list"
 
 [[rulesets.rules]]
 type = "deletion"
@@ -105,6 +121,11 @@ enforcement = "active"
 include = ["refs/heads/paper"]
 exclude = []
 bypass_actors = []
+# The API returns bypass actors to administrators only; the workflow token sees an empty list, so the
+# field is compared locally and listed as not checked on the runner (the first controls run, 2026-11-17).
+[rulesets.fields.bypass_actors]
+checked_on = "local"
+local_reason = "the API returns a ruleset's bypass actors to administrators only; the workflow token sees an empty list"
 
 [[rulesets.rules]]
 type = "deletion"

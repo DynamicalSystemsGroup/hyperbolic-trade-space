@@ -33,7 +33,13 @@ the workflows each names. Five executable, four guideline; `tests/test_repo_sett
    field. Any endpoint that should be readable and is not still exits 2. His decisions: on the setting itself
    (item 1: `write` live, `read` in the design), and whether he wants a local-only field at all, or instead (a) a
    fine-grained token or GitHub App with Administration (read) as a repository secret for that one read, or (b) the
-   field out of the declaration, read back by hand like the publishers and Zenodo.
+   field out of the declaration, read back by hand like the publishers and Zenodo. The first live `controls` run on
+   `dev` (run 44148913732 at 78feb3c1) read every endpoint and found one more field of this kind: GitHub returns a
+   ruleset's bypass actors to administrators only, so the workflow token saw `[]` for `main-review` and the field
+   is unverifiable on the runner in both directions. Every ruleset's `bypass_actors` now carries a field-level
+   `checked_on = "local"`; the runner's verdict is `conforming (55 fields on the runner; 6 local-only)`. The 0.2
+   removal of the `main-review` bypass is therefore attested by a code owner's local run of the checker and by the
+   ruleset page, not by the runner; the same options (a) and (b) apply to it.
 3. **`controls` is not a required status check on `main`.** The `main-checks` ruleset requires the three shards and
    `admissibility`; `controls` gates them in practice (every shard needs it) but is not named. Adding it is a
    ruleset change (a non-goal of WP78) and, by the rule of this package, a change to the declaration first.
@@ -78,8 +84,8 @@ declaration gains a fifth ruleset.
 **(b) CODEOWNERS path lines.** Lines such as `/.github/governance.toml @mzargham` in `.github/CODEOWNERS`.
 *Binds:* only where "Require review from Code Owners" is in force, which today is pull requests into `main`
 (`main-review`); a pull request touching a governed path then needs an approval from an owner of that path. On
-`dev` nothing changes, since `dev` requires no pull request. *Bypass:* `main-review`'s bypass list (Repository admin
-on pull requests, for 0.1). *Cost to direct commits on `dev`:* none. *Checker:* the file is in the tree; the
+`dev` nothing changes, since `dev` requires no pull request. *Bypass:* `main-review`'s bypass list (one user,
+`mzargham`, on pull requests, for 0.1). *Cost to direct commits on `dev`:* none. *Checker:* the file is in the tree; the
 checker reads its `*` line today and the parser (`scripts/admissibility.py`) would be extended to path lines,
 which then also name who may approve a change to each governed file (his principle of 13:40, with CODEOWNERS
 itself as the record).

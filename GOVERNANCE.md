@@ -30,8 +30,8 @@ are `.github/PR_ADMISSIBILITY.md`; the review is recorded in the pull request, t
 Into `main`, a review of the release. A code owner who is not the pull request's author asks: is this candidate the
 release? They read the changelog entry, the release issue the pull request closes and the staged site, and merge.
 The merge is the decision; the `pypi` environment waits for nobody else. A pull request's author cannot approve it,
-so for the 0.1 release the `main-review` ruleset carries a bypass for repository administrators on pull requests
-(decided 2026-11-17), and the release is merged on that bypass. The bypass is removed after 0.1 by a change to the
+so for the 0.1 release the `main-review` ruleset carries a bypass for one named user (`mzargham`) on pull requests
+(decided 2026-11-17; set by name that afternoon), and the release is merged on that bypass. The bypass is removed after 0.1 by a change to the
 declaration first, then to the ruleset, in a pull request of its own, named in the 0.2 changelog; the 0.2 release is
 the first through the review rule without it, and its attestation shows the rule in effect.
 
@@ -71,9 +71,11 @@ A tighter control on editing them is an open decision (`work-packages/WP78-round
 build; the code owners' minimum access; the default workflow permissions. `scripts/check_repo_settings.py` reads
 the live settings through the GitHub API, compares them with the declaration field by field, prints each
 difference and exits non-zero on any; an endpoint it cannot read fails the check by name, never silently. A
-section the declaration marks `checked_on = "local"` (today the default workflow permissions, whose endpoint needs a
-permission the workflow token never has) is not read on the runner: the job's report lists its fields as not
-checked there, with the reason, and a code owner's local run checks them.
+field the declaration marks `checked_on = "local"` is not read on the runner: today the default workflow
+permissions (their endpoint needs a permission the workflow token never has) and the rulesets' bypass actors (the
+API returns them to administrators only; the token sees an empty list). The job's report lists those fields as not
+checked there, with the reason, and a code owner's local run checks them; the removal of the `main-review` bypass
+after 0.1 is therefore attested by that local run and the ruleset page, not by the runner.
 
 The `controls` job runs it first in the Tests and Release workflows; every other job needs it, so no test, build or
 publish runs while a setting differs from its declaration. Its report is the job summary. A change to a setting

@@ -45,7 +45,8 @@ jobs:
     # .github/governance.toml. The outputs are the attestation the tag job writes into the release
     # notes. The endpoints need Metadata (always granted), Actions (the environments) and Pages (the
     # Pages build); the default workflow permissions need Administration, which the workflow token
-    # never has, so the declaration marks them local-only and --runner lists them as not checked here.
+    # never has, and the rulesets' bypass actors are returned to administrators only; the declaration
+    # marks both local-only and --runner lists them as not checked here.
     runs-on: ubuntu-24.04
     permissions:
       contents: read

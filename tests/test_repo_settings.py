@@ -169,12 +169,18 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     del payloads["actions/permissions/workflow"]
     result = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
     assert result.exit_code == 0 and not result.unreadable
-    assert result.verdict == "conforming (59 fields on the runner; 2 local-only)"
+    assert result.verdict == "conforming (55 fields on the runner; 6 local-only)"
     assert [f for f, _ in result.local_only] == [
+        "rulesets.main-review.bypass_actors",
+        "rulesets.main-checks.bypass_actors",
+        "rulesets.dev.bypass_actors",
+        "rulesets.paper.bypass_actors",
         "actions.default_workflow_permissions",
         "actions.can_approve_pull_request_reviews",
     ]
-    assert all("Administration (read)" in reason for _, reason in result.local_only)
+    assert all(
+        "Administration (read)" in r for f, r in result.local_only if f.startswith("actions")
+    )
     text = result.markdown("o/r", Path("d.toml"))
     assert "Not checked on the runner (needs a code owner's local run):" in text
     assert "- `actions.default_workflow_permissions`: GET actions/permissions/workflow" in text
@@ -190,7 +196,7 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     del payloads["pages"]
     result = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
     assert result.exit_code == 2
-    assert result.verdict == "1 endpoint(s) unreadable; 2 local-only"
+    assert result.verdict == "1 endpoint(s) unreadable; 6 local-only"
     # the command line
     for path in FIXTURE.glob("*.json"):
         if path.name != "actions__permissions__workflow.json":
@@ -200,16 +206,46 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     assert (
         "local-only: actions.default_workflow_permissions (GET actions/permissions/workflow" in out
     )
-    assert out.strip().endswith("conforming (59 fields on the runner; 2 local-only)")
+    assert out.strip().endswith("conforming (55 fields on the runner; 6 local-only)")
+
+
+def test_bypass_actors_are_local_only_on_the_runner_and_compared_locally(payloads):
+    """The API returns bypass actors to administrators only (the first controls run on dev,
+    2026-11-17, saw [] for main-review): a field-level override marks them local."""
+    for r in DECLARATION["rulesets"]:
+        assert r["fields"]["bypass_actors"]["checked_on"] == "local", r["name"]
+    ruleset(payloads, "main-review")["bypass_actors"] = []
+    runner = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
+    assert runner.exit_code == 0 and runner.differences == []
+    assert not any(r.path.endswith(".bypass_actors") for r in runner.rows)
+    listed = dict(runner.local_only)
+    assert "administrators only" in listed["rulesets.main-review.bypass_actors"]
+    assert "Not checked on the runner" in runner.markdown("o/r", Path("d.toml"))
+    assert "- `rulesets.main-review.bypass_actors`: the API returns" in runner.markdown(
+        "o/r", Path("d.toml")
+    )
+    local = compare(payloads)
+    assert local.exit_code == 1
+    assert local.lines() == [
+        'rulesets.main-review.bypass_actors: expected ["User:10465438:pull_request"], found []'
+    ]
 
 
 def test_a_bad_checked_on_value_is_refused(tmp_path):
-    text = crs.DECLARATION.read_text(encoding="utf-8").replace(
-        'checked_on = "local"', 'checked_on = "sometimes"'
+    source = crs.DECLARATION.read_text(encoding="utf-8")
+    section = source.replace(
+        '[actions]\nchecked_on = "local"', '[actions]\nchecked_on = "sometimes"'
     )
-    (tmp_path / "g.toml").write_text(text, encoding="utf-8")
-    with pytest.raises(ValueError, match="checked_on"):
-        crs.load_declaration(tmp_path / "g.toml")
+    field = source.replace(
+        '[rulesets.fields.bypass_actors]\nchecked_on = "local"',
+        '[rulesets.fields.bypass_actors]\nchecked_on = "runner"',
+        1,
+    )
+    for text in (section, field):
+        assert text != source
+        (tmp_path / "g.toml").write_text(text, encoding="utf-8")
+        with pytest.raises(ValueError, match="checked_on"):
+            crs.load_declaration(tmp_path / "g.toml")
 
 
 def test_codeowners_without_a_login_is_a_difference(payloads):

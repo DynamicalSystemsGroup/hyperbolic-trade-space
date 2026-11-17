@@ -60,8 +60,11 @@ and a check that runs first in CI.
 From WP78 the read-back is the checker's output: `uv run python scripts/check_repo_settings.py` compares the live
 settings with `.github/governance.toml` (the values above, the code owners' access and the default workflow
 permissions, which read back `write`: `WP78-rounds/gaps.md`, item 1) and reported `conforming (61 fields)` on
-2026-11-17; the `controls` job runs it first in CI (`--runner`: 59 fields, the two workflow-permission fields
-local-only, since their endpoint needs Administration) and its report is the record at each head.
+2026-11-17; the `controls` job runs it first in CI (`--runner`: 55 fields; local-only, the two workflow-permission
+fields, whose endpoint needs Administration, and the four rulesets' bypass actors, which the API returns to
+administrators only) and its report is the record at each head. At 13:37 EST he changed the `main-review` bypass
+actor from the Repository admin role to his user (`User:10465438`, pull requests only); the declaration and the
+recorded responses follow (`tests/data/wp78/`).
 
 ## G8 the pull request
 

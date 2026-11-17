@@ -15,6 +15,8 @@ Y`` and exits 1 on any. An endpoint that cannot be read is named and exits 2, ne
 ``checked_on = "local"`` is not read; its fields are listed in the report under "Not checked on the
 runner" with the declaration's reason and leave the exit code alone, and the verdict counts them
 (``conforming (N fields on the runner; M local-only)``). Without the flag every field is read.
+A field-level override, ``[rulesets.fields.bypass_actors]`` with ``checked_on = "local"``, does the
+same for one field of a section (bypass actors: the API returns them to administrators only).
 ``--report`` writes the comparison as Markdown (the job summary). ``--fixture DIR`` reads recorded
 responses instead of calling ``gh`` (the tests); ``--record DIR`` writes the responses it reads,
 one JSON file per endpoint, for a new fixture. ``--declaration`` and ``--repo`` override the
@@ -49,7 +51,7 @@ RANK = {"none": 0, "read": 1, "triage": 1, "write": 2, "maintain": 2, "admin": 3
 # A section's scope: checked on the runner and locally ("both", the default), or locally only
 # ("local": its endpoint needs a permission the workflow token never has, named in local_reason).
 SCOPES = {"both", "local"}
-SCOPE_KEYS = ("checked_on", "local_reason")
+SCOPE_KEYS = ("checked_on", "local_reason", "fields")
 BRANCH_POLICY = {
     "all": None,
     "protected": {"protected_branches": True, "custom_branch_policies": False},
@@ -183,6 +185,17 @@ class Comparison:
         self.local_only += [(field, reason) for field in fields]
         return True
 
+    def local_only_field(self, section: dict, key: str, path: str) -> bool:
+        """A field-level override: ``[<section>.fields.<key>]`` with ``checked_on = "local"``.
+
+        In runner mode the field is neither fetched nor compared, and is listed with its reason.
+        """
+        scope = (section.get("fields") or {}).get(key) or {}
+        if not (self.runner and scope.get("checked_on", "both") == "local"):
+            return False
+        self.local_only.append((path, scope.get("local_reason", "marked local in the declaration")))
+        return True
+
     def read(self, endpoint: str):
         try:
             return self.fetch(endpoint)
@@ -220,11 +233,12 @@ class Comparison:
             cond = (detail.get("conditions") or {}).get("ref_name") or {}
             self.eq(f"{p}.include", sorted(d["include"]), sorted(cond.get("include") or []))
             self.eq(f"{p}.exclude", sorted(d.get("exclude", [])), sorted(cond.get("exclude") or []))
-            self.eq(
-                f"{p}.bypass_actors",
-                _actors(d.get("bypass_actors", [])),
-                _actors(detail.get("bypass_actors") or []),
-            )
+            if not self.local_only_field(d, "bypass_actors", f"{p}.bypass_actors"):
+                self.eq(
+                    f"{p}.bypass_actors",
+                    _actors(d.get("bypass_actors", [])),
+                    _actors(detail.get("bypass_actors") or []),
+                )
             live_rules = {r["type"]: r.get("parameters") or {} for r in detail.get("rules") or []}
             self.eq(f"{p}.rules", sorted(r["type"] for r in d["rules"]), sorted(live_rules))
             for rule in d["rules"]:
@@ -387,8 +401,9 @@ def load_declaration(path: Path) -> dict:
     sections = [decl["actions"], decl["pages"], decl["code_owners"]]
     sections += decl.get("rulesets", []) + decl.get("environments", [])
     for section in sections:
-        if section.get("checked_on", "both") not in SCOPES:
-            raise ValueError(f"checked_on must be one of {sorted(SCOPES)}: {section}")
+        for scope in (section, *(section.get("fields") or {}).values()):
+            if scope.get("checked_on", "both") not in SCOPES:
+                raise ValueError(f"checked_on must be one of {sorted(SCOPES)}: {scope}")
     return decl
 
 

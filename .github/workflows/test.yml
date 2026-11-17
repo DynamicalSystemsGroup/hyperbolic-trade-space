@@ -46,8 +46,9 @@ jobs:
     # controls: false, so a release run checks once; a called workflow sees the caller's name, hence
     # the test on github.workflow. The endpoints need Metadata (always granted), Actions (the
     # environments) and Pages (the Pages build); the default workflow permissions need Administration,
-    # which the workflow token never has, so the declaration marks them local-only and --runner lists
-    # them as not checked here (a code owner's local run checks them).
+    # which the workflow token never has, and the rulesets' bypass actors are returned to administrators
+    # only; the declaration marks both local-only and --runner lists them as not checked here (a code
+    # owner's local run checks them).
     if: ${{ github.workflow == 'Tests' || inputs.controls }}
     runs-on: ubuntu-24.04
     permissions:
