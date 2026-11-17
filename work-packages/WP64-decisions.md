@@ -639,3 +639,22 @@ and every docs page, the metadata that link handlers and search engines read: a 
 Open Graph and Twitter card fields with an image, structured data (JSON-LD) for the software and the site, and a
 robots file and sitemap for the whole site; the composer and the docs theme emit them from one source of values;
 a test reads them off the staged site. Approved by the driver as his proxy under the mandate.
+
+## His direction for 0.2, relayed from the WP76 session (2026-11-17, ~16:00 EST)
+
+Given by him while reading the site in the iron-triangle session; the verbatim record is that session's
+`WP76-decisions.md` on branch `claude/iron-triangle-example-12a7c6`, and the session relayed it here as:
+
+> i also want to clean up the references to the paper which is currently a working paper. only the abstract is
+> published as a webpage but the full content can be built from the repo. per our recent changes the paper gets
+> its own development path. my overall take is that the documentation site needs work but our goal is not to
+> disrupt the 0.1 release, instead to extend the scope of the 0.2 release to be documentation improvements
+
+**Applied as.** Nothing changes for 0.1. The 0.2 board (opened at 0.1's release; held here until then) carries: the
+bypass removal (its own pull request); WP76, the iron-triangle example (its pull request into `dev`); the docs'
+references to the paper cleaned up (that session's inventory: 22 `paper:` links on nine docs pages, "the paper" in
+prose on five surfaces; the paper a working paper whose abstract alone is published and whose full build comes
+from the repository on its own branch); documentation improvements as 0.2's scope, scoped as their own package
+(he has a scoping card for it from that session). Also on the WP76 branch at his word and outside its package: the
+docs home's and the README's first lines gained "or of observed cases: reported devices, species, plot-years,
+finished projects" (267b7866), with the site's word budget raised by ten; that lands with the branch.

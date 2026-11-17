@@ -10,6 +10,25 @@ to `main` that he alone merges. **v0.2, the secondary:** a tooling and documenta
 examples, drawn from the research that lands in v0.1's record; the breadth those examples should show, in his words, is
 `examples-coverage.md` (an intent record, not a requirement list).
 
+
+## The 0.2 board, held until 0.1 ships (2026-11-17, 16:05 EST)
+
+His release line (`WP64-decisions.md`, "His release line"): 0.1 merged on his bypass; then, each its own pull
+request into `dev` reviewed by a code owner other than the author, and together the 0.2 release approved under
+the review rule without the bypass:
+
+- The bypass removed from `main-review`: the governance declaration first (WP78's file), then the setting; named in
+  the 0.2 changelog.
+- WP76, the iron-triangle example, from branch `claude/iron-triangle-example-12a7c6` (accepted in its session at
+  9657a0f0; one rebase; his review of the interpretation).
+- The docs' references to the paper cleaned up: 22 `paper:` links on nine docs pages and "the paper" in prose on
+  five surfaces, the paper being a working paper whose abstract alone is published (his direction relayed from the
+  WP76 session, `WP64-decisions.md`).
+- Documentation improvements as 0.2's scope, scoped as their own package (his scoping card from the WP76 session).
+- WP79 unit B if it does not land in 0.1: the paper's contribution route.
+- Deferred from 0.1 by his word: Zenodo (after a first full draft is approved); the paper's first pinned mode.
+- The directions backlog built and ordered with him (`notes/directions/README.md`), not 0.2 content by itself.
+
 ## Current state (2026-11-15 13:28 EST; dev at 022c4d2; the section of 2026-11-14 22:56 kept below as history)
 
 The candidate he reviewed on the morning of 2026-11-15 (content head a63d390, fully green) is being reworked under his
