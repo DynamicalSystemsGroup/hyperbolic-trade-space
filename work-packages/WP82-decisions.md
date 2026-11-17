@@ -83,3 +83,34 @@ merge; the Agent's defaults as one item). His answer, verbatim:
 > Approved
 
 Execution runs on `governance-bypass-removal`; the pull request waits for `dev` to be in `main` for 0.1.
+
+## Execution (2026-11-17, evening)
+
+Branch `governance-bypass-removal`, rebased onto `dev` 7b0d7cdf (the paper's route, WP79, landed there while the
+package was scoped); content head 9fa94658. The live check on the branch, `uv run python scripts/check_repo_settings.py`,
+reports five differences, which are the settings he changes on GitHub after Danilo merges the pull request, in this
+order (a runner-checked field first, so the window is short):
+
+1. Settings, Rules, Rulesets: the `main-checks` ruleset's required status checks gain `controls` (runner-checked:
+   the `controls` job on the push to `dev` is red until this and item 2 are done).
+2. Settings, Rules, New push ruleset `governance-files`, enforcement active, "Restrict file paths" with the nine
+   governed paths of the declaration, bypass list: Repository admin, always (runner-checked).
+3. Settings, Rules, Rulesets, `main-review`: remove the bypass actor (local-only).
+4. Settings, Actions, General, Workflow permissions: read, and untick "Allow GitHub Actions to create and approve
+   pull requests" (local-only).
+5. A local run reads `conforming (69 fields)`; `--runner` reads `conforming (62 fields on the runner; 7
+   local-only)`; a `--record tests/data/wp78` run replaces the hand-edited fixture with recordings (a follow-up
+   commit). Re-run the red `controls` job.
+
+The live lines on the branch before any of that, verbatim: `rulesets: expected ["dev", "governance-files",
+"main-checks", "main-review", "paper"], found ["dev", "main-checks", "main-review", "paper"]`;
+`rulesets.main-review.bypass_actors: expected [], found ["User:10465438:pull_request"]`;
+`rulesets.main-checks.rules.required_status_checks.required_status_checks: expected ["admissibility", "controls",
+"test (docs)", "test (fast)", "test (slow)"], found ["admissibility", "test (docs)", "test (fast)", "test (slow)"]`;
+`actions.default_workflow_permissions: expected "read", found "write"`;
+`actions.can_approve_pull_request_reviews: expected false, found true`.
+
+Decided during execution (the Agent's defaults, noted here): the bug and question rows name the form's required
+fields as their machine side and the triaging code owner as their judged side; the judged rows cite the paragraph of
+`CONTRIBUTING.md` or the section of `docs/code-owners.md` by name; the permissions test accepts a workflow whose own
+line reads contents and writes issues or pull requests for its one job.
