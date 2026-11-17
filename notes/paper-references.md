@@ -26,7 +26,7 @@ persona journeys (`work-packages/WP81-rounds/journeys.md`, R-8) and his word on 
 
 | # | Surface | Sentence (the pointer in it) | Key | Disposition |
 |---|---|---|---|---|
-| 1 | `docs/index.md` | "The [paper](paper:sect-problem) makes the argument for the method; the [project page](../) links it, these docs and the package." | sect-problem | names the working paper (moved to the foot of the page; the opening clause removed) |
+| 1 | `docs/index.md` | "The [paper](paper:sect-problem) makes the argument for the method; the [project page](../) links it, these docs and the package." | sect-problem | names the working paper (the naming sentence at the foot of the page; the opening clause now reads "The project page links these docs, the package and the working paper's abstract") |
 | 2 | `docs/theory.md` | "definitions only, no proofs; the [paper](paper:sect-results) has them." | sect-results | removed as the paper's role |
 | 3 | `docs/theory.md` | "Because the weights sum to one, V(λm) = λV(m): [doubling every metric doubles V](paper:thm-invariant)." | thm-invariant | brief: the statement stays, the link goes |
 | 4 | `docs/theory.md` | "[the fit is] a convex program](paper:thm-convex) after the logarithmic change of variables." | thm-convex | brief: the statement stays, the link goes |

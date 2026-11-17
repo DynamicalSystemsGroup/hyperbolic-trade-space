@@ -120,6 +120,6 @@ Done in WP81's first unit as "Kitchenham software projects" (the navigation titl
 ## The word budget (2026-11-17)
 
 The Agent's defaults say the docsite total stays. After the removals of this package and the two naming sentences, the
-touched pages net 19 words fewer than before WP81 (the home 288 of 350, Further reading 229 of 300; the total 12030
+touched pages net 19 words fewer than before WP81 (the home 289 of 350, Further reading 228 of 300; the total 12030
 against the cap of 12055), so the default holds and `TOTAL_BUDGET` is unchanged at 12055. An earlier state of this
 section recorded a rise; it is superseded.
