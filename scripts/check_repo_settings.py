@@ -1,6 +1,7 @@
 """Compare the repository's live settings on GitHub with their declaration.
 
-The declaration is ``.github/governance.toml`` (``GOVERNANCE.md``): the rulesets, the environments
+The declaration is ``.github/governance.toml`` (``GOVERNANCE.md``): the rulesets (branch rulesets
+with their conditions; the push ruleset on the governed files, which has none), the environments
 and their deployment policies, the Pages build, the code owners' access, the paper approvers'
 access and the default workflow permissions. The checker reads each through ``gh api`` (the
 user's login locally, the workflow token on a runner), compares field by field, prints each
@@ -245,9 +246,12 @@ class Comparison:
             p = f"rulesets.{name}"
             self.eq(f"{p}.target", d["target"], detail.get("target"))
             self.eq(f"{p}.enforcement", d["enforcement"], detail.get("enforcement"))
-            cond = (detail.get("conditions") or {}).get("ref_name") or {}
-            self.eq(f"{p}.include", sorted(d["include"]), sorted(cond.get("include") or []))
-            self.eq(f"{p}.exclude", sorted(d.get("exclude", [])), sorted(cond.get("exclude") or []))
+            if "include" in d:  # a branch ruleset; a push ruleset has no ref condition
+                cond = (detail.get("conditions") or {}).get("ref_name") or {}
+                self.eq(f"{p}.include", sorted(d["include"]), sorted(cond.get("include") or []))
+                self.eq(
+                    f"{p}.exclude", sorted(d.get("exclude", [])), sorted(cond.get("exclude") or [])
+                )
             if not self.local_only_field(d, "bypass_actors", f"{p}.bypass_actors"):
                 self.eq(
                     f"{p}.bypass_actors",
@@ -263,6 +267,9 @@ class Comparison:
                     if key == "required_status_checks":
                         want = sorted(want)
                         got = sorted(c["context"] for c in got or [])
+                    elif isinstance(want, list) and all(isinstance(x, str) for x in want):
+                        want = sorted(want)  # a list of names (restricted file paths): order free
+                        got = sorted(got) if isinstance(got, list) else got
                     self.eq(f"{p}.rules.{rule['type']}.{key}", want, got)
 
     def environments(self) -> None:

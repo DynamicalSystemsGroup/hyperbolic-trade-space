@@ -8,8 +8,8 @@
 schema = 1
 repository = "DynamicalSystemsGroup/tradespace"
 
-# Settings, Actions, General, Workflow permissions. The live value on 2026-11-17 is write (the design of
-# 2026-11-16 said read); the difference is item 1 of work-packages/WP78-rounds/gaps.md for decision.
+# Settings, Actions, General, Workflow permissions: read, and a workflow may not approve a pull request
+# (the design of 2026-11-16; live was write through 0.1; decided 2026-11-17, WP82, set after the merge).
 # checked_on = "local": GET actions/permissions/workflow needs the Administration (read) permission,
 # which GitHub never grants to the workflow token, so the controls job (--runner) lists these two
 # fields as not checked on the runner and a code owner's local run checks them. Every other section
@@ -17,8 +17,8 @@ repository = "DynamicalSystemsGroup/tradespace"
 [actions]
 checked_on = "local"
 local_reason = "GET actions/permissions/workflow needs Administration (read), which the workflow token never has"
-default_workflow_permissions = "write"
-can_approve_pull_request_reviews = true
+default_workflow_permissions = "read"
+can_approve_pull_request_reviews = false
 
 # Settings, Pages: built and deployed by the Release workflow (pages-deploy.yml), not from a branch.
 [pages]
@@ -75,8 +75,9 @@ required_review_thread_resolution = false
 require_extra_approval_for_unattributed_changes = true
 required_reviewers = []
 
-# The checks on main, no bypass: the three test shards and admissibility, branches up to date; no
-# deletion, no force push.
+# The checks on main, no bypass: the controls job (the settings against this file; added 2026-11-17,
+# WP82, set after the merge), the three test shards and admissibility, branches up to date; no deletion,
+# no force push.
 [[rulesets]]
 name = "main-checks"
 target = "branch"
@@ -101,7 +102,7 @@ type = "required_status_checks"
 [rulesets.rules.parameters]
 strict_required_status_checks_policy = true
 do_not_enforce_on_create = false
-required_status_checks = ["test (fast)", "test (slow)", "test (docs)", "admissibility"]
+required_status_checks = ["controls", "test (fast)", "test (slow)", "test (docs)", "admissibility"]
 
 # dev: day-to-day commits land directly; no deletion, no force push.
 [[rulesets]]
@@ -143,6 +144,37 @@ type = "deletion"
 [[rulesets.rules]]
 type = "non_fast_forward"
 
+# governance-files: the control on the governed files (the secondary rules below; decided 2026-11-17,
+# WP82: CODEOWNERS lines plus a push ruleset). A push that touches one of the paths is refused unless
+# the pusher is a Repository admin, the one bypass actor, always on: a push ruleset has no
+# pull-requests-only mode and a pull request's merge is a push too. Who approves a change to a governed
+# file is its CODEOWNERS line; who pushes it is this ruleset. A push ruleset has no branch condition.
+[[rulesets]]
+name = "governance-files"
+target = "push"
+enforcement = "active"
+bypass_actors = [{ actor_type = "RepositoryRole", actor_id = 5, bypass_mode = "always" }]
+# The API returns bypass actors to administrators only; the workflow token sees an empty list, so the
+# field is compared locally and listed as not checked on the runner (the first controls run, 2026-11-17).
+[rulesets.fields.bypass_actors]
+checked_on = "local"
+local_reason = "the API returns a ruleset's bypass actors to administrators only; the workflow token sees an empty list"
+
+[[rulesets.rules]]
+type = "file_path_restriction"
+[rulesets.rules.parameters]
+restricted_file_paths = [
+  ".github/CODEOWNERS",
+  ".github/governance.toml",
+  ".github/workflows/*.yml",
+  "GOVERNANCE.md",
+  ".github/ISSUE_ADMISSIBILITY.md",
+  ".github/PR_ADMISSIBILITY.md",
+  ".github/RELEASE_ADMISSIBILITY.md",
+  ".github/ISSUE_TEMPLATE/*.yml",
+  ".github/pull_request_template.md",
+]
+
 # ------------------------------------------------------------------------------------ environments
 # Settings, Environments. `deployment_branches = "selected"` is "Selected branches and tags" with the
 # policies listed; `reviewers` are the required reviewers (none: the deployment waits for nobody).
@@ -183,70 +215,79 @@ can_admins_bypass = false
 # The repository's secondary rules (the rules about how its rules are made, changed and enforced;
 # decided 2026-11-17, 13:40 and 13:45): a small enumerated set, nothing added to it without a
 # governed change. `check` is "executable" (a script or a test checks it; `by` names which) or
-# "guideline" (a named role judges it; `by` names who). `control` is how each is edited today: the
-# same as any file, a pull request into dev or a direct commit to dev by a code owner. The tighter
-# control on these files is the question of work-packages/WP78-rounds/gaps.md (a push ruleset on
-# their paths, CODEOWNERS path lines, or a review rule with file patterns); the decision fills it.
+# "guideline" (a named role judges it; `by` names who). `codeowners` is the file's own line in
+# .github/CODEOWNERS, whose logins approve a change to it (the three code owners; decided 2026-11-17,
+# WP82); `control` is how each is edited: approved by that line, pushed by a Repository admin, since
+# the governance-files push ruleset above refuses any other push that touches these paths.
 
 [[governed_files]]
 path = ".github/CODEOWNERS"
+codeowners = "/.github/CODEOWNERS"
 rule = "who holds authority: the code owners (the * line) and the paper's approvers (the paper/ line)"
 check = "executable"
 by = "scripts/check_repo_settings.py (each code owner's and each paper approver's access); scripts/admissibility.py and tests/test_admissibility.py (the merge row, into dev and into paper)"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = ".github/governance.toml"
+codeowners = "/.github/governance.toml"
 rule = "the settings that enforce the release rules"
 check = "executable"
 by = "scripts/check_repo_settings.py in the controls job; tests/test_repo_settings.py"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = ".github/workflows/*.yml"
+codeowners = "/.github/workflows/"
 rule = "what runs, gates and publishes"
 check = "executable"
 by = "scripts/release_checks.py pins; tests/test_release_workflows.py, tests/test_ci_shards.py, tests/test_release_checks.py, tests/test_paper_model.py"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = "GOVERNANCE.md"
+codeowners = "/GOVERNANCE.md"
 rule = "the release rules in prose, the two reviews, the secondary rules"
 check = "guideline"
 by = "a code owner, at the review of any change to it; its list of secondary rules is checked against this file by tests/test_repo_settings.py"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = ".github/ISSUE_ADMISSIBILITY.md"
+codeowners = "/.github/ISSUE_ADMISSIBILITY.md"
 rule = "when a draft becomes an issue"
 check = "guideline"
 by = "a code owner who removes the draft label (the fitness rows); the machine rows run in issue-admissibility.yml and draft-label-gate.yml"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = ".github/PR_ADMISSIBILITY.md"
+codeowners = "/.github/PR_ADMISSIBILITY.md"
 rule = "when a pull request is reviewed and merged into dev"
 check = "guideline"
 by = "the code owner who reviews and merges (the fitness rows); the machine rows run in pr-linked-issue.yml, pr-fields.yml, merge-by-code-owner.yml and test.yml"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = ".github/RELEASE_ADMISSIBILITY.md"
+codeowners = "/.github/RELEASE_ADMISSIBILITY.md"
 rule = "when a merge into main is a release"
 check = "guideline"
 by = "the code owner who merges the release (the fitness row); the machine rows run in release.yml"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = ".github/ISSUE_TEMPLATE/*.yml"
+codeowners = "/.github/ISSUE_TEMPLATE/"
 rule = "what an issue asks for"
 check = "executable"
 by = "tests/test_admissibility.py (the scope-of-work template carries the fields the checks read); the forms themselves, on GitHub"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
 
 [[governed_files]]
 path = ".github/pull_request_template.md"
+codeowners = "/.github/pull_request_template.md"
 rule = "what a pull request asks for"
 check = "executable"
 by = "tests/test_admissibility.py (the template carries the sections the pr-fields check reads)"
-control = "pull request into dev, or a direct commit to dev by a code owner"
+control = "approved by the owners on its CODEOWNERS line (the three code owners); pushed by a Repository admin, directly to dev or as the merge of a pull request (the governance-files push ruleset)"
