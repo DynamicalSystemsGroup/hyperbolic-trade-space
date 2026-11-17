@@ -2600,7 +2600,9 @@ def test_notebooks_execute_from_a_clean_kernel_and_match_the_committed_outputs(t
             assert keys_a == keys_b, ca.id
             if ca.id.startswith("tab-H-toolchain"):
                 continue  # the commit and the platform are observed values
-            assert _out_text(ca) == _out_text(cb), ca.id
+            # byte-equal in the environment of record; elsewhere the planted table's digest is
+            # masked and the numbers agree within text_rtol, as the F-table comparison does
+            _current(_out_text(ca), _out_text(cb), ca.id)
 
 
 @pytest.mark.skipif(
@@ -2624,7 +2626,10 @@ def test_myst_builds_the_html_site(tmp_path):
     # cross-references use are heading identifiers of the supporting page
     html = work / "_build" / "html"
     page = (html / "index.json").read_text(encoding="utf-8")
-    urls = re.findall(r'"url":"(/build/fig[\w.-]+\.png)"[^]]*?full-size figure', page)
+    # the build inherits BASE_URL (the paper workflow sets the Pages prefix), so the asset paths
+    # carry it; the files are written under _build/html/build/ whatever the prefix
+    base = re.escape(os.environ.get("BASE_URL", "").rstrip("/"))
+    urls = re.findall(rf'"url":"{base}(/build/fig[\w.-]+\.png)"[^]]*?full-size figure', page)
     assert len(urls) == 3  # three figure cells (WP19 P-7, P-10, P-5, P-6 revised); static: none
     assert all((html / u.lstrip("/")).is_file() for u in urls)
     support = (html / "supporting-material.json").read_text(encoding="utf-8")

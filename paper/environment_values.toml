@@ -47,7 +47,9 @@ container became the source of the committed values) and f6c45d25... on Linux am
 agree to rounding"""
 elsewhere = """tests/test_paper.py::test_planted_table_agrees_with_the_reference_values compares the
 table's values with the reference array (values_rtol, values_atol), and the committed output of
-the datasets table is compared with numbers within text_rtol and this digest left uncompared"""
+the datasets table is compared with numbers within text_rtol and this digest left uncompared
+(test_c_committed_output_is_current, and the clean-kernel re-execution
+test_notebooks_execute_from_a_clean_kernel_and_match_the_committed_outputs, cell by cell)"""
 values_rtol = 1e-9
 values_atol = 1e-12
 text_rtol = 1e-3  # the tables print four significant digits
