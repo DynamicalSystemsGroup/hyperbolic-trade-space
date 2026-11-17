@@ -35,13 +35,27 @@ so for the 0.1 release the `main-review` ruleset carries a bypass for one named 
 declaration first, then to the ruleset, in a pull request of its own, named in the 0.2 changelog; the 0.2 release is
 the first through the review rule without it, and its attestation shows the rule in effect.
 
+## The paper's route
+
+A change to the paper is a pull request into `paper`, reviewed and merged by a paper approver (the `paper/` line of
+`.github/CODEOWNERS`) who is not its author: the merge check records it, as it records a merge into `dev`. The
+approver reads for the argument (each claim backed, the glossary's words); the paper workflow checks the build, the
+tests, the residual counts and the key manifest on the push that the merge makes. The pull request template's
+`Paper` section names the section or figure changed, the residual check's result and the build, and the pull request
+check reads it on that base. A pin is a `paper-*` tag pushed by an approver, approved at the `paper-release`
+environment by the other, and recorded in the mode file; it reaches the site by the merge of `paper` into `dev` and
+of `dev` into `main`. The `paper` ruleset forbids deletion and force pushes, as `dev`'s does; files under `tests/`
+and `scripts/` change on `dev`. The route in full is "Contributing to the paper" in `CONTRIBUTING.md`.
+
 ## Authority
 
 `.github/CODEOWNERS` is the source of truth for authority in the repository: the logins on its `*` line are the
-code owners, the people who approve drafts, review and merge candidates, and release. Every check that asks who may
-do something reads that file; no other list exists. Each code owner is a collaborator with at least the access the
-declaration names, which the settings check verifies. The paper's approvers are set in the `paper-release`
-environment and are not thereby code owners.
+code owners, the people who approve drafts, review and merge candidates, and release; the logins on its `paper/`
+line are the paper's approvers, who review and merge pull requests into `paper` and approve a paper tag's
+publication, and who are not thereby code owners. Every check that asks who may do something reads that file; no
+other list exists. Each code owner, and each paper approver, is a collaborator with at least the access the
+declaration names for their line, which the settings check verifies. The `paper-release` environment's required
+reviewers are the paper's approvers, declared with it.
 
 ## The secondary rules
 
@@ -49,7 +63,7 @@ The files that say how the repository's rules are made, changed and enforced are
 rules). The set is small and enumerated; adding a file to it is itself a governed change. Each is executable (a
 script or a test checks it) or a guideline (a named role judges it):
 
-- `.github/CODEOWNERS` — executable: `scripts/check_repo_settings.py` checks each code owner's access; the merge check (`scripts/admissibility.py`) reads it.
+- `.github/CODEOWNERS` — executable: `scripts/check_repo_settings.py` checks each code owner's and each paper approver's access; the merge check (`scripts/admissibility.py`) reads both lines.
 - `.github/governance.toml` — executable: the declaration of the settings; `scripts/check_repo_settings.py` in the `controls` job, `tests/test_repo_settings.py`.
 - `.github/workflows/*.yml` — executable: `scripts/release_checks.py pins` and the workflow tests (`tests/test_release_workflows.py`, `tests/test_ci_shards.py`, `tests/test_release_checks.py`, `tests/test_paper_model.py`).
 - `GOVERNANCE.md` — guideline: a code owner judges a change to it at review; its list of secondary rules is tested against the declaration.
@@ -68,7 +82,7 @@ A tighter control on editing them is an open decision (`work-packages/WP78-round
 `.github/governance.toml` declares the settings that enforce the release rules: the four rulesets (`main-review`,
 `main-checks`, `dev`, `paper`) with their rules, parameters and bypass actors; the four environments
 (`github-pages`, `pypi`, `testpypi`, `paper-release`) with their reviewers and branch or tag policies; the Pages
-build; the code owners' minimum access; the default workflow permissions. `scripts/check_repo_settings.py` reads
+build; the code owners' and the paper approvers' minimum access; the default workflow permissions. `scripts/check_repo_settings.py` reads
 the live settings through the GitHub API, compares them with the declaration field by field, prints each
 difference and exits non-zero on any; an endpoint it cannot read fails the check by name, never silently. A
 field the declaration marks `checked_on = "local"` is not read on the runner: today the default workflow
@@ -97,8 +111,9 @@ made, and which fields a code owner checks by hand.
 
 Issues are templated: a scope of work (`.github/ISSUE_TEMPLATE/scope-of-work.yml`, labelled `draft` until a code
 owner approves it), a bug report and a question; blank issues are off, and security reports go to the private
-advisory form. Pull requests have one template (`.github/pull_request_template.md`), target `dev`, and name the
-issue they resolve or carry the `small-fix` label.
+advisory form. Pull requests have one template (`.github/pull_request_template.md`), target `dev` (`paper` for a
+change to the paper, with the template's `Paper` section filled), and name the issue they resolve or carry the
+`small-fix` label.
 
 Criteria are of two kinds. Executable: the rows marked machine in the three admissibility documents, run by the
 issue and pull request workflows, the test workflow (lint, format, lock, the three test shards, the attribution

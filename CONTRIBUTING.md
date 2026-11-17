@@ -88,6 +88,41 @@ The release rules in one page, the two reviews, the file that declares the setti
 every workflow are in [`GOVERNANCE.md`](GOVERNANCE.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
 the issue tracker; that file is for reporting a vulnerability and does not govern releases.
 
+## Contributing to the paper
+
+The paper takes its own route, apart from the software's. It lives in `paper/` (the two notebooks, `paper.ipynb` and
+`supporting_material.ipynb`, their generators, the MyST configuration and the mode file) and is edited on the `paper`
+branch: a change to it is a pull request against `paper`, from a branch cut from `paper`, never a pull request into
+`dev`. Files under `tests/` and `scripts/` are the software's even when the paper's tests read them (the paper's tests,
+the residual baseline); they change on `dev` by the route above, and `paper` merges `dev` in.
+
+**Who reviews and approves.** The paper's approvers are the logins on the `paper/` line of `.github/CODEOWNERS`
+(today `mzargham` and `jshorish`), set apart from the code owners of the `*` line, who approve, merge and release the
+code and the documentation. A pull request into `paper` is merged by an approver who is not its author; the merge
+check records it. The same pull request template serves, with its `Paper` section filled: the section or figure
+changed, the residual check's result (`uv run python scripts/check_residuals.py --compare scripts/residuals_baseline.json
+--strict --views paper,appendix`) and the build (`cd paper && uv run myst build --html`). Run both before opening the
+pull request: the paper workflow runs on a push to `paper`, not on a pull request, so its checks run once the merge
+lands.
+
+**What is judged and what is checked.** The approver reads for the argument: that the change says what the paper
+claims, each claim backed by a lemma step, a generated value, a test or a verified source, in the glossary's words and
+without metanarration; no passing check stands in for that reading. The machine covers the rest, in the paper workflow
+(`.github/workflows/paper.yml`): the notebooks execute from a clean kernel and match their committed outputs, the
+paper's tests pass, the residual counts do not rise above the baseline, the HTML builds, and the key manifest equals
+the built identifiers.
+
+**How it is published.** A pin is one tag, one approval, one record. An approver prepares it on `paper` (`uv run
+--no-project python scripts/paper_pin.py prepare --tag paper-<shape>-<date>`, which writes the mode file; a section
+in `paper/CHANGES.md`), commits, and pushes the tag `paper-*`. The workflow builds and tests the tag, then waits at
+the `paper-release` environment for the other approver (the one who pushed the tag cannot approve it) and publishes
+the built paper and its key manifest as a GitHub release. Once the release has a DOI, `paper_pin.py record` writes it
+and the artefact's checksum into the mode file, and the pin is complete.
+
+**How it reaches the site.** The site is the software's: `paper` is merged into `dev` (the mode file and the paper's
+files travel with it), and the next merge of `dev` into `main` serves the pinned paper at `/paper/`, with its banner.
+A merge whose software version is already released redeploys the site only, so a new pin needs no software release.
+
 ## Tooling and dependencies
 
 The Python version is in [`.python-version`](.python-version), the dependencies in [`pyproject.toml`](pyproject.toml),

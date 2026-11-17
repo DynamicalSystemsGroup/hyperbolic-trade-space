@@ -16,8 +16,9 @@ requests against `dev`. `main` holds releases only: the merge of a pull request 
 software's release, and nothing else reaches `main`. The paper is edited on the `paper` branch and published by
 pushing a `paper-*` tag there; the merge of `paper` into `dev`, then the next merge of `dev` into `main`, carries a
 published paper to the site. Nothing publishes except that merge, a `paper-*` tag the paper's approvers approve, or a
-dispatch of the Release workflow on `dev` with the target `testpypi`. The rules in full, the two reviews and the
-repository's secondary rules are in `GOVERNANCE.md` at the repository root.
+dispatch of the Release workflow on `dev` with the target `testpypi`. How a change to the paper is proposed, approved
+and published is the section "Contributing to the paper" of `CONTRIBUTING.md`. The rules in full, the two reviews and
+the repository's secondary rules are in `GOVERNANCE.md` at the repository root.
 
 ## Repository settings
 
@@ -111,9 +112,10 @@ the wheel, the metadata and the bill of materials, compose the site, and publish
 Add their login to the `*` line of `.github/CODEOWNERS`, the source of truth for authority (`GOVERNANCE.md`); add
 them as a collaborator with the access the declaration requires (`.github/governance.toml`, `code_owners`), which
 the settings check verifies on the next run; add them as an Owner or Maintainer of the project on PyPI and TestPyPI
-(Manage, Collaborators). The paper's approvers are the `paper-release` environment's, declared in the same file and
-kept apart from the code owners, who approve, merge and release the code and the documentation. Publishing needs no
-secret, so there is no token to hand over.
+(Manage, Collaborators). The paper's approvers are the logins on the `paper/` line of the same `CODEOWNERS` file
+and the `paper-release` environment's required approvers, declared in the same declaration and kept apart from the
+code owners, who approve, merge and release the code and the documentation. Publishing needs no secret, so there is
+no token to hand over.
 
 ## Where the records live
 
