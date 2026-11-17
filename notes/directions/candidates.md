@@ -66,3 +66,7 @@ expected and must be reported, not hidden; which variables sit on which side, an
 choice, as a kernel is: the package supplies the estimator and the diagnostics, the modeller the blocks. Consistent
 with the package's line that conditioning is the analyst's job and that kernel methods are documented extensions
 compatible with generalized geometric programming.
+
+## From the external review of 2026-11-16 (0.2 or later)
+
+Packaging: widen the Python range with a CI matrix; `plotting` as an extra behind a lazy import; sympy out of the runtime dependency set once `derivation/` has its own environment. Model: the standard library's MoE and MoP metadata in place of the `doc` first-word mark; `variation`/`variant` and the library's `TradeStudy` for the alternatives; both belong to the model-focused project (ADCS-lifecycle-demo) as much as to this one. Record: `work-packages/review/external-review-2026-11-16.md`.
