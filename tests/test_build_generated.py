@@ -351,7 +351,10 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
     site = tmp_path / "src_site"
     site.mkdir()
     card = assemble_site.ROOT_CARD.format(assemble_site.ROOT_CARD_LINE_PINNED)
-    (site / "index.html").write_text(f"<html>{card}</html>", encoding="utf-8")
+    # A head with a title: the composer writes the public-link metadata after the title (WP80).
+    (site / "index.html").write_text(
+        f"<html><head><title>t</title></head><body>{card}</body></html>", encoding="utf-8"
+    )
     monkeypatch.setattr(assemble_site, "ROOT_INDEX", site / "index.html")
     seen, figures = [], []
 
@@ -373,9 +376,13 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
     )
     assert slot.slot == "abstract"
     assert figures == [tmp_path / "docsgen" / "figures"]
-    assert (out / "index.html").read_text(encoding="utf-8") == (
-        "<html>" + assemble_site.ROOT_CARD.format(assemble_site.ROOT_CARD_LINE_ABSTRACT) + "</html>"
+    root = (out / "index.html").read_text(encoding="utf-8")
+    assert root.endswith(
+        "<body>"
+        + assemble_site.ROOT_CARD.format(assemble_site.ROOT_CARD_LINE_ABSTRACT)
+        + "</body></html>"
     )
+    assert 'property="og:title"' in root and "<title>t</title>" in root
     assert (out / "docs" / "index.html").exists()
     assert (out / "paper" / "index.html").read_text(encoding="utf-8") == "<html>abstract</html>"
     assert (tmp_path / "gen" / "derivations.md").exists()
