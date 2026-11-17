@@ -759,3 +759,14 @@ Then (22:45 EST), verbatim:
 **Applied as.** One line in `mkdocs.yml`: the navigation section is `User guide`. The docs tests and the strict build
 run on it; the pull request's own release run checks the final head, so no dry run is repeated for it. The wider
 reading of every title stays on the 0.2 board.
+
+## His word for the release issue and the pull request (2026-11-17, 23:15 EST)
+
+To the handover (the candidate `dev` at eada5a3e; the dry run green; TestPyPI holding 0.1.0), the box's button, verbatim:
+
+> Go, open the PR
+
+**Applied as.** The release issue "Release 0.1.0" opened from `WP68-rounds/release-issue.md`; the pull request from
+`dev` into `main` opened with the template's sections and `closes` the issue; the four required checks run on it;
+he merges by his bypass. The changelog's date stays 2026-11-17 (the day in his time zone; the changelog check binds
+no date) and is rewritten if the merge falls on a later day.

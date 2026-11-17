@@ -68,7 +68,8 @@ recorded responses follow (`tests/data/wp78/`).
 
 ## G8 the pull request
 
-Pending his word.
+His word, 23:15 EST 2026-11-17: "Go, open the PR" (`WP64-decisions.md`). The issue and the pull request opened by
+the driver from `dev` at eada5a3e; links in `driver-log.md`.
 
 ## G9 after the merge
 
