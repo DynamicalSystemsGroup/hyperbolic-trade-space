@@ -320,3 +320,19 @@ satisfy statements and verify statements apart and the widening would have count
 statements on a corrected engine. Fast suite 1,984, register, lint, format, lock green on the landed head; the
 touched and ledger tests 160 passed with the engine present. Index row when WP73's index lands.
 
+## WP73 landed (2026-11-17, 03:50 EST), accepted as proxy
+
+The driver's acceptance under his answer "Before 0.1". Landed at 276728a3 (nine unit commits rebased on `dev`).
+The documents of every package landed, accepted, delivered or superseded by 2026-11-17 left the tree: 521 tracked
+files, `work-packages/` from 70 MB to 7.4 MB (815 to 289 tracked files); each index row reads
+`git show 4f81a4ea:work-packages/<file>`, 4f81a4ea being the `dev` head the archive started from. References from
+outside the record: 29 moved with their files (`tests/data/wp45/`, `tests/data/wp57/`, `examples/adcs/spikes/`,
+`paper/data/`), 118 repointed to the hash (code, tests, TOML, YAML, Markdown; seven in `notes/`, citation strings
+only), one dropped; the table in `WP73-rounds/references.md`. Fourteen items pending his read are listed with
+their questions and blob URLs at 4f81a4ea in `supervisor-review-list.md`. `tests/test_index.py` dereferences every
+hash and path and refuses a bare removed path outside the record; it skips on a shallow clone. The driver's
+checks on the rebased head: index test 5 passed; register; fast suite 1,989 passed; lint, format, lock;
+vocabulary; the strict docs build in the abstract slot (after `build_generated`, `build_figures`,
+`build_site_figures`); no attribution line. Left for WP58: WP25's eight files, WP21's scope and WP12's decisions
+(kept by index state), the README's stale WP28 sentence, and the retained-by-decision files the index names.
+
