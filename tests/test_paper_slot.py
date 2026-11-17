@@ -251,8 +251,12 @@ def test_a_pinned_slot_unpacks_the_artefact_with_one_banner_line_per_page(tmp_pa
     for page in pages:
         text = page.read_text(encoding="utf-8")
         assert text.count('class="hts-paper-banner"') == 1, page
-        body = re.search(r"<body[^>]*>", text)
-        assert text[body.end() :].startswith('\n<p class="hts-paper-banner"'), page
+        # The banner is installed by a script once the page has loaded (the theme's hydration
+        # removes a static element placed after <body>; WP67's browser pass); the installer sits
+        # directly before </body>.
+        installer = assemble_site.banner_installer(assemble_site.banner_html(slot.mode))
+        assert text.endswith(installer + "</body>\n</html>") or installer + "</body>" in text, page
+        assert '<template id="hts-paper-banner-source"><p class="hts-paper-banner"' in text, page
     assert (out / "paper" / "build" / "app.js").read_text(encoding="utf-8") == "console.log(1)"
     assert 'id="thm-kkt"' in (out / "paper" / "index.html").read_text(encoding="utf-8")
     assert not slot.staged.exists(), "the staging directory is removed once placed"

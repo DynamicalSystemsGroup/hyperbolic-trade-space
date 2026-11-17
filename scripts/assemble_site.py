@@ -85,7 +85,6 @@ BANNER_STYLE = (
     "margin:0;padding:0.5rem 1rem;font:0.95rem/1.4 system-ui,sans-serif;text-align:center;"
     "border-bottom:1px solid rgba(127,127,127,0.4)"
 )
-_BODY = re.compile(r"<body\b[^>]*>", re.I)
 _DOI = re.compile(r"^10\.5281/zenodo\.\d+$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -172,12 +171,35 @@ def banner_html(mode: dict) -> str:
     )
 
 
+def banner_installer(banner: str) -> str:
+    """The banner inside a ``<template>`` with the script that installs it as ``<body>``'s first
+    element once the page has loaded.
+
+    The article theme hydrates the whole document with React, and a static element placed after
+    ``<body>`` makes that hydration fail (React error 418): the theme then renders the page afresh
+    on the client and the static banner is gone (WP67's browser pass). An element added after the
+    load event, and put back if the theme removes it in its first seconds, stays.
+    """
+    return (
+        f'<template id="hts-paper-banner-source">{banner}</template>\n'
+        "<script>(function(){"
+        'var t=document.getElementById("hts-paper-banner-source");if(!t)return;'
+        "var b=t.content.firstElementChild,n=0;"
+        "function put(){if(!document.body.contains(b))"
+        "document.body.insertBefore(b,document.body.firstChild);}"
+        "function keep(){put();if(++n<50)setTimeout(keep,100);}"
+        'if(document.readyState==="complete")keep();else window.addEventListener("load",keep);'
+        "})();</script>\n"
+    )
+
+
 def insert_banner(page: str, banner: str) -> str:
-    """``page`` with ``banner`` directly after its ``<body>`` tag; unchanged when it has none."""
-    match = _BODY.search(page)
-    if not match:
+    """``page`` with the banner's installer directly before its closing ``</body>`` tag;
+    unchanged when it has none."""
+    at = page.lower().rfind("</body>")
+    if at < 0:
         return page
-    return page[: match.end()] + "\n" + banner + page[match.end() :]
+    return page[:at] + banner_installer(banner) + page[at:]
 
 
 # --- obtaining and checking the artefact -----------------------------------------------------

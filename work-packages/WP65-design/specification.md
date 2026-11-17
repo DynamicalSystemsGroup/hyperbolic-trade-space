@@ -337,8 +337,12 @@ The value at 0.1: `mode = "abstract"`, the rest empty.
 | `submitted` | the same | `Submitted to <venue> · <tag> · <date> · DOI <doi>` |
 | `revision` | the same | `Revision <round> for <venue> · <tag> · <date> · DOI <doi>` |
 
-One banner line, a `<p class="hts-paper-banner">` linked to `https://doi.org/<doi>`, inserted directly after
-`<body>` of every HTML page of the artefact. Only the current pin is served (Q4); earlier pins stay as tags,
+One banner line, a `<p class="hts-paper-banner">` linked to `https://doi.org/<doi>`, on every HTML page of the
+artefact as `<body>`'s first element. It is installed by a script placed directly before `</body>` (the banner in a
+`<template>` beside it), not written after `<body>`: the article theme hydrates the whole document with React, a
+static element there fails that hydration (React error 418) and the theme's client render drops it (WP67 D-4, found
+by the browser pass). The script adds the banner after the load event and puts it back if the theme removes it in
+its first seconds. Only the current pin is served (Q4); earlier pins stay as tags,
 releases and DOIs.
 
 ### 3.3 The abstract page
