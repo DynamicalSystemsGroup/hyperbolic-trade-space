@@ -220,7 +220,7 @@ mode or a fetched, hashed and key-checked pin otherwise, with the fallback said 
 `site.yml` composes and `pages-deploy.yml` deploys, call-only; `scripts/paper_keys.py` resolves the docs' 23
 citations from the manifest in both slots. The driver's checks on the rebased head: register, lint, format, lock,
 vocabulary, WP66b's mode check against the composer's call, the offline stage, the slot tests and the fast suite
-(1,977 passed, the site and build modules deselected after the unit's own 125-test run of 57 minutes), all exit 0.
+(1,870 passed, the site, build and slot modules deselected after the unit's own 125-test run of 57 minutes), all exit 0.
 Captures in `work-packages/WP66c-rounds/captures/` looked at: the abstract page at 1,280 and 375 px in both schemes,
 the pinned banner, the root card. The unit's two uncommitted copies of WP66b's files were dropped; WP66b's committed
 copies serve. For his read: the root lead sentence "The paper makes the argument and gives the proofs" says more than
