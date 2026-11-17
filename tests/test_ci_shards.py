@@ -77,7 +77,9 @@ def test_windows_never_runs_on_a_pull_request():
 
 
 def test_a_push_to_dev_runs_the_fast_shard_alone():
-    on_push = """github.event_name == 'push' && '["fast"]'"""
+    # A called workflow sees the caller's event, so the push case names this workflow too (the WP67
+    # dry run found the release's test job reduced to the fast shard without it).
+    on_push = """(github.event_name == 'push' && github.workflow == 'Tests') && '["fast"]'"""
     otherwise = """|| '["fast", "slow", "docs"]'"""
     assert JOB["strategy"]["matrix"]["shard"] == f"${{{{ fromJSON({on_push} {otherwise}) }}}}"
 

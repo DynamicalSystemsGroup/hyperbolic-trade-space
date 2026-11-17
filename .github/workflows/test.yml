@@ -38,8 +38,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Every shard on a pull request, a call or a dispatch; the fast shard alone on a push to dev.
-        shard: ${{ fromJSON(github.event_name == 'push' && '["fast"]' || '["fast", "slow", "docs"]') }}
+        # Every shard on a pull request, a call or a dispatch; the fast shard alone on a push to dev. A
+        # called workflow sees the caller's event (a push to main or qc/** calling from release.yml), so the
+        # push case is also tied to this workflow's own name.
+        shard: ${{ fromJSON((github.event_name == 'push' && github.workflow == 'Tests') && '["fast"]' || '["fast", "slow", "docs"]') }}
     # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
     runs-on: ubuntu-24.04
     steps:
