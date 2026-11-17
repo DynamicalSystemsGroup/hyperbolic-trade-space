@@ -2665,7 +2665,7 @@ NUM_CELLS = [
 num-k-temperatures, num-participation and num-tension out of Sections 7 to 9; WP57c landed the
 participation sentence in B.1, the reading of the proposals in B.6 and the K temperatures in B.10
 (``MOVED_TO_D``), left the recovery sentence to B.9's own tables and retired the tension sentence
-(``work-packages/WP56-rounds/moved-to-appendix.md``, each line marked)."""
+(``4f81a4ea:work-packages/WP56-rounds/moved-to-appendix.md``, each line marked)."""
 
 
 def _results():

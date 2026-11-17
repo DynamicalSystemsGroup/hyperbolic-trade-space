@@ -36,8 +36,8 @@ CHECK_SEED = 20261108  # the seed of the pool and of the check designs (make_che
 # how the designs were drawn, so the sample is a design choice of the case. Design i depends only on
 # (seed, i), so the first 1000 designs are the earlier sample. The count is the largest round number
 # for which the whole regeneration fits the hour at three workers: the oracle took 203 s per 1000
-# designs (work-packages/WP30-build-notes.md, "Sampling"), and the regeneration is the two datasets
-# plus the sensitivity record's five regenerations of both, 12 x N designs.
+# designs (4f81a4ea:work-packages/WP30-build-notes.md, "Sampling"), and the regeneration is the two
+# datasets plus the sensitivity record's five regenerations of both, 12 x N designs.
 SAMPLE_PER_REGIME = 3000
 
 # Oracle and sampler names -> "module:factory"; a factory takes the (sweep-cell) Experiment.

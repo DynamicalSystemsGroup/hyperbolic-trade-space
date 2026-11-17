@@ -1,7 +1,7 @@
 # WP50 D-4: readout, holes in the chart by persistent homology
 
 Read 2026-11-14 at `dev` a1879e6. Sources: `objects-and-distances.md` (D-1), `construction-and-tools.md` (D-2), `instance.md`
-(D-3). This readout defines nothing in the package or the paper and changes no file outside `work-packages/WP50-rounds/`.
+(D-3). This readout defines nothing in the package or the paper and changes no file outside `work-packages/WP50-rounds/` (`git show 5233126:work-packages/WP50-rounds/`).
 The sentences in "The boundary" are drafts for the supervisor's decision.
 
 ## The frame: two aims

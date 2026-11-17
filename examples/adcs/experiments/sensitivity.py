@@ -3,7 +3,7 @@
 ``settling_time_s`` (and ``slew_time_s``, before WP23 G5 left one time metric) was read off the
 accepted steps of an adaptive RK45 integration (the oracle's ``"steps"`` method), so it moves by
 up to 1.3 percent under perturbations of one unit in the last place
-(``work-packages/swap-evidence.md``). This module measures what that does to the paper.
+(``4f81a4ea:work-packages/swap-evidence.md``). This module measures what that does to the paper.
 
 **Regeneration.** Each of the two cubesat datasets (primary: aggressive gain box; baseline: stock
 gain box) and the six check designs are regenerated through the clean oracle

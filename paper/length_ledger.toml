@@ -393,7 +393,7 @@ words_added = 1
 job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
 reader = "the reader matching each name to its glossary entry"
 
-# Rows: WP19 placements (work-packages/WP19-figure-review.md, "Ready for placement"): each figure's
+# Rows: WP19 placements (4f81a4ea:work-packages/WP19-figure-review.md, "Ready for placement"): each figure's
 # caption, its three lines (shows; does not show; good for) and the sentence that refers to it.
 
 [[raise]]
@@ -998,7 +998,7 @@ reader = "the reader of the main-results list who asks, after the exponents are 
 date = "2026-11-11"
 section = "Methods"
 words_added = 14
-job = "WP29 review, triage of the expert (P9) and novice (P10) reads (work-packages/WP29-review/P9-P10-triage.md, C1, C6, R1 and S10), net of the cuts named here: R1 is made well-formed (an optimal dual weight vector; the facet of the convex hull of the rows) and loses its subgradient sentence and its finite-temperature remark, which the axiom ledger and Appendix B carry; R3, used by Corollary 1 and listed nowhere, gets its clause; the sentence on zeros says what the fit does with a row that has a zero metric; (vi) loses a convexity-of-later-optimization clause no script backs"
+job = "WP29 review, triage of the expert (P9) and novice (P10) reads (4f81a4ea:work-packages/WP29-review/P9-P10-triage.md, C1, C6, R1 and S10), net of the cuts named here: R1 is made well-formed (an optimal dual weight vector; the facet of the convex hull of the rows) and loses its subgradient sentence and its finite-temperature remark, which the axiom ledger and Appendix B carry; R3, used by Corollary 1 and listed nowhere, gets its clause; the sentence on zeros says what the fit does with a row that has a zero metric; (vi) loses a convexity-of-later-optimization clause no script backs"
 reader = "the expert reader who checks the hypotheses of Corollary 1 and Theorem 2 against the scripts, and the novice who met R1 before p existed"
 
 [[raise]]
@@ -1164,7 +1164,7 @@ words_removed = 1
 no_longer_did = "the sentence said 'the requirements' for the four performance thresholds the constrained set applies, and repeated 'requirements' after the pointer; it now names the four performance thresholds and says 'them' (Appendix D.17 carries the reason the two cost limits are not among them)"
 authority = "the PM's brief for the design-sets block (the four performance thresholds named; the cost limits read after the fit)"
 
-# WP33 wayfinding, the paper's rows (work-packages/WP33-scope-of-work.md R-2, R-5; notes/user-journeys.md).
+# WP33 wayfinding, the paper's rows (4f81a4ea:work-packages/WP33-scope-of-work.md R-2, R-5; notes/user-journeys.md).
 # Each deletion states what the content no longer did; no row adds words.
 [[cut]]
 date = "2026-11-12"
@@ -1299,7 +1299,7 @@ words_removed = 3
 no_longer_did = "WP36 adds 63 words (the Lean direction, the reals-versus-floating-point line, one clause for a Rust core compiled to WebAssembly: 58; the gloss of the generalized geometric program that the removed hull clause had carried by accident: 5) and takes out 64: 'Future work follows the assumptions we named.' (the lead-in said that the paragraph follows the assumptions, which its own Beyond-sentences show); the clause 'whose generalized gradient is the convex hull of the active normals, should tolerate the kinks' (a mechanism and a hope with no lemma behind it); 'with smoothing on request' (Methods says it); 'The search ... needs a convergence theorem, and Q2 to Q4 need their own conditions' (the Open paragraph of Results states the four questions and their gaps); 'Other cases across the engineering lifecycle belong here too, the configuration management of a fielded system among them' (the case section says a fielded system's measured attributes would enter the same table); and 'the generalization the search motivates' (the search section says it). The count falls from 188 to 187"
 authority = "WP36 decision entry 441cdcb (placement (a); the unit takes out at least as many words as it adds), marginal-value test"
 
-# WP35 amendment 1 (work-packages/WP35-amendment-1-scope.md, approved at e616329 with the ceiling pinned at 900
+# WP35 amendment 1 (4f81a4ea:work-packages/WP35-amendment-1-scope.md, approved at e616329 with the ceiling pinned at 900
 # words by the visible-prose rule: Markdown, the caption and the generated sentences, not the table; not raised
 # without a new row and the assistant's word). Appendix H replaces the HoroPCA passage of Appendix G.
 [[raise]]
@@ -1364,7 +1364,7 @@ words_removed = 3
 no_longer_did = "the link text 'Appendix B, L4.14 to L4.24' does not say that it opens the supporting material, a separate document; it now reads 'Appendix B, supporting material, L4.14 to L4.24' (two words in), and the clause 'whose convex form is the problem in w' (eight words, which the Results list's item 2 and the geometric-program statement already say as 'convex in the logarithmic variables') is now 'convex in w' (three), claims row C094 re-pointed: net three out"
 authority = "P5's reading of the Methods link (the assistant's brief to this unit); marginal-value test"
 
-# WP35 wording unit (the fresh reads R-13 and R-14, work-packages/WP35-review.md, fixes FW-1 to FW-13 and FW-15 to FW-20;
+# WP35 wording unit (the fresh reads R-13 and R-14, 4f81a4ea:work-packages/WP35-review.md, fixes FW-1 to FW-13 and FW-15 to FW-20;
 # FW-14 not applied). The assistant's ruling at 3fb77e6 moves the ceiling from 900 to 920: the raise below is the
 # words the readers' fixes add (78 measured) with 3 words of headroom over the cuts, the cut row the words the unit
 # takes out; 900 + 81 - 61 = 920.
@@ -1390,7 +1390,7 @@ words_added = 8
 job = "the HoroPCA row says where the result holds, 'on the synthetic tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only where ...', for 'on the paper's tables its exponents are recovered by neither HoroPCA nor PCA except ...', which read as the paper's own case study; the reading pass says 'prospectively specified', as Section 2 and Appendix H do (one term for one thing)"
 reader = "the expert who reads the register's HoroPCA row and takes 'the paper's tables' for the case study"
 
-# WP39 notebook unit (work-packages/WP39-scope-of-work.md, D-1, D-2, D-5): Section 9 closes with the decision the two executives
+# WP39 notebook unit (4f81a4ea:work-packages/WP39-scope-of-work.md, D-1, D-2, D-5): Section 9 closes with the decision the two executives
 # face. Section 9 counted 1,557 against a ceiling of 1,603 (slack 46); it now counts 1,685. The raises are the written
 # paragraph (145), the table's caption (66) and the pointer to the table in the section's opening line (5); the cuts are the
 # Candidates paragraph (48) and the K-choice sentences (35); the ceiling is 1,603 + 216 - 83 = 1,736, and the slack of 46 is as it was.
@@ -1986,7 +1986,7 @@ job = "states the one-term fit as Section 3's problem, the thresholds and ties m
 reader = "the reader at calculus, linear algebra and convex optimization who follows Section 3's kit into the method"
 
 # WP57a: the front matter and Appendices A, F and G tightened to the step deeper their citing sentences need
-# (WP57-decisions.md; the map work-packages/WP57-rounds/map.md, section 1). Words by map_counts.py, prose of the cells.
+# (WP57-decisions.md; the map 4f81a4ea:work-packages/WP57-rounds/map.md, section 1). Words by map_counts.py, prose of the cells.
 
 [[cut]]
 date = "2026-11-15"
@@ -2013,7 +2013,7 @@ authority = "WP57a; the standing rule on metanarration; map_counts.py before and
 date = "2026-11-15"
 section = "Appendix A"
 words_removed = 186
-no_longer_did = "the Job block argued with an objection ('answer in advance the objection that this work is just some existing method'), counted Section 2's words and listed the appendix's own contents; the scope sentence ('This register is not exhaustive ... read only in part') is queued for the assumptions, limitations and open questions section (work-packages/WP57-rounds/assumptions-queue.md, WP57d); the register row C161 that rested on the Job block retires"
+no_longer_did = "the Job block argued with an objection ('answer in advance the objection that this work is just some existing method'), counted Section 2's words and listed the appendix's own contents; the scope sentence ('This register is not exhaustive ... read only in part') is queued for the assumptions, limitations and open questions section (tests/data/wp57/assumptions-queue.md, WP57d); the register row C161 that rested on the Job block retires"
 authority = "WP57a (the supervisor: 'the appendices job IS NOT to opine on the text of the paper'); map_counts.py before and after"
 
 [[cut]]

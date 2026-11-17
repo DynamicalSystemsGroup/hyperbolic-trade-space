@@ -1,6 +1,6 @@
 # Known vocabulary violations (check_vocabulary.py). A row is a debt, with an owner;
 # the test fails on a violation not listed here. Remove a row when it is fixed.
-# Reasons carry the WP10 re-triage disposition (work-packages/WP10-vocabulary-review.md):
+# Reasons carry the WP10 re-triage disposition (4f81a4ea:work-packages/WP10-vocabulary-review.md):
 # SYNONYM (replace with the glossary term), BASELINE (reason), NEW-TERM (for the driver), FIRST-USE.
 
 [[violation]]

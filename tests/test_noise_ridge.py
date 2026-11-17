@@ -5,8 +5,8 @@ delta = -(P C P)^+ P Sigma w* of the exponents on the support of the clean fit (
 the tangent space of the active face, the vectors that sum to zero and vanish off the support, C
 the softmax-weighted covariance at the clean fit; P = I - 11'/d when every exponent is positive).
 These tests check the statement on planted frontier data of the spike
-`work-packages/WP23-rounds/spikes/spike-E-noise/check2_noise_is_ridge.py` (N = 20000, d = 4,
-w* = (.4, .3, .2, .1), the data of seed 0 and the log-normal noise of seed 1), reproduce its
+`4f81a4ea:work-packages/WP23-rounds/spikes/spike-E-noise/check2_noise_is_ridge.py` (N = 20000,
+d = 4, w* = (.4, .3, .2, .1), the data of seed 0 and the log-normal noise of seed 1), reproduce its
 numbers, and record where the formula stops holding: at an exponent on the boundary of the simplex
 and at a temperature where the noisy fit no longer follows the ridge. The ridge minimiser is the
 fit of the clean table with the ridge added; the noisy fit is the package's fit of the noisy

@@ -191,9 +191,9 @@ The v2 datasets, the check designs, the scope-sensitivity table, the coverage ta
 recording were regenerated once in `hts-paper` on the WP23 model (`cubesat.sysml`, sha256
 `fb1dbd061610...`, adopted at the gate; the slew time out, the settling time by event detection,
 WP16 D-7 and WP23 D-3). The full account, with the hash of every regenerated file old and new and the
-five ledger entries, is `work-packages/WP23-rounds/gate/README.md`; the hand-written cause of each
+five ledger entries, is `work-packages/WP23-rounds/gate/README.md` (`git show 4f81a4ea:work-packages/WP23-rounds/gate/README.md`); the hand-written cause of each
 difference beyond tolerance is `examples/adcs/experiments/reports/change-register.md` (CR-1 to CR-4);
-the comparison of old and new (D-9) is the gate section of `work-packages/swap-evidence.md`.
+the comparison of old and new (D-9) is the gate section of `work-packages/swap-evidence.md` (`git show 4f81a4ea:work-packages/swap-evidence.md`).
 
 Steps, each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 2b2e94e
 (30 s, cached layers), image `hts-paper` **`3c7cfc8a2e27`**
@@ -211,7 +211,7 @@ here-document recording failed (the oracle's spawned workers cannot import a `<s
 | `uv run python examples/adcs/model_v2/ledger_gate.py --image 3c7cfc8a2e27` | 459 s | RECORD: `v2-primary@5`, `v2-baseline@5`, `v2-check-predictions@5`, `v2-check-designs@5`, `scope-sensitivity-shared-subspace-v2@4`; `git_dirty` False in all five; the proposer printed `reach 0.6222 ...; 3 of 3 proposals` |
 | `uv run python examples/adcs/model_v2/coverage.py` | 22 s | `views/coverage.{md,csv}` from `cubesat.sysml`; every verdict unchanged, four settling-time magnitudes moved |
 | the first 20 v2 designs by the test's own runner call (`/tmp/record20.py`) | 11 s | `tests/data/v2_first_designs_of_record.csv`, 33 columns, output `894277fb237c...` |
-| `uv run python examples/adcs/model_v2/diagnostic_pair.py ... --out work-packages/WP23-rounds/gate` | 26 s | the gate's pair; zero-exponent sets as rounds 1 to 4 |
+| `uv run python examples/adcs/model_v2/diagnostic_pair.py ... --out work-packages/WP23-rounds/gate` (the folder is read at `4f81a4ea:work-packages/WP23-rounds/gate`) | 26 s | the gate's pair; zero-exponent sets as rounds 1 to 4 |
 | `uv run python -m experiments compare` | 5 s | the report (re-run on the host after the register was written) |
 | `uv run python -m experiments verify` | seconds | RECORD: `34 entries (11 current); 0 drifts` |
 
@@ -257,7 +257,7 @@ this unit that overwrote the frozen files, whose run was discarded); `docker cre
 | `uv run pytest -q -n 4` on the paper's test files (`test_paper`, `test_case`, `test_k_terms_case`, `test_notebook`, `test_paper_sources`, `test_paper_static_figures`, `test_narrative`, `test_claims_register`, `test_sensitivity`, `test_gaps`, and `test_experiments`, `test_v2_data`, `test_interface_contract` for the untouched frozen files and the ledger) | 200 s | 465 passed, 4 skipped |
 
 What changed against the committed values is the data's change, read at the gate: the comparison of old and
-new (D-9, `work-packages/swap-evidence.md`, the gate section) separates the column change from the
+new (D-9, `work-packages/swap-evidence.md` (`git show 4f81a4ea:work-packages/swap-evidence.md`), the gate section) separates the column change from the
 regenerated data, and its part 5 lists each cell of the paper that moved with its cause. The jitter record
 `examples/adcs/experiments/reports/sensitivity.json` (D-6) was rewritten on the Mac from five regenerations
 on the WP23 model (19 min): every listed conclusion is identical, the settling time moves by at most 1e-6 s,
@@ -285,7 +285,7 @@ kept. The file holds 1274 arrays as before (1273 and the field `recorded_on` = l
 
 ## Regeneration after the review of the paper's move (2026-11-10, head 2155775)
 
-The paper's fix-forward after the review (`work-packages/swap-evidence.md` part 6, dispositions in part 7). Steps,
+The paper's fix-forward after the review (`work-packages/swap-evidence.md` (`git show 4f81a4ea:work-packages/swap-evidence.md`) part 6, dispositions in part 7). Steps,
 each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 2155775 (the local head, on `dev` as 5270bf2 after the rebase; `tab-F-toolchain` prints it) (32 s, cached
 layers), image `hts-paper` **`8e91e07fb08f`**
 (`sha256:8e91e07fb08fe61dc3c2dd95b465a686ea249a5f731aef9dc26d3efcf2f1ac6b`), the previous image `f7b7585c7c58`
@@ -584,7 +584,7 @@ regression of the same gate is a separate section, added when it runs.
 | What | Command | Time | Result |
 |---|---|---|---|
 | the five entries | `EXPERIMENTS_WORKERS=9 PYTHONPATH=examples/adcs uv run python examples/adcs/model_v2/ledger_gate.py --host --wp30 regen` | 9.2 min | `v2-primary@11` `e4ab2fca5c74`, `v2-baseline@11` `57c208c91c59`, `v2-check-predictions@11` `05649b15348c`, `v2-check-designs@11` `1cab3bafa3fe`, `scope-sensitivity-shared-subspace-v2@10` `25425be01309`; none dirty |
-| the K = 1, 2, 3 record | `PYTHONPATH=examples/adcs uv run python examples/adcs/k_terms.py` | 3 min 7 s | `work-packages/WP30-rounds/data-gate/k-record.txt` |
+| the K = 1, 2, 3 record | `PYTHONPATH=examples/adcs uv run python examples/adcs/k_terms.py` | 3 min 7 s | `work-packages/WP30-rounds/data-gate/k-record.txt` (`git show 4f81a4ea:work-packages/WP30-rounds/data-gate/k-record.txt`) |
 | re-adoption of the entries that hash a changed code file | `PYTHONPATH=examples/adcs uv run python -m experiments adopt --readopt` | seconds | `adopted-adcs_designs_cubesat@2`, `adopted-adcs_designs_cubesat_gains@2`, `adopted-check_predictions_cubesat@2`, `adopted-check_designs_cubesat@2`, `scope-sensitivity-shared-subspace-legacy@2`; `verify`: 0 drifts |
 
 Earlier runs of the same gate, kept in the ledger as history: the 2,000-design run (`@9`, shared `@8`) and a

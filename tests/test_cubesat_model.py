@@ -567,7 +567,7 @@ def test_dataset_reproducible_first_20(cubesat, gain_box, csv):
     # torque_saturated_frac: ABSOLUTE tolerance 0.01 with no relative term (decision of the driver).
     # The relative form was wrong in kind: the quantity is a step count over about 1340 accepted
     # steps of an adaptive solver, a diagnostic and not a fitted attribute (evidence in
-    # work-packages/swap-evidence.md).
+    # 4f81a4ea:work-packages/swap-evidence.md).
     sat_atol = 0.01
     special = {"settling_time_s", "slew_time_s", "slew_time_05deg_s", "torque_saturated_frac"}
     for col in head.columns:
@@ -580,7 +580,7 @@ def test_dataset_reproducible_first_20(cubesat, gain_box, csv):
     # The time columns are read off the accepted steps of an adaptive integration: 0.5 s allowed.
     # A known way to exceed it is the grazing case, where the error trajectory touches the settling
     # band and the time jumps (design 763 in the D-6 spike: slew time 33.44 s to 12.53 s under a
-    # 1e-12 perturbation; work-packages/swap-evidence.md).
+    # 1e-12 perturbation; 4f81a4ea:work-packages/swap-evidence.md).
     for col in ("settling_time_s", "slew_time_s", "slew_time_05deg_s"):
         np.testing.assert_allclose(head[col], fresh[col], atol=0.5, err_msg=col)
 

@@ -1,5 +1,5 @@
 """The machine rows of the issue and pull request admissibility conditions, one case per row
-(verification cases VC-1 to VC-5 in work-packages/WP47-rounds/checks.md)."""
+(verification cases VC-1 to VC-5 in 4f81a4ea:work-packages/WP47-rounds/checks.md)."""
 
 import importlib.util
 import json

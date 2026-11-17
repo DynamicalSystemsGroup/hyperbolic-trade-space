@@ -118,7 +118,7 @@ Example (`b7df6be`, the vocabulary reading): "The cheap diagnostic is the sign o
 
 ### The flag table
 
-One table per reader slot, `work-packages/WP38-flags/<slot>.md`. Columns:
+One table per reader slot, `work-packages/WP38-flags/<slot>.md` (`git show 4a76229:work-packages/WP38-flags/`). Columns:
 
 | Surface | Location | Sentence | Kind | Disposition | Reason |
 |---|---|---|---|---|---|
@@ -132,7 +132,7 @@ named). Location is the inventory's first-location form (`cell N`, `line N`) plu
 ### The second reader's confirmation form
 
 A second fresh reader, who has not seen the first table, reads the **landed** text of the surface in its rendered
-view and fills one form per surface, `work-packages/WP38-confirmations/<slot>.md`:
+view and fills one form per surface, `work-packages/WP38-confirmations/<slot>.md` (`git show 4a76229:work-packages/WP38-confirmations/`):
 
 | Surface | Reader | Rendered view and head | Reads clean | Remaining flags (kind, sentence) | Cuts that lost something |
 |---|---|---|---|---|---|

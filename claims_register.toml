@@ -6063,7 +6063,7 @@ note = "Framing: the abstract's three words (scalable, reproducible, interpretab
 [[claim]]
 id = "C695"
 fragment = "Voc and Jsc are in the contending set in every variant ... association between log Voc and log Jsc is negative in every one"
-file = "work-packages/WP45-rounds/perovskite/test-record.md"
+file = "tests/data/wp45/perovskite/test-record.md"
 anchor = ""
 kind = "R"
 backing = [
@@ -6078,7 +6078,7 @@ note = "The run writes results.json; the test reads every variant's contending s
 [[claim]]
 id = "C696"
 fragment = "Dropped by the rule: 2,398 = 2,359"
-file = "work-packages/WP45-rounds/perovskite/test-record.md"
+file = "tests/data/wp45/perovskite/test-record.md"
 anchor = ""
 kind = "R"
 backing = [
@@ -6093,7 +6093,7 @@ note = "Counts of the primary table, from the run."
 [[claim]]
 id = "C697"
 fragment = "extracts device data from peer-reviewed perovskite papers into one database of over 42,400 devices"
-file = "work-packages/WP45-rounds/perovskite/test-record.md"
+file = "tests/data/wp45/perovskite/test-record.md"
 anchor = ""
 kind = "L"
 backing = [
@@ -6107,7 +6107,7 @@ note = "Crossref abstract of the database paper, read 2026-11-14."
 [[claim]]
 id = "C698"
 fragment = "the efficiency is calculated with the band gap as a parameter, with a maximum of 30 percent at 1.1 eV"
-file = "work-packages/WP45-rounds/perovskite/test-record.md"
+file = "tests/data/wp45/perovskite/test-record.md"
 anchor = ""
 kind = "L"
 backing = [
@@ -6121,7 +6121,7 @@ note = "Crossref abstract of Shockley and Queisser, read 2026-11-14; the record 
 [[claim]]
 id = "C699"
 fragment = "Complete cases of the five: 2,770"
-file = "work-packages/WP45-rounds/amniote/test-record.md"
+file = "tests/data/wp45/amniote/test-record.md"
 anchor = ""
 kind = "R"
 backing = [
@@ -6136,7 +6136,7 @@ note = "Count of the complete-case table, from the run."
 [[claim]]
 id = "C700"
 fragment = "Longevity and litter size are in the contending set in the primary table and in every variant except the one that reads maturity the other way round"
-file = "work-packages/WP45-rounds/amniote/test-record.md"
+file = "tests/data/wp45/amniote/test-record.md"
 anchor = ""
 kind = "R"
 backing = [
@@ -6151,7 +6151,7 @@ note = "The run writes results.json; the test reads each variant's contending se
 [[claim]]
 id = "C701"
 fragment = "The database is compiled from peer-reviewed studies of individual species and other sources"
-file = "work-packages/WP45-rounds/amniote/test-record.md"
+file = "tests/data/wp45/amniote/test-record.md"
 anchor = ""
 kind = "L"
 backing = [
@@ -6165,7 +6165,7 @@ note = "Crossref abstract of the database paper, read 2026-11-14."
 [[claim]]
 id = "C702"
 fragment = "re-evaluates it for mammals (by its title)"
-file = "work-packages/WP45-rounds/amniote/test-record.md"
+file = "tests/data/wp45/amniote/test-record.md"
 anchor = ""
 kind = "L"
 backing = [
@@ -6179,7 +6179,7 @@ note = "The title of the record (bibliographic record only; the text is not read
 [[claim]]
 id = "C703"
 fragment = "n = 2 with both exponents positive in every variant, and the near-frontier association between log grain and log straw is negative in every one"
-file = "work-packages/WP45-rounds/wheat/test-record.md"
+file = "tests/data/wp45/wheat/test-record.md"
 anchor = ""
 kind = "R"
 backing = [
@@ -6194,7 +6194,7 @@ note = "The run writes results.json; the test reads every variant."
 [[claim]]
 id = "C704"
 fragment = "Grain present (the file marks a missing value `*`): 7,814; straw present: 3,755"
-file = "work-packages/WP45-rounds/wheat/test-record.md"
+file = "tests/data/wp45/wheat/test-record.md"
 anchor = ""
 kind = "R"
 backing = [
@@ -6209,7 +6209,7 @@ note = "Counts of the table, from the run."
 [[claim]]
 id = "C705"
 fragment = "variety improvement raised the yield potential of winter wheat in the U.K."
-file = "work-packages/WP45-rounds/wheat/test-record.md"
+file = "tests/data/wp45/wheat/test-record.md"
 anchor = ""
 kind = "L"
 backing = [
@@ -7431,7 +7431,7 @@ kind = "S"
 backing = ["test:tests/test_site.py::test_the_planted_table_reaches_its_surface_with_about_a_tenth_beyond", "func:scripts/build_site_figures.py::fit_why"]
 status = "backed"
 disposition = "keep"
-source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+source = "WP51, the synthetic-case section (4f81a4ea:work-packages/WP51-rounds/synthetic-case.md)"
 note = "Seed, fraction on the surface and the scatter are PLANT and DATA_SEED in the script."
 
 [[claim]]
@@ -7443,7 +7443,7 @@ kind = "S"
 backing = ["test:tests/test_site.py::test_slices_figure_is_drawn_from_the_one_fit_of_fit_why", "func:scripts/build_site_figures.py::fit_why"]
 status = "backed"
 disposition = "keep"
-source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+source = "WP51, the synthetic-case section (4f81a4ea:work-packages/WP51-rounds/synthetic-case.md)"
 note = "TEMPERATURE and FIT_SEED, one fit shared by both figures."
 
 [[claim]]
@@ -7455,7 +7455,7 @@ kind = "S"
 backing = ["test:tests/test_site.py::test_the_planted_table_reaches_its_surface_with_about_a_tenth_beyond", "func:scripts/build_site_figures.py::fit_why"]
 status = "backed"
 disposition = "keep"
-source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+source = "WP51, the synthetic-case section (4f81a4ea:work-packages/WP51-rounds/synthetic-case.md)"
 note = "The measured share beyond the surface at temperature 50 (the block prints 0.11)."
 
 [[claim]]
@@ -7467,7 +7467,7 @@ kind = "S"
 backing = ["test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "glossary:binding-term"]
 status = "backed"
 disposition = "keep"
-source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+source = "WP51, the synthetic-case section (4f81a4ea:work-packages/WP51-rounds/synthetic-case.md)"
 note = "The region rule is plotting._ternary_region_of."
 
 [[claim]]
@@ -7479,7 +7479,7 @@ kind = "S"
 backing = ["test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak", "glossary:characteristic-point"]
 status = "backed"
 disposition = "keep"
-source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+source = "WP51, the synthetic-case section (4f81a4ea:work-packages/WP51-rounds/synthetic-case.md)"
 note = "The weighted inequality of the means; the markers sit at the exponent vectors."
 
 [[claim]]
@@ -7491,7 +7491,7 @@ kind = "S"
 backing = ["test:tests/test_site.py::test_slices_draw_nine_panes_with_one_surface_each_and_no_formula", "func:scripts/build_site_figures.py::draw_slices"]
 status = "backed"
 disposition = "keep"
-source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+source = "WP51, the synthetic-case section (4f81a4ea:work-packages/WP51-rounds/synthetic-case.md)"
 note = "The chart column's horizontal coordinate, (log m_i - log m_j)/sqrt(2)."
 
 [[claim]]
@@ -7503,7 +7503,7 @@ kind = "S"
 backing = ["test:tests/test_site.py::test_slices_are_the_fitted_surface_with_the_third_metric_at_its_median", "func:scripts/build_site_figures.py::held_at"]
 status = "backed"
 disposition = "keep"
-source = "WP51, the synthetic-case section (work-packages/WP51-rounds/synthetic-case.md)"
+source = "WP51, the synthetic-case section (4f81a4ea:work-packages/WP51-rounds/synthetic-case.md)"
 note = "Rows are the three pairs; the third metric is held at its median over the table."
 
 [[claim]]
@@ -7977,7 +7977,7 @@ kind = "S"
 backing = ["file:examples/amniote/results.json", "file:examples/amniote/manifest.toml", "bib:myhrvold2015amniote"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "results.json counts.rows_in_table; manifest.toml columns and licence."
 
 [[claim]]
@@ -7989,7 +7989,7 @@ kind = "S"
 backing = ["file:examples/amniote/results.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "results.json counts.complete_cases and complete_Mammalia, _Aves, _Reptilia; 2770/21322 = 0.13."
 
 [[claim]]
@@ -8001,7 +8001,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json annual_fecundity_added: the fecundity exponent 0.00, the other exponents and the set equal the primary row's."
 
 [[claim]]
@@ -8013,7 +8013,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json mass_partialled_out contending_set has four members; mass_dropped has 2,776 rows and the primary set."
 
 [[claim]]
@@ -8025,7 +8025,7 @@ kind = "S"
 backing = ["file:examples/amniote/results.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "results.json keep_mass tau_selected 10.655 at target_frac_above 0.10."
 
 [[claim]]
@@ -8037,7 +8037,7 @@ kind = "S"
 backing = ["file:examples/amniote/results.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "results.json keep_mass contending_set."
 
 [[claim]]
@@ -8049,7 +8049,7 @@ kind = "S"
 backing = ["file:examples/amniote/results.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "results.json keep_mass k2: term_share 0.657, 0.343; mean_slack_k1 0.412; mean_slack 0.345; status."
 
 [[claim]]
@@ -8061,7 +8061,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json primary k2.terms: litter size 0.04 to 0.19, litters per year 0.00 to 0.11, longevity 0.59 to 0.36."
 
 [[claim]]
@@ -8073,7 +8073,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json association over primary, robust_scaler, quantile, mass_partialled_out, mass_dropped."
 
 [[claim]]
@@ -8085,7 +8085,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json association longevity|litter_size over the same five rows."
 
 [[claim]]
@@ -8097,7 +8097,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json exponents over the same five rows."
 
 [[claim]]
@@ -8109,7 +8109,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json no_scaler: earliness 1.00, the others 0.00."
 
 [[claim]]
@@ -8121,7 +8121,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json maturity_not_inverted_quantile: association +0.76, set longevity and litters per year (the same as the uninverted standard-scaler row)."
 
 [[claim]]
@@ -8133,7 +8133,7 @@ kind = "S"
 backing = ["file:examples/amniote/variants.json"]
 status = "backed"
 disposition = "keep"
-source = "WP60, the amniote page (work-packages/WP60-rounds/amniote.md)"
+source = "WP60, the amniote page (4f81a4ea:work-packages/WP60-rounds/amniote.md)"
 note = "variants.json primary and maturity_not_inverted: contending_set and association longevity|earliness."
 
 [[claim]]
@@ -8145,7 +8145,7 @@ kind = "S"
 backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_derivation.py::test_full_chain_runs", "test:tests/test_wp45_examples.py::test_manifest_names_source_doi_licence", "file:docs/examples/perovskite.md", "file:docs/examples/amniote.md", "file:docs/examples/wheat.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "The estimator passes scikit-learn's checks; the lemma scripts run in the chain test; the cubesat case is Sections 7 and 8; the three example pages are the records on the public datasets (WP60)."
 
 [[claim]]
@@ -8157,7 +8157,7 @@ kind = "S"
 backing = ["glossary:proposal", "glossary:selection-rule", "file:work-packages/WP41-rounds/spike/readout.md", "func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP41 readout, section 1: the sampled route and the conjecture route, the selection rule, the check."
 
 [[claim]]
@@ -8169,7 +8169,7 @@ kind = "S"
 backing = ["file:work-packages/WP41-rounds/spike/readout.md", "file:docs/bridge.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP41 readout, section 1: the outer loop is the refit; the chain back through the conditioning is the retired Section 7's middle loop, kept in docs/bridge.md."
 
 [[claim]]
@@ -8181,7 +8181,7 @@ kind = "S"
 backing = ["file:work-packages/WP41-rounds/spike/readout.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP41 readout, section 4: the shape of the interface, to be scoped."
 
 [[claim]]
@@ -8193,7 +8193,7 @@ kind = "S"
 backing = ["file:notes/directions/wp50-persistent-homology.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP50 readout, 'The boundary': the planted instance locates and settles a known hole at the cost of one recomputed diagram; the suggested sentence names candidates as hypotheses; no result on the case."
 
 [[claim]]
@@ -8205,7 +8205,7 @@ kind = "S"
 backing = ["file:notes/directions/wp50-persistent-homology.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP50 readout, 'What the next release builds' (stage 1) and the dependency choice (alpha complex under GPL v3 or Rips complex under MIT), his."
 
 [[claim]]
@@ -8217,7 +8217,7 @@ kind = "L"
 backing = ["file:work-packages/WP36-rounds/spike/readout.md", "file:work-packages/WP36-decisions.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP36 decision (placement (a)): the Lean direction with the two lemmas named first and the reals-versus-floating-point line."
 
 [[claim]]
@@ -8229,7 +8229,7 @@ kind = "L"
 backing = ["file:work-packages/WP36-rounds/spike/readout.md", "file:work-packages/WP36-decisions.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP36 decision: one clause for the Rust core compiled to WebAssembly; the supervisor's pairing of Lean with Rust for performance and guarantees."
 
 [[claim]]
@@ -8241,7 +8241,7 @@ kind = "S"
 backing = ["file:notes/directions/wp48-governance-control-checks.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "WP48 readout, section 5: the release process is intended to carry governance checks expressed as SysML v2 requirements and verification definitions; none runs yet."
 
 [[claim]]
@@ -8253,7 +8253,7 @@ kind = "P"
 backing = ["reading", "file:work-packages/README.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "The author's own account of how the work was run; work-packages/README.md records the gates."
 
 [[claim]]
@@ -8265,7 +8265,7 @@ kind = "S"
 backing = ["file:notes/claims-review.md", "test:tests/test_claims_register.py::test_the_register_holds_for_the_paper"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "The claims register's rule: every claim a reader can rely on is backed or narrowed."
 
 [[claim]]
@@ -8277,7 +8277,7 @@ kind = "S"
 backing = ["test:tests/test_derivation.py::test_full_chain_runs", "test:tests/test_proof_map.py::test_checker_passes_on_the_committed_record", "file:notes/proof-conventions.md"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "The lemma scripts are scripted checks, never machine-checked or formally verified."
 
 [[claim]]
@@ -8289,7 +8289,7 @@ kind = "S"
 backing = ["file:work-packages/interface-contract.md", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "file:docs/getting-started.md", "test:tests/test_docs.py::test_runnable_blocks_execute"]
 status = "backed"
 disposition = "keep"
-source = "WP54, the paper's skeleton (work-packages/WP54-review.md)"
+source = "WP54, the paper's skeleton (4f81a4ea:work-packages/WP54-review.md)"
 note = "As the retired C124 and C125, one sentence."
 
 [[claim]]
@@ -8301,7 +8301,7 @@ kind = "M"
 backing = ["lemma:L1", "glossary:energy-differential", "glossary:level-offset"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C004. Worded as an analogy with a potential; the physical potential is named as an analogy, not a claim."
 
 [[claim]]
@@ -8313,7 +8313,7 @@ kind = "M"
 backing = ["lemma:L10"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C007. e^(kappa Phi_K) is a posynomial in m, the sum of K monomials; Definition 3."
 
 [[claim]]
@@ -8325,7 +8325,7 @@ kind = "M"
 backing = ["lemma:L2", "lemma:L1"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C014. Section 6.1; L1 for 'scales with the metrics'."
 
 [[claim]]
@@ -8337,7 +8337,7 @@ kind = "M"
 backing = ["lemma:L10", "lemma:L11"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C018. Section 6.1; weakly efficient in general, efficient when every exponent is positive (L11.17, L11.19, step 5 for K > 1); the converse is stated as not claimed in the L11 box."
 
 [[claim]]
@@ -8349,7 +8349,7 @@ kind = "M"
 backing = ["lemma:L10", "lemma:L11"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C018. Section 6.1; weakly efficient in general, efficient when every exponent is positive (L11.17, L11.19, step 5 for K > 1); the converse is stated as not claimed in the L11 box."
 
 [[claim]]
@@ -8361,7 +8361,7 @@ kind = "M"
 backing = ["lemma:L17"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C021. Section 6.2; a connective: the box states the conditions under which the test certifies."
 
 [[claim]]
@@ -8373,7 +8373,7 @@ kind = "M"
 backing = ["lemma:L17", "file:derivation/lemma_17_soft_fit_certificate.py"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C023. The L17 box, section 6.2; the statement of the derivation script (symbol H = D - kappa M typeset); hypotheses (finite tau and kappa; first-order conditions exactly) are the script's own text; the declared inherited result I16."
 
 [[claim]]
@@ -8385,7 +8385,7 @@ kind = "M"
 backing = ["lemma:L5", "glossary:supporting-envelope"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C038. beta_k = J_tau(U w_k), the soft maximum of the scores along w_k (the exact maximum at tau = infinity); the gloss says the same in words."
 
 [[claim]]
@@ -8397,7 +8397,7 @@ kind = "M"
 backing = ["lemma:L10.9", "lemma:L1.6", "glossary:fitted-reference-surface"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C092. L10.9 Phi_1 = w.u - beta (so Phi_1=0 iff log V=0, L1.7); glossary defines the reference surface as V=1"
 
 [[claim]]
@@ -8409,7 +8409,7 @@ kind = "S"
 backing = ["file:work-packages/interface-contract.md", "test:tests/test_interface_contract.py::test_r1_term_aggregation_keyword_pinned", "test:tests/test_estimator.py::test_term_aggregation_default_and_params_roundtrip", "test:tests/test_estimator.py::test_term_aggregation_mean_shifts_score_by_log_k_over_kappa", "lemma:L10.20"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C386. Definition 3. Interface contract version 9: the keyword term_aggregation takes sum (default) or mean, stored verbatim and validated in fit; the formula in the definition is the sum, the mean subtracts log K / kappa (L10.20)."
 
 [[claim]]
@@ -8421,7 +8421,7 @@ kind = "S"
 backing = ["func:src/hyperbolic_trade_space/tensions.py::trade_off_report", "test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C416. trade_off_report at K > 1 solves the tau = inf LP on the rows assigned to the term with their mean subtracted (_report(..., Uk - Uk.mean(0), ...)): min_w max_i w.(u_i - ubar_k) over the cell equals J_inf(U_k w) - ubar_k.w, the term refit f_k restricted to the cell's rows."
 
 [[claim]]
@@ -8433,7 +8433,7 @@ kind = "S"
 backing = ["func:src/hyperbolic_trade_space/solvers.py::soft_weights", "test:tests/test_soft_fit.py::test_r3_the_limit_kappa_to_infinity_is_the_label_fit", "file:derivation/lemma_16_soft_fit_alternation.py", "file:paper/supporting_material.ipynb"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C417. softmax_k(kappa s_ik) at kappa = infinity is one label per design, k(i) = argmax_k s_ik (L16's setting names the infinite-kappa weights a one-label assignment; Appendix B.2: the package uses the sharp limit of the weights); test_r3 shows the finite-kappa fit tending to the label fit."
 
 [[claim]]
@@ -8445,7 +8445,7 @@ kind = "S"
 backing = ["func:src/hyperbolic_trade_space/estimator.py::assign_cells", "file:work-packages/interface-contract.md", "glossary:cell"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C418. assign_cells(X) is argmax_k (w_k . log m - beta_k) of the fitted model; its doctest shows it equal to cell_, the labels of the returned state."
 
 [[claim]]
@@ -8457,7 +8457,7 @@ kind = "M"
 backing = ["lemma:L14.14", "lemma:L14.15", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner", "func:examples/adcs/case.py::conditioner_for", "glossary:conditioning", "glossary:log-metrics"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C421. L14.14 and L14.15 at K = 1 (one cell, n_1 = N, share 1): F(W) = f_1(w) = J_tau(Uw) - ubar.w with ubar the column mean of U; under A2 the weights sum to one, and with ubar = 0 the linear term vanishes for every w, so equation (2) is equation (1); with ubar != 0 the minimizers of J_tau and of J_tau - ubar.w differ in general. The case's conditioning is LogAffinePreconditioner with scaler='standard' (sklearn StandardScaler on the log-attributes; case.conditioner_for); on the data of record max_j |mean_i log M_ij| = 7.4e-15 (primary, N = 706) and 3.6e-15 (stock, N = 780), computed with case.load_study on 2026-11-10."
 
 [[claim]]
@@ -8469,7 +8469,7 @@ kind = "M"
 backing = ["lemma:L11.17", "lemma:L11.19"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C464. The title and the lead-in say weakly Pareto-efficient: weak efficiency is the general statement, strict efficiency needs every w_j > 0 (K = 1) or an active term with every exponent positive (K > 1, kappa = infinity; step 5 of the script)."
 
 [[claim]]
@@ -8481,7 +8481,7 @@ kind = "M"
 backing = ["lemma:L20.52", "lemma:L20.55", "lemma:L20.58", "lemma:L20.59", "lemma:L20.60", "lemma:L20.63", "test:tests/test_noise_ridge.py::test_the_face_projector_of_the_lemma_is_the_support_projector_and_the_shift_is_stationary", "test:tests/test_noise_ridge.py::test_at_a_boundary_exponent_the_full_simplex_formula_is_wrong_and_the_face_formula_holds"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C465. L20 proves the shift on the support T of the clean fit under strict complementarity: the gradient is lambda on T and above it off T (R3), P_T is the projector onto the sum-zero vectors that vanish off T (L20.55, L20.56), the same algebra gives delta = -(P_T C P_T)^+ P_T Sigma w (L20.58 to L20.60), and the zero exponents stay zero while the first-order change is below the gap (L20.62, L20.63). With every exponent positive P_T is I - 11'/d. D.18 predicts with the support's P and measures it; the first-order statement, not the noisy fit of a finite table."
 
 [[claim]]
@@ -8493,7 +8493,7 @@ kind = "M"
 backing = ["lemma:L20", "test:tests/test_noise_ridge.py::test_the_noisy_fit_no_longer_follows_the_ridge_at_large_tau_and_noise"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C466. The script proves delta'Sigma w <= -m ||delta||^2 <= 0 (the ridge falls to first order) and, for Sigma = sigma^2 I, that ||w||^2 falls; tau cancels from the bound, conditioning_ = tau m is the package name."
 
 [[claim]]
@@ -8505,7 +8505,7 @@ kind = "M"
 backing = ["lemma:L14.19", "lemma:L14.20"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C467. The corollary needs the partition (A8), the reaches beta_k = J_tau(U w_k) and the term gap of L12; it needs neither R2 nor minimality of w_k."
 
 [[claim]]
@@ -8517,7 +8517,7 @@ kind = "M"
 backing = ["lemma:L20.52", "lemma:L20.62", "lemma:L20.63", "lemma:L20.60"]
 status = "backed"
 disposition = "narrow"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C473. R3 as the ledger entry words it (derivation/axioms.py): the hypotheses of L20 on the support. Strict complementarity is the gradient value lambda on the support and strictly above it off the support (L20.52, L20.62); positive definiteness on the face's tangent space makes the shift unique and bounds it (L20.60 and L20.44 to L20.49)."
 
 [[claim]]
@@ -8529,7 +8529,7 @@ kind = "S"
 backing = ["func:src/hyperbolic_trade_space/solvers.py::_termination", "file:src/hyperbolic_trade_space/solvers.py"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C640. _termination: status certified needs n_empty == 0 and a positive margin; with an empty term the status is stationary_without_margin (Appendix D.8)."
 
 [[claim]]
@@ -8541,7 +8541,7 @@ kind = "M"
 backing = ["lemma:L16"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C641. L16 (ii): the fixed-weight loss bounds the soft slack from above with equality at the weights' own model."
 
 [[claim]]
@@ -8553,7 +8553,7 @@ kind = "M"
 backing = ["lemma:L17"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C642. The Hessian is D - kappa M with M positive semidefinite (L17)."
 
 [[claim]]
@@ -8565,7 +8565,7 @@ kind = "M"
 backing = ["lemma:L13"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C643. s_ik = (u_i, -1) . (w_k, beta_k) (L13)."
 
 [[claim]]
@@ -8577,7 +8577,7 @@ kind = "M"
 backing = ["lemma:L16.43", "lemma:L16.41", "lemma:L16.42"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C648. L16.43 proves the mean of the nonnegative Jensen slacks: F <= G_alpha - E, E = (1/(kappa N)) sum_i H_i, the mean entropy of the weights over kappa; equality at x = x0 (L16.41). Request 136."
 
 [[claim]]
@@ -8589,7 +8589,7 @@ kind = "M"
 backing = ["lemma:L16.34", "lemma:L16.35", "lemma:L16.36", "lemma:L16.37"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C649. L16.34: the average of the cyclic shifts is the all-equal point; L16.35: a convex symmetric F is at most F(W) there; L16.36 and L16.37: the exact instance has F(mid) - F(W) above 0.004, so one symmetric point, the shift average, suffices (request 97)."
 
 [[claim]]
@@ -8601,7 +8601,7 @@ kind = "M"
 backing = ["lemma:L15.21", "lemma:L15.22"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C650. L15.21 and L15.22: one cell per row, K^N partitions, pairwise distinct before the stop; the count is a pigeonhole, not a rate (requests 98 and 139)."
 
 [[claim]]
@@ -8613,7 +8613,7 @@ kind = "M"
 backing = ["lemma:L20.20", "lemma:L18"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C652. L20 step 1: J^R = J_tau + (tau/2) w'Sigma w exactly, row by row (L18's cumulant), so independence across rows is not used (request 99)."
 
 [[claim]]
@@ -8625,7 +8625,7 @@ kind = "M"
 backing = ["file:derivation/lemma_20_noise_ridge.py", "lemma:L18"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C653. derivation/lemma_20_noise_ridge.py lists A1, A3, A5, A9, I9, I18, R3 as used; A10 is L18's, which maps a multiplicative attribute error to the conditioned noise (request 118)."
 
 [[claim]]
@@ -8637,7 +8637,7 @@ kind = "M"
 backing = ["lemma:L10.18", "lemma:L10.19"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C654. L10.18: the limit is the maximum of the scores; L10.19: each term is the monomial e^{-kappa beta_k} prod m_j^(kappa w_kj); I15 admits the maximum (request 109)."
 
 [[claim]]
@@ -8649,7 +8649,7 @@ kind = "M"
 backing = ["lemma:L10.8", "lemma:L8"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C655. L10.8: Phi_K(u + c 1) = Phi_K(u) + c; with u = B^T Z + l 1 (L8) the level is recovered from Z and Phi_K (request 107)."
 
 [[claim]]
@@ -8661,7 +8661,7 @@ kind = "M"
 backing = ["lemma:L12"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C658. L12: G = g.w - min_j g_j is the first-order gap over the simplex, 0 <= f - f* <= G (requests 113 and 159)."
 
 [[claim]]
@@ -8673,7 +8673,7 @@ kind = "M"
 backing = ["lemma:L3.9", "lemma:L7"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C660. L3.9 takes R1 to give w_j > 0 for the balanced point; L7 reads R1 as supplying w_j > 0 (request 102)."
 
 [[claim]]
@@ -8685,7 +8685,7 @@ kind = "M"
 backing = ["lemma:L19", "file:derivation/axioms.py"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C802. Request 174: A11 is declared in derivation/axioms.py and used by L19 only; Section 3's list now carries it."
 
 [[claim]]
@@ -8697,7 +8697,7 @@ kind = "M"
 backing = ["lemma:L1", "glossary:invariant-value", "glossary:monomial"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C851. The notation fixes V as a function and V(m) as its positive value; the definition of the invariant value and L1 state it."
 
 [[claim]]
@@ -8709,7 +8709,7 @@ kind = "M"
 backing = ["glossary:conditioning-of-the-exponents", "lemma:L2"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C042. Rescaling or shifting a metric changes the log-metrics the fit sees (the shift of L2 moves the offsets only for a common constant), so the exponents belong to the conditioning chosen."
 
 [[claim]]
@@ -8721,7 +8721,7 @@ kind = "S"
 backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/hyperbolic_trade_space/tuning.py::select_temperature", "test:tests/test_case.py::test_sensitivity_and_refits_on_frozen_primary"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C098. select_temperature hits the target frac_above_ within 0.01; the case uses spec.target_frac=0.10 (case.py), baseline tau pinned"
 
 [[claim]]
@@ -8733,7 +8733,7 @@ kind = "S"
 backing = ["lemma:L10.18", "test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C106. default term_temperature is np.inf (label fit, max of affine terms, kink where terms tie)"
 
 [[claim]]
@@ -8745,7 +8745,7 @@ kind = "R"
 backing = ["gen:paper/generate_results.py::own_rows_refit", "test:tests/test_paper.py::test_the_claims_of_c1_have_their_true_basis"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C419. D.13: the plain K = 1 fit on a term's own rows as they are (solve_slsqp(mine, tau)) recovers 0 of 60 planted terms (largest error 0.97 at the exact maximum); the all-rows refit centred at the term's mean recovers 60 of 60 (0.001). The sentence says what was observed and not 'ill-posed'."
 
 [[claim]]
@@ -8757,7 +8757,7 @@ kind = "S"
 backing = ["file:work-packages/interface-contract.md", "file:work-packages/WP17-decisions.md", "test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone", "test:tests/test_soft_fit.py::test_r7_the_benchmark_tables_are_certified", "lemma:L17"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C928. As the retired C019. Section 6.2; WP17 R-1, R-7; the test is L17."
 
 [[claim]]
@@ -8769,7 +8769,7 @@ kind = "M"
 backing = ["lemma:L15", "lemma:L12", "lemma:L13", "lemma:L14"]
 status = "backed"
 disposition = "keep"
-source = "WP55 (work-packages/WP55-review.md)"
+source = "WP55 (4f81a4ea:work-packages/WP55-review.md)"
 note = "As the retired C929. As the retired C020. Section 6.2; as stated in their boxes."
 
 [[claim]]
@@ -8818,7 +8818,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+source = "WP56 (4f81a4ea:work-packages/WP56-rounds/figures/record.md)"
 note = "The upper half in the tension order: |T[i, j]| = s_i / s_j with s_i = w_i / m_i at the balanced point (L21), so the order by s puts every drawn cell at one or more in size; the ranges per term are the fit's (1.081 to 17.283, 1.013 to 30.131)."
 
 [[claim]]
@@ -8834,7 +8834,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+source = "WP56 (4f81a4ea:work-packages/WP56-rounds/figures/record.md)"
 
 [[claim]]
 id = "C969"
@@ -8849,7 +8849,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+source = "WP56 (4f81a4ea:work-packages/WP56-rounds/figures/record.md)"
 note = "As the retired C800, without its 'sorted by exponent' (the paper's order is now the tension order, C968)."
 
 [[claim]]
@@ -8865,7 +8865,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+source = "WP56 (4f81a4ea:work-packages/WP56-rounds/figures/record.md)"
 
 [[claim]]
 id = "C971"
@@ -8880,7 +8880,7 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP56 (work-packages/WP56-rounds/figures/record.md)"
+source = "WP56 (4f81a4ea:work-packages/WP56-rounds/figures/record.md)"
 note = "The K = 1 fit of case.fleet_ternary_study (fleet cost, unit cost, coverage probability; coverage probability defined in examples/adcs/model_v2/stakeholders.sysml, CoverageProbability)."
 
 [[claim]]
@@ -8895,7 +8895,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP56 second unit (the prose of Sections 7 to 9)"
-note = "Read in the MDO Lab preprint of Gray et al. (2019), Section 7 'Applications' and Table 13: 'a satellite MDO problem that maximized the data downloaded', disciplines orbit dynamics, attitude dynamics, cell illumination, temperature, solar power, energy storage and communication; its code is github.com/OpenMDAO/CADRE (Section 8). The read is recorded in work-packages/WP56-review.md (the WP10 reading pass is a closed record)."
+note = "Read in the MDO Lab preprint of Gray et al. (2019), Section 7 'Applications' and Table 13: 'a satellite MDO problem that maximized the data downloaded', disciplines orbit dynamics, attitude dynamics, cell illumination, temperature, solar power, energy storage and communication; its code is github.com/OpenMDAO/CADRE (Section 8). The read is recorded in 4f81a4ea:work-packages/WP56-review.md (the WP10 reading pass is a closed record)."
 
 [[claim]]
 id = "C973"

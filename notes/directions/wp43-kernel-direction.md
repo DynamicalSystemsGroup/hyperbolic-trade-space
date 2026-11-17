@@ -3,7 +3,7 @@
 Stage 1 (research spike) and stage 2 (decide) of the six-stage lifecycle. The protocol is `protocol.md`
 (committed first, with three amendments, each dated by its commit and labelled; amendments 2 and 3 were made after
 results were read and say so). Every number below is read from `results/`, written by
-`uv run --with cvxpy python work-packages/WP43-rounds/spike/run.py all` (the scripts are in history at d0a97cd) from the repository root (environment in
+`uv run --with cvxpy python work-packages/WP43-rounds/spike/run.py all` (the scripts are in history: `git show d0a97cd:work-packages/WP43-rounds/spike/run.py`) from the repository root (environment in
 `results/environment.txt`; `pyproject.toml` and `uv.lock` are unchanged). Nothing in `src/`, `paper/` or `docs/`
 (beyond the D-4 note) changed.
 

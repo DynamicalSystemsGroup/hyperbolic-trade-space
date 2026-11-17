@@ -6,8 +6,8 @@ one change at a time, writing ``variants.json`` beside this file. The fit, the t
 (a tenth of rows above the surface) and the seeds are those of ``run.py``; the existing chain, PCA
 after the fit on the near-frontier chart, is the ``spread_first_direction`` of every variant.
 
-Each variant is one row of the table in ``work-packages/WP59-rounds/amniote.md``; the first row
-is the record's primary rule. The last row changes two things, stated in its rule.
+Each variant is one row of the table in ``4f81a4ea:work-packages/WP59-rounds/amniote.md``; the first
+row is the record's primary rule. The last row changes two things, stated in its rule.
 """
 
 from __future__ import annotations

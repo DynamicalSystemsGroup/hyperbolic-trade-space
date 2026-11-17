@@ -15,7 +15,7 @@ Two tables, written to ``views/coverage.md`` and ``views/coverage.csv`` from the
    The *empirical* column changes each decision element one at a time at the three named
    configurations of the model and counts an effect when a metric moves by more than ``EFFECT``
    relative. A cell where the two columns disagree is a finding (listed under the table and in
-   ``work-packages/WP23-review.md``).
+   ``4f81a4ea:work-packages/WP23-review.md``).
 
 2. **Traded metric -> MoE or MoP, requirement, verification.** The mark is the first word of the
    ``doc`` on the metric's element; the requirement is the one whose constraint reads the metric's

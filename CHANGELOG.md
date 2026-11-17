@@ -75,7 +75,7 @@ package.
 - The case study moves onto the model of record: the nine-attribute datasets, the settling time by
   event detection, and the K = 1, 2, 3 record and the paper's numbers regenerated on them inside
   the container of record; every moved number is listed with its cause in
-  `work-packages/swap-evidence.md`, and the earlier data stays as the cited comparison (WP16,
+  [`work-packages/swap-evidence.md`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/4f81a4ea3649ff844cff2acdf9d447285cbb0fc5/work-packages/swap-evidence.md), and the earlier data stays as the cited comparison (WP16,
   WP23).
 - The word "facet" is gone from every surface, including the package's public names: the model's
   objects are monomial terms (term assignment, distinct terms, per-term shares), the paper, the

@@ -54,7 +54,7 @@ def test_a_changed_test_file_runs_itself_and_unmapped_paths_have_no_mapping():
 
 @pytest.mark.parametrize(
     "path",
-    ["README.md", "work-packages/WP20-review.md", "uv.lock", "tests/conftest.py"],
+    ["README.md", "work-packages/INDEX.md", "uv.lock", "tests/conftest.py"],
 )
 def test_unmapped_paths_fall_back_to_the_fast_suite(path, monkeypatch, capsys):
     assert check.unmapped([path]) == [path]

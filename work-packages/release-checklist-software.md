@@ -1,7 +1,7 @@
 # Release checklist, the software (0.1)
 
 Working document, not for users. The software's release is the merge of the pull request from `dev` into `main`
-(`WP65-design/specification.md`, section 1); this list holds the rows that decide it. The paper's rows are in
+(`WP65-design/specification.md` (`git show 4f81a4ea:work-packages/WP65-design/specification.md`), section 1); this list holds the rows that decide it. The paper's rows are in
 `release-checklist-paper.md`. Both replace `WP8b-release-checklist.md` (specification 6.3): each row keeps its old
 number, with `s` where the old row was split between the two lists, and the rows added for the new model are R1 and
 R2. Every row is sourced. State, read at dev `5e85196b`: `-` not done; otherwise a short word with the commit or

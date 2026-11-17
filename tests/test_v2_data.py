@@ -244,7 +244,7 @@ def _assert_within_frozen_tolerances(committed: pd.DataFrame, fresh: pd.DataFram
         np.testing.assert_allclose(committed[col], fresh[col], rtol=rtol, atol=1e-6, err_msg=col)
     # torque_saturated_frac is a step count over about 1340 accepted steps of an adaptive solver
     # (a diagnostic, not a fitted attribute): compared with an absolute tolerance of 0.01 and no
-    # relative term (work-packages/swap-evidence.md).
+    # relative term (4f81a4ea:work-packages/swap-evidence.md).
     np.testing.assert_allclose(
         committed.torque_saturated_frac, fresh.torque_saturated_frac, rtol=0, atol=SAT_ATOL
     )

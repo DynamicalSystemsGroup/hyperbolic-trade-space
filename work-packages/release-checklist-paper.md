@@ -1,6 +1,6 @@
 # Release checklist: the paper
 
-The paper's lifecycle on the `paper` branch (`work-packages/WP65-design/specification.md`, section 2): modes
+The paper's lifecycle on the `paper` branch (`work-packages/WP65-design/specification.md` (`git show 4f81a4ea:work-packages/WP65-design/specification.md`), section 2): modes
 `abstract`, `working`, `submitted`, `revision`, a pin per `paper-*` tag, published by `.github/workflows/paper.yml`.
 The software's list is `release-checklist-software.md`. Rows keep their numbers from `WP8b-release-checklist.md`
 (suffix `p` where a row was split between the two lists); rows M, L and P are the paper's own. State: `-` not done;

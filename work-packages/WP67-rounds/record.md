@@ -69,6 +69,8 @@ reports three extra JSON fields (WP66a's notes). `release-punch-list.md` still d
 
 ## G8 the browser pass
 
+The eighty captures this section cites left the tree with WP73; each is read at `4f81a4ea` (`git show 4f81a4ea:work-packages/WP67-rounds/captures/<file>`).
+
 Five cases, each staged in a worktree at 57a0dc25 and served on its own port, captured headless (Playwright,
 Chromium) at 1,280 and 375 px in light and dark: `/`, `/paper/`, `/paper/supporting-material/` and `/docs/theory/`
 (the docs page with eight paper citations). The abstract case is the tree as it is; the other four stage with

@@ -42,7 +42,7 @@ generalizations. this should be viewed as a research roadmap and the any new fea
 Reading: the level explained twice, posynomial in one block of variables and affine in another, agreeing row by row;
 first the monomial with a scalar affine side (w . log x = log(a y + b); at b = 0 the statistic is the correlation of
 log V with log y, 0.99 for wheat with y = biomass, `WP71`); then a vector y, several terms, several outputs. WP72's
-spike (`work-packages/WP72-rounds/readout.md`) is stage 1 of this roadmap; the estimator's features enter the package
+spike (`work-packages/WP72-rounds/readout.md`, `git show 4f81a4ea:work-packages/WP72-rounds/readout.md`) is stage 1 of this roadmap; the estimator's features enter the package
 at 0.2 or later, never 0.1.
 
 **His addition (17:20 EST, verbatim):** "it could end up being a different approach but between the market makers and

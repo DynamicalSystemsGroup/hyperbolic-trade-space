@@ -1,6 +1,6 @@
 name: Issue admissibility
 
-# VC-1 (work-packages/WP47-rounds/checks.md). Trigger: an issue opened or edited. Reads only the event
+# VC-1 (4f81a4ea:work-packages/WP47-rounds/checks.md). Trigger: an issue opened or edited. Reads only the event
 # payload and .github/CODEOWNERS from the default branch; it runs no code from the issue.
 on:
   issues:

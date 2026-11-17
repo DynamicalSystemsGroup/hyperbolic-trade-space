@@ -1,6 +1,7 @@
 """The release gates of scripts/release_checks.py: the changelog entry, the action pins, the bill
-(verification cases VC-6 to VC-8 in work-packages/WP47-rounds/checks.md), and the tag state, the
-merge commit and the PyPI hashes (specification 1.2 and 1.3, with the site-only merge)."""
+(verification cases VC-6 to VC-8 in 4f81a4ea:work-packages/WP47-rounds/checks.md), and the tag
+state, the merge commit and the PyPI hashes (specification 1.2 and 1.3, with the site-only
+merge)."""
 
 import hashlib
 import importlib.util

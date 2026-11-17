@@ -2,7 +2,7 @@
 """Spike D: per-part pricing curves, the fleet totals and the budget band for the case model.
 
 Run from the repository root:
-    uv run python work-packages/WP23-rounds/spikes/spike-D-cubesat-economics/economics.py
+    uv run python examples/adcs/spikes/economics.py
 Reads examples/adcs/data/v2 (read-only). Every parameter is a proposal; the sources are in README.md.
 total_p(n) = u_p(x) * [f_p + (1 - f_p) * n**(1 - b_p)],  b_p = -log2(slope_p)
   u_p(x): the part's single-unit price at the configuration x (n = 1)
