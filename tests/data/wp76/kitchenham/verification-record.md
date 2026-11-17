@@ -246,6 +246,17 @@ vanished on the dark page; both now take the axes' label colour); at 375 px the 
 scrolls inside its box as on the other example pages and the figures shrink below legibility, as the figure rule
 allows (`notes/figure-review.md`: a phone is not a requirement for figure text).
 
+## 7a. The prose checks (R-11)
+
+`scripts/check_vocabulary.py`: 0 new violations. `scripts/check_residuals.py --compare scripts/residuals_baseline.json
+--strict` exits 1 on this branch as it does on `dev`: its baseline predates the paper's and the history page's later
+edits (131 counts rose repository-wide, none on a file this branch changes except the Examples index, whose counts
+are the base's after the route sentence was reworded at the review: parentheticals 5, long parentheticals 0,
+compound sentences 3). The example pages under `docs/examples/` are not residual surfaces (`scripts/prose_surfaces.py`
+scans `docs/*.md` and `docs/user-guide/*.md`), so the checker's patterns were run over the page directly: no
+metanarration opener, no intensifier, one hedge ("may", the possibility about recorded dates), 31 sentences of 22
+words on average.
+
 ## 8. What this changes for the method
 
 A portfolio of a hundred-odd rows needs its band rule stated: 1/tau held 12 projects here and fewer on other rungs.

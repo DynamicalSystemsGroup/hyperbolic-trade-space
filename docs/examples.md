@@ -285,7 +285,7 @@ The last two calls write the root page's images.
 
 ## Four public datasets
 
-On measured data: [perovskite solar cells](examples/perovskite.md) (40,045 devices, three metrics), [amniote life histories](examples/amniote.md) (2,770 species, four metrics), [Broadbalk wheat](examples/wheat.md) (3,753 plot-years, two metrics) and [software projects](examples/kitchenham.md) (141 projects, three metrics: schedule slack, budget slack, scope).
+On measured data: [perovskite solar cells](examples/perovskite.md) (40,045 devices, three metrics), [amniote life histories](examples/amniote.md) (2,770 species, four metrics), [Broadbalk wheat](examples/wheat.md) (3,753 plot-years, two metrics) and [software projects](examples/kitchenham.md), 141 projects and three metrics.
 
 ## Proposing a design for a point with no datum
 
