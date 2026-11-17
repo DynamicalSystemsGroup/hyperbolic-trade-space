@@ -179,7 +179,7 @@ def main():
         "== distribution of unit build cost over the 1000 + 1000 designs (proposed prices, n = 1, 10) =="
     )
     for fn in ("adcs_designs_cubesat.csv", "adcs_designs_cubesat_gains.csv"):
-        rows = list(csv.DictReader(open(DATA / fn)))
+        rows = list(csv.DictReader(open(DATA / fn, encoding="utf-8")))
         feas = [
             r
             for r in rows
@@ -209,7 +209,7 @@ def main():
     P("")
     P("== current roll-up over the same designs (n=1) ==")
     for fn in ("adcs_designs_cubesat.csv", "adcs_designs_cubesat_gains.csv"):
-        rows = list(csv.DictReader(open(DATA / fn)))
+        rows = list(csv.DictReader(open(DATA / fn, encoding="utf-8")))
         v = sorted(
             current_rollup(
                 r["wheel_class"], r["st_grade"], float(r["panel_span_m"]), float(r["battery_wh"])
@@ -229,7 +229,7 @@ def main():
         )
     text = "\n".join(out)
     print(text)
-    (Path(__file__).parent / "economics-output.txt").write_text(text + "\n")
+    (Path(__file__).parent / "economics-output.txt").write_text(text + "\n", encoding="utf-8")
 
 
 main()
