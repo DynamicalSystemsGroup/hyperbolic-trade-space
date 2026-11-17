@@ -123,3 +123,14 @@ The Agent's defaults say the docsite total stays. After the removals of this pac
 touched pages net 19 words fewer than before WP81 (the home 289 of 350, Further reading 228 of 300; the total 12030
 against the cap of 12055), so the default holds and `TOTAL_BUDGET` is unchanged at 12055. An earlier state of this
 section recorded a rise; it is superseded.
+
+## Acceptance (2026-11-17)
+
+Asked whether he accepts WP81, delivered on `v0.2` at 774ff89b with `WP81-review.md` recommending acceptance (every
+paper link out of the docs, each pointer the docs' own statement or gone, the working paper named on the home, in
+Further reading, on the root page and in the README, the lemma scripts named nowhere in the docs, the fast suite
+2,012 passed at the content head 2703c0f9, the twelve journeys re-traced with captures). His answer, verbatim:
+
+> Accepted
+
+The package merges into `dev` with the rest of `v0.2` after 0.1 is out, in the documentation pull request.
