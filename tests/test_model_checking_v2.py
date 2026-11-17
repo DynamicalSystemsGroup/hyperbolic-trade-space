@@ -54,6 +54,7 @@ from test_system_model_v2 import (
     _rel,
     frozen_battery_peak_power_ratio,
 )
+from test_system_model_v2_r1 import _requirement_usages, _verified
 
 ADCS_DIR = MODEL.parents[1]
 FAST = {"t_end": 600.0, "max_step": 1.0}
@@ -258,13 +259,7 @@ def test_requirements_are_declared_one_per_flag(v2):
 
 def test_verification_defs_name_the_requirements_they_verify(v2):
     """R-4: each verification def names its requirements (read from the model by query)."""
-    verified: dict[str, set[str]] = {}
-    for name in _kinds(v2.model, "VerificationCaseDefinition"):
-        found = set()
-        for q in v2.model.query(scope=[f"{P}::{name}"]):
-            if q.properties.get("@type") == "SatisfyRequirementUsage":
-                found.add(q.properties["type"].split("::")[-1])
-        verified[name] = found
+    verified = _verified(v2.model)
     assert verified == REQUIREMENTS["verified"]
     assert set(fz.FLAG_REQUIREMENTS.values()) <= set().union(*verified.values())
     assert set().union(*verified.values()) == REQUIREMENTS["defs"]
@@ -289,10 +284,7 @@ def test_satisfy_statements_hold_on_the_baseline(v2):
     assert {v.engine for v in verdicts} == {"run"}
     assert {v.strength for v in verdicts} == {"observed"}
     assert v2.model.satisfied()
-    satisfy = v2.model.query(
-        scope=[P], where={"property": "@type", "operator": "=", "value": "SatisfyRequirementUsage"}
-    )
-    assert len(satisfy) >= REQUIREMENTS["satisfy"]
+    assert len(_requirement_usages(v2.model, P)) >= REQUIREMENTS["satisfy"]
 
 
 def test_baseline_measurement_is_a_recorded_measurement(v2, frozen):

@@ -22,9 +22,11 @@ import os
 import pathlib
 import re
 import warnings
+from types import SimpleNamespace
 
 import cubesat_model as cm
 import pytest
+from experiments.probes import REQUIREMENT_USAGE_KINDS
 from opensysml.values import Quantity
 from test_system_model_v2 import (
     ADCS_DIR,
@@ -125,14 +127,68 @@ def _kinds(model, kind):
 
 
 def _verified(model) -> dict[str, set[str]]:
+    """The requirements each verification def verifies, by the def's name, read by ``query``; a
+    ``verify requirement`` comes back under either name in ``REQUIREMENT_USAGE_KINDS``."""
     out = {}
     for name in _kinds(model, "VerificationCaseDefinition"):
         found = set()
         for q in model.query(scope=[f"{P}::{name}"]):
-            if q.properties.get("@type") == "SatisfyRequirementUsage":
+            if q.properties.get("@type") in REQUIREMENT_USAGE_KINDS:
                 found.add(q.properties["type"].split("::")[-1])
         out[name] = found
     return out
+
+
+def _requirement_usages(model, scope: str) -> list:
+    """The requirement usages ``query`` returns in ``scope``, asked for by each type name."""
+    return [
+        q
+        for kind in sorted(REQUIREMENT_USAGE_KINDS)
+        for q in model.query(
+            scope=[scope], where={"property": "@type", "operator": "=", "value": kind}
+        )
+    ]
+
+
+class _PlantedQuery:
+    """A stand-in for the client's ``query`` surface: one verification def ``Check`` holding one
+    requirement usage per type name in ``kinds``, each typed by the requirement def ``Light``. The
+    pinned client (0.12.1) types a ``verify requirement`` ``SatisfyRequirementUsage`` only, so the
+    second name cannot be planted through a loaded model."""
+
+    def __init__(self, kinds):
+        check = f"{P}::Check"
+        self.elements = [
+            (check, {"@type": "VerificationCaseDefinition", "name": "Check"}),
+            *(
+                (f"{check}::@{i}", {"@type": kind, "name": f"light{i}", "type": f"{P}::Light"})
+                for i, kind in enumerate(kinds)
+            ),
+        ]
+
+    def query(self, scope, where=None):
+        (scope,) = scope
+        return [
+            SimpleNamespace(properties=props)
+            for qid, props in self.elements
+            if (qid == scope or qid.startswith(scope + "::"))
+            and (where is None or props.get(where["property"]) == where["value"])
+        ]
+
+
+@pytest.mark.parametrize("kind", sorted(REQUIREMENT_USAGE_KINDS))
+def test_a_requirement_usage_is_read_under_either_type_name(kind):
+    """A planted ``verify requirement`` typed by either name is read as verifying its requirement,
+    and is counted among the scope's requirement usages."""
+    planted = _PlantedQuery([kind])
+    assert _verified(planted) == {"Check": {"Light"}}
+    assert len(_requirement_usages(planted, P)) == 1
+
+
+def test_requirement_usages_of_both_type_names_are_read_together():
+    planted = _PlantedQuery(sorted(REQUIREMENT_USAGE_KINDS))
+    assert _verified(planted) == {"Check": {"Light"}}
+    assert len(_requirement_usages(planted, P)) == 2
 
 
 def _code(text: str) -> str:

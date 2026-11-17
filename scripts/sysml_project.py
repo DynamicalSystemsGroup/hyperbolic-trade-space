@@ -546,6 +546,7 @@ def box_reasons(path) -> dict:
 def behavioural(m, byid, P, revision=10, reasons=None):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
+    from experiments.probes import REQUIREMENT_USAGE_KINDS
 
     spec = case.CUBESAT
     metrics = [(spec.short[a], spec.subsystems[a]) for a in spec.attributes]
@@ -566,7 +567,7 @@ def behavioural(m, byid, P, revision=10, reasons=None):
     satisfied_by = {r: set() for r in reqs}
     fails_by = {r: set() for r in reqs}  # revision 9: the negated satisfy statements
     for e in byid.values():
-        if e["@type"] == "SatisfyRequirementUsage":
+        if e["@type"] in REQUIREMENT_USAGE_KINDS:
             req_usage = ref(e["subsets"])
             if typing.get(req_usage) in satisfied_by:
                 negated = revision >= 9 and e.get("isNegated")

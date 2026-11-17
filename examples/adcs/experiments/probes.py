@@ -46,6 +46,11 @@ HERE = pathlib.Path(__file__).resolve().parent
 MODEL_PATH = HERE.parent / "cubesat_tradespace.sysml"
 RECORD_PATH = HERE / "probes" / "probe-record.md"
 PKG = "CubesatTradeSpace::"
+# The type names under which the client's ``query`` returns a requirement usage (a ``satisfy`` or a
+# ``verify requirement`` statement): opensysml 0.12.1 types both ``SatisfyRequirementUsage``; its
+# ``develop`` branch types a ``verify requirement`` ``VerifyRequirementUsage`` (the external review
+# of 2026-11-16, finding 7). Every match of the type in this repository tests membership here.
+REQUIREMENT_USAGE_KINDS = frozenset({"SatisfyRequirementUsage", "VerifyRequirementUsage"})
 BEGIN, END = "<!-- probes:begin -->", "<!-- probes:end -->"
 
 TOOLKIT_VERSION = "v0.12.0"
@@ -940,7 +945,7 @@ def probe_query_blind_spots() -> dict:
     m = connection().load_from_content(_QUERY)
     q = m.query(scope=["Q"])
     kinds = Counter(x.type for x in q)
-    unnamed = sorted(x.id for x in q if x.type in {"SatisfyRequirementUsage", "ConnectionUsage"})
+    unnamed = sorted(x.id for x in q if x.type in REQUIREMENT_USAGE_KINDS | {"ConnectionUsage"})
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
         api = json.loads(m.to_api_json().content)
@@ -949,12 +954,12 @@ def probe_query_blind_spots() -> dict:
         "load_errors": len(errors_of(m)),
         "duplicate_member_warnings": sum("Duplicate of" in d for d in diag_lines(m)) > 0,
         "query_sees_satisfy_and_connection": [
-            kinds["SatisfyRequirementUsage"],
+            sum(kinds[k] for k in REQUIREMENT_USAGE_KINDS),
             kinds["ConnectionUsage"],
         ],
         "unnamed_ids_use_at_numbers": all("::@" in i for i in unnamed) and len(unnamed) == 3,
         "api_json_lists_them_too": [
-            api_kinds["SatisfyRequirementUsage"],
+            sum(api_kinds[k] for k in REQUIREMENT_USAGE_KINDS),
             api_kinds["ConnectionUsage"],
         ],
         "api_json_with_duplicate_members_ok": len(api) > 0,
