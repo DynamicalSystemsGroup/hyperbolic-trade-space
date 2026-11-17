@@ -44,7 +44,8 @@ Settings, Rules, Rulesets (each Active):
 No tag rulesets: the Release workflow's clean-up deletes the tag of a failed release.
 
 The Tests workflow runs on every pull request into `main` (the required checks), when the Release workflow calls it,
-and on dispatch (Actions, Tests, Run workflow), which also runs Windows. It never runs Windows on a pull request.
+and on dispatch (Actions, Tests, Run workflow), which also runs Windows. A push to `dev` runs lint and the Linux
+fast shard only. It never runs Windows on a pull request or a push.
 
 Settings, Environments:
 
