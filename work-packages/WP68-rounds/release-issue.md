@@ -59,8 +59,10 @@ In flight and not part of the release decision: WP8b (its checklist is `release-
   surfaces, the strict docs build in both slots, the index test).
 - CI: the dispatched run with Windows at f305f548 (https://github.com/DynamicalSystemsGroup/tradespace/actions/runs/44133871912,
   every shard on Linux and the Windows fast and slow shards green); the push runs at every later head green; the
-  `qc/release` dry runs at f305f548 (44134005344), 19c7e528 (44153489031, the first with `controls`) and at the
-  head (_the run at 320a7056, to fill_); the TestPyPI rehearsal at 19c7e528 (https://github.com/DynamicalSystemsGroup/tradespace/actions/runs/44153488933)
+  `qc/release` dry runs at f305f548 (44134005344), 19c7e528 (44153489031, the first with `controls`) and at 7b0d7cdf
+  (https://github.com/DynamicalSystemsGroup/tradespace/actions/runs/44180529672, green with `controls` first:
+  `conforming (58 fields on the runner; 6 local-only)`); the head e64d402d differs from it by one line of
+  `mkdocs.yml` (the navigation title) and its push run 44184904829 is green; the TestPyPI rehearsal at 19c7e528 (https://github.com/DynamicalSystemsGroup/tradespace/actions/runs/44153488933)
   published `tradespace` 0.1.0 to https://test.pypi.org/project/tradespace/ by trusted publishing.
 - The staged site at the head looked at: `/`, `/paper/`, one docs page, 1,280 and 375 px, light and dark
   (`work-packages/WP68-rounds/record.md`); the pinned modes and the fallback in WP67's record.
