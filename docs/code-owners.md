@@ -15,49 +15,26 @@ The software (the package and the docs) and the paper have separate release life
 requests against `dev`. `main` holds releases only: the merge of a pull request from `dev` into `main` is the
 software's release, and nothing else reaches `main`. The paper is edited on the `paper` branch and published by
 pushing a `paper-*` tag there; the merge of `paper` into `dev`, then the next merge of `dev` into `main`, carries a
-published paper to the site. Nothing publishes except that merge, a `paper-*` tag a code owner approves, or a
-dispatch of the Release workflow on `dev` with the target `testpypi`.
+published paper to the site. Nothing publishes except that merge, a `paper-*` tag the paper's approvers approve, or a
+dispatch of the Release workflow on `dev` with the target `testpypi`. The rules in full, the two reviews and the
+repository's secondary rules are in `GOVERNANCE.md` at the repository root.
 
 ## Repository settings
 
-Set once, on GitHub, and read back afterwards with `gh api`.
+The rulesets, the environments, the Pages source, the code owners' access and the workflow permissions are declared
+in `.github/governance.toml` and checked against the live repository by `uv run python
+scripts/check_repo_settings.py`, which runs first in every CI run as the `controls` job (`GOVERNANCE.md`). Set each
+on GitHub to match the declaration, then run the checker; to change one, change the declaration first, then the
+setting. The settings below are the ones the declaration does not hold.
 
 Settings, Labels: create `draft` and `small-fix`. The scope-of-work template applies `draft`; a code owner removes it
 to turn a draft into an issue. `small-fix` stands in for an issue on a pull request that fixes a typo or a broken link.
 The label `release-failure` is created by the Release workflow.
 
-Settings, Pages, Build and deployment, Source: GitHub Actions.
-
-Settings, Rules, Rulesets (each Active):
-
-- `main`, two rulesets. The first holds the review: require a pull request before merging, one required approval,
-  require review from Code Owners; bypass list Repository admin, for pull requests only. The second holds the rest
-  and has an empty bypass list. It requires status checks to pass, with branches up to date: `test (fast)`,
-  `test (slow)`, `test (docs)` and `admissibility`, source GitHub Actions. It allows the Merge method only, restricts
-  deletions and blocks force pushes. A pull request's author cannot approve it, so while the code owners are one
-  person that person merges by ticking the bypass of the first ruleset. The second still binds, since the rules of
-  every ruleset on a branch apply together. The day a second code owner exists, the bypass goes.
-- `dev`: restrict deletions; block force pushes; nothing else. Day-to-day work is committed to `dev` directly, and a
-  sole code owner cannot approve their own pull request.
-- `paper`: the same as `dev`.
-
-No tag rulesets: the Release workflow's clean-up deletes the tag of a failed release.
-
 The Tests workflow runs on every pull request into `main` (the required checks), when the Release workflow calls it,
 and on dispatch (Actions, Tests, Run workflow), which also runs Windows. A push to `dev` runs lint and the Linux
-fast shard only. It never runs Windows on a pull request or a push.
-
-Settings, Environments:
-
-- `github-pages`: deployment branches, selected, `main`. No approval required.
-- `pypi`: deployment branches, selected, `main`. No approval required: the merge into `main` is the release
-  decision, recorded by the merger and the release issue.
-- `testpypi`: deployment branches, selected, `dev`. No approval required.
-- `paper-release`: deployment tags, selected, `paper-*`. Approval required from the paper's approvers
-  (`jshorish`, `mzargham`), who are set apart from the code owners; "Prevent self-review" on, so the one who pushed
-  the tag does not approve it; no administrator bypass.
-
-Settings, Actions, General, Workflow permissions: read repository contents; each job declares what it needs.
+fast shard only. It never runs Windows on a pull request or a push. Its first job, `controls`, is the settings check;
+the shards need it.
 
 PyPI and TestPyPI: a pending trusted publisher for `tradespace`, owner `DynamicalSystemsGroup`, workflow
 `release.yml`, environment `pypi` (TestPyPI: `testpypi`). No token is stored anywhere.
@@ -107,12 +84,14 @@ conformance by running the check, fitness by looking and signing the judgement. 
    the merge is site-only, below), the changelog has the entry, the lock is current and every action is pinned; it
    also refuses while a Release run on `main` is queued or in progress. Stage the site, review it, and record the
    review in the release issue.
-4. Merge it (merge commit; tick the bypass while the code owners are one person). One release pull request at a
+4. Merge it (merge commit; for 0.1, on the bypass `GOVERNANCE.md` names). One release pull request at a
    time, merged after the previous Release run has ended.
-5. Watch the run. On the merge commit it checks admissibility again, runs the suite, and builds and checks the
+5. Watch the run. On the merge commit it checks the settings against their declaration, checks admissibility again,
+   runs the suite, and builds and checks the
    wheel, the sdist and the software bill of materials (CycloneDX, from the lock). It composes the site, creates
-   the tag `v<version>` and a draft release, and publishes to PyPI, the one step that cannot be undone. Last, it
-   deploys the site and publishes the release (archived by Zenodo once the repository is switched on there).
+   the tag `v<version>` and a draft release whose notes end with the settings check's attestation, and publishes
+   to PyPI, the one step that cannot be undone. Last, it deploys the site and publishes the release (archived by
+   Zenodo once the repository is switched on there).
 6. On failure, read the issue the run opens (label `release-failure`). It names the failed job and step, what the
    clean-up removed or kept, and the retry. Before PyPI holds the version, the clean-up removes the tag and the
    draft: a re-run of the whole run, or a new pull request after a fix, starts clean. After PyPI holds it, the
@@ -129,11 +108,12 @@ the wheel, the metadata and the bill of materials, compose the site, and publish
 
 ## Adding a code owner
 
-Add their login to the `*` line of `.github/CODEOWNERS`; add them as a collaborator with write access; add them as
-an Owner or Maintainer of the project on PyPI and TestPyPI (Manage, Collaborators). The `paper-release`
-environment's required approvers are the paper's approvers, kept apart from the code owners, who approve, merge and
-release the code and the documentation. The bypass on the first `main` ruleset is removed after the 0.1 release.
-Publishing needs no secret, so there is no token to hand over.
+Add their login to the `*` line of `.github/CODEOWNERS`, the source of truth for authority (`GOVERNANCE.md`); add
+them as a collaborator with the access the declaration requires (`.github/governance.toml`, `code_owners`), which
+the settings check verifies on the next run; add them as an Owner or Maintainer of the project on PyPI and TestPyPI
+(Manage, Collaborators). The paper's approvers are the `paper-release` environment's, declared in the same file and
+kept apart from the code owners, who approve, merge and release the code and the documentation. Publishing needs no
+secret, so there is no token to hand over.
 
 ## Where the records live
 

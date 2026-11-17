@@ -22,6 +22,11 @@ All notable changes to this project are recorded here, in the format of
   `SECURITY.md`, code owners, and issue and pull-request templates with their admissibility conditions (WP47).
 - Lint and the Linux fast shard run on every push to `dev`; the full matrix runs on the release pull request and
   when the release workflow calls it (WP67).
+- Governance as executable: the repository's settings (rulesets, environments, Pages, the code owners' access, the
+  workflow permissions) declared in `.github/governance.toml`, checked against the live repository by
+  `scripts/check_repo_settings.py` in a `controls` job that runs first in the Tests and Release workflows, and
+  attested in each release's notes; `GOVERNANCE.md` states the release rules, the two reviews and the repository's
+  secondary rules (WP78).
 - Windows as a third platform for the fast and slow test shards, run on dispatch and at gates; the paper's tests
   run in the paper's workflow (WP34).
 - The package `tradespace` (alias `hts`): the posynomial invariant form for a trade

@@ -83,7 +83,9 @@ a tag that fails one.
 
 **Code owners.** The code owners are the permissioned set named in `.github/CODEOWNERS`; the file is the record of who may
 approve, merge and release, and adding one changes that file and nothing here. How a code owner is added, how a
-release is cut, and the repository settings that enforce the above are in the [code owners' page](docs/code-owners.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
+release is cut, and the repository settings that enforce the above are in the [code owners' page](docs/code-owners.md).
+The release rules in one page, the two reviews, the file that declares the settings and the check that runs first in
+every workflow are in [`GOVERNANCE.md`](GOVERNANCE.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
 the issue tracker; that file is for reporting a vulnerability and does not govern releases.
 
 ## Tooling and dependencies

@@ -38,6 +38,7 @@ print(trade_off_report(ts, M).exponents.round(2))
 - `glossary.yaml`: the terms, one name per object; `history.yaml`: the record behind the history and acknowledgements page.
 - `CHANGELOG.md`: what changed, by work package.
 - `work-packages/`: the build's record; not needed to use the method.
+- `GOVERNANCE.md`: the release rules, the file that declares their settings (`.github/governance.toml`) and the check that runs first in CI.
 - `CLAUDE.md`: conventions for contributors working with Claude Code.
 - `mkdocs.yml`, `Dockerfile`, `pyproject.toml`, `uv.lock`, `.python-version`: build and environment files.
 - `LICENSE`, `.github/` (CI workflows) and the dot-files `.gitattributes`, `.gitignore`, `.dockerignore`: license and repository settings.
