@@ -31,7 +31,7 @@ headline the page may state is decided by section 4, not by this expectation.
 - **Artefact.** The derived table `examples/kitchenham/derived/projects.csv` (141 rows: project, client, type, the
   plans, the actuals, the overrun ratios, the three attributes) is committed with `LICENCE-DATA.txt` beside it, as the
   licence allows; the source file itself is fetched into the git-ignored `examples/kitchenham/data/` and verified.
-- **Package and commit.** `results.json` records `package_version` 0.1.0 (`hyperbolic_trade_space.__version__`) and
+- **Package and commit.** `results.json` records `package_version` 0.1.0 (`tradespace.__version__`) and
   the Git SHA of the run (`provenance.git_sha`, with `git_dirty`); the SHA is of the tree the run was made on, which
   precedes the commit that carries the file.
 - **Reproduction.** `uv run python examples/kitchenham/run.py --check` refits from the committed derived table and

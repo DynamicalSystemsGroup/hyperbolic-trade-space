@@ -24,7 +24,7 @@ also kept            project type (D development, P perfective
                      maintenance; ten projects carry none), client
 ```
 
-141 of the 145 projects are kept: three have no estimated completion date and one's precedes its start. Each rule is a named element of the [case model](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/examples/kitchenham/kitchenham.sysml).
+141 of the 145 projects are kept: three have no estimated completion date and one's precedes its start. Each rule is a named element of the [case model](https://github.com/DynamicalSystemsGroup/tradespace/blob/main/examples/kitchenham/kitchenham.sysml).
 
 ## What the fit is asked
 

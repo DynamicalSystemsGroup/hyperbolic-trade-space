@@ -128,7 +128,7 @@ def condition(x, shift=SHIFT, scaler=SCALER, cap=None, ratio=False):
     ratio before the shift; ``ratio=True`` uses plan over actual for both slacks instead (no shift:
     the log is the overrun's log with its sign turned).
     """
-    from hyperbolic_trade_space import LogAffinePreconditioner
+    from tradespace import LogAffinePreconditioner
 
     a = x[COLS].to_numpy(float).copy()
     if ratio:
@@ -159,7 +159,7 @@ def smallest_band(log_v, k):
 
 def report_dict(est, M, names, band):
     """The trade-off report at ``band`` as a JSON-ready dict (one dict per term for K > 1)."""
-    from hyperbolic_trade_space import trade_off_report
+    from tradespace import trade_off_report
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -186,7 +186,7 @@ def report_dict(est, M, names, band):
 
 def fit_k1(M, tau=None):
     """The K = 1 fit at the selected temperature (or at ``tau``); returns (estimator, tau)."""
-    from hyperbolic_trade_space import HyperbolicTradeSpace, select_temperature
+    from tradespace import HyperbolicTradeSpace, select_temperature
 
     if tau is None:
         tau = float(select_temperature(M, target_frac_above=TARGET_FRAC_ABOVE, bounds=TAU_BOUNDS))
@@ -195,7 +195,7 @@ def fit_k1(M, tau=None):
 
 def read(M, names=NAMES, k2=True, min_near=MIN_NEAR):
     """Temperature, the K = 1 fit and its report at the band rule, and the K = 2 assessment."""
-    from hyperbolic_trade_space import HyperbolicTradeSpace
+    from tradespace import HyperbolicTradeSpace
 
     M = np.asarray(M, float)
     est, tau = fit_k1(M)
@@ -286,7 +286,7 @@ def frontier_projects(x, res):
 
 def provenance():
     """The package version and the Git SHA of the run (the memo's G1)."""
-    import hyperbolic_trade_space
+    import tradespace
 
     def git(*args):
         try:
@@ -299,7 +299,7 @@ def provenance():
     sha = git("rev-parse", "HEAD")
     dirty = git("status", "--porcelain", "--", str(HERE)) if sha else None
     return {
-        "package_version": hyperbolic_trade_space.__version__,
+        "package_version": tradespace.__version__,
         "git_sha": sha,
         "git_dirty": None if dirty is None else bool(dirty),
     }
