@@ -188,8 +188,8 @@
     ]
   },
   "provenance": {
-    "git_dirty": true,
-    "git_sha": "c34aec463f38fa06f8b5ebaff7e2893da84bec3a",
+    "git_dirty": false,
+    "git_sha": "76a63fd1bfef3659657fd1548c619cf2051da484",
     "package_version": "0.1.0"
   },
   "runs": {
