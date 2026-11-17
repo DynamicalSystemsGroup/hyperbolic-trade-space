@@ -82,3 +82,17 @@ Asked again with R-8 folded in: approve the defaults list, or change items. His 
 Asked whether he approves `WP81-scope-of-work.md` at d1aeba17 for execution on `v0.2`. His answer, verbatim:
 "Approved". Execution begins under `work-execution` in the scope's order of work: the inventory, the persona journeys
 traced with screenshots, the findings and competing preferences recorded, the dispositions, then the edits.
+
+## His direction on the two jobs (2026-11-17, verbatim; a standing direction for every 0.2 documentation package)
+
+"i also want you to remember to use the working paper as a context source for the documentation site work. the
+documentation site and the paper do different jobs. so there may be things we want to pull from the paper so they can
+be explained in brief or used to clarify a concept or mechanism for a user. however we may also need to remove
+materials from the documentation site if they are actually drifting into the papers role. this will help us keep the
+doc site tight and easily navigated: supporting a user not a researcher"
+
+Folded into WP81: a replaced pointer's statement is drawn from the working paper's text, in brief, for a user; a
+pointer whose content is the paper's job (a proof, an appendix, the prior-art argument, the search programme) is
+removed rather than restated; the journey readers are asked, per page, what is the paper's job and not the docs'.
+The dispositions of `notes/paper-references.md` take three values: brief from the paper; removed as the paper's role;
+names the working paper.
