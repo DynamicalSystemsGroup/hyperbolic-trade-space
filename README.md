@@ -3,8 +3,8 @@
 For analysts with a table of evaluated designs, or of observed cases (reported devices, species,
 plot-years, finished projects), to learn which metrics trade. See the
 [docs](https://dynamicalsystemsgroup.github.io/tradespace/docs/),
-[the paper](https://dynamicalsystemsgroup.github.io/tradespace/paper/) and `examples/adcs/` for a
-case study.
+[the working paper's abstract](https://dynamicalsystemsgroup.github.io/tradespace/paper/) (the full text builds
+from `paper/`) and `examples/adcs/` for a case study.
 
 ```bash
 git clone https://github.com/DynamicalSystemsGroup/tradespace

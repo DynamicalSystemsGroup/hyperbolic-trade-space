@@ -5,12 +5,12 @@ For an analyst who has picked a point on the chart and wants a design under it.
 The way from a design to its chart point is a computation: evaluate the configuration, condition the
 attributes into metrics, read the chart. The way back loses invertibility, at one step only, so the route back
 depends on the point: a lookup where the point has a datum, a conjecture where it has none, worth what its check
-shows. It is the bridge to [the search direction of Future work](paper:sect-future).
+shows. It is the bridge to a search loop that is planned and not shipped.
 
 ## Where invertibility is lost
 
-The conditioning is invertible ([pull-back to attributes](paper:thm-pullback)) and so is the chart
-([the chart theorem](paper:thm-chart)), so a chart point maps back to attributes and to metrics. The step that does not invert is the evaluation, from
+The conditioning is invertible (the pull-back to attributes) and so is the chart
+([the map is reversible](theory.md)), so a chart point maps back to attributes and to metrics. The step that does not invert is the evaluation, from
 configuration to attributes, in three ways:
 
 - many configurations can give one outcome, so a point's preimage is not one configuration;
@@ -93,12 +93,12 @@ proposal beyond the fitted reference surface pushes it outward. Both are settled
 
 On the cubesat case the check ran once on three proposals. Each landed within the band of its predicted
 point, and each failed the depth-of-discharge condition, so the case's reading is that they reached the surface
-by spending the battery ([Appendix B.6](paper:sub-b-6)). Two of the three are the same configuration, since two
+by spending the battery. Two of the three are the same configuration, since two
 white-space points had one pooled configuration nearest.
 
 ## The outer loop, and what is open
 
-Propose, evaluate, append the row, refit, and repeat: the outer loop of the search named in the paper's [Future work](paper:sect-future) is the refit. It
+Propose, evaluate, append the row, refit, and repeat: that loop is the search, and its outer step is the refit. It
 need not move outward at every step. The conjecture is that it is a
 submartingale, a process that rises in expectation: outward in expectation, with a convergence result when the expected progress ceases. This is
 future work, and no conditions under which it holds are derived.

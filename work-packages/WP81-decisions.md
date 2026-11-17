@@ -96,3 +96,12 @@ pointer whose content is the paper's job (a proof, an appendix, the prior-art ar
 removed rather than restated; the journey readers are asked, per page, what is the paper's job and not the docs'.
 The dispositions of `notes/paper-references.md` take three values: brief from the paper; removed as the paper's role;
 names the working paper.
+
+## A default departed from, for his acceptance (2026-11-17)
+
+The Agent's defaults say "the docsite total stays". The two naming sentences his rule requires (the home, Further
+reading) cost 34 words net after every paper pointer's removal and the trims on the same pages (the home's caption
+clause "Getting started walks through the output", a sentence about another page; the bridge bullet's "the
+conjecture it is"); paying the rest would cut content that is not this package's (the bibliography's entries, the
+theory page's definitions). `TOTAL_BUDGET` in `tests/test_site.py` rises by 34 with the reason; put to him as a gap at
+the acceptance gate.

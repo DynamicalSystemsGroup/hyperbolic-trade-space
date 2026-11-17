@@ -1,0 +1,488 @@
+[
+  {
+    "file": "root-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3125,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": null,
+    "figures": [],
+    "errors": []
+  },
+  {
+    "file": "paper-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1573,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": null,
+    "figures": [],
+    "errors": []
+  },
+  {
+    "file": "history-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 2591,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": null,
+    "figures": [],
+    "errors": []
+  },
+  {
+    "file": "home-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1701,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "first-fit-light.png#only-light",
+        673,
+        "block"
+      ],
+      [
+        "first-fit-dark.png#only-dark",
+        673,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "getting-started-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 2389,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "first-fit-light.png#only-light",
+        673,
+        "block"
+      ],
+      [
+        "first-fit-dark.png#only-dark",
+        673,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "overview-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1409,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "conditioning-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 2285,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "fitting-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3491,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "three-terms-light.png#only-light",
+        673,
+        "block"
+      ],
+      [
+        "three-terms-dark.png#only-dark",
+        673,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "temperature-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 2845,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "temperature-path-light.png#only-light",
+        867,
+        "block"
+      ],
+      [
+        "temperature-path-dark.png#only-dark",
+        867,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "choosing-k-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3051,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "tensions-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3703,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "tension-report-light.png#only-light",
+        576,
+        "block"
+      ],
+      [
+        "tension-report-dark.png#only-dark",
+        576,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "tension-routes-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1175,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "chart-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3103,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "log-plane-light.png#only-light",
+        673,
+        "block"
+      ],
+      [
+        "log-plane-dark.png#only-dark",
+        673,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "prediction-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1342,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "termination-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3395,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "limitations-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1278,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "api-reference-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 26127,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "examples-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 7944,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "adcs-tensions-light.png#only-light",
+        849,
+        "block"
+      ],
+      [
+        "adcs-tensions-dark.png#only-dark",
+        849,
+        "none"
+      ],
+      [
+        "ternary-cubesat-light.png#only-light",
+        893,
+        "block"
+      ],
+      [
+        "ternary-cubesat-dark.png#only-dark",
+        893,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "perovskite-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3582,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "perovskite-ternary-light.png#only-light",
+        698,
+        "block"
+      ],
+      [
+        "perovskite-ternary-dark.png#only-dark",
+        698,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "amniote-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3661,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "amniote-ternary-light.png#only-light",
+        698,
+        "block"
+      ],
+      [
+        "amniote-ternary-dark.png#only-dark",
+        698,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "wheat-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3241,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "wheat-log-plane-light.png#only-light",
+        673,
+        "block"
+      ],
+      [
+        "wheat-log-plane-dark.png#only-dark",
+        673,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "kitchenham-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3500,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [
+      [
+        "kitchenham-pairs-light.png#only-light",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-pairs-dark.png#only-dark",
+        782,
+        "none"
+      ],
+      [
+        "kitchenham-participation-light.png#only-light",
+        782,
+        "block"
+      ],
+      [
+        "kitchenham-participation-dark.png#only-dark",
+        782,
+        "none"
+      ]
+    ],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "bridge-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 3019,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "theory-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 2024,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "glossary-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 6696,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "further-reading-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1643,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  },
+  {
+    "file": "code-owners-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 4466,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": "default",
+    "figures": [],
+    "errors": [
+      "error: Failed to load resource: the server responded with a status of 404 () https://api.github.com/repos/DynamicalSystemsGroup/tradespace/releases/latest"
+    ]
+  }
+]

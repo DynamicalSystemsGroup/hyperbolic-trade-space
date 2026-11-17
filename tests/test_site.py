@@ -105,8 +105,9 @@ BUDGETS = {
 # page, 815); 7430 until the docs home took its figure and quickstart (his 350); 7237 until WP42;
 # 7472 until WP33
 # 11335 until WP76 (+700, the Kitchenham-CSC page; +10, its route on Examples); 12045 until his
-# clause for observed cases on the docs home (2026-11-17, +10)
-TOTAL_BUDGET = 12055
+# clause for observed cases on the docs home (2026-11-17, +10); 12055 until WP81 (+34: the two
+# sentences that name the working paper, net of the paper pointers removed)
+TOTAL_BUDGET = 12090
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
@@ -407,10 +408,27 @@ def test_docsite_cites_the_paper_only_through_keys():
                 cited.append(href.removeprefix("paper:"))
                 continue
             assert "paper/" not in href and "paper_sections" not in href, f"{path.name}: {href}"
-    assert len(cited) == 23, "the 23 citations of the nine docs pages"
+    # WP81 (his rule, 2026-11-17): while the paper is in abstract mode the docs carry no citation,
+    # since every one would land on the abstract page; the links return under the rule when a pin
+    # is served, and then each key must be in the manifest.
+    if _paper_keys_module().slot() == "abstract":
+        assert cited == [], f"paper citations while the paper is in abstract mode: {cited}"
     assert set(cited) <= set(keys), sorted(set(cited) - set(keys))
     source = (ROOT / "scripts" / "paper_keys.py").read_text(encoding="utf-8")
     assert ".ipynb" not in source, "the docs build reads no notebook"
+
+
+def test_the_working_paper_is_named_where_the_rule_says():
+    """WP81: the home and Further reading name the working paper, say its abstract is published and
+    that the full text builds from the repository; no docs page points into the paper otherwise
+    (notes/paper-references.md)."""
+    for page in ("index.md", "further-reading.md"):
+        text = (DOCS / page).read_text(encoding="utf-8")
+        assert "working paper" in text and "abstract" in text, page
+        assert "builds from" in text and "repository" in text, page
+    if _paper_keys_module().slot() == "abstract":
+        for page in source_pages():
+            assert "(paper:" not in page.read_text(encoding="utf-8"), page.name
 
 
 def test_keys_resolve_to_anchors_in_a_pinned_slot_and_to_the_abstract_otherwise(

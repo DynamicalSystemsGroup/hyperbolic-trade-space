@@ -1529,7 +1529,7 @@ note = "solve_terms and Termination pinned in the solvers contract list"
 
 [[claim]]
 id = "C192"
-fragment = "Because the weights sum to one, $V(\\lambda m)=\\lambda V(m)$: [doubling every metric doubles V](paper:thm-invariant)."
+fragment = "Because the weights sum to one, $V(\\lambda m)=\\lambda V(m)$: doubling every metric doubles V."
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -1565,7 +1565,7 @@ note = "V_K is the 1/kappa power of the posynomial (L10.7, glossary), so V=1 iff
 
 [[claim]]
 id = "C195"
-fragment = "Fitting one term is a geometric program (GP), [solved as"
+fragment = "Fitting one term is a geometric program (GP), solved as"
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -1817,7 +1817,7 @@ note = "reading_pass n43 supported: kernel PCA via feature spaces"
 
 [[claim]]
 id = "C216"
-fragment = "the nearest analog in setting; [how this work differs](paper:sect-prior-art)."
+fragment = "the nearest analog in setting; it fits a frame by a non-convex loss, this work a convex soft maximum over the simplex."
 file = "docs/further-reading.md"
 anchor = ""
 kind = "L"
@@ -3500,7 +3500,7 @@ note = "Exponent vectors within DISTINCT_TERMS_DISTANCE = 1e-3 (Euclidean, singl
 
 [[claim]]
 id = "C375"
-fragment = "[`certified`](paper:thm-certificate) is the first: a local optimum of the loss, not of other restarts"
+fragment = "[`certified`](../generated/glossary.md) is the first: a local optimum of the loss, not of other restarts"
 file = "docs/user-guide/termination.md"
 anchor = "What to decide from it"
 kind = "M"

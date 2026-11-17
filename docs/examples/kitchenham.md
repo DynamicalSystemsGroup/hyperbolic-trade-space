@@ -1,4 +1,4 @@
-# Kitchenham-CSC software projects: scope against slack
+# Kitchenham software projects: scope against slack
 
 ## Where the projects come from
 
