@@ -73,3 +73,13 @@ matching the push ruleset's bypass); all three code owners written out per path.
 `governance-files` restricts pushes touching those paths with `RepositoryRole` 5 (Repository admin), mode `always`,
 as its one bypass actor; the declaration's `control` field of every governed file names both. Who may approve is
 the lines; who may push is the ruleset.
+
+## Approval of the scope (2026-11-17)
+
+Asked whether he approves `WP82-scope-of-work.md` at 19f64d5b for execution (the bypass removal; the four gap items;
+the checker, fixture and tests following; the window written down; no setting changed by anyone but him, after the
+merge; the Agent's defaults as one item). His answer, verbatim:
+
+> Approved
+
+Execution runs on `governance-bypass-removal`; the pull request waits for `dev` to be in `main` for 0.1.
