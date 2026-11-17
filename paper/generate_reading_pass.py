@@ -1,7 +1,7 @@
 """The reading pass: what the paper took from where, from the record of its attributions.
 
 ``reading_pass.yaml`` holds the fifty-six rows of the reading pass
-(``work-packages/WP10-reading-pass.md``, read-only here): the sentence as it was read, the key, the
+(``paper/data/WP10-reading-pass.md``, read-only here): the sentence as it was read, the key, the
 place read, the verdict and the reason, each verbatim, plus what the paper now does with the
 sentence (``status`` and ``now``). The file is the record and is made from the Markdown table by
 ``uv run python paper/generate_reading_pass.py`` (which keeps the ``status`` and ``now`` already in
@@ -24,7 +24,7 @@ from paper_common import Md, md_table
 from paper_paths import PAPER, ROOT
 
 SOURCE = PAPER / "reading_pass.yaml"
-MARKDOWN = ROOT / "work-packages" / "WP10-reading-pass.md"
+MARKDOWN = ROOT / "paper" / "data" / "WP10-reading-pass.md"
 VERDICTS = (
     "supported",
     "partly supported",
@@ -68,7 +68,7 @@ def convert(md=MARKDOWN, out=SOURCE) -> None:
         prev = old.get(r["n"], {})
         merged.append({**r, "status": prev.get("status", ""), "now": prev.get("now", "")})
     head = (
-        "# Rows of the reading pass (work-packages/WP10-reading-pass.md), verbatim, with what the\n"
+        "# Rows of the reading pass (paper/data/WP10-reading-pass.md), verbatim, with what the\n"
         "# paper now does with each sentence. Made by paper/generate_reading_pass.py.\n"
     )
     out.write_text(

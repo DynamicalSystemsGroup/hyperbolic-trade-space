@@ -109,7 +109,7 @@ def test_wheat_derive_keeps_rows_with_both_yields():
 
 
 def _record(case):
-    return (EX.parent / "work-packages" / "WP45-rounds" / case / "test-record.md").read_text(
+    return (EX.parent / "tests" / "data" / "wp45" / case / "test-record.md").read_text(
         encoding="utf-8"
     )
 

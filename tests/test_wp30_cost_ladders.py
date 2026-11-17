@@ -11,7 +11,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/wp30_cost_ladders.py"
-D2 = ROOT / "work-packages/WP23-rounds/spikes/spike-D2-prices-2026/economics2026.py"
+D2 = ROOT / "examples/adcs/spikes/economics2026.py"
 
 
 @pytest.fixture(scope="module")

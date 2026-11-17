@@ -126,7 +126,7 @@ has no uncited key.
 
 ## 6. Sources of the WP45 test records
 
-The test records under `work-packages/WP45-rounds/` cite four sources that no page or paper uses yet; this note
+The test records under `tests/data/wp45/` cite four sources that no page or paper uses yet; this note
 carries the citations so that the bibliography has no uncited key. `shockley1961detailed`
 [@shockley1961detailed] (the detailed-balance limit, perovskite record), `jacobsson2021open`
 [@jacobsson2021open] (the Perovskite Database Project's paper), `myhrvold2015amniote`

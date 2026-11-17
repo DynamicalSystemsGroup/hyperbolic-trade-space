@@ -4,7 +4,7 @@ For each regime and each fleet size n, the unit cost (build and launch, per sate
 fleet cost (build and launch, whole fleet) of every feasible design are priced at that n, and the
 ladder is the share of the feasible designs at or under each candidate limit. The supervisor reads
 the two limits from these rows (``WP30-decisions.md``, OD3 (a)); this script prints them and, with
-``--write``, writes ``work-packages/WP30-rounds/cost-ladders.md``.
+``--write``, writes ``examples/adcs/spikes/cost-ladders.md``.
 
 Prices are the 2026 table: the curves, bus, tracker and assembly of ``spike-D-cubesat-economics/
 economics.py`` with the part coefficients of spike D2 (``spike-D2-prices-2026``: panels 340,000
@@ -29,8 +29,8 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-SPIKE = ROOT / "work-packages/WP23-rounds/spikes/spike-D-cubesat-economics/economics.py"
-OUT = ROOT / "work-packages/WP30-rounds/cost-ladders.md"
+SPIKE = ROOT / "examples/adcs/spikes/economics.py"
+OUT = ROOT / "examples/adcs/spikes/cost-ladders.md"
 REGIMES = {  # label: file (the ledger's v2-baseline and v2-primary outputs)
     "baseline": "adcs_designs_cubesat.csv",
     "primary": "adcs_designs_cubesat_gains.csv",

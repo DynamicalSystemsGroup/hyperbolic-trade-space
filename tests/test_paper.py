@@ -967,12 +967,10 @@ def test_e3_lists_every_open_question_of_the_ledger_once_and_no_closed_one():
 
 
 def test_e2_places_every_line_of_the_queue_and_names_records_that_resolve():
-    """WP57d G2, R-1: every queue line of ``WP57-rounds/assumptions-queue.md`` is marked with where
-    it landed; every G-id in G.2 is a row of the gaps table, every OQ-id an open entry of the
-    ledger, every L-id a lemma of the proof map."""
-    queue = (ROOT / "work-packages" / "WP57-rounds" / "assumptions-queue.md").read_text(
-        encoding="utf-8"
-    )
+    """WP57d G2, R-1: every queue line of ``tests/data/wp57/assumptions-queue.md`` is marked with
+    where it landed; every G-id in G.2 is a row of the gaps table, every OQ-id an open entry of
+    the ledger, every L-id a lemma of the proof map."""
+    queue = (ROOT / "tests" / "data" / "wp57" / "assumptions-queue.md").read_text(encoding="utf-8")
     rows = [ln for ln in queue.splitlines() if ln.startswith("| ") and "---" not in ln][1:]
     # the queue is a dated record: it names the parts by the letter they had at WP57d
     assert len(rows) == 9 and all("E.2" in r or "E.3" in r for r in rows)

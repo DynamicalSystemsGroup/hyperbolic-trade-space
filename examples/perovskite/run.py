@@ -3,7 +3,7 @@
 ``uv run python examples/perovskite/run.py`` fetches the archive named in ``manifest.toml`` into
 ``examples/perovskite/data/`` (ignored by git; hash-checked), conditions the default-scan JV
 attributes, fits K = 1 and K = 2, and writes ``results.json`` beside this file. The expected
-n-lemma is in ``work-packages/WP45-rounds/perovskite/test-record.md``, committed before the first
+n-lemma is in ``tests/data/wp45/perovskite/test-record.md``, committed before the first
 fit.
 
 Conditioning rule (the primary table): Voc, Jsc, FF of the default scan, all larger is better

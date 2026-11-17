@@ -3,7 +3,7 @@
 ``uv run python examples/amniote/run.py`` fetches the archive named in ``manifest.toml`` into
 ``examples/amniote/data/`` (ignored by git; hash-checked), conditions the complete-case life-history
 table, fits K = 1 and K = 2 and writes ``results.json`` beside this file. The expected n-lemma is
-in ``work-packages/WP45-rounds/amniote/test-record.md``, committed before the first fit.
+in ``tests/data/wp45/amniote/test-record.md``, committed before the first fit.
 
 Conditioning rule (the primary table, "keep mass"): complete cases of maximum longevity, litter or
 clutch size, litters or clutches per year, female maturity and adult body mass, with the -999

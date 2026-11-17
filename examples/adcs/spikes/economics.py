@@ -14,7 +14,7 @@ import csv
 import math
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parents[4] / "examples/adcs/data/v2"
+DATA = Path(__file__).resolve().parents[3] / "examples/adcs/data/v2"
 WHEEL_TORQUE = {"small": 0.0003, "medium": 0.002, "large": 0.010}  # N.m (cubesat.sysml)
 TRACKER_ACC = {"coarse": 30.0, "medium": 10.0, "fine": 2.0}  # arcsec (cubesat.sysml)
 PANEL_CHORD = 0.34
