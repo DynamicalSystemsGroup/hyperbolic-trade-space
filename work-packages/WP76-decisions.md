@@ -108,3 +108,15 @@ execution:
    above the frontier can leave fewer); every portfolio study needs its band rule stated.
 3. The `tau = inf` contending set includes a planted non-participant at a fit-temperature exponent of 0.00 to 0.07 in
    every synthetic run of WP70.
+
+### OD1 (2026-11-17, his answer in the popup, as typed by the agent)
+
+Asked: "Your memo bounds the claim (the data do not establish the 3 + m extension). Does the 3 + m idea appear on the
+public example page at all?" Options: not on the page; one sentence in the limitations. His answer, verbatim: "Not on
+the page". Decided: the page's limitations say only that the table carries no quality measure; the 3 + m framing stays
+in the research note and the WP70 record.
+
+### OD2 (2026-11-17, his answer in the popup, as typed by the agent)
+
+Asked: the Agent's defaults list, as one item: approve, or change items. His answer, verbatim: "Approve the list".
+Decided: every default stands as written.

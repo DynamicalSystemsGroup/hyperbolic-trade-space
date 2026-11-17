@@ -49,7 +49,9 @@ His boundaries, and the standing rules that bind every package.
 - Completing the conic-expression research (WP75, running in parallel) is not an acceptance condition; the research
   note of D-5 names what this case could test and defines nothing.
 - No claim that the data establish the 3 + m extension: "Because the dataset has no quality measurements, it does not
-  empirically establish the proposed 3 + m extension."
+  empirically establish the proposed 3 + m extension." The 3 + m idea does not appear on the public page at all (OD1,
+  "Not on the page"): the page's limitations say only that the table carries no quality measure, so the case says
+  nothing about quality; the framing stays in the research note (D-5) and the WP70 record.
 - Nothing for 0.1: no commit on `dev` or `main`, no pull request, no tag, no deployment; the branch is the delivery.
 - Package defects met on the way are recorded, not fixed on this branch ("Record package defects separately and
   resolve any blocking dependency explicitly"): a section of `WP76-decisions.md`, each with the evidence and whether it
@@ -173,9 +175,6 @@ record above.
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** The public page and the 3 + m idea. The memo bounds the claim ("does not empirically establish the proposed
-  3 + m extension"); the question is whether the idea appears on the page at all. Options: (a) the page's limitations
-  say only that the table carries no quality measure, so the case says nothing about quality, and the 3 + m framing
-  stays in the research note and the WP70 record; (b) the limitations name the 3 + m question as the one this portfolio
-  cannot test, in one sentence, with the data's lack of quality measures as the reason.
-- **OD2.** The Agent's defaults, as one item: approve the list, or change items.
+None. Every item was resolved through the decision loop (2 decided, 0 deferred, 0 raised; `WP76-decisions.md`, "Scope
+gate"). OD1: the 3 + m idea does not appear on the public page ("Not on the page"); OD2: the Agent's defaults approved
+as one item ("Approve the list").
