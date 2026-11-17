@@ -211,3 +211,20 @@ WP66c removes `test_every_paper_key_is_a_label_of_the_built_paper` and `test_pap
 keeps `test.yml`'s attribution block byte-identical to `paper.yml`'s, makes `release_cleanup.py` accept paper tags, and
 adds `scripts/paper_mode.py` and `scripts/paper_pin.py` to amendment 29's ownership. His first answer's `blob/dev`
 links are a paper change (the two generator constants and a re-execution of both notebooks) for the paper branch.
+
+## WP66c landed (2026-11-16, 18:20), accepted as proxy
+
+Landed at bf823f22 (the unit's aff808b3 rebased on dev). The composer (`scripts/assemble_site.py`) resolves the slot
+from the mode file, serves the abstract page (`scripts/paper_abstract.py`, `site/paper/abstract.html`) in abstract
+mode or a fetched, hashed and key-checked pin otherwise, with the fallback said on the page and in the run;
+`site.yml` composes and `pages-deploy.yml` deploys, call-only; `scripts/paper_keys.py` resolves the docs' 23
+citations from the manifest in both slots. The driver's checks on the rebased head: register, lint, format, lock,
+vocabulary, WP66b's mode check against the composer's call, the offline stage, the slot tests and the fast suite
+(1,977 passed, the site and build modules deselected after the unit's own 125-test run of 57 minutes), all exit 0.
+Captures in `work-packages/WP66c-rounds/captures/` looked at: the abstract page at 1,280 and 375 px in both schemes,
+the pinned banner, the root card. The unit's two uncommitted copies of WP66b's files were dropped; WP66b's committed
+copies serve. For his read: the root lead sentence "The paper makes the argument and gives the proofs" says more than
+`/paper/` holds in abstract mode (the card already says "its abstract; the paper is iterated towards release"); the
+abstract page's `tree/paper` link 404s until WP68 creates the branch; a missing or invalid mode file gives the
+fallback page rather than a failed build (the unit's literal reading of spec 3.4, `work-packages/WP66c-rounds/notes.md`).
+
