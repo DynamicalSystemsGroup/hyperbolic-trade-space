@@ -306,3 +306,17 @@ request on his word, the steps after his merge) is approved by the driver under 
 outward happens before his word, quoted here when given. Runs after WP73 and WP74 land; its index row is added
 when WP73's rewrite of the index lands.
 
+## WP74 landed (2026-11-17, 02:55 EST), accepted as proxy
+
+The external review's finding 7 (the repository matched only `SatisfyRequirementUsage`, the name opensysml 0.12.1
+gives a `verify requirement` statement in `query`): `WP74-scope-of-work.md`, approved as proxy under the review's
+disposition; landed at 20a4d624 (the unit's ada60258 and the driver's correction). One constant,
+`REQUIREMENT_USAGE_KINDS`, in `examples/adcs/experiments/probes.py` (not `cubesat_model.py`, which the experiment
+ledger hashes), used at every match of what `query` returns: the probes' counts, `_verified` and
+`_requirement_usages` in `tests/test_system_model_v2_r1.py`, the model-checking test. Two planted tests read a
+requirement usage under either name. The driver's correction at acceptance: the satisfy loop of
+`scripts/sysml_project.py` `behavioural` stays on `SatisfyRequirementUsage`, since the API JSON it reads keeps
+satisfy statements and verify statements apart and the widening would have counted verify statements as satisfy
+statements on a corrected engine. Fast suite 1,984, register, lint, format, lock green on the landed head; the
+touched and ledger tests 160 passed with the engine present. Index row when WP73's index lands.
+
