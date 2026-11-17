@@ -6,7 +6,9 @@ environment whose required reviewers are the code owners ("a code owner must app
 me"), self-review allowed while he is the only one. The steps below read with those answers.
 
 Done by him on 2026-11-17 and read back (`WP68-rounds/record.md`, G7); WP78 turns the read-back into a declaration in the
-tree and a check that runs first in CI. Settings no agent can make: none existed before (WP64 readout, live state of 2026-11-16). Do them before the first
+tree and a check that runs first in CI. The settings below are declared in `.github/governance.toml` and checked by
+`scripts/check_repo_settings.py` (the `controls` job, first in the Tests and Release workflows); the read-back is its
+output. Settings no agent can make: none existed before (WP64 readout, live state of 2026-11-16). Do them before the first
 pull request from `dev` into `main` (build plan, section 6); the driver reads each back with `gh api` afterwards.
 Where a setting depends on one of his three questions (the last section), the step names the question.
 

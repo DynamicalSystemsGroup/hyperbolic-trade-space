@@ -57,6 +57,11 @@ The `paper-release` reviewers are the paper's (`jshorish`, `mzargham`), not the 
 the `main-review` bypass is his for 0.1 (his answer, 11:25 EST). WP78 makes this read-back a declaration in the tree
 and a check that runs first in CI.
 
+From WP78 the read-back is the checker's output: `uv run python scripts/check_repo_settings.py` compares the live
+settings with `.github/governance.toml` (the values above, the code owners' access and the default workflow
+permissions, which read back `write`: `WP78-rounds/gaps.md`, item 1) and reported `conforming (61 fields)` on
+2026-11-17; the `controls` job runs it first in CI and its report is the record at each head.
+
 ## G8 the pull request
 
 Pending his word.
