@@ -256,3 +256,44 @@ after WP67 lands and before WP68's pull request, the index naming the hash each 
 the tests, the docs and the paper resolved; the material pending his read listed with its blob URLs in
 `supervisor-review-list.md`.
 
+## WP67 landed (2026-11-17, 01:40 EST), accepted as proxy
+
+The driver's acceptance under his mandate; his read of `work-packages/WP67-rounds/record.md` pending (the release
+issue of WP68 cites it). Record 0d5a4df4; the D-4 fixes cb0ad18f and b8197b52; the trigger f05ad97c and 57a0dc25.
+
+**Met:** G1 (release dry run, all three shards after D-4 item 1), G2 (the failing dry run stops at admissibility,
+nothing after it, no issue), G3 (the artefact's `/paper/` is the abstract page), G6 (clean-up dry runs exit 0), G7
+(the machinery diff, 104 rows explained), G8 (the browser pass, five modes, eighty captures), G9 (lint and the fast
+shard on every push to `dev`); R-2 (no release, tag or issue; the `qc/**` branches deleted); R-4 and R-5.
+
+**Not met on the hosted runner, recorded as the paper branch's first items (G4, G5):** three paper tests fail on
+Ubuntu runners and not locally: the residual-count baseline (52 counts above the c0fe11b baseline; known since
+WP66b), the clean-kernel notebook check (the tab-F-datasets sha256 drifts on the runner), the myst HTML build's
+full-size figure links (0 of 3 on the runner, 3 of 3 locally). The paper branch takes them before its first tag.
+The planted test of G5 was appended to a module the paper marker does not cover and was never collected, so G5's
+run showed the same three failures as G4; the failure path (`build` fails, the summary names the step, no release,
+no issue) was seen on those, and the planted case is recorded honestly as not exercised.
+
+**What the browser pass found and fixed (D-4 item 3):** the pinned slot's banner, written as a static element after
+`<body>`, failed the article theme's React hydration (error 418) and was dropped from every pinned page once the
+page's scripts ran; the composer now installs it by a script before `</body>` and names its colours for both
+schemes (unstyled it read black on the dark background) with padding clear of the theme's scheme button.
+Specification 3.2 amended; `tests/test_paper_slot.py` amended; the fast suite, the register test, lint, format and
+the lock check green on both commits.
+
+**Two things for him, not fixed:** (1) a paper archive packed by hand on a Mac carries AppleDouble members and the
+composer refuses the first one (`._index.html is not UTF-8 text`), so it falls back with that reason; options (a)
+skip `._*` and `__MACOSX/` members, (b) keep the refusal, (c) refuse with a reason naming the cause and
+`COPYFILE_DISABLE=1`. The hosted build packs with GNU tar and writes no forks. (2) `stage_site.py --serve` serves the
+site at the root while a hosted `paper-release` artefact's assets point at `/hyperbolic-trade-space/paper/`, so a
+local review of a hosted artefact renders unstyled; the staging script could serve under the Pages prefix (an item
+for WP58 or WP68's staging, not the release path).
+
+**Process:** the browser-pass unit's loop hung on a server that ignored its interrupt and the unit ended without a
+hand-back; the driver stopped it, finished the loop and ran the four later attempts. The captures in the tree are
+the top 1,200 px of any page taller than 2,000 px (the full set weighed 364 MB); the table's measurements are of
+the full pages.
+
+**Next:** WP73 (the process record leaves the tree), then the correction package for `VerifyRequirementUsage`,
+then WP68 up to the pull request, which waits for his word.
+
