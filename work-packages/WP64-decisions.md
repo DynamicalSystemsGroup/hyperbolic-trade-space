@@ -297,3 +297,12 @@ the full pages.
 **Next:** WP73 (the process record leaves the tree), then the correction package for `VerifyRequirementUsage`,
 then WP68 up to the pull request, which waits for his word.
 
+## WP68 scoped and approved as proxy (2026-11-17, 02:05 EST)
+
+`WP68-scope-of-work.md` (the first merge into `main`: version 0.1.0, the changelog, the punch list, the local and
+hosted checks at the head, the staged site looked at, the release issue drafted, his settings read back, the pull
+request on his word, the steps after his merge) is approved by the driver under his approval of the plan
+(`WP65-design/build-plan.md`, section 6). The pull request, the merge and his keyboard items are his; nothing
+outward happens before his word, quoted here when given. Runs after WP73 and WP74 land; its index row is added
+when WP73's rewrite of the index lands.
+
