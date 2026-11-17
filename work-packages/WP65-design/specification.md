@@ -342,7 +342,9 @@ artefact as `<body>`'s first element. It is installed by a script placed directl
 `<template>` beside it), not written after `<body>`: the article theme hydrates the whole document with React, a
 static element there fails that hydration (React error 418) and the theme's client render drops it (WP67 D-4, found
 by the browser pass). The script adds the banner after the load event and puts it back if the theme removes it in
-its first seconds. Only the current pin is served (Q4); earlier pins stay as tags,
+its first seconds. The banner carries its own colours for the theme's light and dark schemes (the theme colours its containers, not
+`<body>`, so an unstyled banner read black on the dark background) and side padding that clears the theme's fixed
+scheme button at phone width. Only the current pin is served (Q4); earlier pins stay as tags,
 releases and DOIs.
 
 ### 3.3 The abstract page

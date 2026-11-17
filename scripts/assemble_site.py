@@ -82,8 +82,15 @@ ROOT_CARD_LINE_PINNED = "the argument and the proofs"
 ROOT_CARD_LINE_ABSTRACT = "its abstract; the paper is iterated towards release"
 
 BANNER_STYLE = (
-    "margin:0;padding:0.5rem 1rem;font:0.95rem/1.4 system-ui,sans-serif;text-align:center;"
+    "margin:0;padding:0.5rem 3.5rem;font:0.95rem/1.4 system-ui,sans-serif;text-align:center;"
     "border-bottom:1px solid rgba(127,127,127,0.4)"
+)
+# The theme colours its own containers, not <body>, and toggles `dark` on <html>; the banner
+# names its colours for both (the padding clears the theme's fixed scheme button at phone width).
+BANNER_CSS = (
+    ".hts-paper-banner{color:#1c1917;background:#f5f5f4}"
+    "html.dark .hts-paper-banner{color:#e7e5e4;background:#292524}"
+    ".hts-paper-banner a{color:inherit}"
 )
 _DOI = re.compile(r"^10\.5281/zenodo\.\d+$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -181,12 +188,12 @@ def banner_installer(banner: str) -> str:
     load event, and put back if the theme removes it in its first seconds, stays.
     """
     return (
-        f'<template id="hts-paper-banner-source">{banner}</template>\n'
+        f'<template id="hts-paper-banner-source"><style>{BANNER_CSS}</style>{banner}</template>\n'
         "<script>(function(){"
         'var t=document.getElementById("hts-paper-banner-source");if(!t)return;'
-        "var b=t.content.firstElementChild,n=0;"
-        "function put(){if(!document.body.contains(b))"
-        "document.body.insertBefore(b,document.body.firstChild);}"
+        "var s=t.content.firstElementChild,b=s.nextElementSibling,n=0;"
+        "function put(){if(!document.head.contains(s))document.head.appendChild(s);"
+        "if(!document.body.contains(b))document.body.insertBefore(b,document.body.firstChild);}"
         "function keep(){put();if(++n<50)setTimeout(keep,100);}"
         'if(document.readyState==="complete")keep();else window.addEventListener("load",keep);'
         "})();</script>\n"

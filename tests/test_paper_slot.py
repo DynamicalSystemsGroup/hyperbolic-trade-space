@@ -256,7 +256,8 @@ def test_a_pinned_slot_unpacks_the_artefact_with_one_banner_line_per_page(tmp_pa
         # directly before </body>.
         installer = assemble_site.banner_installer(assemble_site.banner_html(slot.mode))
         assert text.endswith(installer + "</body>\n</html>") or installer + "</body>" in text, page
-        assert '<template id="hts-paper-banner-source"><p class="hts-paper-banner"' in text, page
+        assert '<template id="hts-paper-banner-source"><style>' in text, page
+        assert '</style><p class="hts-paper-banner"' in text, page
     assert (out / "paper" / "build" / "app.js").read_text(encoding="utf-8") == "console.log(1)"
     assert 'id="thm-kkt"' in (out / "paper" / "index.html").read_text(encoding="utf-8")
     assert not slot.staged.exists(), "the staging directory is removed once placed"
