@@ -373,6 +373,7 @@ paths = [
 paths = [
   "paper/", "examples/adcs/case.py", "tests/test_paper.py", "tests/test_case.py",
   "docs/references.bib", ".github/workflows/paper.yml", "tests/test_paper_model.py",
+  "scripts/paper_mode.py", "scripts/paper_pin.py",
 ]
 
 # WP12 touches presentation only through declared additions (additive amendment at its scope).
@@ -398,6 +399,8 @@ paths = ["pyproject.toml", "uv.lock", ".gitignore"]
 "tests/test_paper.py" = "wp10"
 "tests/test_case.py" = "wp10"
 "tests/test_paper_model.py" = "wp10"
+"scripts/paper_mode.py" = "wp10"
+"scripts/paper_pin.py" = "wp10"
 "tests/test_paper_slot.py" = "wp8a"
 "tests/test_release_workflows.py" = "wp8b"
 "tests/test_release_cleanup.py" = "wp8b"
