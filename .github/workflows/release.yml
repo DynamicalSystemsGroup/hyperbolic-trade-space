@@ -11,6 +11,8 @@ name: Release
 # A push to qc/** and a dispatch run the dry-run path: admissibility, the build and the site, nothing after.
 # Any failure on main runs `on-failure`: the failed jobs and steps in the summary, scripts/release_cleanup.py,
 # and an issue labelled release-failure. The rows this enforces: .github/RELEASE_ADMISSIBILITY.md.
+# The first job, controls, checks the repository's settings against .github/governance.toml (GOVERNANCE.md);
+# every other job needs it, and the release notes carry its result at the merge commit (the attestation).
 on:
   pull_request:
     branches: [main]
@@ -37,8 +39,43 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  controls:
+    name: controls
+    # The settings against their declaration, first: nothing runs while a setting differs from
+    # .github/governance.toml. The outputs are the attestation the tag job writes into the release
+    # notes. The endpoints need Metadata (always granted), Actions (the environments) and Pages (the
+    # Pages build); the default workflow permissions need Administration, which the workflow token
+    # never has, and the checker then exits 2 naming the endpoint.
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
+      pages: read
+    outputs:
+      declaration: ${{ steps.controls.outputs.declaration }}
+      result: ${{ steps.controls.outputs.result }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: The repository's settings match .github/governance.toml
+        id: controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          declaration=".github/governance.toml@$(git rev-parse --short=12 "HEAD:.github/governance.toml")"
+          echo "declaration=$declaration" >> "$GITHUB_OUTPUT"
+          set +e
+          uv run --no-project python scripts/check_repo_settings.py --report "$GITHUB_STEP_SUMMARY"
+          code=$?
+          set -e
+          case "$code" in 0) result=conforming ;; 1) result=differs ;; *) result=unreadable ;; esac
+          echo "result=$result" >> "$GITHUB_OUTPUT"
+          { echo; echo "Controls: $declaration checked at $GITHUB_SHA: $result"; } >> "$GITHUB_STEP_SUMMARY"
+          exit "$code"
+
   check:
     name: admissibility
+    needs: controls
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -116,6 +153,7 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       windows: false
+      controls: false
 
   build:
     name: build and check
@@ -169,7 +207,7 @@ jobs:
 
   tag:
     name: tag and draft release
-    needs: [check, test, build, site]
+    needs: [controls, check, test, build, site]
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.outputs.tag_state != 'site-only' }}
     runs-on: ubuntu-24.04
     permissions:
@@ -179,6 +217,8 @@ jobs:
       VERSION: ${{ needs.check.outputs.version }}
       TAG: ${{ needs.check.outputs.tag }}
       TAG_STATE: ${{ needs.check.outputs.tag_state }}
+      CONTROLS_DECLARATION: ${{ needs.controls.outputs.declaration }}
+      CONTROLS_RESULT: ${{ needs.controls.outputs.result }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
@@ -190,8 +230,11 @@ jobs:
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             tag -a "$TAG" -m "tradespace $VERSION" "$GITHUB_SHA"
           git push origin "refs/tags/$TAG"
-      - name: Release notes from the changelog
-        run: uv run --no-project python scripts/release_checks.py changelog --version "$VERSION" --final --notes notes.md
+      - name: Release notes from the changelog, with the controls attestation
+        run: |
+          uv run --no-project python scripts/release_checks.py changelog --version "$VERSION" --final --notes notes.md \
+            --controls "$CONTROLS_DECLARATION" --checked-at "$GITHUB_SHA" --controls-result "$CONTROLS_RESULT"
+          tail -n 1 notes.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: dist
@@ -298,7 +341,7 @@ jobs:
 
   on-failure:
     name: on failure, clean up and open an issue
-    needs: [check, test, build, site, tag, publish-pypi, publish-testpypi, deploy-site, publish-release]
+    needs: [controls, check, test, build, site, tag, publish-pypi, publish-testpypi, deploy-site, publish-release]
     if: ${{ always() && (failure() || cancelled()) && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     permissions:

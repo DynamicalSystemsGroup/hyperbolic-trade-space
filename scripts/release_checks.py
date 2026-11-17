@@ -1,6 +1,7 @@
 """The release gates of release.yml: changelog, pins, bill of materials, tag, merge and PyPI.
 
     uv run python scripts/release_checks.py changelog --version 0.1.0 [--final] [--notes out.md]
+        [--controls .github/governance.toml@HASH --checked-at SHA [--controls-result conforming]]
     uv run python scripts/release_checks.py pins
     uv run python scripts/release_checks.py sbom --sbom sbom.cdx.json
     uv run python scripts/release_checks.py tag --tag v0.1.0 --sha SHA
@@ -9,6 +10,8 @@
 
 ``changelog`` needs a ``## [version]`` heading; with ``--final`` (a release) it must have
 one, otherwise an ``## [Unreleased]`` heading also serves (a dry run, a candidate on TestPyPI).
+With ``--controls`` the notes end with the attestation line of the ``controls`` job
+(``GOVERNANCE.md``): the declaration's path and hash, the commit checked and the result.
 ``pins`` fails on any action in ``.github/workflows`` that is not pinned to a 40-character commit.
 ``sbom`` fails unless the CycloneDX file names every package, at its locked version, that
 ``uv.lock`` names.
@@ -54,6 +57,15 @@ def changelog_section(text: str, version: str) -> str | None:
     """
     m = re.search(rf"^## \[{re.escape(version)}\][^\n]*\n(.*?)(?=^## \[|\Z)", text, re.M | re.S)
     return m.group(1).strip() if m else None
+
+
+def attestation(declaration: str, sha: str, result: str = "conforming") -> str:
+    """The controls line of a release's notes and run summary (GOVERNANCE.md).
+
+    >>> attestation(".github/governance.toml@3f2a1b9c0d4e", "0123456789ab")
+    'Controls: .github/governance.toml@3f2a1b9c0d4e checked at 0123456789ab: conforming'
+    """
+    return f"Controls: {declaration} checked at {sha}: {result}"
 
 
 def changelog_problems(root: Path, version: str, final: bool) -> list[str]:
@@ -196,6 +208,9 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--version", required=True)
     c.add_argument("--final", action="store_true")
     c.add_argument("--notes", type=Path, help="write the entry here, for the release notes")
+    c.add_argument("--controls", help="the declaration as <path>@<hash>; adds the attestation line")
+    c.add_argument("--checked-at", help="the commit the controls job checked (with --controls)")
+    c.add_argument("--controls-result", default="conforming", help="the controls job's result")
     sub.add_parser("pins")
     s = sub.add_parser("sbom")
     s.add_argument("--sbom", type=Path, required=True)
@@ -222,10 +237,17 @@ def main(argv: list[str] | None = None) -> int:
         problems = pypi_problems(args.version, args.dist, attempts=args.attempts, wait=args.wait)
     elif args.check == "changelog":
         problems = changelog_problems(args.root, args.version, args.final)
+        if args.controls and not args.checked_at:
+            parser.error("--controls needs --checked-at")
         if args.notes and not problems:
             text = (args.root / "CHANGELOG.md").read_text(encoding="utf-8")
             body = changelog_section(text, args.version) or changelog_section(text, "Unreleased")
-            args.notes.write_text((body or "") + "\n", encoding="utf-8")
+            notes = (body or "") + "\n"
+            if args.controls:
+                notes += (
+                    "\n" + attestation(args.controls, args.checked_at, args.controls_result) + "\n"
+                )
+            args.notes.write_text(notes, encoding="utf-8")
     elif args.check == "pins":
         problems = pin_problems(args.root)
     else:

@@ -83,11 +83,14 @@ def test_release_job_graph():
 
     needs = {job_id: listed(job) for job_id, job in JOBS.items()}
     expected = {
-        "check": [],
+        # controls first (the settings against .github/governance.toml); every job needs it,
+        # directly or through check.
+        "controls": [],
+        "check": ["controls"],
         "test": ["check"],
         "build": ["check"],
         "site": ["check"],
-        "tag": ["build", "check", "site", "test"],
+        "tag": ["build", "check", "controls", "site", "test"],
         "publish-pypi": ["check", "tag"],
         "publish-testpypi": ["build", "test"],
         # The site-only merge skips publish-pypi; the deploy then needs the suite and the
@@ -96,6 +99,7 @@ def test_release_job_graph():
         "publish-release": ["check", "deploy-site"],
         "on-failure": sorted(
             [
+                "controls",
                 "check",
                 "test",
                 "build",
@@ -181,7 +185,7 @@ def test_site_jobs_are_called_workflows():
     assert JOBS["deploy-site"]["uses"] == "./.github/workflows/pages-deploy.yml"
     assert JOBS["deploy-site"]["permissions"] == {"pages": "write", "id-token": "write"}
     assert JOBS["test"]["uses"] == "./.github/workflows/test.yml"
-    assert JOBS["test"]["with"] == {"windows": False}
+    assert JOBS["test"]["with"] == {"windows": False, "controls": False}
     for job_id in ("site", "deploy-site", "test"):
         assert "environment" not in JOBS[job_id], job_id
     for name in ("site.yml", "pages-deploy.yml", "test.yml"):

@@ -96,6 +96,7 @@ def test_the_release_workflow_runs_every_gate():
         "release_checks.py pypi",
         "paper_mode.py check --stage served",
         "uv lock --check",
+        "check_repo_settings.py",
     ):
         assert gate in text
     assert re.search(r"cyclonedx1\.5", text)
