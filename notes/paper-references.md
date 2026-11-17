@@ -11,7 +11,9 @@ While the paper is in abstract mode the docs carry no `paper:` link. The two sur
 `work-packages/WP81-decisions.md`): the docs support a user, the paper a researcher. A former pointer either states
 the result in the docs' own words, drawn from the working paper in brief and for a user and no wider than its
 backing in `claims_register.toml` (a theorem's statement is backed by its lemma, as the theory page's rows are), or
-is removed where its content is the paper's job (a proof, an appendix, the prior-art argument, the search programme). Two sentences name the paper: one on the docs home and one in Further reading, each
+is removed where its content is the paper's job (a proof, an appendix, the prior-art argument, the search programme).
+The lemma scripts are the paper's too (his word, 2026-11-17: "we don't need to address lemma scripts at all in
+documentation. that's something reserved for the paper"): no docs page names them or `derivation/`. Two sentences name the paper: one on the docs home and one in Further reading, each
 saying that it is a working paper, that its abstract is published at `/paper/`, and that the full text builds from
 the repository. The paper is called "the working paper" wherever it is named. When a pin is served the links may
 return, one per named result, under the rule of that day. A test in `tests/test_site.py` holds this: no `paper:`
@@ -19,8 +21,8 @@ citation on a docs page while the mode is abstract, and the two naming sentences
 
 ## The inventory (R-1), read 2026-11-17 at the WP81 base
 
-Every pointer into the paper on a reader-facing surface (23 `paper:` citations, three more than the scope's first count, and five prose surfaces), with its sentence and its disposition. Dispositions (brief from the paper; removed as the paper's role; names the working paper) are decided after the
-persona journeys (`work-packages/WP81-rounds/journeys.md`, R-8); until then a row reads "pending".
+Every pointer into the paper on a reader-facing surface (23 `paper:` citations, three more than the scope's first count, and five prose surfaces), with its sentence and its disposition. Dispositions (brief from the paper; removed as the paper's role; names the working paper) were decided after the
+persona journeys (`work-packages/WP81-rounds/journeys.md`, R-8) and his word on the lemma scripts.
 
 | # | Surface | Sentence (the pointer in it) | Key | Disposition |
 |---|---|---|---|---|
@@ -36,16 +38,16 @@ persona journeys (`work-packages/WP81-rounds/journeys.md`, R-8); until then a ro
 | 10 | `docs/bridge.md` | "the outer loop of the search named in the paper's [Future work](paper:sect-future) is the refit." | sect-future | removed as the paper's role (the outer loop named by its steps) |
 | 11 | `docs/user-guide/temperature.md` | "The fit temperature tau sets how hard the maximum is ([definition](paper:def-temperature))." | def-temperature | brief: links the glossary's temperature entry |
 | 12 | `docs/user-guide/temperature.md` | "([the n-lemma's members](paper:def-nlemma)): here the first four metrics." | def-nlemma | brief: links the glossary's n-lemma entry |
-| 13 | `docs/user-guide/temperature.md` | "supporting envelope (lemma 5 in [Appendix E](paper:appendix-e))." | appendix-e | brief: the result stays in words; the lemma named without a link |
-| 14 | `docs/user-guide/temperature.md` | "(lemma 22 in [Appendix E](paper:appendix-e))." | appendix-e | brief: the result stays in words; the lemma named without a link |
+| 13 | `docs/user-guide/temperature.md` | "supporting envelope (lemma 5 in [Appendix E](paper:appendix-e))." | appendix-e | brief: the result stays in words; no lemma named (his word) |
+| 14 | `docs/user-guide/temperature.md` | "(lemma 22 in [Appendix E](paper:appendix-e))." | appendix-e | brief: the result stays in words; no lemma named (his word) |
 | 15 | `docs/examples.md` | "described by a [SysML v2 system model](paper:sect-case-construction)." | sect-case-construction | removed as the paper's role (the GitHub path to the model stays) |
 | 16 | `docs/further-reading.md` | "HoroPCA: the nearest analog in setting; [how this work differs](paper:sect-prior-art)." | sect-prior-art | brief: one clause on the difference; the page carries the second naming sentence |
 | 17 | `docs/user-guide/fitting.md` | "`n_terms=K` [terms](paper:thm-extension), where you choose K" | thm-extension | brief: terms links the glossary |
 | 18 | `docs/user-guide/termination.md` | "[`certified`](paper:thm-certificate) is the first: a local optimum of the loss, not of other restarts." | thm-certificate | brief: certified links the glossary |
-| 19 | `docs/user-guide/limitations.md` | "Appendix E of the paper states what they do and do not establish" (the lemma scripts) | prose | removed as the paper's role (the lemma scripts' folder named) |
-| 20 | `docs/code-owners.md` | the paper's lifecycle, branch, tags and Zenodo (a maintainers' page) | prose | names (a governance page; the document called the working paper) |
+| 19 | `docs/user-guide/limitations.md` | "Appendix E of the paper states what they do and do not establish" (the lemma scripts) | prose | removed as the paper's role, with the three sentences on the lemma scripts and theorem provers (his word) |
+| 20 | `docs/code-owners.md` | the paper's lifecycle, branch, tags and Zenodo (a maintainers' page) | prose | names (a governance page, unchanged: "the paper" is the release object there) |
 | 21 | `site/index.html` | "The paper makes the argument and gives the proofs; the documentation gets the method running on a dataset of your own." and the card "Read the paper: the argument and the proofs" | root page | names the working paper (the body sentence; the card's mode line is the composer's) |
-| 22 | `README.md` | "See the [docs], [the paper] and `examples/adcs/` for a case study." and the repository map's `paper/` line | README | names the working paper (the first paragraph) |
+| 22 | `README.md` | "See the [docs], [the paper] and `examples/adcs/` for a case study." and the repository map's `paper/`, `examples/adcs/` ("the case study the paper uses") and `claims_register.toml` ("each claim the paper and docs make") lines | README | names the working paper (the first paragraph); the map's three lines unchanged (a map of folders) |
 | 24 | `docs/theory.md` | "using the [log-mean-exp (entropic) soft maximum](paper:thm-lme) of w·u" | thm-lme | brief: the statement stays, the link goes |
 | 25 | `docs/theory.md` | "the contending metrics at [constant elasticities](paper:thm-elasticity)" | thm-elasticity | brief: the statement stays, the link goes |
 | 26 | `docs/bridge.md` | "The conditioning is invertible ([pull-back to attributes](paper:thm-pullback))" | thm-pullback | brief: the statement stays, the link goes |
@@ -58,8 +60,8 @@ persona journeys (`work-packages/WP81-rounds/journeys.md`, R-8); until then a ro
 - Further reading, under the title: "The working paper (its abstract on the [project page](../); the full text builds
   from `paper/` in the repository; the lemma scripts under `derivation/`) carries the literature review, the
   derivations and the worked example."
-- The root page's body: "The working paper makes the argument and gives the proofs; its abstract is published here,
-  the full text builds from the repository and the lemma scripts are under `derivation/`." The card's line per mode
+- The root page's body: "The working paper makes the argument and gives the proofs; its abstract is published here
+  and the full text builds from the repository." The card's line per mode
   is the composer's (`scripts/assemble_site.py`, `ROOT_CARD_LINE_ABSTRACT`), not the docs'.
 - The README's first paragraph: "the working paper's abstract (the full text builds from `paper/`)".
 

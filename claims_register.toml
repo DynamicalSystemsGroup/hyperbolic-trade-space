@@ -3693,22 +3693,6 @@ source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
 note = "verify --solve runs the system model's requirement checks through the solve engine (z3 on PATH, from the case group); the recorded claims hold under it; no other prover is imported"
 
 [[claim]]
-id = "C390"
-fragment = "The lemma scripts replace pencil-and-paper derivation, not formal verification"
-file = "docs/user-guide/limitations.md"
-anchor = "Limitations"
-kind = "S"
-backing = [
-  "func:derivation/run.py::run_chain",
-  "test:tests/test_derivation.py::test_no_phantom_axioms",
-  "file:notes/proof-conventions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
-note = "the docs' one sentence on the position, pointing to Appendix B of the paper (C387)"
-
-[[claim]]
 id = "C393"
 fragment = "too few near-frontier designs for an association reading: {int(n_near)} of ten"
 file = "examples/adcs/case.py"
@@ -4918,35 +4902,6 @@ status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
 note = "Record id 2022-numfocus-council (https://numfocus.org/community/people). The sponsor, PyData NYC 2023 and SciPy 2026 clauses are cut (slimming); 2026-numfocus-sponsor, 2023-pydata-nyc and 2026-scipy-talk stay in the record and the list."
-
-[[claim]]
-id = "C567"
-fragment = "A proof in a theorem prover would fix each lemma's statement over the real numbers"
-file = "docs/user-guide/limitations.md"
-anchor = "Limitations"
-kind = "L"
-backing = [
-  "file:work-packages/WP36-rounds/spike/readout.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP36 decision entry 441cdcb"
-note = "Readout section 2: a proof about Real fixes the statement's shape and its hypotheses, not the accuracy of the code"
-
-[[claim]]
-id = "C568"
-fragment = "It would not bound the double-precision error, which the certificates check"
-file = "docs/user-guide/limitations.md"
-anchor = "Limitations"
-kind = "L"
-backing = [
-  "file:work-packages/WP36-rounds/spike/readout.md",
-  "func:src/tradespace/solvers.py::soft_certificate",
-]
-status = "backed"
-disposition = "keep"
-source = "WP36 decision entry 441cdcb"
-note = "Readout section 2: closing the gap needs a rounding-error statement and a proof per algorithm; the certificates check the float result at run time"
 
 [[claim]]
 id = "C570"
@@ -7412,7 +7367,7 @@ note = "L5.22 the mean; L22.18 the second derivative is the variance; L22.21 and
 
 [[claim]]
 id = "C841"
-fragment = "Whether the exponents tend to the combination of least variance on the simplex is not proved: the lemma does not bound the remainder over the simplex."
+fragment = "Whether the exponents tend to the combination of least variance on the simplex is not proved: the derivation does not bound the remainder over the simplex."
 file = "docs/user-guide/temperature.md"
 anchor = ""
 kind = "M"

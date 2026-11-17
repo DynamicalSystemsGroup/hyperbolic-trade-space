@@ -97,11 +97,29 @@ removed rather than restated; the journey readers are asked, per page, what is t
 The dispositions of `notes/paper-references.md` take three values: brief from the paper; removed as the paper's role;
 names the working paper.
 
-## A default departed from, for his acceptance (2026-11-17)
+## His direction on lemma scripts (2026-11-17, verbatim)
 
-The Agent's defaults say "the docsite total stays". The two naming sentences his rule requires (the home, Further
-reading) cost 42 words net after every paper pointer's removal (with the theory page's eight-word pointer to the lemma scripts the re-trace asked for) and the trims on the same pages (the home's caption
-clause "Getting started walks through the output", a sentence about another page; the bridge bullet's "the
-conjecture it is"); paying the rest would cut content that is not this package's (the bibliography's entries, the
-theory page's definitions). `TOTAL_BUDGET` in `tests/test_site.py` rises by 44 with the reason; put to him as a gap at
-the acceptance gate.
+"we don't need to address lemma scripts at all in documentation. that's something reserved for the paper"
+
+Context: the re-trace had the optimization reader (P5) and the modeller (P3) asking the theory page to say where the
+lemma scripts are, and the temperature and limitations pages named them; the second cold read found "lemma scripts"
+undefined on the theory page. His word decides the competing preference: the docs do not address the lemma scripts;
+the theory page's lead reads "definitions only, no proofs"; the temperature page states its two limits in words with
+no lemma named ("the derivation does not bound the remainder"); the limitations page loses the three sentences on
+the lemma scripts and theorem provers (the register rows C390, C567 and C568 retired, their ids never reused); the
+Further reading sentence and the root page's body sentence no longer name `derivation/`. The README's repository map
+keeps its `derivation/` line (a map of folders, not documentation of the method).
+
+## The page's name (2026-11-17, verbatim)
+
+On the iron-triangle page's navigation title "Software projects (Kitchenham-CSC)": "iron triangle example name with
+a parenthetical in the docs is awkward pick a name that is accurate like you did with others and just stick with it".
+Done in WP81's first unit as "Kitchenham software projects" (the navigation title and the page's heading), named like
+"Broadbalk wheat"; outside WP81's scope, on his word, recorded here.
+
+## The word budget (2026-11-17)
+
+The Agent's defaults say the docsite total stays. After the removals of this package and the two naming sentences, the
+touched pages net 19 words fewer than before WP81 (the home 288 of 350, Further reading 229 of 300; the total 12030
+against the cap of 12055), so the default holds and `TOTAL_BUDGET` is unchanged at 12055. An earlier state of this
+section recorded a rise; it is superseded.

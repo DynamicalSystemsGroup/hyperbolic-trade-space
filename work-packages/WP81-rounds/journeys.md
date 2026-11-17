@@ -98,5 +98,11 @@ results overstates what pencil-and-paper SymPy scripts are" is taken: the Furthe
   the model shown on the examples page (P3, U2), the battery finding's numbers and the toy boundary (P7), the cost of
   adoption (P8): none is a paper pointer; each is recorded in section 2's closing list for packages 4 to 6.
 
+**His word after the re-trace.** The theorists' route through the lemma scripts (P5, P3, P2) was his to weigh against
+the users' pages: "we don't need to address lemma scripts at all in documentation. that's something reserved for the
+paper". The theory lead, the temperature page's lemma numbers, the limitations paragraph's three sentences and the
+`derivation/` clauses on Further reading and the root page came out again; the docs name the working paper and nothing
+of its apparatus.
+
 **Side by side.** `captures/` holds the pages before (1280 px, light), `captures-after/` the ten touched pages after;
 the root page's figures are present in both after the retake.
