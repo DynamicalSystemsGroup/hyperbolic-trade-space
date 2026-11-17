@@ -1,6 +1,6 @@
 # tradespace
 
-For an analyst with a table of evaluated designs. The [paper](paper:sect-problem) makes the argument for the method; the [project page](../) links it, these docs and the package.
+For an analyst with a table of evaluated designs, or of observed cases: reported devices, species, plot-years, finished projects. The [paper](paper:sect-problem) makes the argument for the method; the [project page](../) links it, these docs and the package.
 
 - [Use it on my own table](getting-started.md): install and run a first fit.
 - [Bring my own system model, and know what must hold](getting-started.md#your-own-data)

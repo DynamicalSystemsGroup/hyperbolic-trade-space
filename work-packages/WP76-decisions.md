@@ -186,3 +186,11 @@ rerun in a fresh worktree.
 Asked whether he accepts WP76 on the branch at d25b4892, with the review's recommendation and the narrowed headline
 stated. His answer, verbatim: "Accepted". The index row moves to accepted; the branch waits for the merge of 0.1,
 then one rebase onto `dev` and his review of the interpretation before it merges into `dev`.
+
+## Outside the package, on his word (2026-11-17)
+
+Reading the site, he asked for a second clause on the docs home's first line for the observed phenomena several
+examples are ("i think we need a second clause for observed phenomena since several of our examples are exactly
+that"). Asked where it lands, his answer, verbatim: "This branch". One commit after the acceptance, marked outside
+WP76's scope: `docs/index.md` and `README.md` first lines read "... a table of evaluated designs, or of observed
+cases: reported devices, species, plot-years, finished projects". No register row names either sentence.

@@ -104,7 +104,9 @@ BUDGETS = {
 # to it); 7480 until WP41 (the bridge
 # page, 815); 7430 until the docs home took its figure and quickstart (his 350); 7237 until WP42;
 # 7472 until WP33
-TOTAL_BUDGET = 12045  # 11335 until WP76 (+700, the Kitchenham-CSC page; +10, its route on Examples)
+# 11335 until WP76 (+700, the Kitchenham-CSC page; +10, its route on Examples); 12045 until his
+# clause for observed cases on the docs home (2026-11-17, +10)
+TOTAL_BUDGET = 12055
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
