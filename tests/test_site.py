@@ -106,8 +106,9 @@ BUDGETS = {
 # 7472 until WP33
 # 11335 until WP76 (+700, the Kitchenham-CSC page; +10, its route on Examples); 12045 until his
 # clause for observed cases on the docs home (2026-11-17, +10); 12055 until WP81 (+34: the two
-# sentences that name the working paper, net of the paper pointers removed)
-TOTAL_BUDGET = 12090
+# sentences that name the working paper and the theory page's pointer to the lemma scripts, net of
+# the paper pointers removed)
+TOTAL_BUDGET = 12100
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",

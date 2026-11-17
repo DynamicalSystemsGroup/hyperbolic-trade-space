@@ -1,6 +1,6 @@
 # tradespace
 
-For an analyst with a table of evaluated designs, or of observed cases: reported devices, species, plot-years, finished projects. The [project page](../) links these docs, the package and the paper.
+For an analyst with a table of evaluated designs, or of observed cases: reported devices, species, plot-years, finished projects. The [project page](../) links these docs, the package and the paper's abstract.
 
 - [Use it on my own table](getting-started.md): install and run a first fit.
 - [Bring my own system model, and know what must hold](getting-started.md#your-own-data)

@@ -51,7 +51,25 @@ persona journeys (`work-packages/WP81-rounds/journeys.md`, R-8); until then a ro
 | 26 | `docs/bridge.md` | "The conditioning is invertible ([pull-back to attributes](paper:thm-pullback))" | thm-pullback | brief: the statement stays, the link goes |
 | 23 | `docs/api-reference.md` | a docstring's "Theorem 1" (package text, out of scope; a candidate for the package's next release) | docstring | out of scope |
 
+## The two naming sentences (as landed)
+
+- The docs home, last paragraph: "The argument and the proofs are the working paper's; its abstract is on the
+  [project page](../), and the full text builds from the repository."
+- Further reading, under the title: "The working paper (its abstract on the [project page](../); the full text builds
+  from `paper/` in the repository; the lemma scripts under `derivation/`) carries the literature review, the
+  derivations and the worked example."
+- The root page's body: "The working paper makes the argument and gives the proofs; its abstract is published here,
+  the full text builds from the repository and the lemma scripts are under `derivation/`." The card's line per mode
+  is the composer's (`scripts/assemble_site.py`, `ROOT_CARD_LINE_ABSTRACT`), not the docs'.
+- The README's first paragraph: "the working paper's abstract (the full text builds from `paper/`)".
+
+Neither sentence links the paper route directly (`tests/test_site.py`,
+`test_docsite_cites_the_paper_only_through_keys`: a link into the paper is a key or nothing), so the project page,
+which carries the paper card, is the link. When a pin is served the links may return, one per named result, with
+the test's abstract-mode clause lifted in the same change.
+
 ## The journeys (R-8)
 
-Traced per persona in `work-packages/WP81-rounds/journeys.md` before any edit; the competing preferences and the
-choice per pointer are written there and summarised in the dispositions above.
+Traced per persona in `work-packages/WP81-rounds/journeys.md` before any edit (section 1 and 2, the returns verbatim
+in `journeys/`, the captures in `captures/`), and re-traced after the edits (section 3, `captures-after/`); the
+competing preferences and the choice per pointer are written there and summarised in the dispositions above.

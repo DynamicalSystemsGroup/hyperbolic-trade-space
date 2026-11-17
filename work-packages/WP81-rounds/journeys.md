@@ -64,4 +64,39 @@ page asked for one plain line saying it is the abstract of a working paper (sent
 
 ## 3. After the edits
 
-(the same journeys re-traced; before and after side by side)
+The same twelve personas, each given its earlier report and the after-state screenshots and texts of the pages on
+its path that changed (`captures-after/`, 1280 px, light; the before set in `captures/`), asked what changed for it,
+whether each former pointer is resolved as it wanted, and what still stops it. Their returns, verbatim, in
+`journeys/<persona>-after.md`; the summary below.
+
+**Resolved for every persona.** No page now sends a reader to the abstract for something it does not hold: all twelve
+readers say so in their own words ("the paper pointers now tell me the truth", U1; "the paper links are cleanly gone
+and the docs now stand alone", U4; "no page now implies a paper I can open", P8; "I can now find the route", P5). The
+theorists' route exists: Limitations and Further reading name `derivation/`; after P5's and P3's re-trace the theory
+page's lead names it too ("definitions only, no proofs; the lemma scripts are under `derivation/`"). P2's "formal
+results overstates what pencil-and-paper SymPy scripts are" is taken: the Further reading sentence says
+"derivations".
+
+**What the re-trace still found, and where it goes.**
+
+- The root page's card. Four readers (P1, P7, P8, U1) saw "Read the paper / the argument and the proofs" against the
+  new body sentence and called it the one promise that still bites. What they saw was the static source
+  (`site/index.html`); the published root page takes the card's line per mode from the composer
+  (`scripts/assemble_site.py`, `ROOT_CARD_LINE_ABSTRACT` = "its abstract; the paper is iterated towards release"), so
+  the deployed card already says "abstract". The card's title "Read the paper" and its mode line are the composer's,
+  out of this scope; passed to the v0.1 session with the readers' words ("Read the abstract", P7; "Paper abstract",
+  P1).
+- The home's naming sentence "still trails the page as a sentence about the paper" (U3) and sits "below the figure, so
+  it is easy to miss" (U2); P1 and U1 would cut it or fold it into the first line. His rule asks for the sentence on
+  the home; where it sits is package 3's (Home as the quickstart), which also owns the "six equal bullets" and the PCA
+  line's place.
+- A build command or a lemma index (P2, P5, P6, U4): the sentence says the full text builds from `paper/` and the
+  lemma scripts are under `derivation/`, and gives neither a command nor a claim-to-script index. The command is the
+  paper branch's to publish (the abstract page carries it); a lemma index on the docs is a candidate for package 5
+  (noted), weighed against his rule that the docs serve a user.
+- The termination page's "provably" with no pointer (P5), the convex program never written (P5), the DEA clause (P6),
+  the model shown on the examples page (P3, U2), the battery finding's numbers and the toy boundary (P7), the cost of
+  adoption (P8): none is a paper pointer; each is recorded in section 2's closing list for packages 4 to 6.
+
+**Side by side.** `captures/` holds the pages before (1280 px, light), `captures-after/` the ten touched pages after;
+the root page's figures are present in both after the retake.

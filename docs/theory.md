@@ -1,6 +1,6 @@
 # Theory in brief
 
-For a reader who wants the model stated in one place: definitions only, no proofs.
+For a reader who wants the model stated in one place: definitions only, no proofs; the lemma scripts are under `derivation/`.
 
 ## The invariant form
 

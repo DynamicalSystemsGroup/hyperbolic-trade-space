@@ -100,8 +100,8 @@ names the working paper.
 ## A default departed from, for his acceptance (2026-11-17)
 
 The Agent's defaults say "the docsite total stays". The two naming sentences his rule requires (the home, Further
-reading) cost 34 words net after every paper pointer's removal and the trims on the same pages (the home's caption
+reading) cost 42 words net after every paper pointer's removal (with the theory page's eight-word pointer to the lemma scripts the re-trace asked for) and the trims on the same pages (the home's caption
 clause "Getting started walks through the output", a sentence about another page; the bridge bullet's "the
 conjecture it is"); paying the rest would cut content that is not this package's (the bibliography's entries, the
-theory page's definitions). `TOTAL_BUDGET` in `tests/test_site.py` rises by 34 with the reason; put to him as a gap at
+theory page's definitions). `TOTAL_BUDGET` in `tests/test_site.py` rises by 44 with the reason; put to him as a gap at
 the acceptance gate.
