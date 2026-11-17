@@ -23,9 +23,10 @@ PAPER_MODULES = {
 }
 
 
-def test_workflow_runs_on_dispatch_call_and_pull_requests_to_main():
-    assert set(TRIGGERS) == {"pull_request", "workflow_dispatch", "workflow_call"}
+def test_workflow_runs_on_dispatch_call_pull_requests_to_main_and_pushes_to_dev():
+    assert set(TRIGGERS) == {"push", "pull_request", "workflow_dispatch", "workflow_call"}
     assert TRIGGERS["pull_request"] == {"branches": ["main"]}
+    assert TRIGGERS["push"] == {"branches": ["dev"]}
     assert TRIGGERS["workflow_call"]["inputs"]["windows"]["default"] is False
     assert TRIGGERS["workflow_dispatch"]["inputs"]["windows"]["default"] is True
     # The required checks on a pull request read `test (fast)`, `test (slow)`, `test (docs)`.
@@ -33,7 +34,9 @@ def test_workflow_runs_on_dispatch_call_and_pull_requests_to_main():
 
 
 def test_three_shards_cover_every_software_test():
-    assert JOB["strategy"]["matrix"]["shard"] == ["fast", "slow", "docs"]
+    assert all(
+        f'"{shard}"' in JOB["strategy"]["matrix"]["shard"] for shard in ("fast", "slow", "docs")
+    )
     # fast: unmarked; slow: marked, outside the docs modules; docs: marked, inside them.
     assert 'fast) uv run pytest $opts -m "not slow and not paper" ;;' in RUN
     assert 'uv run pytest $opts -m "slow and not paper" $ignores ;;' in RUN
@@ -70,7 +73,13 @@ def test_windows_never_runs_on_a_pull_request():
     assert "github.event_name != 'pull_request'" in WINDOWS["if"]
     assert "inputs.windows" in WINDOWS["if"]
     assert WINDOWS["strategy"]["matrix"]["shard"] == ["fast", "slow"]
-    assert "push" not in TRIGGERS
+    assert "github.event_name != 'push'" in WINDOWS["if"]
+
+
+def test_a_push_to_dev_runs_the_fast_shard_alone():
+    on_push = """github.event_name == 'push' && '["fast"]'"""
+    otherwise = """|| '["fast", "slow", "docs"]'"""
+    assert JOB["strategy"]["matrix"]["shard"] == f"${{{{ fromJSON({on_push} {otherwise}) }}}}"
 
 
 def test_every_shard_keeps_the_provisioning():

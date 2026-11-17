@@ -3,8 +3,11 @@ name: Tests
 # The software's suite (the paper's tests run in paper.yml on the paper branch and are deselected here:
 # every shard says `not paper` and the paper switch is never set). Runs on pull requests into main (the
 # required checks `test (fast)`, `test (slow)`, `test (docs)`), when release.yml calls it (Linux only), and
-# on manual dispatch (Linux and, by default, Windows). No push trigger. Windows never runs on a pull request.
+# on manual dispatch (Linux and, by default, Windows). A push to dev runs lint and the Linux fast shard
+# only (WP67, the external review of 2026-11-16). Windows never runs on a pull request or a push.
 on:
+  push:
+    branches: [dev]
   pull_request:
     branches: [main]
   workflow_call:
@@ -35,7 +38,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [fast, slow, docs]
+        # Every shard on a pull request, a call or a dispatch; the fast shard alone on a push to dev.
+        shard: ${{ fromJSON(github.event_name == 'push' && '["fast"]' || '["fast", "slow", "docs"]') }}
     # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
     runs-on: ubuntu-24.04
     steps:
@@ -117,9 +121,9 @@ jobs:
 
   windows:
     name: windows (${{ matrix.shard }})
-    # Never on a pull request (inputs.windows is false there; the event test says so outright).
+    # Never on a pull request or a push (inputs.windows is unset there; the event test says so outright).
     # The docs shard stays on Linux (WP34 stage 2 decision); Windows runs fast and slow on a dispatch.
-    if: ${{ github.event_name != 'pull_request' && inputs.windows }}
+    if: ${{ github.event_name != 'pull_request' && github.event_name != 'push' && inputs.windows }}
     strategy:
       fail-fast: false
       matrix:

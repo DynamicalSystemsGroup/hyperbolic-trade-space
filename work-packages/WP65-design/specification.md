@@ -475,7 +475,8 @@ and `tests/test_narrative.py`.
 ### 5.3 `test.yml`
 
 - Triggers: `workflow_call` (`windows`, default false), `workflow_dispatch` (`windows`, default true), and
-  `pull_request: branches: [main]` (the required checks). No push trigger.
+  `pull_request: branches: [main]` (the required checks). No push trigger (amended 2026-11-16, WP67 G9: a push to
+  `dev` runs lint and the Linux `fast` shard only; the external review's first finding).
 - Shards: `fast`, `slow`, `docs` (renamed from `docs-paper`). `DOCS_MODULES` = `tests/test_site.py
   tests/test_build_generated.py tests/test_docs.py tests/test_narrative.py tests/test_paper_slot.py`
   (`test_paper.py` and `test_container.py` leave it). Commands: `fast` `-m "not slow and not paper"`; `slow`
