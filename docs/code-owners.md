@@ -137,4 +137,4 @@ ruleset. Publishing needs no secret, so there is no token to hand over.
 
 `CHANGELOG.md` (user-visible changes), `work-packages/` (each package's scope, decisions and review),
 `history.yaml` (the project's history), `claims_register.toml` (claims and their backing), and the first release's
-steps (`pypi-checklist.md` in the release package's folder under `work-packages/`).
+steps (`pypi-checklist.md` in the release package's folder, read at `git show 4f81a4ea:work-packages/WP47-rounds/pypi-checklist.md`).

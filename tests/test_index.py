@@ -185,15 +185,15 @@ def test_nothing_outside_the_record_names_a_removed_path():
 
 def test_bare_mention_scanner():
     text = (
-        "see `work-packages/WP1-scope-of-work.md` and\n"
-        "`git show abc1234:work-packages/WP1-scope-of-work.md` carried\n"
-        "https://example/blob/abc1234/work-packages/WP2-review.md carried\n"
-        "https://example/blob/main/work-packages/WP2-review.md on main\n"
-        "work-packages/ alone; work-packages/WPn-decisions.md; (work-packages/WP3-rounds/).\n"
+        "see `work-packages/WPx-scope.md` and\n"
+        "`git show abc1234:work-packages/WPx-scope.md` carried\n"
+        "https://example/blob/abc1234/work-packages/WPy-review.md carried\n"
+        "https://example/blob/main/work-packages/WPy-review.md on main\n"
+        "work-packages/ alone; work-packages/WPn-decisions.md; (work-packages/WPz-rounds/).\n"
     )
     assert _bare_mentions(text) == [
-        (1, "work-packages/WP1-scope-of-work.md"),
-        (4, "work-packages/WP2-review.md"),
+        (1, "work-packages/WPx-scope.md"),
+        (4, "work-packages/WPy-review.md"),
         (5, "work-packages/WPn-decisions.md"),
-        (5, "work-packages/WP3-rounds"),
+        (5, "work-packages/WPz-rounds"),
     ]
