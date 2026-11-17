@@ -45,7 +45,7 @@ jobs:
     # .github/governance.toml. The outputs are the attestation the tag job writes into the release
     # notes. The endpoints need Metadata (always granted), Actions (the environments) and Pages (the
     # Pages build); the default workflow permissions need Administration, which the workflow token
-    # never has, and the checker then exits 2 naming the endpoint.
+    # never has, so the declaration marks them local-only and --runner lists them as not checked here.
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -65,10 +65,11 @@ jobs:
           declaration=".github/governance.toml@$(git rev-parse --short=12 "HEAD:.github/governance.toml")"
           echo "declaration=$declaration" >> "$GITHUB_OUTPUT"
           set +e
-          uv run --no-project python scripts/check_repo_settings.py --report "$GITHUB_STEP_SUMMARY"
-          code=$?
+          uv run --no-project python scripts/check_repo_settings.py --runner --report "$GITHUB_STEP_SUMMARY" | tee controls.txt
+          code=${PIPESTATUS[0]}
           set -e
-          case "$code" in 0) result=conforming ;; 1) result=differs ;; *) result=unreadable ;; esac
+          result=$(sed -n 's/^check_repo_settings: //p' controls.txt | tail -n 1)
+          [ -n "$result" ] || result="no verdict (exit $code)"
           echo "result=$result" >> "$GITHUB_OUTPUT"
           { echo; echo "Controls: $declaration checked at $GITHUB_SHA: $result"; } >> "$GITHUB_STEP_SUMMARY"
           exit "$code"

@@ -10,7 +10,13 @@ repository = "DynamicalSystemsGroup/tradespace"
 
 # Settings, Actions, General, Workflow permissions. The live value on 2026-11-17 is write (the design of
 # 2026-11-16 said read); the difference is item 1 of work-packages/WP78-rounds/gaps.md for decision.
+# checked_on = "local": GET actions/permissions/workflow needs the Administration (read) permission,
+# which GitHub never grants to the workflow token, so the controls job (--runner) lists these two
+# fields as not checked on the runner and a code owner's local run checks them. Every other section
+# is checked_on = "both" (the default, implicit): on the runner and locally.
 [actions]
+checked_on = "local"
+local_reason = "GET actions/permissions/workflow needs Administration (read), which the workflow token never has"
 default_workflow_permissions = "write"
 can_approve_pull_request_reviews = true
 

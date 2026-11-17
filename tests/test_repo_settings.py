@@ -159,6 +159,59 @@ def test_a_drift_and_an_unreadable_endpoint_together_exit_2_and_report_both(payl
     ]
 
 
+def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_path, capsys):
+    """The actions section is checked_on = "local": absent from the fixture it does not fail in
+    runner mode; present and differing it is not reported there, and is reported locally."""
+    assert DECLARATION["actions"]["checked_on"] == "local"
+    others = [DECLARATION["pages"], DECLARATION["code_owners"]]
+    others += DECLARATION["rulesets"] + DECLARATION["environments"]
+    assert all(s.get("checked_on", "both") == "both" for s in others)
+    del payloads["actions/permissions/workflow"]
+    result = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
+    assert result.exit_code == 0 and not result.unreadable
+    assert result.verdict == "conforming (59 fields on the runner; 2 local-only)"
+    assert [f for f, _ in result.local_only] == [
+        "actions.default_workflow_permissions",
+        "actions.can_approve_pull_request_reviews",
+    ]
+    assert all("Administration (read)" in reason for _, reason in result.local_only)
+    text = result.markdown("o/r", Path("d.toml"))
+    assert "Not checked on the runner (needs a code owner's local run):" in text
+    assert "- `actions.default_workflow_permissions`: GET actions/permissions/workflow" in text
+    # present and differing: not read in runner mode, reported in a local run
+    differing = copy.deepcopy(crs.load_fixture(FIXTURE))
+    differing["actions/permissions/workflow"]["default_workflow_permissions"] = "read"
+    runner = crs.Comparison(DECLARATION, crs.dict_fetch(differing), OWNERS, runner=True).run()
+    assert runner.exit_code == 0 and runner.differences == []
+    local = compare(differing)
+    assert local.exit_code == 1
+    assert local.lines() == ['actions.default_workflow_permissions: expected "write", found "read"']
+    # a readable endpoint that is missing still exits 2 in runner mode
+    del payloads["pages"]
+    result = crs.Comparison(DECLARATION, crs.dict_fetch(payloads), OWNERS, runner=True).run()
+    assert result.exit_code == 2
+    assert result.verdict == "1 endpoint(s) unreadable; 2 local-only"
+    # the command line
+    for path in FIXTURE.glob("*.json"):
+        if path.name != "actions__permissions__workflow.json":
+            (tmp_path / path.name).write_bytes(path.read_bytes())
+    assert crs.main(["--fixture", str(tmp_path), "--runner"]) == 0
+    out = capsys.readouterr().out
+    assert (
+        "local-only: actions.default_workflow_permissions (GET actions/permissions/workflow" in out
+    )
+    assert out.strip().endswith("conforming (59 fields on the runner; 2 local-only)")
+
+
+def test_a_bad_checked_on_value_is_refused(tmp_path):
+    text = crs.DECLARATION.read_text(encoding="utf-8").replace(
+        'checked_on = "local"', 'checked_on = "sometimes"'
+    )
+    (tmp_path / "g.toml").write_text(text, encoding="utf-8")
+    with pytest.raises(ValueError, match="checked_on"):
+        crs.load_declaration(tmp_path / "g.toml")
+
+
 def test_codeowners_without_a_login_is_a_difference(payloads):
     result = compare(payloads, owners=set())
     assert result.exit_code == 1
@@ -237,7 +290,7 @@ def test_controls_is_first_and_every_other_job_needs_it(name):
     assert "needs" not in controls
     assert controls["permissions"] == {"contents": "read", "actions": "read", "pages": "read"}
     run = next(s["run"] for s in controls["steps"] if "check_repo_settings" in s.get("run", ""))
-    assert 'scripts/check_repo_settings.py --report "$GITHUB_STEP_SUMMARY"' in run
+    assert 'scripts/check_repo_settings.py --runner --report "$GITHUB_STEP_SUMMARY"' in run
     for job_id in jobs:
         if job_id != "controls":
             assert _reaches(jobs, job_id, "controls"), (name, job_id)
@@ -256,6 +309,8 @@ def test_release_runs_controls_once_and_carries_the_attestation():
     controls_run = "\n".join(s.get("run", "") for s in release["jobs"]["controls"]["steps"])
     assert 'git rev-parse --short=12 "HEAD:.github/governance.toml"' in controls_run
     assert "Controls: $declaration checked at $GITHUB_SHA: $result" in controls_run
+    assert "sed -n 's/^check_repo_settings: //p' controls.txt" in controls_run
+    assert "code=${PIPESTATUS[0]}" in controls_run
     tag_run = "\n".join(s.get("run", "") for s in release["jobs"]["tag"]["steps"])
     assert '--controls "$CONTROLS_DECLARATION" --checked-at "$GITHUB_SHA"' in tag_run
     assert '--controls-result "$CONTROLS_RESULT"' in tag_run

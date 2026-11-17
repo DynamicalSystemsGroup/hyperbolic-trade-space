@@ -70,15 +70,19 @@ A tighter control on editing them is an open decision (`work-packages/WP78-round
 (`github-pages`, `pypi`, `testpypi`, `paper-release`) with their reviewers and branch or tag policies; the Pages
 build; the code owners' minimum access; the default workflow permissions. `scripts/check_repo_settings.py` reads
 the live settings through the GitHub API, compares them with the declaration field by field, prints each
-difference and exits non-zero on any; an endpoint it cannot read fails the check by name, never silently.
+difference and exits non-zero on any; an endpoint it cannot read fails the check by name, never silently. A
+section the declaration marks `checked_on = "local"` (today the default workflow permissions, whose endpoint needs a
+permission the workflow token never has) is not read on the runner: the job's report lists its fields as not
+checked there, with the reason, and a code owner's local run checks them.
 
 The `controls` job runs it first in the Tests and Release workflows; every other job needs it, so no test, build or
 publish runs while a setting differs from its declaration. Its report is the job summary. A change to a setting
 starts with the declaration: the declaration changes, then the setting, and the next run checks them.
 
 Attestation: a release's run summary and its GitHub release notes carry the line
-`Controls: .github/governance.toml@<hash> checked at <merge commit>: conforming`, so the release states which
-rules were declared, at which commit, and that they were in effect when it was made.
+`Controls: .github/governance.toml@<hash> checked at <merge commit>: conforming (N fields on the runner; M
+local-only)`, so the release states which rules were declared, at which commit, that they were in effect when it was
+made, and which fields a code owner checks by hand.
 
 ## How the repository is organised
 

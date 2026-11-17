@@ -24,16 +24,16 @@ the workflows each names. Five executable, four guideline; `tests/test_repo_sett
    `can_approve_pull_request_reviews = true` (a workflow could approve a pull request). The declaration encodes the
    live value, as the scope requires. His decision: keep `write`, or set `read` (and `false`) on GitHub after the
    declaration is changed to say so, in that order.
-2. **The workflow token cannot read that setting.** `GET actions/permissions/workflow` needs the Administration
-   permission (read), which GitHub never grants to the workflow token; the other endpoints need Metadata (always
-   granted), Actions and Pages (declared on the job). The checker exits 2 naming the endpoint, so the first
-   `controls` run on `dev` is expected to fail on it, by design (R-2), and the run tells us. His decision, then:
-   (a) a fine-grained personal access token or a GitHub App with Administration (read) stored as a repository
-   secret the `controls` job uses for that one read; (b) the field leaves the declaration and the workflow
-   permissions are read back by hand, as the publishers and Zenodo are; (c) the field stays and the checker takes
-   an option that marks it local-only, checked on a code owner's machine and named as unchecked in the job's
-   report. Nothing is set before his word; the local check (`uv run python scripts/check_repo_settings.py`) reads
-   every field today.
+2. **The workflow token cannot read that setting, so it is local-only.** `GET actions/permissions/workflow` needs
+   the Administration permission (read), which GitHub never grants to the workflow token; the other endpoints need
+   Metadata (always granted), Actions and Pages (declared on the job). The declaration marks the `actions` section
+   `checked_on = "local"` with the reason; the `controls` job (`--runner`) lists its two fields as not checked on
+   the runner, they leave the exit code alone, and the attestation counts them (`conforming (59 fields on the
+   runner; 2 local-only)`); a code owner's local run (`uv run python scripts/check_repo_settings.py`) checks every
+   field. Any endpoint that should be readable and is not still exits 2. His decisions: on the setting itself
+   (item 1: `write` live, `read` in the design), and whether he wants a local-only field at all, or instead (a) a
+   fine-grained token or GitHub App with Administration (read) as a repository secret for that one read, or (b) the
+   field out of the declaration, read back by hand like the publishers and Zenodo.
 3. **`controls` is not a required status check on `main`.** The `main-checks` ruleset requires the three shards and
    `admissibility`; `controls` gates them in practice (every shard needs it) but is not named. Adding it is a
    ruleset change (a non-goal of WP78) and, by the rule of this package, a change to the declaration first.

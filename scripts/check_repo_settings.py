@@ -11,6 +11,10 @@ Y`` and exits 1 on any. An endpoint that cannot be read is named and exits 2, ne
     uv run python scripts/check_repo_settings.py --fixture tests/data/wp78
     uv run python scripts/check_repo_settings.py --record tests/data/wp78
 
+``--runner`` is the workflow token's run (the ``controls`` job): a section the declaration marks
+``checked_on = "local"`` is not read; its fields are listed in the report under "Not checked on the
+runner" with the declaration's reason and leave the exit code alone, and the verdict counts them
+(``conforming (N fields on the runner; M local-only)``). Without the flag every field is read.
 ``--report`` writes the comparison as Markdown (the job summary). ``--fixture DIR`` reads recorded
 responses instead of calling ``gh`` (the tests); ``--record DIR`` writes the responses it reads,
 one JSON file per endpoint, for a new fixture. ``--declaration`` and ``--repo`` override the
@@ -42,6 +46,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DECLARATION = ROOT / ".github" / "governance.toml"
 RANK = {"none": 0, "read": 1, "triage": 1, "write": 2, "maintain": 2, "admin": 3}
+# A section's scope: checked on the runner and locally ("both", the default), or locally only
+# ("local": its endpoint needs a permission the workflow token never has, named in local_reason).
+SCOPES = {"both", "local"}
+SCOPE_KEYS = ("checked_on", "local_reason")
 BRANCH_POLICY = {
     "all": None,
     "protected": {"protected_branches": True, "custom_branch_policies": False},
@@ -154,12 +162,26 @@ def _branch_policy_word(found: dict | None) -> str | None:
 class Comparison:
     """The rows of one run: every compared field, and the endpoints that could not be read."""
 
-    def __init__(self, declaration: dict, fetch: Fetch, owners: set[str]):
+    def __init__(self, declaration: dict, fetch: Fetch, owners: set[str], runner: bool = False):
         self.decl = declaration
         self.fetch = fetch
         self.owners = owners
+        self.runner = runner
         self.rows: list[Row] = []
         self.unreadable: list[str] = []
+        self.local_only: list[tuple[str, str]] = []
+
+    def local_only_section(self, section: dict, fields: list[str]) -> bool:
+        """In runner mode a section marked ``checked_on = "local"`` is listed, not fetched.
+
+        The fields are named in the report with the declaration's reason and leave the exit code
+        alone; a code owner's local run (no ``--runner``) checks them.
+        """
+        if not (self.runner and section.get("checked_on", "both") == "local"):
+            return False
+        reason = section.get("local_reason", "marked local in the declaration")
+        self.local_only += [(field, reason) for field in fields]
+        return True
 
     def read(self, endpoint: str):
         try:
@@ -187,7 +209,7 @@ class Comparison:
         declared = {r["name"]: r for r in self.decl.get("rulesets", [])}
         self.eq("rulesets", sorted(declared), sorted(live))
         for name, d in declared.items():
-            if name not in live:
+            if name not in live or self.local_only_section(d, [f"rulesets.{name}"]):
                 continue
             detail = self.read(f"rulesets/{live[name]['id']}")
             if detail is None:
@@ -222,7 +244,7 @@ class Comparison:
         declared = {e["name"]: e for e in self.decl.get("environments", [])}
         self.eq("environments", sorted(declared), sorted(live))
         for name, d in declared.items():
-            if name not in live:
+            if name not in live or self.local_only_section(d, [f"environments.{name}"]):
                 continue
             e, p = live[name], f"environments.{name}"
             self.eq(f"{p}.can_admins_bypass", d["can_admins_bypass"], e.get("can_admins_bypass"))
@@ -256,11 +278,15 @@ class Comparison:
                 )
 
     def pages(self) -> None:
+        if self.local_only_section(self.decl["pages"], ["pages.build_type"]):
+            return
         pages = self.read("pages")
         if pages is not None:
             self.eq("pages.build_type", self.decl["pages"]["build_type"], pages.get("build_type"))
 
     def code_owners(self) -> None:
+        if self.local_only_section(self.decl["code_owners"], ["code_owners"]):
+            return
         minimum = self.decl["code_owners"]["minimum_permission"]
         self.rows.append(
             Row("code_owners", "at least one login", sorted(self.owners), bool(self.owners))
@@ -280,11 +306,15 @@ class Comparison:
             )
 
     def actions(self) -> None:
+        section = self.decl["actions"]
+        fields = [k for k in section if k not in SCOPE_KEYS]
+        if self.local_only_section(section, [f"actions.{k}" for k in fields]):
+            return
         answer = self.read("actions/permissions/workflow")
         if answer is None:
             return
-        for key, want in self.decl["actions"].items():
-            self.eq(f"actions.{key}", want, answer.get(key))
+        for key in fields:
+            self.eq(f"actions.{key}", section[key], answer.get(key))
 
     # ------------------------------------------------------------------------------ results
 
@@ -300,10 +330,13 @@ class Comparison:
 
     @property
     def verdict(self) -> str:
+        local = f"; {len(self.local_only)} local-only" if self.runner else ""
         if self.unreadable:
-            return f"{len(self.unreadable)} endpoint(s) unreadable"
+            return f"{len(self.unreadable)} endpoint(s) unreadable{local}"
         if self.differences:
-            return f"{len(self.differences)} difference(s)"
+            return f"{len(self.differences)} difference(s){local}"
+        if self.runner:
+            return f"conforming ({len(self.rows)} fields on the runner{local})"
         return f"conforming ({len(self.rows)} fields)"
 
     def lines(self) -> list[str]:
@@ -311,6 +344,7 @@ class Comparison:
             f"{r.path}: expected {fmt(r.expected)}, found {fmt(r.found)}" for r in self.differences
         ]
         out += [f"unreadable: {u}" for u in self.unreadable]
+        out += [f"local-only: {field} ({reason})" for field, reason in self.local_only]
         return out
 
     def markdown(self, repo: str, declaration: Path) -> str:
@@ -320,6 +354,10 @@ class Comparison:
             f"**{self.verdict}**",
             "",
         ]
+        if self.local_only:
+            head += ["Not checked on the runner (needs a code owner's local run):", ""]
+            head += [f"- `{field}`: {reason}" for field, reason in self.local_only]
+            head += [""]
         if self.unreadable:
             head += [
                 "Unreadable (the token lacks the endpoint's permission, or the call failed):",
@@ -344,7 +382,14 @@ def fmt(value) -> str:
 
 
 def load_declaration(path: Path) -> dict:
-    return tomllib.loads(path.read_text(encoding="utf-8"))
+    """The declaration; each section's ``checked_on`` is ``both`` (the default) or ``local``."""
+    decl = tomllib.loads(path.read_text(encoding="utf-8"))
+    sections = [decl["actions"], decl["pages"], decl["code_owners"]]
+    sections += decl.get("rulesets", []) + decl.get("environments", [])
+    for section in sections:
+        if section.get("checked_on", "both") not in SCOPES:
+            raise ValueError(f"checked_on must be one of {sorted(SCOPES)}: {section}")
+    return decl
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -357,13 +402,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fixture", type=Path, help="read recorded responses from this directory")
     parser.add_argument("--record", type=Path, help="write the responses read into this directory")
     parser.add_argument("--report", type=Path, help="write the comparison as Markdown here")
+    parser.add_argument(
+        "--runner",
+        action="store_true",
+        help='the workflow token\'s run: fields marked checked_on = "local" are listed, not read',
+    )
     args = parser.parse_args(argv)
     decl = load_declaration(args.declaration)
     repo = args.repo or decl["repository"]
     owners_file = args.codeowners or (ROOT / decl["code_owners"]["file"])
     owners = code_owners(owners_file)
     fetch = dict_fetch(load_fixture(args.fixture)) if args.fixture else gh_fetch(repo, args.record)
-    result = Comparison(decl, fetch, owners).run()
+    result = Comparison(decl, fetch, owners, runner=args.runner).run()
     for line in result.lines():
         print(line)
     print(f"check_repo_settings: {result.verdict}")
