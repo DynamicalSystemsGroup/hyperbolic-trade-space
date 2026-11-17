@@ -30,7 +30,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 contract_version = 29
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
-package.version = "0.0.1"
+package.version = "0.1.0"
 package.version_changed_by = "WP8b"
 package.public_names = ["HyperbolicTradeSpace", "LogAffinePreconditioner", "TradeSpaceRegressor", "__version__", "design_tensions", "frontier_in_original_units", "make_configured_frontier_data", "make_frontier_data", "select_temperature", "tension_matrix", "trade_off_report"]
 package.submodules = ["plotting", "gaps", "solvers", "coordinates", "datasets", "preconditioning", "predictive", "tensions", "tuning", "estimator"]
@@ -202,7 +202,7 @@ amendment.
 ## 5. R-2 Version string
 
 One authority: `pyproject.toml` `[project].version`, mirrored by `hyperbolic_trade_space.__version__`.
-Format: PEP 440, `MAJOR.MINOR.PATCH`. Current value: `0.0.1` (section 2). Only WP8b (the release
+Format: PEP 440, `MAJOR.MINOR.PATCH`. Current value: `0.1.0` (section 2). Only WP8b (the release
 machinery) changes it, and it changes both places together; a bump therefore edits the manifest value
 in the same commit. The presentation layer reads the version and never writes it.
 

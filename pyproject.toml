@@ -1,6 +1,6 @@
 [project]
 name = "hyperbolic-trade-space"
-version = "0.0.1"
+version = "0.1.0"
 description = "Learn the shape of a design trade space: a scikit-learn-compatible posynomial (monomial first) frontier model with an invertible log-ratio chart, SymPy-verified derivations, and an ADCS trade-study case."
 readme = "README.md"
 authors = [{ name = "Michael Zargham" }]

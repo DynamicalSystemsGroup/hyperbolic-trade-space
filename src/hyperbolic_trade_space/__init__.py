@@ -13,7 +13,7 @@ from .predictive import TradeSpaceRegressor
 from .tensions import design_tensions, tension_matrix, trade_off_report
 from .tuning import select_temperature
 
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 
 __all__ = [
     "HyperbolicTradeSpace",

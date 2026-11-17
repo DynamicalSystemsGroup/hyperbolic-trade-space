@@ -15,7 +15,8 @@ repository-code: "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-spac
 url: "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
 license: MIT
 # Set with pyproject.toml's version by the release package; the date is the release's.
-version: 0.0.1
+version: 0.1.0
+date-released: 2026-11-17
 keywords:
   - decision analysis
   - trade studies
