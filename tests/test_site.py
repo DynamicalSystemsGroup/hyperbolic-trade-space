@@ -377,6 +377,15 @@ def test_internal_anchors_resolve():
             assert frag in _heading_slugs(resolved), f"{path.name}: no heading for {href}"
 
 
+def _script(name):
+    """A module of ``scripts/`` by name (its directory on the path while it loads)."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    try:
+        return importlib.import_module(name)
+    finally:
+        sys.path.remove(str(ROOT / "scripts"))
+
+
 def _paper_keys_module():
     spec = importlib.util.spec_from_file_location("_paper_keys", ROOT / "scripts" / "paper_keys.py")
     mod = importlib.util.module_from_spec(spec)
@@ -385,51 +394,82 @@ def _paper_keys_module():
 
 
 def test_docsite_cites_the_paper_only_through_keys():
-    """D-6: a link into the paper is ``[text](paper:key)`` and nothing else; every cited key is a
-    label the paper defines, and the docs cite the paper at least once."""
-    keys = _paper_keys_module().paper_keys()
-    cited = set()
+    """D-6 and WP65 section 4: a link into the paper is ``[text](paper:key)`` and nothing else;
+    every cited key is in the committed manifest, the only key source; the docs cite the paper."""
+    keys = _paper_keys_module().load_manifest()
+    cited = []
     for path in source_pages():
         for href in md_links(path):
             if href.startswith("paper:"):
-                cited.add(href.removeprefix("paper:"))
+                cited.append(href.removeprefix("paper:"))
                 continue
             assert "paper/" not in href and "paper_sections" not in href, f"{path.name}: {href}"
-    assert cited, "the docs cite the paper"
-    assert cited <= set(keys), sorted(cited - set(keys))
+    assert len(cited) == 23, "the 23 citations of the nine docs pages"
+    assert set(cited) <= set(keys), sorted(set(cited) - set(keys))
+    source = (ROOT / "scripts" / "paper_keys.py").read_text(encoding="utf-8")
+    assert ".ipynb" not in source, "the docs build reads no notebook"
 
 
-def test_paper_keys_resolve_to_relative_links_and_unknown_keys_fail():
+def test_keys_resolve_to_anchors_in_a_pinned_slot_and_to_the_abstract_otherwise(
+    tmp_path, monkeypatch
+):
     mod = _paper_keys_module()
-    keys = mod.paper_keys()
+    keys = mod.load_manifest()
     assert keys["thm-kkt"] == "paper/" and keys["appendix-e"] == "paper/supporting-material/"
     text = "[a](paper:thm-kkt) and [b](paper:appendix-e)"
-    assert mod.resolve(text, "", keys) == (
+    assert mod.resolve(text, "", keys, "pin") == (
         "[a](../paper/#thm-kkt) and [b](../paper/supporting-material/#appendix-e)"
     )
-    assert mod.resolve("[a](paper:fig-nlemma)", "user-guide/fitting/", keys) == (
+    assert mod.resolve(text, "", keys, "abstract") == "[a](../paper/) and [b](../paper/)"
+    assert mod.resolve("[a](paper:fig-nlemma)", "user-guide/fitting/", keys, "pin") == (
         "[a](../../../paper/#fig-nlemma)"
     )
-    assert mod.resolve("[a\nb](paper:thm-kkt)", "", keys) == "[a\nb](../paper/#thm-kkt)"
+    assert mod.resolve("[a](paper:fig-nlemma)", "user-guide/fitting/", keys, "abstract") == (
+        "[a](../../../paper/)"
+    )
+    assert mod.resolve("[a\nb](paper:thm-kkt)", "", keys, "pin") == "[a\nb](../paper/#thm-kkt)"
     fenced = "```\n[a](paper:thm-kkt)\n```"
-    assert mod.resolve(fenced, "", keys) == fenced, "a code fence is left as written"
-    with pytest.raises(mod.UnknownPaperKey):
-        mod.resolve("[a](paper:no-such-key)", "", keys)
+    for slot in ("pin", "abstract"):
+        assert mod.resolve(fenced, "", keys, slot) == fenced, "a code fence is left as written"
+    # the slot: HTS_PAPER_SLOT when set, else the mode file (abstract mode gives abstract)
+    mode = tmp_path / "mode.toml"
+    monkeypatch.delenv("HTS_PAPER_SLOT", raising=False)
+    mode.write_text('schema = 1\nmode = "abstract"\n', encoding="utf-8")
+    assert mod.slot(mode) == "abstract"
+    mode.write_text('schema = 1\nmode = "working"\n', encoding="utf-8")
+    assert mod.slot(mode) == "pin"
+    monkeypatch.setenv("HTS_PAPER_SLOT", "abstract")
+    assert mod.slot(mode) == "abstract"
+    monkeypatch.setenv("HTS_PAPER_SLOT", "sometimes")
+    with pytest.raises(ValueError):
+        mod.slot(mode)
+    # the manifest's rules (WP65 section 4): a broken one is a ValueError
+    good = mod.canonical({"b-key": "paper/", "a-key": "paper/supporting-material/"})
+    assert good.startswith('{\n  "schema": 1,\n  "keys": {\n    "a-key"') and good.endswith("}\n")
+    path = tmp_path / "keys.json"
+    path.write_text(good, encoding="utf-8")
+    assert mod.load_manifest(path) == {"a-key": "paper/supporting-material/", "b-key": "paper/"}
+    for broken in (
+        good.replace('"schema": 1', '"schema": 2'),
+        good.replace('"paper/"', '"elsewhere/"'),
+        good.replace('"b-key"', '"b key"'),
+        good.rstrip("\n"),
+        '{\n  "schema": 1,\n  "keys": {}\n}\n',
+        '{"schema": 1, "keys": {"a-key": "paper/"}}\n',
+    ):
+        path.write_text(broken, encoding="utf-8")
+        with pytest.raises(ValueError):
+            mod.load_manifest(path)
 
 
-def test_every_paper_key_is_a_label_of_the_built_paper():
-    """The keys read from the notebooks are the labels the paper's build publishes, on the page
-    the resolver names (needs a built paper: ``scripts/stage_site.py`` leaves one)."""
-    xref = ROOT / "paper" / "_build" / "html" / "myst.xref.json"
-    if not xref.is_file():
-        pytest.skip("no built paper (run scripts/stage_site.py first)")
-    import json
-
-    refs = json.loads(xref.read_text(encoding="utf-8"))["references"]
-    built = {r["identifier"]: r["url"].rstrip("/") for r in refs if "identifier" in r}
-    for key, route in _paper_keys_module().paper_keys().items():
-        page = "/" + route.removeprefix("paper/").rstrip("/")
-        assert built.get(key) == (page if page != "/" else ""), (key, built.get(key), route)
+def test_unknown_key_fails_in_both_slots():
+    mod = _paper_keys_module()
+    keys = mod.load_manifest()
+    for slot in ("pin", "abstract"):
+        with pytest.raises(mod.UnknownPaperKey):
+            mod.resolve("[a](paper:no-such-key)", "", keys, slot)
+    with pytest.raises(ValueError):
+        mod.resolve("[a](paper:thm-kkt)", "", keys, "sometimes")
 
 
 def _resolve_site_href(page_url: str, href: str) -> str:
@@ -443,6 +483,8 @@ def _site_file_for(path_in_site: str, site_root: Path) -> Path | None:
     base = urlparse(PUBLIC_URL).path
     assert path_in_site.startswith(base), path_in_site
     rel = path_in_site[len(base) :]
+    if Path(site_root) == SITE and rel == "paper/":
+        rel = "paper/abstract.html"  # the template the composer renders at /paper/ (abstract mode)
     candidate = site_root / rel
     if candidate.is_dir():
         candidate = candidate / "index.html"
@@ -464,7 +506,7 @@ def test_root_and_paper_links_classified():
     either the repository or a punch-list URL."""
     expected = punch_list_urls()
     repo = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
-    for rel, page_url in (("index.html", "/"), ("paper/index.html", "/paper/")):
+    for rel, page_url in (("index.html", "/"), ("paper/abstract.html", "/paper/")):
         for href in html_links(SITE / rel):
             if href.startswith("data:"):
                 continue  # the empty icon: the page asks the server for no /favicon.ico (404)
@@ -531,7 +573,7 @@ def test_root_index_is_thin_and_routes_by_need():
     ]  # fmt: skip
     assert "github.com/" not in re.sub(r"<[^>]+>", "", footer), "the URL is not shown as text"
     assert '<link rel="icon" href="data:,">' in text  # D6: no /favicon.ico request, no 404
-    assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "index.html").read_text(
+    assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "abstract.html").read_text(
         encoding="utf-8"
     )
     # R1: a wide figure may use a wide screen's width
@@ -543,10 +585,11 @@ def test_root_index_is_thin_and_routes_by_need():
     # the supervisor, 2026-11-14 night: "this should also have a placeholder link for pypi"; the
     # project page answers 404 until the first publish (the punch list marks it expected-at-release)
     assert "https://pypi.org/project/hyperbolic-trade-space/" in html_links(SITE / "index.html")
-    paper = (SITE / "paper" / "index.html").read_text(encoding="utf-8")
-    assert "The paper is in preparation" in paper
-    assert "../docs/" in html_links(SITE / "paper" / "index.html")
-    assert "../" in html_links(SITE / "paper" / "index.html")
+    paper = (SITE / "paper" / "abstract.html").read_text(encoding="utf-8")
+    assert "The paper is iterated towards release" in paper
+    assert "../docs/getting-started/" in html_links(SITE / "paper" / "abstract.html")
+    assert "../" in html_links(SITE / "paper" / "abstract.html")
+    assert not (SITE / "paper" / "index.html").exists(), "the placeholder left (C15)"
     assert "working draft" not in (text + paper).lower()
     for stale in ("page by page", "its mathematics", "in full"):
         assert stale not in paper.lower(), stale
@@ -1157,15 +1200,6 @@ def test_history_page_follows_the_scope_order_and_the_closing_unit_rulings():
             assert marked and "team-account" in kinds, sentence["text"]
 
 
-def test_paper_theme_is_pinned_to_a_commit():
-    """A clean checkout must build the paper on the theme it was reviewed on (WP8b D-8): the
-    article theme is a commit-pinned archive, not the name that follows the main branch."""
-    template = load_yaml(ROOT / "paper" / "myst.yml")["site"]["template"]
-    assert re.fullmatch(
-        r"https://github\.com/myst-templates/article-theme/archive/[0-9a-f]{40}\.zip", template
-    ), template
-
-
 def test_punch_list_covers_post_release_checks():
     text = PUNCH_LIST.read_text(encoding="utf-8")
     for route in LIVE_ROUTES:
@@ -1185,47 +1219,74 @@ def test_stage_review_pages_follow_the_live_routes():
     assert tuple(mod.REVIEW_PAGES) == ("/", *(f"/{r}" for r in LIVE_ROUTES))
 
 
-# --- the Pages workflow ------------------------------------------------------------------------
+# --- the site workflows (WP65 specification, 3.5) ---------------------------------------------
 
 
-@pytest.fixture(scope="module")
-def workflow() -> dict:
-    wf = load_yaml(ROOT / ".github" / "workflows" / "pages.yml")
+def _workflow(name: str) -> dict:
+    wf = load_yaml(ROOT / ".github" / "workflows" / name)
     # PyYAML reads the key `on` as boolean True.
-    wf["on"] = wf.get("on", wf.get(True))
+    wf["on"] = wf.pop("on", wf.pop(True, None))
     return wf
 
 
-def test_workflow_triggers_release_tag_and_dispatch_only(workflow):
-    triggers = workflow["on"]
-    assert set(triggers) == {"push", "workflow_dispatch"}
-    assert triggers["push"] == {"tags": ["v*"]}, "no push-to-branch trigger"
+def _step_text(job: dict) -> str:
+    return " ".join(str(s.get("uses", "")) + " " + str(s.get("run", "")) for s in job["steps"])
 
 
-def test_workflow_build_and_deploy_jobs(workflow):
-    jobs = workflow["jobs"]
-    build_text = " ".join(
-        str(step.get("uses", "")) + " " + str(step.get("run", ""))
-        for step in jobs["build"]["steps"]
-    )
+def test_site_workflow_composes_and_never_deploys():
+    wf = _workflow("site.yml")
+    assert set(wf["on"]) == {"workflow_call", "workflow_dispatch"}, "never a push or a tag"
+    assert set(wf["on"]["workflow_call"]["outputs"]) == {"slot", "pin"}
+    assert wf["permissions"] == {"contents": "read"}
+    assert set(wf["jobs"]) == {"compose"}
+    job = wf["jobs"]["compose"]
+    assert job["runs-on"] == "ubuntu-24.04"
+    assert set(job["outputs"]) == {"slot", "pin"}
+    text = _step_text(job)
     for needle in (
         "actions/checkout",
         "astral-sh/setup-uv",
         "uv sync --locked",
-        "uv run pytest",
-        "uv run python scripts/assemble_site.py",
+        "actions/cache",
+        "uv run python scripts/assemble_site.py --out _site --summary",
+        "assemble_site: slot ",
         "actions/upload-pages-artifact",
     ):
-        assert needle in build_text, needle
-    upload = next(s for s in jobs["build"]["steps"] if "upload-pages-artifact" in s.get("uses", ""))
+        assert needle in text, needle
+    checkout = next(s for s in job["steps"] if "actions/checkout" in s.get("uses", ""))
+    assert checkout["with"]["fetch-depth"] == 0
+    upload = next(s for s in job["steps"] if "upload-pages-artifact" in s.get("uses", ""))
     assert upload["with"]["path"] == "_site"
-    deploy = jobs["deploy"]
-    assert deploy["needs"] == "build"
-    assert deploy["if"] == "startsWith(github.ref, 'refs/tags/v')"
-    assert deploy["permissions"] == {"pages": "write", "id-token": "write"}
-    assert deploy["environment"]["name"] == "github-pages"
-    assert any("actions/deploy-pages" in s.get("uses", "") for s in deploy["steps"])
-    assert workflow["concurrency"]["group"] == "pages"
+    for absent in ("pytest", "deploy-pages", "myst", "--strict-slot", "--paper"):
+        assert absent not in text, absent
+    raw = (ROOT / ".github" / "workflows" / "site.yml").read_text(encoding="utf-8")
+    assert "pages: write" not in raw and "environment" not in raw
+    assert "refs/tags/" not in raw and "ref_type" not in raw
+
+
+def test_pages_deploy_workflow_is_called_only():
+    wf = _workflow("pages-deploy.yml")
+    assert set(wf["on"]) == {"workflow_call"}
+    assert set(wf["on"]["workflow_call"]["outputs"]) == {"page_url"}
+    assert set(wf["jobs"]) == {"deploy"}
+    job = wf["jobs"]["deploy"]
+    assert job["runs-on"] == "ubuntu-24.04"
+    assert job["permissions"] == {"pages": "write", "id-token": "write"}
+    assert job["environment"]["name"] == "github-pages"
+    assert job["environment"]["url"] == "${{ steps.deployment.outputs.page_url }}"
+    assert job["concurrency"] == {"group": "pages", "cancel-in-progress": False}
+    assert len(job["steps"]) == 1
+    step = job["steps"][0]
+    assert "actions/deploy-pages@" in step["uses"] and step["id"] == "deployment"
+    assert job["outputs"]["page_url"] == "${{ steps.deployment.outputs.page_url }}"
+    raw = (ROOT / ".github" / "workflows" / "pages-deploy.yml").read_text(encoding="utf-8")
+    assert "refs/tags/" not in raw and "ref_type" not in raw
+    groups = [
+        p.name
+        for p in (ROOT / ".github" / "workflows").glob("*.yml")
+        if re.search(r"group:\s*pages\b", p.read_text(encoding="utf-8"))
+    ]
+    assert "pages-deploy.yml" in groups and "site.yml" not in groups
 
 
 # --- the full build ----------------------------------------------------------------------------
@@ -1253,8 +1314,8 @@ def assembled(tmp_path_factory, generated_dir) -> Path:
             str(out),
             "--generated-dir",
             str(generated_dir),
-            "--paper",
-            "placeholder",  # the real paper's build is a separate, slow step with its own tests
+            "--slot",
+            "abstract",  # offline; the composer never builds the paper
         ],
         cwd=ROOT,
         capture_output=True,
@@ -1268,15 +1329,17 @@ def assembled(tmp_path_factory, generated_dir) -> Path:
 def test_assembled_layout(assembled):
     for rel in ("index.html", "docs/index.html", "paper/index.html"):
         assert (assembled / rel).is_file(), rel
-    assert (assembled / "index.html").read_text(encoding="utf-8") == (
-        SITE / "index.html"
-    ).read_text(encoding="utf-8")
+    assemble_site, paper_abstract = _script("assemble_site"), _script("paper_abstract")
+    assert (assembled / "index.html").read_text(encoding="utf-8") == assemble_site.root_page(
+        assemble_site.Slot("abstract")
+    )
     for name in sorted(BUILT_IMAGES):
         assert (assembled / name).stat().st_size > 10_000, name
     assert not (assembled / "figure1.png").exists(), "the paper's Figure 1 left the root page"
-    assert (assembled / "paper" / "index.html").read_text(encoding="utf-8") == (
-        SITE / "paper" / "index.html"
-    ).read_text(encoding="utf-8")
+    assert (assembled / "paper" / "index.html").read_text(
+        encoding="utf-8"
+    ) == paper_abstract.render(), "/paper/ is the abstract page"
+    assert sorted(p.name for p in (assembled / "paper").iterdir()) == ["index.html"]
 
 
 def test_assembled_site_carries_the_history_page(assembled):
@@ -1292,11 +1355,7 @@ def test_every_link_in_the_assembled_site_resolves(assembled):
     expected = punch_list_urls()
     base = urlparse(PUBLIC_URL).path
     problems = []
-    # With the placeholder paper only ``paper/`` exists; the paper's other pages are checked by
-    # the key test against the built paper (test_every_paper_key_is_a_label_of_the_built_paper).
-    placeholder = (assembled / "paper" / "index.html").read_text(encoding="utf-8") == (
-        SITE / "paper" / "index.html"
-    ).read_text(encoding="utf-8")
+    # In the abstract slot every citation of the paper lands on paper/, which exists.
     for page in assembled.rglob("*.html"):
         rel_url = "/" + page.relative_to(assembled).as_posix()
         page_url = rel_url[: -len("index.html")] if rel_url.endswith("index.html") else rel_url
@@ -1316,8 +1375,6 @@ def test_every_link_in_the_assembled_site_resolves(assembled):
             if not route.startswith(base):
                 continue
             if _site_file_for(route, assembled) is None:
-                if placeholder and route.startswith(base + "paper/"):
-                    continue
                 problems.append((rel_url, href))
     assert not problems, problems[:20]
 
@@ -1400,7 +1457,7 @@ def test_r26_docsite_sources_refer_to_no_removed_content():
 def test_r26_root_page_navigation_and_site_scripts_refer_to_no_removed_content():
     scanned = [
         SITE / "index.html",
-        SITE / "paper" / "index.html",
+        SITE / "paper" / "abstract.html",
         ROOT / "mkdocs.yml",
         ROOT / "scripts" / "assemble_site.py",
         ROOT / "scripts" / "stage_site.py",
@@ -1464,7 +1521,7 @@ def test_bare_mkdocs_build_leaves_the_root_site_directory_alone(mkdocs_config, a
             capture_output=True,
         )
     assert (SITE / "index.html").is_file()
-    assert (SITE / "paper" / "index.html").is_file()
+    assert (SITE / "paper" / "abstract.html").is_file()
 
 
 # --- the figures and the code columns ------------------------------------------------------------

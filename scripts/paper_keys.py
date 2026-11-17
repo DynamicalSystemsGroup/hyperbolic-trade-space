@@ -1,69 +1,108 @@
-"""Reference keys from the docsite into the paper (WP8b D-6), resolved at build time.
+"""Reference keys from the docsite into the paper (WP8b D-6; WP65 specification, section 4).
 
 A docs page cites the paper with one syntax, ``[text](paper:key)``, where ``key`` is a label the
-paper defines. The keys are read from the paper's own sources, the two notebooks, so there is no
-second list: a MyST directive's ``:label:`` line and a ``(key)=`` target in a markdown cell. The
-build turns each citation into a relative link to the paper page that carries the label, with the
-label as the anchor, and fails on a key the paper does not define. A section moved inside the paper
-keeps its key, so a link does not break; a key removed or renamed fails the docs build, not the
-reader.
+paper defines. The keys come from one file, the committed manifest ``paper/paper-keys.json``,
+written by ``paper/build_keys.py`` on the ``paper`` branch and carried to ``dev`` by the merge; the
+docs build reads no notebook. The link a citation becomes depends on what ``/paper/`` holds (the
+slot): in a pinned slot the paper page that carries the label, with the label as the anchor; in
+``abstract`` mode (and in the composer's fallback) the abstract page, ``/paper/``, with no anchor.
+A key the manifest does not hold fails the docs build in both slots.
 
-``mkdocs.yml`` lists this file under ``hooks``; MkDocs calls ``on_page_markdown``.
+``mkdocs.yml`` lists this file under ``hooks``; MkDocs calls ``on_page_markdown``. The composer
+sets ``HTS_PAPER_SLOT`` (``pin`` or ``abstract``); a bare ``mkdocs build`` reads the slot from
+``paper/mode.toml``.
 """
 
 from __future__ import annotations
 
 import json
+import os
 import re
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PAPER_DIR = ROOT / "paper"
-# The notebook that defines a key, and the route of the page the paper's build gives it
-# (under the site root, as ``paper/`` and ``paper/supporting-material/``).
-PAGES = {
-    "paper.ipynb": "paper/",
-    "supporting_material.ipynb": "paper/supporting-material/",
-}
+MANIFEST = ROOT / "paper" / "paper-keys.json"
+MODE_FILE = ROOT / "paper" / "mode.toml"
+SLOT_VARIABLE = "HTS_PAPER_SLOT"
+SLOTS = ("pin", "abstract")
+ROUTES = ("paper/", "paper/supporting-material/")
 KEY_CITATION = re.compile(r"\[([^\]]+)\]\(paper:([A-Za-z0-9_-]+)\)")
-_LABEL_LINE = re.compile(r"^\s*:label:\s*([A-Za-z0-9_-]+)\s*$", re.M)
-_TARGET_LINE = re.compile(r"^\(([A-Za-z0-9_-]+)\)=\s*$", re.M)
+_KEY = re.compile(r"^[A-Za-z0-9_-]+$")
 _FENCE = re.compile(r"(```.*?```)", re.S)
 
 
 class UnknownPaperKey(ValueError):
-    """A docs page cites a key the paper does not define."""
+    """A docs page cites a key the manifest does not hold."""
 
 
-def paper_keys(paper_dir: Path = PAPER_DIR) -> dict[str, str]:
-    """Map every key the paper defines to the route of its page (``paper/`` or a sub-page)."""
-    keys: dict[str, str] = {}
-    for notebook, route in PAGES.items():
-        cells = json.loads((Path(paper_dir) / notebook).read_text(encoding="utf-8"))["cells"]
-        for cell in cells:
-            if cell["cell_type"] != "markdown":
-                continue
-            source = "".join(cell["source"])
-            for key in _LABEL_LINE.findall(source) + _TARGET_LINE.findall(source):
-                if keys.get(key, route) != route:
-                    raise ValueError(f"paper key {key!r} is defined in two pages")
-                keys[key] = route
-    return keys
+def canonical(keys: dict[str, str]) -> str:
+    """The manifest's bytes for ``keys``: schema 1, keys sorted, two-space indent, one newline."""
+    return json.dumps({"schema": 1, "keys": dict(sorted(keys.items()))}, indent=2) + "\n"
 
 
-def resolve(markdown: str, page_url: str, keys: dict[str, str] | None = None) -> str:
-    """Replace each ``[text](paper:key)`` outside code fences with a link to the paper.
+def load_manifest(path: Path = MANIFEST) -> dict[str, str]:
+    """Map every key of the manifest to the route of its page; ``ValueError`` on a broken rule."""
+    path = Path(path)
+    text = path.read_text(encoding="utf-8")
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{path}: not JSON ({exc})") from exc
+    if not isinstance(data, dict) or set(data) != {"schema", "keys"}:
+        raise ValueError(f"{path}: the manifest holds exactly 'schema' and 'keys'")
+    if data["schema"] != 1:
+        raise ValueError(f"{path}: schema must be 1, got {data['schema']!r}")
+    keys = data["keys"]
+    if not isinstance(keys, dict) or not keys:
+        raise ValueError(f"{path}: 'keys' must be a non-empty object")
+    for key, route in keys.items():
+        if not _KEY.match(key):
+            raise ValueError(f"{path}: key {key!r} does not match {_KEY.pattern}")
+        if route not in ROUTES:
+            raise ValueError(f"{path}: key {key!r} has route {route!r}, not one of {ROUTES}")
+    if text != canonical(keys):
+        raise ValueError(
+            f"{path}: not in canonical form (keys sorted, two-space indent, one trailing newline)"
+        )
+    return dict(keys)
+
+
+def slot(mode_file: Path = MODE_FILE) -> str:
+    """``HTS_PAPER_SLOT`` when set; else ``abstract`` when the mode file says so, else ``pin``."""
+    value = os.environ.get(SLOT_VARIABLE)
+    if value:
+        if value not in SLOTS:
+            raise ValueError(f"{SLOT_VARIABLE} must be one of {SLOTS}, got {value!r}")
+        return value
+    mode = tomllib.loads(Path(mode_file).read_text(encoding="utf-8")).get("mode")
+    return "abstract" if mode == "abstract" else "pin"
+
+
+_read_slot = slot  # ``resolve`` takes a parameter of the same name
+
+
+def resolve(
+    markdown: str, page_url: str, keys: dict[str, str] | None = None, slot: str | None = None
+) -> str:
+    """Replace each ``[text](paper:key)`` outside code fences with a link into ``/paper/``.
 
     ``page_url`` is the page's route under ``docs/`` (``""`` for the home page, else
-    ``"user-guide/fitting/"``), which fixes how many levels up the site root is.
+    ``"user-guide/fitting/"``), which fixes how many levels up the site root is. ``slot`` ``pin``
+    links the label's anchor on its page; ``abstract`` links ``paper/`` with no anchor.
     """
-    keys = paper_keys() if keys is None else keys
+    keys = load_manifest() if keys is None else keys
+    slot = _read_slot() if slot is None else slot
+    if slot not in SLOTS:
+        raise ValueError(f"slot must be one of {SLOTS}, got {slot!r}")
     up = "../" * (page_url.count("/") + 1)
 
     def link(match: re.Match) -> str:
         text, key = match.groups()
         if key not in keys:
-            raise UnknownPaperKey(f"the paper defines no key {key!r} (cited as [{text}])")
+            raise UnknownPaperKey(f"the paper manifest holds no key {key!r} (cited as [{text}])")
+        if slot == "abstract":
+            return f"[{text}]({up}paper/)"
         return f"[{text}]({up}{keys[key]}#{key})"
 
     parts = _FENCE.split(markdown)

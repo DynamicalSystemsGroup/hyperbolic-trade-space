@@ -349,11 +349,10 @@ def test_exit_nonzero_on_failing_lemma(monkeypatch, tmp_path, capsys):
 @pytest.mark.slow
 def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
     site = tmp_path / "src_site"
-    (site / "paper").mkdir(parents=True)
-    (site / "index.html").write_text("<html>root</html>", encoding="utf-8")
-    (site / "paper" / "index.html").write_text("<html>paper</html>", encoding="utf-8")
+    site.mkdir()
+    card = assemble_site.ROOT_CARD.format(assemble_site.ROOT_CARD_LINE_PINNED)
+    (site / "index.html").write_text(f"<html>{card}</html>", encoding="utf-8")
     monkeypatch.setattr(assemble_site, "ROOT_INDEX", site / "index.html")
-    monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", site / "paper" / "index.html")
     seen, figures = [], []
 
     def fake(cmd):
@@ -362,19 +361,23 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
         out.mkdir(parents=True)
         (out / "index.html").write_text("docs", encoding="utf-8")
 
-    out = assemble_site.assemble(
+    out, slot = assemble_site.assemble(
         tmp_path / "out",
         mkdocs_runner=fake,
         generated_dir=tmp_path / "gen",
         collect_runner=lambda: FAKE_COLLECT,
         docs_generated_dir=tmp_path / "docsgen",
         figures_builder=figures.append,
-        paper="placeholder",
+        slot="abstract",
+        renderer=lambda fallback=None: "<html>abstract</html>",
     )
+    assert slot.slot == "abstract"
     assert figures == [tmp_path / "docsgen" / "figures"]
-    assert (out / "index.html").read_text(encoding="utf-8") == "<html>root</html>"
+    assert (out / "index.html").read_text(encoding="utf-8") == (
+        "<html>" + assemble_site.ROOT_CARD.format(assemble_site.ROOT_CARD_LINE_ABSTRACT) + "</html>"
+    )
     assert (out / "docs" / "index.html").exists()
-    assert (out / "paper" / "index.html").read_text(encoding="utf-8") == "<html>paper</html>"
+    assert (out / "paper" / "index.html").read_text(encoding="utf-8") == "<html>abstract</html>"
     assert (tmp_path / "gen" / "derivations.md").exists()
     assert (tmp_path / "docsgen" / "glossary.md").exists()
     assert "--strict" in seen[0] and "build" in seen[0]
@@ -393,146 +396,80 @@ def test_assemble_fails_loudly_when_mkdocs_fails(tmp_path):
             collect_runner=lambda: FAKE_COLLECT,
             docs_generated_dir=tmp_path / "docsgen",
             figures_builder=lambda out: None,
-            paper="placeholder",
+            slot="abstract",
         )
 
 
-def _paper_slot(tmp_path, monkeypatch):
-    """A fake placeholder and a fake built paper, so no real MyST build runs."""
-    placeholder = tmp_path / "placeholder.html"
-    placeholder.write_text("<html>placeholder</html>", encoding="utf-8")
-    monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", placeholder)
-    built = tmp_path / "html"
-    (built / "build").mkdir(parents=True)
-    (built / "index.html").write_text("<html>the real paper</html>", encoding="utf-8")
-    (built / "build" / "entry.js").write_text("js", encoding="utf-8")
-    return built
-
-
-def test_build_paper_stages_the_real_paper_when_it_builds(tmp_path, monkeypatch):
-    built = _paper_slot(tmp_path, monkeypatch)
-    calls = []
-    kind = assemble_site.build_paper(
-        tmp_path / "out",
-        paper_runner=lambda base: calls.append(base) or True,
-        paper_html=built,
-        base_url="/hyperbolic-trade-space/paper",
-    )
-    assert kind == "paper" and calls == ["/hyperbolic-trade-space/paper"]
-    assert (tmp_path / "out" / "paper" / "index.html").read_text(
-        encoding="utf-8"
-    ) == "<html>the real paper</html>"
-    assert (tmp_path / "out" / "paper" / "build" / "entry.js").is_file()
-
-
-def test_build_paper_falls_back_to_the_placeholder(tmp_path, monkeypatch):
-    built = _paper_slot(tmp_path, monkeypatch)
-    for runner, html in (
-        (lambda base: False, built),  # the build failed
-        (lambda base: True, tmp_path / "missing"),  # it reported success but wrote nothing
-    ):
-        out = tmp_path / f"out{id(runner)}"
-        kind = assemble_site.build_paper(out, paper_runner=runner, paper_html=html)
-        assert kind == "placeholder"
-        assert (out / "paper" / "index.html").read_text(
-            encoding="utf-8"
-        ) == "<html>placeholder</html>"
-    # the explicit placeholder never runs the build
-    out = tmp_path / "forced"
-    kind = assemble_site.build_paper(
-        out,
-        paper="placeholder",
-        paper_runner=lambda base: pytest.fail("the build must not run"),
-        paper_html=built,
-    )
-    assert kind == "placeholder"
-    with pytest.raises(ValueError):
-        assemble_site.build_paper(tmp_path / "x", paper="sometimes")
-
-
-def test_strict_paper_build_raises_instead_of_falling_back(tmp_path, monkeypatch):
-    built = _paper_slot(tmp_path, monkeypatch)
-    with pytest.raises(RuntimeError, match="did not build"):
-        assemble_site.build_paper(
-            tmp_path / "a", paper="strict", paper_runner=lambda base: False, paper_html=built
-        )
-    with pytest.raises(RuntimeError, match="did not build"):  # success reported, nothing written
-        assemble_site.build_paper(
-            tmp_path / "b",
-            paper="strict",
-            paper_runner=lambda base: True,
-            paper_html=tmp_path / "missing",
-        )
-    kind = assemble_site.build_paper(
-        tmp_path / "c", paper="strict", paper_runner=lambda base: True, paper_html=built
-    )
-    assert kind == "paper"
-
-
-def _fake_assemble(tmp_path, monkeypatch, built_ok):
-    """Stage with every step but the paper slot faked; ``built_ok`` is the paper build's result."""
-    placeholder = tmp_path / "placeholder.html"
-    placeholder.write_text("<html>placeholder</html>", encoding="utf-8")
-    monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", placeholder)
+def _offline_stage(tmp_path, monkeypatch):
+    """Stage with the slow steps faked (generated pages, figures, MkDocs) and the network refused,
+    so a test sees only the slot the composer places."""
     monkeypatch.setattr(stage_site, "STAGE_DIR", tmp_path / "_stage")
+    monkeypatch.setattr(assemble_site.build_generated, "build", lambda *a, **k: None)
+    monkeypatch.setattr(assemble_site.build_figures, "build", lambda out: None)
+    monkeypatch.setattr(assemble_site.build_site_figures, "build_all", lambda out: None)
 
-    def fake(out, paper="auto", paper_base="/paper", **kw):
-        Path(out).mkdir(parents=True)
-        assemble_site.build_paper(
-            out, paper, paper_base, paper_runner=lambda base: built_ok, paper_html=tmp_path / "none"
-        )
-        return Path(out)
+    def fake_mkdocs(out_docs, runner=None, docs_slot="abstract"):
+        Path(out_docs).mkdir(parents=True)
+        (Path(out_docs) / "index.html").write_text(f"docs {docs_slot}", encoding="utf-8")
 
-    monkeypatch.setattr(assemble_site, "assemble", fake)
+    def no_network(*args, **kwargs):
+        raise AssertionError("staging reached for the network")
 
-
-def test_stage_site_exits_non_zero_when_the_paper_does_not_build(tmp_path, monkeypatch, capsys):
-    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
-    assert stage_site.main([]) == 1  # the default is strict
-    err = capsys.readouterr().err
-    assert "FAILED" in err and "paper did not build" in err and "--paper placeholder" in err
-    assert not (tmp_path / "_stage" / "paper" / "index.html").exists()
+    monkeypatch.setattr(assemble_site, "run_mkdocs", fake_mkdocs)
+    monkeypatch.setattr(assemble_site.urllib.request, "urlopen", no_network)
 
 
-def test_stage_site_placeholder_flag_still_stages(tmp_path, monkeypatch, capsys):
-    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
-    assert stage_site.main(["--paper", "placeholder"]) == 0
-    assert (tmp_path / "_stage" / "paper" / "index.html").read_text(encoding="utf-8") == (
-        "<html>placeholder</html>"
+def test_stage_site_stages_the_abstract_page_offline(tmp_path, monkeypatch, capsys):
+    _offline_stage(tmp_path, monkeypatch)
+    assert stage_site.main([]) == 0
+    assert "assemble_site: slot abstract - -" in capsys.readouterr().out
+    stage = tmp_path / "_stage"
+    page = (stage / "paper" / "index.html").read_text(encoding="utf-8")
+    assert "<h1>Scaling Decision Analysis" in page and "iterated towards release" in page
+    assert "hts-paper-banner" not in page and 'class="fallback"' not in page
+    assert (stage / "docs" / "index.html").read_text(encoding="utf-8") == "docs abstract"
+    assert "its abstract; the paper is iterated towards release" in (
+        stage / "index.html"
+    ).read_text(encoding="utf-8")
+    assert stage_site.default_slot() == "abstract" and stage_site.default_slot("x") == "auto"
+
+
+def test_stage_site_with_an_artefact_stages_the_pin(tmp_path, monkeypatch, capsys):
+    import hashlib
+    import io
+    import tarfile
+
+    _offline_stage(tmp_path, monkeypatch)
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:gz") as tar:
+        data = b'<html><body><h2 id="thm-kkt">KKT</h2></body></html>'
+        info = tarfile.TarInfo("./index.html")
+        info.size = len(data)
+        tar.addfile(info, io.BytesIO(data))
+    release = tmp_path / "release"
+    release.mkdir()
+    (release / "paper-html.tar.gz").write_bytes(buf.getvalue())
+    keys = tmp_path / "paper-keys.json"
+    keys.write_text(
+        '{\n  "schema": 1,\n  "keys": {\n    "thm-kkt": "paper/"\n  }\n}\n', encoding="utf-8"
     )
-
-
-def test_assemble_site_command_line_is_strict_by_default(tmp_path, monkeypatch, capsys):
-    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
-    out = tmp_path / "site"
-    assert assemble_site.main(["--out", str(out)]) == 1  # the default is strict
-    err = capsys.readouterr().err
-    assert "FAILED" in err and "paper did not build" in err and "--paper placeholder" in err
-    assert not (out / "paper" / "index.html").exists()
-
-
-def test_assemble_site_placeholder_flag_still_assembles(tmp_path, monkeypatch, capsys):
-    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
-    out = tmp_path / "site"
-    assert assemble_site.main(["--out", str(out), "--paper", "placeholder"]) == 0
-    assert (out / "paper" / "index.html").read_text(encoding="utf-8") == "<html>placeholder</html>"
-
-
-def test_run_paper_build_reports_failure_without_raising(tmp_path, monkeypatch, capsys):
-    monkeypatch.setattr(assemble_site, "paper_command", lambda: ["false"])
-    assert assemble_site.run_paper_build("/paper", paper_dir=tmp_path) is False
-    assert "did not build" in capsys.readouterr().err
-    monkeypatch.setattr(assemble_site, "paper_command", lambda: ["no-such-program-hts"])
-    assert assemble_site.run_paper_build("/paper", paper_dir=tmp_path) is False
-
-
-def test_stage_builds_the_paper_for_the_root_route(tmp_path, monkeypatch):
-    seen = {}
-    monkeypatch.setattr(
-        assemble_site, "assemble", lambda out, **kw: seen.update(kw, out=out) or out
+    (release / "paper-keys.json").write_bytes(keys.read_bytes())
+    mode = tmp_path / "mode.toml"
+    mode.write_text(
+        'schema = 1\nmode = "working"\npin = "paper-working-20261120"\nvenue = ""\nround = 0\n'
+        'date = "2026-11-20"\ndoi = "10.5281/zenodo.123"\n'
+        f'sha256 = "{hashlib.sha256(buf.getvalue()).hexdigest()}"\n',
+        encoding="utf-8",
     )
-    stage_site.stage(tmp_path / "s", paper="auto")
-    assert seen["paper_base"] == "/paper" and seen["paper"] == "auto"
+    monkeypatch.setattr(assemble_site, "MODE_FILE", mode)
+    monkeypatch.setattr(assemble_site, "KEYS_FILE", keys)
+    assert stage_site.main(["--artefact", str(release / "paper-html.tar.gz")]) == 0
+    assert "assemble_site: slot pin paper-working-20261120 -" in capsys.readouterr().out
+    stage = tmp_path / "_stage"
+    page = (stage / "paper" / "index.html").read_text(encoding="utf-8")
+    assert "Working paper · paper-working-20261120 · 2026-11-20 · DOI 10.5281/zenodo.123" in page
+    assert (stage / "docs" / "index.html").read_text(encoding="utf-8") == "docs pin"
+    assert "the argument and the proofs" in (stage / "index.html").read_text(encoding="utf-8")
 
 
 def test_assemble_refuses_repo_root():
@@ -555,4 +492,4 @@ def test_stage_server_serves_index_on_loopback(tmp_path):
 
 
 def test_stage_no_build_reuses_existing(tmp_path):
-    assert stage_site.stage(tmp_path, build=False) == tmp_path
+    assert stage_site.stage(tmp_path, build=False) == (tmp_path, None)

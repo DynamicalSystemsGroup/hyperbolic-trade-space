@@ -1,10 +1,13 @@
-"""Stage the site locally: assemble into ``_stage/`` and serve it on 127.0.0.1.
+"""Stage the site locally: compose into ``_stage/`` and serve it on 127.0.0.1.
 
-    uv run python scripts/stage_site.py [--serve] [--port 8000] [--no-build] [--paper placeholder]
+    uv run python scripts/stage_site.py [--serve] [--port 8000] [--no-build]
+                                        [--slot auto|abstract] [--artefact PATH]
 
-No kernel is needed; the paper's build fetches its pinned theme from GitHub. The paper must build:
-a failed paper build exits non-zero. ``--paper placeholder`` stages the placeholder page
-instead. Review the pages printed, then stop with Ctrl-C.
+No kernel and no network are needed: the composer never builds the paper, and without
+``--artefact`` the paper slot is the abstract page (``--slot abstract``). With ``--artefact`` a
+local ``paper-html.tar.gz`` of the pin that ``paper/mode.toml`` names (``paper-keys.json``
+beside it) is staged at ``/paper/`` with its banner line (``--slot auto``). Review the pages
+printed, then stop with Ctrl-C.
 """
 
 from __future__ import annotations
@@ -53,39 +56,50 @@ def serve_in_thread(directory, port=0):
     return server
 
 
-def stage(out=STAGE_DIR, build=True, mkdocs_runner=None, **assemble_kwargs):
-    """Assemble into ``out`` (unless ``build`` is false and it exists). Returns the path.
+def default_slot(artefact=None):
+    """``abstract`` unless a local artefact is given (staging stays offline)."""
+    return "abstract" if artefact is None else "auto"
 
-    The site is served from the root of 127.0.0.1, so the paper is built for the route ``/paper``
-    (``paper="auto"`` falls back to the placeholder when it does not build; the command line
-    asks for ``"strict"``, which raises); other keywords go to ``assemble``.
-    """
+
+def stage(out=STAGE_DIR, build=True, mkdocs_runner=None, slot=None, artefact=None, **kwargs):
+    """Compose into ``out`` (unless ``build`` is false and it exists). Returns ``(out, Slot)``;
+    the slot is ``None`` when the existing stage is reused. Other keywords go to ``assemble``."""
     out = Path(out)
     if build or not out.exists():
-        assemble_kwargs.setdefault("paper_base", "/paper")
-        return assemble_site.assemble(out, mkdocs_runner=mkdocs_runner, **assemble_kwargs)
-    return out
+        return assemble_site.assemble(
+            out,
+            mkdocs_runner=mkdocs_runner,
+            slot=slot or default_slot(artefact),
+            artefact=artefact,
+            **kwargs,
+        )
+    return out, None
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0], allow_abbrev=False)
     parser.add_argument("--serve", action="store_true", help="serve the staged site")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--no-build", action="store_true", help="reuse an existing _stage/")
     parser.add_argument(
-        "--paper",
-        choices=("strict", "placeholder"),
-        default="strict",
-        help="stage the real paper and fail when it does not build (default), or stage the "
-        "placeholder page in its place",
+        "--slot",
+        choices=assemble_site.SLOTS,
+        help="abstract (the default without --artefact) or auto (the default with it)",
+    )
+    parser.add_argument(
+        "--artefact", help="a local paper-html.tar.gz of the pin, paper-keys.json beside it"
     )
     args = parser.parse_args(argv)
     try:
-        out = stage(STAGE_DIR, build=not args.no_build, paper=args.paper)
+        out, slot = stage(
+            STAGE_DIR, build=not args.no_build, slot=args.slot, artefact=args.artefact
+        )
     except Exception as exc:
         print(f"stage_site: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
     print(f"staged site in {out}")
+    if slot is not None:
+        assemble_site.report(slot)
     if not args.serve:
         return 0
     server = make_server(out, args.port)
