@@ -1,4 +1,0 @@
-paper/paper.ipynb: 24 code cells' outputs unchanged, 9 changed in letters only
-  tab-H-toolchain: same rows up to letters, their order and the commit observed
-  tab-H-reproduction: same rows up to letters, their order and the commit observed
-paper/supporting_material.ipynb: 38 code cells' outputs unchanged, 12 changed in letters only
