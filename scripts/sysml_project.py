@@ -546,7 +546,6 @@ def box_reasons(path) -> dict:
 def behavioural(m, byid, P, revision=10, reasons=None):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
-    from experiments.probes import REQUIREMENT_USAGE_KINDS
 
     spec = case.CUBESAT
     metrics = [(spec.short[a], spec.subsystems[a]) for a in spec.attributes]
@@ -566,8 +565,11 @@ def behavioural(m, byid, P, revision=10, reasons=None):
             typing[ref(t["typedFeature"])] = ref(t["type"])
     satisfied_by = {r: set() for r in reqs}
     fails_by = {r: set() for r in reqs}  # revision 9: the negated satisfy statements
+    # The API JSON keeps the two relations apart: a satisfy statement is a `SatisfyRequirementUsage`
+    # with `subsets` and `subject`; a verify statement is a `RequirementUsage` inside its
+    # verification case (read below). So this loop stays on the one name (WP74).
     for e in byid.values():
-        if e["@type"] in REQUIREMENT_USAGE_KINDS:
+        if e["@type"] == "SatisfyRequirementUsage":
             req_usage = ref(e["subsets"])
             if typing.get(req_usage) in satisfied_by:
                 negated = revision >= 9 and e.get("isNegated")

@@ -33,7 +33,7 @@ asked (the queries, the verification calls, the API-JSON projection); no engine 
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | `REQUIREMENT_USAGE_KINDS`, defined once in `examples/adcs/experiments/probes.py` (the probe that records what `query` returns), used at every match: `tests/test_model_checking_v2.py`, `tests/test_system_model_v2_r1.py`, `scripts/sysml_project.py`, `probes.py` itself | G1 |
+| D-1 | `REQUIREMENT_USAGE_KINDS`, defined once in `examples/adcs/experiments/probes.py` (the probe that records what `query` returns), used at every match of what `query` returns: `tests/test_model_checking_v2.py`, `tests/test_system_model_v2_r1.py`, `probes.py` itself. The satisfy loop of `scripts/sysml_project.py` `behavioural` stays on `SatisfyRequirementUsage`: the API JSON it reads keeps satisfy statements and verify statements apart (the verify side is read from the verification cases), so widening it would count verify statements as satisfy statements on a corrected engine (the driver's correction at acceptance) | G1 |
 | D-2 | The planted test in `tests/test_system_model_v2_r1.py`: a stand-in for the client's `query` surface holding one requirement usage of each kind, read by the same reader the engine-backed tests use | G1 |
 
 ## Requirements and checks
