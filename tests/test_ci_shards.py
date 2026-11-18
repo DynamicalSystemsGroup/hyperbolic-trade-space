@@ -23,9 +23,18 @@ PAPER_MODULES = {
 }
 
 
+CONTROLS = WF["jobs"]["controls"]
+# A pull request into dev runs the workflow for Dependabot alone (the dependency row of
+# PR_ADMISSIBILITY.md); anyone else's pull request into dev runs nothing here.
+BOT_ONLY = (
+    "(github.event_name != 'pull_request' || github.base_ref != 'dev' "
+    "|| github.actor == 'dependabot[bot]')"
+)
+
+
 def test_workflow_runs_on_dispatch_call_pull_requests_to_main_and_pushes_to_dev():
     assert set(TRIGGERS) == {"push", "pull_request", "workflow_dispatch", "workflow_call"}
-    assert TRIGGERS["pull_request"] == {"branches": ["main"]}
+    assert TRIGGERS["pull_request"] == {"branches": ["main", "dev"]}
     assert TRIGGERS["push"] == {"branches": ["dev"]}
     assert TRIGGERS["workflow_call"]["inputs"]["windows"]["default"] is False
     assert TRIGGERS["workflow_dispatch"]["inputs"]["windows"]["default"] is True
@@ -76,12 +85,26 @@ def test_windows_never_runs_on_a_pull_request():
     assert "github.event_name != 'push'" in WINDOWS["if"]
 
 
-def test_a_push_to_dev_runs_the_fast_shard_alone():
-    # A called workflow sees the caller's event, so the push case names this workflow too (the WP67
+def test_a_push_to_dev_and_a_dependency_update_run_the_fast_shard_alone():
+    # A called workflow sees the caller's event, so both cases name this workflow too (the WP67
     # dry run found the release's test job reduced to the fast shard without it).
-    on_push = """(github.event_name == 'push' && github.workflow == 'Tests') && '["fast"]'"""
+    into_dev = "(github.event_name == 'push' || github.base_ref == 'dev')"
+    on_push = f"""({into_dev} && github.workflow == 'Tests') && '["fast"]'"""
     otherwise = """|| '["fast", "slow", "docs"]'"""
     assert JOB["strategy"]["matrix"]["shard"] == f"${{{{ fromJSON({on_push} {otherwise}) }}}}"
+
+
+def test_a_pull_request_into_dev_runs_for_dependabot_alone():
+    # controls and test both carry the condition: with controls skipped, test would still run (the
+    # release's call runs controls itself), so the shard job says it as well. Windows is already
+    # off on every pull request.
+    assert CONTROLS["if"] == (
+        "${{ (github.workflow == 'Tests' || inputs.controls) && " + BOT_ONLY + " }}"
+    )
+    assert JOB["if"].endswith("&& " + BOT_ONLY + " }}")
+    assert "needs.controls.result == 'success' || needs.controls.result == 'skipped'" in JOB["if"]
+    # The controls job declares the reads its endpoints need; a Dependabot token keeps the reads.
+    assert CONTROLS["permissions"] == {"contents": "read", "actions": "read", "pages": "read"}
 
 
 def test_every_shard_keeps_the_provisioning():
