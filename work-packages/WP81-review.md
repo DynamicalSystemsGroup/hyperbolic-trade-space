@@ -104,3 +104,15 @@ Kitchenham page, which is this branch's content (WP76) and is served from the 0.
 and in the pull request's review, and dangles on the live site until then.
 
 The fast suite at the unit's head 9e64d44d (`uv run pytest -q -m "not slow and not paper"`): 2,045 passed, 12 skipped, 2 xfailed.
+
+Addendum (his word of 22:55 EST, the figure): the root page's planted triangle is in the README by its deployed address,
+which answers 200 (`image/png`, 282,360 bytes); PyPI's own renderer (`readme_renderer` with its Markdown extra) accepts
+the file and emits the image; GitHub's renderer shows it (`readme-1280-{light,dark}.png` retaken); the sentence under it
+uses the glossary's terms (metrics, shares, trade, term, characteristic point); the vocabulary check is unchanged at 0
+new violations. Observation: the figure's background is transparent (63 per cent of its pixels), so in GitHub's dark scheme the three
+corner labels (`favours metric 1`, `2`, `3`), dark ink outside the tinted triangle, are lost against the page, while the
+triangle, its regions, labels and markers read; pypi.org renders a light page only, where the figure reads whole
+(`readme-1280-dark.png`). A dark variant through `<picture>` is stripped by PyPI's renderer, and GitHub's per-scheme
+address fragments would show two images on PyPI; an opaque background would need the site's figure rebuilt, a root-page
+change outside this unit. Left for his word.
+

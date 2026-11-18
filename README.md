@@ -4,6 +4,12 @@
 work in scikit-learn pipelines. For analysts with a table of evaluated designs, or of observed cases
 (reported devices, species, plot-years, finished projects), to learn which metrics trade.
 
+![A triangle of three metrics tinted in three regions, with designs as points, a numbered marker at each term's exponent vector and lines of equal value closing around each marker; each region is labelled by the trade-off that leads there.](https://dynamicalsystemsgroup.github.io/tradespace/ternary-planted-light.png)
+
+A constructed table of three metrics, fitted with three terms: each design sits by its shares of
+the three metrics, one shaded region is where all three trade and the other two are where one
+metric trades against another, and each numbered marker is a term's characteristic point.
+
 - [Documentation](https://dynamicalsystemsgroup.github.io/tradespace/docs/): getting started, the
   user guide, the examples and the API reference.
 - [Project page](https://dynamicalsystemsgroup.github.io/tradespace/): the method on one page, with

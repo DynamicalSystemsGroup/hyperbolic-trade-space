@@ -191,3 +191,14 @@ the rendered README; the review is in `WP81-review.md` ("Unit 4"); the captures 
 The install was verified once the release landed (01:35 UTC): PyPI serves 0.1.0, and in a fresh virtual environment outside
 the repository the getting-started block prints the page's two lines (`WP81-rounds/readme/pypi-install.txt`,
 `WP81-review.md` "Unit 4").
+
+His word at about 22:55 EST, relayed verbatim by the driver session:
+
+> the readme needs work so let's make sure having an image preferably the one from the index page, is in the readme.
+
+**Applied as.** The root page's figure, the planted triangle of three metrics in the light scheme, sits in the README
+after the opening paragraph as a plain Markdown image by its deployed address
+(`https://dynamicalsystemsgroup.github.io/tradespace/ternary-planted-light.png`), with the root page's alt text and one
+sentence in the glossary's words under it. The address is absolute because pypi.org renders the README from its own
+page, where a repository path breaks, and PyPI's renderer strips a `<picture>` element, so there is no dark variant.
+
