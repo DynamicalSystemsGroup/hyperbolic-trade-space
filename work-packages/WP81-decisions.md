@@ -162,3 +162,29 @@ closing sentence from `dev` stand with the Kitchenham page, the budgets and the 
 The fast suite at the rebased tree: 2,045 passed, 12 skipped, 2 xfailed. The scope issue for the documentation pull
 request is DynamicalSystemsGroup/tradespace#13 (opened by him with the `draft` label; it names WP76, WP81 and the
 README update); the pull request says `closes #13`.
+
+## The README and the install text (2026-11-17, late evening): unit 4, after acceptance, on his word
+
+His words tonight, relayed verbatim by the driver session:
+
+> one thing i noticed is the readme appears to be badly out of date. we need to get a readme update into the 0.2
+> merge candidate. since i was able to merge v0.1, i do need to get to the 0.2 PR so danilo can review that.
+
+> PR into dev for the documentation and readme updates
+
+> its also worth noting that the documentation update can now account for this package being live on pip which can
+> verify once the release lands
+
+**Applied as** unit 4 of this package, on `v0.2` after the rebase. `README.md` reflects the released state: the
+one-line description of `pyproject.toml`, the install from PyPI first (`pip install tradespace`, `uv add tradespace`)
+with the clone-and-sync form for work on the package, the first fit of the getting-started page (the same code, the
+same output, reproduced on the branch), the links a reader needs (the docs, the project page, the working paper as
+this package names it, `CONTRIBUTING.md`, `GOVERNANCE.md`, the code owners' page, the code of conduct, the security
+policy, the changelog, `CITATION.cff`), the four public datasets and the cubesat case, and the layout read line by
+line against the tree. The layout keeps the folders a user opens and drops the rest: the register, the glossary and
+history files, `CLAUDE.md`, the build and environment files, the license and the dot-files, which a user does not open
+and the earlier list described one by one; the changelog and the governance file moved into the Contributing
+paragraph. On the docs, the one install block (`docs/getting-started.md`) leads with PyPI and keeps the clone for work
+on the package, within the page's budget of 348 words. His acceptance is given in the driver session when it shows him
+the rendered README; the review is in `WP81-review.md` ("Unit 4"); the captures are `WP81-rounds/readme/`.
+

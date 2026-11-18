@@ -4,8 +4,13 @@ For an analyst fitting a table for the first time.
 
 ## Install
 
-The package is installed from source for now. It needs Python 3.12 and uses
-[uv](https://docs.astral.sh/uv/):
+From PyPI, for Python 3.12:
+
+```bash
+pip install tradespace
+```
+
+With [uv](https://docs.astral.sh/uv/), `uv add tradespace`. To work on the package:
 
 ```bash
 git clone \

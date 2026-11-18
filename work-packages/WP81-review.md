@@ -77,3 +77,27 @@ persona journeys were traced before and after with screenshots and their competi
 checks are green on the reviewed head.
 
 Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
+
+## Unit 4: the README and the install text (after acceptance, on his word of 2026-11-17, late evening)
+
+Reviewed against his words quoted in `WP81-decisions.md` ("The README and the install text") and the driver
+session's brief: the README reflects the released state; the docs' install text leads with the released package.
+
+| Item | State | Evidence |
+|---|---|---|
+| The one-line description | met | the first sentence is `pyproject.toml`'s `description` with the package named as its subject; the second is his clause for observed cases (2026-11-17) |
+| Install from PyPI, clone for contributors | met | `pip install tradespace`, `uv add tradespace`; then `git clone` and `uv sync`; the same order on `docs/getting-started.md`, whose prose count is 348 of 348 (`tests/test_site.py::test_word_budgets_hold`) |
+| The first fit: the same code, the same output | met | the block is the getting-started page's first block; run on the branch it prints `trilemma [0 1 2]` and `[0.3  0.37 0.33]`, the page's words |
+| The links | met | the docs, the project page, the working paper's abstract with the full text building from the repository (the naming of unit 1), `CONTRIBUTING.md`, `GOVERNANCE.md`, the code owners' page, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CHANGELOG.md`, `CITATION.cff`; every repository file exists; every docs address is a navigation entry of `mkdocs.yml` |
+| The layout, line by line against the tree | met | `ls` of the root: seven lines keep `src/`, `docs/`, `examples/` (five examples; `examples/adcs/` named), `paper/` and `site/`, `derivation/`, `tests/` and `scripts/`, `work-packages/` and `notes/`; dropped: the register, `glossary.yaml` and `history.yaml`, `CLAUDE.md`, `mkdocs.yml`, `Dockerfile`, `pyproject.toml`, `uv.lock`, `.python-version`, `LICENSE`, `.github/` and the dot-files (a user does not open them); `CHANGELOG.md` and `GOVERNANCE.md` are linked in Contributing |
+| No metanarration | met | `scripts/check_residuals.py`: `README.md` metanarration 0; no opener of the kind on the README or the page |
+| Vocabulary check | met | `uv run python scripts/check_vocabulary.py`: 0 new violations, 67 known |
+| Rendered in a browser, captured | met | the README rendered through GitHub's own Markdown renderer (`gh api /markdown`, file mode) with GitHub's stylesheet, served locally and captured headless at 1280 px, light and dark: `WP81-rounds/readme/readme-1280-{light,dark}.png`, `captures.json` (no console error, no sideways scroll); the branch is pushed by the driver session, so the blob view on GitHub is the same renderer on the same text |
+| The install verified against PyPI | see below | a fresh virtual environment outside the repository, `uv venv` and `uv pip install tradespace`, then the first fit; recorded once PyPI serves 0.1.0 |
+
+Observations: the residual checker, against its baseline of `c0fe11b` (stale for the whole tree, WP76 G-1), reports the
+README's compound sentences 1 to 3, acronyms at first use 0 to 3 (PyPI, MIT, API, names in a README) and glossary
+terms at first use 1 to 6 (the first-fit paragraph's terms, defined on the getting-started page it links); the README
+grew from 191 to about 370 prose words. The README on `dev` since 0.1 (WP78's pointer at `GOVERNANCE.md`) is kept
+in the Contributing paragraph.
+

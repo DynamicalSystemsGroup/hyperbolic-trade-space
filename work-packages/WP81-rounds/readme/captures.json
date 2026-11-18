@@ -1,0 +1,46 @@
+[
+  {
+    "file": "readme-light-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1745,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": null,
+    "figures": [],
+    "errors": []
+  },
+  {
+    "file": "readme-light-1280-dark.png",
+    "width": 1280,
+    "scheme": "dark",
+    "height": 1745,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": null,
+    "figures": [],
+    "errors": []
+  },
+  {
+    "file": "readme-dark-1280-light.png",
+    "width": 1280,
+    "scheme": "light",
+    "height": 1745,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": null,
+    "figures": [],
+    "errors": []
+  },
+  {
+    "file": "readme-dark-1280-dark.png",
+    "width": 1280,
+    "scheme": "dark",
+    "height": 1745,
+    "sideways": false,
+    "matched": true,
+    "scheme_attr": null,
+    "figures": [],
+    "errors": []
+  }
+]
