@@ -8,6 +8,9 @@
     uv run python scripts/release_checks.py merge --sha SHA --from origin/dev
     uv run python scripts/release_checks.py pypi --version 0.1.0 --dist dist
     uv run python scripts/release_checks.py version-kind [--package tradespace]
+    uv run python scripts/release_checks.py bump 0.2.0 --changelog final [--date 2026-11-20]
+    uv run python scripts/release_checks.py gates [--release] [--since origin/dev]
+    uv run python scripts/release_checks.py branches [--remote origin]
 
 ``changelog`` needs a ``## [version]`` heading; with ``--final`` (a release) it must have
 one, otherwise an ``## [Unreleased]`` heading also serves (a dry run, a candidate on TestPyPI).
@@ -32,6 +35,32 @@ surface computed from the previous tag's ``src`` when that tag has no record), t
 and ``Removed`` sections untouched; each difference is one line, and any fails. A minor or major
 bump passes with the kind printed. No previous tag (the first release) and a version that is
 already tagged (a redeploy, which ``tag`` decides) pass with a notice.
+
+``bump`` writes a new version in every place it is written (``VERSION_PLACES``: ``pyproject.toml``,
+``tradespace.__version__``, ``CITATION.cff``, the interface contract's manifest and the two values
+its document quotes), runs ``uv lock`` so the lock's own entry follows, and edits ``CHANGELOG.md``
+as ``--changelog`` says: ``final`` (a release) turns ``## [Unreleased]`` into ``## [<version>] -
+<date>`` with a fresh empty ``## [Unreleased]`` above it; ``stub`` (a dry run on a ``qc/`` branch)
+inserts a one-line throwaway entry below the unreleased section; ``none`` leaves it alone. With
+``--date`` the citation file's ``date-released`` is set too; without it the heading carries today.
+It prints each file it changed, refuses a version that is not PEP 440 or not above the current one
+(nothing is written on a refusal), and never commits.
+
+``gates`` runs locally, in order, what the Tests workflow runs on a push to ``dev`` (the
+attribution grep over the commits since ``--since``, ``uv lock --check``, ``ruff check``, ``ruff
+format --check``, the test modules that hold the repository's rules), the vocabulary check, the
+public-surface record, the settings check and ``branches`` (the last two skipped with a line when
+``gh`` is not authenticated), and with ``--release`` the release admissibility checks on the head
+(``version``, ``tag`` at ``HEAD``, ``changelog --final``, ``version-kind``, ``pins``, the paper's
+mode file). One line per check with its exit code, a verdict, exit 1 on any failure. It is the step
+a unit runs before it reports, the driver before a push, and a code owner before a pull request or
+a dry run.
+A release check that refuses a head is reported as it is: a content branch at a released version is
+refused by ``tag``, which is the rule doing its job, and ``bump`` is the answer.
+
+``branches`` lists the remote's branches that are none of the long-lived three (``main``, ``dev``,
+``paper``), the head of an open pull request, a ``qc/*`` branch (one dry run; named as a notice)
+or a ``dependabot/*`` branch, and exits 1 naming them (``GOVERNANCE.md``, "Branches").
 """
 
 from __future__ import annotations
@@ -52,6 +81,8 @@ import tomllib
 import urllib.error
 import urllib.request
 from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -376,6 +407,397 @@ def version_kind_problems(root: Path, package: str = "tradespace") -> tuple[list
     return notices, problems
 
 
+# ------------------------------------------------------------------ the bump
+
+# Every place the version is written, as (path, pattern whose group `v` is the value); each pattern
+# matches exactly once in its file. tests/test_release_checks.py holds the list complete against the
+# tree (every version assignment a tracked file carries is here). uv.lock follows by `uv lock`.
+VERSION_PLACES = (
+    ("pyproject.toml", r'^version = "(?P<v>[^"]+)"$'),
+    ("src/tradespace/__init__.py", r'^__version__ = "(?P<v>[^"]+)"$'),
+    ("CITATION.cff", r"^version: (?P<v>\S+)$"),
+    ("work-packages/interface-contract.toml", r'^version = "(?P<v>[^"]+)"$'),
+    ("work-packages/interface-contract.md", r'^package\.version = "(?P<v>[^"]+)"$'),
+    ("work-packages/interface-contract.md", r"Current value: `(?P<v>[^`]+)`"),
+)
+DATE_PLACE = ("CITATION.cff", r"^date-released: (?P<v>\S+)$")
+CHANGELOG_MODES = ("final", "stub", "none")
+STUB_LINE = "- A dry-run stub for a `qc/` branch; the commit that carries it is never merged."
+
+
+def version_values(root: Path) -> dict[str, str | None]:
+    """The value each place holds, keyed ``path#n`` (None when the pattern does not match once).
+
+    >>> sorted(version_values(ROOT))[:2]
+    ['CITATION.cff#2', 'pyproject.toml#0']
+    """
+    out = {}
+    for n, (path, pattern) in enumerate(VERSION_PLACES):
+        found = re.findall(pattern, (root / path).read_text(encoding="utf-8"), re.M)
+        out[f"{path}#{n}"] = found[0] if len(found) == 1 else None
+    return out
+
+
+def _replace_once(text: str, pattern: str, value: str) -> tuple[str, int]:
+    """``text`` with the pattern's ``v`` group set to ``value``, and how many times it matched."""
+
+    def sub(m: re.Match) -> str:
+        return m.string[m.start() : m.start("v")] + value + m.string[m.end("v") : m.end()]
+
+    return re.subn(pattern, sub, text, flags=re.M)
+
+
+def bumped_changelog(text: str, version: str, day: str, mode: str) -> tuple[str, str | None]:
+    """``CHANGELOG.md`` after the bump, and the reason to refuse (or None).
+
+    >>> text = "# C\\n\\n## [Unreleased]\\n\\n### Fixed\\n\\n- a\\n\\n"
+    >>> text += "## [0.1.0] - 2026-11-17\\n\\n- b\\n"
+    >>> print(bumped_changelog(text, "0.2.0", "2026-11-20", "final")[0])
+    # C
+    <BLANKLINE>
+    ## [Unreleased]
+    <BLANKLINE>
+    ## [0.2.0] - 2026-11-20
+    <BLANKLINE>
+    ### Fixed
+    <BLANKLINE>
+    - a
+    <BLANKLINE>
+    ## [0.1.0] - 2026-11-17
+    <BLANKLINE>
+    - b
+    <BLANKLINE>
+    >>> changelog_section(bumped_changelog(text, "0.1.1", "2026-11-20", "stub")[0], "0.1.1")
+    '- A dry-run stub for a `qc/` branch; the commit that carries it is never merged.'
+    """
+    if mode == "none":
+        return text, None
+    if changelog_section(text, version) is not None:
+        return text, f"CHANGELOG.md already has an entry `## [{version}]`"
+    m = re.search(r"^## \[Unreleased\][^\n]*\n(.*?)(?=^## \[|\Z)", text, re.M | re.S)
+    if m is None:
+        return text, "CHANGELOG.md has no `## [Unreleased]` heading"
+    heading = f"## [{version}] - {day}\n"
+    body = m.group(1)
+    if mode == "final":
+        if not body.strip():
+            return text, "CHANGELOG.md `## [Unreleased]` is empty; nothing to release"
+        return text[: m.start()] + "## [Unreleased]\n\n" + heading + text[m.start(1) :], None
+    sep = "" if body.endswith("\n\n") else ("\n" if body.endswith("\n") else "\n\n")
+    stub = sep + heading + "\n" + STUB_LINE + "\n\n"
+    return text[: m.end()] + stub + text[m.end() :], None
+
+
+def bump(
+    root: Path, version: str, day: str | None, changelog: str, lock: bool = True
+) -> tuple[list[str], list[str]]:
+    """Write ``version`` everywhere; the files changed and the problems (nothing written on any)."""
+    current = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"][
+        "version"
+    ]
+    problems = []
+    if parse_version(version) is None:
+        problems.append(
+            f"version {version!r} is not major.minor.patch with an optional a, b, rc or dev suffix"
+        )
+    elif parse_version(version) <= parse_version(current):
+        problems.append(f"version {version} is not above the current {current}")
+    if day is not None:
+        try:
+            date.fromisoformat(day)
+        except ValueError:
+            problems.append(f"--date {day!r} is not YYYY-MM-DD")
+    if changelog not in CHANGELOG_MODES:
+        problems.append(f"--changelog must be one of {', '.join(CHANGELOG_MODES)}")
+    if problems:
+        return [], problems
+    edits: dict[str, str] = {}
+    for path, pattern in VERSION_PLACES:
+        text = edits.get(path) or (root / path).read_text(encoding="utf-8")
+        found = re.findall(pattern, text, re.M)
+        if len(found) != 1 or found[0] != current:
+            problems.append(
+                f"{path} does not hold the current version {current} once "
+                f"(found {found}); the tree is inconsistent, fix it by hand first"
+            )
+            continue
+        edits[path], _ = _replace_once(text, pattern, version)
+    if day is not None:
+        path, pattern = DATE_PLACE
+        text = edits.get(path) or (root / path).read_text(encoding="utf-8")
+        edits[path], n = _replace_once(text, pattern, day)
+        if n != 1:
+            problems.append(f"{path} has no single `date-released:` line")
+    log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    new_log, problem = bumped_changelog(log, version, day or date.today().isoformat(), changelog)
+    if problem:
+        problems.append(problem)
+    elif new_log != log:
+        edits["CHANGELOG.md"] = new_log
+    if problems:
+        return [], problems
+    for path, text in edits.items():
+        (root / path).write_text(text, encoding="utf-8")
+    changed = list(edits)
+    if lock:
+        before = (root / "uv.lock").read_bytes() if (root / "uv.lock").is_file() else b""
+        r = subprocess.run(["uv", "lock"], cwd=root, capture_output=True, text=True)
+        if r.returncode != 0:
+            problems.append(f"uv lock failed: {r.stderr.strip().splitlines()[-1:]}")
+        elif (root / "uv.lock").read_bytes() != before:
+            changed.append("uv.lock")
+    return changed, problems
+
+
+# ------------------------------------------------------------------ the remote's branches
+
+LONG_LIVED = ("main", "dev", "paper")
+# A branch for one dry run (deleted after it; named as a notice) and the update bot's branches
+# (each goes with its pull request).
+TOLERATED_PREFIXES = ("qc/", "dependabot/")
+
+
+def stray_branches(heads: list[str], open_heads: set[str]) -> tuple[list[str], list[str]]:
+    """The remote branches that should not be there, and the ``qc/`` branches as notices.
+
+    >>> heads = ["main", "dev", "paper", "qc/release", "dependabot/uv/x", "wp-a", "old-b"]
+    >>> stray_branches(heads, {"wp-a"})
+    (['old-b'], ['qc/release'])
+    """
+    stray = [
+        h
+        for h in heads
+        if h not in LONG_LIVED and h not in open_heads and not h.startswith(TOLERATED_PREFIXES)
+    ]
+    return stray, [h for h in heads if h.startswith("qc/")]
+
+
+def remote_heads(root: Path, remote: str) -> list[str]:
+    r = _git(root, "ls-remote", "--heads", remote)
+    if r.returncode != 0:
+        raise RuntimeError(r.stderr.strip() or f"git ls-remote {remote} failed")
+    return [line.split("refs/heads/", 1)[1] for line in r.stdout.splitlines() if "\t" in line]
+
+
+def open_pull_request_heads(root: Path) -> set[str]:
+    r = subprocess.run(
+        ["gh", "pr", "list", "--state", "open", "--limit", "200", "--json", "headRefName"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    if r.returncode != 0:
+        raise RuntimeError(r.stderr.strip() or "gh pr list failed")
+    return {p["headRefName"] for p in json.loads(r.stdout)}
+
+
+def gh_authenticated() -> bool:
+    try:
+        return subprocess.run(["gh", "auth", "status"], capture_output=True).returncode == 0
+    except FileNotFoundError:
+        return False
+
+
+def branch_problems(root: Path, remote: str = "origin") -> tuple[list[str], list[str]]:
+    """The notices to print and the stray branches that fail the check."""
+    heads = remote_heads(root, remote)
+    stray, dry_runs = stray_branches(heads, open_pull_request_heads(root))
+    notices = [f"branches: {len(heads)} on {remote}; long-lived {', '.join(LONG_LIVED)}"]
+    notices += [f"branches: {h} is a dry-run branch; delete it after its run" for h in dry_runs]
+    return notices, [
+        f"{remote}/{h} is neither long-lived, an open pull request's head, qc/ nor dependabot/; "
+        "delete it (GOVERNANCE.md, Branches)"
+        for h in stray
+    ]
+
+
+# ------------------------------------------------------------------ the gates, run locally
+
+# The test modules that hold the repository's rules (the fast shard in full is CI's).
+RULE_MODULES = (
+    "tests/test_release_checks.py",
+    "tests/test_release_workflows.py",
+    "tests/test_ci_shards.py",
+    "tests/test_admissibility.py",
+    "tests/test_repo_settings.py",
+    "tests/test_api_surface.py",
+    "tests/test_interface_contract.py",
+    "tests/test_package.py",
+    "tests/test_index.py",
+    "tests/test_claims_register.py",
+    "tests/test_site.py::test_hand_written_pages_carry_no_review_or_proof_content",
+)
+ATTRIBUTION = re.compile(r"\bco-authored-by\b|\bgenerated with\b|🤖", re.I)
+Run = Callable[[Path], tuple[int | None, str]]
+
+
+@dataclass
+class Gate:
+    """One check: its name, what it runs (for the table) and how; ``release`` marks the
+    admissibility checks of ``--release``; ``needs_gh`` skips it when ``gh`` is not
+    authenticated."""
+
+    name: str
+    run: Run
+    argv: tuple[str, ...] = ()
+    release: bool = False
+    needs_gh: bool = False
+
+
+def command(*argv: str) -> Run:
+    def run(root: Path) -> tuple[int, str]:
+        r = subprocess.run(list(argv), cwd=root, capture_output=True, text=True)
+        return r.returncode, (r.stdout + r.stderr).strip()
+
+    return run
+
+
+def problems_of(fn: Callable[[Path], list[str]]) -> Run:
+    def run(root: Path) -> tuple[int, str]:
+        problems = fn(root)
+        return (1 if problems else 0), "\n".join(problems)
+
+    return run
+
+
+def attribution_lines(root: Path, since: str) -> list[str]:
+    """The commit-message lines since ``since`` that carry an attribution (the Tests workflow's
+    grep); the whole log when the ref is absent."""
+    rng = f"{since}..HEAD" if _commit(root, since) else "HEAD"
+    log = _git(root, "log", "--format=%B", rng).stdout
+    hits = [line for line in log.splitlines() if ATTRIBUTION.search(line)]
+    return [f"{len(hits)} attribution line(s) in the commits of {rng}: {hits[:3]}"] if hits else []
+
+
+def _release_version(root: Path) -> str:
+    return tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"][
+        "version"
+    ]
+
+
+def _tag_check(root: Path) -> tuple[int, str]:
+    version = _release_version(root)
+    state, reason = tag_state(root, f"v{version}", "HEAD")
+    return (1 if state == "taken" else 0), f"v{version} is {state}" + (
+        f": {reason}" if reason else ""
+    )
+
+
+def gates(release: bool, since: str) -> list[Gate]:
+    """The checks in order; ``release`` appends the admissibility checks."""
+    uv = ("uv", "run")
+    out = [
+        Gate("attribution", problems_of(lambda r: attribution_lines(r, since)), ("git", "log")),
+        Gate("uv lock --check", command("uv", "lock", "--check"), ("uv", "lock", "--check")),
+        Gate("ruff check", command(*uv, "ruff", "check", "."), (*uv, "ruff", "check", ".")),
+        Gate(
+            "ruff format --check",
+            command(*uv, "ruff", "format", "--check", "."),
+            (*uv, "ruff", "format", "--check", "."),
+        ),
+        Gate(
+            "pytest (the rule modules)",
+            command(*uv, "pytest", "-q", "-p", "no:cacheprovider", "-n", "auto", *RULE_MODULES),
+            (*uv, "pytest", *RULE_MODULES),
+        ),
+        Gate(
+            "vocabulary",
+            command(*uv, "python", "scripts/check_vocabulary.py"),
+            (*uv, "python", "scripts/check_vocabulary.py"),
+        ),
+        Gate(
+            "api surface record",
+            command(*uv, "python", "scripts/api_surface.py", "--check"),
+            (*uv, "python", "scripts/api_surface.py", "--check"),
+        ),
+        Gate(
+            "repository settings",
+            command(*uv, "--no-project", "python", "scripts/check_repo_settings.py"),
+            (*uv, "--no-project", "python", "scripts/check_repo_settings.py"),
+            needs_gh=True,
+        ),
+        Gate(
+            "branches", problems_of(lambda r: branch_problems(r)[1]), ("branches",), needs_gh=True
+        ),
+    ]
+    if release:
+        out += [
+            Gate(
+                "version",
+                command(*uv, "--no-project", "python", "scripts/check_release_version.py"),
+                ("check_release_version.py",),
+                release=True,
+            ),
+            Gate("tag", _tag_check, ("tag", "--sha", "HEAD"), release=True),
+            Gate(
+                "changelog --final",
+                problems_of(lambda r: changelog_problems(r, _release_version(r), True)),
+                ("changelog", "--final"),
+                release=True,
+            ),
+            Gate(
+                "version-kind",
+                command(*uv, "--locked", "python", "scripts/release_checks.py", "version-kind"),
+                ("version-kind",),
+                release=True,
+            ),
+            Gate("pins", problems_of(pin_problems), ("pins",), release=True),
+            Gate(
+                "paper mode (served)",
+                command(
+                    *uv,
+                    "--no-project",
+                    "python",
+                    "scripts/paper_mode.py",
+                    "check",
+                    "--stage",
+                    "served",
+                ),
+                ("paper_mode.py", "check", "--stage", "served"),
+                release=True,
+            ),
+        ]
+    return out
+
+
+def run_gates(root: Path, checks: list[Gate], out=sys.stdout, gh: bool | None = None) -> int:
+    """Run the checks in order, one line each, a verdict; 1 when any fails."""
+    head = _git(root, "rev-parse", "--short=12", "HEAD").stdout.strip()
+    branch = _git(root, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
+    print(f"gates at {head} ({branch}): {len(checks)} checks", file=out)
+    failed, skipped = [], []
+    for gate in checks:
+        if gate.needs_gh:
+            gh = gh_authenticated() if gh is None else gh
+            if not gh:
+                skipped.append(gate.name)
+                print(f"  skip  {gate.name}: gh is not authenticated", file=out)
+                continue
+        code, text = gate.run(root)
+        first = text.splitlines()[-1] if text else ""
+        if code == 0:
+            print(f"  ok    {gate.name}" + (f": {first}" if first else ""), file=out)
+            continue
+        failed.append(gate)
+        print(f"  FAIL  {gate.name} (exit {code})", file=out)
+        for line in text.splitlines()[-12:]:
+            print(f"        {line}", file=out)
+    tail = f"; {len(skipped)} skipped ({', '.join(skipped)})" if skipped else ""
+    if not failed:
+        print(f"verdict: pass ({len(checks) - len(skipped)} checks{tail})", file=out)
+        return 0
+    names = ", ".join(g.name for g in failed)
+    print(f"verdict: refused ({len(failed)} of {len(checks)}: {names}{tail})", file=out)
+    if all(g.release for g in failed):
+        print(
+            "the Tests gates pass; the release gates refuse this head. A head at a released"
+            " version is not releasable: `release_checks.py bump` first (`--changelog stub` for"
+            " a dry run).",
+            file=out,
+        )
+    return 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = parser.add_subparsers(dest="check", required=True)
@@ -402,9 +824,47 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--wait", type=float, default=20.0)
     v = sub.add_parser("version-kind")
     v.add_argument("--package", default="tradespace", help="the package whose surface is read")
+    b = sub.add_parser("bump", help="write a new version in every place it is written")
+    b.add_argument("version", help="the new version, PEP 440, above the current one")
+    b.add_argument(
+        "--date", help="YYYY-MM-DD: the changelog heading and CITATION.cff's release day"
+    )
+    b.add_argument(
+        "--changelog",
+        required=True,
+        choices=CHANGELOG_MODES,
+        help="final: release the unreleased entry; stub: a dry-run entry; none: leave it",
+    )
+    b.add_argument("--no-lock", action="store_true", help="do not run uv lock (the tests)")
+    g = sub.add_parser("gates", help="run the repository's checks locally, in order")
+    g.add_argument("--release", action="store_true", help="also the release admissibility checks")
+    g.add_argument("--since", default="origin/dev", help="the attribution grep's base ref")
+    br = sub.add_parser("branches", help="the remote branches that should not be there")
+    br.add_argument("--remote", default="origin")
     parser.add_argument("--root", type=Path, default=ROOT)
     args = parser.parse_args(argv)
-    if args.check == "version-kind":
+    if args.check == "gates":
+        return run_gates(args.root, gates(args.release, args.since))
+    if args.check == "bump":
+        changed, problems = bump(
+            args.root, args.version, args.date, args.changelog, lock=not args.no_lock
+        )
+        for path in changed:
+            print(f"changed: {path}")
+        for p in problems:
+            print(f"refused: {p}", file=sys.stderr)
+        if not problems:
+            print(f"bump: {args.version} written in {len(changed)} files; nothing committed")
+        return 1 if problems else 0
+    if args.check == "branches":
+        try:
+            notices, problems = branch_problems(args.root, args.remote)
+        except RuntimeError as e:
+            print(f"refused: {e}", file=sys.stderr)
+            return 2
+        for line in notices:
+            print(line)
+    elif args.check == "version-kind":
         notices, problems = version_kind_problems(args.root, args.package)
         for line in notices:
             print(line)
