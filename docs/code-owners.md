@@ -49,7 +49,8 @@ The label `release-failure` is created by the Release workflow.
 
 The Tests workflow runs on every pull request into `main` (the required checks), when the Release workflow calls it,
 and on dispatch (Actions, Tests, Run workflow), which also runs Windows. A push to `dev` runs lint and the Linux
-fast shard only. It never runs Windows on a pull request or a push. Its first job, `controls`, is the settings check;
+fast shard only, and so does a Dependabot pull request into `dev` (a pull request into `dev` by anyone else runs
+nothing there). It never runs Windows on a pull request or a push. Its first job, `controls`, is the settings check;
 the shards need it.
 
 PyPI and TestPyPI: a pending trusted publisher for `tradespace`, owner `DynamicalSystemsGroup`, workflow
@@ -87,7 +88,36 @@ and the comment. The Release workflow refuses a release while any action is unpi
 Read the pull request template's answers (what changed, what backs it, which tests, defaults, tools used). Run the
 tests and the code yourself, and look at any rendered result (a docs page, a plot, the paper) rather than reading the
 source alone. A claim with no backing is narrowed or dropped. Take the issue's good-enough items one by one:
-conformance by running the check, fitness by looking and signing the judgement. Merge into `dev`.
+conformance by running the check, fitness by looking and signing the judgement. Merge into `dev`. A dependency
+update, Dependabot's pull request into `dev`, has no template and no issue: its steps are the next section.
+
+## Dependency updates
+
+Dependabot (`.github/dependabot.yml`) opens its pull requests against `dev` with the `dependencies` label, weekly:
+one pull request per ecosystem (`github-actions`, `uv`) for that week's minor and patch bumps, and a pull request of
+its own for each major bump. Its description, the release notes, the commits and the compatibility score, stands in
+for the template, and it names no issue; the pull request checks pass it with a notice that quotes its row in
+`.github/PR_ADMISSIBILITY.md`. The Tests workflow runs on it as on a push to `dev`: lint, the `controls` job and the
+Linux fast shard. When one arrives:
+
+1. Read the bump: what moved, from which version to which, whether a major moved, and the release notes Dependabot
+   quotes (a breaking change named there is read before anything runs).
+2. Confirm the Tests workflow ran on the pull request and is green. The workflow runs for Dependabot's pull requests
+   into `dev` alone; if it did not run, the actor was not the bot (a hand-pushed rebase): comment `@dependabot rebase`
+   and it runs on the bot's push.
+3. For a workflow-action bump: the pin is a full commit SHA with the new version in its trailing comment (`uv run
+   python scripts/release_checks.py pins` on the branch), and an admin merges it, since the push ruleset
+   `governance-files` covers `.github/workflows/*.yml`.
+4. For a `uv` bump: `uv.lock` is the only file touched beyond `pyproject.toml`, and `uv lock --check` passes on the
+   branch (the fast shard runs it).
+5. Merge with a merge commit. The merge check records that a code owner merged it.
+
+When the run is red, the pull request stays open: file the failure as an issue (the test that failed, the bump that
+caused it), and either fix it on `dev` and comment `@dependabot rebase`, or close the pull request with a comment that
+names the issue (a closed bump is skipped until the dependency's next release; `@dependabot ignore this major
+version` skips the whole line). A major bump of a runtime dependency (`numpy`, `scipy`, `scikit-learn`) is a
+candidate like any other: when it changes behaviour, open a scope-of-work issue for it and deliver the change as a
+pull request that closes the issue, with the record `tests/data/api_surface.json` and the changelog following.
 
 ## Cutting a release
 

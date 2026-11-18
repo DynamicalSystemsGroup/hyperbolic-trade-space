@@ -147,7 +147,14 @@ Issues are templated: a scope of work (`.github/ISSUE_TEMPLATE/scope-of-work.yml
 owner approves it), a bug report and a question; blank issues are off, and security reports go to the private
 advisory form. Pull requests have one template (`.github/pull_request_template.md`), target `dev` (`paper` for a
 change to the paper, with the template's `Paper` section filled), and name the issue they resolve or carry the
-`small-fix` label.
+`small-fix` label. A dependency update is Dependabot's pull request into `dev` with the `dependencies` label
+(`.github/dependabot.yml`: weekly, minor and patch bumps grouped per ecosystem, a major on its own); its own
+description stands in for the template and it names no issue (the dependency row of `.github/PR_ADMISSIBILITY.md`).
+A code owner reads the bump, confirms the test workflow ran green on it (lint, `controls`, the fast shard), checks a
+moved pin is a full commit SHA with its version comment, and merges it with a merge commit, a Repository admin where
+it touches `.github/workflows/*.yml`; a red run leaves it open with the failure filed as an issue, and a major bump of
+a runtime dependency that changes behaviour is a candidate with a scope-of-work issue like any other. The steps in
+full are "Dependency updates" in `docs/code-owners.md`.
 
 Criteria are of two kinds. Executable: the rows marked machine in the three admissibility documents, run by the
 issue and pull request workflows, the test workflow (lint, format, lock, the three test shards, the attribution

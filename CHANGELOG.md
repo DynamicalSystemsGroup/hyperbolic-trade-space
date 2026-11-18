@@ -34,6 +34,11 @@ All notable changes to this project are recorded here, in the format of
   which refuses a push touching one of them by anyone but a Repository admin (WP82).
 - The admissibility documents: rows for a bug report and a question, the `controls` job in the pull request's
   conformance row, and each judged row naming its guideline (WP82).
+- The dependency route: Dependabot's pull requests target `dev` with the `dependencies` label, minor and patch bumps
+  grouped weekly per ecosystem and a major on its own (`.github/dependabot.yml`); a dependency row in
+  `.github/PR_ADMISSIBILITY.md` that the linked-issue and fields checks pass with a notice; the Tests workflow runs
+  lint, `controls` and the fast shard on the bot's pull requests into `dev`; the code owner's steps on
+  `docs/code-owners.md`, "Dependency updates" (WP82, Amendment 2).
 
 ## [0.1.0] - 2026-11-17
 
