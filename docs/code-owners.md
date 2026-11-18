@@ -36,7 +36,7 @@ code owners as the approvers of a change to them, and the `governance-files` pus
 touches one of them by anyone but a Repository admin; a pull request that changes a governed file is merged by an
 admin.
 
-After the merge of the 0.2 governance change (WP82), in this order: 1. `main-checks` gains the required check
+After the merge of the 0.2 governance change, in this order: 1. `main-checks` gains the required check
 `controls`; 2. the push ruleset `governance-files` is created (active; the nine governed paths; bypass Repository
 admin, always); the `controls` job on the push to `dev` is red until these two are done, then re-run it; 3.
 `main-review` loses its bypass actor; 4. the workflow permissions become read, approving reviews off; 5. your local run
