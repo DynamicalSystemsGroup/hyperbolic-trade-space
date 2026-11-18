@@ -344,8 +344,10 @@ the remote carries no branch the rules do not account for.
 - The declaration's table is `[general]`, named for the settings page, since the top-level key `repository` is the
   repository's name. The field is runner-checked (Metadata), so the post-merge list gains it as item 5, before the
   verification step, which becomes item 6 at 70 fields.
-- `branches` tolerates `qc/*` (named as a notice, since one dry run may be in flight) and `dependabot/*` (each goes
-  with its pull request); everything else that is not `main`, `dev`, `paper` or an open pull request's head is stray.
+- `branches` tolerates `qc/*` (named as a notice, since one dry run may be in flight), `dependabot/*` (each goes
+  with its pull request) and the branch it runs on (`HEAD`'s remote-tracking branch, or a remote branch whose tip is
+  `HEAD`; named as "this branch (its pull request comes next)", since a code owner runs `gates` before the pull
+  request opens); everything else that is not `main`, `dev`, `paper` or an open pull request's head is stray.
   At the branch head the live remote carries the stray `deps-2026-11` and the dry-run branch `qc/release`; both are
   a code owner's to delete, not this unit's.
 - The dry-run bump is the next version the rule allows, not always the next patch: `version-kind` refuses a patch

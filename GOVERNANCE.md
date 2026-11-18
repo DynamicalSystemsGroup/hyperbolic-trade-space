@@ -142,7 +142,7 @@ request's branch is deleted at its merge by the repository setting (declared in 
 `general.delete_branch_on_merge`, and checked by the `controls` job); a `qc/*` branch is deleted after its run by
 whoever pushed it; a bot's branch goes with its pull request. Local worktrees and branches of a landed unit are
 retired at the landing. `uv run python scripts/release_checks.py branches` names a remote branch that is none of
-these, and `gates` runs it.
+these (the branch it runs on, whose pull request comes next, excepted), and `gates` runs it.
 
 ## How the repository is organised
 

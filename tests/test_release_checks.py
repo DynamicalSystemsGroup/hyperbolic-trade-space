@@ -586,12 +586,14 @@ def test_attribution_lines_read_the_commits_since_the_base(repo):
 
 
 def test_branches_names_the_stray_and_notices_the_dry_run(monkeypatch, capsys):
-    heads = ["main", "dev", "paper", "qc/release", "dependabot/uv/x", "wp-a", "old-b"]
-    monkeypatch.setattr(rc, "remote_heads", lambda root, remote: heads)
+    heads = ["main", "dev", "paper", "qc/release", "dependabot/uv/x", "wp-a", "old-b", "mine"]
+    monkeypatch.setattr(rc, "remote_heads", lambda root, remote: dict.fromkeys(heads, "0" * 40))
+    monkeypatch.setattr(rc, "this_branch", lambda root, remote, tips: {"mine"})
     monkeypatch.setattr(rc, "open_pull_request_heads", lambda root: {"wp-a"})
     notices, problems = rc.branch_problems(ROOT)
     assert notices == [
-        "branches: 7 on origin; long-lived main, dev, paper",
+        "branches: 8 on origin; long-lived main, dev, paper",
+        "branches: mine is this branch (its pull request comes next)",
         "branches: qc/release is a dry-run branch; delete it after its run",
     ]
     assert problems == [
@@ -609,3 +611,33 @@ def test_branches_names_the_stray_and_notices_the_dry_run(monkeypatch, capsys):
 
     monkeypatch.setattr(rc, "open_pull_request_heads", no_gh)
     assert rc.main(["branches"]) == 2
+
+
+@needs_git
+def test_this_branch_is_the_upstream_or_a_remote_tip_at_head(repo, tmp_path, monkeypatch):
+    """A code owner runs the gates on a branch before its pull request opens: the branch is on
+    the remote with no pull request yet, and is this branch, not a stray one."""
+    bare = tmp_path / "remote.git"
+    _git(repo, "init", "-q", "--bare", str(bare))
+    _git(repo, "remote", "add", "origin", str(bare))
+    _git(repo, "push", "-q", "-u", "origin", "main")
+    _git(repo, "checkout", "-q", "-b", "feature")
+    _commit(repo, "f.txt", "f\n")
+    _git(repo, "push", "-q", "origin", "feature")  # no upstream: the tip equals HEAD
+    tips = rc.remote_heads(repo, "origin")
+    assert set(tips) == {"main", "feature"} and tips["feature"] == _git(repo, "rev-parse", "HEAD")
+    assert rc.this_branch(repo, "origin", tips) == {"feature"}
+    monkeypatch.setattr(rc, "open_pull_request_heads", lambda root: set())
+    notices, problems = rc.branch_problems(repo)
+    assert problems == []
+    assert "branches: feature is this branch (its pull request comes next)" in notices
+    # a local commit ahead of the pushed tip: the upstream still names it
+    _git(repo, "branch", "-q", "--set-upstream-to=origin/feature")
+    _commit(repo, "g.txt", "g\n")
+    assert rc.this_branch(repo, "origin", rc.remote_heads(repo, "origin")) == {"feature"}
+    assert rc.branch_problems(repo)[1] == []
+    # from another branch, feature is a remote branch with no pull request: stray
+    _git(repo, "checkout", "-q", "main")
+    assert rc.this_branch(repo, "origin", rc.remote_heads(repo, "origin")) == {"main"}
+    problems = rc.branch_problems(repo)[1]
+    assert len(problems) == 1 and problems[0].startswith("origin/feature is neither")

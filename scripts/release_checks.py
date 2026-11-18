@@ -59,8 +59,10 @@ A release check that refuses a head is reported as it is: a content branch at a 
 refused by ``tag``, which is the rule doing its job, and ``bump`` is the answer.
 
 ``branches`` lists the remote's branches that are none of the long-lived three (``main``, ``dev``,
-``paper``), the head of an open pull request, a ``qc/*`` branch (one dry run; named as a notice)
-or a ``dependabot/*`` branch, and exits 1 naming them (``GOVERNANCE.md``, "Branches").
+``paper``), the head of an open pull request, a ``qc/*`` branch (one dry run; named as a notice),
+a ``dependabot/*`` branch or the branch the check runs on (``HEAD``'s remote-tracking branch, or a
+remote branch whose tip is ``HEAD``: its pull request comes next, so it is named as a notice), and
+exits 1 naming them (``GOVERNANCE.md``, "Branches").
 """
 
 from __future__ import annotations
@@ -557,26 +559,49 @@ LONG_LIVED = ("main", "dev", "paper")
 TOLERATED_PREFIXES = ("qc/", "dependabot/")
 
 
-def stray_branches(heads: list[str], open_heads: set[str]) -> tuple[list[str], list[str]]:
-    """The remote branches that should not be there, and the ``qc/`` branches as notices.
+def stray_branches(
+    heads: list[str], open_heads: set[str], this: set[str] = frozenset()
+) -> tuple[list[str], list[str]]:
+    """The remote branches that should not be there, and the ``qc/`` branches as notices;
+    ``this`` is the branch the check runs on, whose pull request comes next.
 
-    >>> heads = ["main", "dev", "paper", "qc/release", "dependabot/uv/x", "wp-a", "old-b"]
-    >>> stray_branches(heads, {"wp-a"})
+    >>> heads = ["main", "dev", "paper", "qc/release", "dependabot/uv/x", "wp-a", "old-b", "mine"]
+    >>> stray_branches(heads, {"wp-a"}, {"mine"})
     (['old-b'], ['qc/release'])
     """
     stray = [
         h
         for h in heads
-        if h not in LONG_LIVED and h not in open_heads and not h.startswith(TOLERATED_PREFIXES)
+        if h not in LONG_LIVED
+        and h not in open_heads
+        and h not in this
+        and not h.startswith(TOLERATED_PREFIXES)
     ]
     return stray, [h for h in heads if h.startswith("qc/")]
 
 
-def remote_heads(root: Path, remote: str) -> list[str]:
+def remote_heads(root: Path, remote: str) -> dict[str, str]:
+    """The remote's branches and their tips, ``{name: sha}``."""
     r = _git(root, "ls-remote", "--heads", remote)
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip() or f"git ls-remote {remote} failed")
-    return [line.split("refs/heads/", 1)[1] for line in r.stdout.splitlines() if "\t" in line]
+    tips = {}
+    for line in r.stdout.splitlines():
+        if "\t" in line:
+            sha, ref = line.split("\t", 1)
+            tips[ref.split("refs/heads/", 1)[1]] = sha
+    return tips
+
+
+def this_branch(root: Path, remote: str, tips: dict[str, str]) -> set[str]:
+    """The remote branch the check runs on: ``HEAD``'s remote-tracking branch on ``remote`` when it
+    has one, and any remote branch whose tip is ``HEAD``."""
+    head = _commit(root, "HEAD")
+    this = {name for name, sha in tips.items() if sha == head}
+    upstream = _git(root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}")
+    if upstream.returncode == 0 and upstream.stdout.strip().startswith(f"{remote}/"):
+        this.add(upstream.stdout.strip()[len(remote) + 1 :])
+    return this
 
 
 def open_pull_request_heads(root: Path) -> set[str]:
@@ -600,9 +625,11 @@ def gh_authenticated() -> bool:
 
 def branch_problems(root: Path, remote: str = "origin") -> tuple[list[str], list[str]]:
     """The notices to print and the stray branches that fail the check."""
-    heads = remote_heads(root, remote)
-    stray, dry_runs = stray_branches(heads, open_pull_request_heads(root))
-    notices = [f"branches: {len(heads)} on {remote}; long-lived {', '.join(LONG_LIVED)}"]
+    tips = remote_heads(root, remote)
+    this = this_branch(root, remote, tips)
+    stray, dry_runs = stray_branches(list(tips), open_pull_request_heads(root), this)
+    notices = [f"branches: {len(tips)} on {remote}; long-lived {', '.join(LONG_LIVED)}"]
+    notices += [f"branches: {h} is this branch (its pull request comes next)" for h in sorted(this)]
     notices += [f"branches: {h} is a dry-run branch; delete it after its run" for h in dry_runs]
     return notices, [
         f"{remote}/{h} is neither long-lived, an open pull request's head, qc/ nor dependabot/; "
