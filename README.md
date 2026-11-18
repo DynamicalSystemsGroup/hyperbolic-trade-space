@@ -1,5 +1,7 @@
 # tradespace
 
+<a href="https://dynamicalsystemsgroup.com/"><img src="docs/assets/brand/dsg-logo.png" alt="Dynamical Systems Group" width="80" height="80"></a>
+
 [![PyPI](https://img.shields.io/pypi/v/tradespace)](https://pypi.org/project/tradespace/)
 [![Python](https://img.shields.io/pypi/pyversions/tradespace)](https://pypi.org/project/tradespace/)
 [![Tests](https://github.com/DynamicalSystemsGroup/tradespace/actions/workflows/test.yml/badge.svg?branch=dev)](https://github.com/DynamicalSystemsGroup/tradespace/actions/workflows/test.yml?query=branch%3Adev)

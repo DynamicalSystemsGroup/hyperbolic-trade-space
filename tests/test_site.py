@@ -526,7 +526,7 @@ BUILT_IMAGES = {
 def test_root_and_paper_links_classified():
     """Every link on the two hand-written pages is internal and resolvable, or external and
     either the repository or a punch-list URL."""
-    expected = punch_list_urls()
+    expected = punch_list_urls() | {"https://dynamicalsystemsgroup.com/"}
     repo = "https://github.com/DynamicalSystemsGroup/tradespace"
     for rel, page_url in (("index.html", "/"), ("paper/abstract.html", "/paper/")):
         for href in html_links(SITE / rel):
