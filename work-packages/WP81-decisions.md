@@ -200,5 +200,5 @@ His word at about 22:55 EST, relayed verbatim by the driver session:
 after the opening paragraph as a plain Markdown image by its deployed address
 (`https://dynamicalsystemsgroup.github.io/tradespace/ternary-planted-light.png`), with the root page's alt text and one
 sentence in the glossary's words under it. The address is absolute because pypi.org renders the README from its own
-page, where a repository path breaks, and PyPI's renderer strips a `<picture>` element, so there is no dark variant.
+page, where a repository path breaks. The dark variant rides in a `picture` element's `source`: GitHub serves it in its dark scheme, and PyPI's renderer keeps the light `img` alone (a rendering default, the driver session's).
 

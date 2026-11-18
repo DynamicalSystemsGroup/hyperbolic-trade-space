@@ -114,5 +114,4 @@ corner labels (`favours metric 1`, `2`, `3`), dark ink outside the tinted triang
 triangle, its regions, labels and markers read; pypi.org renders a light page only, where the figure reads whole
 (`readme-1280-dark.png`). A dark variant through `<picture>` is stripped by PyPI's renderer, and GitHub's per-scheme
 address fragments would show two images on PyPI; an opaque background would need the site's figure rebuilt, a root-page
-change outside this unit. Left for his word.
-
+change outside this unit. Decided as a rendering default (the driver session): the figure is a `picture` element whose `source` names the dark variant for `prefers-color-scheme: dark` and whose `img` is the light one; PyPI's renderer keeps the `img` with the light address and drops the `source` (checked in its output), GitHub's page serves each scheme its own. Checked two ways: GitHub's Markdown API, the local approximation, wraps the `img` in a link, which takes it out of the `picture`'s reach, so its dark capture (`readme-1280-dark.png`) still shows the light figure; on github.com itself the `img` stays the `picture`'s direct child and, with the browser's scheme forced dark, a public README's `img` reports the dark `source` as its current source (astral-sh/uv, read in the browser pane). The blob view of this README in the dark scheme is captured after the push.
