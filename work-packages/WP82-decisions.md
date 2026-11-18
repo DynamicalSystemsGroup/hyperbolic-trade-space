@@ -164,3 +164,36 @@ by `tests/test_api_surface.py`; the release check `scripts/release_checks.py ver
 admissibility job, with its tests; the machine row and the judged part in `.github/RELEASE_ADMISSIBILITY.md`, the test
 named in `.github/PR_ADMISSIBILITY.md`, the rule on the code owners' page, the changelog entry under `### Added`. The
 secondary-rules list and the declaration are unchanged: the record is a record, not a rule.
+
+## Amendment 2: the Dependabot route (2026-11-17, evening)
+
+His sentence at about 20:50 EST, with a screenshot of the eight open Dependabot pull requests #4 to #11 (each "Review
+required", 15 of 18 checks failing), verbatim:
+
+> we're going to need to handle this stuff. in v0.2 if possible
+
+The driver's finding: `.github/dependabot.yml` named no `target-branch`, so Dependabot's pull requests targeted
+`main`, the default branch, and were judged as releases: the release `admissibility` job, the template-fields check and
+the linked-issue check failed on each, while `controls` and the three test shards passed on every bump. Asked where
+the Dependabot route lands (target branch `dev`, the labels, the bot's admissibility row, tests on its pull requests),
+with the options "Amend WP82", "Own package in 0.2" and "After 0.2", his answer, verbatim:
+
+> Amend WP82
+
+At about 21:15 EST, verbatim:
+
+> i also think we should extend our governance PR content to provide instructions for how dependabot PRs should be
+> handled since it seems like they will be a common occurance (some of our dependencies are advancing rather quickly)
+
+**Applied as.** Amendment 2 of `WP82-scope-of-work.md` (goal G5, deliverables D-11 to D-14, requirements R-11 to
+R-13, the Agent's defaults and the "After the merge" steps listed there), delivered on the governance branch before
+the pull request opens: `.github/dependabot.yml` targets `dev` with the `dependencies` label, minor and patch bumps
+grouped weekly per ecosystem and a major on its own; a dependency row in `.github/PR_ADMISSIBILITY.md`, which the
+linked-issue and fields checks of `scripts/admissibility.py` pass with a notice quoting it (the three conditions: the
+bot, the label, the base `dev`), `pr-fields.yml` firing on `labeled` too; `test.yml` running lint, `controls` and the
+fast shard on the bot's pull requests into `dev` and nothing on anyone else's; the route in `GOVERNANCE.md`'s
+pull-request paragraph and the code owner's steps in `docs/code-owners.md`, "Dependency updates"; the changelog entry
+under `### Changed`. `.github/dependabot.yml` is not added to the secondary rules (the reason is in the amendment's
+defaults); the declaration, the fixture and the governed set are unchanged. The eight pull requests against `main` are
+handled after the merge as the amendment says: "Check for updates" on the Dependabot page, the stale ones closed with a
+one-line comment naming the route, each new one merged on its own by a code owner after the Tests workflow passes.

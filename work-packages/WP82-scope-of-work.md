@@ -180,3 +180,86 @@ rule lands, "Amend WP82". The amendment joins the governance pull request before
   and the declaration's `by` field ("the fitness row", singular) stay true.
 - Nothing is added to the secondary-rules list: the record is a record, not a rule; the interface contract is not
   amended, since no package surface changes.
+
+### Amendment 2 (2026-11-17, evening): the Dependabot route
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 2"), with a screenshot of the eight open Dependabot pull requests
+#4 to #11, each "Review required", 15 of 18 checks failing: "we're going to need to handle this stuff. in v0.2 if
+possible"; asked where the route lands, "Amend WP82"; then: "i also think we should extend our governance PR content to
+provide instructions for how dependabot PRs should be handled since it seems like they will be a common occurance
+(some of our dependencies are advancing rather quickly)". The amendment joins the governance pull request before it
+opens.
+
+**Goal added.** **G5** A dependency update has a declared route: Dependabot's pull request targets `dev`, the
+admissibility checks read it as one, the test workflow runs on it before the merge, and a code owner has the steps.
+
+**Deliverables added.**
+
+- **D-11** `.github/dependabot.yml`: `target-branch: dev` and `labels: ["dependencies"]` for both ecosystems; minor and
+  patch bumps grouped into one weekly pull request per ecosystem, a major on its own; the weekly schedule kept.
+- **D-12** The route in the rules: a machine row for a dependency update in `.github/PR_ADMISSIBILITY.md` (opened by
+  `dependabot[bot]` against `dev` with the `dependencies` label; its own description stands in for the template; no
+  issue; the test workflow before the merge; a code owner merges, an admin where it touches a workflow);
+  `scripts/admissibility.py` `linked-issue` and `pr-fields` pass such a pull request with a notice quoting the row,
+  `merge` unchanged (the author is the bot); `pr-fields.yml` fires on `labeled` too; the cases in
+  `tests/test_admissibility.py`, among them one holding `dependabot.yml` to the target, the label and the groups.
+- **D-13** `.github/workflows/test.yml`: the `pull_request` event for base `dev`, gated at job level to
+  `github.actor == 'dependabot[bot]'` on `controls` and `test`; lint, `controls` and the fast shard, as the push to
+  `dev`; the workflow tests (`tests/test_ci_shards.py`) holding the trigger, the gate and the matrix.
+- **D-14** The documents: `GOVERNANCE.md`'s pull-request paragraph (the route and the steps in brief);
+  `docs/code-owners.md`, a sentence under "Reviewing a candidate" and the section "Dependency updates" (the steps a
+  code owner takes, the red-run case, a major bump of a runtime dependency); the Tests paragraph of that page;
+  `CHANGELOG.md` under `### Changed`; this amendment, the decision record, the index row.
+
+**Requirements added.**
+
+- **R-11** The linked-issue and fields checks pass a dependency update with the notice and fail a pull request missing
+  any one of the three conditions (the bot, the label, the base `dev`); the merge check passes a code owner's merge of
+  one. Checked by `tests/test_admissibility.py`.
+- **R-12** `test.yml` runs on a pull request into `dev` for Dependabot alone, the fast shard, with `controls`; a
+  pull request into `dev` by anyone else runs no job; `main`'s pull requests, the push to `dev`, the call and the
+  dispatch are unchanged. Checked by `tests/test_ci_shards.py`, `tests/test_release_workflows.py`,
+  `tests/test_workflow_permissions.py` and `uv run python scripts/release_checks.py pins`.
+- **R-13** The docs page carries no package number, "supervisor" or "reviewer"; the vocabulary check adds no term.
+  Checked by `tests/test_site.py::test_hand_written_pages_carry_no_review_or_proof_content` and
+  `scripts/check_vocabulary.py`.
+
+**Agent's defaults (Amendment 2).**
+
+- `.github/dependabot.yml` is not added to the secondary rules. It is configuration downstream of the route, which is
+  stated in two governed files (`GOVERNANCE.md`, `.github/PR_ADMISSIBILITY.md`) and enforced by the admissibility
+  script and the test workflow's trigger; a drift in it (a target other than `dev`, the label gone) is caught on the
+  bot's next pull request, which then fails the linked-issue and fields checks as any other would, and a test holds
+  the file to its target, label and groups. Keeping it out leaves the `governance-files` ruleset's path list, the
+  CODEOWNERS lines, the declaration, the fixture and the count of nine unchanged, so his post-merge settings list does
+  not grow.
+- The `controls` job runs on the bot's pull request: its endpoints need Metadata (always granted), Actions (read) and
+  Pages (read), which the job declares, and a Dependabot-triggered run's token keeps the read permissions and loses
+  the writes and the secrets, none of which the job uses. The first Dependabot pull request after the merge is the
+  live check; should the job read red for a permission reason, the fallback is to extend the job's `if` to skip it on
+  that event, with the `test` job's `needs` already accepting `skipped`.
+- The gate is `github.actor == 'dependabot[bot]'` on a `pull_request` into `dev`, on `controls` and on `test` (with
+  `controls` skipped the shard would otherwise run, since the release's call runs `controls` itself). A hand push to
+  the bot's branch makes the pusher the actor and skips the run; `@dependabot rebase` restores it. Windows was
+  already off on every pull request.
+- The fast shard alone on the bot's pull request, as on the push to `dev` (the full matrix stays the release pull
+  request's); the matrix expression reads `github.base_ref == 'dev'` beside the push case.
+- The row's three conditions are all required: a person's pull request carrying the `dependencies` label is read as
+  any other, and so is a bot pull request into `main`. `pr-fields.yml` gains the `labeled` type because Dependabot
+  applies the label after the open, so an `opened` payload may not carry it yet; the later `labeled` event re-runs
+  the check (the linked-issue workflow already fires on `labeled`).
+- The groups are named `actions-minor-and-patch` and `python-minor-and-patch`, `patterns: ["*"]`, `update-types:
+  ["minor", "patch"]`; a major bump is outside every group and arrives alone.
+- The notice reads `a dependency update; the row says: <the row>`, the shape of the merge check's notice.
+- `CONTRIBUTING.md`'s sentence ("Dependency updates arrive as pull requests from the update bot and go through the
+  same review as any change") stays true and is not touched.
+
+**After the merge (the eight open pull requests #4 to #11 against `main`).** A code owner, in this order: on the
+repository's Insights, Dependency graph, Dependabot page, "Check for updates" for `github-actions` and for `uv`, which
+runs the bot with the new configuration; the bot's new pull requests arrive against `dev`, grouped, with the label.
+Each pull request still open against `main` afterwards is closed with a one-line comment naming the route ("dependency
+updates target `dev`; superseded by #n"). Whether the bot closes the `main` pull requests itself as superseded when the
+target changes is observed at that first run; a bump the bot does not recreate against `dev` within that run is
+brought by the next weekly run or by "Check for updates" again. Each new pull request is then merged on its own by a
+code owner after the Tests workflow passes on it, an admin where it moves an action pin, following "Dependency
+updates" on the code owners' page.
