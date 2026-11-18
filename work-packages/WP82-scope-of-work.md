@@ -263,3 +263,94 @@ target changes is observed at that first run; a bump the bot does not recreate a
 brought by the next weekly run or by "Check for updates" again. Each new pull request is then merged on its own by a
 code owner after the Tests workflow passes on it, an admin where it moves an action pin, following "Dependency
 updates" on the code owners' page.
+
+### Amendment 3 (2026-11-17, evening): the gates prepared by command
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 3"), after a release dry run of a content branch was refused by
+the tag rule and a hand-made throwaway version bump missed one of the six places the version is written: "do we need
+to update how we do dry runs or how we prepare our code before dry runs so we don't have these kinds of errors in the
+future. in general i'd prefer to set up our processes to not fail the gate, than relax the gate"; asked where the
+tooling lands, "Amend WP82"; then, on the remote: "i am also seeing branch sprawl on github remote. another SOP we may
+need integrated into our governance work is making sure we're cleaning up after ourselves". No gate is relaxed. The
+amendment joins the governance pull request before it merges.
+
+**Goal added.** **G6** The gates are prepared by command, not by hand: one command writes a version in every place it
+is written, one command runs the repository's checks locally before a report, a push, a pull request or a dry run, and
+the remote carries no branch the rules do not account for.
+
+**Deliverables added.**
+
+- **D-15** `scripts/release_checks.py bump <version> [--date YYYY-MM-DD] --changelog final|stub|none`: the version in
+  every place it is written (`pyproject.toml`, `tradespace.__version__`, `CITATION.cff` and, with `--date`, its
+  `date-released`, the interface contract's manifest and the two values its document quotes), `uv lock` for the
+  lock's own entry, and `CHANGELOG.md` released (`final`: `## [Unreleased]` becomes `## [<version>] - <date>` with a
+  fresh empty `## [Unreleased]` above it), stubbed (`stub`: a one-line throwaway entry for a `qc/` dry run) or left
+  alone (`none`); each changed file printed; a version not PEP 440 or not above the current one refused with nothing
+  written; never a commit. The places are one constant.
+- **D-16** `scripts/release_checks.py gates [--release] [--since origin/dev]`: in order, the attribution grep over the
+  commits since the base, `uv lock --check`, `ruff check`, `ruff format --check`, the test modules that hold the
+  rules, the vocabulary check, `api_surface.py --check`, `check_repo_settings.py` and `branches` (both skipped with a
+  line when `gh` is not authenticated), and with `--release` `version`, `tag` at `HEAD`, `changelog --final`,
+  `version-kind`, `pins` and the paper's mode check; one line per check with its exit code, a verdict, exit 1 on any
+  failure; the docstring names it as the step before a report, a push, a pull request or a dry run.
+- **D-17** The branch rule: `GOVERNANCE.md`, "Branches" (the long-lived three; every other remote branch an open pull
+  request's head, a `qc/*` dry run or the bot's; who deletes what; local worktrees retired at the landing);
+  `.github/governance.toml` `[general] delete_branch_on_merge = true`, compared by `scripts/check_repo_settings.py`
+  from `GET repos/{owner}/{repo}` (runner-checked), the fixture's `repository.json` recorded and edited to the
+  declared value, `tests/test_repo_settings.py` at 70 fields with the drift named; `scripts/release_checks.py
+  branches`, naming a remote branch that is none of these, in `gates`.
+- **D-18** The documents: `docs/code-owners.md` ("Cutting a release": the bump as step 1, `gates --release` before
+  the pull request, the subsection "A dry run" with the cleanup; "Reviewing a candidate": `gates` before approving,
+  the merged branch deleted by the setting, a `qc/*` or stale branch deleted by a code owner; the post-merge list's
+  item 5 and the count 70); `GOVERNANCE.md` ("Criteria are of two kinds": the command; "Branches"); `CHANGELOG.md`
+  under `### Added`; `work-packages/release-checklist-software.md` row R2; this amendment, the decision record (his
+  words, the two failures, "Applied as", the post-merge list's new item), the index row.
+
+**Requirements added.**
+
+- **R-14** `bump` writes every place: on a copy of the tree the old version remains in none of them and the
+  consumers' assertions hold (pyproject = `__version__` = the manifest = the document's two quoted values =
+  `CITATION.cff`; the released entry holds the former unreleased body); the list of places equals the set of tracked
+  files that assign the current version; a version not PEP 440 or not above the current one, a malformed date, an
+  inconsistent tree and an empty unreleased section are refused with nothing written. Checked by
+  `tests/test_release_checks.py`.
+- **R-15** `gates` names the Tests workflow's checks and the release workflow's admissibility checks in order, a
+  failing check fails the verdict and a skipped one does not; the table at the branch head is in the decision record.
+  Checked by `tests/test_release_checks.py` (the list against the workflows; fake green, red and skipped checks) and
+  by the run.
+- **R-16** The settings check names `delete_branch_on_merge` when it differs, locally and on the runner, exits 2 when
+  the repository record is unreadable, and the fixture conforms at 70 fields; `branches` names a stray branch and
+  exits 1, notices a `qc/*` branch, exits 2 without `gh`. Checked by `tests/test_repo_settings.py` and
+  `tests/test_release_checks.py`.
+- **R-17** The docs page carries no package number, "supervisor" or "reviewer"; the vocabulary check adds no term.
+  Checked as R-13.
+
+**Agent's defaults (Amendment 3).**
+
+- The places are one constant, `VERSION_PLACES`, each a file and a pattern that matches once; `uv.lock` is not a
+  place but follows by `uv lock` (`--no-lock` for the tests). `--changelog` is required with no default: the release
+  case and the dry-run case differ, and a forgotten flag should not choose. Without `--date` the changelog heading
+  carries today and `CITATION.cff`'s `date-released` is untouched; with it both are set. A refusal writes nothing; a
+  tree whose places disagree is named, not repaired.
+- The `final` edit leaves an empty `## [Unreleased]` above the released entry and refuses an empty unreleased section
+  (nothing to release). The `stub` entry is one bullet that names itself a dry-run stub, below the unreleased
+  section, so `changelog --final` passes and `version-kind` reads no `Added` or `Removed` section in it.
+- `gates` runs the rule modules, not the fast shard (the shard is CI's; the modules hold the rules this package
+  touches); `check_repo_settings.py` and `branches` are skipped with a line when `gh auth status` fails; the
+  attribution grep reads `--since origin/dev..HEAD` (the whole log when the ref is absent, as the workflow does); the
+  paper's mode check is among the release gates because the admissibility job runs it. A release gate that refuses is
+  reported as it is and fails the verdict; when the release gates alone refuse, the verdict names `bump` and the
+  stub. `gates` without `--release` is a content branch's command.
+- The declaration's table is `[general]`, named for the settings page, since the top-level key `repository` is the
+  repository's name. The field is runner-checked (Metadata), so the post-merge list gains it as item 5, before the
+  verification step, which becomes item 6 at 70 fields.
+- `branches` tolerates `qc/*` (named as a notice, since one dry run may be in flight) and `dependabot/*` (each goes
+  with its pull request); everything else that is not `main`, `dev`, `paper` or an open pull request's head is stray.
+  At the branch head the live remote carries the stray `deps-2026-11` and the dry-run branch `qc/release`; both are
+  a code owner's to delete, not this unit's.
+- The dry-run bump is the next version the rule allows, not always the next patch: `version-kind` refuses a patch
+  where a governed file or the public surface changed since the last tag, so a governance branch rehearses at the
+  next minor; `gates --release` says which before the push.
+- Records ride with the work they record (his word of about 21:45 EST, `WP82-decisions.md`): this amendment's records land
+  in the governance pull request and nowhere else; no record-only commit to `dev` from here.
+

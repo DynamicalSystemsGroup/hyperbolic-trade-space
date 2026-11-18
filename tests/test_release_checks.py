@@ -417,14 +417,14 @@ def test_bump_writes_every_place_and_releases_the_changelog(tmp_path, capsys):
 def test_bump_stub_adds_a_dry_run_entry_and_keeps_the_unreleased_one(tmp_path):
     root = _tree(tmp_path)
     before = _texts(root)
-    changed, problems = rc.bump(root, "0.1.1", None, "stub", lock=False)
+    changed, problems = rc.bump(root, "9.0.1", None, "stub", lock=False)
     assert problems == [] and sorted(changed) == sorted(PLACES | {"CHANGELOG.md"})
     log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
-    assert rc.changelog_section(log, "0.1.1") == rc.STUB_LINE
+    assert rc.changelog_section(log, "9.0.1") == rc.STUB_LINE
     assert rc.changelog_section(log, "Unreleased") == rc.changelog_section(
         before["CHANGELOG.md"], "Unreleased"
     )
-    assert rc.changelog_problems(root, "0.1.1", True) == []
+    assert rc.changelog_problems(root, "9.0.1", True) == []
     # without --date the citation file's release day is untouched
     assert (
         yaml.safe_load(before["CITATION.cff"])["date-released"]
@@ -432,7 +432,7 @@ def test_bump_stub_adds_a_dry_run_entry_and_keeps_the_unreleased_one(tmp_path):
     )
     # `none` leaves the changelog alone
     root2 = _tree(tmp_path / "two")
-    changed, problems = rc.bump(root2, "0.1.1", None, "none", lock=False)
+    changed, problems = rc.bump(root2, "9.0.1", None, "none", lock=False)
     assert problems == [] and "CHANGELOG.md" not in changed
     assert (root2 / "CHANGELOG.md").read_text(encoding="utf-8") == before["CHANGELOG.md"]
 

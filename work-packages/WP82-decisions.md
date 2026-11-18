@@ -88,8 +88,9 @@ Execution runs on `governance-bypass-removal`; the pull request waits for `dev` 
 
 Branch `governance-bypass-removal`, rebased onto `dev` 7b0d7cdf (the paper's route, WP79, landed there while the
 package was scoped); content head 9fa94658. The live check on the branch, `uv run python scripts/check_repo_settings.py`,
-reports five differences, which are the settings he changes on GitHub after Danilo merges the pull request, in this
-order (a runner-checked field first, so the window is short):
+reports five differences (six with Amendment 3's `general.delete_branch_on_merge`), which are the settings he
+changes on GitHub after Danilo merges the pull request, in this order (a runner-checked field first, so the window is
+short):
 
 1. Settings, Rules, Rulesets: the `main-checks` ruleset's required status checks gain `controls` (runner-checked:
    the `controls` job on the push to `dev` is red until this and item 2 are done).
@@ -98,7 +99,8 @@ order (a runner-checked field first, so the window is short):
 3. Settings, Rules, Rulesets, `main-review`: remove the bypass actor (local-only).
 4. Settings, Actions, General, Workflow permissions: read, and untick "Allow GitHub Actions to create and approve
    pull requests" (local-only).
-5. A local run reads `conforming (69 fields)`; `--runner` reads `conforming (62 fields on the runner; 7
+5. Settings, General, Pull Requests: "Automatically delete head branches" on (runner-checked; Amendment 3).
+6. A local run reads `conforming (70 fields)`; `--runner` reads `conforming (63 fields on the runner; 7
    local-only)`; a `--record tests/data/wp78` run replaces the hand-edited fixture with recordings (a follow-up
    commit). Re-run the red `controls` job.
 
@@ -108,7 +110,8 @@ The live lines on the branch before any of that, verbatim: `rulesets: expected [
 `rulesets.main-checks.rules.required_status_checks.required_status_checks: expected ["admissibility", "controls",
 "test (docs)", "test (fast)", "test (slow)"], found ["admissibility", "test (docs)", "test (fast)", "test (slow)"]`;
 `actions.default_workflow_permissions: expected "read", found "write"`;
-`actions.can_approve_pull_request_reviews: expected false, found true`.
+`actions.can_approve_pull_request_reviews: expected false, found true`; and, from Amendment 3,
+`general.delete_branch_on_merge: expected true, found false`.
 
 Decided during execution (the Agent's defaults, noted here): the bug and question rows name the form's required
 fields as their machine side and the triaging code owner as their judged side; the judged rows cite the paragraph of
@@ -197,3 +200,76 @@ under `### Changed`. `.github/dependabot.yml` is not added to the secondary rule
 defaults); the declaration, the fixture and the governed set are unchanged. The eight pull requests against `main` are
 handled after the merge as the amendment says: "Check for updates" on the Dependabot page, the stale ones closed with a
 one-line comment naming the route, each new one merged on its own by a code owner after the Tests workflow passes.
+
+## Amendment 3: the gates prepared by command (2026-11-17, evening)
+
+Two failures earlier in the evening. A release dry run of a content branch at version 0.1.0, pushed to `qc/release`, was
+refused by the `tag` check: `v0.1.0` is on `main`'s merge commit and the package files had changed since it, so the
+head was `taken`, the rule's answer to a released version with changed package files. The throwaway version bump
+then made by hand set five of the six places the version is written and missed the contract document's quoted value;
+`tests/test_interface_contract.py::test_r8_document_quotes_the_manifest` caught it.
+
+His sentence at about 21:10 EST, verbatim:
+
+> do we need to update how we do dry runs or how we prepare our code before dry runs so we don't have these kinds of
+> errors in the future. in general i'd prefer to set up our processes to not fail the gate, than relax the gate
+
+Asked where the release-preparation tooling lands (the one-command version bump, the gates runnable locally, the page
+naming them), with the options "Own package in 0.2", "Amend WP82" and "After 0.2", his answer within minutes, verbatim:
+
+> Amend WP82
+
+At about 21:20 EST, verbatim:
+
+> i am also seeing branch sprawl on github remote. another SOP we may need integrated into our governance work is
+> making sure we're cleaning up after ourselves
+
+**Applied as.** Amendment 3 of `WP82-scope-of-work.md` (goal G6, deliverables D-15 to D-18, requirements R-14 to
+R-17, the Agent's defaults listed there), delivered on the governance branch. No gate is relaxed.
+`scripts/release_checks.py bump <version> --changelog final|stub|none [--date]` writes the version in its six places
+(`pyproject.toml`, `__version__`, `CITATION.cff`, the contract manifest and the two values its document quotes),
+refreshes the lock and edits the changelog for a release or a dry run; `scripts/release_checks.py gates [--release]`
+runs the Tests workflow's checks, the vocabulary, surface, settings and branch checks and, with `--release`, the
+admissibility checks locally, one line each with a verdict, the step before a report, a push, a pull request or a dry
+run; `scripts/release_checks.py branches` names a remote branch the rules do not account for. The branch rule is
+`GOVERNANCE.md`, "Branches", with `delete_branch_on_merge = true` declared in `.github/governance.toml` (`[general]`,
+since the key `repository` is the repository's name) and compared by the settings check from
+`GET repos/{owner}/{repo}` on the runner; live it is `false` today, the sixth difference, item 5 of the post-merge list
+under "Execution" above; the fixture's `repository.json` is recorded and edited to the declared value, 70 fields. The
+dry-run step is "A dry run" on the code owners' page: a throwaway `bump <next version> --changelog stub` commit on
+top of the head, `gates --release` green, pushed to `qc/release`, never merged, deleted after the run; the checklist's
+row R2 says the same.
+
+The runs. At the content head 312a16c2, `gates --release` reads 12 of 15 green and three refusals, each the correct
+answer: `repository settings` (the six live differences, his post-merge list), `branches` (`origin/deps-2026-11`,
+stray, with `qc/release` noticed as a dry-run branch left behind; both a code owner's to delete) and `tag`
+(`v0.1.0 is taken: v0.1.0 is on 74e62fdaf256, which is not an ancestor of 312a16c2cc5a`, a content branch at a
+released version). On a throwaway commit over it, `bump 0.2.0 --changelog stub` (seven files, `uv.lock` among them),
+the same command reads `version: 0.2.0`, `tag: v0.2.0 is new`, `changelog --final` ok, `version-kind: 0.2.0 after
+v0.1.0 is a minor release`, `pins` ok, the paper's mode ok: every release gate green; the commit was dropped. That
+run also caught a test of this amendment that pinned the stub version instead of reading the current one; fixed in
+the records commit.
+
+## Records ride with the work they record (2026-11-17, about 21:45 EST)
+
+Seeing five record-only commits on `dev` tonight (the driver log, the decisions files, the checklists, the board,
+pushed under his identity as events happened), his question at about 21:43 EST, verbatim:
+
+> so you are committing the notes from our conversation direct to dev?
+
+Asked where the process records (the driver log, the decisions files, the checklists, the board) go from here, with
+the options "Direct to dev, as now", "Batched pull request" and "With the work they record" (records ride in the
+package's own pull request and nowhere else; between pull requests they live only in the working tree or outside the
+repository), his answer at about 21:45 EST, verbatim:
+
+> With the work they record
+
+**Applied as.** No record-only commit to `dev` from here. Each package's records (its decisions file with his words,
+its review, its rows in the index, the checklists it ticks, the board, the driver log's entries about it) land in
+that package's pull request; between pull requests they are in the working tree or in the driver's notes outside the
+repository. The five record commits of 2026-11-17 evening stay as history. The rule is one sentence in
+`work-packages/README.md` ("Branching"); `GOVERNANCE.md`'s sentence on how a governed file is edited is about governed
+files and is left as it is; `CLAUDE.md` is not edited. The times written in the driver's entries on `dev` for the
+evening of 2026-11-17 after 20:45 EST run ahead of the clock by up to two hours (the entries' sequence is right; the
+commit timestamps of 1f154885, eeab5201, faee0f9c, 068e79d9 and 924e253c are the record).
+
