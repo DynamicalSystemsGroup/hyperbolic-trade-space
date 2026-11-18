@@ -866,3 +866,33 @@ Verbatim:
 (`pip install tradespace`, `uv add tradespace`), the clone-and-sync form kept for work on the package; verified in a
 fresh virtual environment outside the repository once PyPI served 0.1.0 (01:35Z), the command and its output in the
 unit's record on `v0.2`.
+
+## The Dependabot pull requests (2026-11-17, 20:50 to 21:15 EST)
+
+With a screenshot of pull requests #4 to #11 (eight bumps by Dependabot, each "Review required", 15 of 18 checks
+failing), verbatim:
+
+> we're going to need to handle this stuff. in v0.2 if possible
+
+The driver's finding: `.github/dependabot.yml` named no target branch, so the bumps targeted `main` and were judged
+as releases (the release admissibility, the template fields and the linked-issue rule failed; `controls` and the
+three test shards passed on every one). Asked where the route lands, with the options "Amend WP82", "Own package in
+0.2" and "After 0.2", his answer, verbatim:
+
+> Amend WP82
+
+Then, after removing the `draft` labels on #12 and #13 himself (the label gate recorded a code owner on each),
+verbatim:
+
+> i unmarked draft on the 0.2 issues. i also think we should extend our governance PR content to provide instructions
+> for how dependabot PRs should be handled since it seems like they will be a common occurance (some of our
+> dependencies are advancing rather quickly)
+
+**Applied as.** Amendment 2 of `WP82-scope-of-work.md`: `.github/dependabot.yml` targets `dev`, names the
+`dependencies` label and groups minor and patch bumps into one weekly pull request per ecosystem with majors on
+their own; the pull request checks pass a dependency update by the bot against `dev` with the label; the Tests
+workflow runs on such pull requests as on a push to `dev`; a code owner merges, an admin where an action pin moves;
+the row in `.github/PR_ADMISSIBILITY.md`; the steps for a code owner as the section "Dependency updates" of
+`docs/code-owners.md`, in brief in `GOVERNANCE.md`. After the merge a code owner triggers Dependabot's check for
+updates and closes the eight against `main` with a comment naming the route. The governance pull request #16 carries
+WP82 with both amendments.

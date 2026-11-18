@@ -2711,3 +2711,14 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   `v0.2` (31 commits over 0dc2f4d2, the register rows renumbered) and committed the README unit at 9e64d44d (fast
   suite 2,045 passed); pushed, pull request #15 opened as a draft (`closes #13`; both admissibility checks green),
   marked ready after the fresh-venv install against PyPI. The `draft` labels are his to remove.
+- **The two 0.2 pull requests are open (20:55 to 21:45).** #15, the documentation update (`v0.2` into `dev`, closes
+  #13; head 6dd538a6 with the README unit and the install verified against PyPI in a fresh environment; fast suite
+  2,045 at the unit's head; both admissibility checks green; marked ready for Danilo at 21:00). #16, the governance
+  update (`governance-bypass-removal` into `dev`, closes #12; head 5c4c6471 = WP82 rebased onto 0dc2f4d2 + the two
+  docs-page rewordings + amendment 1 (the versioning rule, the surface record, `version-kind`) + amendment 2 (the
+  Dependabot route with his instructions ask). Verified at 5c4c6471 by the driver: lint, format, lock, `pins`, the
+  checker on the fixture (69 fields), the surface check, `version-kind` (`v0.1.0 is already a tag`), vocabulary 0
+  new, 152 targeted tests, the fast suite 2,059 passed; no attribution line in 21 commits. Both units' reports and
+  the driver's re-runs agree. The `draft` labels on #12 and #13 removed by him (the label gate green on both).
+  His words of 20:50 to 21:15 verbatim in `WP64-decisions.md`. After Danilo merges #16 he changes the five settings
+  in order and runs Dependabot's check for updates; the eight bumps against `main` close then.
