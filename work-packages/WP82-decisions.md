@@ -138,3 +138,29 @@ fixed or dispositioned; the code owners' page captured). His answer, verbatim:
 
 The pull request into `dev` opens after `dev` is in `main` for 0.1, for `danlessa` to review and merge; then his five
 settings changes in the order under "Execution".
+
+## Amendment 1: the versioning rule (2026-11-17, evening)
+
+His words, in this order, verbatim:
+
+> i recommend we also indicate that the governance update is the reason why this qualifies as an 0.2.0 rather than an
+> 0.1.1 since documentation updates since didn't touch the optimizer just the documentation and the governance
+> machinery
+
+> i think we probably need to ensure we have explicit guidance and checks for semantic versioning. this also probably
+> amounts to changes in the governance
+
+Asked where the versioning rule lands (amend WP82: the rule, the surface record and the check join the 0.2 governance
+pull request before it opens; its own package in 0.2; its own package after 0.2). His answer, verbatim:
+
+> Amend WP82
+
+**Applied as.** Amendment 1 of `WP82-scope-of-work.md` (goal G4, deliverables D-7 to D-10, requirements R-8 to R-10,
+the Agent's defaults listed there), delivered on the governance branch before the pull request opens: a `## Versions`
+section in `GOVERNANCE.md` (the patch, minor and major rule while the major is 0; the executable and the judged side;
+the sentence that 0.2.0 is minor for the governance update with the package's code unchanged since 0.1.0); the public
+surface as the record `tests/data/api_surface.json`, written by `scripts/api_surface.py` and held equal to the package
+by `tests/test_api_surface.py`; the release check `scripts/release_checks.py version-kind` in `release.yml`'s
+admissibility job, with its tests; the machine row and the judged part in `.github/RELEASE_ADMISSIBILITY.md`, the test
+named in `.github/PR_ADMISSIBILITY.md`, the rule on the code owners' page, the changelog entry under `### Added`. The
+secondary-rules list and the declaration are unchanged: the record is a record, not a rule.

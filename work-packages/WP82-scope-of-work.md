@@ -120,3 +120,63 @@ None. His answers of 2026-11-17 are quoted in `WP82-decisions.md`.
   heading.
 - The `Tools used` section of the pull request names uv, ruff, pytest and the GitHub CLI; his line on AI tools is his
   to write.
+
+## Amendments
+
+### Amendment 1 (2026-11-17, evening): the versioning rule and its check
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 1"): "i recommend we also indicate that the governance update is
+the reason why this qualifies as an 0.2.0 rather than an 0.1.1 since documentation updates since didn't touch the
+optimizer just the documentation and the governance machinery"; "i think we probably need to ensure we have explicit
+guidance and checks for semantic versioning. this also probably amounts to changes in the governance"; asked where the
+rule lands, "Amend WP82". The amendment joins the governance pull request before it opens.
+
+**Goal added.** **G4** The version number's meaning is a stated rule with an executable side and a judged side, and
+0.2.0 is named a minor release for the governance update, the package's code unchanged.
+
+**Deliverables added.**
+
+- **D-7** `GOVERNANCE.md`, a `## Versions` section: while the major is 0, a patch release changes neither the public
+  surface nor a governed file; a minor release adds capability, changes the surface or changes a secondary rule; the
+  major stays 0 until a release whose surface is a commitment; what is executable and what is judged; the sentence on
+  0.2.0.
+- **D-8** The public surface as a record: `scripts/api_surface.py` (by import and `inspect`; sorted JSON; `--write`,
+  `--check` naming each differing entry), `tests/data/api_surface.json` committed, `tests/test_api_surface.py` holding
+  the record equal to the package with the rewrite command in its failure message.
+- **D-9** `scripts/release_checks.py version-kind`: the version against the highest `v*` tag below it; the bump named;
+  a patch release refused for a changed record (or, for a previous tag without a record, a surface that differs from
+  the one computed from the tag's `src`), a changed governed file (the declaration's `governed_files` paths) or an
+  `Added` or `Removed` section in the entry; the first release and an already-tagged version pass with a notice; a
+  step in `release.yml`'s admissibility job; tests on temporary repositories with tags.
+- **D-10** The rows: a machine row in `.github/RELEASE_ADMISSIBILITY.md` and the judged part (the entry names what
+  moved the number) in its fitness row; the test named in `.github/PR_ADMISSIBILITY.md`'s conformance row; the rule in
+  `docs/code-owners.md` ("Cutting a release"); the changelog entry under `### Added`; this amendment and the decision
+  record; the index row.
+
+**Requirements added.**
+
+- **R-8** `uv run python scripts/api_surface.py --check` exits 0 at the head, and `tests/test_api_surface.py` fails
+  when the record is stale. Checked by running both (the test's own stale-record case).
+- **R-9** `uv run python scripts/release_checks.py version-kind` classifies patch, minor and major, and refuses each
+  of the three patch conditions with one line per difference. Checked by `tests/test_release_checks.py`.
+- **R-10** `tests/test_release_workflows.py` and `tests/test_release_checks.py` name the step among the gates; the
+  dry-run and TestPyPI paths of `release.yml` are unchanged. Checked by those tests and by reading the job's `if`.
+
+**Agent's defaults (Amendment 1).**
+
+- The record leaves out `__version__` (the version is what the rule classifies) and a class's inherited methods (the
+  base's surface); properties are not recorded; module constants are recorded with their value; a module without
+  `__all__` contributes the public names it defines.
+- The previous release is the highest `v*` tag strictly below the version by version order (a final release above its
+  pre-releases); a tag equal to the version is the redeploy case and passes with a notice, the `tag` check deciding.
+- The bump is the first of the three numbers that moved; a pre-release of a higher number is classified by its number.
+- The patch check reads the committed record at the head (held equal to the package by the test), not a fresh import,
+  so the admissibility job needs no import of the package unless the previous tag lacks a record; that fallback runs
+  `scripts/api_surface.py` in a fresh interpreter over `git archive <tag> src`, so the workflow step runs under
+  `uv run --locked` (the project environment) rather than `--no-project`.
+- The step is skipped on a site-only merge, as the changelog step is; a patch release whose entry is still under
+  `## [Unreleased]` (a dry run) has its sections not read, with a notice.
+- The judged part is folded into the existing fitness row rather than a second fitness row, so the secondary-rules list
+  and the declaration's `by` field ("the fitness row", singular) stay true.
+- Nothing is added to the secondary-rules list: the record is a record, not a rule; the interface contract is not
+  amended, since no package surface changes.
