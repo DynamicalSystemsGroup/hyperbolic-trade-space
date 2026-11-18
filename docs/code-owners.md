@@ -92,13 +92,17 @@ conformance by running the check, fitness by looking and signing the judgement. 
 ## Cutting a release
 
 1. On `dev`: set `version` in `pyproject.toml` (and `uv lock` to refresh `uv.lock`), move the Unreleased entries
-   in `CHANGELOG.md` under the new version with the date, and commit.
+   in `CHANGELOG.md` under the new version with the date, and commit. The bump follows the rule in
+   `GOVERNANCE.md` ("Versions"): a patch release leaves the package's public names and signatures (the record
+   `tests/data/api_surface.json`) and the governed files untouched; a minor release adds capability, changes those
+   names or signatures, or changes a governed file; the changelog entry names what moved the number.
 2. Optionally dispatch the Release workflow on `dev` with target `testpypi` (a candidate version such as
    `0.1.0rc1` can be published only once per version). The suite runs first. Install from TestPyPI and try it.
 3. Open the pull request from `dev` into `main`, closing a release issue ("Release 0.1.0"). Its checks are the
    three test shards and `admissibility`. `admissibility` refuses the pull request unless the version is new (or
-   the merge is site-only, below), the changelog has the entry, the lock is current and every action is pinned; it
-   also refuses while a Release run on `main` is queued or in progress. Stage the site, review it, and record the
+   the merge is site-only, below), the changelog has the entry, the bump matches what changed since the previous
+   tag (`scripts/release_checks.py version-kind`), the lock is current and every action is pinned; it also refuses
+   while a Release run on `main` is queued or in progress. Stage the site, review it, and record the
    review in the release issue.
 4. Merge it (merge commit). One release pull request at a
    time, merged after the previous Release run has ended.

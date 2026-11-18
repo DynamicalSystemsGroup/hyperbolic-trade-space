@@ -107,6 +107,33 @@ Attestation: a release's run summary and its GitHub release notes carry the line
 local-only)`, so the release states which rules were declared, at which commit, that they were in effect when it was
 made, and which fields a code owner checks by hand.
 
+## Versions
+
+The version in `pyproject.toml` is `major.minor.patch`, and the number says what kind of change a release is. While
+the major is 0:
+
+- A patch release (0.x.y to 0.x.y+1) changes neither the package's public surface nor any governed file: fixes,
+  documentation, internal code, the site.
+- A minor release (0.x to 0.x+1.0) adds capability, changes the public surface, or changes a secondary rule (a
+  governed file): a change to how a release is made is a change to the release itself.
+- The major stays 0 until a release whose surface is a commitment; after that release, a breaking change to the
+  surface moves the major.
+
+The public surface is the record `tests/data/api_surface.json`: each public module of `tradespace`, its public
+names, for a class its own methods with their signatures, for a function its signature, for a constant its value.
+`scripts/api_surface.py --write` writes it from the package, and `tests/test_api_surface.py` holds it equal to the
+package, so a pull request that changes the surface rewrites the record and names the change in the changelog.
+
+Executable: `scripts/release_checks.py version-kind`, in the release workflow's admissibility job, reads the version
+and the highest `v*` tag below it, names the bump, and for a patch release refuses a changed record, a changed
+governed file (`git diff` against the tag over the declaration's `governed_files` paths) and an `Added` or
+`Removed` section in the version's changelog entry; a minor or major release passes with the bump printed. Judged:
+whether the changelog's entry names what moved the number, by the code owner who merges the release
+(`.github/RELEASE_ADMISSIBILITY.md`, the fitness row).
+
+0.2.0 is a minor release because of the governance update: the bypass removal, the control on the governed files
+and the admissibility rows change the secondary rules, while the package's code is unchanged since 0.1.0.
+
 ## How the repository is organised
 
 - `src/tradespace/`: the package; `tests/`: its suite, the docs and site checks, and the checks of the rules on this page.
@@ -124,8 +151,8 @@ change to the paper, with the template's `Paper` section filled), and name the i
 
 Criteria are of two kinds. Executable: the rows marked machine in the three admissibility documents, run by the
 issue and pull request workflows, the test workflow (lint, format, lock, the three test shards, the attribution
-check) and the release workflow (version, tag, changelog, pins, bill of materials, merge, the PyPI hash check), and
-the `controls` job. Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
+check) and the release workflow (version, tag, changelog, version kind, pins, bill of materials, merge, the PyPI hash
+check), and the `controls` job. Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
 in `CONTRIBUTING.md` ("Review is against the scope") and the code owners' page (`docs/code-owners.md`, "Reviewing a
 candidate" and "Cutting a release"); each judged row names its guideline. A check with no row, or a judged criterion
 with no guideline, is a gap, listed for decision in `work-packages/WP78-rounds/gaps.md` (the items he decided on

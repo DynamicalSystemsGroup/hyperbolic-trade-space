@@ -7,6 +7,16 @@ All notable changes to this project are recorded here, in the format of
 
 ## [Unreleased]
 
+### Added
+
+- The versioning rule and its check (`GOVERNANCE.md`, "Versions"): while the major is 0, a patch release changes
+  neither the package's public surface nor a governed file, and a minor release adds capability, changes the surface
+  or changes a secondary rule, so this governance update makes the next release 0.2.0 and not 0.1.1, the package's
+  code unchanged since 0.1.0. The public surface is the record `tests/data/api_surface.json`, written by
+  `scripts/api_surface.py` and held equal to the package by `tests/test_api_surface.py`; the release check
+  `scripts/release_checks.py version-kind` names the bump against the previous `v*` tag and refuses a patch release
+  that changes the record, a governed file, or adds or removes a changelog section (WP82, Amendment 1).
+
 ### Removed
 
 - The `main-review` bypass carried for the 0.1 release (one user, `mzargham`, on pull requests): removed from the
