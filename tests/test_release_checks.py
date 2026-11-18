@@ -1,7 +1,7 @@
 """The release gates of scripts/release_checks.py: the changelog entry, the action pins, the bill
 (verification cases VC-6 to VC-8 in 4f81a4ea:work-packages/WP47-rounds/checks.md), and the tag
 state, the merge commit and the PyPI hashes (specification 1.2 and 1.3, with the site-only
-merge)."""
+merge), and the version kind (the versioning rule of GOVERNANCE.md, "Versions")."""
 
 import hashlib
 import importlib.util
@@ -94,6 +94,7 @@ def test_the_release_workflow_runs_every_gate():
         "release_checks.py tag",
         "release_checks.py merge",
         "release_checks.py pypi",
+        "release_checks.py version-kind",
         "paper_mode.py check --stage served",
         "uv lock --check",
         "check_repo_settings.py",
@@ -206,3 +207,150 @@ def test_pypi_hashes_must_equal_the_dist(tmp_path):
 
     problems = rc.pypi_problems("0.1.0", dist, fetch=absent, attempts=2, wait=0)
     assert problems == ["PyPI has no version 0.1.0"] and calls == ["0.1.0", "0.1.0"]
+
+
+# ------------------------------------------------------------------ the versioning rule
+
+
+def test_version_keys_order_releases_and_pre_releases():
+    order = ["0.1.0", "0.1.1", "0.2.0a1", "0.2.0rc1", "0.2.0", "1.0.0"]
+    assert sorted(order, key=rc.parse_version) == order
+    assert rc.parse_version("v0.1.0") == rc.parse_version("0.1.0")
+    assert rc.parse_version("paper-2") is None and rc.parse_version("0.1") is None
+    tags = ["v0.1.0", "v0.1.1", "v0.2.0", "paper-1", "v0.3.0rc1"]
+    assert rc.previous_release(tags, "0.1.2") == "v0.1.1"
+    assert rc.previous_release(tags, "0.3.0") == "v0.3.0rc1"
+    assert rc.previous_release(tags, "0.1.0") is None
+    assert rc.bump_kind("v0.1.0", "0.1.1") == "patch"
+    assert rc.bump_kind("v0.1.4", "0.2.0") == "minor"
+    assert rc.bump_kind("v0.2.0", "1.0.0") == "major"
+
+
+DECLARATION = (
+    '[[governed_files]]\npath = "GOVERNANCE.md"\n'
+    '[[governed_files]]\npath = ".github/workflows/*.yml"\n'
+)
+RECORD = {"pkg": {"f": {"kind": "function", "signature": "(a)"}}}
+
+
+def _version(repo, version, changelog="## [Unreleased]\n- a\n"):
+    (repo / "pyproject.toml").write_text(f'[project]\nversion = "{version}"\n', encoding="utf-8")
+    (repo / "CHANGELOG.md").write_text(changelog, encoding="utf-8")
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-q", "--allow-empty", "-m", f"version {version}")
+
+
+@pytest.fixture
+def released(tmp_path):
+    """A repository at v0.1.0 with the record, the declaration and a governed file committed."""
+    r = tmp_path / "repo"
+    r.mkdir()
+    _git(r, "init", "-q", "-b", "main")
+    (r / "tests" / "data").mkdir(parents=True)
+    (r / "tests" / "data" / "api_surface.json").write_text(json.dumps(RECORD), encoding="utf-8")
+    (r / ".github" / "workflows").mkdir(parents=True)
+    (r / ".github" / "governance.toml").write_text(DECLARATION, encoding="utf-8")
+    (r / ".github" / "workflows" / "a.yml").write_text("on: push\n", encoding="utf-8")
+    (r / "GOVERNANCE.md").write_text("# Governance\n", encoding="utf-8")
+    _version(r, "0.1.0", "## [0.1.0]\n### Added\n- the package\n")
+    _git(r, "tag", "-a", "v0.1.0", "-m", "v0.1.0")
+    return r
+
+
+def _kind(repo, capsys):
+    code = rc.main(["--root", str(repo), "version-kind", "--package", "pkg"])
+    out = capsys.readouterr()
+    return code, out.out, [line for line in out.err.splitlines() if line.startswith("refused")]
+
+
+@needs_git
+def test_version_kind_first_release_and_redeploy_pass_with_a_notice(repo, capsys):
+    (repo / "pyproject.toml").write_text('[project]\nversion = "0.1.0"\n', encoding="utf-8")
+    code, out, refused = _kind(repo, capsys)
+    assert (code, refused) == (0, []) and "first release" in out
+    _git(repo, "tag", "-a", "v0.1.0", "-m", "v0.1.0")
+    code, out, refused = _kind(repo, capsys)
+    assert (code, refused) == (0, []) and "already a tag" in out
+
+
+@needs_git
+def test_a_patch_release_that_changes_nothing_it_may_not_passes(released, capsys):
+    (released / "docs.md").write_text("a fix\n", encoding="utf-8")
+    _version(released, "0.1.1", "## [0.1.1]\n### Fixed\n- a typo\n## [0.1.0]\n### Added\n- x\n")
+    code, out, refused = _kind(released, capsys)
+    assert (code, refused) == (0, []) and "0.1.1 after v0.1.0 is a patch release" in out
+
+
+@needs_git
+def test_a_patch_release_is_refused_for_each_kind_of_change(released, capsys):
+    changed = {"pkg": {"f": {"kind": "function", "signature": "(a, b)"}}}
+    (released / "tests" / "data" / "api_surface.json").write_text(
+        json.dumps(changed), encoding="utf-8"
+    )
+    (released / "GOVERNANCE.md").write_text("# Governance\nchanged\n", encoding="utf-8")
+    workflow = released / ".github" / "workflows" / "a.yml"
+    workflow.write_text("on: pull_request\n", encoding="utf-8")
+    _version(
+        released,
+        "0.1.1",
+        "## [0.1.1]\n### Added\n- a thing\n### Removed\n- another\n## [0.1.0]\n- x\n",
+    )
+    code, out, refused = _kind(released, capsys)
+    assert code == 1 and "patch release" in out
+    assert refused == [
+        "refused: the public surface changed since v0.1.0 "
+        "(changed: pkg.f: function (a) -> function (a, b)); a patch release keeps it",
+        "refused: GOVERNANCE.md changed since v0.1.0; a patch release changes no governed file",
+        "refused: .github/workflows/a.yml changed since v0.1.0; "
+        "a patch release changes no governed file",
+        "refused: CHANGELOG.md `## [0.1.1]` has a `### Added` section; "
+        "a patch release adds and removes nothing",
+        "refused: CHANGELOG.md `## [0.1.1]` has a `### Removed` section; "
+        "a patch release adds and removes nothing",
+    ]
+    # The same changes under a minor bump pass with the kind printed; a major bump likewise.
+    _version(released, "0.2.0", "## [0.2.0]\n### Added\n- a thing\n")
+    code, out, refused = _kind(released, capsys)
+    assert (code, refused) == (0, []) and "0.2.0 after v0.1.0 is a minor release" in out
+    _version(released, "1.0.0", "## [1.0.0]\n### Removed\n- a thing\n")
+    code, out, refused = _kind(released, capsys)
+    assert (code, refused) == (0, []) and "1.0.0 after v0.1.0 is a major release" in out
+
+
+@needs_git
+def test_a_patch_release_without_an_entry_yet_reads_no_sections(released, capsys):
+    _version(released, "0.1.1")
+    code, out, refused = _kind(released, capsys)
+    assert (code, refused) == (0, []) and "no `## [0.1.1]` entry yet" in out
+
+
+@needs_git
+def test_a_previous_tag_without_a_record_is_read_from_its_source(repo, capsys):
+    """The releases before the rule carry no record: the surface is computed from the tag's src."""
+    _commit(repo, "src/pkg/__init__.py", "__all__ = ['f']\n\n\ndef f(a):\n    return a\n")
+    _git(repo, "tag", "-a", "v0.1.0", "-m", "v0.1.0")
+    # The record at HEAD says what the package is now; the fallback reads v0.1.0's src.
+    same = rc.surface_from_source(repo / "src", "pkg")
+    assert same == {"pkg": {"f": {"kind": "function", "signature": "(a)"}}}
+    (repo / "tests" / "data").mkdir(parents=True)
+    (repo / "tests" / "data" / "api_surface.json").write_text(json.dumps(same), encoding="utf-8")
+    _version(repo, "0.1.1", "## [0.1.1]\n### Fixed\n- a\n")
+    code, _, refused = _kind(repo, capsys)
+    assert (code, refused) == (0, [])
+    widened = {"pkg": {"f": {"kind": "function", "signature": "(a, b=None)"}}}
+    (repo / "tests" / "data" / "api_surface.json").write_text(json.dumps(widened), encoding="utf-8")
+    _version(repo, "0.1.1", "## [0.1.1]\n### Fixed\n- a\n")
+    code, _, refused = _kind(repo, capsys)
+    assert code == 1 and refused == [
+        "refused: the public surface changed since v0.1.0 "
+        "(changed: pkg.f: function (a) -> function (a, b=None)); a patch release keeps it"
+    ]
+
+
+@needs_git
+def test_a_patch_release_without_a_record_in_the_tree_is_refused(repo, capsys):
+    _commit(repo, "x.txt", "x\n")
+    _git(repo, "tag", "-a", "v0.1.0", "-m", "v0.1.0")
+    _version(repo, "0.1.1", "## [0.1.1]\n- a\n")
+    code, _, refused = _kind(repo, capsys)
+    assert code == 1 and refused[0].startswith("refused: tests/data/api_surface.json is missing")

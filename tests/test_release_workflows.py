@@ -121,6 +121,7 @@ def test_release_job_graph():
         "scripts/check_release_version.py",
         "release_checks.py tag --tag",
         "release_checks.py changelog",
+        "release_checks.py version-kind",
         "uv lock --check",
         "release_checks.py pins",
         "scripts/paper_mode.py check --stage served",
