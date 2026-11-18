@@ -134,6 +134,16 @@ whether the changelog's entry names what moved the number, by the code owner who
 0.2.0 is a minor release because of the governance update: the bypass removal, the control on the governed files
 and the admissibility rows change the secondary rules, while the package's code is unchanged since 0.1.0.
 
+## Branches
+
+The long-lived branches are `main`, `dev` and `paper`. Every other branch on the remote is the head of an open pull
+request, a `qc/*` branch for one dry run of the release, or the update bot's branch for its pull request. A pull
+request's branch is deleted at its merge by the repository setting (declared in `.github/governance.toml`,
+`general.delete_branch_on_merge`, and checked by the `controls` job); a `qc/*` branch is deleted after its run by
+whoever pushed it; a bot's branch goes with its pull request. Local worktrees and branches of a landed unit are
+retired at the landing. `uv run python scripts/release_checks.py branches` names a remote branch that is none of
+these, and `gates` runs it.
+
 ## How the repository is organised
 
 - `src/tradespace/`: the package; `tests/`: its suite, the docs and site checks, and the checks of the rules on this page.
@@ -159,7 +169,9 @@ full are "Dependency updates" in `docs/code-owners.md`.
 Criteria are of two kinds. Executable: the rows marked machine in the three admissibility documents, run by the
 issue and pull request workflows, the test workflow (lint, format, lock, the three test shards, the attribution
 check) and the release workflow (version, tag, changelog, version kind, pins, bill of materials, merge, the PyPI hash
-check), and the `controls` job. Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
+check), and the `controls` job; they run locally by one command before a pull request, `uv run python
+scripts/release_checks.py gates` (`--release` adds the release workflow's admissibility checks), one line per check.
+Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
 in `CONTRIBUTING.md` ("Review is against the scope") and the code owners' page (`docs/code-owners.md`, "Reviewing a
 candidate" and "Cutting a release"); each judged row names its guideline. A check with no row, or a judged criterion
 with no guideline, is a gap, listed for decision in `work-packages/WP78-rounds/gaps.md` (the items he decided on

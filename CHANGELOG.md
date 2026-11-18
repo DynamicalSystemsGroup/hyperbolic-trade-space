@@ -16,6 +16,14 @@ All notable changes to this project are recorded here, in the format of
   `scripts/api_surface.py` and held equal to the package by `tests/test_api_surface.py`; the release check
   `scripts/release_checks.py version-kind` names the bump against the previous `v*` tag and refuses a patch release
   that changes the record, a governed file, or adds or removes a changelog section (WP82, Amendment 1).
+- The gates prepared by command: `scripts/release_checks.py bump <version> --changelog final|stub|none [--date]`
+  writes a version in every place it is written and refreshes the lock; `scripts/release_checks.py gates
+  [--release]` runs the Tests workflow's checks, the vocabulary, surface, settings and branch checks and, with
+  `--release`, the release admissibility checks locally, one line each with a verdict; `scripts/release_checks.py
+  branches` names a remote branch that is neither long-lived, an open pull request's head, `qc/*` nor the update
+  bot's. The branch rule (`GOVERNANCE.md`, "Branches") with the setting `delete_branch_on_merge` declared in
+  `.github/governance.toml` and checked by the `controls` job, and the dry-run step on the code owners' page (WP82,
+  Amendment 3).
 
 ### Removed
 

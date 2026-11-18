@@ -39,9 +39,10 @@ admin.
 After the merge of the 0.2 governance change, in this order: 1. `main-checks` gains the required check
 `controls`; 2. the push ruleset `governance-files` is created (active; the nine governed paths; bypass Repository
 admin, always); the `controls` job on the push to `dev` is red until these two are done, then re-run it; 3.
-`main-review` loses its bypass actor; 4. the workflow permissions become read, approving reviews off; 5. your local run
-reads `conforming (69 fields)`, and a `--record` run of `scripts/check_repo_settings.py` into the recorded fixture under
-`tests/data/` replaces the hand-edited files in a follow-up commit.
+`main-review` loses its bypass actor; 4. the workflow permissions become read, approving reviews off; 5. Settings,
+General, Pull Requests: "Automatically delete head branches" on (runner-checked, as items 1 and 2 are); 6. your local
+run reads `conforming (70 fields)`, and a `--record` run of `scripts/check_repo_settings.py` into the recorded fixture
+under `tests/data/` replaces the hand-edited files in a follow-up commit.
 
 Settings, Labels: create `draft` and `small-fix`. The scope-of-work template applies `draft`; a code owner removes it
 to turn a draft into an issue. `small-fix` stands in for an issue on a pull request that fixes a typo or a broken link.
@@ -88,7 +89,10 @@ and the comment. The Release workflow refuses a release while any action is unpi
 Read the pull request template's answers (what changed, what backs it, which tests, defaults, tools used). Run the
 tests and the code yourself, and look at any rendered result (a docs page, a plot, the paper) rather than reading the
 source alone. A claim with no backing is narrowed or dropped. Take the issue's good-enough items one by one:
-conformance by running the check, fitness by looking and signing the judgement. Merge into `dev`. A dependency
+conformance by running the check, fitness by looking and signing the judgement. Before approving, run `uv run python
+scripts/release_checks.py gates` on the branch: the Tests workflow's checks, the vocabulary, surface, settings and
+branch checks, one line each with a verdict. Merge into `dev`; the repository setting deletes the merged branch, and a
+`qc/*` branch or a stale branch the `branches` check names is deleted by a code owner. A dependency
 update, Dependabot's pull request into `dev`, has no template and no issue: its steps are the next section.
 
 ## Dependency updates
@@ -121,28 +125,34 @@ pull request that closes the issue, with the record `tests/data/api_surface.json
 
 ## Cutting a release
 
-1. On `dev`: set `version` in `pyproject.toml` (and `uv lock` to refresh `uv.lock`), move the Unreleased entries
-   in `CHANGELOG.md` under the new version with the date, and commit. The bump follows the rule in
+1. On `dev`: `uv run python scripts/release_checks.py bump 0.2.0 --date <merge day> --changelog final`. It writes
+   the version in every place it is written (`pyproject.toml`, `__version__`, `CITATION.cff` with the date, the
+   interface contract's manifest and document), refreshes `uv.lock`, and moves the Unreleased entries in
+   `CHANGELOG.md` under the new version with the date; commit the files it prints. The bump follows the rule in
    `GOVERNANCE.md` ("Versions"): a patch release leaves the package's public names and signatures (the record
    `tests/data/api_surface.json`) and the governed files untouched; a minor release adds capability, changes those
    names or signatures, or changes a governed file; the changelog entry names what moved the number.
 2. Optionally dispatch the Release workflow on `dev` with target `testpypi` (a candidate version such as
    `0.1.0rc1` can be published only once per version). The suite runs first. Install from TestPyPI and try it.
-3. Open the pull request from `dev` into `main`, closing a release issue ("Release 0.1.0"). Its checks are the
+3. Run `uv run python scripts/release_checks.py gates --release` at the head: the Tests workflow's checks, the
+   repository's own, and the release admissibility checks (`version`, `tag`, `changelog --final`, `version-kind`,
+   `pins`, the paper's mode file) as the pull request will see them, one line each; every line green before the pull
+   request opens.
+4. Open the pull request from `dev` into `main`, closing a release issue ("Release 0.1.0"). Its checks are the
    three test shards and `admissibility`. `admissibility` refuses the pull request unless the version is new (or
    the merge is site-only, below), the changelog has the entry, the bump matches what changed since the previous
    tag (`scripts/release_checks.py version-kind`), the lock is current and every action is pinned; it also refuses
    while a Release run on `main` is queued or in progress. Stage the site, review it, and record the
    review in the release issue.
-4. Merge it (merge commit). One release pull request at a
+5. Merge it (merge commit). One release pull request at a
    time, merged after the previous Release run has ended.
-5. Watch the run. On the merge commit it checks the settings against their declaration, checks admissibility again,
+6. Watch the run. On the merge commit it checks the settings against their declaration, checks admissibility again,
    runs the suite, and builds and checks the
    wheel, the sdist and the software bill of materials (CycloneDX, from the lock). It composes the site, creates
    the tag `v<version>` and a draft release whose notes end with the settings check's attestation, and publishes
    to PyPI, the one step that cannot be undone. Last, it deploys the site and publishes the release (archived by
    Zenodo once the repository is switched on there).
-6. On failure, read the issue the run opens (label `release-failure`). It names the failed job and step, what the
+7. On failure, read the issue the run opens (label `release-failure`). It names the failed job and step, what the
    clean-up removed or kept, and the retry. Before PyPI holds the version, the clean-up removes the tag and the
    draft: a re-run of the whole run, or a new pull request after a fix, starts clean. After PyPI holds it, the
    clean-up keeps them: the retry is a re-run of the failed jobs, or a new version when the cause needs a code
@@ -155,6 +165,17 @@ version unchanged is refused.
 The Release workflow's dispatch on `dev` (target `dry-run`, the default) and a push to a `qc/` branch build, check
 the wheel, the metadata and the bill of materials, compose the site, and publish nothing. Giving the dispatch a
 `tag` input that differs from the package version shows the refusal.
+
+### A dry run
+
+A rehearsal of content on a `qc/` branch is prepared by a throwaway commit on top of the head: `uv run python
+scripts/release_checks.py bump <next version> --changelog stub`, committed, `gates --release` green, pushed with
+`git push origin HEAD:qc/release`, never merged, and the branch deleted after the run (`git push origin --delete
+qc/release`). The next version is the one the rule allows: a patch where neither the package's public names and signatures
+nor a governed file changed since the last tag, otherwise the next minor; `version-kind` in `gates --release` says which before the
+push. The bump is needed because the `tag` check refuses a head whose version is already tagged once the package files
+changed since that tag, and a content branch at a released version is exactly that: the rule doing its job, not a
+reason to relax it. The `branches` check names a `qc/*` branch left behind.
 
 ## Adding a code owner
 
