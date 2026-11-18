@@ -915,3 +915,34 @@ artefacts through `upload-artifact` 7 and `download-artifact` 4.3.0 together). O
 scope-of-work issue once green; the eight closed against it with a comment. The failing checks on the eight were
 the release admissibility, the template fields and the linked-issue rule, since they targeted `main`; their test
 shards were green.
+
+## The gates are prepared, not relaxed (2026-11-17, 22:20 EST)
+
+The release dry run of the dependency branch was refused by the tag rule (`v0.1.0` sits on `main`'s merge commit,
+which is not an ancestor of a `dev`-based head, and the package files had changed), and the driver's hand-made
+throwaway bump to 0.1.1 missed one of the six places the version is written (the contract document's quoted value;
+`tests/test_interface_contract.py` caught it). Verbatim:
+
+> do we need to update how we do dry runs or how we prepare our code before dry runs so we don't have these kinds
+> of errors in the future. in general i'd prefer to set up our processes to not fail the gate, than relax the gate
+
+Asked where the release-preparation tooling lands (the one-command version bump, the gates runnable locally, the
+page naming them), with the options "Own package in 0.2", "Amend WP82" and "After 0.2", his answer, verbatim:
+
+> Amend WP82
+
+Then (22:35 EST), verbatim:
+
+> i am also seeing branch sprawl on github remote. another SOP we may need integrated into our governance work is
+> making sure we're cleaning up after ourselves
+
+**Applied as.** Amendment 3 of `WP82-scope-of-work.md`, on the open governance pull request #16: `release_checks.py
+bump <version>` writes every place the version is written and the changelog heading (a test proves the set of
+places complete); `release_checks.py gates [--release]` runs the executable criteria locally in one command, the
+step before a report, a push, a pull request or a dry run; the dry-run procedure written on the code owners' page (a
+throwaway `bump <next patch> --changelog stub` commit on a `qc/` branch, never merged, deleted after); a "Branches"
+rule in `GOVERNANCE.md` (long-lived `main`, `dev`, `paper`; a pull request's branch deleted at its merge by the
+repository setting, declared as `delete_branch_on_merge` and checked; `qc/*` deleted after its run; a bot's branch
+with its pull request; local worktrees retired at the landing) with `release_checks.py branches` listing the remote
+branches outside the rule, and the setting as item 6 of his list after the merge. Tonight's dry run of the
+dependency branch runs on a hand-made throwaway commit of that shape (`qc/release` at dfcee17a), deleted after.

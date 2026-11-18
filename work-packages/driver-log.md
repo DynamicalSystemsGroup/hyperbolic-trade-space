@@ -2740,3 +2740,14 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   applied by hand (its lines beside `setup-uv`'s). Local: lock clean, ruff 0.17.5 clean, format clean, pins clean,
   79 workflow tests; the fast suite running. Runners: Tests dispatched with Windows (44220588377) and the release
   dry run on `qc/release` (44220587981). The issue and the pull request open on green; the eight close against it.
+- **The dependency branch's dry run, refused then rehearsed (22:05 to 22:45).** The fast suite at 89f7bec3: 2,022
+  passed, 14 skipped (the two beyond `dev`'s twelve are `tests/test_wp45_examples.py`, "archive not fetched" in the
+  fresh worktree, an environment skip, not the bumps). The dry run on `qc/release` at 89f7bec3 (44220587981)
+  refused in admissibility: `v0.1.0 is on 74e62fda, which is not an ancestor of 89f7bec3`: the tag rule, correct for
+  a `dev`-based head at a released version with changed package files. Rehearsed instead on a throwaway commit
+  (version 0.1.1 in the six places, the lock re-locked, a changelog stub), the first attempt missing the contract
+  document's quoted value (caught by `test_r8_document_quotes_the_manifest`; the push at e33cd128 went out on a
+  piped exit code and its run 44221478489 was cancelled), the second at dfcee17a green on the version tests and
+  pushed; its run is watched. The Tests dispatch with Windows (44220588377) runs. His words on preparing the gates
+  and on branch sprawl are in `WP64-decisions.md`; amendment 3 of WP82 is a unit on the pull request's branch. The
+  lesson for the driver: never gate a push on a piped exit code; the bump and the gates become one command each.
