@@ -1,8 +1,18 @@
 # tradespace
 
+[![PyPI](https://img.shields.io/pypi/v/tradespace)](https://pypi.org/project/tradespace/)
+[![Python](https://img.shields.io/pypi/pyversions/tradespace)](https://pypi.org/project/tradespace/)
+[![Tests](https://github.com/DynamicalSystemsGroup/tradespace/actions/workflows/test.yml/badge.svg?branch=dev)](https://github.com/DynamicalSystemsGroup/tradespace/actions/workflows/test.yml?query=branch%3Adev)
+
 `tradespace` learns the shape of a design trade space from evaluated designs, with estimators that
 work in scikit-learn pipelines. For analysts with a table of evaluated designs, or of observed cases
 (reported devices, species, plot-years, finished projects), to learn which metrics trade.
+
+[Getting started](https://dynamicalsystemsgroup.github.io/tradespace/docs/getting-started/) ·
+[Examples](#examples) ·
+[API reference](https://dynamicalsystemsgroup.github.io/tradespace/docs/api-reference/) ·
+[Contribute](CONTRIBUTING.md#start-contributing) ·
+[Report a bug](https://github.com/DynamicalSystemsGroup/tradespace/issues/new?template=bug.yml)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://dynamicalsystemsgroup.github.io/tradespace/ternary-planted-dark.png">
@@ -21,18 +31,14 @@ metric trades against another, and each numbered marker is a term's characterist
 
 ## Install
 
-Python 3.12, from PyPI:
+`tradespace` requires Python 3.12. Install it from PyPI:
 
 ```bash
 pip install tradespace
 ```
 
-In a uv project, `uv add tradespace`. To work on the package itself:
-
-```bash
-git clone https://github.com/DynamicalSystemsGroup/tradespace
-cd tradespace && uv sync
-```
+In a uv project, run `uv add tradespace`. For development setup and checks, see
+[Start contributing](CONTRIBUTING.md#start-contributing).
 
 ## A first fit
 
@@ -76,13 +82,17 @@ working paper uses, a synthetic satellite demonstrator with its SysML v2 system 
 
 ## Contributing
 
-[CONTRIBUTING.md](CONTRIBUTING.md) says who owns a change, how tools fit and how a change moves from
-an idea to a release. [GOVERNANCE.md](GOVERNANCE.md) states the release rules, the file that declares
-their settings and the check that runs first in CI. The
-[code owners' page](https://dynamicalsystemsgroup.github.io/tradespace/docs/code-owners/) is for the
-code owners. Conduct between people: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md); reporting a
-vulnerability: [SECURITY.md](SECURITY.md); what changed in each release: [CHANGELOG.md](CHANGELOG.md).
-To cite the package, use [CITATION.cff](CITATION.cff). The license is MIT.
+Report bugs, improve the docs or add a reproducible example. Follow the
+[contributor quickstart](CONTRIBUTING.md#start-contributing) to set up a checkout and run checks.
+Small fixes need no issue. Discuss new methods and public API changes in an issue before implementing them.
+
+Code owners follow the [release rules](GOVERNANCE.md) and
+[release instructions](https://dynamicalsystemsgroup.github.io/tradespace/docs/code-owners/).
+All contributors must follow the [code of conduct](CODE_OF_CONDUCT.md).
+Report vulnerabilities through the [security policy](SECURITY.md).
+
+See [CHANGELOG.md](CHANGELOG.md) for release changes and [CITATION.cff](CITATION.cff) to cite the package.
+The license is MIT.
 
 ## Layout
 
