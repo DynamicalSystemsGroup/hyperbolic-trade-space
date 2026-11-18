@@ -23,9 +23,9 @@ PAPER_MODULES = {
 }
 
 
-def test_workflow_runs_on_dispatch_call_pull_requests_to_main_and_pushes_to_dev():
+def test_workflow_runs_on_dispatch_call_pull_requests_to_dev_and_main_and_pushes_to_dev():
     assert set(TRIGGERS) == {"push", "pull_request", "workflow_dispatch", "workflow_call"}
-    assert TRIGGERS["pull_request"] == {"branches": ["main"]}
+    assert TRIGGERS["pull_request"] == {"branches": ["dev", "main"]}
     assert TRIGGERS["push"] == {"branches": ["dev"]}
     assert TRIGGERS["workflow_call"]["inputs"]["windows"]["default"] is False
     assert TRIGGERS["workflow_dispatch"]["inputs"]["windows"]["default"] is True

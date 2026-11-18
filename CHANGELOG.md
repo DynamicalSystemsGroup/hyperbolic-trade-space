@@ -9,12 +9,15 @@ All notable changes to this project are recorded here, in the format of
 
 ### Added
 
+- Added a `justfile` for uv setup, tests, formatting and documentation checks.
 - The Kitchenham-CSC example: 141 software projects' scope against schedule and budget slack, with the page
   `docs/examples/kitchenham.md`, the SysML v2 case model, the provenance and analysis code under
   `examples/kitchenham/` and the verification record (WP76).
 
 ### Changed
 
+- Added README navigation and status badges, documented Python 3.12 support and contributor setup,
+  and corrected the release instructions. The Tests workflow now runs on pull requests into `dev`.
 - The docs' links into the paper are withdrawn while the paper is in abstract mode, each pointer the docs' own
   statement or removed as the paper's role; the working paper is named on the docs home, in Further reading, on the
   root page and in the README (WP81).

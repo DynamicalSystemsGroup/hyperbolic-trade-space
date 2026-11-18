@@ -1,8 +1,8 @@
 name: Tests
 
 # The software's suite (the paper's tests run in paper.yml on the paper branch and are deselected here:
-# every shard says `not paper` and the paper switch is never set). Runs on pull requests into main (the
-# required checks `test (fast)`, `test (slow)`, `test (docs)`), when release.yml calls it (Linux only), and
+# every shard says `not paper` and the paper switch is never set). Runs on pull requests into dev and
+# main with the checks `test (fast)`, `test (slow)`, `test (docs)`, when release.yml calls it (Linux only), and
 # on manual dispatch (Linux and, by default, Windows). A push to dev runs lint and the Linux fast shard
 # only (WP67, the external review of 2026-11-16). Windows never runs on a pull request or a push.
 # The first job, controls, checks the repository's settings against .github/governance.toml
@@ -11,7 +11,7 @@ on:
   push:
     branches: [dev]
   pull_request:
-    branches: [main]
+    branches: [dev, main]
   workflow_call:
     inputs:
       windows:
