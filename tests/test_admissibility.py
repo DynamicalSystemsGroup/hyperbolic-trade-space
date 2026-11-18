@@ -291,3 +291,69 @@ def test_the_templates_carry_the_fields_the_checks_read():
     pr = (ROOT / ".github" / "pull_request_template.md").read_text(encoding="utf-8")
     assert all(f"## {f}\n" in pr for f in adm.PR_FIELDS + adm.PAPER_FIELDS)
     assert "Target `dev`" in pr and "`paper`" in pr
+
+
+# The dependency route (the dependency row of PR_ADMISSIBILITY.md): a pull request opened by
+# dependabot[bot] against dev with the `dependencies` label passes the linked-issue and the fields
+# checks with a notice quoting the row; any one of the three conditions missing, it is read as a
+# pull request like any other.
+BOT_BODY = "Bumps [actions/checkout](https://github.com/actions/checkout) from 5.0.0 to 5.1.0.\n"
+
+
+def bot_event(labels=("dependencies",), base="dev", author="dependabot[bot]", **kw):
+    return pr_event(BOT_BODY, labels=labels, base=base, author=author, **kw)
+
+
+@pytest.mark.parametrize("check", ["linked-issue", "pr-fields"])
+def test_a_dependency_update_passes_with_the_row_quoted(tmp_path, capsys, check):
+    assert run(tmp_path, check, bot_event())[0] == 0
+    out = capsys.readouterr().out
+    assert out.startswith("::notice::a dependency update; the row says: A dependency update")
+    assert "stands in for the first three rows" in out and "::error::" not in out
+
+
+@pytest.mark.parametrize("check", ["linked-issue", "pr-fields"])
+@pytest.mark.parametrize(
+    "event",
+    [
+        bot_event(labels=()),  # no label
+        bot_event(base="main"),  # a pull request into main is judged as a release
+        bot_event(author="alice"),  # a person with the label is not the bot
+        bot_event(author="alice", labels=()),
+    ],
+    ids=["no-label", "into-main", "a-person", "a-person-unlabelled"],
+)
+def test_a_pull_request_missing_one_of_the_three_conditions_is_read_as_any_other(
+    tmp_path, capsys, check, event
+):
+    assert run(tmp_path, check, event)[0] == 1
+    assert "::notice::" not in capsys.readouterr().out
+
+
+def test_a_dependency_update_is_merged_by_a_code_owner_without_a_notice(tmp_path, capsys):
+    ev = bot_event(action="closed", merged=True, merger="alice")
+    assert run(tmp_path, "merge", ev, "*   @alice @bob\n")[0] == 0
+    assert "::notice::" not in capsys.readouterr().out
+    ev = bot_event(action="closed", merged=True, merger="eve")
+    assert run(tmp_path, "merge", ev, "*   @alice @bob\n")[0] == 1
+
+
+def test_dependabot_targets_dev_with_the_label_the_row_reads():
+    config = yaml.safe_load((ROOT / ".github" / "dependabot.yml").read_text(encoding="utf-8"))
+    updates = config["updates"]
+    assert {u["package-ecosystem"] for u in updates} == {"github-actions", "uv"}
+    for update in updates:
+        assert update["target-branch"] == adm.DEV_BRANCH, update
+        assert update["labels"] == [adm.DEPENDENCIES], update
+        assert update["schedule"] == {"interval": "weekly"}, update
+        # minor and patch bumps arrive as one pull request per ecosystem; a major comes on its own
+        (group,) = update["groups"].values()
+        assert group == {"patterns": ["*"], "update-types": ["minor", "patch"]}, update
+
+
+def test_the_fields_workflow_fires_when_the_label_arrives_after_the_open():
+    wf = yaml.safe_load(
+        (ROOT / ".github" / "workflows" / "pr-fields.yml").read_text(encoding="utf-8")
+    )
+    on = wf.get("on", wf.get(True))
+    assert on["pull_request_target"] == {"types": ["opened", "edited", "synchronize", "labeled"]}

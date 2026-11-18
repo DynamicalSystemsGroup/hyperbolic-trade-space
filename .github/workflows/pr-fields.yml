@@ -1,10 +1,11 @@
 name: Pull request fields
 
-# VC-4. Trigger: a pull request opened, edited or pushed to. Same safety as pr-linked-issue.yml: the base
-# branch is checked out and the description is read as data.
+# VC-4. Trigger: a pull request opened, edited, pushed to or labelled (Dependabot applies the `dependencies`
+# label after the open, and the dependency row reads it). Same safety as pr-linked-issue.yml: the base branch
+# is checked out and the description is read as data.
 on:
   pull_request_target:
-    types: [opened, edited, synchronize]
+    types: [opened, edited, synchronize, labeled]
 
 permissions:
   contents: read

@@ -14,6 +14,10 @@ as a command and calls no network service; the workflows do the commenting and t
                    one merged into ``paper``, by a paper approver (the ``paper/`` line), not its
                    author
 
+A dependency update, a pull request opened by ``dependabot[bot]`` against ``dev`` with the
+``dependencies`` label, passes ``linked-issue`` and ``pr-fields`` with a notice that quotes its
+row: its description is Dependabot's own and it names no issue.
+
     uv run --no-project python scripts/admissibility.py issue --event e.json --report r.md
 """
 
@@ -28,6 +32,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DRAFT = "draft"
 SMALL_FIX = "small-fix"
+DEPENDENCY_BOT = "dependabot[bot]"  # the author of a dependency update
+DEPENDENCIES = "dependencies"  # its label (.github/dependabot.yml names it)
+DEV_BRANCH = "dev"
 ISSUE_FIELDS = (
     "Scope",
     "Non-goals",
@@ -170,10 +177,26 @@ def label_gate_problems(event: dict, owners: set[str]) -> list[str]:
     return [f"`{DRAFT}` was removed by @{event['sender']['login']}, who is not a code owner"]
 
 
+def is_dependency_update(pr: dict) -> bool:
+    """A dependency update: opened by the bot, labelled ``dependencies``, against ``dev``.
+
+    >>> pr = {"user": {"login": "dependabot[bot]"}, "labels": [{"name": "dependencies"}],
+    ...       "base": {"ref": "dev"}}
+    >>> is_dependency_update(pr), is_dependency_update({**pr, "base": {"ref": "main"}})
+    (True, False)
+    """
+    labels = {label["name"] for label in pr.get("labels", [])}
+    return (
+        (pr.get("user") or {}).get("login", "").lower() == DEPENDENCY_BOT
+        and DEPENDENCIES in labels
+        and pr["base"]["ref"] == DEV_BRANCH
+    )
+
+
 def linked_issue_problems(event: dict) -> list[str]:
     pr = event["pull_request"]
     labels = {label["name"] for label in pr.get("labels", [])}
-    if SMALL_FIX in labels or CLOSING.search(pr.get("body") or ""):
+    if SMALL_FIX in labels or CLOSING.search(pr.get("body") or "") or is_dependency_update(pr):
         return []
     return [
         f"the description names no issue it resolves (`closes #n`) and has no `{SMALL_FIX}` label"
@@ -181,8 +204,12 @@ def linked_issue_problems(event: dict) -> list[str]:
 
 
 def pr_field_problems(event: dict) -> list[str]:
-    """The template's sections, and the ``Paper`` section on a pull request into ``paper``."""
+    """The template's sections, and the ``Paper`` section on a pull request into ``paper``.
+
+    A dependency update's description is Dependabot's own and stands in for the template."""
     pr = event["pull_request"]
+    if is_dependency_update(pr):
+        return []
     found = sections(pr.get("body") or "", "## ")
     fields = PR_FIELDS + (PAPER_FIELDS if pr["base"]["ref"] == PAPER_BRANCH else ())
     return [
@@ -192,12 +219,22 @@ def pr_field_problems(event: dict) -> list[str]:
     ]
 
 
-def merge_row(root: Path = ROOT) -> str:
-    """The pull request admissibility row about the merge, quoted in the notice."""
+def _row(root: Path, start: str) -> str:
+    """The pull request admissibility row that starts with ``start``, quoted in a notice."""
     text = (root / ".github" / "PR_ADMISSIBILITY.md").read_text(encoding="utf-8")
-    row = next(ln for ln in text.splitlines() if ln.startswith("| It is merged by a code owner"))
+    row = next(ln for ln in text.splitlines() if ln.startswith(start))
     cells = [c.strip() for c in row.strip().strip("|").split(" | ")]
     return f"{cells[0]} ({cells[1]}): {cells[2]}"
+
+
+def merge_row(root: Path = ROOT) -> str:
+    """The pull request admissibility row about the merge."""
+    return _row(root, "| It is merged by a code owner")
+
+
+def dependency_row(root: Path = ROOT) -> str:
+    """The pull request admissibility row about a dependency update."""
+    return _row(root, "| A dependency update")
 
 
 def merge_problems(
@@ -265,10 +302,14 @@ def main(argv: list[str] | None = None) -> int:
         problems = issue_problems(event)
     elif args.check == "label-gate":
         problems = label_gate_problems(event, owners)
-    elif args.check == "linked-issue":
-        problems = linked_issue_problems(event)
-    elif args.check == "pr-fields":
-        problems = pr_field_problems(event)
+    elif args.check in ("linked-issue", "pr-fields"):
+        problems = (
+            linked_issue_problems(event)
+            if args.check == "linked-issue"
+            else pr_field_problems(event)
+        )
+        if is_dependency_update(event["pull_request"]):
+            notices = [f"a dependency update; the row says: {dependency_row(args.root)}"]
     else:
         problems, notices = merge_problems(
             event, owners, args.root, paper_approvers(args.codeowners)
