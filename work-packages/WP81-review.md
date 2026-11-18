@@ -92,12 +92,15 @@ session's brief: the README reflects the released state; the docs' install text 
 | The layout, line by line against the tree | met | `ls` of the root: seven lines keep `src/`, `docs/`, `examples/` (five examples; `examples/adcs/` named), `paper/` and `site/`, `derivation/`, `tests/` and `scripts/`, `work-packages/` and `notes/`; dropped: the register, `glossary.yaml` and `history.yaml`, `CLAUDE.md`, `mkdocs.yml`, `Dockerfile`, `pyproject.toml`, `uv.lock`, `.python-version`, `LICENSE`, `.github/` and the dot-files (a user does not open them); `CHANGELOG.md` and `GOVERNANCE.md` are linked in Contributing |
 | No metanarration | met | `scripts/check_residuals.py`: `README.md` metanarration 0; no opener of the kind on the README or the page |
 | Vocabulary check | met | `uv run python scripts/check_vocabulary.py`: 0 new violations, 67 known |
-| Rendered in a browser, captured | met | the README rendered through GitHub's own Markdown renderer (`gh api /markdown`, file mode) with GitHub's stylesheet, served locally and captured headless at 1280 px, light and dark: `WP81-rounds/readme/readme-1280-{light,dark}.png`, `captures.json` (no console error, no sideways scroll); the branch is pushed by the driver session, so the blob view on GitHub is the same renderer on the same text |
-| The install verified against PyPI | see below | a fresh virtual environment outside the repository, `uv venv` and `uv pip install tradespace`, then the first fit; recorded once PyPI serves 0.1.0 |
+| Rendered in a browser, captured | met | the README rendered through GitHub's own Markdown renderer (`gh api /markdown`, file mode) with GitHub's stylesheet, served locally and captured headless at 1280 px, light and dark: `WP81-rounds/readme/readme-1280-{light,dark}.png`, `captures.json` (no console error, no sideways scroll); after the driver session pushed the branch, the blob view on GitHub at 9e64d44d captured the same way: `readme-github-blob-9e64d44d-1280-light.png`, the same rendering |
+| The install verified against PyPI | met | PyPI served `tradespace` 0.1.0 at 01:35 UTC (the Release run 44207809538 green; tag `v0.1.0` on 74e62fda). In a fresh virtual environment outside the repository: `uv venv venv --python 3.12`, `uv pip install --python venv/bin/python tradespace` (`+ tradespace==0.1.0`), `__version__` `0.1.0`, then the getting-started block prints `trilemma [0 1 2]` and `[0.3  0.37 0.33]`; the commands and their output verbatim in `WP81-rounds/readme/pypi-install.txt` |
 
 Observations: the residual checker, against its baseline of `c0fe11b` (stale for the whole tree, WP76 G-1), reports the
 README's compound sentences 1 to 3, acronyms at first use 0 to 3 (PyPI, MIT, API, names in a README) and glossary
 terms at first use 1 to 6 (the first-fit paragraph's terms, defined on the getting-started page it links); the README
 grew from 191 to about 370 prose words. The README on `dev` since 0.1 (WP78's pointer at `GOVERNANCE.md`) is kept
-in the Contributing paragraph.
+in the Contributing paragraph. With the 0.1 site deployed, every address the README links to answers 200 except the
+Kitchenham page, which is this branch's content (WP76) and is served from the 0.2 release; the link holds on the branch
+and in the pull request's review, and dangles on the live site until then.
 
+The fast suite at the unit's head 9e64d44d (`uv run pytest -q -m "not slow and not paper"`): 2,045 passed, 12 skipped, 2 xfailed.

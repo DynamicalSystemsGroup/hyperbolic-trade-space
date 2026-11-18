@@ -188,3 +188,6 @@ paragraph. On the docs, the one install block (`docs/getting-started.md`) leads 
 on the package, within the page's budget of 348 words. His acceptance is given in the driver session when it shows him
 the rendered README; the review is in `WP81-review.md` ("Unit 4"); the captures are `WP81-rounds/readme/`.
 
+The install was verified once the release landed (01:35 UTC): PyPI serves 0.1.0, and in a fresh virtual environment outside
+the repository the getting-started block prints the page's two lines (`WP81-rounds/readme/pypi-install.txt`,
+`WP81-review.md` "Unit 4").

@@ -1,0 +1,16 @@
+# The install verified against PyPI, 2026-11-17 20:35 EST (01:35 UTC), a fresh virtual environment outside the repository
+# (uv 'venv' and 'pip install' in a scratch folder; first_fit.py is the getting-started page's first block, run with python -I)
+
+$ uv venv venv --python 3.12
+Using CPython 3.12.12
+Creating virtual environment at: venv
+Activate with: source venv/bin/activate
+$ uv pip install --python venv/bin/python tradespace
+ + threadpoolctl==3.8.0
+ + tradespace==0.1.0
+ + tzdata==2026.6
+$ venv/bin/python -c "import tradespace; print(tradespace.__version__)"
+0.1.0
+$ venv/bin/python first_fit.py
+trilemma [0 1 2]
+[0.3  0.37 0.33]
