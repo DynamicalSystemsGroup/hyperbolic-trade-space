@@ -5,6 +5,22 @@ All notable changes to this project are recorded here, in the format of
 [Semantic Versioning](https://semver.org/). Entries are drawn from the work-package index
 (`work-packages/INDEX.md`) and the git history; the package that made each change is named in parentheses.
 
+## [Unreleased]
+
+### Added
+
+- The Kitchenham-CSC example: 141 software projects' scope against schedule and budget slack, with the page
+  `docs/examples/kitchenham.md`, the SysML v2 case model, the provenance and analysis code under
+  `examples/kitchenham/` and the verification record (WP76).
+
+### Changed
+
+- The docs' links into the paper are withdrawn while the paper is in abstract mode, each pointer the docs' own
+  statement or removed as the paper's role; the working paper is named on the docs home, in Further reading, on the
+  root page and in the README (WP81).
+- The README rewritten to the released state: the install from PyPI first, the getting-started first fit with its
+  output, the links a reader needs, the layout read against the tree, and the root page's figure (WP81 unit 4).
+
 ## [0.1.0] - 2026-11-17
 
 ### Added

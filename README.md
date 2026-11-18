@@ -15,7 +15,7 @@ metric trades against another, and each numbered marker is a term's characterist
 
 - [Documentation](https://dynamicalsystemsgroup.github.io/tradespace/docs/): getting started, the
   user guide, the examples and the API reference.
-- [Project page](https://dynamicalsystemsgroup.github.io/tradespace/): the method on one page, with
+- [Root page](https://dynamicalsystemsgroup.github.io/tradespace/): the method on one page, with
   the docs, the package and the working paper's abstract. The working paper's full text builds from
   the repository (`paper/`).
 
@@ -78,7 +78,7 @@ working paper uses, a synthetic satellite demonstrator with its SysML v2 system 
 
 [CONTRIBUTING.md](CONTRIBUTING.md) says who owns a change, how tools fit and how a change moves from
 an idea to a release. [GOVERNANCE.md](GOVERNANCE.md) states the release rules, the file that declares
-their settings and the check that runs first in every workflow. The
+their settings and the check that runs first in CI. The
 [code owners' page](https://dynamicalsystemsgroup.github.io/tradespace/docs/code-owners/) is for the
 code owners. Conduct between people: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md); reporting a
 vulnerability: [SECURITY.md](SECURITY.md); what changed in each release: [CHANGELOG.md](CHANGELOG.md).
@@ -90,7 +90,7 @@ To cite the package, use [CITATION.cff](CITATION.cff). The license is MIT.
 - `docs/`: the documentation site's pages.
 - `examples/`: the five examples' data, provenance and analysis code; `examples/adcs/` holds the
   cubesat system model.
-- `paper/`: the working paper and what rebuilds it; `site/`: the project page.
+- `paper/`: the working paper and what rebuilds it; `site/`: the root page.
 - `derivation/`: the proofs of the method's results as SymPy scripts, one per lemma.
 - `tests/` and `scripts/`: the test suite, the build and check tools.
 - `work-packages/` and `notes/`: the build's record and working notes; not needed to use the package.

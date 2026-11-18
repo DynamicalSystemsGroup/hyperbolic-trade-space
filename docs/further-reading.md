@@ -2,7 +2,7 @@
 
 The sources the method builds on, by what you may want from each.
 
-The working paper (its abstract on the [project page](../); the full text builds from `paper/` in the repository) carries the literature review, the derivations and the worked example.
+The working paper (its abstract on the [root page](../); the full text builds from `paper/` in the repository) carries the literature review, the derivations and the worked example.
 
 **Using the package**
 

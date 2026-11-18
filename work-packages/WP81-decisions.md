@@ -175,6 +175,8 @@ His words tonight, relayed verbatim by the driver session:
 > its also worth noting that the documentation update can now account for this package being live on pip which can
 > verify once the release lands
 
+(the third at about 20:12 EST)
+
 **Applied as** unit 4 of this package, on `v0.2` after the rebase. `README.md` reflects the released state: the
 one-line description of `pyproject.toml`, the install from PyPI first (`pip install tradespace`, `uv add tradespace`)
 with the clone-and-sync form for work on the package, the first fit of the getting-started page (the same code, the
@@ -192,7 +194,7 @@ The install was verified once the release landed (01:35 UTC): PyPI serves 0.1.0,
 the repository the getting-started block prints the page's two lines (`WP81-rounds/readme/pypi-install.txt`,
 `WP81-review.md` "Unit 4").
 
-His word at about 22:55 EST, relayed verbatim by the driver session:
+His word at about 21:32 EST, relayed verbatim by the driver session:
 
 > the readme needs work so let's make sure having an image preferably the one from the index page, is in the readme.
 
@@ -201,4 +203,20 @@ after the opening paragraph as a plain Markdown image by its deployed address
 (`https://dynamicalsystemsgroup.github.io/tradespace/ternary-planted-light.png`), with the root page's alt text and one
 sentence in the glossary's words under it. The address is absolute because pypi.org renders the README from its own
 page, where a repository path breaks. The dark variant rides in a `picture` element's `source`: GitHub serves it in its dark scheme, and PyPI's renderer keeps the light `img` alone (a rendering default, the driver session's).
+
+## The cross-read of the two pull requests (2026-11-17, about 21:35 EST)
+
+His ask, relayed verbatim by the driver session:
+
+> look at the two PRs (the documentation one and the governance one) and ensure they don't contradict since they both
+> need to merge into dev and the documentation does reference some of the governance content
+
+The driver session's read of the documentation pull request (#15) against the governance one (#16) found no
+contradiction, one gap and two names. Applied on `v0.2`: `CHANGELOG.md` gains an `[Unreleased]` entry naming what the
+pull request ships (the Kitchenham example, WP76; the paper links withdrawn and the working paper named, WP81; the
+README rewritten, unit 4), under the one heading the governance pull request also inserts, so the second merge keeps
+both lists; the README says `GOVERNANCE.md` states "the check that runs first in CI", the base's words, since the
+`controls` job runs first in the Tests and Release workflows and not in every workflow; and `site/index.html` is "the
+root page" on this side too (the README, the docs home, Further reading), as in `GOVERNANCE.md`, the code owners' page
+and the changelog, the glossary having no term for it.
 

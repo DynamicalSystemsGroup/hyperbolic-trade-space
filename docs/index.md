@@ -1,6 +1,6 @@
 # tradespace
 
-For an analyst with a table of evaluated designs, or of observed cases: reported devices, species, plot-years, finished projects. The [project page](../) links these docs, the package and the working paper's abstract.
+For an analyst with a table of evaluated designs, or of observed cases: reported devices, species, plot-years, finished projects. The [root page](../) links these docs, the package and the working paper's abstract.
 
 - [Use it on my own table](getting-started.md): install and run a first fit.
 - [Bring my own system model, and know what must hold](getting-started.md#your-own-data)
@@ -45,4 +45,4 @@ It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_
 unsupervised learning, beside PCA: PCA finds where the data spread, this finds where they stop, and
 the two chain.
 
-The argument and the proofs are the working paper's; its abstract is on the [project page](../), and the full text builds from the repository.
+The argument and the proofs are the working paper's; its abstract is on the [root page](../), and the full text builds from the repository.
