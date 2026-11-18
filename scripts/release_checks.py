@@ -647,7 +647,10 @@ class Gate:
 def command(*argv: str) -> Run:
     def run(root: Path) -> tuple[int, str]:
         r = subprocess.run(list(argv), cwd=root, capture_output=True, text=True)
-        return r.returncode, (r.stdout + r.stderr).strip()
+        # The ok line quotes stdout alone (a library's stderr chatter is not the result); a
+        # failure shows both.
+        text = r.stdout if r.returncode == 0 else r.stdout + r.stderr
+        return r.returncode, text.strip()
 
     return run
 
