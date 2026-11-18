@@ -148,3 +148,17 @@ his release line. Both open once `dev` is in `main` for 0.1; a code owner who is
 readiness note with the issue and pull request drafts is in the sessions' shared notes folder
 (`0.2-pull-requests-readiness.md`); the trial merge into `dev` 7973fbd1 found two conflicts (index rows; WP76's register
 ids `C1104` to `C1120` against `dev`'s `C1104`, to be renumbered at the rebase) and a green fast suite once resolved.
+
+## The rebase onto `dev` after 0.1 (2026-11-17, evening)
+
+0.1 was merged into `main` by him (74e62fda, 19:25 EST). `v0.2` was rebased onto `dev` 0dc2f4d2 (33 commits of
+`dev` since the base c0e210cc, the branch's 31 replayed; the backup ref `v0.2-pre-rebase` at e49a8cd4 local only).
+The two conflict kinds the trial merge found: `work-packages/INDEX.md` rows (resolved by row order, six times) and
+WP76's register rows against `dev`'s `C1104`, the root page's closing sentence. `dev`'s `C1104` row stands whole;
+WP76's seventeen rows are `C1105` to `C1121` (one id up each), and `WP76-review.md` names the new ids; no other file
+on either side referred to them. `README.md`, `mkdocs.yml`, `site/index.html` and `tests/test_site.py` merged without
+conflict and were read against `dev`'s versions: the `User guide` section title, the public-link hook and the
+closing sentence from `dev` stand with the Kitchenham page, the budgets and the working-paper sentence from this branch.
+The fast suite at the rebased tree: 2,045 passed, 12 skipped, 2 xfailed. The scope issue for the documentation pull
+request is DynamicalSystemsGroup/tradespace#13 (opened by him with the `draft` label; it names WP76, WP81 and the
+README update); the pull request says `closes #13`.
