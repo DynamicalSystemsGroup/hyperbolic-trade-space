@@ -2755,3 +2755,14 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   scope text; closed #4 to #11 with the comment and `--delete-branch`; the remote now holds `main`, `dev`, `paper`,
   the two pull-request branches, `deps-2026-11` and the transient `qc/release`. The consolidated pull request opens
   on green (the Tests dispatch 44220588377 and the dry run 44223300180 at the throwaway 0.1.1, both in progress).
+- **The dependency updates as one pull request (2026-11-17, 21:05 to 23:05 EST; the records ride with this pull
+  request by his decision of 21:45).** Branch `deps-2026-11` over `dev` 924e253c: Dependabot's eight bumps (#4 to
+  #11, closed into issue #17 on his word), seven cherry-picked clean, `checkout` applied by hand beside `setup-uv`.
+  Local: lock, ruff 0.17.5, format, pins, the workflow tests, the fast suite 2,022 passed. Runners: the release dry
+  run 44223300180 green end to end on a throwaway 0.1.1 commit over the same content (the tag rule refuses a head
+  at a released version once the package files changed; the first attempt at 0.1.0, 44220587981, was that refusal,
+  and a hand bump that missed the contract document's quoted value was caught by `test_r8_document_quotes_the_manifest`:
+  both are the reason for WP82's amendment 3); the Tests dispatch with Windows 44228473745 green on every shard. A
+  first dispatch at the pre-rebase head (44220588377) was red on Windows slow alone: the figshare archive of the
+  amniote example came back short on that runner; a fresh fetch matched the manifest and the re-run was green.
+  `qc/release` deleted after its run. The eight Dependabot branches went with their pull requests.
