@@ -40,8 +40,8 @@ After the merge of the 0.2 governance change, in this order: 1. `main-checks` ga
 `controls`; 2. the push ruleset `governance-files` is created (active; the nine governed paths; bypass Repository
 admin, always); the `controls` job on the push to `dev` is red until these two are done, then re-run it; 3.
 `main-review` loses its bypass actor; 4. the workflow permissions become read, approving reviews off; 5. your local run
-reads `conforming (69 fields)`, and `uv run python scripts/check_repo_settings.py --record tests/data/wp78` re-records
-the fixture in a follow-up commit.
+reads `conforming (69 fields)`, and a `--record` run of `scripts/check_repo_settings.py` into the recorded fixture under
+`tests/data/` replaces the hand-edited files in a follow-up commit.
 
 Settings, Labels: create `draft` and `small-fix`. The scope-of-work template applies `draft`; a code owner removes it
 to turn a draft into an issue. `small-fix` stands in for an issue on a pull request that fixes a typo or a broken link.
