@@ -1,45 +1,222 @@
 name: Tests
 
+# The software's suite (the paper's tests run in paper.yml on the paper branch and are deselected here:
+# every shard says `not paper` and the paper switch is never set). Runs on pull requests into main (the
+# required checks `test (fast)`, `test (slow)`, `test (docs)`), when release.yml calls it (Linux only), and
+# on manual dispatch (Linux and, by default, Windows). A push to dev runs lint and the Linux fast shard
+# only (WP67, the external review of 2026-11-16). Windows never runs on a pull request or a push.
+# The first job, controls, checks the repository's settings against .github/governance.toml
+# (GOVERNANCE.md); every shard needs it.
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:
     branches: [main]
+  workflow_call:
+    inputs:
+      windows:
+        description: "Also run the Windows fast and slow shards"
+        type: boolean
+        default: false
+      controls:
+        description: "Run the controls job here (release.yml runs its own and passes false)"
+        type: boolean
+        default: true
   workflow_dispatch:
+    inputs:
+      windows:
+        description: "Also run the Windows fast and slow shards"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  # The modules that build the site and the docs (they share generated files).
+  DOCS_MODULES: >-
+    tests/test_site.py tests/test_build_generated.py tests/test_docs.py tests/test_narrative.py
+    tests/test_paper_slot.py
 
 jobs:
+  controls:
+    name: controls
+    # The settings against their declaration, first: no shard runs while a setting differs from
+    # .github/governance.toml. release.yml runs its own controls job and calls this workflow with
+    # controls: false, so a release run checks once; a called workflow sees the caller's name, hence
+    # the test on github.workflow. The endpoints need Metadata (always granted), Actions (the
+    # environments) and Pages (the Pages build); the default workflow permissions need Administration,
+    # which the workflow token never has, and the rulesets' bypass actors are returned to administrators
+    # only; the declaration marks both local-only and --runner lists them as not checked here (a code
+    # owner's local run checks them).
+    if: ${{ github.workflow == 'Tests' || inputs.controls }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
+      pages: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: The repository's settings match .github/governance.toml
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: uv run --no-project python scripts/check_repo_settings.py --runner --report "$GITHUB_STEP_SUMMARY"
+
   test:
+    name: test (${{ matrix.shard }})
+    needs: controls
+    # Runs after controls passed here, or when release.yml ran controls itself (skipped here).
+    if: ${{ !cancelled() && (needs.controls.result == 'success' || needs.controls.result == 'skipped') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Every shard on a pull request, a call or a dispatch; the fast shard alone on a push to dev. A
+        # called workflow sees the caller's event (a push to main or qc/** calling from release.yml), so the
+        # push case is also tied to this workflow's own name.
+        shard: ${{ fromJSON((github.event_name == 'push' && github.workflow == 'Tests') && '["fast"]' || '["fast", "slow", "docs"]') }}
     # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0
       - name: No AI attribution lines in commit messages (project rule)
         run: |
-          hits=$(git log --format=%B | grep -ciE 'co-authored-by|generated with' || true)
+          hits=$(git log --format=%B | grep -ciE '\bco-authored-by\b|\bgenerated with\b|🤖' || true)
           if [ "$hits" != "0" ]; then
             echo "::error::$hits commit message(s) carry an AI attribution line; the project forbids them."
-            git log --format='%h %s%n%b' | grep -iE -B2 'co-authored-by|generated with' || true
+            git log --format='%h %s%n%b' | grep -iE -B2 '\bco-authored-by\b|\bgenerated with\b|🤖' || true
             exit 1
           fi
       # uv reads .python-version itself; setup-uv has no python-version-file input.
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
       - name: Check the lockfile is current
         run: uv lock --check
       - name: Install (locked)
         run: uv sync --locked
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
       - name: Locked opensysml version
         id: opensysml
         run: |
           v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
           echo "version=$v" >> "$GITHUB_OUTPUT"
       - name: Cache the opensysml runtime (downloaded on first use)
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.opensysml
           key: opensysml-${{ runner.os }}-${{ steps.opensysml.outputs.version }}
-      - name: Test
+      # The model-checking tests need the pinned sysml-toolkit (examples/adcs/experiments/
+      # toolkit-pin.toml). The helper verifies the archive's size and sha256 before extracting it
+      # and requires the standard library clone to be at the pinned commit.
+      # The cache is restored before and saved right after provisioning, not at the end of the
+      # job, so a failing test run does not leave every later run downloading again.
+      - name: Restore the pinned sysml-toolkit
+        id: toolkit-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/tradespace
+          key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
+      - name: Provision the pinned sysml-toolkit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The helper is idempotent (a cache hit opens no connection), retries, and falls back
+          # to the release-assets API. If its routes all fail, fetch the asset with gh and install
+          # from the local file. Every route verifies the pinned size and sha256 before extraction.
+          if PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch; then exit 0; fi
+          read -r repo tag asset < <(PYTHONPATH=examples/adcs uv run python -m experiments.toolkit pin)
+          gh release download "$tag" --repo "$repo" --pattern "$asset" --dir "$RUNNER_TEMP"
+          PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch --archive "$RUNNER_TEMP/$asset"
+      - name: Save the pinned sysml-toolkit
+        if: steps.toolkit-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/tradespace
+          key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
+      # fast + slow + docs = every software test: unmarked; marked slow outside the docs modules;
+      # marked slow inside them. `not paper` in each (belt and braces: the conftest deselects them too).
+      - name: Test (${{ matrix.shard }})
         env:
           REQUIRE_OPENSYSML: "1"
-        run: uv run pytest -q
+          SHARD: ${{ matrix.shard }}
+        run: |
+          opts="-q -n auto --dist loadgroup"
+          case "$SHARD" in
+            fast) uv run pytest $opts -m "not slow and not paper" ;;
+            slow)
+              ignores=""
+              for m in $DOCS_MODULES; do ignores="$ignores --ignore=$m"; done
+              uv run pytest $opts -m "slow and not paper" $ignores ;;
+            docs) uv run pytest $opts -m "slow and not paper" $DOCS_MODULES ;;
+          esac
+
+  windows:
+    name: windows (${{ matrix.shard }})
+    # Never on a pull request or a push (inputs.windows is unset there; the event test says so outright).
+    # The docs shard stays on Linux (WP34 stage 2 decision); Windows runs fast and slow on a dispatch.
+    needs: controls
+    if: ${{ !cancelled() && (needs.controls.result == 'success' || needs.controls.result == 'skipped') && github.event_name != 'pull_request' && github.event_name != 'push' && inputs.windows }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [fast, slow]
+    defaults:
+      run:
+        shell: bash
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          python-version: "3.12"
+      - name: Versions (OS, uv, python, node)
+        run: |
+          uname -a || true
+          cmd //c ver || true
+          uv --version
+          uv run --no-project python --version
+          node --version || echo "node: not found"
+          git --version
+          git config --get core.autocrlf || echo "core.autocrlf: unset"
+      - name: Install (locked)
+        run: uv sync --locked
+      - name: Lock check
+        run: uv lock --check
+      # The z3-solver wheel installs z3.exe in <venv>\bin, which a Windows venv does not put on PATH
+      # (it adds Scripts); the engines find the solver by PATH.
+      - name: z3 on PATH
+        run: |
+          test -f .venv/bin/z3.exe
+          echo "$(cygpath -w "$PWD/.venv/bin")" >> "$GITHUB_PATH"
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+      - name: Locked opensysml version
+        id: opensysml
+        run: |
+          v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+      - name: Provision the pinned sysml-toolkit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
+      - name: Test (${{ matrix.shard }})
+        env:
+          REQUIRE_OPENSYSML: "1"
+          SHARD: ${{ matrix.shard }}
+        run: |
+          opts="-q -n auto --dist loadgroup"
+          case "$SHARD" in
+            fast) uv run pytest $opts -m "not slow and not paper" ;;
+            slow)
+              ignores=""
+              for m in $DOCS_MODULES; do ignores="$ignores --ignore=$m"; done
+              uv run pytest $opts -m "slow and not paper" $ignores ;;
+          esac

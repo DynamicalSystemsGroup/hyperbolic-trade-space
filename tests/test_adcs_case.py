@@ -41,7 +41,7 @@ def test_regression_pins(kp, kd, expected, tol):
 
 def test_no_forbidden_imports_and_license():
     """R-3."""
-    text = (ADCS_DIR / "adcs_sim.py").read_text()
+    text = (ADCS_DIR / "adcs_sim.py").read_text(encoding="utf-8")
     for mod in ("rdflib", "sympy", "opensysml", "flexo"):
         assert not re.search(rf"^\s*(import|from)\s+{mod}", text, re.I | re.M)
     assert "Apache License, Version 2.0" in text
@@ -142,6 +142,7 @@ CSV = ADCS_DIR / "data" / "adcs_designs.csv"
 GEN = ADCS_DIR / "generate_dataset.py"
 
 
+@pytest.mark.slow
 def test_generator_cli_skip_and_force(tmp_path):
     """R-8: help works, existing output is skipped unless --force."""
     help_out = subprocess.run([sys.executable, str(GEN), "--help"], capture_output=True, text=True)
@@ -151,15 +152,16 @@ def test_generator_cli_skip_and_force(tmp_path):
     out = tmp_path / "d.csv"
     cmd = [sys.executable, str(GEN), "--n", "4", "--fast", "--workers", "2", "--out", str(out)]
     assert subprocess.run(cmd, capture_output=True).returncode == 0
-    first = out.read_text()
+    first = out.read_text(encoding="utf-8")
     assert len(pd.read_csv(out)) == 4
-    out.write_text("sentinel")
+    out.write_text("sentinel", encoding="utf-8")
     r = subprocess.run(cmd, capture_output=True, text=True)
-    assert "skipping" in r.stdout and out.read_text() == "sentinel"
+    assert "skipping" in r.stdout and out.read_text(encoding="utf-8") == "sentinel"
     assert subprocess.run([*cmd, "--force"], capture_output=True).returncode == 0
-    assert out.read_text() == first
+    assert out.read_text(encoding="utf-8") == first
 
 
+@pytest.mark.slow
 def test_dataset_reproducible_first_20():
     """R-9: committed CSV has 1000 rows; the first 20 designs regenerate."""
     from generate_dataset import COLUMNS, generate
@@ -196,6 +198,7 @@ def test_dataset_reproducible_first_20():
     np.testing.assert_allclose(head.settling_time_s, fresh.settling_time_s, atol=0.5)
 
 
+@pytest.mark.slow
 def test_dataset_same_platform_exact():
     """Amendment 1 (R-9): on one platform, regeneration is bit-for-bit repeatable."""
     from generate_dataset import generate
@@ -243,7 +246,7 @@ def test_dataset_summary(capsys):
 
 def test_sysml_documentation_file():
     """R-11."""
-    text = (ADCS_DIR / "extended_design_space.sysml").read_text()
+    text = (ADCS_DIR / "extended_design_space.sysml").read_text(encoding="utf-8")
     assert text.strip()
     assert "documentation only" in text.lower()
     for name in (*WHEEL_CLASSES, *STAR_TRACKERS, *ATTRS):

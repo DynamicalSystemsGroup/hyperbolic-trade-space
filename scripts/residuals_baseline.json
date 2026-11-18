@@ -1,0 +1,4977 @@
+{
+ "head": "c0fe11b",
+ "note": "taken at the dev head c0fe11b; taken again when the pass starts",
+ "schema": 1,
+ "thresholds": {
+  "long_sentence_words": 35,
+  "long_paren_words": 8,
+  "dense_paragraph_parens": 3,
+  "deep_clause_subordinators": 4,
+  "compound_semicolons_colons": 2,
+  "restatement_overlap": 0.6
+ },
+ "totals": {
+  "words": 73192,
+  "prose_words": 35978,
+  "sentences": 1710,
+  "metanarration": 17,
+  "hedges": 12,
+  "intensifiers": 4,
+  "parens": 659,
+  "long_parens": 68,
+  "path_parens": 8,
+  "dense_paras": 78,
+  "restatements": 6,
+  "long_sentences": 188,
+  "compound": 180,
+  "deep_clauses": 3,
+  "acronyms_undefined_at_first_use": 22,
+  "acronyms_never_expanded": 21,
+  "terms_undefined_at_first_use": 192
+ },
+ "surfaces": {
+  "paper/abstract": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 255,
+   "prose_words": 255,
+   "paragraphs": 2,
+   "sentences": 11,
+   "metanarration": 0,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 4,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 1,
+   "deep_clauses": 1,
+   "max_parens": 4,
+   "mean_sentence": 23.2,
+   "max_sentence": 44
+  },
+  "paper/the-decision-problem": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 635,
+   "prose_words": 635,
+   "paragraphs": 11,
+   "sentences": 34,
+   "metanarration": 0,
+   "hedges": 1,
+   "intensifiers": 2,
+   "parens": 19,
+   "long_parens": 4,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 7,
+   "deep_clauses": 0,
+   "max_parens": 11,
+   "mean_sentence": 18.6,
+   "max_sentence": 53
+  },
+  "paper/prior-art-by-family": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 1057,
+   "prose_words": 476,
+   "paragraphs": 6,
+   "sentences": 27,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 17.5,
+   "max_sentence": 28
+  },
+  "paper/preliminaries-and-notation": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 406,
+   "prose_words": 406,
+   "paragraphs": 6,
+   "sentences": 25,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 5,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 16.1,
+   "max_sentence": 42
+  },
+  "paper/definitions": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 625,
+   "prose_words": 625,
+   "paragraphs": 14,
+   "sentences": 32,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 11,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 4,
+   "deep_clauses": 0,
+   "max_parens": 4,
+   "mean_sentence": 19.5,
+   "max_sentence": 39
+  },
+  "paper/methods": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 532,
+   "prose_words": 532,
+   "paragraphs": 5,
+   "sentences": 30,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 19,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 4,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 8,
+   "deep_clauses": 0,
+   "max_parens": 8,
+   "mean_sentence": 17.7,
+   "max_sentence": 39
+  },
+  "paper/results": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 2260,
+   "prose_words": 2260,
+   "paragraphs": 91,
+   "sentences": 133,
+   "metanarration": 1,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 93,
+   "long_parens": 10,
+   "path_parens": 0,
+   "dense_paras": 11,
+   "restatements": 0,
+   "long_sentences": 10,
+   "compound": 21,
+   "deep_clauses": 0,
+   "max_parens": 11,
+   "mean_sentence": 16.9,
+   "max_sentence": 87,
+   "metanarration_by_pattern": {
+    "here-we": 1
+   }
+  },
+  "paper/search-of-the-design-space-preliminary": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 245,
+   "prose_words": 245,
+   "paragraphs": 3,
+   "sentences": 15,
+   "metanarration": 1,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 15.9,
+   "max_sentence": 34,
+   "metanarration_by_pattern": {
+    "this-section": 1
+   }
+  },
+  "paper/case-construction": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 1264,
+   "prose_words": 1264,
+   "paragraphs": 15,
+   "sentences": 50,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 35,
+   "long_parens": 9,
+   "path_parens": 0,
+   "dense_paras": 7,
+   "restatements": 0,
+   "long_sentences": 12,
+   "compound": 8,
+   "deep_clauses": 0,
+   "max_parens": 7,
+   "mean_sentence": 25.2,
+   "max_sentence": 53
+  },
+  "paper/case-analysis": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 1749,
+   "prose_words": 1662,
+   "paragraphs": 25,
+   "sentences": 65,
+   "metanarration": 1,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 26,
+   "long_parens": 6,
+   "path_parens": 0,
+   "dense_paras": 2,
+   "restatements": 1,
+   "long_sentences": 13,
+   "compound": 5,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 25.5,
+   "max_sentence": 52,
+   "metanarration_by_pattern": {
+    "we-now": 1
+   }
+  },
+  "paper/discussion": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 699,
+   "prose_words": 699,
+   "paragraphs": 11,
+   "sentences": 35,
+   "metanarration": 1,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 19.9,
+   "max_sentence": 44,
+   "metanarration_by_pattern": {
+    "summary": 1
+   }
+  },
+  "paper/reproducibility-and-your-own-case": {
+   "file": "paper/paper.ipynb",
+   "kind": "paper",
+   "words": 299,
+   "prose_words": 299,
+   "paragraphs": 4,
+   "sentences": 19,
+   "metanarration": 0,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 14.9,
+   "max_sentence": 30
+  },
+  "appendix/title": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 190,
+   "prose_words": 190,
+   "paragraphs": 3,
+   "sentences": 4,
+   "metanarration": 1,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 46.0,
+   "max_sentence": 121,
+   "metanarration_by_pattern": {
+    "this-section": 1
+   }
+  },
+  "appendix/appendix-d": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1718,
+   "prose_words": 77,
+   "paragraphs": 2,
+   "sentences": 2,
+   "metanarration": 3,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 36.0,
+   "max_sentence": 52,
+   "metanarration_by_pattern": {
+    "in-this": 2,
+    "this-section": 1
+   }
+  },
+  "appendix/appendix-e": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 827,
+   "prose_words": 537,
+   "paragraphs": 8,
+   "sentences": 25,
+   "metanarration": 1,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 9,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 21.1,
+   "max_sentence": 92,
+   "metanarration_by_pattern": {
+    "this-section": 1
+   }
+  },
+  "appendix/e-1": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 407,
+   "prose_words": 74,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 8,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 6,
+   "mean_sentence": 8.3,
+   "max_sentence": 24
+  },
+  "appendix/l2": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 589,
+   "prose_words": 58,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 7.5,
+   "max_sentence": 22
+  },
+  "appendix/l3": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 2152,
+   "prose_words": 174,
+   "paragraphs": 3,
+   "sentences": 8,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 9,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 8,
+   "mean_sentence": 20.2,
+   "max_sentence": 50
+  },
+  "appendix/l4": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1093,
+   "prose_words": 72,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 10.0,
+   "max_sentence": 33
+  },
+  "appendix/l5": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 965,
+   "prose_words": 82,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 11.5,
+   "max_sentence": 50
+  },
+  "appendix/l6": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 480,
+   "prose_words": 86,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 4,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 13.0,
+   "max_sentence": 43
+  },
+  "appendix/l7": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 460,
+   "prose_words": 68,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 9.8,
+   "max_sentence": 26
+  },
+  "appendix/l8": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 675,
+   "prose_words": 46,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 6.5,
+   "max_sentence": 14
+  },
+  "appendix/l9": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 375,
+   "prose_words": 50,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 6.3,
+   "max_sentence": 13
+  },
+  "appendix/l10": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1213,
+   "prose_words": 84,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 7,
+   "mean_sentence": 11.7,
+   "max_sentence": 49
+  },
+  "appendix/l11": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 898,
+   "prose_words": 226,
+   "paragraphs": 3,
+   "sentences": 8,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 12,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 2,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 6,
+   "mean_sentence": 27.0,
+   "max_sentence": 89
+  },
+  "appendix/e-2": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 259,
+   "prose_words": 259,
+   "paragraphs": 1,
+   "sentences": 12,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 5,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 20.6,
+   "max_sentence": 39
+  },
+  "appendix/l12": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1643,
+   "prose_words": 161,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 12,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 2,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 8,
+   "mean_sentence": 23.7,
+   "max_sentence": 99
+  },
+  "appendix/l13": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 814,
+   "prose_words": 176,
+   "paragraphs": 3,
+   "sentences": 8,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 12,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 2,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 7,
+   "mean_sentence": 20.4,
+   "max_sentence": 42
+  },
+  "appendix/l14": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1028,
+   "prose_words": 209,
+   "paragraphs": 4,
+   "sentences": 10,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 21,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 17,
+   "mean_sentence": 20.6,
+   "max_sentence": 57
+  },
+  "appendix/l14-2": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 264,
+   "prose_words": 110,
+   "paragraphs": 4,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 4,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 15.3,
+   "max_sentence": 42
+  },
+  "appendix/l15": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 999,
+   "prose_words": 197,
+   "paragraphs": 4,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 2,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 26.1,
+   "max_sentence": 72
+  },
+  "appendix/l15-2": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 531,
+   "prose_words": 212,
+   "paragraphs": 4,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 2,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 27.1,
+   "max_sentence": 72
+  },
+  "appendix/l16": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 2146,
+   "prose_words": 112,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 16.8,
+   "max_sentence": 70
+  },
+  "appendix/l17": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 2250,
+   "prose_words": 126,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 1,
+   "long_sentences": 1,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 18.8,
+   "max_sentence": 68
+  },
+  "appendix/l18": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1169,
+   "prose_words": 141,
+   "paragraphs": 3,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 5,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 18.3,
+   "max_sentence": 55
+  },
+  "appendix/l19": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1730,
+   "prose_words": 129,
+   "paragraphs": 3,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 2,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 4,
+   "mean_sentence": 16.1,
+   "max_sentence": 45
+  },
+  "appendix/l20": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 3674,
+   "prose_words": 343,
+   "paragraphs": 3,
+   "sentences": 9,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 22,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 3,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 14,
+   "mean_sentence": 36.6,
+   "max_sentence": 131
+  },
+  "appendix/e-3": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 318,
+   "prose_words": 114,
+   "paragraphs": 1,
+   "sentences": 8,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 13.5,
+   "max_sentence": 20
+  },
+  "appendix/appendix-f": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 181,
+   "prose_words": 181,
+   "paragraphs": 2,
+   "sentences": 5,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 33.6,
+   "max_sentence": 61,
+   "metanarration_by_pattern": {
+    "this-section": 1
+   }
+  },
+  "appendix/f-1": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 260,
+   "prose_words": 7,
+   "paragraphs": 0,
+   "sentences": 0,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 0.0,
+   "max_sentence": 0
+  },
+  "appendix/f-3": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 409,
+   "prose_words": 75,
+   "paragraphs": 5,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 11.8,
+   "max_sentence": 37
+  },
+  "appendix/f-5": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1126,
+   "prose_words": 159,
+   "paragraphs": 5,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 3,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 22.0,
+   "max_sentence": 31
+  },
+  "appendix/f-6": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 691,
+   "prose_words": 577,
+   "paragraphs": 5,
+   "sentences": 19,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 4,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 29.5,
+   "max_sentence": 84
+  },
+  "appendix/appendix-b": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 226,
+   "prose_words": 226,
+   "paragraphs": 2,
+   "sentences": 3,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 71.7,
+   "max_sentence": 182,
+   "metanarration_by_pattern": {
+    "this-section": 1
+   }
+  },
+  "appendix/d-1": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 273,
+   "prose_words": 71,
+   "paragraphs": 3,
+   "sentences": 5,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 13.2,
+   "max_sentence": 31
+  },
+  "appendix/d-2": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1132,
+   "prose_words": 112,
+   "paragraphs": 14,
+   "sentences": 14,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 7.1,
+   "max_sentence": 19
+  },
+  "appendix/b-2": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 420,
+   "prose_words": 47,
+   "paragraphs": 4,
+   "sentences": 4,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 9.5,
+   "max_sentence": 31
+  },
+  "appendix/d-6": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 190,
+   "prose_words": 8,
+   "paragraphs": 2,
+   "sentences": 2,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 2.0,
+   "max_sentence": 2
+  },
+  "appendix/d-7": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 460,
+   "prose_words": 283,
+   "paragraphs": 10,
+   "sentences": 16,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 17.2,
+   "max_sentence": 69
+  },
+  "appendix/b-5": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 472,
+   "prose_words": 202,
+   "paragraphs": 5,
+   "sentences": 11,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 16.8,
+   "max_sentence": 36
+  },
+  "appendix/d-12": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 213,
+   "prose_words": 169,
+   "paragraphs": 6,
+   "sentences": 9,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 18.1,
+   "max_sentence": 37
+  },
+  "appendix/b-8": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 537,
+   "prose_words": 419,
+   "paragraphs": 6,
+   "sentences": 14,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 6,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 4,
+   "mean_sentence": 28.6,
+   "max_sentence": 65
+  },
+  "appendix/b-10": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 266,
+   "prose_words": 164,
+   "paragraphs": 5,
+   "sentences": 10,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 1,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 15.8,
+   "max_sentence": 56
+  },
+  "appendix/b-11": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 168,
+   "prose_words": 114,
+   "paragraphs": 2,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 17.2,
+   "max_sentence": 23
+  },
+  "appendix/b-12": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1319,
+   "prose_words": 416,
+   "paragraphs": 6,
+   "sentences": 20,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 2,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 20.4,
+   "max_sentence": 75
+  },
+  "appendix/b-13": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 278,
+   "prose_words": 205,
+   "paragraphs": 2,
+   "sentences": 10,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 19.8,
+   "max_sentence": 45
+  },
+  "appendix/b-14": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 769,
+   "prose_words": 265,
+   "paragraphs": 5,
+   "sentences": 10,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 4,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 25.7,
+   "max_sentence": 66
+  },
+  "appendix/appendix-g": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 3720,
+   "prose_words": 97,
+   "paragraphs": 2,
+   "sentences": 2,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 45.5,
+   "max_sentence": 70,
+   "metanarration_by_pattern": {
+    "this-section": 1
+   }
+  },
+  "appendix/appendix-h": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1207,
+   "prose_words": 280,
+   "paragraphs": 6,
+   "sentences": 12,
+   "metanarration": 3,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 21.5,
+   "max_sentence": 87,
+   "metanarration_by_pattern": {
+    "in-this": 1,
+    "this-section": 2
+   }
+  },
+  "appendix/appendix-a": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 36,
+   "prose_words": 36,
+   "paragraphs": 2,
+   "sentences": 2,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 4,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 4,
+   "mean_sentence": 18.0,
+   "max_sentence": 34
+  },
+  "appendix/a-1": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1135,
+   "prose_words": 1135,
+   "paragraphs": 12,
+   "sentences": 22,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 6,
+   "long_parens": 2,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 9,
+   "compound": 5,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 51.3,
+   "max_sentence": 147
+  },
+  "appendix/dimension-reduction-and-model-fitting": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 799,
+   "prose_words": 799,
+   "paragraphs": 12,
+   "sentences": 15,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 1,
+   "parens": 4,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 7,
+   "compound": 5,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 52.9,
+   "max_sentence": 162
+  },
+  "appendix/systems-engineering-practice-and-decision-analys": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 718,
+   "prose_words": 718,
+   "paragraphs": 11,
+   "sentences": 20,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 8,
+   "compound": 5,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 35.6,
+   "max_sentence": 156
+  },
+  "appendix/a-2": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1207,
+   "prose_words": 61,
+   "paragraphs": 1,
+   "sentences": 2,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 1,
+   "max_parens": 0,
+   "mean_sentence": 27.0,
+   "max_sentence": 45
+  },
+  "appendix/appendix-c": {
+   "file": "paper/supporting_material.ipynb",
+   "kind": "appendix",
+   "words": 1023,
+   "prose_words": 894,
+   "paragraphs": 13,
+   "sentences": 33,
+   "metanarration": 0,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 19,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 4,
+   "restatements": 0,
+   "long_sentences": 5,
+   "compound": 3,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 26.0,
+   "max_sentence": 98,
+   "metanarration_by_pattern": {
+    "this-section": 2
+   }
+  },
+  "docs/api-reference.md": {
+   "file": "docs/api-reference.md",
+   "kind": "docs",
+   "words": 288,
+   "prose_words": 288,
+   "paragraphs": 13,
+   "sentences": 20,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 6,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 12,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 14.3,
+   "max_sentence": 80
+  },
+  "docs/examples.md": {
+   "file": "docs/examples.md",
+   "kind": "docs",
+   "words": 600,
+   "prose_words": 600,
+   "paragraphs": 15,
+   "sentences": 32,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 1,
+   "long_sentences": 2,
+   "compound": 3,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 17.7,
+   "max_sentence": 39
+  },
+  "docs/further-reading.md": {
+   "file": "docs/further-reading.md",
+   "kind": "docs",
+   "words": 182,
+   "prose_words": 182,
+   "paragraphs": 7,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 3,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 25.7,
+   "max_sentence": 67
+  },
+  "docs/getting-started.md": {
+   "file": "docs/getting-started.md",
+   "kind": "docs",
+   "words": 325,
+   "prose_words": 325,
+   "paragraphs": 10,
+   "sentences": 18,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 4,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 17.4,
+   "max_sentence": 51
+  },
+  "docs/index.md": {
+   "file": "docs/index.md",
+   "kind": "docs",
+   "words": 193,
+   "prose_words": 193,
+   "paragraphs": 4,
+   "sentences": 7,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 27.4,
+   "max_sentence": 52
+  },
+  "docs/theory.md": {
+   "file": "docs/theory.md",
+   "kind": "docs",
+   "words": 577,
+   "prose_words": 577,
+   "paragraphs": 11,
+   "sentences": 32,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 6,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 3,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 17.3,
+   "max_sentence": 66
+  },
+  "docs/user-guide/chart.md": {
+   "file": "docs/user-guide/chart.md",
+   "kind": "docs",
+   "words": 508,
+   "prose_words": 508,
+   "paragraphs": 15,
+   "sentences": 29,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 3,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 17.1,
+   "max_sentence": 68
+  },
+  "docs/user-guide/choosing-k.md": {
+   "file": "docs/user-guide/choosing-k.md",
+   "kind": "docs",
+   "words": 545,
+   "prose_words": 545,
+   "paragraphs": 9,
+   "sentences": 25,
+   "metanarration": 0,
+   "hedges": 2,
+   "intensifiers": 0,
+   "parens": 5,
+   "long_parens": 2,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 21.2,
+   "max_sentence": 48
+  },
+  "docs/user-guide/conditioning.md": {
+   "file": "docs/user-guide/conditioning.md",
+   "kind": "docs",
+   "words": 576,
+   "prose_words": 576,
+   "paragraphs": 10,
+   "sentences": 33,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 1,
+   "long_sentences": 0,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 17.0,
+   "max_sentence": 35
+  },
+  "docs/user-guide/fitting.md": {
+   "file": "docs/user-guide/fitting.md",
+   "kind": "docs",
+   "words": 614,
+   "prose_words": 614,
+   "paragraphs": 15,
+   "sentences": 34,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 8,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 3,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 17.5,
+   "max_sentence": 118
+  },
+  "docs/user-guide/index.md": {
+   "file": "docs/user-guide/index.md",
+   "kind": "docs",
+   "words": 3,
+   "prose_words": 3,
+   "paragraphs": 0,
+   "sentences": 0,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 0,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 0,
+   "mean_sentence": 0.0,
+   "max_sentence": 0
+  },
+  "docs/user-guide/limitations.md": {
+   "file": "docs/user-guide/limitations.md",
+   "kind": "docs",
+   "words": 443,
+   "prose_words": 443,
+   "paragraphs": 11,
+   "sentences": 31,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 14.3,
+   "max_sentence": 31
+  },
+  "docs/user-guide/overview.md": {
+   "file": "docs/user-guide/overview.md",
+   "kind": "docs",
+   "words": 388,
+   "prose_words": 388,
+   "paragraphs": 8,
+   "sentences": 23,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 1,
+   "deep_clauses": 1,
+   "max_parens": 2,
+   "mean_sentence": 16.3,
+   "max_sentence": 82
+  },
+  "docs/user-guide/prediction.md": {
+   "file": "docs/user-guide/prediction.md",
+   "kind": "docs",
+   "words": 212,
+   "prose_words": 212,
+   "paragraphs": 5,
+   "sentences": 13,
+   "metanarration": 0,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 15.8,
+   "max_sentence": 39
+  },
+  "docs/user-guide/tensions.md": {
+   "file": "docs/user-guide/tensions.md",
+   "kind": "docs",
+   "words": 560,
+   "prose_words": 560,
+   "paragraphs": 13,
+   "sentences": 33,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 16.0,
+   "max_sentence": 54
+  },
+  "docs/user-guide/termination.md": {
+   "file": "docs/user-guide/termination.md",
+   "kind": "docs",
+   "words": 703,
+   "prose_words": 703,
+   "paragraphs": 14,
+   "sentences": 40,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 5,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 4,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 17.1,
+   "max_sentence": 79
+  },
+  "examples/adcs/case-model.md/the-cubesat-model-the-experiment-layer-and-how-t": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 248,
+   "prose_words": 196,
+   "paragraphs": 6,
+   "sentences": 15,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 0,
+   "path_parens": 1,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 11.7,
+   "max_sentence": 22
+  },
+  "examples/adcs/case-model.md/reading-the-model-top-to-bottom": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 429,
+   "prose_words": 429,
+   "paragraphs": 4,
+   "sentences": 12,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 17,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 3,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 2,
+   "deep_clauses": 0,
+   "max_parens": 7,
+   "mean_sentence": 35.2,
+   "max_sentence": 120
+  },
+  "examples/adcs/case-model.md/from-the-assembly-to-the-dataset-measures-of-eff": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 1976,
+   "prose_words": 1976,
+   "paragraphs": 14,
+   "sentences": 51,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 44,
+   "long_parens": 8,
+   "path_parens": 2,
+   "dense_paras": 7,
+   "restatements": 1,
+   "long_sentences": 13,
+   "compound": 5,
+   "deep_clauses": 0,
+   "max_parens": 9,
+   "mean_sentence": 32.2,
+   "max_sentence": 217
+  },
+  "examples/adcs/case-model.md/running-an-experiment-and-reading-the-ledger": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 444,
+   "prose_words": 263,
+   "paragraphs": 4,
+   "sentences": 13,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 3,
+   "long_parens": 1,
+   "path_parens": 1,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 19.5,
+   "max_sentence": 59
+  },
+  "examples/adcs/case-model.md/the-cadcad-like-mapping": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 171,
+   "prose_words": 171,
+   "paragraphs": 2,
+   "sentences": 4,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 5,
+   "long_parens": 1,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 42.0,
+   "max_sentence": 139
+  },
+  "examples/adcs/case-model.md/the-toolkit-account": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 695,
+   "prose_words": 695,
+   "paragraphs": 3,
+   "sentences": 6,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 5,
+   "long_parens": 0,
+   "path_parens": 1,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 4,
+   "mean_sentence": 115.3,
+   "max_sentence": 599
+  },
+  "examples/adcs/case-model.md/z3-excludes-infeasible-configurations-before-sim": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 472,
+   "prose_words": 428,
+   "paragraphs": 6,
+   "sentences": 20,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 7,
+   "long_parens": 1,
+   "path_parens": 3,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 3,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 21.1,
+   "max_sentence": 48
+  },
+  "examples/adcs/case-model.md/the-legacy-geostationary-oracle-and-the-scope-se": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 202,
+   "prose_words": 202,
+   "paragraphs": 3,
+   "sentences": 9,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 4,
+   "long_parens": 2,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 2,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 21.6,
+   "max_sentence": 43
+  },
+  "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the": {
+   "file": "examples/adcs/case-model.md",
+   "kind": "example",
+   "words": 365,
+   "prose_words": 365,
+   "paragraphs": 10,
+   "sentences": 20,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 1,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 0,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 1,
+   "mean_sentence": 15.8,
+   "max_sentence": 34
+  },
+  "README.md": {
+   "file": "README.md",
+   "kind": "readme",
+   "words": 191,
+   "prose_words": 191,
+   "paragraphs": 2,
+   "sentences": 3,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 1,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 63.0,
+   "max_sentence": 166
+  },
+  "site/index.html": {
+   "file": "site/index.html",
+   "kind": "site",
+   "words": 300,
+   "prose_words": 300,
+   "paragraphs": 10,
+   "sentences": 19,
+   "metanarration": 0,
+   "hedges": 1,
+   "intensifiers": 0,
+   "parens": 2,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 0,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 2,
+   "mean_sentence": 15.6,
+   "max_sentence": 38
+  },
+  "site/history.html": {
+   "file": "site/history.html",
+   "kind": "site",
+   "words": 323,
+   "prose_words": 323,
+   "paragraphs": 8,
+   "sentences": 16,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 1,
+   "parens": 9,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 0,
+   "deep_clauses": 0,
+   "max_parens": 5,
+   "mean_sentence": 20.0,
+   "max_sentence": 37
+  },
+  "glossary/long-forms": {
+   "file": "glossary.yaml",
+   "kind": "glossary",
+   "words": 2531,
+   "prose_words": 2531,
+   "paragraphs": 174,
+   "sentences": 189,
+   "metanarration": 0,
+   "hedges": 0,
+   "intensifiers": 0,
+   "parens": 27,
+   "long_parens": 0,
+   "path_parens": 0,
+   "dense_paras": 1,
+   "restatements": 0,
+   "long_sentences": 1,
+   "compound": 7,
+   "deep_clauses": 0,
+   "max_parens": 3,
+   "mean_sentence": 13.4,
+   "max_sentence": 39
+  }
+ },
+ "documents": {
+  "README.md": {
+   "acronyms": [
+    {
+     "acronym": "API",
+     "first_surface": "README.md",
+     "first_location": "line 31",
+     "count": 1,
+     "defined_at_first_use": true,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "CI",
+     "first_surface": "README.md",
+     "first_location": "line 31",
+     "count": 1,
+     "defined_at_first_use": true,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 2,
+   "terms": [
+    {
+     "term": "frontier",
+     "first_surface": "README.md",
+     "first_location": "line 31",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "metrics",
+     "first_surface": "README.md",
+     "first_location": "line 3",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "README.md",
+     "first_location": "line 31",
+     "count": 1,
+     "defined_at_first_use": true
+    }
+   ],
+   "terms_undefined_at_first_use": 1
+  },
+  "docs/api-reference.md": {
+   "acronyms": [
+    {
+     "acronym": "API",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 1",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 1,
+   "acronyms_never_expanded": 1,
+   "terms": [
+    {
+     "term": "attributes",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 3",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "certificate",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 28",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 3",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "configuration",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 3",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "monomial",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "novelty",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "number-of-terms",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "numerically-zero",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 28",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/api-reference.md",
+     "first_location": "line 7",
+     "count": 2,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 14
+  },
+  "docs/examples.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "cell",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 33",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 10",
+     "count": 6,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "exponent-vector",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 170",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 33",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "invariant-value",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 170",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "log-metrics",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 33",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 5",
+     "count": 6,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "participation-threshold",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 33",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "region",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 162",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "share",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 10",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "temperature",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 10",
+     "count": 10,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "ternary-plot",
+     "first_surface": "docs/examples.md",
+     "first_location": "line 150",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 8
+  },
+  "docs/further-reading.md": {
+   "acronyms": [
+    {
+     "acronym": "API",
+     "first_surface": "docs/further-reading.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": true,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 1,
+   "terms": [
+    {
+     "term": "chart",
+     "first_surface": "docs/further-reading.md",
+     "first_location": "line 21",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/further-reading.md",
+     "first_location": "line 23",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "generalized-posynomial",
+     "first_surface": "docs/further-reading.md",
+     "first_location": "line 13",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "geometric-program",
+     "first_surface": "docs/further-reading.md",
+     "first_location": "line 11",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "docs/further-reading.md",
+     "first_location": "line 11",
+     "count": 3,
+     "defined_at_first_use": true
+    }
+   ],
+   "terms_undefined_at_first_use": 1
+  },
+  "docs/getting-started.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "attributes",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 71",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 63",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "conditioning",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 71",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "configuration",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 71",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 57",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 63",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 19",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "invariant-value",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 63",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 19",
+     "count": 8,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "pareto-boundary",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 71",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "temperature",
+     "first_surface": "docs/getting-started.md",
+     "first_location": "line 57",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 9
+  },
+  "docs/index.md": {
+   "acronyms": [
+    {
+     "acronym": "PCA",
+     "first_surface": "docs/index.md",
+     "first_location": "line 5",
+     "count": 3,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 1,
+   "acronyms_never_expanded": 1,
+   "terms": [
+    {
+     "term": "elasticity",
+     "first_surface": "docs/index.md",
+     "first_location": "line 11",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/index.md",
+     "first_location": "line 11",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/index.md",
+     "first_location": "line 11",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/index.md",
+     "first_location": "line 11",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "docs/index.md",
+     "first_location": "line 11",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/index.md",
+     "first_location": "line 11",
+     "count": 2,
+     "defined_at_first_use": true
+    }
+   ],
+   "terms_undefined_at_first_use": 3
+  },
+  "docs/theory.md": {
+   "acronyms": [
+    {
+     "acronym": "GP",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 17",
+     "count": 1,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    }
+   ],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "chart",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 42",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "conditioning",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 71",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 63",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 54",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "energy-differential",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 39",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 26",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 28",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "geometric-program",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 17",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "level-offset",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 39",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 7",
+     "count": 5,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "n-lemma",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 54",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "pareto-boundary",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 32",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "participation-threshold",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 63",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 17",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "supporting-envelope",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 32",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "temperature",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 32",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 17",
+     "count": 12,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "white-space",
+     "first_surface": "docs/theory.md",
+     "first_location": "line 51",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 12
+  },
+  "docs/user-guide/chart.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "attributes",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 65",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "cell",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 101",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 1",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "configuration",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 92",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 3",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 92",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "level-offset",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 3",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 3",
+     "count": 7,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "near-frontier-band",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 53",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "number-of-terms",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 101",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "numerically-zero",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 48",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "reach",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 48",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "region",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 63",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "share",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 92",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 38",
+     "count": 6,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "white-space",
+     "first_surface": "docs/user-guide/chart.md",
+     "first_location": "line 61",
+     "count": 2,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 15
+  },
+  "docs/user-guide/choosing-k.md": {
+   "acronyms": [
+    {
+     "acronym": "PCA",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 128",
+     "count": 2,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 1,
+   "acronyms_never_expanded": 1,
+   "terms": [
+    {
+     "term": "cell",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 9",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "certificate",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 9",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "exponent-vector",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 9",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 9",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "mean-slack",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 9",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 29",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "number-of-terms",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 3",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "share",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 9",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "stable-radius",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 9",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "temperature",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 29",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/user-guide/choosing-k.md",
+     "first_location": "line 3",
+     "count": 18,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 3
+  },
+  "docs/user-guide/conditioning.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "attributes",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 3",
+     "count": 6,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 54",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "conditioning",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 1",
+     "count": 6,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 66",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 3",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 3",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "monomial",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 77",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "reach",
+     "first_surface": "docs/user-guide/conditioning.md",
+     "first_location": "line 35",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 8
+  },
+  "docs/user-guide/fitting.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "cell",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 77",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 21",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "configuration",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 124",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 33",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 61",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 21",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 3",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "mean-slack",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 21",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 3",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "near-frontier-band",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 38",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "number-of-terms",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 21",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "region",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 61",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "share",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 91",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "support-weights",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 21",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "supporting-envelope",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 38",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 3",
+     "count": 24,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term-share",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 91",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term-temperature",
+     "first_surface": "docs/user-guide/fitting.md",
+     "first_location": "line 81",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 16
+  },
+  "docs/user-guide/index.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [],
+   "terms_undefined_at_first_use": 0
+  },
+  "docs/user-guide/limitations.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "certificate",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 39",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "conditioning",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 3",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 26",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 10",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 14",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 10",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "novelty",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 33",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "number-of-terms",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "pareto-boundary",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 14",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "region",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 7",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "supporting-envelope",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 14",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "temperature",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 26",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/user-guide/limitations.md",
+     "first_location": "line 3",
+     "count": 5,
+     "defined_at_first_use": true
+    }
+   ],
+   "terms_undefined_at_first_use": 1
+  },
+  "docs/user-guide/overview.md": {
+   "acronyms": [
+    {
+     "acronym": "PCA",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 10",
+     "count": 1,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    }
+   ],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "attributes",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 25",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 25",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "configuration",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 25",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 5",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 17",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "level-offset",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 38",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 10",
+     "count": 10,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "novelty",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 38",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "reach",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 38",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "region",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 38",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "temperature",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 10",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "white-space",
+     "first_surface": "docs/user-guide/overview.md",
+     "first_location": "line 38",
+     "count": 1,
+     "defined_at_first_use": true
+    }
+   ],
+   "terms_undefined_at_first_use": 9
+  },
+  "docs/user-guide/prediction.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "certificate",
+     "first_surface": "docs/user-guide/prediction.md",
+     "first_location": "line 43",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/user-guide/prediction.md",
+     "first_location": "line 3",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "configuration",
+     "first_surface": "docs/user-guide/prediction.md",
+     "first_location": "line 1",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/prediction.md",
+     "first_location": "line 26",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "novelty",
+     "first_surface": "docs/user-guide/prediction.md",
+     "first_location": "line 33",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 4
+  },
+  "docs/user-guide/tensions.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "cell",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 72",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "chart",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 64",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 29",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 43",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 29",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "log-metrics",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 29",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "mean-slack",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 100",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 3",
+     "count": 5,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "n-lemma",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 35",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "numerically-zero",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 45",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "participation-threshold",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 45",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "share",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 64",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "temperature",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 37",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/user-guide/tensions.md",
+     "first_location": "line 45",
+     "count": 10,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 11
+  },
+  "docs/user-guide/termination.md": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "assignment",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 22",
+     "count": 7,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "assignment-margin",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 22",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "cell",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 34",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "certificate",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 123",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "conditioning",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 75",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 75",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "exponent-vector",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 56",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "log-metrics",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 75",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "mean-slack",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 22",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 75",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "row-share",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 56",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "share",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 56",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "stable-radius",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 22",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 22",
+     "count": 14,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term-gap",
+     "first_surface": "docs/user-guide/termination.md",
+     "first_location": "line 22",
+     "count": 3,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 10
+  },
+  "examples/adcs/case-model.md": {
+   "acronyms": [
+    {
+     "acronym": "CI",
+     "first_surface": "examples/adcs/case-model.md/the-toolkit-account",
+     "first_location": "line 330",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "CLI",
+     "first_surface": "examples/adcs/case-model.md/the-toolkit-account",
+     "first_location": "line 330",
+     "count": 6,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "CSV",
+     "first_surface": "examples/adcs/case-model.md/the-legacy-geostationary-oracle-and-the-scope-se",
+     "first_location": "line 430",
+     "count": 2,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "JSON",
+     "first_surface": "examples/adcs/case-model.md/running-an-experiment-and-reading-the-ledger",
+     "first_location": "line 269",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "JSONL",
+     "first_surface": "examples/adcs/case-model.md/the-toolkit-account",
+     "first_location": "line 330",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "MDAO",
+     "first_surface": "examples/adcs/case-model.md/from-the-assembly-to-the-dataset-measures-of-eff",
+     "first_location": "line 220",
+     "count": 1,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "NAMED",
+     "first_surface": "examples/adcs/case-model.md/reading-the-model-top-to-bottom",
+     "first_location": "line 48",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "README",
+     "first_surface": "examples/adcs/case-model.md/the-toolkit-account",
+     "first_location": "line 323",
+     "count": 3,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "SPACE",
+     "first_surface": "examples/adcs/case-model.md/reading-the-model-top-to-bottom",
+     "first_location": "line 48",
+     "count": 1,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "THE",
+     "first_surface": "examples/adcs/case-model.md/reading-the-model-top-to-bottom",
+     "first_location": "line 48",
+     "count": 2,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "XDSM",
+     "first_surface": "examples/adcs/case-model.md/from-the-assembly-to-the-dataset-measures-of-eff",
+     "first_location": "line 220",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 8,
+   "acronyms_never_expanded": 8,
+   "terms": [
+    {
+     "term": "attributes",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 3",
+     "count": 6,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "cell",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 205",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "configuration",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 3",
+     "count": 50,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "launch-cost",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 137",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "metrics",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 60",
+     "count": 7,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "moe",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 89",
+     "count": 9,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "mop",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 89",
+     "count": 14,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "reach",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 105",
+     "count": 6,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "region",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 330",
+     "count": 14,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "share",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 137",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "temperature",
+     "first_surface": "examples/adcs/case-model.md/provide-the-oracle-three-small-cases-through-the",
+     "first_location": "line 235",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 5
+  },
+  "glossary.yaml": {
+   "acronyms": [],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "assignment",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry assignment.short",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "attributes",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry configuration.not",
+     "count": 6,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "cell",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry cell.short",
+     "count": 5,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "chart",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry log-metrics.not",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "configuration",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry attributes.formal",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry n-lemma.formal",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "energy-differential",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry level-offset.short",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "exponent-vector",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry contending-set.formal",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry term.short",
+     "count": 10,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "frontier",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry number-of-terms.short",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "generalized-geometric-program",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry geometric-program.not",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "generalized-posynomial",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry generalized-geometric-program.short",
+     "count": 4,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "geometric-program",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry geometric-program.not",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "hyperbolic",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry hyperbolic.not",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "invariant-value",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry energy-differential.short",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "launch-cost",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry moe.short",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "log-metrics",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry monomial.short",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry configuration.not",
+     "count": 28,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "moe",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry moe.short",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "monomial",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry log-metrics.short",
+     "count": 11,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "mop",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry moe.not",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "n-lemma",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry contending-set.short",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "pareto-boundary",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry term.not",
+     "count": 7,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry number-of-terms.formal",
+     "count": 15,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "region",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry white-space.short",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "ridge",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry ridge.not",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "row-share",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry term-share.not",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "share",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry term-share.not",
+     "count": 10,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "support-weights",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry effective-sample-size.short",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "supporting-envelope",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry pareto-boundary.not",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "temperature",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry term-temperature.not",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry exponent-vector.short",
+     "count": 43,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term-gap",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry row-share.short",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term-share",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry row-share.not",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term-temperature",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry assignment.short",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "ternary-plot",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry region.short",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "white-space",
+     "first_surface": "glossary/long-forms",
+     "first_location": "entry novelty.short",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 32
+  },
+  "paper/paper.ipynb": {
+   "acronyms": [
+    {
+     "acronym": "AI",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 104",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "DEA",
+     "first_surface": "paper/prior-art-by-family",
+     "first_location": "cell 13",
+     "count": 2,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "GGP",
+     "first_surface": "paper/abstract",
+     "first_location": "cell 0 abstract",
+     "count": 2,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "KKT",
+     "first_surface": "paper/results",
+     "first_location": "cell 24",
+     "count": 3,
+     "defined_at_first_use": false,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "PCA",
+     "first_surface": "paper/abstract",
+     "first_location": "cell 0 abstract",
+     "count": 14,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    }
+   ],
+   "acronyms_undefined_at_first_use": 2,
+   "acronyms_never_expanded": 1,
+   "terms": [
+    {
+     "term": "active-face",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 46",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "assignment",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 18",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "assignment-margin",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 18",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "attributes",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 5",
+     "count": 13,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "cell",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 14",
+     "count": 22,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "certificate",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 7",
+     "count": 9,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "chart",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 19,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "conditioning",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 14",
+     "count": 19,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "configuration",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 5",
+     "count": 19,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 15,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "effective-sample-size",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 63",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 15,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "energy-differential",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 8,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "exponent-vector",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 13",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 5",
+     "count": 13,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "frontier",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 13",
+     "count": 14,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "generalized-geometric-program",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "generalized-posynomial",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 18",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "geometric-program",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 8,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "hyperbolic",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 title",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "improvement-factor",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 29",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "invariant-value",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 7",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "launch-cost",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 57",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "level-offset",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 15",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "log-metrics",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 18",
+     "count": 7,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "mean-slack",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 36",
+     "count": 5,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "metrics",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 46,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "moe",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 56",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "monomial",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 8,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "mop",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 56",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "n-lemma",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 10,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "near-frontier-band",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 15",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "novelty",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 99",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "number-of-designs",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 5",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "numerically-zero",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 18",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "pareto-boundary",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 7,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "participation-threshold",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 15",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "position-along-the-frontier",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 100 output",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 16,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "reach",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 12",
+     "count": 8,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "region",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 5",
+     "count": 6,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "ridge",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 19",
+     "count": 5,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "share",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 8",
+     "count": 8,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "stable-radius",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 42",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "support-weights",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 65 output",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "supporting-envelope",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 14",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "temperature",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 15",
+     "count": 19,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 0 abstract",
+     "count": 123,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term-gap",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 39",
+     "count": 7,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term-share",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 17",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term-temperature",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 15",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "white-space",
+     "first_surface": "paper/reproducibility-and-your-own-case",
+     "first_location": "cell 101",
+     "count": 1,
+     "defined_at_first_use": true
+    }
+   ],
+   "terms_undefined_at_first_use": 8
+  },
+  "paper/supporting_material.ipynb": {
+   "acronyms": [
+    {
+     "acronym": "DEA",
+     "first_surface": "appendix/appendix-a",
+     "first_location": "cell 99",
+     "count": 5,
+     "defined_at_first_use": false,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "KKT",
+     "first_surface": "appendix/l3",
+     "first_location": "cell 10 output",
+     "count": 4,
+     "defined_at_first_use": false,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "LME",
+     "first_surface": "appendix/l5",
+     "first_location": "cell 10 output",
+     "count": 7,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "LP",
+     "first_surface": "appendix/l12",
+     "first_location": "cell 12 output",
+     "count": 2,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "LSE",
+     "first_surface": "appendix/l5",
+     "first_location": "cell 10 output",
+     "count": 3,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "MBSE",
+     "first_surface": "appendix/systems-engineering-practice-and-decision-analys",
+     "first_location": "cell 102 output",
+     "count": 3,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    },
+    {
+     "acronym": "MDAO",
+     "first_surface": "appendix/systems-engineering-practice-and-decision-analys",
+     "first_location": "cell 102 output",
+     "count": 2,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "PCA",
+     "first_surface": "appendix/b-11",
+     "first_location": "cell 71",
+     "count": 26,
+     "defined_at_first_use": false,
+     "expanded_anywhere": true
+    },
+    {
+     "acronym": "QQ",
+     "first_surface": "appendix/l8",
+     "first_location": "cell 10 output",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 8,
+   "acronyms_never_expanded": 5,
+   "terms": [
+    {
+     "term": "active-face",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "assignment",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 2,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "assignment-margin",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "attributes",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 16",
+     "count": 7,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "cell",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 17,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "certificate",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 7 output",
+     "count": 6,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "chart",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 11,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "conditioning",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 12,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "conditioning-of-the-exponents",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 36",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "configuration",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 16",
+     "count": 7,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "contending-set",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 78",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "effective-sample-size",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 38 output",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "elasticity",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 5,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "energy-differential",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "exponent-vector",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 69",
+     "count": 5,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 4,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "frontier",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 16,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "generalized-geometric-program",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 11",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "generalized-posynomial",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 11",
+     "count": 5,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "geometric-program",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 11",
+     "count": 7,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "hyperbolic",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 102 output",
+     "count": 8,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "improvement-factor",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "launch-cost",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 34",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "log-metrics",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 53",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "mean-slack",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 11",
+     "count": 13,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "metrics",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 37,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "monomial",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 102 output",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "near-frontier-band",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 80",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "number-of-metrics",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 38 output",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "number-of-terms",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 102 output",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 7,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "reach",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 6,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "ridge",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "share",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 7 output",
+     "count": 28,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "stable-radius",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "supporting-envelope",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 2,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "temperature",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 10 output",
+     "count": 3,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 2",
+     "count": 95,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "term-gap",
+     "first_surface": "appendix/appendix-c",
+     "first_location": "cell 12 output",
+     "count": 3,
+     "defined_at_first_use": true
+    }
+   ],
+   "terms_undefined_at_first_use": 11
+  },
+  "site/history.html": {
+   "acronyms": [
+    {
+     "acronym": "RAI",
+     "first_surface": "site/history.html",
+     "first_location": "line 134",
+     "count": 1,
+     "defined_at_first_use": false,
+     "expanded_anywhere": false
+    }
+   ],
+   "acronyms_undefined_at_first_use": 1,
+   "acronyms_never_expanded": 1,
+   "terms": [
+    {
+     "term": "frontier",
+     "first_surface": "site/history.html",
+     "first_location": "line 88",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "geometric-program",
+     "first_surface": "site/history.html",
+     "first_location": "line 88",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "site/history.html",
+     "first_location": "line 88",
+     "count": 1,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 3
+  },
+  "site/index.html": {
+   "acronyms": [
+    {
+     "acronym": "PCA",
+     "first_surface": "site/index.html",
+     "first_location": "line 137",
+     "count": 4,
+     "defined_at_first_use": true,
+     "expanded_anywhere": true
+    }
+   ],
+   "acronyms_undefined_at_first_use": 0,
+   "acronyms_never_expanded": 0,
+   "terms": [
+    {
+     "term": "chart",
+     "first_surface": "site/index.html",
+     "first_location": "line 137",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "exponent-vector",
+     "first_surface": "site/index.html",
+     "first_location": "line 130",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "fitted-reference-surface",
+     "first_surface": "site/index.html",
+     "first_location": "line 146",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "frontier",
+     "first_surface": "site/index.html",
+     "first_location": "line 130",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "metrics",
+     "first_surface": "site/index.html",
+     "first_location": "line 117",
+     "count": 3,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "n-lemma",
+     "first_surface": "site/index.html",
+     "first_location": "line 137",
+     "count": 1,
+     "defined_at_first_use": true
+    },
+    {
+     "term": "posynomial",
+     "first_surface": "site/index.html",
+     "first_location": "line 117",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "reach",
+     "first_surface": "site/index.html",
+     "first_location": "line 122",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "region",
+     "first_surface": "site/index.html",
+     "first_location": "line 130",
+     "count": 1,
+     "defined_at_first_use": false
+    },
+    {
+     "term": "term",
+     "first_surface": "site/index.html",
+     "first_location": "line 117",
+     "count": 4,
+     "defined_at_first_use": false
+    }
+   ],
+   "terms_undefined_at_first_use": 8
+  }
+ }
+}

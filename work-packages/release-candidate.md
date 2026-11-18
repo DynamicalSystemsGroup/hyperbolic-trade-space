@@ -1,0 +1,218 @@
+# The 0.1 release candidate: mandate, decisions, path
+
+Records typed by the driver. Decisions are the supervisor's, quoted verbatim.
+
+## The mandate (2026-11-08)
+
+**Supervisor (mzargham), verbatim:** "your job is to loop on the dev using local host and all the
+tools at your disposal to get me a candidate release. when you are done you can give me a PR. i will
+do my own comprehensive review. i am a human not a computer so although this work is my core
+intellectual contribution if you present the information badly i wont be able to sign off on it. you
+have a pretty clear picture of what i want for a first 0.1 release and how i expect you to verify
+the correctness and how i expect you to make the UX and information design robust to diverse
+readers but if you have any other questions you want to resolve you should clarify them now"
+
+**The chain, verbatim:** "our org architecture is me -> you -> pm -> subagents to spec"
+
+## Clarified before the run (popups, one at a time)
+
+- **Who holds the gates until the PR.** Options put: the driver holds them provisionally /
+  acceptances the driver's, scopes his / gates stay with him. **Verbatim:** "i am the only one who
+  can accept and merge a pr but you can define and accept scopes to get to something you believe i
+  will expect. don't hesitate to define spikes if you don't have the info you need to make a call.
+  at will eventually review the calls you made as part of my acceptance but if you approach them
+  scientifically its unlikely i'll reject them. (though it is my perogative to do so)".
+  Disposition: the driver defines and approves scopes and amendments and accepts packages, each
+  recorded as the driver's call with its evidence; a spike is run where the evidence for a call is
+  missing; every call is listed for his review; only he accepts and merges the PR.
+- **The trade-off-aware search.** Options put: in the candidate / after 0.1 / spike first.
+  **Verbatim:** "After 0.1". Disposition: WP12 follows the release; the paper's search section
+  stays short, marked as future work, with no results.
+- **The data under the paper's case.** Options put: swap for 0.1 if the evidence supports it / stay
+  on the frozen data. **Verbatim:** "Swap for 0.1 if the evidence supports it". Disposition: after
+  the system model package is verified, the case and its records move to the new data; every number
+  that changes is listed with its reason; the frozen data stays as the cited comparison; if the new
+  data changes a conclusion, the driver stops and brings it to him.
+- **The hand-off.** Options put: one guide in reading order / sittings by output / several smaller
+  PRs. **Verbatim:** "Sittings by output". Disposition: one PR from `dev` to `main` with a
+  reviewer's guide split into sittings he can take on different days (the paper; the docsite and
+  root page; the code and derivations; the calls made for him), each with a short checklist and its
+  own localhost entry point.
+
+Already decided in earlier records and not asked again: version 0.1.0; MIT, copyright Dynamical
+Systems Group (`WP8-decisions.md`); PyPI deferred; no image on a registry; nothing deploys before
+the release; the PDF export later.
+
+## The path to the candidate
+
+| Step | What | Depends on |
+|---|---|---|
+| 1 | System model tidy-up (WP15) delivered, verified, accepted by the driver | in execution |
+| 2 | Docsite restructure (WP8a Amendment 2) delivered; the driver's full browser pass; accepted | in execution |
+| 3 | The paper (WP10 with Amendment 1) delivered: proofs step for step, appendices, the container of record; structural acceptance by the driver | in execution |
+| 3b | The several-term fit with soft weights (WP17, scoped by the driver on the supervisor's conditional direction of 2026-11-09), and WP10 Amendments 4 and 5 (the abstract, the vocabulary review, the claims review) | 3 |
+| 3c | Ternary plots in the documentation's examples (WP18; the supervisor's request of 2026-11-09; scoped by the PM, approved by the driver): the pattern documented, accessible and interpretable, as simple as the other example plots | 2, 3b |
+| 3d | Figures: selection, generation and narration by section (WP19; the supervisor's direction of 2026-11-09; candidates placed when they pass the figure review, each with its purpose and the hypothesis that it serves it, as inputs to the review-and-revise loop with him on his return) | 3, 3c, 3e |
+| 3e | The system model, two views (WP22; the supervisor's direction of 2026-11-09): the same SysML v2 model extended, refactored and tightened in a modeller loop so that its configuration view (how a design is configured) and its assessment view (requirements, and the measurements by simulation or model checking that trace to the traded metrics) make the chain from configuration variables to assessed attributes to traded metrics explicit, with the results preserved; the two model diagrams of WP19 are generated from it | 1, 3d |
+| 3f | ACCEPTED 2026-11-10 (db59365). The model-realism loop (WP23; the supervisor's direction of 2026-11-09, 20:35, "0.1 waits for it"): the behavioural view as the guide; a launch cost that reads total mass; a requirement or a stated MoE for every traded metric; every swap and tune reaching at least one metric; the two views re-read cold each round; the interface contract amended if columns change | 3e |
+| 3g | ACCEPTED 2026-11-10 (c3c1ce3). The vocabulary rename (WP24; the supervisor's decision of 2026-11-09, 22:10, "Everything before 0.1"): "facet" leaves every surface including the package's public names, for "monomial term"/"term", "n-lemma", "trade-off", "cell"; contract amendment; lands after or rebased onto 3d, 3f | 3d, 3f |
+| 3h | Repository tidiness (WP25, recurring; the supervisor's direction of 2026-11-09, 22:20): cruft deleted (history keeps it), drift between docs, glossary and code closed, gaps listed; one small instance at each gate and one before the PR | each gate |
+| 4 | ACCEPTED 2026-11-10 with the WP23 close-out (6de8f68). The data swap (WP16): event detection (its regeneration runs once, after 3f) for the time attributes (the supervisor, 2026-11-09), the datasets, the K = 1, 2, 3 record and the paper's numbers regenerated on the new model inside the container of record, every change listed at the gate | 3e, 3b |
+| 5 | Readability and correctness loops over the reader grid (WP11, the driver scopes): context-gapped reads, triage, revision, re-test; browser passes | 3, 4 |
+| 5a | Improvement by subtraction (the supervisor's direction of 2026-11-09, 23:10): once the content is complete, one disciplined pass over the whole paper and the docs asking of every figure, argument and section whether it advances the narrative; what does not, goes; anything stuck in a loop or that cannot be made clear is assessed for removal rather than reworked again | 3f, 3g, 4, 5 |
+| 6 | Release candidate (WP8b, the driver scopes): version, license file, changelog, the archive cleared, stable reference keys from the docsite into the paper, the punch list, the reviewer's guide in sittings | 2, 5 |
+| 7 | The PR from `dev` to `main` | 6 |
+
+After 0.1: the search (WP12); publishing to an index or a registry; the PDF export. From 2026-11-14 the two-milestone board `milestones.md` tracks every item in flight against v0.1 and v0.2 (the supervisor's request before the autonomous phase resumed).
+
+## What "candidate" means (the driver's definition of done; his review may change it)
+
+- Every package above delivered, verified by the driver independently, and recorded.
+- The whole suite, lint, format, the lock check, the lemma chain and the proof-map checker pass:
+  on this machine, inside the container of record, and on CI by a manual run on `dev`.
+- The paper's committed numbers and figures were produced inside the container of record, and a
+  cold reproduction from Appendix F alone regenerates them.
+- The staged site (root page, docsite, paper) has had the driver's full browser pass on every
+  page, at desktop and phone width, in light and dark, with the findings fixed or listed.
+- The reader grid's stopping rule is met and the held-out cells have been read once; the whole
+  grid is reported with its worst cells.
+- No commit carries an attribution line; nothing has been merged to `main`, tagged, deployed or
+  published.
+- The reviewer's guide exists, sized for a person, and lists every call the driver made with its
+  evidence, every number that changed, and what is known to be weak.
+
+## The driver's calls (each for the supervisor's review)
+
+Kept in `driver-log.md` ("Scopes and acceptances by the driver"), with the evidence for each.
+
+## The mandate, extended (2026-11-11, 10:00; the supervisor, verbatim)
+
+"i think you have enough information to get us to a full package for me to review. don't make the pull request
+because i do want you to make a list of calls you made for me to review (and revert at my discretion) but at this
+point once you handle these spikes, design the changes, test, integrate, test, review, and then do ux loops to meet
+our human user requirements you should have something i can only need to make minor changes on before we prep for
+release."
+
+**What this changes.** The open decisions that waited for him (the two cost budgets and the launch rate after the
+2026 recalibration readout; the noise corollary's placement after its derivation passes; the final form of the
+two-panel figure) are the driver's to make on the readouts, each listed for his review. No pull request: the package
+is `dev` at a named head with `work-packages/supervisor-review-list.md`, the list of every call the driver made with
+where it is recorded and the commit that lands it, so that he can revert any at his discretion, and the reviewer's
+guide in sittings. The path to the package from here: WP30 built, gated and reviewed by P7 and P8; WP29's corollary
+derived, tested, placed and read; the two-panel figure in the paper and the docs; WP25-5; the release items that are
+the driver's (the version, the changelog heading, the reviewer's guide); a final reader round on the finished paper
+and docs at depths A to D with the grid including P7 and P8, its change requests landed; both platforms and the
+container green at the head; then the driver stops and hands him the package.
+
+## The role, restated (2026-11-11, 10:50; the supervisor, verbatim)
+
+"you are not just the driver. you are the assistant to the chief engineer. i am chief engineer. that means you are
+playing the role of an expert who is training under me. you are making calls and i am watching over your shoulder. i
+am accountable so i can revert them but you are not just punting up to me, you are making calls unless you are
+genuinely unable to. i have final decision authority so i still go through everything you produce and change what i
+feel must be changed."
+
+**What this changes.** The assistant makes the calls, including the ones that were being held for him, and records
+each with its reason and its commits in `work-packages/supervisor-review-list.md`; a question goes to him only when
+the assistant is genuinely unable to decide (a value only he holds, a change to his own stated intent, an outward
+act). He reviews everything produced and changes what he must.
+
+## Windows (2026-11-11, 11:30; the supervisor, verbatim)
+
+"i have another parallel workpackage for you to get going. we have mac and linux environments, but can you emulate
+windows and make sure that works as well?"
+
+**Disposition (the assistant).** Windows cannot be emulated on this Mac (no Windows containers on macOS, no VM in the
+sandbox); the honest route is a real Windows runner in GitHub Actions (`windows-latest`), which is a true Windows, not
+an emulation. A parallel package (the PM numbers it) under the lifecycle: (1) a spike: dispatch the fast suite, lint
+and the lock check on `windows-latest` once, and read what breaks (paths, line endings, encodings, temp directories,
+fonts, subprocess calls, wheels for scipy, HiGHS and Z3, the SysML toolkit, node for mystmd); (2) decide which shards
+Windows runs (the fast suite at least; slow and docs-paper if the toolchain stands up, otherwise stated as Linux-only
+with the reason); (3) fix what is ours (pathlib, utf-8 opens, newline handling, a Windows-safe staging script), never
+weaken a test for Windows without a stated reason; (4) a Windows job in `test.yml` on dispatch and at gates, matrix on
+the operating system; (5) the README and the reproducibility appendix say what runs where; (6) review on the three
+platforms green at the head.
+
+## The deliverables grid (2026-11-11, 11:40; the supervisor, verbatim)
+
+"another thing that i think would be helpful is to update your readout protocol to start reporting a grid of
+deliverables cross stakeholders. it can be rolled up but the point is to make sure we're actually delivering
+everything we need for people who are just interested in exploring, people going deep in the theory, people going
+deep into the model or people exploring the repo for potential use, versus using it. tell me what you think the
+columns and rows for this rolled up view should look like, keep in mind its sparse"
+
+**The assistant's proposal (adopted unless he changes it).** Columns, five journeys: Explore (a skim with no
+commitment: the root page, the README, the abstract, one figure); Use (install and run on a table of their own); Theory
+(the mathematics and its proofs); Model (the case model, its views and data); Evaluate (deciding whether to adopt or
+cite: reproducibility, platforms, tests, the release record). Rows, nine deliverable groups: the root page; the README
+and repository layout; the docs user guide (getting started, conditioning, fitting, choosing K, tensions, chart,
+prediction, termination, limitations); the API reference and examples; the package itself (install, public API,
+tests); the paper's body; the paper's appendices (proofs, model, results, reproducibility, prior art); the
+derivations and proof map; the case model, views, stakeholder layer and data of record; the release items
+(container, CI on three platforms, changelog, version, reviewer's guide). A cell is filled only where the row serves
+the column; it holds the state (not started, in progress, delivered, accepted) and the last evidence for that
+stakeholder (the reader round or user test and its verdict, or the check that ran). Blank means not applicable.
+The grid lives in `work-packages/deliverables-grid.md`, the PM keeps it current at each batch, the tick update
+prints its changes (and the whole grid when he asks); the handover prints it whole.
+
+**The status report (2026-11-11, 11:50; the supervisor, verbatim):** "sounds good. use that grid to create a status
+report template so we can start converging to our 0.1 release candidate". The template is
+`work-packages/status-report-template.md`; from this point the tick updates and the PM's batch reports use it, the
+grid as the table and the rest in lines; the first filled report follows the grid's first fill.
+
+## The entry surfaces (the supervisor, 2026-11-12, verbatim)
+
+> for the abstrac you are allowed to author/edit it but i am just telling you that rewriting the abstract as needed
+> is something i expect to do and therefore we should not push a release until i've approved it. strictly speaking
+> this is true for all of the content but there are a few surfaces: the index, the readme, the abstract, the
+> history, the first page of the documentation site. all of which need an extra close read by me since they are
+> entry points that impact peoples perception of the project
+
+**Applied.** Five entry surfaces, the root page (`site/index.html`), the README, the paper's abstract, the history
+page and the docs site's first page (`docs/index.md`), may be edited by the team but carry a release gate: the
+supervisor reads each closely and approves it before any release, and he rewrites the abstract as he sees fit.
+Every change to one of them is listed, with its reason and commit, in a section of the supervisor-review-list and
+in the reviewer's guide (WP8b), so his close read starts from the list of what moved. The abstract correction in
+flight (the restoration of the clause the WP33 unit cut) stands as the assistant's editorial call, not as a
+breach, and is on that list like every other change.
+
+> this is just me informing you that i expect to concentrate review effort there in addition to reviewing the
+> content as a whole
+
+**Applied.** Information, not a new gate: his review covers the whole package, with extra effort on the five entry
+surfaces. The "Entry surfaces" section of the review list and the reviewer's guide exist to make that
+concentration easy, and nothing else changes in how units work.
+
+**The reading pass joins the close read (2026-11-13).** Beside the five entry surfaces, the supervisor validates the
+reading pass before any release: `paper/reading_pass.yaml` is the record of every citing sentence read against its
+source, and Appendix G.2 says the readings are the authors', so he reads the record and confirms it before the
+sentence stands. Until then G.2 is worded to what has been done.
+
+The supervisor's own tasks, his word and the ones done together at a keyboard, are kept apart in `supervisor-tasks.md`;
+the two-milestone board is `milestones.md`.
+
+## Autonomous until the evening (15:59 EST, 2026-11-16; the supervisor, verbatim)
+
+"you are free to run autonomously; i should be around later this evening to check in on progress. i am looking
+forward to getting a first release in place so future work can be more incremental. initial conditions!"
+
+The driver's reading: the first release (0.1 of the software, `dev` merged into `main`, the paper route holding the
+abstract) is the goal the day's work serves; the build units WP66a to c land in order as they verify, quality
+control (WP67) and integration (WP68) are scoped and run as far as his keyboard items allow, with those items ready
+for him as exact steps; the example work (WP63's figure, WP70's probe) lands behind the release work; nothing merges
+to `main`, tags or publishes before his word. Tick updates continue in the fixed shape.
+
+## The two lifecycles (2026-11-16)
+
+The supervisor's six answers and three later ones (`WP64-decisions.md`) split the release in two; the design is
+`WP65-design/specification.md`.
+
+- 0.1 is the software's release: the package, the docs and the root page. It happens when the pull request from
+  `dev` into `main` is merged; the Release workflow then tags `v0.1.0`, publishes to PyPI, deploys the site and
+  publishes the GitHub release.
+- The paper is in `abstract` mode at 0.1 (`paper/mode.toml`): `/paper/` holds the title, the author and the
+  abstract he approved (`WP64-decisions.md`). The paper keeps iterating on the `paper` branch and reaches the site
+  at a later pin, through a merge of `paper` into `dev` and the next merge of `dev` into `main`.
+- "Candidate" for 0.1 means the rows of `release-checklist-software.md`. The reader round, the container gate and
+  the paper's appendices move to the paper's lifecycle and its list, `release-checklist-paper.md`.
+- Step 7 of the path, "The PR from `dev` to `main`", is the release pull request: its merge is the release.

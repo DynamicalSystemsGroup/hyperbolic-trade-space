@@ -1,0 +1,32 @@
+name: Merge by a code owner
+
+# VC-5. Trigger: a pull request closed into dev or into paper. Into dev the merger must be a code owner other
+# than the author; while the code owners are one person the check passes with a notice that quotes the
+# admissibility row. Into paper the merger must be a paper approver (the paper/ line of CODEOWNERS) other than
+# the author (WP79). Branch protection (docs/code-owners.md) refuses the merge up front; this records it when
+# it happens.
+on:
+  pull_request_target:
+    types: [closed]
+    branches: [dev, paper]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  merged:
+    name: merged by a code owner (dev) or a paper approver (paper), not the author
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Who merged
+        run: uv run --no-project python scripts/admissibility.py merge --event "$GITHUB_EVENT_PATH" --report "$RUNNER_TEMP/report.md"
+      - name: Record the failure on the pull request
+        if: ${{ failure() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/report.md"

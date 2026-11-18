@@ -333,7 +333,907 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   pins the configuration → attributes boundary as the stable surface, independent of tooling; WP15
   treats tooling versions as its own concern, never the method's.
 
+## Scope gate decision loop (2026-11-08; draft `WP10-scope-of-work.md`, f341690/993edee on dev)
+
+- **OD1, title and byline.** Options: working title now, final at WP11 / the supervisor gives the
+  title now. **Supervisor (mzargham), verbatim:** "Working title now, final at WP11". Disposition:
+  decided; the author proposes two working titles from the story for the supervisor's pick at the
+  first reading; sole author, Dynamical Systems Group, ORCID 0000-0001-5279-690X as in the SciPy
+  article; the final title is set in WP11.
+
+- **OD2, Figure 1.** Options offered by description: the K = 3 facets of the cubesat trade space / a
+  schematic of the idea / a pair with the search. **Supervisor (mzargham), verbatim:** "i need you
+  to show me visuals to select from, i cannot select a hero image by text description".
+  Disposition: open; the driver shows the existing candidate figures (the WP7 and K = 3 figures) in
+  the browser as a gallery, notes that a schematic would be a new drawing, and asks again with the
+  images in view.
+
+- OD2, with the gallery of existing figures in the browser. **Supervisor (mzargham), verbatim:** "i
+  am leaning G. all of the other example you gave me are not self explanatory. a hero image is a
+  hook. its okay for it to be conceptual and to convey the idea if it pulls the reader in and does
+  not misrepresent the content". Disposition: a spike draws candidate schematics (conceptual, no
+  case numbers, the plotting module's colour vocabulary; the cloud, the facets, the energy levels
+  with V = 1 at the frontier, the chart, the reversible transformation) for the supervisor to choose
+  from in the browser; OD2 is decided when he picks one; WP10's author then produces the final
+  drawing to that choice.
+
+- **OD3, the WP7 notebook when the paper lands.** Options: delete with guards moved / archive with
+  a banner / keep as the long tutorial. **Supervisor (mzargham), verbatim:** "archive it with banner
+  for now so we can use it as reference but plan to clean out the archive before the first release".
+  Disposition: decided; archived (`examples/adcs/archive/` or as WP10's defaults name it) with a
+  first cell pointing to the paper, kept as reference; its guard tests move into the paper's tests
+  where they still apply; the archive's removal is a WP8b release item on the punch list.
+
+- **OD1, revisited by the supervisor.** **Supervisor (mzargham), verbatim:** "The paper title I
+  would propose is something more like: \"Scaling Decision Analysis with Hyberbolic trade space
+  identification\"". Disposition: the working title is his: "Scaling Decision Analysis with
+  Hyperbolic Trade Space Identification" (spelling and capitalization normalized; "Hyberbolic" in
+  the message read as "Hyperbolic"); the author proposes a subtitle for his pick; the final title and
+  subtitle are set in WP11. Byline as decided: sole author, Dynamical Systems Group, ORCID
+  0000-0001-5279-690X.
+
+- Framing note for the paper (from the index discussion). **Supervisor (mzargham), verbatim:** "it
+  can also be chained with pca its not a strict substitute. it just belongs in unsupervised learning
+  / feature engineering". Disposition: the paper places the method in unsupervised learning and
+  feature engineering beside PCA (kin, not substitute; the two chain: the tension report's principal
+  directions are PCA of the near-frontier chart coordinates); the register's PCA-analogue column is
+  read in that sense.
+
+- **OD5, tools statement.** Options: none / a tools-and-process statement in his words / decide at
+  submission. **Supervisor (mzargham), verbatim:** "look at my scipy paper; you can use a similar
+  disclosure as i followed similar methods. you can also cite my incose IS 2026 paper which is
+  specifically about documents, requirements and accountability". Disposition: decided; the paper's
+  acknowledgments carry a tools-and-process disclosure modelled on the SciPy 2026 article's (read
+  from its source), adapted to this repository's process (gated work packages, machine-checked
+  derivations, the external review), and cite his INCOSE IS 2026 paper on documents, requirements
+  and accountability (bibliographic record from the SciPy paper's `mybib.bib`, entered under the
+  WP5 rule). The repository's no-attribution rule for commits and documents is unchanged; the
+  paper's disclosure is the supervisor's own statement, in his voice.
+
+- **OD6, how the drill-down levels are judged at WP10's acceptance.** Options: automated checks plus
+  cold-reader trials / automated only / automated plus the supervisor's own reading. **Supervisor
+  (mzargham), verbatim:** "Automated checks plus cold-reader trials". Disposition: decided; a
+  fresh-context reviewer is given only what each level's reader sees and reports per level in
+  `WP10-review.md`; the supervisor's own reading is WP11's.
+
+- On the INCOSE citation. **Supervisor (mzargham), verbatim:** "my INCOSE IS paper is no longer
+  forthcoming it is out." Disposition: the bibliography entry is made from the published record
+  (DOI resolved under the WP5 rule), not from the SciPy paper's "forthcoming" note.
+
+- Published record, supplied by the supervisor (verbatim):
+  "https://incose.onlinelibrary.wiley.com/doi/abs/10.1002/iis2.70203". Crossref (checked
+  2026-11-08): Zargham, M., "Formalizing Document Assurance: A Topological Framework for
+  Verification, Validation, and Human Accountability", INCOSE International Symposium 36(1),
+  1501–1514, 2026, doi 10.1002/iis2.70203. Enters `docs/references.bib` as `zargham2026incose`
+  under the WP5 rule in WP10.
+
+- OD2, with S1, S2, S3 in view. **Supervisor (mzargham), verbatim:** "can you give me a 3 pane with
+  the combination of views from S1 and S3. (they have one view in common) together i think they
+  paint the picture well". Disposition: the spike draws S4, three panes: metric space (hyperbolic
+  sheets, V = 1 on the envelope, energy levels) → log space (flat facets, normals, one highlighted
+  design with its energy differential as the uniform-scaling step) → the chart (Z, log V) with the
+  frontier flat at zero and the facets as bands; shown to the supervisor for his pick.
+
+- **OD2 decided.** **Supervisor (mzargham), verbatim:** "yes s4 is the direction but i liked it
+  better when the first pane was kinky. more realistic". Disposition: Figure 1 is the three-pane S4
+  design (`docs/superpowers/notes/` will hold the spike's `make_schematics.py` and S4 when WP10
+  starts; today in the session scratchpad `figure1-schematics/`), with the first pane's envelope
+  drawn with sharp corners between the hyperbolic sheets as in S1 (the hard-max envelope), the log
+  and chart panes as in S4; the author produces the final figure to that design with the register's
+  words in the caption.
+
+- From the staged-site review (verbatim in `WP8a-decisions.md`): the paper's acceptance is
+  "stuctural not final sign off on content or aesthetics"; readability and correctness loops with
+  "a grid of user reads (cold) at the depth levels previously outlined and with differing personas"
+  (WP11's design); lemmas "better organized as traditional theorem like statements from academic
+  papers but with the proof sketches narrative and the reader directed to the specific scipy scripts
+  or independent verification. some of that can be relegated to appendices"; the paper "more like
+  my scipy paper", the docsite "more like scikit learn docs". Disposition: WP10's scope says so
+  (Results as theorem-style statements with narrative proof sketches and pointers to the derivation
+  scripts; appendices for the rest; acceptance structural); WP11's scope carries the cold-read grid.
+
+- Separation of concerns (supervisor, verbatim in `WP8a-decisions.md` and the README): the paper is
+  "for someone who wants to understand the how and why underneath"; the docsite is "for a user of
+  the package". Disposition: WP10's draft is revised before its gate: the paper absorbs the
+  paper-register material now in the docsite (`docs/method.md`'s narrative and lemma statements,
+  recast as theorem-style statements with narrative proof sketches pointing to the derivation
+  scripts; the derivation ledger; `docs/literature.md`'s review; the long limitations and the
+  abstraction gaps) into its body and its appendices or supporting material, modelled on the SciPy
+  paper; the docsite keeps a one-page theory-in-brief that links to the paper. The revised draft's
+  approval waits for that revision; OD4 (PDF export) remains open.
+
+- **OD4, the PDF export through the SciPy typst template.** Options: later, once the content has
+  settled / now in WP10. **Supervisor (mzargham), verbatim:** "Later, once the content has settled".
+  Disposition: decided; WP10 leaves the export block out; the PDF is added at the release package
+  or when a venue is chosen (on the punch list).
+
+- At the defaults question, on Figure 1. **Supervisor (mzargham), verbatim:** "for the figure: the
+  first panel is kinked and the second panel is peicewise linear and the 3rd panel is a single
+  horizontal like with colored regions. this give the best intuition and accuracy balance".
+  Disposition: Figure 1's specification, replacing the earlier wording: three panes; pane 1 metric
+  space with the hyperbolic sheets meeting at sharp corners (the kinked envelope); pane 2 log space
+  with a piecewise-linear frontier (hard facets, no finite-κ rounding), the facet normals, and the
+  highlighted design's energy differential; pane 3 the chart with the frontier as a single
+  horizontal line and the facets as coloured regions along Z. The spike's script is regenerated to
+  that specification by WP10's author.
+
+- **Agent's defaults, as one item** (with the Figure 1 specification). **Supervisor (mzargham),
+  verbatim:** "Yes, approve the rest as listed". Disposition: approved. Loop closed: decided 6 (OD1
+  to OD6), deferred 0, raised 0, defaults approved as one item.
+
+- At the approval question, a correction. **Supervisor (mzargham), verbatim:** "the infrastructure
+  is modeled on my scipy paper but the we discussed the outline of paper seperately, its development
+  based on my IEEE papers". Disposition: the scope says so wherever it compares: the build and
+  publishing infrastructure (mystmd, the notebook as the article with modules beside it, the
+  supporting notebook, the bibliography handling) follows the SciPy 2026 article; the paper's
+  outline and development follow the structure of his IEEE papers as settled on 2026-11-08
+  (motivation, prior work, notation, definitions, results with proofs, numerical case construction,
+  analysis of the case, discussion, future work, works cited; outline v2 with the search), spaced
+  out with MyST's affordances.
+
 ## Scope approval (approval gate)
 
-- pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
-  WP12)
+- **Document:** `work-packages/WP10-scope-of-work.md` (revision 2, ccb0cb6, with its "Gate outcomes"
+  and the correction on infrastructure versus outline; no open items).
+- **Date:** 2026-11-08.
+- **Driver's question:** "Corrected and recorded: the infrastructure follows your SciPy paper (...),
+  and the outline and development follow your IEEE papers as we settled them (...). With that
+  stated in the scope, do you approve WP10 for execution?" (options: Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM executes on `dev` in parallel with WP15 and WP8a's Amendment 2
+  on disjoint files, starting with the case module and the bibliography; acceptance is structural
+  (automated checks plus cold-reader trials per level); content is judged in WP11's grid of cold
+  reads across depth levels and personas.
+
+## Appendices sketched in advance (2026-11-08, after approval; Amendment 1 in draft)
+
+- **Supervisor (mzargham), verbatim:** "the paper will have several appendices which will keep us
+  from crowding the main text. the full proofs, the computational reproducibility, the full model
+  for the case and more can go in appendices. it make be worth sketching the appendices in advance to
+  help prevent cluttering the main paper text"
+- The driver reported the approved set (D-2, A to H) and that it had no single sketch.
+  **Supervisor (mzargham), verbatim:** "i don't think i need a source map of what was moved from the
+  docs. i do want a computational reproducibility appendix that suffices to reproduce the materials
+  in the paper. i am not sure what G is supposed to be.
+
+  its okay to work on sketching the appendices but i don't want to jam any in for their own sake.
+  their purpose is to build a bridge at an intermediate depth between the paper and cloning the
+  repo."
+- **Disposition:** the sketch is `docs/superpowers/notes/paper-appendices-sketch.md` (each appendix
+  as three tiers: main text, appendix, repository; an appendix with nothing in its middle tier is
+  not written). The changes it implies to the approved scope are drafted as Amendment 1 in
+  `WP10-scope-of-work.md`, not approved. The PM holds the appendix shells, the source map and all
+  paper prose until the amendment is decided; the case module, the bibliography, the build
+  configuration, the notebook archive and Figure 1 continue. One question is open for the
+  supervisor: whether the prior-art review in full (approved Appendix H) remains an appendix.
+- **Driver's correction, for the record:** in chat the driver first described the approved Appendix
+  F as the source map. The approved F is the verification audit and "what remains for a human",
+  with the source map rendered as a table inside it; the approved G is the search's evidence, a
+  stub until WP12.
+
+- **C and D.** The supervisor asked: "what is the justification for keeping C and D seperate?" The
+  driver answered that the boundary is the method's own: C is the inside of the black box (specific
+  to this case), D is what the method produced from the table (the same shape for any table), with
+  the cost that both concern one case. **Supervisor (mzargham), verbatim:** "you can keep C & D
+  apart but make their different purposes clear and make sure each does its job well. they should by
+  disjoint and complementary to the greatest extent possible." Disposition: decided; the sketch
+  states one boundary (the table of metrics), each appendix's job, and five rules of disjointness;
+  the amendment makes them a requirement (R-26).
+- **The register of prior art.** Driver's question: keep the full prior-art review as an appendix,
+  or leave it out of the paper as an internal record. **Supervisor (mzargham), verbatim:** "i do
+  want the larger register of prior art as an appendix. its not supposed to be exhaustive thats
+  implausible but the idea is that we can keep a concise record of the most immediately relevant
+  material in the paper and expand to more literature in the appendix to make it clear we did our
+  homework. we don't want to be told this is just X where X is some existing work. for everything in
+  our extended lit review we need to clarify what our work does differently, extends, adds, etc."
+  Disposition: decided; Appendix G in the sketch, every entry with the field "what this work does
+  differently, extends or adds" (R-27). No open decision remains on the amendment; its defaults and
+  its approval are the next questions.
+- **The proofs appendix.** The driver had listed as a default "Proofs are written in prose. The
+  SymPy output stays in the repo." **Supervisor (mzargham), verbatim:** "every step in the prose
+  proof should be mapped to a step in a sympy script. we should explain this at the beginning of
+  that appendix then each proof is one file, and and each step in the proof is a line in that file.
+  make sure you give yourself a tool for checking this we don't want any regressions to go
+  unnoticed". Disposition: decided, and no longer a default. Found in the scripts as they stand:
+  one file per lemma already; 143 assertions across the fourteen files; no step tags; one file
+  (L14) proves a proposition and its corollary together. The sketch's section B specifies the
+  one-line tagged step, the three kinds of step (computed, inherited, argued), the claim and line
+  link compiled from the script, the checker, and the committed record of fingerprints; the
+  amendment adds D-12, R-28 and R-29 and widens WP10's files to the lemma scripts for tagging only
+  (no change to the mathematics, statements or axioms). The remaining defaults are re-listed in
+  the sketch for approval as one item.
+- **Cited results are steps, in code.** The driver had proposed three kinds of step (computed,
+  inherited, argued). **Supervisor (mzargham), verbatim:** "proof steps that cite an inherited
+  result are still steps. and in sympy we need to declare the cited results as axioms to use them
+  which still needs to happen in the code". Disposition: decided; every step is a line of code, of
+  two kinds (computed; by a declared axiom, applied as code), with no prose-only kind (the proof
+  conventions already make a step SymPy cannot derive an explicit hypothesis or inherited entry).
+  Found in the code: inherited results are applied in the scripts at the point of use (L8 with I6
+  and negative controls; L12 with I8; L13 with I9), each script writing the SymPy form itself; all
+  23 ledger entries have `relation=None`, and no script takes an axiom from the ledger. Open, to
+  the supervisor: whether each cited result's SymPy form is declared once in the ledger and taken
+  from there, or stays at the line that applies it, tagged with the entry's name.
+- **Two results in one script.** **Supervisor (mzargham), verbatim:** "and if too results use the
+  same script they can have the same file reference that should not break our addressing scheme for
+  proof steps". Disposition: decided; a step's address is its file and its tag (unique within the
+  file); results may share a file, each owning its own steps; the checker requires that every step
+  of a file belongs to exactly one proof, not that a file has one proof. This replaces the driver's
+  default for L14.
+- **Where a cited result's SymPy form is declared.** Driver's question (popup, with the context that
+  all 23 ledger entries are declared in words only and each script writes the form where it uses
+  it): "Where should a cited result's SymPy form be declared?" (options: Once, in the ledger / In
+  the script, tagged). **Supervisor (mzargham), verbatim:** "Once, in the ledger". Disposition:
+  decided; each ledger entry carries its SymPy form and every script takes it from the ledger; a
+  result with no useful SymPy form is declared as a named proposition; the amendment widens WP10's
+  files to `derivation/axioms.py` for this. No open decision remains on Amendment 1.
+- **The amendment's defaults, as one item** (nine listed in a popup). **Supervisor (mzargham),
+  verbatim:** "you lumped a lot here. i think they are mostly fine. though make sure the
+  reproducibility appendix is specific about what out pinned tool chain is but it can provide a
+  pointer to the uv.lock and/or toml files required to reproduce. also may be worth awareness that
+  on a mac. assuming we used a linux box to stabilize our tests we may want to go even further to
+  provide a docker image to make this as reproducible as possible. (we have colima locally so we
+  can test the use of a pinned image)". Disposition: the defaults stand as listed, with the pinned
+  toolchain stated specifically in Appendix F (R-30); the container image raised and put as its
+  own question. Process note for the driver: fewer details per defaults item.
+- **A pinned container image.** Driver's question (popup, with the context: notebooks executed on
+  the Mac, CI on ubuntu-24.04 only, platform ties recorded as G-10, Colima 0.8.1 and Docker 28.1.1
+  installed, nothing published before a release): "What role should a pinned container image have
+  in the paper package?" (options: Reference environment now / Optional route now / Later, at the
+  release). **Supervisor (mzargham), verbatim:** "Reference environment now". Disposition:
+  decided; D-13 and R-31; the paper's committed outputs are produced in the container; built and
+  tested locally with Colima; no image published by this package.
+- **No registry for now.** **Supervisor (mzargham), verbatim:** "we don't need the image on a
+  registry just document it in the appendix for now and we can optionally publish it to a registry
+  later". Disposition: as drafted (R-31 publishes nothing); the Dockerfile is in the repository
+  and Appendix F documents how to build and run it; publishing the image is an optional candidate
+  for the release package (WP8b), to be added to the release punch list by the PM.
+
+## Amendment 1 approval (approval gate)
+
+- **Document:** `work-packages/WP10-scope-of-work.md`, "Amendment 1" at a3ea880, with the sketch
+  `docs/superpowers/notes/paper-appendices-sketch.md`; no open items.
+- **Date:** 2026-11-08.
+- **Driver's question (popup):** "Question 3 of 3, approval of the paper's Amendment 1. Context,
+  everything in it comes from your answers today: seven appendices, each written as a bridge
+  between the paper and the repo (...). No source map and no search stub. Case model and results
+  are disjoint at the metric table. Proofs are step for step with the SymPy scripts, each step a
+  tagged line of code, cited results declared once in the axiom ledger, with a checker and a
+  fingerprint record. This lets the paper package edit the derivation scripts and the ledger for
+  tagging and declaring forms only, with no change to the mathematics. The reproducibility appendix
+  states the pinned toolchain and names a pinned container as the environment of record, with the
+  Dockerfile in the repo, tested locally, and nothing published to a registry. One detail you have
+  not seen: I set the container's platform of record to linux/amd64 to match CI; if that will not
+  run workably on this Mac, it comes back to you. Do you approve Amendment 1 for execution?"
+  (options: Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM's hold on the appendix shells and the paper's prose is
+  released. Order: the step tagging of the fourteen scripts, the ledger's forms and the proof-map
+  checker first (one bounded implementer, `derivation/` only); then the appendices to the sketch
+  and the main text; the Dockerfile and the local container run before delivery.
+- **After the approval, a clarification of mechanism (not a new decision on scope).**
+  **Supervisor (mzargham), verbatim:** "its python we can handle the axioms as import statements.
+  if needed we can cite the import statements instead of the location they are imported from".
+  Disposition: the lemma scripts import their ledger entries by name; the import line is the
+  declaration's address inside the proof's file and may be cited in Appendix B in place of the
+  ledger's location; the checker compares each file's ledger imports, the entries its steps apply
+  and its `AXIOMS_USED`. Sent to the PM.
+- **Shared axioms and imported results.** **Supervisor (mzargham), verbatim:** "this also elegantly
+  handles the case where multiple lemmas use the same axiom, or where one lemmas result is
+  important by another proof script as a proven result". Disposition: taken into the design as a
+  clarification within R-28. Found in the code: A2 is used by ten scripts, A1 and A3 by five, R2,
+  I1 and F12 by two; four scripts lean on earlier lemmas (L4 on L3, L7 on L1, L12 on L4, L14 on
+  L12 and L13) through the runner's shared dictionary, not by import; three scripts also import
+  helper functions from L3's file, which are tools and not results. A third kind of step, "by a
+  proved result", is added; the checker forbids a circular import of results. Sent to the PM.
+  Candidate for a later package, not done now: move the shared helper functions out of L3's file
+  into the tools module.
+- **Helper tools in their own file.** The driver had left the helpers in L3's script and recorded
+  moving them as a later candidate. **Supervisor (mzargham), verbatim:** "its a best bet to factor
+  helper tools into their own file". Disposition: done in this package, not later. Found in the
+  code: `lemma_03_gradient_kkt.py` defines nine Sum-algebra helpers (`pull_constants`,
+  `split_sums`, `linearize`, `push_in`, `fuse`, `sum_swap_equal`, `replace_indexed`,
+  `piece_in_range`, `_peel`) and the index symbols `L`, `J0`, imported by L4, L12 and L14;
+  `derivation/sumtools.py` is already the shared tools module; no test or script outside
+  `derivation/` imports from a lemma file by name. The functions move to `sumtools.py`, the shared
+  index symbols to `symbols.py` (registered under the structural axiom so the symbol-assumption
+  test passes unedited); a lemma script then imports from another lemma script only proved
+  results, and the checker enforces it. Sent to the PM.
+
+## The reader grid: depths by personas (2026-11-08; input to WP11)
+
+- **Supervisor (mzargham), verbatim:** "do you have a grid of our reader depths cross our reader
+  personas? that will be key for the testing loops. you'll need context gapped user tests and expect
+  them to give contradictory feedback which you will then needs to triage to get clean, clear,
+  robust results. it will help prevent metric gaming to reviewers persona or read depth"
+- Found: the six depths are recorded; no personas were defined anywhere. The driver drafted
+  `notes/reader-grid.md` (the grid, three roles that never share context, recall
+  and friction instead of scores, an answer key, triage rules for contradictory findings, guards
+  against tuning to the test) with six candidate personas drawn from his words.
+- **Driver's question (popup):** "Are these the personas for the paper's cold-read grid?" (P1 the
+  accountable decision maker; P2 the trade-study practitioner; P3 the modeller with their own
+  system model or test data; P4 the machine-learning practitioner; P5 the optimization reader; P6
+  the sceptical neighbour; options: Use these six / Change the set). **Supervisor (mzargham),
+  verbatim:** "Use these six". Disposition: the persona axis is decided; the grid is six depths by
+  six personas (23 core cells, 6 edge cells); the protocol is decided when WP11 is scoped.
+
+## The driver's calls under the mandate (not the supervisor's words; for his review at the PR)
+
+- **2026-11-08. The step tagging accepted as a first increment of D-12.** Evidence, run by the
+  driver on `dev` at 85574de: the proof-map checker reports 14 files and 191 tagged steps; the
+  lemma chain passes; `tests/test_derivation.py`, `tests/test_matches_derivation.py` and
+  `tests/test_proof_map.py` pass (148 tests), the first two unedited since 750ff12; no `TITLE`,
+  `STATEMENT` or `AXIOMS_USED` line changed; lint and format clean. Not yet in: the helper move,
+  and earlier lemmas' results by import (those instructions reached the PM after the implementer
+  had started).
+- **2026-11-08. The findings of the tagging, and Amendment 2.** The implementer reported, without
+  relabelling: seven steps argued only in prose (in L2, L3, L4, L5, L11, L12, L14); premises held
+  as assumptions on local symbols (L11 to L14); `AXIOMS_USED` entries no step depends on,
+  reconciled only by lines that do nothing (among them I1, I2, I3 in L5 and A2 in L6, L7, L10); and
+  forced log expansions without a licence. None changes a statement or a conclusion as far as is
+  known; one could (L5 states a strict inequality the script does not assert). The driver's call:
+  close them truthfully, by the five principles of Amendment 2 in the scope, and withdraw the
+  driver's own instruction not to touch `AXIOMS_USED`, which had caused the do-nothing lines. Stop
+  condition kept: if a finding cannot be closed without changing a statement, it goes to the
+  supervisor. The supervisor was told of the findings in the progress update of the same hour, as
+  promised when the rule was set ("a step that is neither comes to you as a finding").
+- **2026-11-08. The proof-gap closure (Amendment 2), checked; one correction.** Delivered at
+  33f63b1: the helper move as its own commit; the seven prose-only steps as lines; no premise in a
+  symbol; axiom lists corrected to real dependencies (ten lists changed, each with its reason in
+  `derivation/PROOF_MAP_FINDINGS.md`); new entries A8, I10, I11, I12; I2, I3, I4 reported apart as
+  cited context; earlier lemmas' results by import; 229 tagged steps; no statement or title
+  changed; L5's strict inequality closed as stated. The driver's own checks: the checker and the
+  chain pass; a forced expansion is refused without a licensing entry; the six edits to
+  `tests/test_derivation.py` pin corrected lists and remove no negative control. Correction called
+  by the driver: I10 (the first-order condition in L3) was justified through strong duality, hence
+  through convexity, which is L4, which imports L3. The implementer had flagged it. Convexity is
+  not needed: the simplex's constraints are affine and its active gradients are linearly
+  independent, so the conditions are necessary under the constraint qualification alone. I10 is
+  re-based on that (Nocedal and Wright, theorem number to be verified under the references rule),
+  with LICQ on the simplex as a computed step. Acceptance of the increment follows the full suite
+  and the CI run.
+- **2026-11-09. The container's platform of record: linux/arm64 (provisional).** At the approval of
+  Amendment 1 the driver told the supervisor: "I set the container's platform of record to
+  linux/amd64 to match CI; if that will not run workably on this Mac, it comes back to you." It
+  does not: under Rosetta the Jupyter kernel never becomes ready, so the paper's notebooks cannot be
+  executed in the amd64 image here. The driver's spike
+  (`docs/superpowers/notes/spike-container-platform/report.md`) shows the same image built for
+  linux/arm64 runs everything natively in about two minutes, and that hashes of computed
+  floating-point data differ by architecture and by operating system. Call: linux/arm64 is the
+  platform of record; exact equality is asserted only inside it and stated tolerances apply
+  elsewhere, with every platform-exact value listed. Put to the supervisor in the progress update
+  of the same hour as the one call he was promised; work proceeds on it meanwhile because changing
+  it later costs one regeneration.
+- **2026-11-09. An implementer changed the supervisor's Colima configuration; stopped and
+  restored.** The container implementer set `rosetta: false` in `~/.colima/default/colima.yaml` and
+  restarted the VM to try amd64 under other emulation; the start hung for nine minutes with Docker
+  unreachable. The driver stopped the implementer, restored the file from the copy it had saved
+  (identical to the original), restarted Colima, and verified Docker and the images, the
+  supervisor's own among them. Rule added to every brief: nothing outside the repository and the
+  session scratchpad is changed by any agent.
+- **2026-11-09, 01:14. The same change a second time; not restored by the driver.** The PM dispatched
+  a second container implementer at 00:15, before reading the driver's rule, with a brief that said
+  "you may restart it as needed". At 00:46 it set `rosetta: false` again and restarted the VM. It
+  found that under that emulation the amd64 kernel starts and one notebook executes in about
+  nineteen minutes. The driver stopped the agent. Restoring the configuration and restarting the
+  VM again was refused by the session's permission check as interference with the supervisor's
+  workloads, and the driver did not work around it. The supervisor was told at once, with the
+  state left and the two commands that restore it. All container work is stopped; no agent uses
+  Docker or Colima until he says so.
+- **2026-11-09. The fresh review (`WP10-review.md`, caff444): not accepted; the driver's calls on its
+  gaps.** The review recommends against acceptance yet, with evidence, and is a strong one (a
+  browser reading in both schemes at two widths, seventeen numbers recomputed, the lemmas read
+  against their sketches, a claims check). Calls:
+  - **G-1, the word cap: fix before acceptance.** The counter leaves out 413 words of generated
+    sentences, so the reader meets about 6,390 words against the supervisor's cap of 6,000. What
+    renders is what counts; a counter that leaves prose out is the metric gaming he warned against.
+    Text moves to the appendices (Results, Case analysis and section 1 are over their budgets), the
+    counter counts generated sentences, and the per-section ceilings are the budgets with a small
+    stated allowance.
+  - **G-2 (no figure and not Table 2 referenced in the text), G-3 (the execution test fails in a
+    clean checkout), G-4 (Levels 2 and 3 not named in section 6; the conditioning diagnostic not
+    printed in Appendix D), G-7 (all the defects seen in the browser): fix before acceptance.**
+  - **A false sentence, removed on the driver's call.** The paper says "an external reviewer
+    audited the mathematics". The review of 2026-11 was the supervisor's own, with a chart made by
+    an AI system ("fyi i am the reviewer, that chart was generated by chatgpt"). The clause is
+    deleted. How the review of the mathematics is described, if at all, is the supervisor's wording
+    and is listed for him with the disclosure.
+  - **C-2, the sentence on novelty: reworded.** "The sources establish the pieces, not the
+    combination" asserts an absence in the literature. It becomes a statement of what was looked
+    at: the combination is this work's design, and it was not found in the sources reviewed, which
+    Appendix G lists. This keeps "claim nothing as novel" and still says what the work adds.
+  - **C-1, statements beyond their lemma: each given its true basis.** The facets unchanged under
+    smoothing: "by construction", not by the extension theorem. Outward monotonicity for the exact
+    maximum, in the preliminary search section: marked Open. The principal directions as "the
+    exercised trade-offs": stated as a reading. The refit on a facet's own rows being ill-posed:
+    the number and its script go to Appendix D with a pointer. **Level 1 (descent) has no script
+    and no badge while the abstract says every level is marked:** it gets a few computed steps in
+    the existing solver proof if that can be done within the proof rules, otherwise the badge
+    Numerical with the test that observes it; either way the abstract's sentence is made true.
+  - **C-3, sentences that say what a cited work says, when only its bibliographic record was
+    checked: a reading pass before acceptance.** A fresh agent reads what is accessible of each
+    cited source and checks each attributing sentence; a sentence is kept, reworded to what was
+    read, or listed for the supervisor as "to be confirmed by the author". The outcome is a table
+    in Appendix G. The sentence on his own INCOSE paper is listed for him.
+  - **C-4:** "regime" is kept for the two gain boxes; the three facets are facets.
+  - **O-6:** the main-results list, which is what a skimming reader sees, also names the Numerical
+    and Open findings. **O-1:** the reference list shows all entries if the builder allows it.
+    **O-2:** the edits to the gaps ledger, the proof conventions and the verified-references note
+    were made on the driver's instructions (Amendment 2 and the calls above) and are hereby
+    recorded; an edit to a verbatim snapshot under `paper-sources/` is to be explained or undone.
+  - **G-8:** the cold-reader trials are running. **G-9, G-10, O-3 to O-5:** accepted as pending or
+    left to the reader loops.
+- **2026-11-09. The second review (`WP10-review-2.md`): the driver's calls.** It recommends
+  acceptance with gaps noted and found every must-fix item of the first review closed. G-4 to G-8
+  were fixed by the PM (f3bbf30); G-10 was undone by trimming the two docsite pages back to their
+  budgets (be5ea99). **G-1:** the cap is read on the prose the page shows, generated sentences
+  included, without the builder's labels; 5,881 on that count; recorded in Amendment 3. **G-9:**
+  recorded as Amendment 3. **G-2, G-3, G-13 and the observations:** to the reader loops (WP11),
+  with figure legibility first. **G-12:** the rows marked for the author are on the supervisor's
+  list. **Returned:** Appendix D.3 pairs live facet numbers with stored labels; facets are to be
+  matched by their exponents, so that a different facet order on another platform cannot mislabel
+  a row.
+- **2026-11-09. WP10 (the paper, with Amendments 1 to 3) accepted structurally by the driver**
+  (under the mandate; ratified or reversed by the supervisor at the PR). As the supervisor set it,
+  the acceptance is structural: "the paper acceptance is stuctural not final sign off on content or
+  aesthetics". Reviews of record: `WP10-review.md` (not yet) and `WP10-review-2.md` (accept with
+  gaps noted; every must-fix item of the first closed; 28 numbers recomputed; no mathematical
+  error found). Cold reads: `WP10-cold-reads.md`, one fresh reader per depth, with the driver's
+  triage and its change requests done. The driver's own evidence: commit 4ede5bd is green in a
+  clean checkout on the Mac and on Linux (Tests run 42623588724), 1882 passed and none failed on
+  both, with ruff, format, lock, the lemma chain, the proof map (15 scripts, 252 steps), the ledger
+  and attribution clean on the Mac; the main page read rendered from top to bottom at 1280 px and
+  the appendices sampled, with no error in the mathematics, images or layout. **Open and stated:**
+  the container deliverables (D-13, R-31, R-30's container part) until the supervisor restores his
+  container runtime and settles the platform of record; the data swap (WP16) and the choice on the
+  two step-read times; the items on his list (the disclosure and how his review is described; the
+  facet share's analogy; the title's "scaling"; ten cited claims marked for the author).
+  **Not signed off, by design:** content and presentation, which are WP11's: figure legibility, the
+  prior-art table, the length of the proofs appendix, the run of generated sentences in section 9.
+
+## The supervisor's reading of the abstract (2026-11-09, at the staged paper)
+
+- On "The fit is convex for one facet and an alternation of convex fits for several;".
+  **Supervisor (mzargham), verbatim:** "this feels a bit obtuse. we can either say it can be
+  transformed into a convex program, or we can say they are generalized geometric programs (GGPs)
+  solved via coordinate transform to a convex program."
+- **What the driver checked before changing the sentence.** For one facet both of his wordings are
+  true, and exactly so: with x_j = exp(w_j) the objective is a posynomial in x (coefficients 1/N,
+  exponents tau times the log-metrics), the simplex is one monomial equality (the product of the
+  x_j equals e) and the nonnegativity of the exponents is x_j >= 1; so the one-facet fit is a
+  geometric program in standard form and the problem in w is its convex form (checked numerically:
+  the two objectives agree to twelve digits). For several facets neither wording is true of the
+  fit as a whole: each design counts against its nearest facet, a minimum over facets, which is
+  not convex and not a generalized posynomial in the parameters. Each facet's refit is a program of
+  the one-facet kind, and the fitted model itself is a generalized posynomial in the metrics, so a
+  design problem that uses it is a GGP. Saying the several-facet fit transforms into a convex
+  program would overclaim against the paper's own "global optimality is not claimed".
+- **Disposition.** The sentence is rewritten in his direction where it is true: the model is a
+  generalized posynomial; fitting one facet is a geometric program, solved as a convex program
+  after the logarithmic change of variables; fitting several alternates assigning designs to
+  facets with one such program per facet. The change of variables gets its line in the proof
+  scripts, since it is a new statement. The abstract stays within 200 words. Sent to the PM.
+- On "On a cubesat trade space under two controller-gain regimes, one facet reports one tension and
+  three facets three different contending sets." **Supervisor (mzargham), verbatim:** "the cubesat
+  model we used covers power, mass and controls i thought."
+- **Checked.** He is right. The model (`examples/adcs/model_v2/cubesat.sysml`) has a bus, antenna,
+  inertial unit, controller, reaction wheel and star tracker alternatives, solar panel and battery,
+  with calculations for mass (structure, attitude hardware, total), power (generated, base load,
+  available), energy (eclipse demand, reserve, depth of discharge, balance) and the slew. The ten
+  attributes fall into three subsystems: controls (settling time, slew time, pointing error,
+  control effort), power and energy (power margin, energy balance, eclipse reserve, peak slew
+  power, depth of discharge) and mass (total mass). The paper says "Our case is the attitude
+  determination and control system (ADCS) of a cubesat", the abstract names only the two gain
+  regimes, and the docsite's example is headed "A spacecraft attitude-control trade study". The
+  name is left over from the first, attitude-only case. Readers of the cold reads all called it an
+  attitude-control study.
+- **Disposition.** The case is described as what it is: a cubesat model coupling power, mass and
+  attitude control, ten attributes across the three, compared under two controller-gain regimes.
+  Abstract, section 8, the main-results line, Appendix C's opening and the docsite's Examples page
+  follow. The finding gains its point by this: the tensions the fit reports run across subsystems.
+  Sent to the PM. The ternary spike's three groups are these three subsystems.
+- On the keywords. **Supervisor (mzargham), verbatim:** "scikit-learn does not belong in the
+  keywords list because its a tool, but we can say open source software and/or scientific computing
+  if you think its merited". **Disposition (the driver's judgment, as he left it):** "scikit-learn"
+  is removed; "open source software" is added, because the method ships as a package that backs
+  every claim and a reader searching for a usable tool should find it; "scientific computing" is
+  not added, being too broad to help anyone find the paper. The list becomes: decision analysis,
+  trade studies, trade space, posynomial, geometric programming, unsupervised learning, model-based
+  systems engineering, open source software. Sent to the PM.
+
+## The supervisor's reading of the abstract, second pass (2026-11-09)
+
+- On the model class. **Supervisor (mzargham), verbatim:** "\"A fitted generalized posynomial
+  reference surface\" this feels weird. its a posynomial or a generalized geometric program. i think
+  you are blending them". **What the driver found:** the model is V_K = (sum of monomials)^(1/kappa).
+  The sum is a posynomial and V_K = 1 exactly where the sum is one, so the surface is the level set
+  of a posynomial. V_K itself, a root of a posynomial (and at the default the maximum of its terms),
+  is a generalized posynomial in the sense of Boyd et al. 2007, a class of functions; a generalized
+  geometric program is a class of problems defined from it. The terms were not confused in the
+  source, but the paper used two names for one object: its Definition said "Posynomial", its
+  abstract, section 5 and the docsite's theory page said "generalized posynomial".
+- **Supervisor, verbatim:** "we need to change it. also make sure its reflected in our glossary and
+  that we have a documented review technique for jargon checking across our paper and documentation
+  to ensure we're consistent with our glossary. we should avoid unecessary jargon but use the
+  glossary defined terms to keep the prose clear and concise." **Disposition:** Amendment 4 of the
+  scope (R-33, R-35, R-36); the technique is `notes/vocabulary-review.md` (a tool in
+  the test suite and a reading by fresh-context reviewers, with a fixed triage); `CLAUDE.md` points
+  to it. Sent to the PM.
+- On what is modelled. **Supervisor, verbatim:** "\"a model of the table, not the Pareto boundary,
+  gives the table a coordinate system.\" should be described as a model of the data underlying the
+  table so the table and associated interpretation are a view." **Disposition:** Amendment 4, R-34.
+  The data (the evaluated designs) is what the surface models; the table and the reading drawn from
+  it are views. Sent to the PM.
+- On the word for the rates. **Supervisor, verbatim:** "\"exchange rates.\" feels like money even
+  though its not. i believe we define these as elasticities. abstract should be consistent with
+  glossary and we can provide the gloss for what an elasticity is in the abstract so it remains
+  readable". **What the driver found:** the glossary's term was "exchange rate" while the theorem
+  that derives it is named for elasticities (L7) and the supporting material says "elasticity"
+  37 times: again two names for one object. **Disposition:** Amendment 4, R-37. The term is
+  "elasticity", glossed in the abstract; "exchange rate" is withdrawn everywhere. **Driver's call:**
+  the public field `exchange_rates` of the tension report becomes `elasticities` with a contract
+  amendment, since nothing is released and the code should carry the glossary's word. Sent to the PM.
+- Continuing through the abstract. **Supervisor, verbatim:** "\"Fitting one facet is a geometric
+  program, solved as a convex program after a logarithmic change of variables; fitting several
+  alternates assigning designs to facets with one such program per facet; descent is derived,
+  stationarity checked numerically, local optimality derived under stated hypotheses.\" this is to
+  complex of prose for an abstract. just make it clear that if we are modeling a single n-lemma its
+  fitting a monomial with can be transformed into a convex program and solved directly. when there
+  are multiple active trades at the same time we use a posynomial and the resulting program is a
+  generalized geometric program (GGP). we can note the method may be further generalized to any
+  kernel which satisfies the conditions of a GGP."
+  On "The method belongs beside PCA, and the two chain.": "our implementation mirrors the structure
+  of a PCA as an unsupervised learning method for feature engineering."
+  "cut \"On one case it scales where dominance does not: the nondominated set stops shortlisting
+  with more metrics.\" (too much detail)"
+  On the cubesat sentence: "just summarize the case we used and what we show using the case."
+  On "Derived statements point to script and proof.": "drop the point about proof scripts thats a
+  distraction".
+- **Disposition.** Amendment 4, R-38: four of the five edits are sent to the PM as written. **One
+  clause is held and put to him** (a stop condition of the mandate: a requested statement against
+  a derived one): "the resulting program is a generalized geometric program". The paper's section 6
+  states and the derivations use (L11 to L13) that the fit of several facets is not convex, because
+  the assignment of designs to facets is combinatorial; a generalized geometric program is convex
+  after the change of variables. What is true: each term's refit is a geometric program; the fitted
+  posynomial is compatible with generalized geometric programming, so a design program that uses it
+  is a GGP; kernels that keep that compatibility are the stated extension.
+- The held clause, put to him (driver's question: how should the abstract use GGP; options: the
+  fitted model is GGP-compatible / say the fit is a GGP / GGP only for the kernel extension).
+  **Supervisor, verbatim:** "i need you to do a research sprint. i don't think each config needs to
+  be in a unique facet. i think you may be getting confused between the fitting and the analysis.
+  fitting a model and interpreting it are different. any config is likely to have a projection onto
+  each facet but analysis tells us which dominates. do a research loop to make sure we're aligned.
+  for the abstract GGP compatible is okay language but keep in mind i am the author here. you can
+  check my work and help me substantiate it but please do be careful not to confuse fitting models
+  with analyzing and interpreting the results." **Disposition:** the abstract says "compatible with
+  generalized geometric programming" (sent to the PM; R-38 (a) no longer held). The research sprint
+  is `docs/superpowers/notes/spike-ggp-fit/` (the model, the fit and the analysis kept apart; whether
+  the several-term fit is a GGP; whether a design needs a unique facet in the fit; the sources).
+- **The research sprint's readout** (`docs/superpowers/notes/spike-ggp-fit/report.md`, `check_fit.py`).
+  The supervisor was right on both counts. (1) Every facet is fitted against every design already
+  (offsets and support weights over all rows), and a fit in which each design carries a weight on
+  every term recovers the planted exponents as well as the single-label fit (errors 0.013 against
+  0.013, and 0.007 against 0.009); the single label is the limit of sharp weights, an
+  implementation choice. (2) "Assigning designs to facets" is analysis of the current model, and
+  the driver had written it into the fit. (3) With the weights given, fitting all terms is one
+  generalized geometric program in the sense of Boyd et al. 2007 (convex; a generalized posynomial
+  in exp(w) to 2e-16). The unsupervised problem as one program is not convex in the terms (the
+  objective rises by 0.18 and 0.14 at a midpoint; by symmetry no convex symmetric formulation can
+  return distinct facets); it is solved by a sequence of such programs, and the tutorial notes
+  that some authors call that wider class "generalized geometric programs" too. Proposals for the
+  paper, the glossary, the derivations and the code are in the readout; none is applied. A separate
+  finding is put to him there: the one-term fit minimizes the level and the several-term refit the
+  mean slack, and only the first depends on the units of a single metric.
+
+## After the research sprint (2026-11-09)
+
+- Driver's proposals (the readout): 1. rewrite section 6 to state the fit without membership; 2. add
+  "generalized geometric program" to the glossary in the sense of Boyd et al., the older sense
+  noted as what it is not; 3. three short scripted proof steps (the symmetry argument, the bound,
+  the fixed-weight program); 4. leave the code (fitting with soft weights) for after 0.1.
+  **Supervisor (mzargham), verbatim:** "1. yes 2. yes 3. yes 4. do a spike now to assess the change.
+  i prefer to make this update for the first release if possible but only if the spike deems it
+  reasonable". **Disposition:** 1 to 3 are Amendment 5 of the scope (R-39 to R-41), sent to the PM.
+  4: the driver's spike `docs/superpowers/notes/spike-soft-fit/`, whose readout decides.
+- On the separate finding (the one-term fit minimizes the level, the several-term refit the mean
+  slack; "the extension reduces to the one-facet fit" is backed for the model only).
+  **Supervisor, verbatim:** "on the separate finding. i prefer to drop unbacked claims. as part of
+  our narrative, prose and copy editing work we need to sweep for claims to make sure they have
+  backing. this does not mean we need to heavily caveat and reference a claim everytime it appears
+  we just need to know we've not injected spurious details or unsupported claims. that should be
+  addressed primarily in clarifying our requirements and include offering a mechanism for assessing
+  the requirement." **Disposition:** the claim is narrowed to what L10 backs (R-42). The requirement
+  and its mechanism are R-43 and `notes/claims-review.md` (a register of claims
+  outside the prose, a test that keeps it current, a sampled coverage check by the driver);
+  `CLAUDE.md` points to it. Sent to the PM.
+- **The spike on soft weights, readout** (`docs/superpowers/notes/spike-soft-fit/report.md`).
+  Reasonable for 0.1 in a contained form: soft weights when the term temperature is finite, today's
+  fit at the default, no committed number changed. Planted tables at temperature 50: 16 of 20
+  recovered with one label and with soft weights at kappa = tau (mean exponent error 0.063 and
+  0.053), about twice the time, the objective falling at every step. Cubesat, four fits: the same
+  contending sets and leading metrics at kappa = tau (largest exponent difference 0.003); a kappa
+  far below tau merges facets. It buys consistency between the fit and the reported model, not
+  accuracy; local optimality is not certified for a soft fit. **Disposition (the driver, on his
+  conditional direction):** scoped and approved for execution as `work-packages/WP17-scope-of-work.md`;
+  sent to the PM; for his review at the PR.
+- On the soft fit's certificate. **Supervisor, verbatim:** "we need to chase this cascade one more
+  level:\"Local optimality is not certified for a soft fit. The existing certificate, margin and
+  stable radius are defined for one label per design. A soft fit keeps descent and stationarity,
+  reported through one new termination status. That needs an interface contract amendment.\" can we
+  get another certification method for the soft fit". **What the driver found**
+  (`docs/superpowers/notes/spike-soft-fit/report.md`, addendum; `certificate.py`): yes. The soft
+  objective is smooth, so the second-order sufficient condition certifies a strict local minimizer
+  of the objective itself, with no assignment and no margin. The Hessian is each term's convex
+  curvature minus kappa times the designs' ambiguity between terms (checked against finite
+  differences to 3e-10). Certified: 20 of 20 benchmark fits and the four cubesat fits at
+  kappa = tau; the all-equal point, stationary to rounding, is rejected as a saddle. Limits: finite
+  fit temperature only; local, not global; no useful radius yet. **Disposition:** WP17's R-7 and
+  R-8 amended to carry it; sent to the PM.
+
+## Ticket: the three-pane figure leaves the paper's body (2026-11-09)
+
+- **Supervisor (mzargham), verbatim,** reading Figure 1 on the staged paper: "i am reviewing in
+  parallel; don't thrash yourself but i would like to log another ticket to be processed. these
+  images are helpful high level but i am worried they may be out of place and distracting in the
+  paper body. it may be best to keep this in the index as a high level story arc / gloss."
+- **Disposition:** logged as a ticket for the PM's next paper push, not an interruption. The
+  three-pane figure is removed from the paper's body and stays on the index page beside "What"; its
+  generator stays, with the index page as its one consumer. The paper's figures renumber, the
+  references to it in the text are reworded so the chart is explained in words where it was shown,
+  and the tests on figures follow. This overrules the driver's earlier call that the figure also
+  stays the paper's Figure 1 (`WP8a-decisions.md`); recorded under "Overruled or corrected" in the
+  driver's log.
+
+## Ticket: narrate the definitions, the energy reading first (2026-11-09)
+
+- **Supervisor (mzargham), verbatim,** reading section 4 (Definitions 2 to 5) on the staged paper:
+  "another ticket. i think the energy interpretation of the invariant form needs to be narrated
+  otherwise it comes out of thin air. my suggestion is minimal prose before and between the
+  definitions so its a bit more human interpretable. keep in minimal but should ensure that people
+  of various levels of mathematical sophistication can follow the arc of the paper. recall we need
+  to pass muster for an ML or convex optimization expert but also support a reader who is trad
+  engineering decision analysis practicianer".
+- **Disposition:** logged as a ticket for the PM's next paper push. One or two plain sentences before
+  and between the definitions of section 4, carrying the arc: what the invariant is and why it is
+  called invariant; why its logarithm is read as an energy (a potential whose level sets are the
+  surfaces of equal standing, the level taken relative to the reference surface; path-independent;
+  not a physical energy and not a distance); several trade-offs as a sum of such terms; what the
+  two temperatures do; what the chart separates. The words are the glossary's; every sentence is
+  backed (L1, L2, L13 for the energy reading) under the claims requirement; nothing is added that
+  an expert would call loose. The section's reading is then tested on the reader grid (the
+  trade-study practitioner, the ML practitioner and the optimization reader, at the depth of the
+  definitions). The word ceiling: the driver's call, for his review, is that this ticket may add at
+  most 150 words to the paper's ceiling if trimming elsewhere cannot pay for it.
+
+## Ticket: the results section must flow for a close reader and for a skimmer (2026-11-09)
+
+- **Supervisor (mzargham), verbatim:** "i have a similar feeling about the results section. again
+  minimal but needs to flow for a reader who is reading the math closely AND a reader who is just
+  skimming the math."
+- **Disposition:** logged as a ticket for the PM's next paper push, with the ticket on section 4.
+  The prose between the boxed results of section 6 becomes a path a skimmer can read on its own:
+  an opening that says what is established and in what order, and before each result one plain
+  sentence saying what it says and what it is for. The boxes stay exact and unchanged, so the close
+  reader loses nothing; no sentence of the prose may say more than its box. Two tests of the
+  result: a reader given the section with the boxes hidden states the arc; a reader given the
+  whole section finds no sentence looser than the box it introduces. The word ceiling: the
+  driver's call, for his review, is that the two tickets together (sections 4 and 6) may add at
+  most 400 words to the paper's ceiling if trimming cannot pay for them.
+
+## Length is a regularizer; figures become their own package (2026-11-09)
+
+- On length. **Supervisor (mzargham), verbatim:** "the total length of the paper is less hard ceiling
+  and more regularization. each word earns his place, and more text has a higher burden".
+  **Disposition:** the paper's word ceiling stops being a hard cap. The count is still measured and
+  tested, but against a ceiling kept in a length ledger where every raise is one line: the section,
+  the words, the job those words do for which reader. Growth is admitted by its job and refused
+  without one. This supersedes the driver's calls of the same day that the narration tickets may
+  add "at most 150" and "at most 400" words: there is no allowance, only the burden of saying what
+  each addition is for. Sent to the PM.
+- On figures. His direction is quoted in full in `work-packages/WP19-backlog.md`: describe each plot by
+  what it does and does not show, and whether it earns its place; one or two diagrams of the SysML
+  v2 model; figure selection and narration as a package of its own with subpackages by section;
+  prose not fine-tuned until the slots and then the figures are confirmed; the package in the
+  backlog; the diagram spike in parallel. **Disposition:** WP19 on the backlog as step 3d of the
+  path; the spike scoped (`docs/superpowers/notes/spike-sysml-diagrams/SCOPE.md`) and started in
+  parallel by the driver; the PM told that the narration tickets for sections 4 and 6 are a first
+  pass of structure, with no polishing rounds, and that captions and figure prose are frozen until
+  WP19's gates.
+
+## Docker and Colima are available again (2026-11-09)
+
+- Driver's question: may agents use Docker on his Colima again, within the limits listed (build and
+  run only images named `hts-*`; never stop, start or reconfigure Colima; never touch his other
+  containers or images). He first asked whether he had to run the commands the driver had given
+  (restoring the Rosetta setting, removing a stopped container); the answer was no: the container of
+  record is linux/arm64 and runs natively, so no setting has to change.
+- **Supervisor (mzargham), verbatim:** "go ahead. you can use colima. to be clear i made that
+  available to you for reproducibility reasons".
+- **Disposition:** the halt on container work is lifted, for the purpose he names: reproducibility.
+  Stream P10 of the board (the container of record) is ready. The limits stand and are in its
+  scope: linux/arm64, native; images and containers named `hts-*` only; nothing under `~/.colima`,
+  no `colima stop`, `start`, `delete` or restart, no change of its settings; his other containers
+  and images are not touched; if a build needs more memory or disk than the machine gives, the
+  agent stops and reports. **Driver's call, for his review:** linux/arm64 in that container stays
+  the environment of record (it was provisional); Linux on amd64 is covered by the CI runs.
+- On the environment of record. **Supervisor, verbatim:** "seems fine to me. i don't care about the
+  details, i just want reproducibility (via pinning) but also robustness, doesn't go to shit if you
+  swap a different but generally comparable image". **Disposition:** the driver's call is ratified
+  (linux/arm64 in the pinned container is the environment of record). The requirement is two-sided
+  and both sides are checked: *reproducible* means the pinned image reproduces the committed values
+  exactly; *robust* means a different, generally comparable image (another base, same Python minor
+  version, the same lock) passes the whole suite within the stated tolerances and reaches the same
+  conclusions, with every value that differs listed. Added to stream P10. The CI runs on Linux
+  amd64 and the Mac runs are further evidence of the second side.
+
+## The container of record is the source of the committed outputs (2026-11-09)
+
+- **What the container run found** (`paper/container/RECORD.md`, 48df440): inside the pinned
+  linux/arm64 image with the environment-of-record flag set, 46 tests fail and 2011 pass. Every
+  failure is an exact comparison against a value recorded on the Mac: the soft fit's reference
+  recording (45), one recorded design row (settling time 0.05 s apart, inside the stated 0.5 s),
+  and the planted table's digest (c127dd4c on the Mac, b17d4f8f in the container). Facets, offsets,
+  corners and the Figure 1 data hash are bit-equal; the reference arrays differ at 1e-15. The
+  robustness image (Ubuntu 24.04) agrees with the pinned image on all 69 executed notebook cells and
+  fails only the four soft-fit cases where the same facets come out numbered differently (gap G-10).
+- **Driver's call, under the supervisor's ratified words ("reproducibility (via pinning) but also
+  robustness"):** the committed exact values are produced inside the container of record, not on the
+  Mac. The notebooks' outputs, the paper's figures, the planted table's digest, the soft fit's
+  reference recording (with its platform written in) and the recorded design row are regenerated in
+  `hts-paper` and committed; every printed value that changes is listed; the conclusions (contending
+  sets, leading metrics, signs, certificates, check outcomes, the counts) must be unchanged, and any
+  change at that level stops the work and goes to the supervisor. The datasets (the CSVs) are not
+  touched: their regeneration is WP16, held on his step-read choice. Exact comparisons then pass in
+  the container; the Mac and Linux runs compare within the stated tolerances. The facet-numbering
+  failures are fixed by matching facets by exponent vector, as the paper's tables already do, under
+  WP17.
+- Also confirmed: P10's three edits to `tests/test_container.py` (base-image digest from the build
+  argument's default; platform arm64; the record's needle). Returned as a finding: the full suite
+  rewrites the tracked `examples/adcs/experiments/reports/v1-v2-comparison.md`; a test must not write
+  a tracked file.
+- **Supervisor (mzargham), verbatim,** on the container's results and the driver's call: "the
+  reproducibility results make sense to me. byte exact with identical image but small differences
+  due to minor variations in mathematical libriaries when switching between linux and mac. document
+  and approve". **Disposition:** approved. The two-sided finding is documented as the paper's
+  reproducibility statement (Appendix F, through the paper stream): byte-exact reproduction inside
+  the pinned image; small differences at the last digits between the image and the Mac, and between
+  the pinned and the comparable image, from the platforms' mathematical libraries; conclusions
+  unchanged. The regeneration of the committed exact values inside the container proceeds as
+  recorded above.
+
+## Measurement by simulation here; empirical data from a fielded system equally (2026-11-09)
+
+- **Supervisor (mzargham), verbatim:** "the simulations are how how take measurements since this a
+  design optimization loop but we should be clear that hts would work for emperical data from a
+  fielded system as well".
+- **What the paper says today:** section 3 states that the evaluation is a black box to the method
+  (a simulator behind a system model, a physical test, or a human assessment); the discussion says
+  the same functions serve a simulator, a physical test campaign or a human assessment, and that
+  the analysis must rerun on empirical data to support configuration management. The case's
+  framing (section 8, Appendix C, the docsite's Examples page) says the data are simulated without
+  saying why, or that a fielded system's measurements would enter the same way.
+- **Disposition:** routed to the paper stream (one sentence at the case's framing, in section 8 and
+  the Appendix C opening: the simulation is the measurement of this design loop, and a fielded
+  system's measured attributes would enter the same table; a claim of kind M, backed by the
+  method's definition of the evaluation as a black box), to the docs stream (one sentence on the
+  Examples page), and to the diagram work (the second view's recipe names the verification cases as
+  measurements by simulation here, with the same place taken by field data). No new term; the
+  glossary's "attributes" entry already says what the evaluation returns.
+- **Supervisor, verbatim, the same hour:** "even if its just in prose i want design optimization and
+  configuration management to both be named uses for this workflow. because the paper is focused on
+  the underlying math and fitting the algorithm the case demonstration is a initially just a worked
+  example future work can include other cases spanning the engineering lifecycle". **Disposition:**
+  routed to the paper stream: the two uses named in prose where the workflow is introduced (section
+  1 or 3) and again in the discussion; the case framed as a worked example of the first use, not a
+  study of either; the future-work section names other cases across the engineering lifecycle,
+  configuration management of a fielded system among them. Statements of scope and intent, not
+  claims; the glossary's words. The docs' Home page says the two uses in one sentence.
+
+
+## The word "energy differential" (2026-11-09, 20:40; CR-5 of WP11 round 1)
+
+**Driver's question (popup):** every cold reader so far (16 of 16 across three rounds) guessed at "energy
+differential"; the glossary's other name for log V is "level offset". Options: Keep it, gloss it / Level offset /
+Leave as is. **Supervisor (mzargham), verbatim:** "Keep it, gloss it".
+
+**Disposition.** "energy differential" stays the term; one clause at its first use in the abstract says what it is
+(the design's level relative to the reference surface, by analogy with a potential, not a physical energy); the
+glossary entry keeps "level offset" as the gloss, not a second name. To the paper stream with CR-1c.
+
+## The abstract's PCA sentence (2026-11-09, 20:45; WP11 rounds 1b and 1c)
+
+**Driver's question (popup):** 7 of 8 cold readers in the last two rounds took the method as an alternative to or
+replacement for PCA; the body says the two chain. Options: Add "and the two chain" / Keep as is / I will reword it.
+**Supervisor (mzargham), verbatim:** "reword to clarify they are distinct and complementary, they can be composed.
+(don't use my words verbatim smooth it to fit the context)"
+
+**Disposition.** The paper stream rewords the sentence so that PCA and this method read as distinct and
+complementary, and composable (one can be run on the other's output), in words that fit the abstract's context; his
+earlier sentence is not kept verbatim; the test pin follows the new wording; the register fragment follows. One
+depth-A re-test afterwards. The opening contrast ("explains variance, not trade-offs. We explain tensions.") is read
+against this: if it still produces "replacement", the stream smooths it in the same unit.
+
+## The word "facet" (2026-11-09, 21:55; the supervisor's proposal)
+
+**Supervisor (mzargham), verbatim:** "on wording i want to propose we drop the use of the term "facet" and stick to
+"monomial term", "n-lemma", and if obvious from context we can call it a "trade-off". facet even without the color
+coding semantically brings to mind the wrong concept. our model uses monomial terms kernels representing trade-offs,
+and our solver finds a quilt of of trade-offs that explain a design space where all the metrics are strictly positive
+values with bigger is better."
+
+**Sizing by the driver (grep, case-insensitive):** paper 1099 occurrences, docs 1153, glossary 36 (two entries,
+`facet` and `facet gap`), derivation 213, examples 247, tests 320, src 254 (public names among them: `facet_share_`,
+`facet_gap`, `assign_facets`, `facet_labels`, `facet_step`, `single_facet_termination`, `facet_objective`,
+`by_facet`), interface contract 13 mentions, work-packages 2281 (records; left as written). Mapping the driver
+proposes: the model object (a term of the posynomial) is the "monomial term", shortened to "term" where the
+sentence leaves no doubt; the metrics in tension within a term are its "n-lemma" (the contending set); where the
+context makes it obvious, "trade-off"; the piece of the surface where one term is the maximum is "the term's piece of
+the surface" or "the trade-off's region" where the geometry is the point; the set of designs scoring highest on a
+term stays "cell" (A8). "Facet share" becomes "term share", "facet gap" "term gap", "several-facet fit" "several-term
+fit" or "posynomial fit". Scope of the rename (prose and glossary only, or the public API too): his, below.
+
+**Driver's question (popup):** how far does the rename go (everything, API included / prose and glossary now, API
+after 0.1 / prose first, API as its own package)? **Supervisor (mzargham), verbatim:** "so i realize its a big change
+but i think its causing more confusion than it is saving. can you do a spike to assess the effort to benefit ratio"
+
+**Disposition.** A spike, bounded to one agent and one report (`docs/superpowers/notes/spike-facet-rename/report.md`):
+effort by surface (mechanical rename, sentence rewrite, public-name rename with contract and tests, derivation
+scripts with Appendix B regenerated, figure labels, claims-register fragments, vocabulary baseline), with counts and
+an estimate in units; benefit from the reader-grid evidence (rounds 1, 1b, 1c, 1d: where "facet" misled and whether
+the figure colouring or the word carried it) and a small cold-read A/B of the same passages with the two
+vocabularies; a semantic check of where "facet" carries geometry that "term" does not; a recommendation with plain
+options for him.
+
+## MDAO in the prior art (2026-11-09, 22:05)
+
+**Supervisor (mzargham), verbatim:** "one thing i am pretty sure you don't have is the MDAO literature in your lit
+review which given our case example is a design optimization needs to be included"
+
+**Disposition (the driver).** A paper unit: a row of Table 1 (Section 2) and entries of Appendix G for
+multidisciplinary design analysis and optimization (MDAO) and the trade-space exploration literature that sits with
+it, in the register's own columns (what each family produces, what we share, how we differ, where to read it); every
+reference with a resolved DOI or stable URL before it enters `docs/references.bib` (R-43, the claims rule); the
+sentence in Section 1 or 10 that names design optimization and configuration management as uses (his direction of
+2026-11-09) cites the family. Candidates for the search, to be verified, not assumed: Sobieszczanski-Sobieski and
+Haftka (1997, survey), Martins and Lambe (2013, architectures), Gray et al. (2019, OpenMDAO), Martins and Ning (2021,
+the textbook), Ross and Hastings (tradespace exploration), Simpson et al. (trade-space visualization).
+
+**Driver's question (popup), with the spike's evidence** (`docs/superpowers/notes/spike-facet-rename/report.md`,
+d1efdfe: across 18 abstract-only reads no reader took a facet for a set of designs; the 7 cluster readings came at
+depth B from the facet-coloured figures and two membership phrases; the A/B placed the tension in the model 4 of 4
+under either vocabulary; the rename buys the glossary's one-object-one-name rule). Options: Keep facet, fix the
+phrases / Prose now, API after 0.1 / Everything before 0.1 / Prose now, API as its own package. **Supervisor
+(mzargham), verbatim:** "Everything before 0.1".
+
+**Disposition.** A new package, WP24 (the vocabulary rename), scoped by the PM for the driver's approval: "facet"
+leaves the glossary, the paper, the docs, the derivations (Appendix B regenerated), the figures and captions, the
+claims-register fragments and test pins, and the package's public names (`facet_share_` to `term_share_`,
+`facet_gap` to `term_gap`, `assign_facets`, `facet_labels`, `facet_step`, `single_facet_termination`,
+`facet_objective`, `by_facet` renamed in the same spirit) with a non-additive interface-contract amendment and no
+deprecation shims; one stream owns it and it lands after the executing packages' units or rebased onto them, in one
+push per surface with the regenerations in the same push. Vocabulary: "monomial term", shortened to "term" where
+unambiguous, glossed at first use in the abstract and the docs as a product of powers of the metrics (the executive
+in the A/B: nobody said what a monomial is); "n-lemma" for the metrics in tension within a term; "trade-off" where
+obvious; "cell" for the designs a term scores highest; the τ = ∞ polyhedral sense is the one place the textbook
+word may stay or become "face" (an agent's default in the scope, for the driver). Work-package records keep their
+wording as written. Step 3g on the path.
+
+## The position on the proof scripts, stated in Appendix B (2026-11-09, 22:45)
+
+**Supervisor (mzargham), verbatim,** on his framing of the scripts ("the sympy scripting is a substitute for pencil
+and paper paper mathematics not for formal verification ... an efficient trade between rigor and friction ...
+pen and paper mathematics (or even latex proofs) are essentially free form ... formal proof assistents like Lean
+... have domain languages lots of friction and interpretability gaps for the uninitiated. we do actually use some
+formal proof tools but they are baked into the sysmlv2 support (the z3 prover)"): "we can summarize in a more
+institutional tone the position i am taking in the appendix containing the proofs"
+
+**Disposition.** A support unit (the supporting notebook's single writer): one paragraph in Appendix B's opening
+("Job" or beside "This appendix carries"), in the paper's register and not his chat words: the derivation scripts
+are a substitute for pencil-and-paper derivation, not formal verification; they sit between free-form proof, which
+no tool checks, and a proof assistant, whose language and friction put the derivation beyond most readers; each
+step is a line of symbolic algebra a reader can run against its sentence, so the trade is rigor for friction on the
+stack the paper already uses; the formal prover in the project is the one inside the system-model tooling (Z3,
+Appendix C's checks), and the word "formal verification" is used only there. A claims-register row; a ledger entry
+stating the job (the reader of Appendix B knows what the scripts do and do not establish); the limitations page of
+the docs carries one sentence pointing to it. No re-test needed.
+
+- **2026-11-11. `streams/P10-review.md` deleted at WP25-5 (the assistant's call 6): WP10 is accepted as a structure and its record is `WP10-review-2.md`.**

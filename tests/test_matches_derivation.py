@@ -14,12 +14,15 @@ import pytest
 import sympy as sp
 
 from derivation.run import run_chain
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, solvers
-from hyperbolic_trade_space.coordinates import (
+from tradespace import HyperbolicTradeSpace, make_frontier_data, solvers
+from tradespace.coordinates import (
     from_frontier_coordinates,
     helmert_basis,
     to_frontier_coordinates,
 )
+
+# Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
+pytestmark = pytest.mark.slow
 
 TOL = 1e-10
 D, N, TAU = 3, 5, 4.0
@@ -57,6 +60,7 @@ def ev(expr, S, inst, extra=None, tau=TAU, pre=None):
 
 
 # ---------------------------------------------------------------- L1 homogeneity, invariant form
+@pytest.mark.slow
 def test_L1_invariant_value_homogeneity_and_invariant_form(ctx, inst):
     S, L1 = ctx["S"], ctx["L1"]
     w, beta, M = inst["w"], inst["beta"], inst["M"]
@@ -86,11 +90,11 @@ def test_L1_invariant_value_homogeneity_and_invariant_form(ctx, inst):
 def test_L2_objective_and_shift(ctx, inst):
     S, L2 = ctx["S"], ctx["L2"]
     U, w = inst["U"], inst["w"]
-    f, _ = solvers.objective_and_grad(w, U, TAU)
+    f, _ = solvers.loss_and_grad(w, U, TAU)
     assert ev(L2["J"], S, inst) == pytest.approx(f, abs=TOL)
     c = 0.8
     shifted = ev(L2["J_shifted"].subs(S.c, c), S, inst)
-    assert shifted == pytest.approx(solvers.objective_and_grad(w, U + c, TAU)[0], abs=TOL)
+    assert shifted == pytest.approx(solvers.loss_and_grad(w, U + c, TAU)[0], abs=TOL)
     # reduced form J + c, and the implementation's offset shifts the same way
     assert ev(L2["J_shifted_reduced"].subs(S.c, c), S, inst) == pytest.approx(f + c, abs=TOL)
     assert shifted == pytest.approx(f + c, abs=TOL)
@@ -122,7 +126,7 @@ def test_L5_log_mean_exp(ctx, inst):
 def test_L3_gradient_and_support_weights(ctx, inst):
     S, L3 = ctx["S"], ctx["L3"]
     U, w, v = inst["U"], inst["w"], inst["v"]
-    _, grad = solvers.objective_and_grad(w, U, TAU)
+    _, grad = solvers.loss_and_grad(w, U, TAU)
     p = solvers.support_weights(U @ w, TAU)
     # directional derivative dJ/dt of J(w + t v) at 0 equals v . grad
     assert ev(L3["dJ"], S, inst) == pytest.approx(v @ grad, abs=TOL)
@@ -284,6 +288,7 @@ def test_fitted_model_check_negative_control(ctx):
 
 
 # ---------------------------------------------------------------- L10 (K-term extension, WP9)
+@pytest.mark.slow
 @pytest.mark.parametrize("kappa", [0.5, 3.0, 40.0])
 def test_L10_phi_k_bounds_shift_and_limit_at_numeric_instance(ctx, kappa):
     """Lemma L10 (verified abstractly in derivation/lemma_10_extension.py) at the estimator."""

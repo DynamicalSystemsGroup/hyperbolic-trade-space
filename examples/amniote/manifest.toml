@@ -1,0 +1,16 @@
+# Source record of the amniote example (R-1). Read from the figshare API on 2026-11-14.
+name = "Amniote life-history database (Myhrvold et al. 2015), full archive"
+doi = "10.6084/m9.figshare.3563457.v1"
+paper_doi = "10.1890/15-0846R.1"
+licence = "CC0 1.0"
+licence_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+attribution = "Myhrvold et al., Ecology 96:3109 (2015), doi:10.1890/15-0846R.1; data doi:10.6084/m9.figshare.3563457.v1"
+url = "https://ndownloader.figshare.com/files/8067269"
+file = "ECOL_96_269.zip"
+size = 6539535
+md5 = "5d78e9ca3494f33ed55ee532c8c01e1c"
+sha256 = "f7a8973452625422868ff33cc6fc2362e965eede173b2fd4262ed1668abe0f2f"
+table = "Data_Files/Amniote_Database_Aug_2015.csv"
+rows = 21322
+columns = 36
+sentinel = -999

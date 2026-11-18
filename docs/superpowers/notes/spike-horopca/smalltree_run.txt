@@ -1,0 +1,12 @@
+-- pca
+2026-11-12 10:41:41 INFO     distortion: 	0.84 +- 0.00
+2026-11-12 10:41:41 INFO     frechet_var: 	0.34 +- 0.00
+-- tpca
+2026-11-12 10:41:43 INFO     distortion: 	0.70 +- 0.00
+2026-11-12 10:41:43 INFO     frechet_var: 	1.16 +- 0.00
+-- pga
+2026-11-12 10:41:48 INFO     distortion: 	0.62 +- 0.07
+2026-11-12 10:41:48 INFO     frechet_var: 	2.17 +- 0.46
+-- horopca
+2026-11-12 10:41:54 INFO     distortion: 	0.20 +- 0.00
+2026-11-12 10:41:54 INFO     frechet_var: 	7.15 +- 0.00

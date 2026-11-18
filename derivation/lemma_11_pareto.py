@@ -30,7 +30,10 @@ w to use, or about the fitted frontier being the true front.
 
 import sympy as sp
 
-from derivation.sumtools import linear
+from derivation.axioms import A2
+from derivation.licence import hypothesis_base, hypothesis_symbol
+from derivation.sumtools import entails, linear
+from derivation.symbols import J0
 
 TITLE = "A V-maximizer is Pareto-efficient (weighted-sum scalarization; converse not claimed)"
 STATEMENT = (
@@ -43,17 +46,26 @@ STATEMENT = (
     "it (theta_k0.delta = 0), so it is weakly efficient in all d metrics. The converse is not "
     "claimed: only the log-convex part of a front is reached by some w"
 )
-AXIOMS_USED = ["A1", "A2"]
+AXIOMS_USED = ["A2"]
+
+# Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
+DOMINANCE = hypothesis_base("dl", "nonnegative", "u' = u + delta with delta_j >= 0 for every j")
+W_POSITIVE = hypothesis_symbol("wp", "positive", "some j has w_j > 0 and delta_j > 0")
+D_POSITIVE = hypothesis_symbol("dp", "positive", "some j has w_j > 0 and delta_j > 0")
+EPSILON = hypothesis_symbol("eps", "positive", "delta_j >= eps > 0 for all j")
+DELTA_MINUS_EPS = hypothesis_base("gam", "nonnegative", "delta_j >= eps > 0 for all j")
 
 
 def derive(ctx):
     S = ctx["S"]
-    d, j, w, u, theta = S.d, S.j, S.w, S.u, S.theta
+    d, j, w, theta = S.d, S.j, S.w, S.theta
     lim = (j, 1, d)
+    u = S.u
 
     # local nonnegative families: the hypotheses w_j >= 0 (A2) and delta_j >= 0 (dominance)
-    wn = sp.IndexedBase("wn", nonnegative=True)
-    dl = sp.IndexedBase("dl", nonnegative=True)
+    # [L11.1] A2: the exponents are nonnegative, w_j >= 0
+    wn = A2.nonneg_base("wn")
+    dl = DOMINANCE
     beta0 = sp.Symbol("beta0", real=True)
 
     # 1. identity, with u' = u + delta
@@ -62,9 +74,9 @@ def derive(ctx):
     gain_nonneg = gain.is_nonnegative
 
     # 2. strictness: separate the j0 term, j0 a distinguished index with w_j0 > 0, delta_j0 > 0
-    rest = sp.Symbol("rest", nonnegative=True)  # sum over j != j0 of a nonnegative summand
-    wp = sp.Symbol("wp", positive=True)  # w_j0 > 0
-    dp = sp.Symbol("dp", positive=True)  # delta_j0 > 0
+    # the sum over j != j0 of the nonnegative summands w_j delta_j (A2, dominance)
+    rest = sp.Sum(sp.Piecewise((0, sp.Eq(j, J0)), (wn[j] * dl[j], True)), lim)
+    wp, dp = W_POSITIVE, D_POSITIVE  # w_j0 > 0 and delta_j0 > 0
     strict = rest + wp * dp
     strict_positive = strict.is_positive
 
@@ -79,10 +91,10 @@ def derive(ctx):
     )
 
     # 4. simplex lower bound: delta_j = eps + gam_j, gam_j >= 0, sum_j w_j = 1
-    eps = sp.Symbol("eps", positive=True)
-    gam = sp.IndexedBase("gam", nonnegative=True)
+    eps, gam = EPSILON, DELTA_MINUS_EPS
     low = linear(sp.Sum(wn[j] * (eps + gam[j]), lim))
-    low = low.subs(sp.Sum(wn[j], lim), 1)  # A2: sum_j w_j = 1
+    # [L11.2] A2: sum_j w_j = 1 turns sum_j w_j (eps + gam_j) into eps + sum_j w_j gam_j
+    low = A2.rewrite(low, rename={w: wn})
     low_minus_eps = sp.simplify(low - eps)  # = sum_j w_j gam_j
     low_remainder_nonneg = sp.Sum(wn[j] * gam[j], lim).is_nonnegative
     low_positive = (eps + sp.Sum(wn[j] * gam[j], lim)).is_positive
@@ -97,7 +109,29 @@ def derive(ctx):
         sp.solveset(a >= 0, a, sp.S.Reals), sp.solveset(phi_up_ge <= x0, a, sp.S.Reals)
     )
 
+    # 6. the deductions, as propositional steps.  Atoms: Dc (u' dominates u in a contending metric),
+    # Gt (V(u') > V(u)), Mx (u maximizes V over S, u' in S), Sall (u' strictly better in every
+    # metric), Epos (some w_j > 0), Pall (every w_j > 0), Dw (u' >= u, u' != u).
+    Dc, Gt, Mx, Sall, Epos, Pall, Dw = sp.symbols("Dc Gt Mx Sall Epos Pall Dw", boolean=True)
+    # [L11.3] A2: if no w_j were positive the simplex sum would be 0, not 1, so some w_j > 0
+    some_positive = sp.true if sp.Sum(0, lim).doit() != A2.rule(0)[1] else sp.false
+    some_positive = sp.Equivalent(Epos, some_positive)
+    strict_gain = strict_positive is True and ratio_gt1 == sp.Interval.open(0, sp.oo)
+    deductions = dict(
+        atoms=(Dc, Gt, Mx, Sall, Epos, Pall, Dw),
+        # dominance in a contending metric makes V strictly larger (steps 2 and 3)
+        dominance_gains=sp.Implies(Dc, Gt) if strict_gain else sp.true,
+        # a maximizer of V over S has no member of S with V strictly larger
+        maximizer=sp.Implies(Mx, sp.Not(Gt)),
+        # strictly better in every metric, with some contending metric, is dominance there
+        every_metric=sp.Implies(sp.And(Sall, Epos), Dc),
+        # u' >= u and u' != u with every w_j > 0 is dominance in a contending metric
+        all_positive=sp.Implies(sp.And(Pall, Dw), Dc),
+        some_positive=some_positive,
+    )
+
     ctx["L11"] = {
+        "deductions": deductions,
         "diff": diff,
         "gain": gain,
         "gain_nonneg": gain_nonneg,
@@ -126,24 +160,35 @@ def verify(ctx):
     wn, dl, gam = r["wn"], r["dl"], r["gam"]
 
     # 1. identity and sign
+    # [L11.4] w.u' - w.u = sum_j w_j delta_j, by Sum linearity
     assert sp.simplify(r["diff"] - sp.Sum(w[j] * dl[j], (j, 1, d))) == 0, (
         "L11 FAIL: w.u' - w.u != sum_j w_j delta_j"
     )
+    # [L11.5] every summand w_j delta_j is >= 0, so the gain is >= 0
     assert r["gain_nonneg"] is True, "L11 FAIL: sum_j w_j delta_j is not nonnegative"
     # 2. strictness
+    # [L11.6] strictness: a nonnegative rest plus the positive term w_j0 delta_j0 is > 0
     assert r["strict_positive"] is True, "L11 FAIL: nonnegative rest + positive term is not > 0"
     # 3. V ratio
+    # [L11.7] exp(x) >= 1 exactly when x >= 0, so V(u') >= V(u)
     assert r["ratio_ge1"] == sp.Interval(0, sp.oo), "L11 FAIL: exp(x) >= 1 iff x >= 0"
+    # [L11.8] exp(x) > 1 exactly when x > 0, so V(u') > V(u) under the strictness condition
     assert r["ratio_gt1"] == sp.Interval.open(0, sp.oo), "L11 FAIL: exp(x) > 1 iff x > 0"
+    # [L11.9] the ratio V(u')/V(u) is exp(sum_j w_j delta_j)
     assert r["ratio_identity"] == 0, "L11 FAIL: V(u')/V(u) != exp(sum_j w_j delta_j)"
     # 4. simplex lower bound: w.delta - eps = sum_j w_j gam_j >= 0, hence w.delta >= eps > 0
     gap = sp.simplify(r["low_minus_eps"] - sp.Sum(wn[j] * gam[j], (j, 1, d)))
+    # [L11.10] with sum_j w_j = 1: w.delta - eps = sum_j w_j gam_j
     assert gap == 0, f"L11 FAIL: sum_j w_j (eps + gam_j) - eps != sum_j w_j gam_j (gap {gap})"
+    # [L11.11] the remainder sum_j w_j gam_j is >= 0
     assert r["low_remainder_nonneg"] is True, "L11 FAIL: sum_j w_j gam_j is not nonnegative"
+    # [L11.12] hence w.delta >= eps > 0 whenever every delta_j >= eps
     assert r["low_positive"] is True, "L11 FAIL: eps + nonnegative sum is not > 0"
-    # 5. K > 1: the facet inequality chain leaves only theta_k0 . delta = 0
+    # 5. K > 1: the term inequality chain leaves only theta_k0 . delta = 0
+    # [L11.13] K > 1: theta_k0.delta >= 0 and x0 + theta_k0.delta <= x0 force theta_k0.delta = 0
     assert r["squeeze"] == sp.FiniteSet(0), "L11 FAIL: theta_k0.delta is not forced to 0"
     k0 = sp.Symbol("k0", integer=True)
+    # [L11.14] theta_k0.delta expands as sum_j theta_k0j delta_j
     assert sp.simplify(r["a_def"] - sp.Sum(S.theta[k0, j] * dl[j], (j, 1, d))) == 0, (
         "L11 FAIL: theta_k0.delta mis-expanded"
     )
@@ -154,7 +199,26 @@ def verify(ctx):
     uv = [R(0), R(1), R(2)]
     up = [R(1, 3), R(1), R(5)]  # dominates uv; strictly better in metric 1 (w_1 > 0)
     gain = sum(a * (b - c) for a, b, c in zip(wv, up, uv, strict=True))
+    # [L11.15] exact instance (d = 3): the dominating point gains 1/6 > 0 where w_1 > 0
     assert gain == R(1, 6) and gain > 0, "L11 FAIL: numeric instance gain"
     up_free = [R(0), R(1), R(5)]  # better only in metric 3, where w_3 = 0: no gain, not blocked
     gain0 = sum(a * (b - c) for a, b, c in zip(wv, up_free, uv, strict=True))
+    # [L11.16] exact instance: a gain only in the zero-exponent metric 3 does not count
     assert gain0 == 0, "L11 FAIL: gain in a zero-exponent metric must not count"
+
+    # 6. the deductions of the statement, checked propositionally
+    dd = r["deductions"]
+    Dc, _, Mx, Sall, _, Pall, Dw = dd["atoms"]
+    base = [dd["dominance_gains"], dd["maximizer"]]
+    # [L11.17] contrapositive of steps 2 and 3: a maximizer of V over S is not dominated
+    assert entails(base, sp.Not(sp.And(Mx, Dc))), "L11 FAIL: a maximizer is dominated"
+    # [L11.18] weakly efficient in all d metrics: no u' in S is strictly better in every metric
+    assert entails([*base, dd["every_metric"], dd["some_positive"]], sp.Not(sp.And(Mx, Sall))), (
+        "L11 FAIL: a maximizer is strictly beaten in every metric"
+    )
+    # [L11.19] efficient when every w_j > 0: no u' >= u, u' != u in S
+    assert entails([*base, dd["all_positive"]], sp.Not(sp.And(Mx, Pall, Dw))), (
+        "L11 FAIL: a maximizer with every w_j > 0 is dominated"
+    )
+    # [L11.20] negative control inside the chain: without step 3 (V strictly larger) nothing follows
+    assert not entails([dd["maximizer"]], sp.Not(sp.And(Mx, Dc))), "L11 FAIL: the chain is vacuous"

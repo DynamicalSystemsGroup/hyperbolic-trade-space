@@ -1,0 +1,70 @@
+{
+  "tested_hts_commit": "c46832c633ea7efc5ef0915372ba83ff03d46ea2",
+  "later_inspected_dev_commit": "b653e98a4c7cbe097b1c25c73b5d17d83e28ba59",
+  "commits_between": 62,
+  "later_revision_retested": false,
+  "rerun_commands_completed": [
+    "analyze.py (Filecoin)",
+    "analyze.py (RAI)",
+    "sweep_k.py (RAI)",
+    "finite_sweep.py --extra-seeds (RAI)"
+  ],
+  "table_comparisons": {
+    "design_table.csv": {
+      "rows": 102,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "k_sweep_primary.csv": {
+      "rows": 10,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "k_sweep_all_seeds.csv": {
+      "rows": 30,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "k_sweep_tau20_secondary.csv": {
+      "rows": 10,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "tau20_additional_seed_checks.csv": {
+      "rows": 6,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "k_sweep_predictions.csv": {
+      "rows": 51,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "k_sweep_tau20_predictions.csv": {
+      "rows": 51,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "weekly_states.csv": {
+      "rows": 90,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "weekly_scores.csv": {
+      "rows": 90,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    "bootstrap_weights.csv": {
+      "rows": 200,
+      "numeric_comparison": "passed; atol=1e-10, rtol=1e-9; runtime seconds excluded",
+      "maximum_absolute_numeric_difference": 0.0
+    }
+  },
+  "original_bundle_manifests_verified": {
+    "rai-hts-analysis": 37,
+    "filecoin-hts": 19,
+    "rai-hts-design": 10
+  },
+  "limits": "Table comparisons cover the core empirical and K-sweep results, not every field of all JSON outputs. Complete repository suite was not rerun."
+}

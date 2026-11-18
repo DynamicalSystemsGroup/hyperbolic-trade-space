@@ -1,4 +1,4 @@
-"""Run the full abstract derivation chain L1 -> L14, then print the assumption audit.
+"""Run the full abstract derivation chain L1 -> L21, then print the assumption audit.
 
     uv run python derivation/run.py
 
@@ -31,9 +31,17 @@ CHAIN_NAMES = [
     "lemma_09_pullback",
     "lemma_10_extension",
     "lemma_11_pareto",
-    "lemma_12_facet_gap",
+    "lemma_12_term_gap",
     "lemma_13_margin",
     "lemma_14_assignment_stable",
+    "lemma_15_descent",
+    "lemma_16_soft_fit_alternation",
+    "lemma_17_soft_fit_certificate",
+    "lemma_18_noise_covariance",
+    "lemma_19_noise_shift_bound",
+    "lemma_20_noise_ridge",
+    "lemma_21_tension",
+    "lemma_22_small_temperature",
 ]
 
 
@@ -104,6 +112,11 @@ def print_audit(used):
     print("\nINHERITED, solver level (cited by the K > 1 solver, not consumed by a lemma):")
     _print_conditions(solver)
 
+    print("\nINHERITED, cited context (recorded remarks; no proof step consumes them):")
+    for name, reason in AX.CITED_CONTEXT.items():
+        print(f"  - {AX.get(name)}")
+        print(f"      why not consumed: {reason}")
+
     regularity = AX.by_tag(AX.REGULARITY)
     print("\nREGULARITY (interpretive conditions; hypotheses, not defects):")
     _print_conditions(regularity)
@@ -129,7 +142,7 @@ def print_audit(used):
 
 def main():
     print("=" * 72)
-    print("Posynomial invariant form - axiom-explicit derivation (L1 -> L14)")
+    print("Posynomial invariant form - axiom-explicit derivation (L1 -> L21)")
     print("=" * 72)
     print()
     _, used = run_chain(verbose=True)

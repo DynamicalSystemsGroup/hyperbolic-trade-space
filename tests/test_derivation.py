@@ -20,6 +20,7 @@ ALL_PRESENT = all(
 )
 
 
+@pytest.mark.slow
 def test_full_chain_runs():
     ctx, used = run_chain(verbose=False)
     assert "S" in ctx
@@ -27,6 +28,7 @@ def test_full_chain_runs():
         assert name in AX.AXIOMS
 
 
+@pytest.mark.slow
 def test_each_lemma_verifies():
     ctx = {"S": S.make_symbols()}
     for lemma in CHAIN:
@@ -81,6 +83,7 @@ def test_load_bearing_symbol_assumptions_are_declared():
                     )
 
 
+@pytest.mark.slow
 def test_every_used_axiom_resolves_and_all_tags_valid():
     _, used = run_chain(verbose=False)
     for name in used:
@@ -109,13 +112,17 @@ def test_fallbacks_are_declared():
         assert "interpretive role" in out and "failure mode" in out and a.name in out
 
 
+@pytest.mark.slow
 @pytest.mark.skipif(not ALL_PRESENT, reason="needs all ten lemma modules")
 def test_every_axiom_is_used():
     _, used = run_chain(verbose=False)
     unused = [
         n
         for n in AX.AXIOMS
-        if n not in used and n not in AX.STRUCTURAL and n not in AX.SOLVER_LEVEL
+        if n not in used
+        and n not in AX.STRUCTURAL
+        and n not in AX.SOLVER_LEVEL
+        and n not in AX.CITED_CONTEXT
     ]
     assert not unused, f"axioms never used by any lemma: {unused}"
 
@@ -230,7 +237,7 @@ def test_L3_L4_verify_abstractly_with_declared_axioms():
     ctx = _ctx_l3_l4()
     for mod in (_L3, _L4):
         assert all(a in AX.AXIOMS for a in mod.AXIOMS_USED)
-    assert "R1" in _L3.AXIOMS_USED and "A3" in _L3.AXIOMS_USED
+    assert "R1" in _L3.AXIOMS_USED
     assert "A3" in _L4.AXIOMS_USED
     assert ctx["L3"]["KKT"].rhs == _L3.LAM  # (U^T p)_{j0} = lambda
     assert ctx["L4"]["convex"] is True
@@ -346,6 +353,29 @@ def test_L5_fails_loudly_when_limit_wrong():
         mods[5].verify(ctx)
 
 
+def test_L5_band_weight_ratio_numerically():
+    """L5.25 at numbers: softmax weights of the LME terms, one design on the surface (log V = 0);
+    every design with |log V| <= 1/tau weighs within a factor e of it, and one outside does not."""
+    import numpy as np
+
+    rng = np.random.default_rng(5)
+    for tau in (0.5, 3.0, 38.1):
+        g = np.concatenate([[0.0], rng.uniform(-1 / tau, 1 / tau, 200), [1 / tau, -1 / tau]])
+        p = np.exp(tau * g) / np.exp(tau * g).sum()
+        ratio = p[1:] / p[0]
+        np.testing.assert_allclose(ratio, np.exp(tau * g[1:]), rtol=1e-12)
+        assert np.all(ratio <= np.e * (1 + 1e-12)) and np.all(ratio >= (1 - 1e-12) / np.e)
+        outside = np.exp(tau * 1.5 / tau)  # log V = 1.5 / tau, outside the band
+        assert outside > np.e
+
+
+def test_L5_fails_loudly_when_band_ratio_wrong():
+    ctx, mods = _run_lemmas(5)
+    ctx["L5"]["band_range"] = sp.Interval(sp.exp(-2), sp.exp(2))
+    with pytest.raises(AssertionError, match="L5 FAIL"):
+        mods[5].verify(ctx)
+
+
 def test_L7_fails_loudly_when_elasticity_wrong():
     ctx, mods = _run_lemmas(1, 7)
     ctx["L7"]["x_sol"] = -ctx["L7"]["x_sol"]  # +w_k/w_j: wrong sign
@@ -366,6 +396,14 @@ def test_L10_fails_loudly_when_limit_wrong_and_fallback_recorded():
     ctx["L10"]["lim_lower"] = ctx["L10"]["lim_lower"] + 1
     with pytest.raises(AssertionError, match="L10 FAIL"):
         mods[10].verify(ctx)
+
+
+def test_L10_mean_form_fails_loudly_when_bound_or_repeat_shift_wrong():
+    for key in ("lim_lower_mean", "ceil_mean", "dup_sum", "dup_mean"):
+        ctx, mods = _run_lemmas(10)
+        ctx["L10"][key] = ctx["L10"][key] + 1
+        with pytest.raises(AssertionError, match="L10 FAIL"):
+            mods[10].verify(ctx)
 
 
 # --- numeric I1/I2 and cross-checks ---
@@ -514,6 +552,7 @@ _TAU = sp.Rational(3, 2)
 _PARAMS = pytest.mark.parametrize("dnk", _DNK, ids=lambda t: f"d{t[0]}_n{t[1]}_K{t[2]}")
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L1(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L1"]
@@ -525,6 +564,7 @@ def test_crosscheck_L1(_ctx_all, dnk):
     _eq(_conc(r["V_inv_form"], dnk, S_), 1)
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L2(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L2"]
@@ -534,6 +574,7 @@ def test_crosscheck_L2(_ctx_all, dnk):
     _eq(_conc(r["J_shifted_reduced"], dnk, S_, ex), J + sp.Rational(7, 3))
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L3(_ctx_all, dnk):
     """dJ (abstract directional derivative) vs exact softmax-weighted form and vs the
@@ -562,6 +603,7 @@ def test_crosscheck_L3(_ctx_all, dnk):
     assert abs(sp.N(fd - dJ, 30)) < 1e-12
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L4(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L4"]
@@ -584,6 +626,7 @@ def test_crosscheck_L4(_ctx_all, dnk):
     assert var >= 0
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L5(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L5"]
@@ -601,6 +644,7 @@ def test_crosscheck_L5(_ctx_all, dnk):
     _eq(_conc(r["offset"], dnk, S_, ex), lse - lme)  # LSE - LME = log(n)/tau
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L6(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L6"]
@@ -616,6 +660,7 @@ def test_crosscheck_L6(_ctx_all, dnk):
     _eq(_conc(r["cumulant"], dnk, S_, ex), _conc(r["target"], dnk, S_, ex))
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L7(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L7"]
@@ -636,6 +681,7 @@ def test_crosscheck_L7(_ctx_all, dnk):
         _eq(_conc(r["f_star"], dnk, S_, ex), sp.exp(lf))
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L8(_ctx_all, dnk):
     """Helmert realization of the abstract chart identities (A7 hypotheses and recon)."""
@@ -718,7 +764,7 @@ def _run_l11():
 def test_L11_verifies_abstractly_with_declared_axioms():
     ctx, L11 = _run_l11()
     assert L11.TITLE and L11.STATEMENT
-    assert list(L11.AXIOMS_USED) == ["A1", "A2"]
+    assert list(L11.AXIOMS_USED) == ["A2"]
     for name in L11.AXIOMS_USED:
         assert name in AX.AXIOMS
     assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
@@ -814,9 +860,9 @@ def test_L6_statement_is_the_restricted_population_identity():
     assert "A5" in L6.AXIOMS_USED
 
 
-# --- WP13 (E-1): L12 facet gap, L13 margin, L14 assignment-stable local optimality ---
+# --- WP13 (E-1): L12 term gap, L13 margin, L14 assignment-stable local optimality ---
 _WP13 = {
-    12: "lemma_12_facet_gap",
+    12: "lemma_12_term_gap",
     13: "lemma_13_margin",
     14: "lemma_14_assignment_stable",
 }
@@ -842,7 +888,10 @@ def test_wp13_lemmas_in_chain_in_order_and_no_enumeration(num):
     import inspect
 
     assert _WP13[num] in CHAIN_NAMES
-    assert CHAIN_NAMES[-3:] == list(_WP13.values())
+    first = CHAIN_NAMES.index(_WP13[min(_WP13)])
+    assert CHAIN_NAMES[first : first + 3] == list(
+        _WP13.values()
+    )  # L15 (Level 1), L16 and L17 follow
     src = inspect.getsource(_il.import_module(f"derivation.{_WP13[num]}"))
     assert "range(" not in src and "numpy" not in src and "scipy" not in src
 
@@ -851,7 +900,7 @@ def test_L12_verifies_at_symbolic_d_with_declared_axioms():
     ctx, mods = _run_wp13(12)
     L12 = mods[12]
     assert L12.TITLE and L12.STATEMENT
-    assert set(L12.AXIOMS_USED) >= {"A2", "A3", "I1", "I8", "F12"}
+    assert set(L12.AXIOMS_USED) >= {"A2", "I1", "I8", "F12"}
     for name in L12.AXIOMS_USED:
         assert name in AX.AXIOMS
     assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
@@ -961,7 +1010,7 @@ def test_L13_fails_loudly_when_margin_claim_broken():
 def test_L14_verifies_at_symbolic_d_nk_K_with_declared_axioms():
     ctx, mods = _run_wp13(12, 13, 14)
     L14 = mods[14]
-    assert set(L14.AXIOMS_USED) >= {"A2", "R2"}
+    assert set(L14.AXIOMS_USED) >= {"R2"}
     for name in L14.AXIOMS_USED:
         assert name in AX.AXIOMS
     assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
@@ -969,26 +1018,27 @@ def test_L14_verifies_at_symbolic_d_nk_K_with_declared_axioms():
     assert ctx["L14"]["nk"].is_integer and not ctx["L14"]["nk"].is_number
 
 
-def test_L14_statement_scopes_level_three_to_step_b_unpenalized_support_offsets():
+def test_L14_statement_scopes_level_three_to_step_b_unpenalized_reaches():
     _, mods = _run_wp13(12, 13, 14)
     s = mods[14].STATEMENT
     assert "Level 3" in s and "step B" in s and "unpenalized" in s
-    assert "beta_k = J_tau(U w_k)" in s and "support offsets" in s
+    assert "beta_k = J_tau(U w_k)" in s and "reaches beta_k" in s
     assert "n_k (beta_k - w_k.ubar_k)" in s
     assert "F(W') - F(W) = sum_k (n_k/N) (f_k(w'_k) - f_k(w_k)) >= 0" in s
     assert "F(W) - F*_fixed" in s and "sum_k (n_k/N) G_k" in s
     assert "fitted reference surface" in s
 
 
-def test_L14_partition_regrouping_is_stated_not_enumerated_and_not_a_fallback():
+def test_L14_partition_regrouping_is_declared_by_A8_not_enumerated_and_not_a_fallback():
     import inspect
 
     mod = _il.import_module("derivation.lemma_14_assignment_stable")
     src = inspect.getsource(mod)
-    assert "symbolic partition" in src and "one-line finite-sum argument" in src
+    assert "A8" in mod.AXIOMS_USED and "declared relation A8" in src
     assert not any("L14" in (a.statement + a.role) for a in AX.fallbacks())
 
 
+@pytest.mark.slow
 def test_L14_fails_loudly_when_premise_or_step_broken():
     for key, bad in (
         ("regroup_swap_equal", False),
@@ -996,7 +1046,7 @@ def test_L14_fails_loudly_when_premise_or_step_broken():
         ("local_min_nonneg", False),
         ("cor_slack", 1),
         ("cor_nonneg", False),
-        ("objective_agrees", 1),
+        ("loss_agrees", 1),
     ):
         ctx, mods = _run_wp13(12, 13, 14)
         ctx["L14"][key] = bad
@@ -1013,6 +1063,7 @@ def test_L14_fails_loudly_when_premise_or_step_broken():
         mods[14].verify(ctx)
 
 
+@pytest.mark.slow
 def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
     _, used = run_chain(verbose=False)
     for name in ("I8", "I9", "F12", "R2"):
@@ -1032,4 +1083,73 @@ def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
 
     with redirect_stdout(buf):
         assert main() == 0
-    assert "L1 -> L14" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
+    assert "L1 -> L21" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
+
+
+# --- WP10 C-1: L15, Level 1 (descent) ---
+def test_L15_is_followed_by_L16_and_states_level_one_exactly():
+    mod = _il.import_module("derivation.lemma_15_descent")
+    at = CHAIN_NAMES.index("lemma_15_descent")
+    assert CHAIN_NAMES[at : at + 2] == ["lemma_15_descent", "lemma_16_soft_fit_alternation"]
+    assert mod.STATEMENT == (
+        "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing term "
+        "does not increase the mean slack F, and refitting each term to a minimizer of its "
+        "convex term loss does not increase F; so F is non-increasing along accepted "
+        "iterations."
+    )
+    assert set(mod.AXIOMS_USED) == {"A8", "F12"}
+
+
+def _run_L15():
+    ctx, _ = _run_wp13(12, 13, 14)
+    mod = _il.import_module("derivation.lemma_15_descent")
+    mod.derive(ctx)
+    mod.verify(ctx)
+    return ctx, mod
+
+
+@pytest.mark.slow
+def test_L15_verifies_and_fails_loudly_when_a_step_is_broken():
+    ctx, mod = _run_L15()
+    assert ctx["L15"]["nonincreasing"] is True
+    for key, bad in (
+        ("row_split", 1),
+        ("on_maximizing", 1),
+        ("reassign_diff", 1),
+        ("reassign_nonneg", False),
+        ("partition_identity", False),
+        ("refit_diff", 1),
+        ("refit_nonneg", None),
+        ("total", 1),
+    ):
+        ctx, mod = _run_L15()
+        ctx["L15"][key] = bad
+        with pytest.raises(AssertionError, match="L15 FAIL"):
+            mod.verify(ctx)
+
+
+@pytest.mark.parametrize(("K", "kappa", "d"), [(2, 0.5, 2), (3, 4.0, 3), (7, 30.0, 5)])
+def test_L10_both_forms_bounds_hold_numerically_and_repeat_shift_is_log2_over_kappa(K, kappa, d):
+    """R-5: sum: max <= Phi_K <= max + log K / kappa; mean: max - log K / kappa <= Phi <= max."""
+    from scipy.special import logsumexp
+
+    rng = np.random.default_rng(10 * K + d)
+    for _ in range(200):
+        x = rng.normal(scale=3.0, size=(50, K))  # scores x_k = theta_k . u - beta_k
+        top = x.max(axis=1)
+        phi_sum = logsumexp(kappa * x, axis=1) / kappa
+        phi_mean = phi_sum - np.log(K) / kappa
+        assert (phi_sum >= top - 1e-12).all() and (phi_sum <= top + np.log(K) / kappa + 1e-12).all()
+        assert (phi_mean <= top + 1e-12).all() and (
+            phi_mean >= top - np.log(K) / kappa - 1e-12
+        ).all()
+        np.testing.assert_allclose(phi_mean, np.log(np.mean(np.exp(kappa * x), axis=1)) / kappa)
+    # a repeated term: the sum form moves by exactly log 2 / kappa, the mean form does not
+    x = rng.normal(size=(40, K))
+    two = np.concatenate([x[:, :1], x[:, :1]], axis=1)
+    np.testing.assert_allclose(
+        logsumexp(kappa * two, axis=1) / kappa - x[:, 0], np.log(2) / kappa, atol=1e-12
+    )
+    np.testing.assert_allclose(
+        np.log(np.mean(np.exp(kappa * two), axis=1)) / kappa, x[:, 0], atol=1e-12
+    )

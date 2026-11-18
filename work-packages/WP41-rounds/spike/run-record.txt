@@ -1,0 +1,38 @@
+proposer reach = 0.6947; tau = 10.691, band = 0.0935, n_train = 2134, targets = 10 (3 committed + 7)
+existing rule reproduces the committed proposals: [True, True, True]
+                  in_reach  in_band  median_distance  median_change
+rule                                                               
+nearest in pool          3        0         1.124677       1.296098
+smallest change          3        0         1.124677       1.296098
+surrogate search         3        0         1.095322       1.406267
+rule    nearest in pool  smallest change  surrogate search
+target                                                    
+1                 0.674            0.690             0.664
+2                 0.678            0.678             0.632
+3                 0.626            0.670             0.621
+4                 1.100            1.100             1.064
+5                 1.223            1.223             1.199
+6                 1.340            1.340             1.315
+7                 1.316            1.316             1.313
+8                 0.970            0.970             0.963
+9                 1.149            1.149             1.126
+10                1.239            1.239             1.212
+ target             rule  pred_dist     dZ  dlogV failed    outcome
+      1  nearest in pool     0.6743 0.0170 0.0424 dod_ok infeasible
+      1  smallest change     0.6898 0.0164 0.0239 dod_ok infeasible
+      1 surrogate search     0.6644 0.0224 0.0421 dod_ok infeasible
+      2  nearest in pool     0.6782 0.0770 0.0611 dod_ok infeasible
+      2  smallest change     0.6782 0.0770 0.0611 dod_ok infeasible
+      2 surrogate search     0.6322 0.1013 0.0812 dod_ok infeasible
+      3  nearest in pool     0.6262 0.0170 0.0424 dod_ok infeasible
+      3  smallest change     0.6703 0.0451 0.0181      -  confirmed
+      3 surrogate search     0.6215 0.0223 0.0346 dod_ok infeasible
+1 nearest in pool {'panel_span_m': 0.3001, 'battery_wh': 21.9628, 'Kp': 0.835, 'Kd': 0.3131, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 13.0}
+1 smallest change {'panel_span_m': 0.3058, 'battery_wh': 27.923, 'Kp': 0.9157, 'Kd': 0.3285, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 6.0}
+1 surrogate search {'panel_span_m': 0.3, 'battery_wh': 23.1703, 'Kp': 0.8277, 'Kd': 0.3, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 26.0}
+2 nearest in pool {'panel_span_m': 0.4961, 'battery_wh': 22.1354, 'Kp': 1.746, 'Kd': 1.4029, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 27.0}
+2 smallest change {'panel_span_m': 0.4961, 'battery_wh': 22.1354, 'Kp': 1.746, 'Kd': 1.4029, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 27.0}
+2 surrogate search {'panel_span_m': 0.5261, 'battery_wh': 20.0, 'Kp': 1.7847, 'Kd': 1.5, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 9.0}
+3 nearest in pool {'panel_span_m': 0.3001, 'battery_wh': 21.9628, 'Kp': 0.835, 'Kd': 0.3131, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 13.0}
+3 smallest change {'panel_span_m': 0.3403, 'battery_wh': 39.1116, 'Kp': 0.8383, 'Kd': 0.3103, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 11.0}
+3 surrogate search {'panel_span_m': 0.3, 'battery_wh': 26.3031, 'Kp': 0.7979, 'Kd': 0.3, 'wheel_class': 'medium', 'st_grade': 'fine', 'fleet_size': 20.0}

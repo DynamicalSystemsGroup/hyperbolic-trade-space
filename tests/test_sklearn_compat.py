@@ -1,11 +1,11 @@
-"""scikit-learn conformance (spec section 7, docs/superpowers/notes/sklearn-conformance.md)."""
+"""scikit-learn conformance (spec section 7, notes/sklearn-conformance.md)."""
 
 import inspect
 
 import numpy as np
 from sklearn.utils.estimator_checks import parametrize_with_checks
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+from tradespace import HyperbolicTradeSpace, make_frontier_data
 
 # Bare check name -> written reason. The goal is an empty dict.
 EXPECTED_FAILURES: dict[str, str] = {}
@@ -18,7 +18,8 @@ EXPECTED_FAILURES: dict[str, str] = {}
         HyperbolicTradeSpace(coordinates="alr"),
         HyperbolicTradeSpace(n_terms=3),  # WP9 (R-5): the same expected failures (none)
         HyperbolicTradeSpace(n_terms=3, temperature=np.inf, term_temperature=5.0),
-        HyperbolicTradeSpace(n_terms=3, facet_step="tangent"),  # Amendment 1: same (empty) failures
+        HyperbolicTradeSpace(n_terms=3, temperature=20.0, term_temperature=20.0),  # WP17: soft fit
+        HyperbolicTradeSpace(n_terms=3, refit_step="tangent"),  # Amendment 1: same (empty) failures
     ],
     expected_failed_checks=lambda est: EXPECTED_FAILURES,
     xfail_strict=True,
@@ -72,7 +73,7 @@ def test_fitted_attributes_end_in_underscore_and_n_iter_positive():
 
 
 # --- WP3 preconditioner ---
-from hyperbolic_trade_space import LogAffinePreconditioner  # noqa: E402
+from tradespace import LogAffinePreconditioner  # noqa: E402
 
 PRECONDITIONER_EXPECTED_FAILURES: dict[str, str] = {}
 
@@ -112,7 +113,7 @@ def test_preconditioner_conformance_surface():
 # --- WP3 regressor ---
 from sklearn.linear_model import LinearRegression  # noqa: E402
 
-from hyperbolic_trade_space import TradeSpaceRegressor  # noqa: E402
+from tradespace import TradeSpaceRegressor  # noqa: E402
 
 # Bare check name -> written reason. The goal is an empty dict.
 REGRESSOR_EXPECTED_FAILURES: dict[str, str] = {

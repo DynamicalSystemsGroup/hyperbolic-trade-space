@@ -15,10 +15,18 @@ htmlcov/
 
 # site builds and generated docs pages
 _site/
-site/
+_stage/
 docs/generated/
 
 # OS / editors
 .DS_Store
 .vscode/
 .idea/
+
+# WP45 example caches (hash-checked downloads; nothing redistributed)
+examples/perovskite/data/
+examples/amniote/data/
+examples/wheat/data/
+
+# local copies of removed work-package documents
+work-packages/archive/

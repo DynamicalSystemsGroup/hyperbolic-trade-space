@@ -1,0 +1,58 @@
+name: Scope of work (draft)
+description: Propose a piece of work as a scope. A code owner approves it by removing the draft label.
+labels: [draft]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        An issue is a scope of work: what will be delivered, what the work aims at, and what a reviewer will check.
+        It does not say how the work is done. Every field below is read by the admissibility check; see
+        [the issue admissibility conditions](https://github.com/DynamicalSystemsGroup/tradespace/blob/dev/.github/ISSUE_ADMISSIBILITY.md).
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is delivered.
+    validations:
+      required: true
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: Non-goals
+      description: What is not delivered.
+    validations:
+      required: true
+  - type: textarea
+    id: blast-radius
+    attributes:
+      label: Blast radius
+      description: The files and surfaces the work may touch, small enough to review in one sitting.
+    validations:
+      required: true
+  - type: textarea
+    id: good
+    attributes:
+      label: Definition of good
+      description: What the work aims at.
+    validations:
+      required: true
+  - type: textarea
+    id: good-enough
+    attributes:
+      label: Definition of good enough
+      description: |
+        A list; mark every item (conformance) if a machine checks it (a test, a lint or format rule, the lock check,
+        a script) or (fitness) if a person validates it (it does what the issue intends, it reads as intended, it
+        renders right).
+      placeholder: |
+        - The new test passes (conformance)
+        - The page reads as intended in a browser (fitness)
+    validations:
+      required: true
+  - type: textarea
+    id: open-decisions
+    attributes:
+      label: Open decisions
+      description: Decisions only a code owner can make, each with plain options. Write "none" if there are none.
+    validations:
+      required: true

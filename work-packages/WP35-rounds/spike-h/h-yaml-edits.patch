@@ -1,0 +1,26 @@
+--- a/paper/prior_art.yaml
++++ b/paper/prior_art.yaml
+@@ -296,8 +296,7 @@
+       This work estimates a one-sided edge, not a variance over frames, by convex programs on a
+       simplex with a certificate, and it uses no negative-curvature geometry; on the paper's
+       tables its exponents are recovered by neither HoroPCA nor PCA except where the generator made
+-      them the direction of largest spread (the passage and table after this register, and the spike
+-      record).
++      them the direction of largest spread (Appendix H, and the first spike's record).
+     cites: [chami2021horopca]
+     section2: true
+     # Section 2's table prints these phrases; each is an extract of the field of the same name
+--- a/paper/reading_pass.yaml
++++ b/paper/reading_pass.yaml
+@@ -435,8 +435,9 @@
+     paper''s statement about itself.'
+   status: reworded
+   now: 'The "unrelated" clause is gone (the glossary and Appendix A define the word). Section 2 and
+-    Appendix G now say what the abstract says, that HoroPCA extends the components of PCA to hyperbolic space
+-    with horospherical projections, and what the authors'' code did on the paper''s tables (WP35).'
++    Appendix H now say what the abstract says, that HoroPCA extends the components of PCA to hyperbolic space
++    with horospherical projections, and what the authors'' code did in a pre-registered test on constructed
++    tables (WP35).'
+ - n: 45
+   sentence: 'Lineage: ''Tradespace exploration displays a table of designs''; table: ''Value-focused broad
+     exploration of design alternatives, user-guided samplers and linked visualization with the Pareto

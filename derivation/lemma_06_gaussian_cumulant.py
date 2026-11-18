@@ -19,7 +19,10 @@ stated target (symproof/library/convex.py, closed-form identity checks).
 """
 
 import sympy as sp
-from sympy.stats import E, Normal
+from sympy.stats import E
+
+from derivation.axioms import A2, A3, A5, I5
+from derivation.licence import log_expand
 
 TITLE = "Gaussian cumulant of a weighted noise sum"
 STATEMENT = (
@@ -27,24 +30,26 @@ STATEMENT = (
     "independent across j, sigma > 0): (1/tau) log E exp(tau w.eps) = tau sigma^2 ||w||^2 / 2, "
     "with E the population expectation; not a finite-sample estimator, and no consistency claim"
 )
-AXIOMS_USED = ["A2", "A5", "I5"]
+AXIOMS_USED = ["A2", "A3", "A5", "I5"]
 
 
 def derive(ctx):
     S = ctx["S"]
     t = sp.Symbol("t", real=True)
-    sigma, tau, w, j, d = S.sigma, S.tau, S.w, S.j, S.d
+    sigma, tau, j, d, w = S.sigma, S.tau, S.j, S.d, S.w
 
     # single-variable MGF (A5: eps ~ N(0, sigma^2))
-    X = Normal("X", 0, sigma)
+    # [L6.1] A5: each noise term is eps ~ N(0, sigma^2) with sigma > 0, independent across j
+    X = A5.obj("noise")
     mgf1 = sp.simplify(E(sp.exp(t * X)))
 
     # I5: MGF of sum_j w_j eps_j = Product_j mgf1(tau w_j)
     factor = mgf1.subs(t, tau * w[j])
-    prod = sp.Product(factor, (j, 1, d))
+    # [L6.2] I5: the MGF of the independent sum w.eps is the product of the MGFs at tau w_j
+    prod = I5.specialize(Mgf1=lambda arg: mgf1.subs(t, arg))
     # exp-product identity: Product exp(f_j) = exp(Sum f_j)
-    f = sp.log(factor)
-    f = sp.expand_log(f, force=True)
+    # [L6.3] A2, A3, A5: w, tau and sigma are real, so log of each factor is its exponent
+    f = log_expand(sp.log(factor), A2, A3, A5)
     mgf_sum = sp.exp(sp.Sum(sp.simplify(f), (j, 1, d)))
     # j-independent constants are pulled out of the Sum by simplify (w stays symbolic)
     norm2 = sp.Sum(w[j] ** 2, (j, 1, d))
@@ -68,13 +73,19 @@ def verify(ctx):
     S = ctx["S"]
     r = ctx["L6"]
     t, sigma, tau = r["t"], S.sigma, S.tau
+    # [L6.4] one noise variable: E exp(t eps) = exp(sigma^2 t^2 / 2)
     assert sp.simplify(r["mgf1"] - sp.exp(sigma**2 * t**2 / 2)) == 0, "L6 FAIL one-variable MGF"
     # the Sum of per-term exponents equals the closed form's exponent, term by term
     lhs = r["mgf_sum"].args[0]
+    # [L6.5] the exponent of the product of MGFs is a Sum over j
     assert isinstance(lhs, sp.Sum), "L6 FAIL exponent is not a Sum over j"
     summand_gap = sp.simplify(lhs.function - tau**2 * sigma**2 * S.w[S.j] ** 2 / 2)
+    # [L6.6] each summand of the exponent is tau^2 sigma^2 w_j^2 / 2
     assert summand_gap == 0, "L6 FAIL per-term exponent mismatch"
+    # [L6.7] the Sum runs over j = 1..d, the same range as ||w||^2
     assert lhs.limits == r["norm2"].limits, "L6 FAIL Sum range is not 1..d"
     # cumulant divided by tau equals tau sigma^2 ||w||^2 / 2
+    # [L6.8] the cumulant (1/tau) log E exp(tau w.eps) equals tau sigma^2 ||w||^2 / 2
     assert sp.simplify(r["cumulant"] - r["target"]) == 0, "L6 FAIL cumulant formula"
+    # [L6.9] the identity holds at symbolic d (the upper limit of ||w||^2 is d)
     assert r["norm2"].limits[0][2] == S.d, "L6 FAIL upper limit is not symbolic d"

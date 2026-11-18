@@ -1,5 +1,6 @@
 """Plotting smoke tests (Agg backend): each function returns an Axes and uses the vocabulary."""
 
+import re
 from types import SimpleNamespace
 
 import matplotlib
@@ -11,8 +12,8 @@ import numpy as np
 import pytest
 from matplotlib.axes import Axes
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
-from hyperbolic_trade_space import plotting as P
+from tradespace import HyperbolicTradeSpace, make_frontier_data
+from tradespace import plotting as P
 
 
 @pytest.fixture(autouse=True)
@@ -98,40 +99,40 @@ def make_report(d=3):
         participating=np.array([True, True] + [False] * (d - 2)),
         exponents=np.array([0.5, 0.5] + [0.0] * (d - 2)),
         association=A,
-        tension_directions=np.zeros((0, d - 1)),
-        tension_loadings=np.zeros((0, d)),
+        spread_directions=np.zeros((0, d - 1)),
+        spread_loadings=np.zeros((0, d)),
         contending_set=np.array([0, 1]),
         n_lemma=2,
     )
 
 
 def test_plot_tensions_with_stand_in_report():
-    ax = P.plot_tensions(make_report(), names=["mass", "power", "cost"])
+    ax = P.plot_association(make_report(), names=["mass", "power", "cost"])
     assert isinstance(ax, Axes)
     assert ax.get_title() == "dilemma (2 metrics contend)"
     assert len(ax.patches) == 2  # contending set outlined
     assert ax.get_images()[0].get_cmap().name == P.TENSION_CMAP
-    assert P.plot_tensions(SimpleNamespace(**{**vars(make_report(4)), "n_lemma": 5})).get_title()
+    assert P.plot_association(SimpleNamespace(**{**vars(make_report(4)), "n_lemma": 5})).get_title()
     one = make_report(3)
     one.n_lemma, one.contending_set = 1, np.array([0])
-    assert P.plot_tensions(one).get_title().startswith("monolemma")
+    assert P.plot_association(one).get_title().startswith("monolemma")
 
 
 def test_module_does_not_import_matplotlib_at_import_time():
     import subprocess
     import sys
 
-    code = "import sys, hyperbolic_trade_space.plotting; sys.exit('matplotlib' in sys.modules)"
+    code = "import sys, tradespace.plotting; sys.exit('matplotlib' in sys.modules)"
     assert subprocess.run([sys.executable, "-c", code], check=False).returncode == 0
 
 
 def test_plot_tensions_with_real_report():
-    from hyperbolic_trade_space import tensions
+    from tradespace import tensions
 
     X, _ = make_frontier_data(500, 3, random_state=0)
     hts = HyperbolicTradeSpace().fit(X)
-    report = tensions.tension_report(hts, X, band=0.5)
-    ax = P.plot_tensions(report, names=["a", "b", "c"])
+    report = tensions.trade_off_report(hts, X, band=0.5)
+    ax = P.plot_association(report, names=["a", "b", "c"])
     assert isinstance(ax, Axes)
     assert ax.get_title().startswith(report.lemma_name)
     assert len(ax.patches) == report.n_lemma
@@ -148,7 +149,25 @@ def _texts(ax):
     return " ".join(out).lower()
 
 
-def test_log_plane_k3_draws_envelope_and_facet_legend():
+def _scatters(ax):
+    """The scatter collections (the designs); not the band's filled polygon or a contour set."""
+    from matplotlib.collections import PathCollection
+
+    return [c for c in ax.collections if isinstance(c, PathCollection)]
+
+
+def _design_colours(ax):
+    """Distinct face colours of the designs, as hex."""
+    return {
+        matplotlib.colors.to_hex(c)
+        for coll in _scatters(ax)
+        for c in np.atleast_2d(coll.get_facecolor())
+    }
+
+
+def test_log_plane_k3_draws_envelope_and_designs_in_one_colour_by_default():
+    # WP19-decisions.md (the principle check): the default is one colour with the term lines
+    # drawn as the model; colouring designs by cell is the cluster idiom and an explicit option.
     X, hts = _k3(2)
     ax = P.plot_log_plane(hts, X)
     g, y = ax.lines[0].get_data()
@@ -157,39 +176,62 @@ def test_log_plane_k3_draws_envelope_and_facet_legend():
     phi = np.max(np.outer(g, W[:, 0]) + np.outer(y, W[:, 1]) - b, axis=1)
     assert matplotlib.colors.to_hex(P.FRONTIER_COLOR) in colors_of(ax)
     assert np.all(phi[np.isfinite(phi)] <= 1e-9) and np.isfinite(y).all() and len(u) == 300
+    assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
     labels = [t.get_text() for t in ax.get_legend().get_texts()]
-    # platform drift may relabel or empty a facet (WP9 post-review fix 2): test the set only
-    assert set(labels) <= {f"facet {k + 1}" for k in range(3)} and len(labels) >= 2
+    assert not any(w in " ".join(labels).lower() for w in ("term", "cell"))
+    assert any("frontier" in lab for lab in labels) and any("band" in lab for lab in labels)
     assert "red" not in _texts(ax)
-    assert P.plot_log_plane(hts, X, color="facet").get_legend() is not None
 
 
-def test_surface_k3_and_coordinates_facet_colouring():
+def test_log_plane_colour_by_cell_is_an_explicit_option():
+    X, hts = _k3(2)
+    ax = P.plot_log_plane(hts, X, color="cell")
+    labels = [t.get_text() for t in ax.get_legend().get_texts()]
+    # platform drift may relabel or empty a term (WP9 post-review fix 2): test the set only
+    assert set(labels) <= {f"cell {k + 1}" for k in range(3)} and len(labels) >= 2
+    assert len(_design_colours(ax)) == len(labels)
+    assert matplotlib.colors.to_hex(P.FRONTIER_COLOR) in colors_of(ax)  # the model is still drawn
+    X1, _ = make_frontier_data(80, 2, random_state=0)
+    ax1 = P.plot_log_plane(HyperbolicTradeSpace().fit(X1), X1, color="cell")
+    assert [t.get_text() for t in ax1.get_legend().get_texts()] == ["cell 1"]
+    with pytest.raises(ValueError, match="cell"):
+        P.plot_log_plane(hts, X, color="red")
+
+
+def test_surface_k3_one_colour_by_default_and_coordinates_cell_colouring():
+    # WP19-decisions.md (the principle check): the designs in one colour, the envelope surface
+    # as the model; colouring by the term that scores each highest is the explicit option.
     X, hts = _k3(3)
     ax = P.plot_frontier_surface_3d(hts, X)
     assert ax.name == "3d" and len(ax.collections) >= 2
-    assert "facet 1" in _texts(ax) and "red" not in _texts(ax)
+    assert "term" not in _texts(ax) and "cell" not in _texts(ax) and "red" not in _texts(ax)
+    neutral = {matplotlib.colors.to_hex(P.DATA_COLOR), matplotlib.colors.to_hex(P.BAND_COLOR)}
+    assert _design_colours(ax) <= neutral and len(_design_colours(ax)) == 2
+    ax = P.plot_frontier_surface_3d(hts, X, color="cell")
+    assert "cell 1" in _texts(ax) and len(_design_colours(ax)) >= 2
+    with pytest.raises(ValueError, match="cell"):
+        P.plot_frontier_surface_3d(hts, X, color="red")
     Z = hts.transform(X)
-    ax = P.plot_frontier_coordinates(Z[:, :-1], Z[:, -1], color=P.facet_labels(hts, X))
-    assert "facet 1" in _texts(ax) and "red" not in _texts(ax)
+    ax = P.plot_frontier_coordinates(Z[:, :-1], Z[:, -1], color=P.cell_labels(hts, X))
+    assert "cell 1" in _texts(ax) and "red" not in _texts(ax)
 
 
 def test_plot_tensions_list_of_reports_side_by_side():
-    axs = P.plot_tensions([make_report(), make_report()], names=["a", "b", "c"])
-    assert len(axs) == 2 and axs[1].get_title().startswith("facet 2: dilemma")
-    assert isinstance(P.plot_tensions(make_report()), Axes)
+    axs = P.plot_association([make_report(), make_report()], names=["a", "b", "c"])
+    assert len(axs) == 2 and axs[1].get_title().startswith("term 2: dilemma")
+    assert isinstance(P.plot_association(make_report()), Axes)
 
 
-def test_log_plane_k3_draws_facet_only_where_it_has_weight_on_both_metrics():
+def test_log_plane_k3_draws_term_only_where_it_has_weight_on_both_metrics():
     hts = HyperbolicTradeSpace(n_terms=2, temperature=np.inf)
-    hts.exponents_ = np.array([[0.5, 0.5], [0.0005, 1.0]])  # facet 2 below the threshold on m0
+    hts.exponents_ = np.array([[0.5, 0.5], [0.0005, 1.0]])  # term 2 below the threshold on m0
     hts.log_offset_ = np.array([0.0, -50.0])  # would dominate the envelope if it were drawn
     hts.n_features_in_ = 2
     X = np.exp(np.random.default_rng(0).normal(size=(40, 2)))
     ax = P.plot_log_plane(hts, X, color=np.arange(40) % 2)
     g, y = ax.lines[0].get_data()
-    assert np.allclose(y, (0.0 - 0.5 * g) / 0.5)  # facet 1's line only
-    hts.exponents_ = np.array([[0.0005, 1.0], [1.0, 0.0005]])  # no facet has weight on both
+    assert np.allclose(y, (0.0 - 0.5 * g) / 0.5)  # term 1's line only
+    hts.exponents_ = np.array([[0.0005, 1.0], [1.0, 0.0005]])  # no term has weight on both
     assert len(P.plot_log_plane(hts, X, color=np.arange(40) % 2).lines) == 0
 
 
@@ -197,3 +239,353 @@ def test_log_plane_k1_unchanged_by_the_envelope_rule():
     X, _ = make_frontier_data(80, 2, random_state=0)
     ax = P.plot_log_plane(HyperbolicTradeSpace().fit(X), X)
     assert len(ax.lines) == 1 and ax.get_legend() is not None
+    assert "term" not in _texts(ax) and "cell" not in _texts(ax)
+    assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
+
+
+def test_tension_annotations_contrast_with_their_cell():
+    A = np.array([[1.0, -1.0, 0.0], [-1.0, 1.0, 0.1], [0.0, 0.1, 1.0]])
+    r = SimpleNamespace(
+        participating=np.array([True, True, False]),
+        exponents=np.array([0.5, 0.5, 0.0]),
+        association=A,
+        contending_set=np.array([0, 1]),
+        n_lemma=2,
+    )
+    ax = P.plot_association(r)
+    im = ax.images[0]
+    texts = {t.get_text(): t for t in ax.texts if t.get_text()[:1] in "-01"}
+    assert len(ax.texts) >= 9
+    for t in ax.texts[:9]:
+        v = float(t.get_text())
+        rgba = im.cmap(im.norm(v))
+        lum = 0.2126 * rgba[0] + 0.7152 * rgba[1] + 0.0722 * rgba[2]
+        assert t.get_color() == ("black" if lum > 0.5 else "white")
+    assert {t.get_color() for t in ax.texts[:9]} == {"black", "white"}
+    assert texts
+
+
+# ---- plot_ternary (WP18) ----------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def planted3():
+    X, _ = make_frontier_data(400, 3, n_terms=3, random_state=11)
+    return X, HyperbolicTradeSpace(n_terms=3, temperature=50.0, random_state=0).fit(X)
+
+
+def _by_gid(ax, prefix):
+    found = ax.findobj(lambda a: re.fullmatch(prefix + r"\d+", a.get_gid() or "") is not None)
+    return {int(a.get_gid().rsplit("-", 1)[1]): a for a in found}
+
+
+def test_ternary_designs_are_one_neutral_colour_by_default_and_by_cell_on_request(planted3):
+    # WP19-decisions.md, docs Figure 8: the supervisor's "Recolour". The designs go to one neutral
+    # colour; the region tints and the numbered markers are unchanged; colouring the near-frontier
+    # designs by their cell is analysis, kept as the explicit option ``color="cell"``.
+    import inspect
+
+    X, ts = planted3
+    assert inspect.signature(P.plot_ternary).parameters["color"].default is None
+    dots = matplotlib.colors.to_hex(P._TERN_SCHEMES["light"]["dots"])
+    term_cols = {matplotlib.colors.to_hex(c) for c in P._ternary_colours(ts.exponents_).values()}
+    plain = P.plot_ternary(ts, X, scheme="light")  # with X and no lines: the designs only
+    assert _design_colours(plain) == {dots}
+    n_near = int((np.abs(ts.score_samples(X)) < 0.2).sum())
+    assert 0 < n_near < len(X)
+    sizes = {float(np.unique(c.get_sizes())[0]) for c in _scatters(plain)}
+    assert len(sizes) == 2  # the near-frontier designs are still set apart by size, not colour
+    by_cell = P.plot_ternary(ts, X, scheme="light", color="cell")
+    assert _design_colours(by_cell) - {dots} <= term_cols
+    assert len(_design_colours(by_cell) - {dots}) >= 2
+    for ax in (plain, by_cell):  # the region tints are the same picture either way
+        assert len(ax.images) == 1
+    assert np.array_equal(plain.images[0].get_array(), by_cell.images[0].get_array())
+    with pytest.raises(ValueError, match="cell"):
+        P.plot_ternary(ts, X, color="red")
+    lined = P.plot_ternary(ts, X, lines=True, scheme="light")
+    stars = _by_gid(lined, "ternary-star-")
+    assert {matplotlib.colors.to_hex(s.get_facecolor()[0]) for s in stars.values()} == term_cols
+
+
+@pytest.mark.slow
+def test_ternary_markers_sit_at_the_exponent_vectors(planted3):
+    X, ts = planted3
+    ax = P.plot_ternary(ts, X, lines=True)
+    assert isinstance(ax, Axes)
+    stars = _by_gid(ax, "ternary-star-")
+    assert set(stars) == {0, 1, 2}
+    for k, art in stars.items():
+        x, y = art.get_offsets()[0]
+        top = y / (np.sqrt(3) / 2)
+        right = x - top / 2
+        np.testing.assert_allclose([top, 1 - top - right, right], ts.exponents_[k], atol=1e-12)
+    # colour is not the only cue: each marker has its own shape and a numbered label
+    assert len({a.get_paths()[0].vertices.tobytes() for a in stars.values()}) == 3
+    assert {int(t.get_text()) for t in _by_gid(ax, "ternary-star-label-").values()} == {1, 2, 3}
+
+
+def test_ternary_fixed_total_identity_and_peak(planted3):
+    """log V = log S + max_k (a_k + sum_j w_kj log c_j) at shares of the total, to 1e-10, and
+    term k's piece is largest among all shares at c = w_k."""
+    X, ts = planted3
+    fit = P._ternary_geometry(ts, X)
+    W = fit["W"]
+    a = W @ fit["colmean"] - fit["beta"]
+    c = P._ternary_shares(fit, 1.0)
+    S = np.exp(fit["U"] - fit["colmean"]).sum(axis=1)
+    np.testing.assert_allclose(
+        np.log(S) + (a + np.log(c) @ W.T).max(axis=1), ts.score_samples(X), atol=1e-10
+    )
+    rng = np.random.default_rng(0)
+    cs = rng.dirichlet(np.ones(3), size=3000)
+    for w in W:
+        assert w @ np.log(np.clip(w, 1e-300, None)) >= (np.log(cs) @ w).max() - 1e-12
+
+
+def test_ternary_regions_partition_the_triangle(planted3):
+    X, ts = planted3
+    fit = P._ternary_geometry(ts, X)
+    pts, reg = P._ternary_regions(fit, fit["spread"], n=120)
+    assert np.allclose(pts.sum(axis=1), 1.0) and (pts > 0).all()
+    assert set(np.unique(reg)) == {0, 1, 2}
+    a = fit["W"] @ fit["colmean"] - fit["beta"]
+    assert (reg == (a + fit["spread"] * (np.log(pts) @ fit["W"].T)).argmax(axis=1)).all()
+
+
+@pytest.mark.slow
+def test_ternary_lines_are_off_by_default_and_add_contours_and_markers(planted3):
+    import inspect
+
+    X, ts = planted3
+    assert inspect.signature(P.plot_ternary).parameters["lines"].default is False
+    plain, lined = P.plot_ternary(ts, X), P.plot_ternary(ts, X, lines=True)
+    assert not _by_gid(plain, "ternary-star-")
+    assert len(lined.collections) > len(plain.collections)
+    assert _by_gid(plain, "ternary-label-").keys() == {0, 1, 2}  # the regions are named in words
+
+
+@pytest.mark.slow
+def test_ternary_names_schemes_and_ax(planted3):
+    X, ts = planted3
+    _fig, ax = plt.subplots(figsize=(4, 4))
+    names = ["cost", "speed", "range"]
+    assert P.plot_ternary(ts, X, names=names, ax=ax, scheme="dark") is ax
+    words = " ".join(t.get_text() for t in ax.texts)
+    assert "favours cost" in words and "metric 1" not in words
+    assert matplotlib.colors.to_hex(ax.lines[-1].get_color()) == "#e8e6e1"
+    with plt.rc_context({"axes.labelcolor": "#e8e6e1"}):
+        assert P._ternary_scheme("auto") == "dark"
+    assert P._ternary_scheme("auto") == "light"
+    with pytest.raises(ValueError, match="scheme"):
+        P.plot_ternary(ts, X, scheme="blue")
+    with pytest.raises(ValueError, match="strictly positive"):
+        P.plot_ternary(ts, X * 0.0)
+
+
+def test_ternary_groups_sum_the_exponents_exactly():
+    X, _ = make_frontier_data(300, 6, n_terms=2, random_state=3)
+    ts = HyperbolicTradeSpace(n_terms=2, temperature=30.0, random_state=0).fit(X)
+    names = list("abcdef")
+    groups = {"p": ["a", "b"], "q": ["c"], "r": [3, 4, 5]}
+    ax = P.plot_ternary(ts, names=names, groups=groups)
+    W = ts.exponents_
+    want = np.column_stack([W[:, [0, 1]].sum(1), W[:, [2]].sum(1), W[:, [3, 4, 5]].sum(1)])
+    assert np.allclose(want.sum(axis=1), 1.0)
+    stars = {
+        k: v for k, v in _by_gid(ax, "ternary-star-").items() if v.get_gid() == f"ternary-star-{k}"
+    }
+    for k, art in stars.items():
+        x, y = art.get_offsets()[0]
+        top = y / (np.sqrt(3) / 2)
+        np.testing.assert_allclose([top, 1 - top - (x - top / 2), x - top / 2], want[k], atol=1e-12)
+    assert "favours p" in " ".join(t.get_text() for t in ax.texts)
+    with pytest.raises(ValueError, match="exactly one group"):
+        P.plot_ternary(ts, names=names, groups={"p": ["a"], "q": ["b"], "r": ["c"]})
+    with pytest.raises(ValueError, match="needs 3 metrics"):
+        P.plot_ternary(ts, names=names)
+    with pytest.raises(ValueError, match="omit X"):
+        P.plot_ternary(ts, X, names=names, groups=groups)
+
+
+def test_ternary_marker_values_equal_an_independent_recomputation(planted3):
+    """V at a term's exponent vector at a fixed total, from first principles (the soft maximum is
+    the hard maximum over terms here: log V = log S + max_k(a_k + w_k . log c)), as a fraction of
+    the highest marker's; one row reads 1.00; the levels are those the lines are drawn at."""
+    X, ts = planted3
+    table = P.ternary_marker_values(ts, X, names=["p", "q", "r"])
+    W = ts.exponents_
+    fit = P._ternary_geometry(ts, X)
+    a = W @ fit["colmean"] - fit["beta"]
+    for total in (1.0, 7.5):  # the fraction does not depend on the total
+        v = np.array([total * np.exp((a + np.log(np.maximum(w, 1e-300)) @ W.T).max()) for w in W])
+        np.testing.assert_allclose(table["V"], v / v.max(), rtol=1e-12)
+    assert table["V"].max() == pytest.approx(1.0) and (table["V"] <= 1.0 + 1e-12).all()
+    np.testing.assert_allclose(table[["share of p", "share of q", "share of r"]].to_numpy(), W)
+    assert table.attrs["levels"] == [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97]
+
+
+@pytest.mark.slow
+def test_ternary_marker_table_matches_the_drawn_markers_and_levels(planted3):
+    X, ts = planted3
+    ax = P.plot_ternary(ts, X, lines=True)
+    table = P.ternary_marker_values(ts, X)
+    stars = _by_gid(ax, "ternary-star-")
+    labels = _by_gid(ax, "ternary-star-label-")
+    assert [int(labels[k].get_text()) for k in sorted(stars)] == list(table["number"])
+    drawn = [stars[k].get_paths()[0].vertices.tobytes() for k in sorted(stars)]
+    want = []
+    for m in table["marker"]:
+        fig = plt.figure()
+        want.append(fig.add_subplot().scatter([0], [0], marker=m).get_paths()[0].vertices.tobytes())
+    assert drawn == want
+    # the contour levels drawn are the table's, on the same scale as the markers' values
+    cs = [c for c in ax.collections if hasattr(c, "levels")]
+    levels = np.exp(cs[0].levels)
+    np.testing.assert_allclose(levels, table.attrs["levels"])
+
+
+def test_ternary_labels_clear_the_markers_and_share_one_size(planted3):
+    # WP19 redraw iteration: a region's words must not sit on an exponent marker or its number,
+    # and the labels of one figure are one size (cold readers: "cramped, inconsistent in size").
+    X, ts = planted3
+    for scheme in ("light", "dark"):
+        fig = plt.figure(figsize=(6.4, 6.1))
+        ax = fig.add_axes([0, 0, 1, 1])
+        P.plot_ternary(ts, X, lines=True, scheme=scheme, ax=ax)
+        fig.canvas.draw()
+        rend = fig.canvas.get_renderer()
+        words = _by_gid(ax, "ternary-label-")
+        assert len(words) == 3
+        assert len({t.get_fontsize() for t in words.values()}) == 1
+        marks = [
+            t.get_bbox_patch().get_window_extent(rend)
+            for t in _by_gid(ax, "ternary-star-label-").values()
+        ]
+        for star in _by_gid(ax, "ternary-star-").values():  # a scatter marker: box from its size
+            (cx, cy), half = (
+                ax.transData.transform(star.get_offsets()[0]),
+                np.sqrt(star.get_sizes()[0]) * fig.dpi / 72 / 2,
+            )
+            marks.append(
+                matplotlib.transforms.Bbox([[cx - half, cy - half], [cx + half, cy + half]])
+            )
+        for t in words.values():
+            box = t.get_bbox_patch().get_window_extent(rend)
+            assert not any(box.overlaps(m) for m in marks), (scheme, t.get_text())
+        plt.close(fig)
+
+
+def test_ternary_marker_values_needs_three_metrics():
+    X, _ = make_frontier_data(100, 4, n_terms=2, random_state=1)
+    ts = HyperbolicTradeSpace(n_terms=2, temperature=30.0, random_state=0).fit(X)
+    with pytest.raises(ValueError, match="3 metrics"):
+        P.ternary_marker_values(ts, X)
+
+
+def _planted_k3_reports(band):
+    from tradespace import trade_off_report
+
+    W = [[0.5, 0.5, 0, 0], [0, 0.5, 0.5, 0], [0, 0, 0.5, 0.5]]
+    X, _ = make_frontier_data(900, 4, exponents=W, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
+    return trade_off_report(est, X, band=band, min_near_frontier=0)
+
+
+def test_tensions_thin_term_is_drawn_with_empty_cells_and_its_count():
+    """A term with too few near-frontier designs keeps its panel and has empty cells."""
+    reps = _planted_k3_reports(band=0.03)
+    counts = [r.n_near_frontier for r in reps]
+    assert min(counts) < 10 <= max(counts), counts
+    axs = P.plot_association(reps, names=list("abcd"), ax=plt.subplots(1, 3)[1])
+    for rep, ax in zip(reps, axs, strict=True):
+        assert rep.lemma_name in ax.get_title()
+        assert len(ax.patches) == len(np.atleast_1d(rep.contending_set))  # the outline is drawn
+        assert ax.get_xticklabels()[0].get_text().startswith("a\nw=")  # metrics with exponents
+        cells = [t.get_text() for t in ax.texts if re.fullmatch(r"-?\d\.\d\d", t.get_text())]
+        line = [t.get_text() for t in ax.texts if "near-frontier" in t.get_text()]
+        im = ax.get_images()[0]
+        if rep.n_near_frontier < 10:
+            n = rep.n_near_frontier
+            word = "design" if n == 1 else "designs"
+            assert cells == []
+            assert np.ma.getmaskarray(im.get_array()).all()
+            assert line == [f"{n} near-frontier {word};\nno association reading"]
+        else:
+            assert len(cells) == 16 and line == []
+            assert not np.ma.getmaskarray(im.get_array()).any()
+
+
+def test_tensions_a_report_without_a_count_is_drawn_in_full():
+    r = SimpleNamespace(
+        participating=np.array([True, True]),
+        exponents=np.array([0.5, 0.5]),
+        association=np.array([[1, -0.6], [-0.6, 1]]),
+        contending_set=np.array([0, 1]),
+        n_lemma=2,
+    )
+    ax = P.plot_association(r)
+    assert sum(bool(re.fullmatch(r"-?\d\.\d\d", t.get_text())) for t in ax.texts) == 4
+
+
+def _level_set(ax):
+    """The contour set of a log-plane drawn with ``levels`` (the level sets of V)."""
+    from matplotlib.contour import ContourSet
+
+    sets = [c for c in ax.collections if isinstance(c, ContourSet) and not c.filled]
+    assert len(sets) == 1
+    return sets[0]
+
+
+def test_log_plane_levels_k1_draws_labelled_straight_level_sets():
+    # WP63-decisions.md: level sets of V, labelled, instead of the single line read as a fit line
+    X, _ = make_frontier_data(100, 2, random_state=0)
+    hts = HyperbolicTradeSpace(np.inf).fit(X)
+    ax = P.plot_log_plane(hts, X, levels=(0.5, 0.8))  # V = 1 is added: the frontier is drawn
+    cs = _level_set(ax)
+    np.testing.assert_allclose(cs.levels, np.log([0.5, 0.8, 1.0]))
+    assert sorted(t.get_text() for t in ax.texts) == ["V = 0.5", "V = 0.8", "V = 1"]
+    w, beta = hts.exponents_[0], hts.log_offset_[0]
+    for lv, segs in zip(cs.levels, cs.allsegs, strict=True):
+        assert len(segs) >= 1
+        for seg in segs:  # each level set is the straight line w.u = beta + log v
+            np.testing.assert_allclose(seg @ w, beta + lv, atol=1e-9)
+    edge = [matplotlib.colors.to_hex(c) for c in cs.get_edgecolor()]
+    assert edge[-1] == matplotlib.colors.to_hex(P.FRONTIER_COLOR)
+    assert edge[0] != edge[-1] and len(ax.lines) == 0 and len(ax.patches) == 0  # no band
+    labels = [t.get_text() for t in ax.get_legend().get_texts()]
+    assert labels == ["frontier V = 1", "lines of equal V"]
+
+
+def test_log_plane_levels_count_picks_round_values_and_validates():
+    X, _ = make_frontier_data(100, 2, random_state=0)
+    hts = HyperbolicTradeSpace(temperature=8.0, random_state=0).fit(X)
+    v = np.exp(_level_set(P.plot_log_plane(hts, X, levels=4)).levels)
+    assert 3 <= len(v) <= 7 and np.isclose(v, 1.0).any()
+    assert np.allclose(v * 100, np.round(v * 100))  # round values
+    ax = P.plot_log_plane(hts, X, levels=(0.5, 1.0), band=0.1)  # the band only when asked
+    assert any(c.filled for c in ax.collections if hasattr(c, "filled"))
+    with pytest.raises(ValueError, match="positive"):
+        P.plot_log_plane(hts, X, levels=(0.0, 1.0))
+    with pytest.raises(ValueError, match="at least 1"):
+        P.plot_log_plane(hts, X, levels=0)
+
+
+def test_log_plane_levels_k3_draws_the_envelope_at_each_level():
+    X, hts = _k3(2)
+    ax = P.plot_log_plane(hts, X, levels=(0.5, 1.0))
+    cs = _level_set(ax)
+    W, b = hts.exponents_, hts.log_offset_
+    ok = W.min(axis=1) > P.PARTICIPATION
+    for lv, segs in zip(cs.levels, cs.allsegs, strict=True):
+        pts = np.vstack(segs)
+        phi = np.max(pts @ W[ok].T - b[ok], axis=1)
+        np.testing.assert_allclose(phi, lv, atol=1e-2)  # the grid's envelope, to its resolution
+    assert sorted(t.get_text() for t in ax.texts) == ["V = 0.5", "V = 1"]
+    assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
+
+
+def test_log_plane_default_draws_no_level_sets():
+    X, _ = make_frontier_data(80, 2, random_state=0)
+    ax = P.plot_log_plane(HyperbolicTradeSpace().fit(X), X)
+    assert not any(hasattr(c, "allsegs") for c in ax.collections) and len(ax.texts) == 0

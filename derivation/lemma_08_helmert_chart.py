@@ -20,6 +20,8 @@ a structural claim by rewriting with the stated hypotheses (symproof/tactics.py)
 import sympy as sp
 from sympy.matrices.expressions import Identity, OneMatrix, ZeroMatrix
 
+from derivation.axioms import A7, I6
+
 TITLE = "Sum-zero (Helmert-type) chart and scale/shape bijection"
 STATEMENT = "Z=Bu is shift-invariant; u = B^T Z + (1/d)(1^T u) 1; Q=[B;1^T/sqrt d] orthogonal"
 AXIOMS_USED = ["A7", "I6"]
@@ -31,16 +33,19 @@ def gram_identity_blocks(B, one, d, use_orth=True, use_ker=True):
     g = sp.block_collapse(Q * Q.T)
     sub = {}
     if use_orth:
-        sub[B * B.T] = Identity(d - 1)  # A7: B B^T = I
+        # [L8.1] A7: B B^T = I (the chart's rows are orthonormal)
+        sub[B * B.T] = A7.rule(0)[1]
 
     def kill(expr):
         """A7: B 1 = 0 (and its transpose 1^T B^T = 0), through any scalar coefficient."""
         if use_ker and isinstance(expr, sp.MatMul):
             _, prod = expr.as_coeff_mmul()
+            # [L8.2] A7: B 1 = 0, and its transpose 1^T B^T = 0
+            zero = A7.rule(1)[1]
             if prod == B * one:
-                return ZeroMatrix(d - 1, 1)
+                return zero
             if prod == one.T * B.T:
-                return ZeroMatrix(1, d - 1)
+                return zero.T
         return expr
 
     blocks = [
@@ -63,7 +68,8 @@ def roundtrip_holds(B, u, one, d, use_orth=True, use_ker=True, use_I6=True):
         return False
     QtQ = sp.block_collapse(Q.T * Q)
     # I6 (Horn & Johnson): square Q, Q Q^T = I  =>  Q^T Q = I
-    QtQ_red = QtQ.xreplace({QtQ: Identity(d)}) if use_I6 else QtQ
+    # [L8.3] I6: Q is square and Q Q^T = I, so Q^T Q = I
+    QtQ_red = QtQ.xreplace({QtQ: I6.rule(0)[1]}) if use_I6 else QtQ
     recon = sp.block_collapse(QtQ_red * u).doit()
     return recon == u
 
@@ -75,8 +81,8 @@ def derive(ctx):
     u = sp.MatrixSymbol("u_vec", d, 1)
 
     # A7 (hypotheses)
-    hyp_orth = Identity(d - 1)  # B B^T = this
-    hyp_ker = ZeroMatrix(d - 1, 1)  # B 1 = this
+    # [L8.4] A7: the chart's hypotheses are B B^T = I and B 1 = 0
+    hyp_orth, hyp_ker = A7.rule(0)[1], A7.rule(1)[1]
 
     # (a) shift invariance: B (u + c 1) = B u + c (B 1) and B 1 = 0 (A7)
     Z = B * u
@@ -84,7 +90,9 @@ def derive(ctx):
     kept = []
     for term in shifted_raw.args:  # each term is coeff * (matrix product)
         _coeff, prod = term.as_coeff_mmul()
-        if prod == B * one:  # A7: B 1 = 0 kills c * B * 1
+        # [L8.5] A7: B 1 = 0 kills the term c (B 1) of B (u + c 1)
+        kills = prod == A7.rule(1)[0]
+        if kills:
             continue
         kept.append(term)
     shifted = sp.MatAdd(*kept).doit()
@@ -112,16 +120,25 @@ def verify(ctx):
     S = ctx["S"]
     r = ctx["L8"]
     d, B, one, u = S.d, S.B, r["one"], r["u"]
+    # [L8.6] the chart is blind to the common shift: Z(u + c 1) = Z(u)
     assert r["shifted"] == r["Z"], "L8 FAIL Z(u + c 1) != Z(u)"
     g = r["gram_blocks"]
+    # [L8.7] block (1,1) of Q Q^T is B B^T = I
     assert g[0][0] == Identity(d - 1), "L8 FAIL B B^T != I"
+    # [L8.8] block (1,2) of Q Q^T is B 1 / sqrt(d) = 0
     assert g[0][1] == ZeroMatrix(d - 1, 1) or g[0][1] == 0, "L8 FAIL Gram (1,2) block != 0"
+    # [L8.9] block (2,1) of Q Q^T is 1^T B^T / sqrt(d) = 0
     assert g[1][0] == ZeroMatrix(1, d - 1) or g[1][0] == 0, "L8 FAIL Gram (2,1) block != 0"
+    # [L8.10] block (2,2) of Q Q^T is (1/d) 1^T 1 = 1
     assert sp.simplify(g[1][1] - Identity(1)) in (0, ZeroMatrix(1, 1)), "L8 FAIL (1/d) 1^T 1 != 1"
+    # [L8.11] Q = [B; 1^T / sqrt(d)] is a square d x d matrix
     assert r["Q"].shape == (d, d), "L8 FAIL Q is not square"
     # Q^T Q expands to B^T B + (1/d) 1 1^T (exact)
     QtQ = sp.block_collapse(r["Q"].T * r["Q"])
+    # [L8.12] Q^T Q expands to B^T B + (1/d) 1 1^T
     assert QtQ == B.T * B + OneMatrix(d, d) / d, "L8 FAIL Q^T Q expansion"
+    # [L8.13] 1 1^T is the all-ones d x d matrix
     assert one * one.T == OneMatrix(d, d), "L8 FAIL 1 1^T != all-ones"
     # round trip derived: QQ^T = I (A7) => Q^T Q = I (I6) => B^T B u + (1/d) 1 1^T u = u
+    # [L8.14] round trip: Q Q^T = I (A7) and Q^T Q = I (I6) give B^T B u + (1/d) 1 1^T u = u
     assert roundtrip_holds(B, u, one, d), "L8 FAIL round trip u = B^T B u + ell 1 not derived"

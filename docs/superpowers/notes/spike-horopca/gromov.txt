@@ -1,0 +1,7 @@
+cubesat_primary  delta_rel(log-metrics) = 0.457   gaussian same d = 0.420
+cubesat_stock    delta_rel(log-metrics) = 0.446   gaussian same d = 0.393
+planted_K1_s0    delta_rel(log-metrics) = 0.280   gaussian same d = 0.457
+planted_K2_s7    delta_rel(log-metrics) = 0.262   gaussian same d = 0.427
+planted_K3_s0    delta_rel(log-metrics) = 0.329   gaussian same d = 0.399
+planted_K3_s4    delta_rel(log-metrics) = 0.259   gaussian same d = 0.423
+smalltree graph (40 nodes) delta_rel = 0.000

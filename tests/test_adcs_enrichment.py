@@ -29,8 +29,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, tension_report
-from hyperbolic_trade_space import solvers as S
+from tradespace import HyperbolicTradeSpace, trade_off_report
+from tradespace import solvers as S
 
 DATA = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs" / "data"
 CSV = DATA / "adcs_designs_cubesat.csv"  # the 30 degree baseline (kept, never altered)
@@ -71,7 +71,7 @@ TARGET_FRAC_ABOVE = 0.10
 
 
 PRIMARY = ["gains", "gains_headroom"]  # aggressive-gain regime: R-13 (a), (b), (c), (e)
-REGIME = ["baseline", "headroom"]  # stock-gain regime: the recorded comparison
+REGIME = ["baseline", "headroom"]  # baseline regime (the stock gains): the recorded comparison
 
 
 def feasible(df: pd.DataFrame, attrs: list[str] = ATTRS) -> pd.DataFrame:
@@ -351,9 +351,9 @@ def test_regime_comparison_stock_gains(probe, dataset):
 
 
 def test_hand_probe_agrees_with_tension_report(probe):
-    """The WP3 tension report reproduces the hand quantities on the same conditioned data."""
+    """The WP3 trade-off report reproduces the hand quantities on the same conditioned data."""
     attrs = probe["attrs"]
-    rep = tension_report(probe["hts"], np.exp(probe["U"]))
+    rep = trade_off_report(probe["hts"], np.exp(probe["U"]))
     assert rep.n_near_frontier == probe["n_near"]
     np.testing.assert_allclose(rep.association, probe["assoc"].to_numpy(), atol=1e-9)
     assert [attrs[i] for i in rep.contending_set] == probe["contending"] or set(

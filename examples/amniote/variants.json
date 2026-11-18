@@ -1,0 +1,982 @@
+{
+  "log_spread_of_attributes": {
+    "earliness": 1.044286183577416,
+    "litter_size": 0.7966149435423394,
+    "litters_per_year": 0.5845753500150789,
+    "longevity": 0.951562606741152
+  },
+  "variants": {
+    "annual_fecundity_added": {
+      "association": {
+        "earliness|annual_fecundity": 0.2519554033338195,
+        "litter_size|annual_fecundity": 0.803775754382568,
+        "litter_size|earliness": -0.13766497159516114,
+        "litter_size|litters_per_year": 0.08440353731890392,
+        "litters_per_year|annual_fecundity": 0.6606509727499019,
+        "litters_per_year|earliness": 0.5956987896397663,
+        "longevity|annual_fecundity": -0.43769771836731997,
+        "longevity|earliness": -0.9724110582964869,
+        "longevity|litter_size": -0.05773019991203295,
+        "longevity|litters_per_year": -0.6602400645263348
+      },
+      "band": 0.09384884699081768,
+      "contending_exponents": {
+        "earliness": 0.39763658257059886,
+        "litter_size": 0.1147167332156759,
+        "longevity": 0.4876466842137253
+      },
+      "contending_set": [
+        "longevity",
+        "litter_size",
+        "earliness"
+      ],
+      "elasticities": {
+        "annual_fecundity|earliness": null,
+        "annual_fecundity|litter_size": null,
+        "annual_fecundity|litters_per_year": null,
+        "annual_fecundity|longevity": null,
+        "earliness|annual_fecundity": -0.0,
+        "earliness|litter_size": -0.2655219602858889,
+        "earliness|litters_per_year": -0.1250285852193317,
+        "earliness|longevity": -1.425478553370068,
+        "litter_size|annual_fecundity": -0.0,
+        "litter_size|earliness": -3.7661668320137993,
+        "litter_size|litters_per_year": -0.4708785107066577,
+        "litter_size|longevity": -5.368590047449363,
+        "litters_per_year|annual_fecundity": -0.0,
+        "litters_per_year|earliness": -7.998170964229882,
+        "litters_per_year|litter_size": -2.1236900331239963,
+        "litters_per_year|longevity": -11.401221175696895,
+        "longevity|annual_fecundity": -0.0,
+        "longevity|earliness": -0.7015187970635082,
+        "longevity|litter_size": -0.18626864617370137,
+        "longevity|litters_per_year": -0.08770990270161788
+      },
+      "exponents": {
+        "annual_fecundity": 0.0,
+        "earliness": 0.3551099668676706,
+        "litter_size": 0.09428949451976096,
+        "litters_per_year": 0.044398896754748604,
+        "longevity": 0.5062016418578199
+      },
+      "frac_above": 0.09494584837545127,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "earliness"
+          ],
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ]
+        ],
+        "mean_slack": 0.3454879631829327,
+        "mean_slack_k1": 0.4119092819328652,
+        "second_term_exponents": {
+          "annual_fecundity": 4.006853647713586e-18,
+          "earliness": 0.3355560636843779,
+          "litter_size": 0.1947085015169657,
+          "litters_per_year": 0.11070338747119003,
+          "longevity": 0.35903204732746635
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.3431952662721893,
+        "shares": [
+          0.6568047337278107,
+          0.3431952662721893
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "annual_fecundity": 5.2121941611396075e-17,
+            "earliness": 0.3746248955389457,
+            "litter_size": 0.038494605367462985,
+            "litters_per_year": 3.2196259498641045e-18,
+            "longevity": 0.5868804990935914
+          },
+          {
+            "annual_fecundity": 4.006853647713586e-18,
+            "earliness": 0.3355560636843779,
+            "litter_size": 0.1947085015169657,
+            "litters_per_year": 0.11070338747119003,
+            "longevity": 0.35903204732746635
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness",
+        "annual_fecundity"
+      ],
+      "n_eff": 31.467830722566934,
+      "n_lemma": 3,
+      "n_near_frontier": 314,
+      "rows": 2770,
+      "rule": "derived metric litter size x litters per year added as a fifth",
+      "spread_first_direction": {
+        "explained": 0.6249052806857333,
+        "loadings": {
+          "annual_fecundity": -0.03081048132701924,
+          "earliness": -0.5806832196808701,
+          "litter_size": 0.258814938991392,
+          "litters_per_year": -0.3397426790304591,
+          "longevity": 0.6924214410469565
+        }
+      },
+      "tau": 10.655431921266349
+    },
+    "mass_dropped": {
+      "association": {
+        "litter_size|earliness": -0.13849757193050208,
+        "litter_size|litters_per_year": 0.07621554592234986,
+        "litters_per_year|earliness": 0.5965168880050894,
+        "longevity|earliness": -0.9721547545896435,
+        "longevity|litter_size": -0.05755286468732355,
+        "longevity|litters_per_year": -0.6601155959330817
+      },
+      "band": 0.09384884699081768,
+      "contending_exponents": {
+        "earliness": 0.3974675169531922,
+        "litter_size": 0.11484291202906309,
+        "longevity": 0.4876895710177447
+      },
+      "contending_set": [
+        "longevity",
+        "litter_size",
+        "earliness"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -0.2666697164425558,
+        "earliness|litters_per_year": -0.12508572045944838,
+        "earliness|longevity": -1.4258266218289877,
+        "litter_size|earliness": -3.7499571130170426,
+        "litter_size|litters_per_year": -0.46906608717376985,
+        "litter_size|longevity": -5.3467886824566735,
+        "litters_per_year|earliness": -7.99451765019166,
+        "litters_per_year|litter_size": -2.1318957548716173,
+        "litters_per_year|longevity": -11.39879609432499,
+        "longevity|earliness": -0.7013475444281185,
+        "longevity|litter_size": -0.18702815080032917,
+        "longevity|litters_per_year": -0.08772856288725618
+      },
+      "exponents": {
+        "earliness": 0.3549142417702607,
+        "litter_size": 0.09464488021430012,
+        "litters_per_year": 0.04439470363315191,
+        "longevity": 0.5060461743822874
+      },
+      "frac_above": 0.09438040345821326,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "earliness"
+          ],
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ]
+        ],
+        "mean_slack": 0.34573846408505127,
+        "mean_slack_k1": 0.41217766974849074,
+        "second_term_exponents": {
+          "earliness": 0.3356560183390311,
+          "litter_size": 0.19526128178833396,
+          "litters_per_year": 0.11003732958339162,
+          "longevity": 0.3590453702892434
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.3373134328358209,
+        "shares": [
+          0.6626865671641791,
+          0.3373134328358209
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 0.3744287717408581,
+            "litter_size": 0.03860196238266139,
+            "litters_per_year": 0.0,
+            "longevity": 0.5869692658764805
+          },
+          {
+            "earliness": 0.3356560183390311,
+            "litter_size": 0.19526128178833396,
+            "litters_per_year": 0.11003732958339162,
+            "longevity": 0.3590453702892434
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 31.571660839464794,
+      "n_lemma": 3,
+      "n_near_frontier": 316,
+      "rows": 2776,
+      "rule": "mass not required: complete cases of the four metrics only",
+      "spread_first_direction": {
+        "explained": 0.6708625572277811,
+        "loadings": {
+          "earliness": -0.5906350051385223,
+          "litter_size": 0.2603137175420395,
+          "litters_per_year": -0.3490528248335919,
+          "longevity": 0.6793741124300747
+        }
+      },
+      "tau": 10.655431921266349
+    },
+    "mass_partialled_out": {
+      "association": {
+        "litter_size|earliness": -0.14165603596801307,
+        "litter_size|litters_per_year": 0.07824397569041235,
+        "litters_per_year|earliness": 0.4874027611198815,
+        "longevity|earliness": -0.9287655170150316,
+        "longevity|litter_size": -0.17395678114599647,
+        "longevity|litters_per_year": -0.6046262990699879
+      },
+      "band": 0.12092578132210276,
+      "contending_exponents": {
+        "earliness": 0.3716361358343974,
+        "litter_size": 0.14206972636888884,
+        "litters_per_year": 0.012970348424359875,
+        "longevity": 0.4733237893723538
+      },
+      "contending_set": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -0.37403203809197294,
+        "earliness|litters_per_year": -0.1848779197240018,
+        "earliness|longevity": -1.4401692622143767,
+        "litter_size|earliness": -2.6735677646793032,
+        "litter_size|litters_per_year": -0.49428364657505913,
+        "litter_size|longevity": -3.850390115138332,
+        "litters_per_year|earliness": -5.408974752057289,
+        "litters_per_year|litter_size": -2.0231298505000117,
+        "litters_per_year|longevity": -7.789839178006537,
+        "longevity|earliness": -0.694362826812745,
+        "longevity|litter_size": -0.2597139432880746,
+        "longevity|litters_per_year": -0.12837235495481764
+      },
+      "exponents": {
+        "earliness": 0.33343567362981485,
+        "litter_size": 0.12471562458032956,
+        "litters_per_year": 0.061644893702451374,
+        "longevity": 0.48020380808740415
+      },
+      "frac_above": 0.10722021660649819,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ],
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ]
+        ],
+        "mean_slack": 0.4146707422748359,
+        "mean_slack_k1": 0.4714777619389215,
+        "second_term_exponents": {
+          "earliness": 0.4235068094201386,
+          "litter_size": 0.23974418121462443,
+          "litters_per_year": 0.18792682689591753,
+          "longevity": 0.14882218246931955
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.27823691460055094,
+        "shares": [
+          0.721763085399449,
+          0.27823691460055094
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 0.33093087947327504,
+            "litter_size": 0.11425123691538625,
+            "litters_per_year": 0.04059804635667816,
+            "longevity": 0.5142198372546606
+          },
+          {
+            "earliness": 0.4235068094201386,
+            "litter_size": 0.23974418121462443,
+            "litters_per_year": 0.18792682689591753,
+            "longevity": 0.14882218246931955
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 42.40819186065899,
+      "n_lemma": 4,
+      "n_near_frontier": 316,
+      "rows": 2770,
+      "rule": "linear effect of log mass removed from each oriented log metric",
+      "spread_first_direction": {
+        "explained": 0.6030276732681362,
+        "loadings": {
+          "earliness": -0.60209497922255,
+          "litter_size": 0.2438944734543626,
+          "litters_per_year": -0.32777415002412374,
+          "longevity": 0.6859746557923111
+        }
+      },
+      "tau": 8.26953515674511
+    },
+    "maturity_not_inverted": {
+      "association": {
+        "litter_size|earliness": -0.1495824991614955,
+        "litter_size|litters_per_year": 0.0994778708255174,
+        "litters_per_year|earliness": -0.8316130458438542,
+        "longevity|earliness": 0.8399419917556376,
+        "longevity|litter_size": -0.26420865153048034,
+        "longevity|litters_per_year": -0.9131750157421941
+      },
+      "band": 0.29365254215191855,
+      "contending_exponents": {
+        "litters_per_year": 0.38898636176742407,
+        "longevity": 0.6110136382325759
+      },
+      "contending_set": [
+        "longevity",
+        "litters_per_year"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -4.042068282939564,
+        "earliness|litters_per_year": -19.00207757523604,
+        "earliness|longevity": -25.12073283469066,
+        "litter_size|earliness": -0.24739809671714838,
+        "litter_size|litters_per_year": -4.701077825785002,
+        "litter_size|longevity": -6.2148214914424456,
+        "litters_per_year|earliness": -0.052625824520536844,
+        "litters_per_year|litter_size": -0.21271717615800514,
+        "litters_per_year|longevity": -1.3219992779857188,
+        "longevity|earliness": -0.039807755871637734,
+        "longevity|litter_size": -0.16090566742374807,
+        "longevity|litters_per_year": -0.7564300651689182
+      },
+      "exponents": {
+        "earliness": 0.02033972271643372,
+        "litter_size": 0.08221454807588208,
+        "litters_per_year": 0.3864969889164642,
+        "longevity": 0.5109487402912201
+      },
+      "frac_above": 0.09566787003610108,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year"
+          ],
+          [
+            "longevity",
+            "litters_per_year"
+          ]
+        ],
+        "mean_slack": 0.3337693432009429,
+        "mean_slack_k1": 0.47487806099276497,
+        "second_term_exponents": {
+          "earliness": 0.04650958628554401,
+          "litter_size": 0.25290403220372926,
+          "litters_per_year": 0.47859866459493167,
+          "longevity": 0.22198771691579502
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.3425760286225403,
+        "shares": [
+          0.6574239713774598,
+          0.3425760286225403
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 1.7770763152599225e-17,
+            "litter_size": 4.831038403910484e-19,
+            "litters_per_year": 0.2713640820262134,
+            "longevity": 0.7286359179737866
+          },
+          {
+            "earliness": 0.04650958628554401,
+            "litter_size": 0.25290403220372926,
+            "litters_per_year": 0.47859866459493167,
+            "longevity": 0.22198771691579502
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 36.93664850537813,
+      "n_lemma": 2,
+      "n_near_frontier": 762,
+      "rows": 2770,
+      "rule": "maturity read as larger is better (orientation +,+,+,+)",
+      "spread_first_direction": {
+        "explained": 0.7273004257881758,
+        "loadings": {
+          "earliness": -0.5698140872487435,
+          "litter_size": 0.28210311604044597,
+          "litters_per_year": 0.6703253026004992,
+          "longevity": -0.3826143313922015
+        }
+      },
+      "tau": 3.405385128532818
+    },
+    "maturity_not_inverted_quantile": {
+      "association": {
+        "litter_size|earliness": -0.09476503049755029,
+        "litter_size|litters_per_year": -0.15710140016893956,
+        "litters_per_year|earliness": -0.805472896720467,
+        "longevity|earliness": 0.7600183502508195,
+        "longevity|litter_size": -0.24175994396815026,
+        "longevity|litters_per_year": -0.8189063954633111
+      },
+      "band": 0.07283480813777511,
+      "contending_exponents": {
+        "litters_per_year": 0.9710930442637759,
+        "longevity": 0.028906955736224108
+      },
+      "contending_set": [
+        "longevity",
+        "litters_per_year"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -1.3724375365560069,
+        "earliness|litters_per_year": -3.5189993722188,
+        "earliness|longevity": -2.1081974461173445,
+        "litter_size|earliness": -0.7286306104024223,
+        "litter_size|litters_per_year": -2.5640506605855253,
+        "litter_size|longevity": -1.5360971920133084,
+        "litters_per_year|earliness": -0.2841716903659121,
+        "litters_per_year|litter_size": -0.3900078946847488,
+        "litters_per_year|longevity": -0.5990900318882647,
+        "longevity|earliness": -0.47433887269036135,
+        "longevity|litter_size": -0.6510004739279129,
+        "longevity|litters_per_year": -1.669198195216355
+      },
+      "exponents": {
+        "earliness": 0.12500571346594774,
+        "litter_size": 0.17156253344463138,
+        "litters_per_year": 0.43989502721043333,
+        "longevity": 0.2635367258789876
+      },
+      "frac_above": 0.10866425992779784,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litters_per_year"
+          ],
+          [
+            "earliness"
+          ]
+        ],
+        "mean_slack": 0.04747576504778427,
+        "mean_slack_k1": 0.11941292991672985,
+        "second_term_exponents": {
+          "earliness": 0.7881337327599537,
+          "litter_size": 0.0,
+          "litters_per_year": 0.12184918506467192,
+          "longevity": 0.09001708217537438
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.39621152328334647,
+        "shares": [
+          0.6037884767166535,
+          0.39621152328334647
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 4.795688789117034e-18,
+            "litter_size": 0.3204269765250314,
+            "litters_per_year": 0.5007732256678132,
+            "longevity": 0.17879979780715535
+          },
+          {
+            "earliness": 0.7881337327599537,
+            "litter_size": 0.0,
+            "litters_per_year": 0.12184918506467192,
+            "longevity": 0.09001708217537438
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 98.93738304885406,
+      "n_lemma": 2,
+      "n_near_frontier": 796,
+      "rows": 2770,
+      "rule": "two changes: maturity not inverted and the quantile map",
+      "spread_first_direction": {
+        "explained": 0.6790130628050914,
+        "loadings": {
+          "earliness": 0.4847917124203406,
+          "litter_size": -0.32012661067184034,
+          "litters_per_year": -0.6519546408783998,
+          "longevity": 0.48728953912989964
+        }
+      },
+      "tau": 13.72969910359878
+    },
+    "no_scaler": {
+      "association": {
+        "litter_size|earliness": 0.082087960890971,
+        "litter_size|litters_per_year": 0.015074036857358166,
+        "litters_per_year|earliness": 0.021072648669474395,
+        "longevity|earliness": -0.21282023699061664,
+        "longevity|litter_size": -0.12310350165853733,
+        "longevity|litters_per_year": -0.3187862375377159
+      },
+      "band": 0.29365254215191855,
+      "contending_exponents": {
+        "earliness": 1.0
+      },
+      "contending_set": [
+        "earliness"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -0.0,
+        "earliness|litters_per_year": -0.0,
+        "earliness|longevity": -0.0,
+        "litter_size|earliness": null,
+        "litter_size|litters_per_year": null,
+        "litter_size|longevity": null,
+        "litters_per_year|earliness": null,
+        "litters_per_year|litter_size": null,
+        "litters_per_year|longevity": null,
+        "longevity|earliness": null,
+        "longevity|litter_size": null,
+        "longevity|litters_per_year": null
+      },
+      "exponents": {
+        "earliness": 1.0,
+        "litter_size": 0.0,
+        "litters_per_year": 0.0,
+        "longevity": 0.0
+      },
+      "frac_above": 0.10108303249097472,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ],
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ]
+        ],
+        "mean_slack": -0.017465574526119652,
+        "mean_slack_k1": 1.5544159311248715,
+        "second_term_exponents": {
+          "earliness": 0.213462689108451,
+          "litter_size": 0.41040162463939295,
+          "litters_per_year": 0.27854509210648104,
+          "longevity": 0.09759059414567517
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.4195871339414306,
+        "shares": [
+          0.5804128660585693,
+          0.4195871339414306
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 0.25713176158861356,
+            "litter_size": 0.0,
+            "litters_per_year": 0.09902608759156886,
+            "longevity": 0.6438421508198177
+          },
+          {
+            "earliness": 0.213462689108451,
+            "litter_size": 0.41040162463939295,
+            "litters_per_year": 0.27854509210648104,
+            "longevity": 0.09759059414567517
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 97.10156219905325,
+      "n_lemma": 1,
+      "n_near_frontier": 183,
+      "rows": 2770,
+      "rule": "pure log, no scaler (metric = attribute, maturity as 1/days)",
+      "spread_first_direction": {
+        "explained": 0.6590533958474674,
+        "loadings": {
+          "earliness": -0.1490993145723327,
+          "litter_size": -0.26774274879968424,
+          "litters_per_year": -0.4315807503275769,
+          "longevity": 0.8484228136995938
+        }
+      },
+      "tau": 3.405385128532818
+    },
+    "primary": {
+      "association": {
+        "litter_size|earliness": -0.13766497159516114,
+        "litter_size|litters_per_year": 0.08440353731890392,
+        "litters_per_year|earliness": 0.5956987896397663,
+        "longevity|earliness": -0.9724110582964869,
+        "longevity|litter_size": -0.05773019991203295,
+        "longevity|litters_per_year": -0.6602400645263348
+      },
+      "band": 0.09384884699081768,
+      "contending_exponents": {
+        "earliness": 0.39763658257059886,
+        "litter_size": 0.1147167332156759,
+        "longevity": 0.4876466842137253
+      },
+      "contending_set": [
+        "longevity",
+        "litter_size",
+        "earliness"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -0.2655219602858889,
+        "earliness|litters_per_year": -0.12502858521933183,
+        "earliness|longevity": -1.4254785533700682,
+        "litter_size|earliness": -3.7661668320137984,
+        "litter_size|litters_per_year": -0.47087851070665815,
+        "litter_size|longevity": -5.368590047449363,
+        "litters_per_year|earliness": -7.998170964229873,
+        "litters_per_year|litter_size": -2.1236900331239945,
+        "litters_per_year|longevity": -11.401221175696884,
+        "longevity|earliness": -0.7015187970635081,
+        "longevity|litter_size": -0.18626864617370137,
+        "longevity|litters_per_year": -0.08770990270161796
+      },
+      "exponents": {
+        "earliness": 0.35510996686767055,
+        "litter_size": 0.09428949451976096,
+        "litters_per_year": 0.044398896754748646,
+        "longevity": 0.5062016418578199
+      },
+      "frac_above": 0.09494584837545127,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "earliness"
+          ],
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ]
+        ],
+        "mean_slack": 0.3454879631829327,
+        "mean_slack_k1": 0.4119092819328652,
+        "second_term_exponents": {
+          "earliness": 0.33555606368437807,
+          "litter_size": 0.19470850151696587,
+          "litters_per_year": 0.11070338747118968,
+          "longevity": 0.3590320473274663
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.3431952662721893,
+        "shares": [
+          0.6568047337278107,
+          0.3431952662721893
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 0.37462489553894573,
+            "litter_size": 0.03849460536746301,
+            "litters_per_year": 0.0,
+            "longevity": 0.5868804990935913
+          },
+          {
+            "earliness": 0.33555606368437807,
+            "litter_size": 0.19470850151696587,
+            "litters_per_year": 0.11070338747118968,
+            "longevity": 0.3590320473274663
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 31.46783072256692,
+      "n_lemma": 3,
+      "n_near_frontier": 314,
+      "rows": 2770,
+      "rule": "record's rule: complete cases of the four metrics and mass; log, orientation (+,+,+,-), standard scaler; mass kept in the metrics",
+      "spread_first_direction": {
+        "explained": 0.671917828751174,
+        "loadings": {
+          "earliness": -0.5920528395337465,
+          "litter_size": 0.2577132231638552,
+          "litters_per_year": -0.34623346423807944,
+          "longevity": 0.6805730806079708
+        }
+      },
+      "tau": 10.655431921266349
+    },
+    "quantile": {
+      "association": {
+        "litter_size|earliness": -0.26501281827143697,
+        "litter_size|litters_per_year": -0.13898230177347362,
+        "litters_per_year|earliness": 0.44333668018878564,
+        "longevity|earliness": -0.8903712631154608,
+        "longevity|litter_size": -0.06199718075083968,
+        "longevity|litters_per_year": -0.6365672252131468
+      },
+      "band": 0.036273677574152736,
+      "contending_exponents": {
+        "earliness": 0.3248279102199119,
+        "litter_size": 0.09605699525125472,
+        "longevity": 0.5791150945288334
+      },
+      "contending_set": [
+        "longevity",
+        "litter_size",
+        "earliness"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -0.47512360905284695,
+        "earliness|litters_per_year": -0.4734400464016349,
+        "earliness|longevity": -1.3517381429393394,
+        "litter_size|earliness": -2.104715448667111,
+        "litter_size|litters_per_year": -0.996456579679195,
+        "litter_size|longevity": -2.8450241519970194,
+        "litters_per_year|earliness": -2.1121998605746732,
+        "litters_per_year|litter_size": -1.0035560207971588,
+        "litters_per_year|longevity": -2.85514111704994,
+        "longevity|earliness": -0.7397882535337141,
+        "longevity|litter_size": -0.35149086495384085,
+        "longevity|litters_per_year": -0.3502453850803861
+      },
+      "exponents": {
+        "earliness": 0.3030025922134383,
+        "litter_size": 0.14396368516481686,
+        "litters_per_year": 0.14345356131734588,
+        "longevity": 0.409580161304399
+      },
+      "frac_above": 0.10108303249097472,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ],
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ]
+        ],
+        "mean_slack": 0.06377562679493338,
+        "mean_slack_k1": 0.11148517136537486,
+        "second_term_exponents": {
+          "earliness": 0.22081613530158295,
+          "litter_size": 0.0,
+          "litters_per_year": 0.04684995734955486,
+          "longevity": 0.7323339073488622
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.4817610062893082,
+        "shares": [
+          0.5182389937106918,
+          0.4817610062893082
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 0.35879771054734816,
+            "litter_size": 0.2199569559895353,
+            "litters_per_year": 0.15192750471647434,
+            "longevity": 0.2693178287466423
+          },
+          {
+            "earliness": 0.22081613530158295,
+            "litter_size": 0.0,
+            "litters_per_year": 0.04684995734955486,
+            "longevity": 0.7323339073488622
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 22.056915562323663,
+      "n_lemma": 3,
+      "n_near_frontier": 412,
+      "rows": 2770,
+      "rule": "QuantileTransformer uniform of each oriented attribute, shifted into (0, 1]",
+      "spread_first_direction": {
+        "explained": 0.64248989843459,
+        "loadings": {
+          "earliness": -0.6034577554888447,
+          "litter_size": 0.23156755245093702,
+          "litters_per_year": -0.3205448018525054,
+          "longevity": 0.6924350048904132
+        }
+      },
+      "tau": 27.568200052386267
+    },
+    "robust_scaler": {
+      "association": {
+        "litter_size|earliness": -0.165887918310376,
+        "litter_size|litters_per_year": 0.0790274102529682,
+        "litters_per_year|earliness": 0.6581704150671346,
+        "longevity|earliness": -0.9702833858435769,
+        "longevity|litter_size": -0.04311148888868582,
+        "longevity|litters_per_year": -0.6724534649903474
+      },
+      "band": 0.08267685749064012,
+      "contending_exponents": {
+        "earliness": 0.3222554315175431,
+        "litter_size": 0.16199028891864511,
+        "longevity": 0.5157542795638118
+      },
+      "contending_set": [
+        "longevity",
+        "litter_size",
+        "earliness"
+      ],
+      "elasticities": {
+        "earliness|litter_size": -0.49005334556084507,
+        "earliness|litters_per_year": -0.0,
+        "earliness|longevity": -1.7088910324770998,
+        "litter_size|earliness": -2.040594170121506,
+        "litter_size|litters_per_year": -0.0,
+        "litter_size|longevity": -3.4871530782456905,
+        "litters_per_year|earliness": null,
+        "litters_per_year|litter_size": null,
+        "litters_per_year|longevity": null,
+        "longevity|earliness": -0.5851748186368931,
+        "longevity|litter_size": -0.2867668776109702,
+        "longevity|litters_per_year": -0.0
+      },
+      "exponents": {
+        "earliness": 0.3126031221003425,
+        "litter_size": 0.1531922058180382,
+        "litters_per_year": 0.0,
+        "longevity": 0.5342046720816193
+      },
+      "frac_above": 0.10577617328519856,
+      "k2": {
+        "contending_sets": [
+          [
+            "longevity",
+            "litter_size",
+            "earliness"
+          ],
+          [
+            "longevity",
+            "litter_size",
+            "litters_per_year",
+            "earliness"
+          ]
+        ],
+        "mean_slack": 0.24886206587839252,
+        "mean_slack_k1": 0.3183471393494743,
+        "second_term_exponents": {
+          "earliness": 0.2606098296438696,
+          "litter_size": 0.3556204910991979,
+          "litters_per_year": 0.09966178664104065,
+          "longevity": 0.2841078926158918
+        },
+        "second_term_index": 1,
+        "second_term_share": 0.31971153846153844,
+        "shares": [
+          0.6802884615384616,
+          0.31971153846153844
+        ],
+        "status": "certified",
+        "terms": [
+          {
+            "earliness": 0.28498167030799787,
+            "litter_size": 0.08493711766334336,
+            "litters_per_year": 0.019479879388501372,
+            "longevity": 0.6106013326401574
+          },
+          {
+            "earliness": 0.2606098296438696,
+            "litter_size": 0.3556204910991979,
+            "litters_per_year": 0.09966178664104065,
+            "longevity": 0.2841078926158918
+          }
+        ]
+      },
+      "metrics": [
+        "longevity",
+        "litter_size",
+        "litters_per_year",
+        "earliness"
+      ],
+      "n_eff": 56.91922263771699,
+      "n_lemma": 3,
+      "n_near_frontier": 336,
+      "rows": 2770,
+      "rule": "robust scaler of the log (median and interquartile range)",
+      "spread_first_direction": {
+        "explained": 0.783435977284531,
+        "loadings": {
+          "earliness": -0.6458013317177922,
+          "litter_size": 0.25972068132343296,
+          "litters_per_year": -0.2765108825213995,
+          "longevity": 0.6625915329157589
+        }
+      },
+      "tau": 12.095283134258102
+    }
+  }
+}

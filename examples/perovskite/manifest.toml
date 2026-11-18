@@ -1,0 +1,16 @@
+# Source record of the perovskite example (R-1). Read from the Zenodo API on 2026-11-14.
+name = "Perovskite Database Project, v1.0.1 (archive)"
+doi = "10.5281/zenodo.5837035"
+concept_doi = "10.5281/zenodo.5834698"
+paper_doi = "10.1038/s41560-021-00941-3"
+licence = "CC BY 4.0"
+licence_url = "https://creativecommons.org/licenses/by/4.0/"
+attribution = "Jacobsson et al., Nature Energy 2021, doi:10.1038/s41560-021-00941-3; data doi:10.5281/zenodo.5837035"
+url = "https://zenodo.org/api/records/5837035/files/Jesperkemist/perovskitedatabase_data-v1.0.1.zip/content"
+file = "perovskitedatabase_data-v1.0.1.zip"
+size = 3317874
+md5 = "1119f05607ebe4bbf46ad7cc3258c6b0"
+sha256 = "4de4e9756bad9c9ba7407fe621345666fad79b3bb6bbe24396495f7f490ceae4"
+table = "Jesperkemist-perovskitedatabase_data-9b6ed4c/data/Perovskite_database_content_all_data.csv"
+rows = 42443
+columns = 410

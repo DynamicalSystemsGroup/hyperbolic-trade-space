@@ -1,4 +1,6 @@
-"""WP6 narrative hygiene: docs/method.md, why-and-how.md, limitations.md and spec section 6.
+"""WP6 narrative hygiene: the preserved sources method.md, why-and-how.md and limitations.md (under
+docs/superpowers/notes/paper-sources/, moved off the docsite by WP8a Amendment 2), the docsite
+pages' hygiene and spec section 6.
 
 Offline; standard library, ``re`` and the project modules only. Checks structure and agreement
 with the ledger and the code (formula tags resolve to lemma modules, every lemma is cited, the
@@ -12,13 +14,14 @@ import re
 from pathlib import Path
 
 from derivation import axioms
-from hyperbolic_trade_space import HyperbolicTradeSpace, coordinates, datasets, solvers
+from tradespace import HyperbolicTradeSpace, coordinates, datasets, solvers
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
-METHOD = DOCS / "method.md"
-PAGES = [METHOD, DOCS / "why-and-how.md", DOCS / "limitations.md"]
-SPEC = ROOT / "docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md"
+SOURCES = DOCS / "superpowers" / "notes" / "paper-sources"
+METHOD = SOURCES / "method.md"
+PAGES = [METHOD, SOURCES / "why-and-how.md", SOURCES / "limitations.md"]
+SPEC = ROOT / "notes/2026-11-07-posynomial-invariant-form-design.md"
 LEMMAS = {f"L{n}": next((ROOT / "derivation").glob(f"lemma_{n:02d}_*.py")) for n in range(1, 15)}
 
 CITE_RE = re.compile(r"\[(@[^\]]+)\]")
@@ -31,6 +34,24 @@ def _text(path):
 def _lemma_axioms(lemma_id):
     mod = importlib.import_module(f"derivation.{LEMMAS[lemma_id].stem}")
     return list(mod.AXIOMS_USED)
+
+
+def _docsite_pages():
+    return sorted(
+        p
+        for p in DOCS.rglob("*.md")
+        if p.relative_to(DOCS).parts[0] not in ("generated", "superpowers")
+    )
+
+
+def test_docsite_pages_hygiene():
+    """The hygiene rule of the narrative (no attribution, no emoji) also holds on the docsite."""
+    pages = _docsite_pages()
+    assert pages
+    for page in pages:
+        t = _text(page)
+        assert "Co-Authored" not in t and "Generated with" not in t, page
+        assert not re.search(r"[\U0001F300-\U0001FAFF☀-➿]", t), f"emoji in {page}"
 
 
 # ------------------------------------------------------------------ formula tags (R-2)
@@ -90,7 +111,7 @@ def test_conditions_table_equals_ledger_set():
     expected = {a.name for a in axioms.by_tag(axioms.REGULARITY)}
     expected |= {a.name for a in axioms.fallbacks()}
     expected |= {"A4"}
-    assert ids == expected == {"R1", "R2", "F5", "F10", "F12", "A4"}
+    assert ids == expected == {"R1", "R2", "R3", "F5", "F10", "F12", "F19", "A4"}
 
 
 def test_conditions_table_quotes_ledger_role_and_failure_mode():
@@ -106,6 +127,8 @@ def test_conditions_table_quotes_ledger_role_and_failure_mode():
 
 
 # ---------------------------------------------------- implementation pointers (R-3)
+
+
 def test_referenced_functions_exist():
     text = _text(METHOD)
     found = 0
@@ -128,7 +151,7 @@ def test_no_wp3_signatures_quoted():
     # the analysis toolkit is described by concept; no WP3 API names appear
     for page in PAGES:
         t = _text(page)
-        for name in ("knn_gap_scores", "find_holes", "tension_report", "select_temperature"):
+        for name in ("knn_gap_scores", "find_holes", "trade_off_report", "select_temperature"):
             assert name not in t, f"{page.name} quotes {name}"
 
 

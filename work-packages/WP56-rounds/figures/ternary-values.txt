@@ -1,0 +1,9 @@
+feasible designs (primary regime): 2134
+fleet cost / (unit cost x fleet size): min 0.999999994405, max 1.000000004758
+coverage probability: min 0.0725, max 0.9979
+fleet size: 1 to 30
+K = 1, tau 34.791:
+  term 1: fleet cost 0.386, unit cost 0.006, coverage probability 0.608
+K = 2, tau 113.219:
+  term 1: fleet cost 0.140, unit cost 0.000, coverage probability 0.860, share 0.93
+  term 2: fleet cost 0.537, unit cost 0.000, coverage probability 0.463, share 0.07

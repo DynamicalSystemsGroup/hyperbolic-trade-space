@@ -1,0 +1,30 @@
+name: Pages deploy
+
+# Deploys the Pages artefact of the calling run (WP65 specification, 3.5). Called only by
+# release.yml on a push to main; the github-pages environment is set here (a calling job cannot
+# set one) and admits only main. One concurrency group, never cancelled while running.
+on:
+  workflow_call:
+    outputs:
+      page_url:
+        description: "The deployed site's URL"
+        value: ${{ jobs.deploy.outputs.page_url }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5

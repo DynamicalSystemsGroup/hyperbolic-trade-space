@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "tradespace"
+abstract: >-
+  Learns the shape of a design trade space from evaluated designs, with estimators that work in scikit-learn pipelines.
+authors:
+  - family-names: Zargham
+    given-names: Michael
+    orcid: "https://orcid.org/0000-0001-5279-690X"
+    affiliation: Dynamical Systems Group
+repository-code: "https://github.com/DynamicalSystemsGroup/tradespace"
+url: "https://dynamicalsystemsgroup.github.io/tradespace/"
+license: MIT
+# Set with pyproject.toml's version by the release package; the date is the release's.
+version: 0.1.0
+date-released: 2026-11-17
+keywords:
+  - decision analysis
+  - trade studies
+  - trade space
+  - posynomial
+  - scikit-learn

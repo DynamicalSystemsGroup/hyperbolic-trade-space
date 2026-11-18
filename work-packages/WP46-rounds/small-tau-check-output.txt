@@ -1,0 +1,25 @@
+table: 2134 designs, 13 metrics; |mean of log-metrics| max 3.2e-15
+minimum-variance fit: variance 0.008531, converged True
+   tau  largest gap  agree to 3 places
+  0.01       0.0002              False
+   0.1       0.0001              False
+     1       0.0007              False
+     3       0.0021              False
+
+metric                      tau = 3  min variance
+settling time                 0.067         0.067
+pointing error                0.141         0.141
+total mass                    0.064         0.067
+control effort                0.000         0.000
+power margin                  0.000         0.000
+energy balance                0.000         0.000
+peak slew power               0.000         0.000
+depth of discharge            0.056         0.056
+momentum headroom             0.109         0.109
+available power               0.189         0.189
+battery peak power ratio      0.000         0.000
+unit cost                     0.225         0.224
+fleet cost                    0.148         0.149
+
+metrics with an exponent above 1e-3, minimum variance: 8 {0.01: 8, 0.1: 8, 1.0: 8, 3.0: 8}
+exponents differing at three places at tau = 3: 3

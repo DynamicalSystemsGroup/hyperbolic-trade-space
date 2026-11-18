@@ -192,7 +192,7 @@ class CubesatModel:
     def from_path(
         cls, path=MODEL_PATH, connection=None, gain_box: str = "baseline"
     ) -> CubesatModel:
-        return cls(pathlib.Path(path).read_text(), connection, gain_box)
+        return cls(pathlib.Path(path).read_text(encoding="utf-8"), connection, gain_box)
 
     def _evaluation_engine(self) -> str:
         """The name of a ready engine that answers ``evaluate`` questions, from ``list_engines``."""

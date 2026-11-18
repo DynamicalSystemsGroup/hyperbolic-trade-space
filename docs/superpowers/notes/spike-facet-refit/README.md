@@ -1,6 +1,6 @@
 # Research spike (2026-11-08): the per-facet refit step of the K > 1 alternation
 
-Run for WP9 gap G-1 at the supervisor's request (`work-packages/WP9-decisions.md`). Throwaway: the scripts here are kept for reproducibility only; nothing in the package depends on them.
+Run for WP9 gap G-1 at the supervisor's request (`work-packages/WP9-decisions.md` (`git show 4a76229:work-packages/WP9-decisions.md`)). Throwaway: the scripts here are kept for reproducibility only; nothing in the package depends on them.
 
 Supervisor's question (verbatim): "what function did this fulfill and what are some ways to handle
 that function which is better fit with our evidence".

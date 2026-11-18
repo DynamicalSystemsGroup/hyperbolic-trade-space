@@ -1,0 +1,2 @@
+# the MyST build output (the site is assembled under /paper/ by scripts/assemble_site.py)
+_build/

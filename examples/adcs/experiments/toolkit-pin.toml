@@ -1,0 +1,47 @@
+# The pinned model-checking toolkit (WP15 D-8). Read by toolkit.py; nothing else holds these values.
+#
+# Digests are the sha256 values the GitHub release publishes for each asset (read with
+# `gh release view v0.12.0 --repo Open-MBEE/sysml-toolkit --json assets`, 2026-11-08). The archive is
+# verified against its digest and its size before anything in it is used.
+
+[toolkit]
+repo = "Open-MBEE/sysml-toolkit"
+tag = "v0.12.0"
+commit = "ab3d590fa8bf3602eeae7fcf9e5e263f1e5b4768"   # the tag's commit, for the cargo route
+version_output = "sysmlv2 0.12.0"
+binary = "sysmlv2"                                   # the member of each archive that is used
+
+# Release assets by target triple. The helper picks the entry for the running platform.
+[toolkit.assets."aarch64-apple-darwin"]
+name = "sysmlv2-0.12.0-aarch64-apple-darwin.tar.gz"
+size = 5593394
+sha256 = "d2a2208e8b9ffbd570176d6122bfabf494e3344e67f65b9a87e8889c56238195"
+
+[toolkit.assets."x86_64-apple-darwin"]
+name = "sysmlv2-0.12.0-x86_64-apple-darwin.tar.gz"
+size = 6055486
+sha256 = "2a89c4ef1bb33fd5bf5bcf3f7430f9a1f4029f1981480152e307709ffe4b41c8"
+
+[toolkit.assets."x86_64-unknown-linux-gnu"]
+name = "sysmlv2-0.12.0-x86_64-unknown-linux-gnu.tar.gz"
+size = 6300846
+sha256 = "0f17df5c0eefbfc1715e98a30c533476a7323c2d20145065589fbf7d2227d497"
+
+[toolkit.assets."aarch64-unknown-linux-gnu"]
+name = "sysmlv2-0.12.0-aarch64-unknown-linux-gnu.tar.gz"
+size = 5905427
+sha256 = "21b1dfad0ea82b0dd379a988276c91e07256ee1958af38fdb81e25ae0a3c724a"
+
+[toolkit.assets."x86_64-pc-windows-msvc"]
+name = "sysmlv2-0.12.0-x86_64-pc-windows-msvc.zip"
+size = 5972068
+sha256 = "a9f0daca2cb7697447fc77e59d4eaded37a55fa195181e0d722794a8182c3971"
+
+# The standard-library directory the CLI needs (`--lib`): the library shipped with OpenSysML. It is
+# obtained with a sparse, depth-1 git clone of the tag; the clone's HEAD must equal `commit`
+# (git's content hash is the integrity check) before the directory is used.
+[stdlib]
+repo = "https://github.com/Open-MBEE/OpenSysML"
+tag = "v0.12.1"
+commit = "b2f0e9b802a334369da94312c35cefbd8726d3bf"
+path = "internal/workspace/libs/stdlib"

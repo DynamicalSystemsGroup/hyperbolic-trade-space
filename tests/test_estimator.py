@@ -1,6 +1,7 @@
 """Estimator behaviour: recovery, invariants, shape tests, chart, novelty, edges, composition."""
 
 import warnings
+from dataclasses import replace
 
 import numpy as np
 import pandas as pd
@@ -11,7 +12,8 @@ from sklearn.exceptions import ConvergenceWarning
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+from tradespace import HyperbolicTradeSpace, make_frontier_data
+from tradespace import solvers as _solvers
 
 INF = np.inf
 
@@ -53,7 +55,7 @@ def test_fit_invariants(tau, min_exponent):
         assert est.frac_above_ == 0 and V.max() <= 1 + 1e-9
     else:
         assert 0 < est.frac_above_ < 0.5
-    assert est.objective_ == pytest.approx(est.log_offset_[0])
+    assert est.loss_ == pytest.approx(est.log_offset_[0])
     assert est.n_iter_ >= 1
 
 
@@ -356,12 +358,12 @@ def _planted_k3(seed=0, tau=np.inf, n=400):
 
 
 @pytest.mark.parametrize("seed,tau", [(0, np.inf), (2, np.inf), (0, 50.0), (4, 50.0)])
-def test_k_terms_recovers_planted_facets(seed, tau):
+def test_k_terms_recovers_planted_terms(seed, tau):
     X, info, est, err, perm = _planted_k3(seed, tau)
-    assert err < 0.05  # exponents recovered after matching facets
-    lab = np.array([perm[k] for k in est.facet_])
+    assert err < 0.05  # exponents recovered after matching terms
+    lab = np.array([perm[k] for k in est.cell_])
     fm = info["frontier_mask"]
-    assert (lab == info["facet"])[fm].mean() >= 0.9  # frontier rows on the right facet
+    assert (lab == info["term"])[fm].mean() >= 0.9  # frontier rows on the right term
     if np.isinf(tau):
         # statistic: mean depth -log V of the frontier rows. K = 1 leaves them loose
         # (measured 0.158 to 0.245); K = 3 puts them on V = 1 (0 to 1e-6): a factor > 1e5.
@@ -372,6 +374,7 @@ def test_k_terms_recovers_planted_facets(seed, tau):
         assert loose1 > 0.15 and abs(loose3) < 1e-6
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("K", [2, 3])
 @pytest.mark.parametrize("kappa", [np.inf, 5.0])
 def test_k_terms_round_trip_and_scores(K, kappa):
@@ -384,36 +387,38 @@ def test_k_terms_round_trip_and_scores(K, kappa):
     assert (gap >= -1e-12).all() and (gap <= np.log(K) / kappa + 1e-12).all()
     np.testing.assert_allclose(est.score_samples(X), T[:, -1], atol=1e-12)
     np.testing.assert_allclose(est.inverse_transform(T), X, rtol=1e-8)
-    lab = est.assign_facets(X)
+    lab = est.assign_cells(X)
     assert lab.min() >= 0 and lab.max() < K
-    np.testing.assert_array_equal(lab, est.facet_)
+    np.testing.assert_array_equal(lab, est.cell_)
     np.testing.assert_allclose(est.training_log_v_, T[:, -1])
     M = est.level_set(T[:3, :-1], value=0.5)
     np.testing.assert_allclose(est.invariant_value(M), 0.5)
     assert est.basis_.shape == (K, 3, 4) and est.exponents_.shape == (K, 4)
 
 
+@pytest.mark.slow
 def test_k_terms_attributes_conventions():
     X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
     for kappa, kf in ((np.inf, 1.0), (4.0, 4.0)):
         est = HyperbolicTradeSpace(n_terms=3, term_temperature=kappa, random_state=0).fit(X)
         np.testing.assert_allclose(est.coefficients_, np.exp(-kf * est.log_offset_))
-        assert est.facet_share_.sum() == pytest.approx(1.0)
+        assert est.term_share_.sum() == pytest.approx(1.0)
         assert est.support_weights_.sum() == pytest.approx(1.0)
         assert est.n_eff_ == pytest.approx(1.0 / np.sum(est.support_weights_**2))
-        assert est.facet_.shape == (300,) and est.n_iter_ >= 1
+        assert est.cell_.shape == (300,) and est.n_iter_ >= 1
         assert 0.0 <= est.frac_above_ <= 1.0
+    # K = 1: the same attributes exist (WP10 item 19, recorded in contract version 3)
     k1 = HyperbolicTradeSpace().fit(X)
-    assert not any(hasattr(k1, a) for a in ("facet_", "coefficients_", "facet_share_"))
+    assert all(hasattr(k1, a) for a in ("cell_", "coefficients_", "term_share_", "mean_slack_"))
     far = HyperbolicTradeSpace(n_terms=3, temperature=1000.0, random_state=0).fit(X * 1e3)
-    assert far.facet_share_.sum() in (0.0, pytest.approx(1.0))
+    assert far.term_share_.sum() in (0.0, pytest.approx(1.0))
 
 
-def test_k_terms_improvement_factors_use_assigned_facet():
+def test_k_terms_improvement_factors_use_assigned_term():
     X, _ = make_frontier_data(150, 4, n_terms=3, random_state=0)
     est = HyperbolicTradeSpace(n_terms=3, random_state=0).fit(X)
     x = X[:1].copy()
-    j = int(np.argmax(est.exponents_[est.assign_facets(x)[0]]))
+    j = int(np.argmax(est.exponents_[est.assign_cells(x)[0]]))
     x[0, j] *= est.improvement_factors(x)[0, j]
     assert est.invariant_value(x)[0] == pytest.approx(1.0)
 
@@ -424,7 +429,7 @@ def test_k_terms_zero_rows_and_determinism():
     a = HyperbolicTradeSpace(n_terms=2, random_state=7).fit(X)
     b = HyperbolicTradeSpace(n_terms=2, random_state=7).fit(X)
     np.testing.assert_array_equal(a.exponents_, b.exponents_)
-    assert a.facet_[3] == -1 and a.assign_facets(X)[3] == -1
+    assert a.cell_[3] == -1 and a.assign_cells(X)[3] == -1
     assert a.support_weights_[3] == 0 and np.isneginf(a.score_samples(X)[3])
     assert np.isnan(a.inverse_transform(a.transform(X))[3]).all()
 
@@ -440,7 +445,7 @@ def test_k_terms_degenerate_inputs_replicate(shape):
 
 
 def test_penalty_gives_exact_zero_exponents_at_the_estimator():
-    # R-11 at the estimator: planted sparse facet d=4, as tests/test_solvers.py
+    # R-11 at the estimator: planted sparse term d=4, as tests/test_solvers.py
     X, _ = make_frontier_data(300, 4, exponents=[0.6, 0.4, 0, 0], noise=0.1, random_state=0)
     plain = HyperbolicTradeSpace(temperature=20.0).fit(X)
     pen = HyperbolicTradeSpace(temperature=20.0, penalty="reweighted_l1", alpha=0.01).fit(X)
@@ -451,31 +456,32 @@ def test_penalty_gives_exact_zero_exponents_at_the_estimator():
     np.testing.assert_array_equal(zero.exponents_, plain.exponents_)
 
 
-# ------------------------------------------- WP9 Amendment 1: facet_step
+# ------------------------------------------- WP9 Amendment 1: refit_step
+@pytest.mark.slow
 @pytest.mark.parametrize("step", ["support", "tangent"])
 @pytest.mark.parametrize("seed,tau", [(0, np.inf), (2, np.inf), (0, 50.0), (4, 50.0)])
 def test_k_terms_both_steps_recover_under_identifiability(step, seed, tau):
-    # R-1 with the condition: every planted facet has >= d + 1 frontier rows (the generator
+    # R-1 with the condition: every planted term has >= d + 1 frontier rows (the generator
     # guarantees it); recovery within 0.05 after matching, >= 90% of frontier rows right
     X, info = make_frontier_data(400, 4, n_terms=3, random_state=seed)
-    assert np.bincount(info["facet"][info["frontier_mask"]], minlength=3).min() >= 5
-    est = HyperbolicTradeSpace(n_terms=3, temperature=tau, random_state=0, facet_step=step).fit(X)
+    assert np.bincount(info["term"][info["frontier_mask"]], minlength=3).min() >= 5
+    est = HyperbolicTradeSpace(n_terms=3, temperature=tau, random_state=0, refit_step=step).fit(X)
     C = np.abs(est.exponents_[:, None] - info["exponents"][None]).max(-1)
     r, c = linear_sum_assignment(C)
     assert C[r, c].max() < 0.05
     perm = dict(zip(r, c, strict=True))
-    lab = np.array([perm[k] for k in est.facet_])
-    assert (lab == info["facet"])[info["frontier_mask"]].mean() >= 0.9
+    lab = np.array([perm[k] for k in est.cell_])
+    assert (lab == info["term"])[info["frontier_mask"]].mean() >= 0.9
 
 
-def test_facet_step_validated_and_inert_at_k1():
+def test_term_step_validated_and_inert_at_k1():
     X, _ = make_frontier_data(100, 3, random_state=0)
-    with pytest.raises(ValueError, match="facet_step"):
-        HyperbolicTradeSpace(facet_step="nope").fit(X)
+    with pytest.raises(ValueError, match="refit_step"):
+        HyperbolicTradeSpace(refit_step="nope").fit(X)
     a = HyperbolicTradeSpace().fit(X)
-    b = HyperbolicTradeSpace(facet_step="tangent").fit(X)
+    b = HyperbolicTradeSpace(refit_step="tangent").fit(X)
     np.testing.assert_array_equal(a.exponents_, b.exponents_)
-    assert HyperbolicTradeSpace().get_params()["facet_step"] == "support"
+    assert HyperbolicTradeSpace().get_params()["refit_step"] == "support"
 
 
 def test_n_restarts_default_and_validation():
@@ -491,8 +497,7 @@ def test_n_restarts_default_and_validation():
 
 
 # ------------------------------------------------ WP13 (E-1, E-5, E-7): record, warning, limit
-from hyperbolic_trade_space import estimator as _est  # noqa: E402
-from hyperbolic_trade_space import solvers as _solvers  # noqa: E402
+from tradespace import estimator as _est  # noqa: E402
 
 
 def _k3(seed, tau=INF, **kw):
@@ -507,6 +512,12 @@ def test_constants_are_reexported():
     assert _est.EPS_ZERO_EXPONENT == 1e-12 and _est.PARTICIPATION_THRESHOLD == 1e-3
 
 
+def _by_rows(W):
+    """Rows of ``W`` in a canonical order (lexicographic on the exponents), to compare as sets."""
+    return W[np.lexsort(W.T[::-1])]
+
+
+@pytest.mark.slow
 @pytest.mark.parametrize(
     "seed,tau,status",
     [(0, INF, "certified"), (1, INF, "stationary_without_margin"), (0, 50.0, "certified")],
@@ -521,7 +532,8 @@ def test_termination_record_for_k_terms(seed, tau, status):
     assert t.status == status and t.max_gap <= _est.EPS_KKT and t.assignment_changes == 0
     assert t.n_iter == ref.n_iter and t.gamma == ref.termination.gamma
     assert (t.eps_kkt, t.eps_feas, t.guard_tol) == (1e-8, 1e-9, 1e-12)
-    np.testing.assert_array_equal(est.exponents_, ref.W)
+    # the same rows: the estimator's order is the share order, the solver's the alternation's
+    np.testing.assert_array_equal(_by_rows(est.exponents_), _by_rows(ref.W))
 
 
 def test_termination_not_applicable_cases_do_not_warn():
@@ -530,7 +542,7 @@ def test_termination_not_applicable_cases_do_not_warn():
     cases = [
         (HyperbolicTradeSpace(), X),
         (HyperbolicTradeSpace(temperature=INF), X),
-        (HyperbolicTradeSpace(n_terms=3, facet_step="tangent", random_state=0), X),
+        (HyperbolicTradeSpace(n_terms=3, refit_step="tangent", random_state=0), X),
         (HyperbolicTradeSpace(n_terms=3, penalty="reweighted_l1", alpha=0.01, random_state=0), X),
         (HyperbolicTradeSpace(n_terms=2), d1),
     ]
@@ -552,15 +564,66 @@ def _one_warning(est, X, pattern):
         est.fit(X)
     cw = [w for w in rec if issubclass(w.category, ConvergenceWarning)]
     assert len(cw) == 1 and pattern in str(cw[0].message), [str(w.message) for w in rec]
-    assert "max facet gap" in str(cw[0].message)
+    assert "max term gap" in str(cw[0].message)
+    return str(cw[0].message)
 
 
-def test_convergence_warning_keyed_to_iteration_cap(monkeypatch):
+def test_convergence_warning_at_the_cap_while_the_objective_still_moves(monkeypatch):
+    # one partition-and-refit round: every term is stationary on its rows (the gap is at machine
+    # precision) but the assignment step is still moving rows and the loss still falls
     real = _solvers.solve_terms
     monkeypatch.setattr(_solvers, "solve_terms", lambda *a, **k: real(*a, max_iter=1, **k))
     X, est = _k3(1)
-    _one_warning(est, X, "iteration_cap")
-    assert est.termination_.status == "iteration_cap"
+    msg = _one_warning(est, X, "iteration_cap")
+    t = est.termination_
+    assert t.status == "iteration_cap" and t.max_gap <= est.tol < t.loss_change
+    assert f"{t.max_gap:.2e}" in msg and f"{t.loss_change:.2e}" in msg
+    assert f"tol {est.tol:g}" in msg
+
+
+@pytest.mark.parametrize(
+    ("gap", "change", "warns"),
+    [(1e-15, 1e-16, False), (1e-15, 1e-5, True), (1e-5, 1e-16, True), (float("nan"), 0.0, True)],
+)
+def test_iteration_cap_warns_only_when_not_stationary_to_tol(monkeypatch, gap, change, warns):
+    # a run stopped at the cap is silent when the terms are stationary and the loss had
+    # stopped moving, both to within tol; the status and the gap are recorded either way
+    real = _solvers.solve_terms
+
+    def capped(*a, **k):
+        r = real(*a, **k)
+        t = replace(r.termination, status="iteration_cap", max_gap=gap, loss_change=change)
+        return replace(r, success=False, message="max_iter reached", termination=t)
+
+    monkeypatch.setattr(_solvers, "solve_terms", capped)
+    X, est = _k3(1, tol=1e-10)
+    if warns:
+        msg = _one_warning(est, X, "iteration_cap")
+        assert "tol 1e-10" in msg
+    else:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            est.fit(X)
+    t = est.termination_
+    assert t.status == "iteration_cap" and t.loss_change == change
+    assert t.max_gap == gap or (np.isnan(gap) and np.isnan(t.max_gap))
+
+
+def test_a_cycle_among_tied_rows_at_the_cap_is_silent():
+    # on macOS this table reaches the cap (50 rounds) with the loss constant over the last
+    # rounds and no row trailing its best term beyond EPS_FEAS: rows that tie exactly between two
+    # terms change label at each round; where the ties resolve into a fixed assignment the fit
+    # is certified; either way the fit is stationary and nothing is reported as a failure
+    X, _ = make_frontier_data(400, 4, n_terms=3, random_state=57)
+    est = HyperbolicTradeSpace(n_terms=3, temperature=INF, random_state=1)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        est.fit(X)
+    t = est.termination_
+    assert t.status in ("iteration_cap", "certified", "stationary_without_margin")
+    assert t.max_gap <= est.tol and t.assignment_changes == 0
+    if t.status == "iteration_cap":
+        assert t.n_iter == 50 and t.loss_change <= est.tol
 
 
 def test_convergence_warning_keyed_to_guard_stop(monkeypatch):
@@ -594,7 +657,7 @@ def test_conditioning_is_the_restricted_hessian_eigenvalue():
 
 
 def _coords_helmert(d):
-    from hyperbolic_trade_space.coordinates import helmert_basis
+    from tradespace.coordinates import helmert_basis
 
     return helmert_basis(d)
 
@@ -609,7 +672,7 @@ def test_conditioning_drops_for_nearly_collinear_metrics():
     assert 0 < bad < 1e-2 * good
 
 
-def test_conditioning_per_facet_and_nan_cases():
+def test_conditioning_per_term_and_nan_cases():
     X, est = _k3(0, 50.0)
     est.fit(X)
     assert est.conditioning_.shape == (3,) and (est.conditioning_ > 0).all()
@@ -640,16 +703,16 @@ def test_zero_metric_with_zero_exponent_equals_the_formal_limit():
     assert np.isnan(est.inverse_transform(T)[:15]).all()
 
 
-def test_zero_metric_limit_for_k_terms_follows_each_facet():
+def test_zero_metric_limit_for_k_terms_follows_each_term():
     W = np.array([[0.5, 0.5, 0.0], [0.0, 0.5, 0.5]])
     est = HyperbolicTradeSpace(n_terms=2)
     est.fit(make_frontier_data(60, 3, n_terms=2, random_state=0)[0])
     est.exponents_, est.log_offset_ = W, np.zeros(2)
     X = np.array([[0.0, 2.0, 3.0], [2.0, 2.0, 0.0], [0.0, 2.0, 0.0], [2.0, 3.0, 4.0]])
     lv = est.score_samples(X)
-    assert lv[0] == pytest.approx(0.5 * np.log(6.0))  # only facet 1 has no zero metric
-    assert lv[1] == pytest.approx(np.log(2.0))  # only facet 0
-    assert np.isneginf(lv[2])  # a zero on a participating exponent of both facets
+    assert lv[0] == pytest.approx(0.5 * np.log(6.0))  # only term 1 has no zero metric
+    assert lv[1] == pytest.approx(np.log(2.0))  # only term 0
+    assert np.isneginf(lv[2])  # a zero on a participating exponent of both terms
     assert np.isfinite(lv[3])
 
 
@@ -661,3 +724,188 @@ def test_degenerate_single_valid_row_warns_with_the_convention():
         np.testing.assert_allclose(est.exponents_, 1 / 3)
         assert est.termination_.status == "not_applicable"
     assert "single valid row" in HyperbolicTradeSpace.__doc__
+
+
+def test_attributes_exist_for_every_k_and_k1_numbers_are_unchanged():
+    X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
+    for tau in (np.inf, 50.0):
+        e = HyperbolicTradeSpace(temperature=tau).fit(X)
+        assert e.cell_.shape == (300,) and not e.cell_.any()
+        np.testing.assert_array_equal(e.term_share_, [1.0])
+        np.testing.assert_allclose(e.coefficients_, np.exp(-e.log_offset_))  # kappa = inf -> 1
+        assert e.coefficients_.shape == (1,)
+    Xz = X.copy()
+    Xz[5, 1] = 0.0
+    assert HyperbolicTradeSpace().fit(Xz).cell_[5] == -1  # zero metric, as at K > 1
+    # the fitted numbers of the K = 1 fit are those of the pre-change code (literals)
+    e = HyperbolicTradeSpace(temperature=50.0).fit(X)
+    assert e.loss_ == pytest.approx(-0.06947951610557283, rel=1e-12)
+    assert e.log_offset_[0] == pytest.approx(e.loss_, rel=1e-12)
+
+
+def test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized():
+    X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
+    U = np.log(X)
+    # K = 1: beta - mean(w . u); not the soft maximum
+    e1 = HyperbolicTradeSpace(temperature=50.0).fit(X)
+    expected = e1.log_offset_[0] - np.mean(U @ e1.exponents_[0])
+    assert e1.mean_slack_ == pytest.approx(expected, rel=1e-12)
+    assert e1.mean_slack_ > 0 and e1.loss_ < e1.mean_slack_
+    # K > 1: the mean slack is what the solver minimized
+    for tau in (np.inf, 50.0):
+        e2 = HyperbolicTradeSpace(n_terms=2, temperature=tau, random_state=0).fit(X)
+        k = e2.cell_
+        slack = e2.log_offset_[k] - np.einsum("ij,ij->i", e2.exponents_[k], U)
+        assert e2.mean_slack_ == pytest.approx(slack.mean(), rel=1e-12)
+        assert e2.mean_slack_ == pytest.approx(e2.loss_, rel=1e-9)
+    # zero-metric rows are masked
+    Xz = X.copy()
+    Xz[7, 2] = 0.0
+    ez = HyperbolicTradeSpace(temperature=50.0).fit(Xz)
+    v = np.log(np.delete(Xz, 7, axis=0))
+    assert ez.mean_slack_ == pytest.approx(
+        ez.log_offset_[0] - np.mean(v @ ez.exponents_[0]), rel=1e-12
+    )
+    assert np.isfinite(ez.mean_slack_)
+
+
+# ---------------------------------------------------------------------------- WP21 D-1
+def test_term_aggregation_default_and_params_roundtrip():
+    est = HyperbolicTradeSpace()
+    assert est.term_aggregation == "sum"
+    assert est.get_params()["term_aggregation"] == "sum"
+    est2 = HyperbolicTradeSpace(**est.set_params(term_aggregation="mean").get_params())
+    assert est2.term_aggregation == "mean"
+    HyperbolicTradeSpace(term_aggregation="bad")  # stored verbatim, not validated in __init__
+
+
+@pytest.mark.parametrize("bad", ["bad", None, 1, "Sum"])
+def test_term_aggregation_invalid_raises_in_fit(bad):
+    with pytest.raises(ValueError, match="term_aggregation"):
+        HyperbolicTradeSpace(term_aggregation=bad).fit(planted(30, 3)[0])
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize(("K", "kappa", "d"), [(2, 5.0, 3), (3, 2.0, 4), (4, 20.0, 5)])
+def test_term_aggregation_mean_shifts_score_by_log_k_over_kappa(K, kappa, d):
+    X, _ = make_frontier_data(120, d, n_terms=K, random_state=3)
+    kw = dict(n_terms=K, term_temperature=kappa, temperature=20.0, random_state=0)
+    s = HyperbolicTradeSpace(term_aggregation="sum", **kw).fit(X)
+    m = HyperbolicTradeSpace(term_aggregation="mean", **kw).fit(X)
+    shift = np.log(K) / kappa
+    # the mean aggregation shifts every score, so the near-frontier band's membership, and with
+    # it the share order, can differ on near-equal shares: the same terms, matched by exponent
+    ps, pm = np.lexsort(s.exponents_.T[::-1]), np.lexsort(m.exponents_.T[::-1])
+    np.testing.assert_allclose(m.exponents_[pm], s.exponents_[ps], atol=1e-10)
+    np.testing.assert_allclose(m.log_offset_[pm], s.log_offset_[ps], atol=1e-10)
+    np.testing.assert_allclose(s.score_samples(X) - m.score_samples(X), shift, atol=1e-10)
+    np.testing.assert_allclose(m.mean_slack_ - s.mean_slack_, shift, atol=1e-10)
+    assert m.termination_.status == s.termination_.status
+    np.testing.assert_allclose(m.inverse_transform(m.transform(X)), X, rtol=1e-8)
+    S_ = np.log(X) @ m.exponents_.T - m.log_offset_
+    gap = m.score_samples(X) - S_.max(axis=1)
+    assert (gap <= 1e-12).all() and (gap >= -shift - 1e-12).all()
+
+
+@pytest.mark.parametrize("params", [{"n_terms": 3, "term_temperature": np.inf}, {"n_terms": 1}])
+def test_term_aggregation_mean_equals_sum_at_kappa_inf_or_k1(params):
+    X, _ = make_frontier_data(80, 3, n_terms=3, random_state=2)
+    kw = dict(random_state=0, **params)
+    a = HyperbolicTradeSpace(term_aggregation="sum", **kw).fit(X)
+    b = HyperbolicTradeSpace(term_aggregation="mean", **kw).fit(X)
+    np.testing.assert_array_equal(a.score_samples(X), b.score_samples(X))
+    np.testing.assert_array_equal(a.exponents_, b.exponents_)
+    assert a.mean_slack_ == b.mean_slack_
+
+
+def test_term_aggregation_duplicated_term_shift_is_log2_over_kappa():
+    # sum: a repeated term raises Phi by log 2 / kappa where it ties the maximum
+    est = HyperbolicTradeSpace(n_terms=2, term_temperature=4.0).fit(planted(40, 3)[0])
+    one = est.exponents_[:1], est.log_offset_[:1]
+    est.exponents_, est.log_offset_ = np.repeat(one[0], 2, axis=0), np.repeat(one[1], 2)
+    est.basis_ = est.basis_[:2]
+    U = np.log(planted(40, 3)[0])
+    s = U @ est.exponents_.T - est.log_offset_
+    sum_phi = est._phi(s)
+    est.term_aggregation = "mean"
+    np.testing.assert_allclose(sum_phi - est._phi(s), np.log(2) / 4.0, atol=1e-12)
+    np.testing.assert_allclose(est._phi(s), s[:, 0], atol=1e-12)
+
+
+# ---------------------------------------------------------------------------- WP21 D-5
+@pytest.mark.slow
+@pytest.mark.parametrize("kappa", [np.inf, 6.0])
+def test_n_distinct_terms_equals_k_on_planted_terms(kappa):
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(
+        n_terms=3, term_temperature=kappa, temperature=20.0, random_state=0
+    ).fit(X)
+    assert est.termination_.n_distinct_terms == 3
+
+
+@pytest.mark.slow
+def test_n_distinct_terms_falls_below_k_where_terms_repeat():
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(
+        n_terms=8, term_temperature=6.0, temperature=20.0, random_state=0
+    ).fit(X)
+    assert 3 <= est.termination_.n_distinct_terms < 8
+    W = est.exponents_
+    assert est.termination_.n_distinct_terms == _solvers.distinct_terms(W)
+    # the count reads the exponent vectors: a repeated row is one term, a far row another
+    assert _solvers.distinct_terms(np.vstack([W[:1], W[:1], W[:1] + 0.5 * (1 - W[:1])])) == 2
+    # within the stated distance is one term; just outside is two
+    d = _solvers.DISTINCT_TERMS_DISTANCE
+    base, step = np.array([0.5, 0.5]), np.array([1.0, -1.0]) / np.sqrt(2)
+    assert _solvers.distinct_terms(np.array([base, base + 0.5 * d * step])) == 1
+    assert _solvers.distinct_terms(np.array([base, base + 2 * d * step])) == 2
+
+
+@pytest.mark.parametrize("params", [{}, {"n_terms": 4}])
+def test_n_distinct_terms_is_one_in_the_degenerate_cases(params):
+    X1 = np.random.default_rng(0).uniform(1.0, 2.0, size=(40, 1))  # d = 1: K copies of w = 1
+    assert HyperbolicTradeSpace(**params).fit(X1).termination_.n_distinct_terms == 1
+    X, _ = make_frontier_data(60, 3, random_state=0)
+    one = HyperbolicTradeSpace(n_terms=1).fit(X).termination_
+    assert one.n_distinct_terms == 1 and one.status == "not_applicable"
+
+
+# ---------------------------------------------------------------- term order (WP30)
+@pytest.mark.parametrize("seed", [0, 1, 2, 3])
+def test_terms_are_ordered_by_descending_share_and_every_attribute_carries_it(seed):
+    """Terms run by descending term share; the per-term attributes are permuted together."""
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(n_terms=3, random_state=seed).fit(X)
+    share = est.term_share_
+    cells = np.bincount(est.cell_[est.cell_ >= 0], minlength=3)
+    # descending share; equal shares fall back to the cell size (rows)
+    assert np.all(np.diff(share) <= 0)
+    for k in range(2):
+        if share[k] == share[k + 1]:
+            assert cells[k] >= cells[k + 1]
+    # the labels, the offsets and the exponents pair up: the chart's log V is the maximum score
+    U = np.log(X)
+    scores = U @ est.exponents_.T - est.log_offset_
+    np.testing.assert_array_equal(est.cell_, np.argmax(scores, axis=1))
+    np.testing.assert_allclose(est.transform(X)[:, -1], scores.max(axis=1), atol=1e-12)
+    # per-term attributes follow the same order
+    np.testing.assert_allclose(est.coefficients_, np.exp(-est.log_offset_))
+    np.testing.assert_allclose(est.termination_.shares, cells / len(X))
+    np.testing.assert_allclose(
+        est.conditioning_, est._conditioning(U, est.temperature), equal_nan=True
+    )
+    near = np.abs(scores.max(axis=1)) < 1.0 / est.temperature
+    np.testing.assert_allclose(share, np.bincount(est.cell_[near], minlength=3) / near.sum())
+
+
+def test_term_order_is_stable_across_seeds_and_the_one_term_fit_is_untouched():
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    # seeds 0, 2 and 3 reach the same three terms (seed 1 reaches another local fit); without
+    # sorting, term k is the same term in all three
+    fits = [HyperbolicTradeSpace(n_terms=3, random_state=s).fit(X) for s in (0, 2, 3)]
+    for f in fits[1:]:
+        np.testing.assert_allclose(f.exponents_, fits[0].exponents_, atol=1e-2)
+        np.testing.assert_allclose(f.term_share_, fits[0].term_share_, atol=1e-12)
+    k1 = HyperbolicTradeSpace().fit(X)
+    np.testing.assert_array_equal(k1.term_share_, [1.0])
+    np.testing.assert_array_equal(k1.cell_, 0)

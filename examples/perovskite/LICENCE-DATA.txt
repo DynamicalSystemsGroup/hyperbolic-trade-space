@@ -1,0 +1,9 @@
+The Perovskite Database Project data (doi:10.5281/zenodo.5837035, v1.0.1) are available under the
+Creative Commons Attribution 4.0 licence (https://creativecommons.org/licenses/by/4.0/); the licence
+is read from the Zenodo record (2026-11-14).
+
+Attribution: Jacobsson et al., "An open-access database and analysis tool for perovskite solar cells
+based on the FAIR data principles", Nature Energy (2021), doi:10.1038/s41560-021-00941-3.
+
+Nothing from the archive is committed to this repository. The archive is fetched at run time into
+examples/perovskite/data/ (ignored by git) and checked against manifest.toml.

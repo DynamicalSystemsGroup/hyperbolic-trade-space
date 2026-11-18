@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from hyperbolic_trade_space.coordinates import (
+from tradespace.coordinates import (
     alr_basis,
     from_frontier_coordinates,
     helmert_basis,

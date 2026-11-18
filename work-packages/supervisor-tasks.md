@@ -1,0 +1,39 @@
+# The supervisor's tasks (kept apart from the autonomous work)
+
+Written 2026-11-14, 21:20, at his request: "a clear separate list of tasks that i need to do (facilitated by you but may
+involve configuring accounts in the browser with lots of guarded activites meriting explicit approvals or my own hands on
+keyboard so we need to do them together)". Two kinds: **his word** (a reading, an acceptance, a call, given in chat or
+a popup, recorded verbatim) and **together at a keyboard** (accounts, settings, forms; the assistant prepares the exact
+names and steps, he performs the guarded actions). Order within each kind is the order the path needs them.
+
+## His word
+
+Each item is walked with him in chat, one at a time, from `supervisor-walkthrough.md`: what he is accepting, what he
+reviews it against (the scope's good-enough list and any amendment), where to look, what the driver verified, and the
+question he answers.
+
+| # | Task | When | Prepared by |
+|---|---|---|---|
+| W2 | Accept the third paper unit (ca352f5) and the abstract landing (735fa51) | after CI is green on both | the driver log's entries |
+| W7 | Close read of the five entry surfaces; the two root-page sentences that are his (the summary paragraph; "bespoke or opaque") | before the PR | `WP11-final/abstract/entry-surfaces-consistency.md` |
+| W8 | Reading pass G.2 | before the PR | the paper's Appendix G.2 |
+| W9 | Accept each remaining package as it is delivered and verified (WP41, WP43, WP45, WP46, WP47, WP48, WP49 readouts; the WP42 build; the held-out reads' triage) | as they land | the driver log |
+| W9b | Assess the abstract's last sentence as a list of three (search; holes by topological data analysis; formal methods and performance), on the draft the WP50 readout carries | after the WP50 readout | `WP50-rounds/spike/readout.md` |
+| W11 | The version bump to 0.1.0 and the dated changelog entry, done as part of the merge-to-main workflow on his word (his ruling of 2026-11-14 night, WP8b-decisions) | with W12 | `WP47-rounds/pypi-checklist.md` |
+| W12 | Review the PR from `dev` to `main` with the reviewer's guide, in sittings; merge it `--no-ff`; push the `v0.1.0` tag | the last step | WP8b |
+
+## Together at a keyboard
+
+| # | Task | What he does | What the assistant prepares | When |
+|---|---|---|---|---|
+| K3 | PyPI and TestPyPI accounts | signs in or creates the accounts, enables two-factor authentication | nothing to prepare; his credentials are never typed by the assistant | before W11 |
+| K4 | Pending trusted publishers on TestPyPI and PyPI | adds a pending publisher for `DynamicalSystemsGroup/tradespace` with the workflow file name and the environment names WP47 delivers | the exact names in `WP47-rounds/pypi-checklist.md` | when WP47 delivers |
+| K5 | GitHub environments `testpypi` and `pypi` | creates them on the repository with himself as required reviewer, so no publish runs without his click | the names and the reviewer rule | with K4 |
+| K6 | Branch protection | `main`: require a pull request, require the test workflow, require review from code owners, restrict who can merge; `dev`: require the test workflow | the checklist in `docs/code-owners.md` with exact setting names | when WP47 delivers |
+| K7 | CODEOWNERS enforcement and the maintainers' team | confirms the `CODEOWNERS` file names him; creates the organisation team if he wants onboarding to be one line later | the file and the page | with K6 |
+| K8 | Repository visibility and Pages | decides when the repository goes public (PyPI's source link and the docs site need it) and enables GitHub Pages from the workflow | the Pages source setting and the order of steps | before the publish |
+| K9 | The TestPyPI dry run | clicks the environment's approval when the dispatch from `dev` asks | the dispatch and the check of the uploaded package | after K4, K5 |
+| K10 | The release | after W12's merge and tag, approves the `pypi` environment; checks the project page | the checklist's last section | the last step |
+| K11 | Governance checks as release gates (after v0.1) | the settings or tokens the chosen checks need, if any | WP48's readout names them | after v0.1 |
+
+Items move to the record (`WPn-decisions.md`, `driver-log.md`) as they are done; this list is rewritten, not appended.

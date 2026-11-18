@@ -1,0 +1,29 @@
+name: Issue admissibility
+
+# VC-1 (4f81a4ea:work-packages/WP47-rounds/checks.md). Trigger: an issue opened or edited. Reads only the event
+# payload and .github/CODEOWNERS from the default branch; it runs no code from the issue.
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    name: draft carries every field
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Check the fields of the scope of work
+        run: uv run --no-project python scripts/admissibility.py issue --event "$GITHUB_EVENT_PATH" --report "$RUNNER_TEMP/report.md"
+      - name: Name the gap and keep the draft label
+        if: ${{ failure() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          gh issue edit "$ISSUE" --repo "$GITHUB_REPOSITORY" --add-label draft
+          gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/report.md"

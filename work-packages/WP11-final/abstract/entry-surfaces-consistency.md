@@ -1,0 +1,22 @@
+# The entry surfaces against the new abstract (2026-11-14, 18:10; the assistant's read, for the supervisor's call)
+
+Read as rendered text: `site/index.html` (the root page), `README.md` (first screen and Layout), `docs/index.md` (the docs
+home), against the abstract landing from `draft-2026-11-14.md` and the day's vocabulary rulings.
+
+| Surface, place | As it reads | The abstract and the rulings | Proposed |
+|---|---|---|---|
+| Root page, summary paragraph | "An unsupervised learning method which applies a posynomial invariant form, a sum of terms each a product of powers of the metrics, to learn the shape of a trade space from evaluated designs." | The abstract names the method (hyperbolic trade space, HTS) and says plainly what it does: explains trade-offs in a dataset of designs and measurements. Two executives stopped at "posynomial invariant form", "invariant" and "unsupervised" (H01, H02). | His hand. A sentence in the abstract's register: "Hyperbolic trade space (HTS) is an unsupervised learning method that learns, from a table of evaluated designs, which of their metrics trade against which and at what rate." |
+| Root page, What, first sentence | "Principal component analysis (PCA) explains variance; this explains tensions." | The abstract says "explains trade-offs", and tension now names the local rate between two metrics (ruling of 12:00), so "explains tensions" would mean the pairwise rates. | "Principal component analysis (PCA) explains variance; this explains trade-offs." |
+| Root page, What | "a combination of the metrics that names which of them compete on one part of the trade space" | The glossary's verb is contend. | "contend" for "compete". |
+| Root page, What; docs home, last paragraph | "unsupervised learning and feature engineering beside PCA"; "in the unsupervised and feature-engineering family, beside PCA" | The abstract dropped "feature engineering" (three readers read it as frontier estimation); it says "Like PCA, HTS is an unsupervised learning method". | "unsupervised learning, beside PCA" on both. |
+| Root page, What | "the tension report already runs PCA on the near-frontier chart coordinates"; README snippet `tension_report(...)`; README Layout "fit a frontier, read its tensions" | Tension is redefined; the package's `tension_report` reports contending sets and exponents today. Either the report gains the tension matrix (WP42) and keeps its name, or it is renamed; the surfaces follow the package. | To WP42's readout as a named question (the API name); the README line reads "fit a frontier, read its trade-offs" either way. |
+| Root page, What, last sentences | "It ships as a scikit-learn-compatible estimator (...). The conformance checks pass." | The abstract: "implemented as a scikit-learn estimator, so it works with existing pipelines and tools." Consistent; the pipelines point is the one users want. | "It ships as a scikit-learn estimator (...), so it works in existing pipelines; the conformance checks pass." |
+| Docs home, second paragraph | "and where the table has gaps" | The abstract says "white space"; the glossary says hole; three words for one object. | One word in the glossary (WP42); the surfaces follow. |
+| Docs home, second paragraph | "fits a frontier model in the posynomial invariant form: a sum of terms, where a term (a product of powers of the metrics) is one trade-off" | Consistent with the abstract's patchwork ("piecewise hyperbolic frontiers"; "level sets of a posynomial function of the metrics"); "frontier model" and "fitted reference surface" both appear, as the abstract's "frontier" and the paper's Definition 1 do. | No change. |
+| README, first sentence | "For analysts with a table of evaluated designs, to learn which metrics trade." | Consistent. | No change. |
+| All three | No surface uses "objective" or "loss". | Consistent with the layer rule: objective only at the decision layer, which the root page's Why holds ("a decision-maker"). | No change. |
+| Root page, Why | "The alternatives are bespoke or opaque." | Not in the abstract; two executives asked which alternatives (H01, H02). | His hand; already on the review list. |
+
+Nothing here is applied. The root page's summary and Why are the supervisor's; the four small edits (trade-offs for
+tensions; contend for compete; "unsupervised learning, beside PCA" twice; the README's "read its trade-offs") are one
+unit on his word; the two naming items (gap/hole/white space; the tension report's name) go to WP42.

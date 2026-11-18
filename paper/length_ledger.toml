@@ -1,0 +1,2136 @@
+# The length ledger of the paper (WP10).
+#
+# The supervisor's rule: "the total length of the paper is less hard ceiling and more
+# regularization. each word earns his place, and more text has a higher burden". The word count is
+# still measured (tests/test_paper.py: the rendered prose the page shows, generated sentences
+# included, builder labels excluded) but against the ceiling kept here, not a fixed cap. A section's
+# ceiling is its baseline plus the words_added of the rows that name it; the total's ceiling is the
+# total baseline plus every row. Growth is admitted by its job and refused without one: a row says
+# what the added words do and for which reader. A cut lowers the ceiling to the count after (WP28
+# OD5 (a)): a [[cut]] row says the date, the section, words_removed, what the content no longer did
+# and the authority that cut it. The ceiling is the baseline plus the raise rows less the cut rows.
+#
+# Baseline: the rendered counts of the paper at 2026-11-09 after the three-pane figure left the body
+# (5,927 words before; the figure's caption and the sentence that pointed at it came out, 27 net, in
+# "The decision problem", whose ceiling was lowered to the new count; the sentence that now says the
+# chart in words is inside that net cut). The rows below start from here.
+
+[baseline]
+total = 5900
+
+[baseline.sections]
+"The decision problem" = 547
+"Prior art" = 585
+"Preliminaries and notation" = 454
+"Definitions" = 314
+"Methods" = 515
+"Results" = 1609
+"Search of the design space (preliminary)" = 218
+"Case construction" = 330
+"Case analysis" = 572
+"Discussion" = 450
+"Reproducibility and your own case" = 60
+"Future work and final remark" = 170
+"Acknowledgments and process" = 73
+"Future work" = 0
+"AI acknowledgement and Reproducibility" = 0
+"Works cited" = 3
+# The supporting material is outside the count (words_by_section reads the paper only); the entry
+# below admits rows that record what is added to Appendix E and why.
+"Appendix E" = 0
+# And Appendix F (WP30: the cost model and what the case leaves out).
+"Appendix F" = 0
+# The same for Appendix B (WP28 S-10).
+"Appendix B" = 0
+# And Appendix A (WP35: the HoroPCA passage and its table).
+"Appendix A" = 0
+# And Appendix C (WP35 amendment 1: the HoroPCA comparison as a tested hypothesis).
+"Appendix C" = 0
+# And the top of the supporting material, before Appendix A (its audience line).
+"Supporting material" = 0
+# And Appendices D and H (WP57a: the Job blocks cut).
+"Appendix D" = 0
+"Appendix H" = 0
+# And Appendix G (WP57d: assumptions, limitations and open questions).
+"Appendix G" = 0
+
+# Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
+# Each row: date, section, words_added, job, reader.
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 27
+job = "says in plain words what the invariant value is and why it is called invariant, before the first definition uses it"
+reader = "the trade-study practitioner meeting the definitions cold"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 57
+job = "narrates why the logarithm of V is read as an energy (a potential, a level relative to the reference surface, path-independent) and what it is not, before the term is defined"
+reader = "every reader of the definitions; the convex-optimization reader needs the analogy marked as one"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 19
+job = "says that several trade-offs active at once are a sum of such terms, before the posynomial is defined"
+reader = "the trade-study practitioner"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 20
+job = "says in words what the two temperatures do, before they are defined"
+reader = "the trade-study practitioner and the machine-learning reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 28
+job = "says what the chart separates, with distance in the register's sense only, before the chart is defined"
+reader = "the trade-study practitioner and the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 10
+job = "keeps the main-results list complete by naming the soft-fit certificate that WP17 added"
+reader = "the reader who stops at the introduction"
+
+[[raise]]
+date = "2026-11-09"
+section = "Methods"
+words_added = 21
+job = "corrects the simplifying assumption on sharp weights, which WP17 made incomplete: a finite kappa now changes the fit"
+reader = "the optimization reader checking the assumptions against the package"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 76
+job = "tells a skimmer what is established and in what order, in two sentences"
+reader = "the reader skimming the mathematics, and the practitioner choosing what to read closely"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 28
+job = "says what the first two boxes are for (the invariant value scales; a shift moves only the offset)"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 29
+job = "says what the next three boxes are (the one-facet fit is a convex program) before they appear"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 35
+job = "says what the fitted numbers mean, in one sentence for two boxes"
+reader = "the practitioner who reads the exponents as trade rates"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 25
+job = "says what the chart and pull-back boxes are for"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 37
+job = "says what the two several-term boxes state, and that the converse of Pareto-efficiency is not claimed"
+reader = "the optimization reader and the skimmer"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 27
+job = "states what the package fits at each term temperature and what certifies a soft fit, the wording WP17 requires of section 6"
+reader = "the machine-learning and optimization readers using the package"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 30
+job = "names the three levels of guarantee of the sharp-weight fit before their four boxes"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 15
+job = "says what the certificate box is for: a second-order test certifies a strict local minimizer of the soft fit"
+reader = "the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 154
+job = "states the soft-fit certificate (L17) as a box in the form of every other result, with hypotheses, sketch and script pointer"
+reader = "the close reader and the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 27
+job = "says what the statuses certified and stationary mean for a soft fit"
+reader = "the user reading a returned fit's status"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 1
+job = "says the stable radius is sufficient and that its tightness is not claimed, as the lemma's docstring does (claims review U09-S02)"
+reader = "the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Reproducibility and your own case"
+words_added = 120
+job = "states in Appendix F.2 that results reproduce exactly in the image of record and agree within tolerances elsewhere"
+reader = "the reader reproducing the paper"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 25
+job = "names the two uses of the workflow, design optimization and configuration management, where the workflow is introduced"
+reader = "the trade-study practitioner deciding whether the workflow is for them"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 58
+job = "frames the case as a worked example of design optimization, says the simulation is the measurement of this loop and that a fielded system's measured attributes would enter the same table and fit"
+reader = "the reader asking what the case does and does not show"
+
+[[raise]]
+date = "2026-11-09"
+section = "Future work and final remark"
+words_added = 20
+job = "names other cases across the engineering lifecycle, configuration management of a fielded system among them"
+reader = "the reader looking for where the workflow goes next"
+
+# Rows: WP11 round 1, the L-A and L-B cells (change requests CR-1 to CR-3). The abstract has its
+# own cap of 200 words (tests/test_paper.py) and stays at 200: the added clauses came out of
+# the space of the kernel clause and the cubesat sentence.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 11
+job = "says once where facet first appears in the body that a facet is a piece of the surface and not a set of designs"
+reader = "the reader meeting facet cold, who read it as a cluster of rows"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 20
+job = "puts the first main result in the glossary's words (the invariant value and the reference surface) in place of an unglossed phrase of the mathematics"
+reader = "the reader who stops at the introduction and is not an optimization specialist"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 30
+job = "adds the main-results item that PCA and the fit are chained (Appendix D.16), a reading and not a result"
+reader = "the machine-learning reader who asked how the method relates to PCA"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 11
+job = "glosses reach at first use: how far the data extend along a direction, their largest score along it"
+reader = "the reader meeting the definitions cold"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 5
+job = "names the two regimes in the regimes figure's caption by what they are (aggressive gains, stock gains)"
+reader = "the reader meeting the regimes figure cold"
+
+# Rows: WP21 D-4 and D-6 (the response to the external assessment, findings A1, A4, A6, A7).
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 12
+job = "names the term-aggregation toggle in one clause in the posynomial definition: sum by default, or mean (WP21 D-4)"
+reader = "the optimization and machine-learning readers using the package's keyword"
+
+[[raise]]
+date = "2026-11-09"
+section = "Methods"
+words_added = 15
+job = "says that a stable fitted direction answers the question the conditioning poses and is not a context-free discovery (finding A7)"
+reader = "the analyst choosing a conditioning"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 33
+job = "states that turning a predicted level into a bounded outcome is the analyst's task, can fail while the fit is certified, and that an out-of-range prediction is reported as invalid and never clipped (finding A6)"
+reader = "the practitioner using propose, predict, check"
+
+[[raise]]
+date = "2026-11-09"
+section = "Discussion"
+words_added = 92
+job = "keeps three claims apart in one paragraph (the certificate, the description of this table, usefulness outside it), and says designed samples are not independent observations (findings A1 and A7)"
+reader = "the decision-maker and the analyst deciding what a certified fit licenses"
+
+# The abstract's own length (tests/test_paper.py::abstract_cap): a target with a tolerance, not a
+# hard cap. The supervisor's ruling of 2026-11-14 17:35 (WP11-decisions.md): "i am currently thinking
+# of 500 word as the target length but with slight under or overshot okay". The tolerance is five
+# percent (25 words); the bound is cap plus tolerance. The seven [[abstract.raise]] rows of 2026-11-09
+# and 2026-11-10 are retired: they paid for sentences of the old abstract that no longer exist (the
+# model the table and its reading are views of, the case's finding in the main-results list's words,
+# the outer-edge picture, the energy differential gloss, PCA run on the chart, the monomial term gloss).
+
+[abstract]
+cap = 500
+tolerance = 25
+
+# Rows: PM-BRIEF ruling 2 (Theorem 11, descent): cell and facet kept apart.
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 20
+job = "says once in the descent theorem that a cell is a set of rows and a facet a piece of the surface, one cell per facet, and names the cell a row is reassigned to"
+reader = "the reader who took facet for a cluster of rows in the descent statement"
+
+# Rows: PM-BRIEF ruling 3 (claims U09-C038 and U08-C040). The margin sentence gains the count of
+# designs within the band of a seam; the L11 sketch's narrowed sentence is shorter, so the net is 2.
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 2
+job = "replaces a few designs with the generated count of designs within the band of a seam, of all the designs"
+reader = "the reader judging how much a margin below the band matters on this case"
+
+# Rows: WP11 round 1b, depth B (CR-3, CR-6, CR-7, CR-8) and claim U05-C009.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 16
+job = "says beside the negative what the fitted reference surface is for: the level every design's position and level and each facet's elasticities are read from (CR-6)"
+reader = "the skimming reader who understood the negative and not the use (3 of 6)"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 23
+job = "says where facet first appears in the statements that a facet is a piece of the surface and its cell the designs whose largest term it is (CR-3)"
+reader = "the skimming reader who read a facet as a set of designs"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 10
+job = "says the band's weight clause in the fit's own words and cites the lemma step L5.25 that backs it (CR-7, U05-C009)"
+reader = "the reader who did not know why a design weighs anything (3 of 6)"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 11
+job = "gives beta one name, the reach, in Definitions 2 and 7, and says the facet share counts the rows of a facet's cell instead of dominates (CR-8)"
+reader = "the reader who could not tell whether the fitted offset and the reach are one quantity"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 51
+job = "says what the facets give that a clustering with per-cluster correlations does not: fitted exponents as elasticities and a level for every design, the model kept apart from the association figures"
+reader = "the sceptic deciding whether facet separation is more than clusters with different correlation structure"
+
+# Rows: vocabulary fixes of the P3 re-triage (WP10 Amendment 4 R-36): each puts the glossary's term
+# (fitted reference surface, supporting envelope, fit temperature) in place of a synonym.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 3
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 4
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 4
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 2
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Discussion"
+words_added = 1
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+# Rows: WP19 placements (4f81a4ea:work-packages/WP19-figure-review.md, "Ready for placement"): each figure's
+# caption, its three lines (shows; does not show; good for) and the sentence that refers to it.
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 117
+job = "captions the n-lemma figure (WP19 P-1): how a facet's exponent vector sits on the simplex and which face names its n-lemma"
+reader = "the reader meeting n-lemma as a word and wanting the picture"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 64
+job = "says what the n-lemma figure shows, does not show and is good for (the figure-review rule, WP19 P-1)"
+reader = "the reader deciding what to take from the figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 10
+job = "refers to the n-lemma figure from the text after Definition 5 (WP19 P-1)"
+reader = "the reader of the definitions"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 192
+job = "captions the assembly view and the behavioural view of the cubesat model (WP19 P-2, P-3): parts and configuration variables; requirements, traded metrics and their sources"
+reader = "the modeller mapping the case onto a system model"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 124
+job = "says what the two model views show, do not show and are good for (the figure-review rule, WP19 P-2, P-3)"
+reader = "the reader deciding what to take from each view"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 14
+job = "refers to the two model views from the text of Section 8 (WP19 P-2, P-3)"
+reader = "the reader of the case construction"
+
+# Rows: WP19 P-4 to P-10 (19c, 19d): the three lines under each kept figure, the new captions; the
+# chart and predict-check figures and their captions left the body (cuts, no row).
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 62
+job = "says what the temperature figure shows, does not show and is good for (the figure-review rule, WP19 P-4)"
+reader = "the reader deciding what to take from the temperature figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 132
+job = "says what the K = 1 plane, the K = 3 association and the regimes figures show, do not show and are good for (WP19 P-5, P-8, P-9)"
+reader = "the reader deciding what to take from each case figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 24
+job = "new captions: the plane's line is a slice of the surface at the median of the other metrics, association is the Pearson correlation of the log-metrics, w is the fitted exponent (WP19 P-5, P-8, P-9), net of the two removed figures"
+reader = "the reader who read the plane as the whole surface and asked what association means"
+
+# Rows: WP19 P-6 revised and P-7 revised (the supervisor's verdict on Figures 3 and 4): the K = 3
+# planes redrawn without facet colouring and the chart redrawn as position against level, both
+# placed as static figures with the review's captions and their three lines.
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 86
+job = "captions the redrawn K = 3 planes (WP19 P-6 revised): the black line is the surface in a slice, one straight segment per facet, the other metrics held at a median, the discrete bands of the bottom panel, net of the caption it replaces"
+reader = "the reader who took a facet for a group of designs"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 55
+job = "captions the chart redrawn as position against level (WP19 P-7 revised): the surface is the flat line log V = 0 and a design's level is read apart from its position"
+reader = "the reader asking what the chart separates"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 106
+job = "says what the K = 3 planes and the chart show, do not show and are good for (the figure-review rule, WP19 P-6 and P-7 revised)"
+reader = "the reader deciding what to take from each case figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 18
+job = "the K = 3 paragraph refers to the chart figure and says what the planes show (the surface bending where facets meet) in place of 'their envelope' (WP19 P-6 and P-7 revised)"
+reader = "the reader of the case analysis"
+
+# Row: WP19 principle check (WP19-decisions.md, "Paper Figures 5 and 6"): the association captions
+# name their cells as analysis of the designs assigned to each facet; the drawing is kept.
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 28
+job = "the K = 3 association and regimes captions name each heatmap as an analysis of the designs assigned to a facet (its cell) and not of the model (WP19 principle check, Figures 5 and 6)"
+reader = "the reader who took the association cells for the model's structure"
+
+# Row: WP10-decisions.md, "The position on the proof scripts, stated in Appendix B" (2026-11-09).
+
+[[raise]]
+date = "2026-11-09"
+section = "Appendix E"
+words_added = 132
+job = "states what the lemma scripts do and do not establish: a substitute for pencil-and-paper derivation between free-form proof and a proof assistant, each step a line the reader can run, and not formal verification, which is said only of the Z3 checks of the case's system model"
+reader = "the reader of Appendix B deciding what a checked step buys"
+
+# Row: P-11 (WP10-decisions.md, "MDAO in the prior art"): the MDAO family enters Table 1 and
+# Appendix G (tables, not counted) and the uses sentence of Section 1 cites it.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 13
+job = "names multidisciplinary design analysis and optimization as the setting of the design-optimization use and cites the family (WP10 'MDAO in the prior art', P-11)"
+reader = "the MDAO practitioner placing the method beside the tools they use"
+
+# Rows: the paper's move onto the data of record (WP23's swap, 2026-11-10; swap-evidence.md, the gate
+# section, part 5). Removed in the same move, net of the rows below (cuts need no row; recorded here):
+# the behavioural caption's dashed clause (no traded metric is left without a requirement in the WP23
+# model) and its "which trades no requirement constrains" (-), the assembly caption's claim that the
+# view draws the ranges (now a pointer to Appendix C.1), the two-attribute view's count from the
+# nondominated sentence, the slew time from the K = 1 and regime sentences (shorter sets), and the
+# heatmap lines' "the exponents hardly depend on it" (the image shows they do).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 142
+job = "the heatmap's caption and three lines of figure review redraw 2: what the top and bottom panels draw, the row order, the white cells and the scale, and no claim that tau does not matter"
+reader = "the cold reader of Figure 1 who must read the grid without the text"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 58
+job = "states the rule that sets the proposer's radius"
+reader = "the reader judging whether the proposals were chosen by a rule or tuned"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 22
+job = "says why one K = 3 term has no association map (too few near-frontier designs) and what the figure then shows"
+reader = "the reader of Figure 5 who sees a panel replaced by a sentence"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 27
+job = "names the metrics of the K = 1 plane and the bottom K = 3 panel's columns and bands, and the term leaders absent at K = 1"
+reader = "the reader matching each plotted axis and term to the text"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 40
+job = "states that two proposals are one configuration and that all three fail the depth-of-discharge requirement, with the reason"
+reader = "the supervisor deciding whether a proposal that fails a model requirement counts as a check"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 39
+job = "explains the behavioural view's MoE and MoP marks where the view appears, and says which supplier draws which of the metrics' lines (seven from the analysis, two from the measured slew) as the image counts them"
+reader = "the reader of the behavioural view who meets the marks and counts the lines"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 5
+job = "gives the duplicate proposal its antecedent and says that the three proposals checked are two designs"
+reader = "the reader weighing how much the check shows"
+
+# Rows: WP24 push 3, the word "facet" leaves the paper's prose (term for the model object, cell for
+# the assignment; WP24-scope-of-work.md, A2, A6, A7). Removed in the same push (cuts need no row;
+# recorded here): the Preliminaries' "A term, a monomial and a facet are one object: ..." and "We say
+# facet for the geometry and term for the algebra" (they explained the old word; the quilt sentence
+# of A6 takes their place, net -2 in "Preliminaries and notation"); "a facet:" in the posynomial
+# definition and the clause "those whose largest term is facet k's" in the share's definition (the
+# cell, defined in the posynomial definition, already says it; -8 in "Definitions"). Added without a
+# row (within the section's ceiling): "monomial" before the body's first "term" (+1, "The decision
+# problem"), "scores ... highest" for "dominates" (+1, "Results"), "the near-frontier designs in that
+# term's cell" for "that facet's near-frontier designs" in the K = 3 planes caption (+3, "Case
+# analysis"). The job row of 2026-11-10 on the proposer's radius no longer names the clause on the
+# typed constant, cut since.
+
+[[raise]]
+date = "2026-11-10"
+section = "Methods"
+words_added = 2
+job = "names the several-term fit as what alternates the weights, where a word swap would say that several terms alternate (WP24 push 3)"
+reader = "the reader who must not take a term for a step of the algorithm"
+
+# Rows of the WP23 close-out (WP23-closeout-scope-of-work.md, D-18; the supervisor's "a sentence or
+# two in the dicussion suffices" and "Keep 0.0085 deg", WP23-decisions.md).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 67
+job = "states the model's four threshold requirements and, plainly, that the baseline configuration fails the pointing-error requirement with the share of designs that pass it, and says where the requirements are read after the fit (Appendix D.17); the figure caption counts eight metrics"
+reader = "the systems engineer who reads the model's requirements and the trade-study practitioner"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 4
+job = "the check section says plainly that the proposals fail the depth-of-discharge requirement and reached the four-metric frontier by spending the battery"
+reader = "the reader of propose, predict, check"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 155
+job = "the generated check reading states spike A's finding on the proposals (the four-metric frontier reached by spending the battery, their batteries and depths of discharge) and the future work, in place of a clause the close-out made untrue; and the two CANDIDATE sentences on the requirements read after the fit, for the supervisor's review (claims C406, C407)"
+reader = "the trade-study practitioner deciding how to use the fit beside a set of requirements"
+
+# Rows: WP11 round 2, the author stream's unit 1 (change requests CR-9 to CR-14 and CR-16). Each
+# generated sentence that grew is listed with the cell that prints it.
+
+[[raise]]
+date = "2026-11-10"
+section = "The decision problem"
+words_added = 14
+job = "places the fitted reference surface at the outer edge of the data, not through its middle, in the first main result, which cites Theorem 1 for the invariant value and Definition 1 for the three objects (CR-9)"
+reader = "the reader of the main results who had the surface fitted through the table"
+
+[[raise]]
+date = "2026-11-10"
+section = "Definitions"
+words_added = 25
+job = "states in the n-lemma definition which set the reading uses: the contending set names the n-lemma, the exponents at the fit temperature give the elasticities, and a member below the participation threshold contends in the limit (CR-12)"
+reader = "the reader deciding which set to report when an outlined metric is grey and an unoutlined one carries 0.02"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 13
+job = "says in Theorem 10 the step from the symmetry of a convex program to the non-convexity of the fit, in L16's words: a fit with distinct terms is lower than the all-equal point (CR-16)"
+reader = "the reader who stopped at the theorem's so"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 57
+job = "says that the fits of record are sharp and defines certified for a sharp fit from the termination record beside the soft definition, with the results that apply to each (CR-14); the generated status sentence (num-certificates) names the kind"
+reader = "the user reading a returned fit's status against the theorems"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 41
+job = "the generated margin sentence (num-margin) ends with the reading of a margin below the band for the three-term split: the certified local optimality covers changes about seventy times smaller than the band, and the contending sets' stability is D.11's (CR-13)"
+reader = "the reader who could not tell whether the margin is good, bad or routine"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 68
+job = "the generated temperature sentence (num-temperature) says what the effective sample size counts and what its value means for the exponents, with the sensitivity (D.5) and the digits that hold (D.11) (CR-10)"
+reader = "the ten readers who stopped on the effective sample size"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 51
+job = "a generated sentence (num-terms-k3) prints what the main text relies on for the term without an association map: its contending set, its leading exponent and its near-frontier count, and the term shares (CR-11)"
+reader = "the reader who met a placeholder where a headline term's reading should be"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 84
+job = "says what the fit can and cannot tell apart between two metrics that move together (convex, not strictly, Theorem 3) and that the regimes are compared with such a pair counted as one; the generated regimes sentence (num-regimes) names the pair with its association and counts it so (CR-12)"
+reader = "the seven readers who called the regimes' difference a swap of names"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 13
+job = "cites in the three-claims paragraph the result that applies to the fit of record's kind: Proposition 3 and Corollary 1 for a sharp fit, Theorem 12 for a soft one (CR-14)"
+reader = "the reader checking the certificate claim against the theorem it rests on"
+
+# WP11 round 2, author unit 2 (CR-17 to CR-22, CR-24 to CR-27, CR-29). Cuts in the same unit, no
+# row: "Case construction" lost 6 (the planted-table lead sentence of Section 8 shortened, CR-24),
+# "Case analysis" lost 10 (num-recovery's repeated "(400 rows, 4 metrics)" and the pointer to the
+# term shares that num-terms-k3 now prints, CR-24 and CR-11).
+
+[[raise]]
+date = "2026-11-10"
+section = "The decision problem"
+words_added = 10
+job = "the generated dominance sentence (num-nondominated) names the four attributes of the view it counts on (CR-25)"
+reader = "the two readers who read the counts three times"
+
+[[raise]]
+date = "2026-11-10"
+section = "The decision problem"
+words_added = 10
+job = "main result 2 says what convexity gives (every minimizer is global) and does not (uniqueness is not claimed) (CR-17)"
+reader = "the three readers who read convex as one answer independent of the start"
+
+[[raise]]
+date = "2026-11-10"
+section = "The decision problem"
+words_added = 14
+job = "main results 5 and 6 name their objects: what composes with what, the termination status read from its record, Q1 to Q4 and the search's monotonicity with their sections (CR-20)"
+reader = "the readers who could not read 'chained' or the sixth item without its sections"
+
+[[raise]]
+date = "2026-11-10"
+section = "Definitions"
+words_added = 20
+job = "one clause where V is defined says that its level curves are hyperbola-like in the metrics, the source of the title's word (CR-29)"
+reader = "the two readers who guessed where the title's word comes from"
+
+[[raise]]
+date = "2026-11-10"
+section = "Definitions"
+words_added = 16
+job = "Definition 2 writes V with its normalization e^{-beta}, so its two halves agree and it matches Theorem 1 (CR-19)"
+reader = "the reader checking Definition 2 against Theorem 1"
+
+[[raise]]
+date = "2026-11-10"
+section = "Definitions"
+words_added = 15
+job = "Definition 3 says what the package's mean aggregation changes (a constant off every level) and what it does not (CR-22)"
+reader = "the three readers who could not tell why the box carries the mean"
+
+[[raise]]
+date = "2026-11-10"
+section = "Methods"
+words_added = 22
+job = "the balanced point is defined in one clause where R1 is stated: the support-weighted mean of the log-metrics, equal on the support of w by Theorem 2 (CR-21)"
+reader = "the two readers who could not find the balanced point defined"
+
+[[raise]]
+date = "2026-11-10"
+section = "Methods"
+words_added = 4
+job = "the change of variables is stated in the direction of L4.23: a geometric program in x = e^w whose convex form is the problem in w (CR-18)"
+reader = "the reader checking the Methods against Appendix B"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 52
+job = "Theorem 2's last sentence glossed in R1's words; step B and unpenalized said in the alternation's words in Theorem 11's hypotheses; one sentence at the section's lead saying where each hypothesis code family is defined (CR-21)"
+reader = "the readers who treated the hypothesis codes as opaque"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 28
+job = "the generated planted-table sentence (num-planted) names each planted table of the case once with its job: the worked example of C.7 with its record in D.8, the twenty tables of D.14 (CR-24)"
+reader = "the three readers who found three planted-data descriptions that do not match"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 85
+job = "a generated sentence (num-elasticity) reads one term's elasticity as a number from its exponents, the thing an association cannot give, and says that term 3's two leading metrics are stepped by the swaps, so its elasticity is read across the swapped parts' alternatives (CR-27)"
+reader = "the readers who asked why not just cluster, and what an elasticity means across a lattice"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 14
+job = "the Candidates paragraph says what a candidate is and where it comes from (CR-24)"
+reader = "the four readers who did not know what a candidate is"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 16
+job = "the proposals paragraph's first sentence says its job: a check of the regressor, not an estimate of a rate (CR-24)"
+reader = "the three readers who asked why three proposals sit in the Results"
+
+# WP11 round 2, author unit 3 (CR-23 and CR-28).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 62
+job = "a generated sentence (num-k-temperatures) where the K = 3 fit is introduced gives each fit of record's temperature and band, says that each K selects its own by the one rule, and which band the section's figures and the association reading use (CR-23)"
+reader = "the five readers who could not reconcile the bands or tell which temperature produced the chart"
+
+[[raise]]
+date = "2026-11-10"
+section = "Methods"
+words_added = 14
+job = "the conditioning paragraph names where the case's rule is (Appendix C.4) and where the guide is (the docsite's Conditioning page) (CR-28)"
+reader = "the three readers who asked for a house rule for conditioning"
+
+[[raise]]
+date = "2026-11-10"
+section = "Reproducibility and your own case"
+words_added = 15
+job = "Section 11 names the docsite page to start from (Getting started: install and a first fit) and that the user guide takes over (CR-28)"
+reader = "the three readers who could not start from the text"
+
+# WP11 round 2, author unit 4: the figure stream's captions and three lines (WP19 round 2, CR-30 to
+# CR-34) placed. Cut, no row: Figure 1's caption lost 13 (the clause on the printed n-lemma, which
+# warned of a disagreement the figure does not show, CR-34).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 22
+job = "Figure 4's caption states the temperature rule as applied (within 0.01 of the target, the convention of Section 5) and glosses 'primary regime' at its first use (CR-31)"
+reader = "the ten readers who asked why 0.1 and the two who met 'regime' before Figure 9"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 87
+job = "Figure 5's caption and lines say what the two greys are (the designs near the slice's median, which stop at the line) and that the slope is the elasticity, for the redrawn figure (CR-33)"
+reader = "the four readers who could not see the outer edge in the slice"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 105
+job = "Figure 6's caption and lines say what the panels show as drawn (each term's own line in its own pair, no panel with two terms meeting) and what the two streaks are (torque-limited slews, one per wheel class), for the redrawn figure (CR-32)"
+reader = "the five readers who saw unnamed streaks and the two who saw no kink"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 78
+job = "Figure 7's caption and lines name the horizontal axis (the first principal direction of the near-frontier chart, a reading and not the model) and the band (the K = 1 band at every K), for the redrawn figure (CR-30, CR-23)"
+reader = "the eight readers who took nothing from the horizontal axis"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 10
+job = "the K = 3 paragraph says what Figure 6 shows as redrawn (each term's own line in its own pair), not the bending it no longer draws"
+reader = "the reader who follows the sentence to the figure"
+
+# WP11 round 2, author unit 5 (the third paper author): CR-15 said truthfully, the sceptic's
+# register, CR-26's second difference in Table 1.
+
+[[raise]]
+date = "2026-11-10"
+section = "Prior art"
+words_added = 40
+job = "the DEA paragraph says what the title's word means here (the level curve of V, Section 4) and that it is not Färe, Grosskopf and Lovell's hyperbolic graph measure; Table 1's DEA cell carries both differences (global exponents, not per-unit weights; a band, not extreme units; CR-26)"
+reader = "the sceptic who knows the DEA literature and reads the title as the hyperbolic measure"
+
+[[raise]]
+date = "2026-11-10"
+section = "Definitions"
+words_added = 19
+job = "Definition 6 says what the exact-maximum fit to a cell is as the package computes it (the term refit f_k on the cell's rows alone, centred on the cell's mean), so that it no longer reads as the own-rows refit Section 6 calls ill-posed (CR-15)"
+reader = "the reader who holds Definition 6 against the sentence after Theorem 10"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 80
+job = "Section 6.2 says what the labels are (the alternation's weights at infinite term temperature, the limit of Theorem 10's soft weights, an implementation choice and not an assumption), that the offsets and the soft fit see every design, and that the cell is read after the fit; the sentence after Theorem 10 says which refit is ill-posed (the plain one-term fit on a cell) and which is of record (CR-15)"
+reader = "the reader who held 'not part of the fit' against equation (2) and Theorem 11"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 42
+job = "Theorem 2's hypothesis says what step L3.9 uses (w_j > 0 at the finite-temperature minimizer, R1's relation there), since R1's exact-maximum geometry does not imply it; Theorem 12's statement says which face its tangent space belongs to (positive-multiplier bounds fixed, the rest free, a space containing the critical cone), so no strict complementarity is assumed, and its sketch names the derivation steps (L17.12, L17.13) and the exact instance as their check, not as the derivation (the maths-check unit of WP11 round 2, items (b), (c), (d))"
+reader = "the mathematician who checks each box against the step it cites"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 47
+job = "the sentence after the conditioning says that the conditioning of record centres each log-metric (the standard scaler), so that at K = 1 the fit's objective of equation (2) is that of equation (1), and that on uncentred log-metrics the two differ by a linear term and need not share a minimizer (the maths-check unit of WP11 round 2, item (a); WP28's narrowing before the inventory)"
+reader = "the mathematician who sets K = 1 in equation (2) and holds it against equation (1)"
+
+[[raise]]
+date = "2026-11-10"
+section = "Methods"
+words_added = 15
+job = "R1 is stated as the exact-maximum (tau = infinity) condition it is, and its relation at the fit temperature is named as the hypothesis Theorem 2 states (L3.9), so a reader does not carry R1 to the finite-tau minimizer (WP11 round 2, item (d))"
+reader = "the mathematician who found R1 stated for the tau = infinity envelope and invoked in Theorem 2 at finite tau"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 25
+job = "Theorem 11 hooks L15's second result: with unique term minimizers and a fixed tie rule the sharp alternation stops within K^N + 1 iterations (L15.17 to L15.22), and says that the stop is not claimed stationary (WP11 round 2, item (e))"
+reader = "the mathematician who held finite termination of the sharp alternation to be elementary and distinct from Q1"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 6
+job = "Theorem 11's box says what step B's refit is in Section 6.2's words (each term refitted by f_k, its support over all rows less its cell's mean), replacing 'on its cell', which three readers took for a one-term fit on the cell's rows (WP28 CR-35)"
+reader = "the depth-B reader who reads the box and not Section 6.2's first sentence"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 7
+job = "Theorem 11's termination sentence says that Theorem 3 does not supply the unique term minimizers it assumes, and states finite termination without the K^N + 1 count (which stays in L15), so the count is not read as a practical bound (WP28 CR-36)"
+reader = "the mathematician who set 'unique term minimizers' against Theorem 3 and read the count as empty"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 20
+job = "the K = 1 sentence says that R1 holds on both regimes (the exact-maximum optimum is one point, so the support is not a solver's choice), the check the test at 4c9416c makes and three readers could not find stated (WP28 CR-37)"
+reader = "the mathematician who asks whether R1 was checked on the case before reading the contending set"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 26
+job = "the comparison of equations (1) and (2) at K = 1 (equal on centred log-metrics, as the case's conditioning makes them; otherwise differing by the linear term) moves to Section 6.2 after f_k is defined, the first place both equations stand; it leaves Case construction, which falls by 38 words (a placement, net -12; WP28 CR-38)"
+reader = "the mathematician who meets equation (1) and wants its relation to equation (2) where both stand"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 1
+job = "the effective sample sentence gives one number for one quantity: 'about that many' replaces the count rounded to five, which five readers read as a second, disagreeing number (WP28 CR-39)"
+reader = "the depth-C reader who compared 23.1 with 'about 25'"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 6
+job = "Figure 3's caption says which way each measured metric goes (the settling time directly to the table, the control effort through the analysis) and that the analysis returns seven of the eight, so its counts agree with the box read from the model (WP28 CR-41)"
+reader = "the reader who could not reconcile the caption's counts with the box's '7 of 8'"
+
+# Cuts: WP28 (the supervisor's rulings on the cut list, WP28-decisions.md).
+# Each row: date, section, words_removed, no_longer_did, authority.
+
+[[cut]]
+date = "2026-11-10"
+section = "Case analysis"
+words_removed = 103
+no_longer_did = "Figure 9 (the two regimes' associations and contending sets) repeated what Appendix D.4 tabulates, and no sentence of the abstract or Section 1 needs the comparison; Section 9 points to D.4"
+authority = "the supervisor, S-3: 'Cut to a pointer'"
+
+[[cut]]
+date = "2026-11-10"
+section = "Case construction"
+words_removed = 10
+no_longer_did = "Figure 4's caption pointed to the baseline regime as the second panel of a figure that is gone"
+authority = "the supervisor, S-3: 'Cut to a pointer'"
+
+[[raise]]
+date = "2026-11-10"
+section = "Appendix B"
+words_added = 153
+job = "the supervisor's word on D.12 (S-10, WP28-decisions.md): 'keep and clarify why it matters ... we do need to provide a concise explanation for why this is relevant and how it was computed. someone who runs into issue needs a way to inspect the conditioning of their problem since trouble shooting may involve feature engineering work': D.12 says why the conditioning of the exponents matters, how the number is computed, and how a reader inspects their own problem"
+reader = "the discerning reader and the external reviewer who asked for the diagnostic, and the user whose own fit shows a small value"
+
+[[raise]]
+date = "2026-11-10"
+section = "The decision problem"
+words_added = 14
+job = "the main-results list carries the second item of the key's S8, that the method claims nothing as novel and does not replace PCA or Pareto analysis, which five of six depth-B readers of the third WP11 round did not find stated (WP28-retest.md; the driver's choice of option (a))"
+reader = "the reader who stops after the main-results list and needs to know what the method does not claim"
+
+[[cut]]
+date = "2026-11-11"
+section = "Appendix B"
+words_removed = 3
+no_longer_did = "D.12's first paragraph read the small value as weakly identified exponents, which the register's backing for the flat-direction claim does not carry (WP25-4 T-3)"
+authority = "WP25-4 instance 4, row T-3 (WP25-decisions.md)"
+
+[[cut]]
+date = "2026-11-11"
+section = "Appendix B"
+words_removed = 1
+no_longer_did = "D.12's second paragraph read a small value as the data fixing the exponents loosely (a reading the definition of curvature alone does not back), and the sentence after it said the case shows both; net one word (the driver's decision, cd2aad2)"
+authority = "the driver, cd2aad2"
+
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 201
+job = "the noise-ridge corollary (L20) between L6 and L7, one box with its sketch and script pointer, and the lead-in sentence of L6 and L7 naming it: Gaussian noise on the conditioned metrics adds a ridge to the objective and moves the exponents to first order by a stated amount that the conditioning bounds, the result that touches the paper's reading of the exponents; the supervisor, WP29-decisions.md (the glance): 'okay this sounds like a good addition'"
+reader = "the reader of the main-results list who asks, after the exponents are elasticities, how far noise of a given size moves them, and the practitioner whose own fit shows a small `conditioning_`"
+
+[[raise]]
+date = "2026-11-11"
+section = "Methods"
+words_added = 14
+job = "WP29 review, triage of the expert (P9) and novice (P10) reads (4f81a4ea:work-packages/WP29-review/P9-P10-triage.md, C1, C6, R1 and S10), net of the cuts named here: R1 is made well-formed (an optimal dual weight vector; the facet of the convex hull of the rows) and loses its subgradient sentence and its finite-temperature remark, which the axiom ledger and Appendix B carry; R3, used by Corollary 1 and listed nowhere, gets its clause; the sentence on zeros says what the fit does with a row that has a zero metric; (vi) loses a convexity-of-later-optimization clause no script backs"
+reader = "the expert reader who checks the hypotheses of Corollary 1 and Theorem 2 against the scripts, and the novice who met R1 before p existed"
+
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 129
+job = "WP29 review, triage of the expert (P9) and novice (P10) reads, net of the cuts named here: the opening roadmap of L-numbers (each group's lead-in names the same results) and the L12 statement of the duality gap at tau = infinity with its sketch clause are deleted, and the F-codes leave the boxes for one clause of the lead-in; what is added narrows or backs the boxes (Corollary 1 to interior fits and to the expected noisy objective; L11 to weak efficiency with its two words defined; L16 (i) to an instance; Corollary 2 to its true hypotheses; the margin sentence to score units), defines the symbols the boxes used undefined (LSE and LME in L5, the fixed-weight objective in L16, slack, accepted), and mends the thread of L8 (the chart (Z, log V) is a bijection)"
+reader = "the expert reader (P9) who checks each box against its script, and the novice reader (P10) who stopped on undefined symbols and on two numbering systems; the balance rule of reader-grid.md holds, no box gained a hypothesis the novice must follow"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case analysis"
+words_added = 151
+job = "the two-panel ternary figure of the cubesat in the paper (WP28-decisions.md, S-5 and the assistant's call on the two-panel figure): the citing paragraph, the caption (one sentence) and the Shows line; the supervisor, S-5: 'the real data one belongs in the paper and in the documentation', and, adding the fourth plot: 'and actually use the 4th plot too place 1 and 4 side by side to show multiple active trade-offs'"
+reader = "the reader of Case analysis who has read the elasticity and wants to see two different pairs of metrics trading in two regions each, three metrics at a time, from the real data"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case analysis"
+words_added = 11
+job = "Figure 5's caption says what an empty panel means (the supervisor's 'leaving the first term off the picture feels wrong to me', WP19-decisions.md): the sentence 'has no map; a sentence in its place says so' (17 words) becomes 'is drawn without cells, and a line in its panel gives the count: too few designs for a correlation' (28 words); the panel of the term with too few near-frontier designs is now drawn like the others"
+reader = "the reader of Figure 5 who sees a panel with a title, metrics and outlines but no colours"
+
+[[raise]]
+date = "2026-11-11"
+section = "Methods"
+words_added = 14
+job = "WP29 stage 6, the assistant's call on triage C1 (WP29-decisions.md): R3 states strict complementarity and the support's tangent space (the sum-zero vectors that vanish where w does) in place of 'every exponent positive', because the case's fits of record carry zero exponents and L20 now proves the shift on the support (steps L20.52 to L20.63)"
+reader = "the expert reader who checks R3 against the script and the practitioner whose fit has zero exponents"
+
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 16
+job = "WP29 stage 6, the assistant's call on triage C1: Corollary 1 states P as the projector onto the sum-zero vectors that vanish where w does (the sum-zero projector when every exponent is positive) and that the zero exponents stay zero, the claim L20 proves on the support under strict complementarity"
+reader = "the expert reader who checks the box against the script, and the practitioner applying the shift to a fit with zero exponents"
+
+# Figure 1 simplification (the supervisor's ruling, WP19-decisions.md, "The n-lemma schematic (Figure 1)").
+[[cut]]
+date = "2026-11-11"
+section = "Definitions"
+words_removed = 14
+no_longer_did = "Figure 1 drew the planted exponent vectors as open rings beside the fitted ones; the caption's clause and the 'Shows' line's clause (7 words each) said the fit recovers them, and the recovery statement stays in Appendix D.14, now cited from Section 9"
+authority = "the supervisor: 'i don't think you ned the extra circle denoting planted data'"
+
+# WP29 acceptance rider: the reads2 wording items on Corollary 1 (net one word).
+[[cut]]
+date = "2026-11-11"
+section = "Results"
+words_removed = 1
+no_longer_did = "Corollary 1 said 'result first order' in its hypotheses line and again 'to first order' in its statement, and its sketch said the Hessian and gradient are 'set against each other'; the box now names the noise on the log-metrics, the noise-free fit, A5, and 'to first order' at 'lowers', net one word"
+authority = "WP29 acceptance rider (WP29-decisions.md, Acceptance), reads2 returns a2, b2, d2"
+
+# WP30 cascade: the generated sentences of Results on the regenerated record (thirteen metrics, 3,000
+# designs per regime) run one word longer than the ceiling set on the earlier record.
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 1
+job = "the K = 1 and K = 2 and 3 generated sentences of Results name the regenerated record's contending sets and counts (seven metrics at K = 1 where five were named), one word beyond the ceiling set on the earlier record"
+reader = "the expert reader checking the case's numbers of record against the tables"
+
+# WP30 cascade, the choice of K in the case (WP30-decisions.md, "The choice of K in the case"): the
+# several-term reading is told at the K the package's own choosing-K checks pick (K = 2); the K = 3
+# narrative leaves the body, and the next K stays as one clause that says where a thin term appears.
+[[raise]]
+date = "2026-11-11"
+section = "Case analysis"
+words_added = 106
+job = "the generated sentence num-choosing-k states the K the package's choosing-K checks pick for the case (K = 2) and why: the drop in the mean slack, the thinnest term's share at the pick and at the next K, the movement under resampling, with Appendix D.15's table behind it"
+reader = "the reader who asked whether three terms was a bad choice for the case, and the practitioner choosing K for a table of their own"
+
+[[raise]]
+date = "2026-11-11"
+section = "Appendix B"
+words_added = 88
+job = "D.15 says which three checks choose K for the case, at which temperature each is read and how the K is read from them, in place of the fixed-temperature note it replaces"
+reader = "the reader checking the main text's K against the checks it names"
+
+[[cut]]
+date = "2026-11-11"
+section = "Case analysis"
+words_removed = 138
+no_longer_did = "the K = 3 narrative: the sweep sentence (mean slack at two sets of temperatures, the sizes of three terms' contending sets), the K = 3 term-share sentence, the planes caption's sentence on the torque-limited streaks of a panel no longer drawn, and the clause that left three terms to the analyst; the K = 2 text says the terms' sets and shares in one sentence and the choice in the raised one"
+authority = "the supervisor: 'if we were to do only 2 would we get the other 2?' (WP30-decisions.md, The choice of K in the case)"
+
+# WP30 cascade, the case model's entry into the body (the standing order of 2026-11-11, 09:40: the body gets
+# the sentence or two the demonstration needs, the detail goes to Appendix C). Each row is one such sentence.
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 44
+job = "says that two of the thirteen traded metrics, the power margin and the battery peak power ratio, enter no contending set in either regime at K = 1 to 3 and why (each is nearly one axis with a metric that does), the sentence the no-floating-requirements ruling promised the body"
+reader = "the practitioner who sees thirteen metrics and two requirements that carry no exponent, and the space-industry reader checking that nothing is hidden"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 58
+job = "states the cost coverage in one sentence: the unit cost and the fleet cost price the bus, the attitude-control parts, assembly and test, and launch, leave out the payload, communications and operations, so are a lower bound, and the covered fleet cost is held under 6,000,000 USD inside the sponsor's full budget of 8,000,000 USD (the supervisor, 2026-11-11, 10:30)"
+reader = "the new-space systems engineer and the executive who read a cost figure and ask what it covers"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 25
+job = "says the case's designs are a random draw of 3,000 per regime and that the method assumes nothing about how designs are drawn (the supervisor, 2026-11-11, 12:25: 'this paper is about decision analysis and is not assuming iid samples or really anything about the sampling strategy')"
+reader = "the reader who asks whether the sample size or the sampler is part of the result"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 16
+job = "names the fleet size as a design variable of the case (a count that belongs to no part and is not drawn in the assembly view) and corrects which traded metrics are measures of effectiveness now that the unit cost and the fleet cost are traded"
+reader = "the reader mapping the case's design variables and metrics onto their own system model"
+
+[[raise]]
+date = "2026-11-11"
+section = "Search of the design space (preliminary)"
+words_added = 31
+job = "says in a sentence that the method assumes nothing about how a table's designs were drawn and that how a sampling strategy enters the search loops is not studied here (the supervisor, 2026-11-11, 12:25: 'we eventually need to think about how sampling strategies play into the broader optimization loop but we can reduce that to a sentence or two in the section about search')"
+reader = "the reader asking where sampling strategy belongs in the optimisation loop"
+
+# WP30 cascade, Appendix C: the detail of the case model for the thirteen metrics and the cost coverage
+# (the standing order of 2026-11-11, 09:40: the body keeps a sentence or two, the appendix the detail).
+[[raise]]
+date = "2026-11-11"
+section = "Appendix F"
+words_added = 343
+job = "C.8 states how the unit cost and the fleet cost are priced (part prices, the fleet curve, launch), what the cost covers and leaves out, the two budgets, and what the case as a whole leaves out, so the body's one-sentence coverage and its claim of a demonstration rest on a checkable statement"
+reader = "the new-space systems engineer and the executive judging whether the case is realistic enough and honest where it is a toy"
+
+[[cut]]
+date = "2026-11-11"
+section = "Appendix F"
+words_removed = 20
+no_longer_did = "the job's two bullets restated the section list the reader is about to see and the main text's length ('about 300 words', which was no longer true); one bullet now names what the main text keeps and what the appendix carries"
+authority = "the triage's offset for the new paragraph (WP30-rounds/persona-baseline/triage.md, Class 3 texts)"
+
+# WP30 cascade, the figure loop on Figures 6 and 7 (WP30-rounds/chooseK/cold-reads/cold-read-figs-6-7-8.md;
+# WP30-rounds/paperwp30/figure-loop.md).
+[[cut]]
+date = "2026-11-11"
+section = "Case analysis"
+words_removed = 259
+no_longer_did = "the K = 2 planes figure (then Figure 6), its Shows and Does-not-show lines and the sentence that introduced it: its top panel drew term 1's pair as a lattice of tracker-grade and wheel-class combinations, which reads as no trade-off the designs trace, and its bottom panel was the K = 1 plane (Figure 5) again; the chart figure's caption also lost a clause naming which way the axis improves, which had gone stale (the axis names the metrics itself), and the elasticity sentence its pointer to the removed panel"
+authority = "the figure loop: cold reader's returns on the K = 2 planes figure (the top panel not a trade-off, the bottom the same plane as Figure 5) and the supervisor's standing order that a figure that cannot be made clear is assessed for removal (PM-BRIEF.md, 'Stuck means assess removal')"
+
+# No floating requirements applied to the two cost requirements: the body's requirements sentence names
+# all six and Appendix D.17 reads them (WP30-decisions.md, 'No floating requirements').
+[[cut]]
+date = "2026-11-12"
+section = "Case construction"
+words_removed = 3
+no_longer_did = "the sentence counted four threshold requirements and left the two cost limits out of what Appendix D.17 reads after the fit; it now names all six in fewer words (the cost coverage sentence says 'the two costs' for 'the unit cost and the fleet cost')"
+authority = "the supervisor's 'no floating requirements' (WP30-decisions.md, 2026-11-11, 12:00), applied to the unit-cost and fleet-cost limits"
+
+# The design-sets block names what it applies: the four performance thresholds (the supervisor's, 2026-11-12).
+[[cut]]
+date = "2026-11-12"
+section = "Discussion"
+words_removed = 1
+no_longer_did = "the sentence said 'the requirements' for the four performance thresholds the constrained set applies, and repeated 'requirements' after the pointer; it now names the four performance thresholds and says 'them' (Appendix D.17 carries the reason the two cost limits are not among them)"
+authority = "the PM's brief for the design-sets block (the four performance thresholds named; the cost limits read after the fit)"
+
+# WP33 wayfinding, the paper's rows (4f81a4ea:work-packages/WP33-scope-of-work.md R-2, R-5; notes/user-journeys.md).
+# Each deletion states what the content no longer did; no row adds words.
+[[cut]]
+date = "2026-11-12"
+section = "The decision problem"
+words_removed = 11
+no_longer_did = "the Results list's sixth item opened with 'Numerical: the termination status a fit reaches, read from its record', which three P4 cells stopped on and which Section 6 already carries (the stopping declaration, its Numerical sentence, item 4's 'stopping declaration', Appendix D.8); the item now names only the open questions ('both', which paired the two kinds, went with it), and the badge the list needs for the findings that are not derived moved to the case item, whose finding is observed (one word)"
+authority = "WP33 journeys note, placement 8 (P4 cells; the item is P5's and Section 6 holds the certificate)"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art"
+words_removed = 60
+no_longer_did = "the DEA paragraph listed the super-efficiency variant, Malmquist indices and the weights restrictions and protocols of practice, which Table 1 and Appendix G's DEA entry already carry and which a sceptical reader skimmed past on the way to how this work differs; the Lineage paragraph's tradespace sentence repeated Table 1's tradespace row and Appendix G's entry. The citations stay in Appendix G and the nocite list"
+authority = "WP33 baseline wayfinding read, P6 (the DEA and Lineage citation walls), offsetting the stochastic-frontier line added to Appendix G"
+
+[[cut]]
+date = "2026-11-12"
+section = "Preliminaries and notation"
+words_removed = 9
+no_longer_did = "the section opened with the reader sentence ('We assume multivariate calculus, linear algebra and convex optimization'), which P5 found only after reading to Section 3; the sentence now ends Section 1's Organization paragraph, on the first screens (moved; the abstract is the supervisor's hand and is unchanged; the +9 is the raise row of the same date in 'The decision problem')"
+authority = "WP33 baseline wayfinding read, P5 (no reader statement on the first screen)"
+
+[[cut]]
+date = "2026-11-12"
+section = "Results"
+words_removed = 3
+no_longer_did = "the Corollary 1 box's hypothesis line carried two inherited-result codes with glosses (I9 Cauchy-Schwarz, I18 the pseudoinverse), which the novice cannot place and the expert reads in Appendix B, L20 (AXIOMS_USED); the line keeps the assumptions and R3, and the one gloss the formula needs, of the superscript plus, sits where the formula is"
+authority = "WP29 triage C4 and C6 (P9 keeps the detail, P10 keeps the thread); WP33 journeys note, placement 9"
+
+[[raise]]
+date = "2026-11-12"
+section = "The decision problem"
+words_added = 9
+job = "the reader sentence ('We assume multivariate calculus, linear algebra and convex optimization'), moved from the opening of Section 3 to the end of the Organization paragraph, where the route through the paper is stated and a reader who may stop meets what is assumed; it replaces the abstract placement WP33's first unit made and the correction undid"
+reader = "the reader who stops at the first screens (P5: found the statement only at Section 3)"
+
+# The P7 and P8 final reads, triaged (WP30-rounds/persona-final/triage.md): what each omission does to a reading.
+[[raise]]
+date = "2026-11-12"
+section = "Appendix F"
+words_added = 229
+job = "C.8's list says, item by item, what a flight-hardware reader may not take from the case: the pointing error is a loop-and-tracker figure, the momentum check is one slew, the launch slot is not priced (understated 3.1 to 4.2 times at a fleet of one), the horizon and slew law are choices, the wings are rigid and the mass axis a trim on a fixed bus; the body keeps one clause"
+reader = "the systems engineer judging whether the case is honest where it is a toy"
+
+[[raise]]
+date = "2026-11-12"
+section = "Appendix B"
+words_added = 45
+job = "D.17 states that the excess column puts the price of meeting a requirement in currency (USD per satellite, USD per fleet, the mass as USD of launch), the one conversion the program reader can negotiate with; the bands stay beside it"
+reader = "the executive weighing which requirement is dear"
+
+[[raise]]
+date = "2026-11-12"
+section = "Appendix B"
+words_added = 52
+job = "D.7 says what the constrained fit reads of the hand-named candidates (two sit beyond the thresholds-met surface; none meets all four thresholds), a result the candidate table's last column holds and no sentence read"
+reader = "the executive reading the case for the decision it supports"
+
+# WP35 (work-packages/WP35-decisions.md, Q1 to Q4): HoroPCA acknowledged and distinguished, "hyperbolic"
+# defined once. Section 2 nets to zero: the paragraph is paid for by the two caveats it replaces and by
+# detail that Table 1 and Appendix G already carry.
+[[raise]]
+date = "2026-11-12"
+section = "Prior art"
+words_added = 119
+job = "one paragraph names HoroPCA as the closest existing analog in setting and the farthest in what is estimated, says what this work borrows from PCA and from scikit-learn, and reports that the authors' code recovered the planted exponents only where the generator made them the direction of largest spread; and a one-sentence pointer says where the title's word is defined"
+reader = "the reader who knows hyperbolic PCA and asks whether this work is a PCA or a hyperbolic method"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art"
+words_removed = 51
+no_longer_did = "two caveats against the title's word (the Färe, Grosskopf and Lovell graph measure after the DEA paragraph, and 'unrelated to hyperbolic PCA' in the Lineage paragraph), each a definition by negation in a different place; the glossary entry, Appendix A and the Definitions sentence now say the word once"
+authority = "WP35 Q3 (a), the supervisor's request to limit the places that caveat the word"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art"
+words_removed = 48
+no_longer_did = "the DEA paragraph's last three sentences (larger-is-better metrics with homogeneity, one convex program and K refits with coordinates and a pull-back, and the connecting sentence) repeated the DEA row of Table 1 and the DEA entry of Appendix G, which print the same distinctions word for word"
+authority = "WP35 build, offsetting the HoroPCA paragraph (length is a regularizer)"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art"
+words_removed = 20
+no_longer_did = "the Pareto paragraph's clause on what the fit returns (an exponent vector per term, a band, an effective sample size) repeated the Pareto row of Table 1 and Appendix G's entry"
+authority = "WP35 build, offsetting the HoroPCA paragraph (length is a regularizer)"
+
+[[raise]]
+date = "2026-11-12"
+section = "Appendix A"
+words_added = 659
+job = "the full version of the HoroPCA distinction: the solver contrast, what HoroPCA does that this work does not, the plain statement that the embedding was ours and not natural for the data, the reading of the generated results table, and the limits of the comparison with the spike record cited; the numbers sit here so that Section 2 holds none"
+reader = "the expert who asks what running the closest existing analog on the paper's tables showed"
+
+# WP33 R-3: the paper's whom-it-is-for sentence, net neutral in Section 1 (a raise and a cut, no net raise).
+[[raise]]
+date = "2026-11-12"
+section = "The decision problem"
+words_added = 37
+job = "one sentence at the top of Section 1 names the three readers who arrive at the paper (those who decide on it, those who check the mathematics, those placing it among prior methods) and where each goes; the first screen named no reader (P1, P5, P6, P7, P8)"
+reader = "the reader who arrives at the paper and has to find which part is theirs"
+
+[[cut]]
+date = "2026-11-12"
+section = "The decision problem"
+words_removed = 39
+no_longer_did = "the Section 1 paragraph's sentence 'Like PCA, our method is unsupervised feature engineering; the two answer different questions and compose: Appendix D.16 reads the principal directions ... a reading and not a result' said again what the abstract says in its own words (unsupervised feature engineering, the two compose) and what Main results item 5 says two paragraphs below (PCA on the near-frontier chart, a reading and not a result, with the same pointer to Appendix D.16); a reader met it three times in one screen and a half"
+authority = "WP33 R-3, marginal-value test (the cut that pays for the audience sentence)"
+
+# Appendix D.3: the summed-pairs table, one per regime (the supervisor's skim, driver-log b229220).
+[[cut]]
+date = "2026-11-12"
+section = "Appendix B"
+words_removed = 120
+no_longer_did = "D.3 printed the one-axis pair's summed exponents as three frames per regime (K = 1, 2, 3), each row repeating the pair in a column of identical text under the labels 'exponent a' and 'exponent b', and closed with a sentence naming the same pair again; one table per regime now names the pair once in its lead sentence, carries K as a column and the two exponents under the metrics' own names, and the closing sentence (also printed in C.5 and D.4) is dropped"
+authority = "the supervisor's skim of D.3, driver-log entry b229220 (the 'cubesat-stock' table has the same fix)"
+
+# Appendix G.2: the reading pass becomes a table to check against the sources (the supervisor, WP38-decisions.md 7257053).
+[[cut]]
+date = "2026-11-12"
+section = "Appendix A"
+words_removed = 853
+no_longer_did = "G.2 rendered the machine's reading of its own citations: a count line, a verdict column (supported, partly supported, not found, not accessible), the reason for each verdict, and the action taken on the sentence, in six columns; the paragraph above the table described the verdicts. A reader cannot use a verdict to check a citation, and the table said a machine had checked. The table now gives, for each citing sentence still in the paper, what we say, the source and the place in it, three columns; the record keeps the verdicts"
+authority = "the supervisor, WP38-decisions.md at 7257053 (G.2 lets a reader check for themselves; it is not a report that a machine checked)"
+
+[[cut]]
+date = "2026-11-13"
+section = "Future work and final remark"
+words_removed = 3
+no_longer_did = "WP36 adds 63 words (the Lean direction, the reals-versus-floating-point line, one clause for a Rust core compiled to WebAssembly: 58; the gloss of the generalized geometric program that the removed hull clause had carried by accident: 5) and takes out 64: 'Future work follows the assumptions we named.' (the lead-in said that the paragraph follows the assumptions, which its own Beyond-sentences show); the clause 'whose generalized gradient is the convex hull of the active normals, should tolerate the kinks' (a mechanism and a hope with no lemma behind it); 'with smoothing on request' (Methods says it); 'The search ... needs a convergence theorem, and Q2 to Q4 need their own conditions' (the Open paragraph of Results states the four questions and their gaps); 'Other cases across the engineering lifecycle belong here too, the configuration management of a fielded system among them' (the case section says a fielded system's measured attributes would enter the same table); and 'the generalization the search motivates' (the search section says it). The count falls from 188 to 187"
+authority = "WP36 decision entry 441cdcb (placement (a); the unit takes out at least as many words as it adds), marginal-value test"
+
+# WP35 amendment 1 (4f81a4ea:work-packages/WP35-amendment-1-scope.md, approved at e616329 with the ceiling pinned at 900
+# words by the visible-prose rule: Markdown, the caption and the generated sentences, not the table; not raised
+# without a new row and the assistant's word). Appendix H replaces the HoroPCA passage of Appendix G.
+[[raise]]
+date = "2026-11-13"
+section = "Appendix C"
+words_added = 900
+job = "states the HoroPCA comparison as a hypothesis with the result that would refute each part, the design in one paragraph, the generated results table, what the table shows (the two methods estimate different things and are complementary), the part not in the hypothesis, the reading limits with the embedding stated as ours, and how the formalisms and solvers differ"
+reader = "the expert who asks whether the closest existing analog does what this work does, and what the experiment would have shown otherwise"
+
+[[cut]]
+date = "2026-11-13"
+section = "Appendix A"
+words_removed = 659
+no_longer_did = "the HoroPCA passage (cells app-G-horopca and app-G-horopca-reading, with the generated table tab-G-horopca) asserted a causal reading, 'recovered only where the generator made them the direction of largest spread', from a handful of tables where the factor was never varied, with an undefined 'recovered', terms (PC, absolute cosine, span alignment, distortion, frame, horosphere) left unexplained, a cubesat 'target' that was this work's own fit, numbers without a source or command, and a table without a caption or source; Appendix H states the claim as a hypothesis, tests it by varying the factor with the edge fixed, and carries each of those fixes"
+authority = "WP35 amendment 1, the supervisor's request (13165e8) that the comparison have its own appendix"
+
+# The one sentence that Appendix G keeps to point at Appendix H.
+[[raise]]
+date = "2026-11-13"
+section = "Appendix A"
+words_added = 11
+job = "one sentence under the register points the HoroPCA row at Appendix H, where the comparison is tested by experiment"
+reader = "the reader of the register who looks for what running HoroPCA on the paper's tables showed"
+
+# Appendix G.2: the view carries the paper's sentence and the source's link (the supervisor's return on the G.2 table).
+[[cut]]
+date = "2026-11-13"
+section = "Appendix A"
+words_removed = 79
+no_longer_did = "G.2's 'What we say' column carried the record's disposition for 21 rows ('Cited now for ...', 'Cited now only for ...', 'The sentence now says only ...', 'Attributed through the review in ...') and, for the rows the record gave as '(same)' or 'Table row ...', the record's note instead of a sentence; each cell is now the paper's own sentence at the citation. 'Where in it' carried the fetch addresses of the reading (api.crossref.org calls, a Semantic Scholar API call) as text, which no reader opens; it now says where in the source the place read lies and links the source's own DOI or page. The Job line of Appendix G still described the table as what was read, the verdict and what the paper does, and G.2's lead said sentences reworded after the reading were given as reworded; both now describe the three columns"
+authority = "the assistant's return of G.2 on three points (2026-11-12); the supervisor, WP38-decisions.md at 7257053"
+
+# Section 1's Organization paragraph routes by depth (the supervisor's F-1 close read; 17 words at 60f92d9, 26 before this
+# row, 29 after): the raise is the three words over the 26, paid by a cut of twelve in the same section.
+[[raise]]
+date = "2026-11-13"
+section = "The decision problem"
+words_added = 3
+job = "the Organization paragraph, which listed the appendices by letter, routes by depth in one line each: abstract and Figure 1; headers and Main results; the whole text (with the reader sentence, which stays); the supporting material's appendices; the repository and container (each a link: Section 11 for the repository and container)"
+reader = "the reader who arrives at the paper and has to choose how far down to read"
+
+[[cut]]
+date = "2026-11-13"
+section = "The decision problem"
+words_removed = 12
+no_longer_did = "'We take PCA as inspiration and explain tensions where it explains variance.' opened the paragraph after the PCA paragraph, and said again what the abstract's second and third sentences say ('PCA ... explains variance. We explain tensions.') and what the PCA paragraph above it ends on (variance says nothing about trade-offs); the next sentence ('Objectives may align in one region and oppose in another') carries the step from PCA to the fitted surface without it. Together with the Organization raise this puts the paragraph, with its neighbour, at 17 words net against its 17 at 60f92d9"
+authority = "the assistant's brief to this unit (Organization not above its words at 60f92d9); marginal-value test"
+
+# The top of the supporting material names whom the appendices serve (journeys map, user-journeys.md: P5, P2, P3, P7).
+[[raise]]
+date = "2026-11-13"
+section = "Supporting material"
+words_added = 19
+job = "one clause at the top of the supporting material says whom the appendices serve: readers who check the proofs (Appendix B), reproduce the results (Appendices D and F) or read the case model (Appendix C); the journeys map shows P5, P2 and P3, and P7 arriving there with no statement of whose it is"
+reader = "the reader who follows a link out of the paper and cannot tell which appendix is theirs"
+
+# P5's finding: a link that leaves the article should say so ("Appendix B, L4.14 to L4.24" did not).
+[[cut]]
+date = "2026-11-13"
+section = "Methods"
+words_removed = 3
+no_longer_did = "the link text 'Appendix B, L4.14 to L4.24' does not say that it opens the supporting material, a separate document; it now reads 'Appendix B, supporting material, L4.14 to L4.24' (two words in), and the clause 'whose convex form is the problem in w' (eight words, which the Results list's item 2 and the geometric-program statement already say as 'convex in the logarithmic variables') is now 'convex in w' (three), claims row C094 re-pointed: net three out"
+authority = "P5's reading of the Methods link (the assistant's brief to this unit); marginal-value test"
+
+# WP35 wording unit (the fresh reads R-13 and R-14, 4f81a4ea:work-packages/WP35-review.md, fixes FW-1 to FW-13 and FW-15 to FW-20;
+# FW-14 not applied). The assistant's ruling at 3fb77e6 moves the ceiling from 900 to 920: the raise below is the
+# words the readers' fixes add (78 measured) with 3 words of headroom over the cuts, the cut row the words the unit
+# takes out; 900 + 81 - 61 = 920.
+[[raise]]
+date = "2026-11-14"
+section = "Appendix C"
+words_added = 81
+job = "defines at first use what the three fresh readers could not read: the spread ratio rho as a ratio of standard deviations of the edge's vector and the largest direction orthogonal to it; t as a fraction of the way from the depth direction of the package's generator (equal exponents) to one metric; kind C as still scoring the same vector, its rows spread symmetrically along it; the threshold's number (0.9) where the recovery is defined; the ball as the disk that models hyperbolic space; the exponential map at the origin in the first reading limit; 'before any table of this experiment existed'; H1 to H4 as counts of the six tables, HoroPCA named at its two scales; the caption's line saying what H1 to H4 and the HoroPCA column mean; 'its fourth' for the smallest-variance component; the solver paragraph's sources split by claim and 'shortfall from the best value'; and the reviewer's second boundary stated with its number (30 percent of the rows on the edge)"
+reader = "the novice and the expert who read the finished Appendix H cold (P9, P10, R-13): one blocked on 'vector' and 'symmetric' in construction C, eight more slowed by rho, t, the depth direction, the ball and the two different 0.9s"
+
+[[cut]]
+date = "2026-11-14"
+section = "Appendix C"
+words_removed = 61
+no_longer_did = "'hypothesis, experiment, results, reading and solver differences' in the job line listed the headings that follow (3 words out; the tier stays, as every appendix has the three); 'no noise,' in the design paragraph said what the first reading limit already says as 'noise-free' (2); '30 percent of the rows on the edge,' in the design paragraph is stated once, in the second reading limit, where it is the boundary (8 out, 8 in); 'robustness under realistic sampling is separate' repeated the limit's 'a mechanism demonstration' (6); 'by a linear program or sequential quadratic programming' named two solvers the argument does not use and the novice could not read (8); ', though an analyst with other domain information might choose it' was an aside the experiment does not back (10); 'A HoroPCA of the chart would be the same kind of chain and was not run' said what was not done in an unrun experiment, and the sentence before it carries the complementarity (16); 'The threshold is 0.9, fixed before the run.' repeated H.1, which now gives the number where the recovery is defined and the time of commitment in its first paragraph (8)"
+authority = "the assistant's ruling at 3fb77e6 (the four cuts the review names pay for the rest; the ledger test measures); marginal-value test"
+
+# Appendix G's HoroPCA row (FW-15, 'on the paper's tables') and the reading pass's wording of Section 2's sentence (FW-1).
+[[raise]]
+date = "2026-11-14"
+section = "Appendix A"
+words_added = 8
+job = "the HoroPCA row says where the result holds, 'on the synthetic tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only where ...', for 'on the paper's tables its exponents are recovered by neither HoroPCA nor PCA except ...', which read as the paper's own case study; the reading pass says 'prospectively specified', as Section 2 and Appendix H do (one term for one thing)"
+reader = "the expert who reads the register's HoroPCA row and takes 'the paper's tables' for the case study"
+
+# WP39 notebook unit (4f81a4ea:work-packages/WP39-scope-of-work.md, D-1, D-2, D-5): Section 9 closes with the decision the two executives
+# face. Section 9 counted 1,557 against a ceiling of 1,603 (slack 46); it now counts 1,685. The raises are the written
+# paragraph (145), the table's caption (66) and the pointer to the table in the section's opening line (5); the cuts are the
+# Candidates paragraph (48) and the K-choice sentences (35); the ceiling is 1,603 + 216 - 83 = 1,736, and the slack of 46 is as it was.
+
+[[raise]]
+date = "2026-11-13"
+section = "Case analysis"
+words_added = 145
+job = "the closing paragraph (num-decision, 'What the executives decide') reduces the feasible designs to the shortlist inside the requirements and the band of both fits, names the one question left to the two executives in their own measures (a fine star tracker, pointing error from about 0.003 to 0.0008 degree, for about 0.56 M USD of the 6 M USD fleet cost limit), says in the paragraph what 'the band of both fits' is (near the frontier on the simpler and the richer fit) and what the pick does ('gives up the least of either measure' among the designs of the shortlist that no other beats on both), introduces the operator and the sponsor as the case's two stakeholders, the two phrases the P8 and P7 cold reads could not follow (their finding 2, finding 3), gives the design either answer points to in program currency, and says the method prices the question and does not answer it and that the numbers are nominal, with the pointer to C.8"
+reader = "the executive and the sponsor who read the case for the call it leads to (P8 final read F2 and F3; the supervisor's direction of 2026-11-13)"
+
+[[raise]]
+date = "2026-11-13"
+section = "Case analysis"
+words_added = 66
+job = "the six-row table's caption says what the rows are (the baseline configuration and the designs the rules pick, on the executives' measures and with the level of each), that the baseline configuration is outside the requirements, what the method does not tell (schedule and risk, what to buy beyond the modelled parts, the value of fleet size) and where the shortlist and the rules are (D.19), and says in the caption what the level column is (the distance above or below the fitted reference surface, not a ranking) and why the last two rows are there (context: the cheapest unit needs the largest fleet), the two things the P8 cold read could not tell (its findings 4 and 5); the table's configuration column is cut to wheel class, tracker grade and fleet size, and the caption names the unit cost limit the baseline misses; the net of these clauses fits inside the section's earlier ceiling (words 1,690 to 1,734 of 1,736), so no raise is added"
+reader = "the executive who reads the table without the paragraph, and the systems engineer who asks what the table leaves out (P7 final read, section 4)"
+
+[[raise]]
+date = "2026-11-13"
+section = "Case analysis"
+words_added = 5
+job = "the section's opening line points to the table of the executives' call, so a reader who stops at the opening knows the case ends in a call and where it is shown"
+reader = "the executive who reads the opening of the section and skims on"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case analysis"
+words_removed = 48
+no_longer_did = "the Candidates paragraph (26 words) and its generated sentence (22) defined a candidate and reported that three hand-named configurations sit inside the fitted surface, none of which meets the four thresholds (P8 final read F4); the shortlist of the decision subsection replaces them as the case's concrete designs, D.7 keeps the table and its sentence on the thresholds, and the generator's candidates_sentence, its cell, the perturbation entry and the pointer to D.7 from Section 9 go with it"
+authority = "the assistant's ruling on Q4 (b), WP39-decisions.md, stage 2; marginal-value test"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case analysis"
+words_removed = 35
+no_longer_did = "the K-choice sentence (106 words to 81) no longer reports the movement of an exponent vector under resampling at K = 4 against K = 2 and no longer says the 'mean slack' was read for the first share (the movement is in D.15's table, which the sentence points at); the temperatures sentence (59 words to 49) no longer says the one rule is 'the target fraction above V = 1', which the fit-temperature sentence three paragraphs earlier states, nor 'of this section'; claim C474 narrowed to the surviving pick and the thin-term share"
+authority = "the assistant's ruling on Q4 (b), WP39-decisions.md, stage 2 (the K-choice sentences shortened); marginal-value test"
+
+[[raise]]
+date = "2026-11-13"
+section = "Appendix B"
+words_added = 287
+job = "D.19 gives the detail behind Section 9's closing paragraph: the shortlist's definition and the rules that pick from it (the sponsor alone, the operator alone, between them by minimax regret, balanced between the terms, the cheapest unit cost), the 28-design table with the nondominated designs marked and exact values, what the fit adds to a two-measure view (11 nondominated over all 548 six-pass designs, 1 inside both bands), and the baseline regime's funnel in one sentence; the appendix's job line names it (six words net)"
+reader = "the executive weighing which design to ask for, and the systems engineer checking the shortlist"
+
+[[cut]]
+date = "2026-11-13"
+section = "The decision problem"
+words_removed = 45
+no_longer_did = "the parenthetical pointer '(the abstract, the Main results below)'; the repeat of 'the surface is not the Pareto boundary, and the table and its reading are views' (the abstract and Definition 1 say it); the announcement '(Section 6; each has hypotheses, a sketch and a script)' after Main results; and 'fitted to the outer edge of the data, not through its middle' and 'but the level from which' in main result 1 (the abstract and Definition 1 say them; 'It is not the Pareto boundary' stays, a test pins it); net of the plain words that replaced 'it' in 'To displace it' and the splits"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Prior art"
+words_removed = 24
+no_longer_did = "'says what each family produces, what we share, how we differ and where to read it' (the table's column heads say it); '; it is not exhaustive and ... what this work does differently, extends or adds' (said as 'how this work differs'); '(Section 1 counts it)' (the reader has just read the count); 'a band and an effective sample size' in the DEA sentence (defined in Definition 4 and the methods); net of the splits of the HoroPCA and Lineage sentences"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Preliminaries and notation"
+words_removed = 1
+no_longer_did = "'quilt' and 'patch' for the one name 'piece'; net of the split of the sentence on the gaps ledger"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Definitions"
+words_removed = 60
+no_longer_did = "the sentence 'The chart separates where a design sits along the surface from its energy differential, ...' (Definition 5 and the first paragraph of Section 1 say it); 'Each term is a piece of the surface, not a set of designs' (Section 1 says it); the restated 'the level of a potential relative to the fitted reference surface, negative inside, positive beyond' in Definition 5 (said after Definition 2); 'Figure 1 draws the n-lemma of each term for three metrics' (the caption says it); net of 'the ascent direction' added to Definition 9 and the splits"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Methods"
+words_removed = 18
+no_longer_did = "'We name each where it is made, defend it, and say in Section 12 how to go beyond it' (the list does it); 'the sentences between the boxes say what the next result is for ... and box numbers follow the page' (the layout shows it); net of the splits of the conditions R1 to R3 and the legend of Derived, Numerical and Open"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Results"
+words_removed = 120
+no_longer_did = "the lead-in paragraph 'Three results say what the fitted numbers mean: ...' (each of the three boxes states its own result); the box line and the proof line 'The converse is not claimed' (the summary line above the box states it); 'Global optimality is not claimed' in Level 3 (the lead-in says 'none global'); 'The fits of record are sharp, the default; a soft fit is on request' (said in Methods and above); the clause 'tightness is not claimed' after 'sufficient'; '(a partition into nonempty cells ... a cell is a set of rows, a term a piece of the surface)' (Definition 3 says it); net of the splits of the corollary, the soft-fit certificate and the stopping declaration"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Search of the design space (preliminary)"
+words_removed = 4
+no_longer_did = "'This section is future work with no results, and it stops short of selecting a design, which falls to experts' (the heading says preliminary; the closing Open and goal sentences say the rest); 'There are nested loops' (the three sentences that follow set them out); '(our reading)' (the sentence is labelled Open next to it); 'beyond the noise band' for 'by more than the noise' (a term the paper never defined)"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case construction"
+words_removed = 25
+no_longer_did = "'Every traded metric is read by a requirement' in the behavioural view's caption (its first sentence says it); '; Section 12 says how to go beyond that' (a pointer the contents show); the second 'black box to the method' (made in Section 3 and the paragraph above); net of the splits of the design-variables, requirements and costs sentences and the captions of Figure 4"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case analysis"
+words_removed = 43
+no_longer_did = "the sentence 'Figure 6 shows each design's level read apart ..., and Figure 7 shows what trades off' (the figures' captions say it; the figures stay referenced); 'The finding: the terms' sets differ' (the paragraph before says two terms with different contending sets); 'the K = 1 fit's band as at every K' in the caption of Figure 6 (the paragraph before says it); 'The case plants its own' (the next sentence says what is planted); in the generated sentences, the pointer to Appendix D.11 after the effective sample size, the termination-record and 20-table pointers after the worked example, the clause 'a number an association cannot give' and 'Every term has an association reading' (the figure's caption says it) leave at the next execution and are counted then; net of the splits"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Discussion"
+words_removed = 27
+no_longer_did = "'A certified fit supports three claims of different strength' (the next sentences state them); ', so on this case pre-imposing them does not change what the frontier trades' (said by 'changes the one-term contending set by at most one of its five metrics'); 'Another table runs through the same calls' (the sentence before says the same functions serve any source of attributes); net of the plain gloss in the deflation sentence"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Reproducibility and your own case"
+words_removed = 13
+no_longer_did = "'(install and a first fit)' and 'and its user guide takes over from there' (the page's name and 'is where to begin' say them)"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Future work and final remark"
+words_removed = 13
+no_longer_did = "'We offer this as a hook for future exploration, not as a result' (the sentence before says 'could be given'); net of 'crashes' for 'panics' and the split at the Lean sentence"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_added = 2
+job = "'the nested loops below' for 'the loops': the first sentence of the section named loops the reader meets only in the next paragraph, and the pass had cut the sentence that introduced them"
+reader = "the reader following the search section for the first time"
+
+# The final reader round, wave 1 (change requests 1 to 31 of work-packages/WP11-final/triage/wave-1.md).
+# Each row below is the section's measured growth (tests/test_paper.py words_by_section, before and
+# after); the cuts are the sentences the same unit deleted.
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 21
+job = "says once that A3 and A6 are for finite temperatures and that infinity is the exact limit, named where used (the axioms and the lemma scripts say tau > 0, the text said tau in (0, infinity])"
+reader = "the reader checking the mathematics against the lemma scripts"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 88
+job = "the three thresholds on an exponent, side by side where the first is met; the posynomial definition's grammar (V_K the 1/kappa power of the bracketed posynomial, e^{kappa Phi_K} the posynomial); the open band against the closed band of L5.25; the contending set's size under its own symbol"
+reader = "the reader checking the mathematics, who met three thresholds in three places and a symbol with two meanings"
+
+[[raise]]
+date = "2026-11-14"
+section = "Methods"
+words_added = 39
+job = "the case is read at K = 2 and K = 3 is certified with a thin term (the sentence said the case needs three terms); the pointer to the correspondence between the conditioning letters of the text and of the lemma scripts"
+reader = "the reader checking the case against the theory"
+
+[[cut]]
+date = "2026-11-14"
+section = "Methods"
+words_removed = 14
+no_longer_did = "'One at or below 10^-12 is numerically zero, not mathematically so (membership: Definition 6)': the definition of the contending set now says it beside the other two thresholds"
+authority = "final reader round wave 1, change request 19; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 122
+job = "each theorem states what its lemma script states (V with its scale factor, R1 as a tau = infinity condition, K = 1 in Theorem 5, the noise model of Corollary 1, weak efficiency only at K > 1, the symmetry instance of Theorem 10, the finite stop's hypotheses in Theorem 11), what certified is and holds at, why the own-rows refit differs from the contending set's fit, and whether a script proves for arbitrary dimension"
+reader = "the reader checking the mathematics against the lemma scripts"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 98
+job = "the ternary figure's caption says the triples are their own two-term fits and how many of the search's fits showed two stable terms; the energy differential and the regime are glossed at their first caption use; the elasticity sentence says what its percentages are of; the decision paragraph says the two fleets differ in more than the tracker"
+reader = "the executive reading the case and its figures"
+
+[[cut]]
+date = "2026-11-14"
+section = "Case analysis"
+words_removed = 24
+no_longer_did = "'The triples were picked for two stable terms that contend differently, from a search of every triple at one, two and three terms' (the sentence said 'every triple' of thirteen metrics where the search read eight; the caption of the figure now says what was searched and how many fits showed it)"
+authority = "final reader round wave 1, change request 28; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 16
+job = "the contending-set change under pre-imposed requirements is generated per regime with the size of the set, in place of one count typed for the primary regime (five metrics, where the set has seven)"
+reader = "the reader weighing whether the requirements belong before or after the fit"
+
+# The final reader round, second paper unit (change requests 32 to 92 of triage/wave-2.md, wave-3.md, wave-4.md): the section's measured
+# growth, before and after (tests/test_paper.py words_by_section); the cut is the sentence the same unit deleted.
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 37
+job = "Main results: each pointer resolves to the statement that carries the claim (chart, elasticity, the geometric program in the exponents, the three levels in order, the stopping declaration named as a paragraph), the Numerical tag becomes a sentence and 'blends' is glossed"
+reader = "the reader of the main results who followed a pointer to the wrong statement"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 19
+job = "names the package at its first use, and gives the second-order scores and the line that the case holds no zero rows (the definitions that read them come after)"
+reader = "the executive and the skimmer who meet 'the package' before anything says what it is"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 58
+job = "the fit temperature and the reach glossed where Definitions 1 and 2 use them, the score defined where the reach uses it, the rule that numbers the terms, the n-lemma figure's rule that reads a face from the contending set"
+reader = "the reader checking the mathematics who met a symbol before its definition"
+
+[[raise]]
+date = "2026-11-14"
+section = "Methods"
+words_added = 27
+job = "the zero-row hypothesis against the package's handling, the robust scaler beside the target-fraction sentence, reach for the offset"
+reader = "the reader weighing whether the conditioning and the temperature are choices"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 111
+job = "the statements say what they state: the descent condition of the soft alternation, the empty-cell status, the factor for a small exponent, what the codes F and I are, the vector of Lemma 2, the sign of kappa M, Corollary 1's parents, Theorem 8's order"
+reader = "the reader checking the mathematics against the lemma scripts"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 228
+job = "the requirements sorted into thirteen, four feasibility conditions and six read after the fit; the illustrative thresholds; how the fleet cost is formed; Figure 3's tags and measure names; Figure 4's lower panel described as lines"
+reader = "the reader of the case who met six requirements in the text and thirteen in the figure"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 231
+job = "the second-order claims of the case read from the record: the K = 1 zeros and where they enter, total mass outside the support, the robust scaler, the known answer's failure, the regressor's band, the two quantities of propose-predict-check; Figures 5 to 8 and Table 2 say what their points, axes, levels and rules are; the shortlist rule in steps"
+reader = "the executive and the frontier economist reading the case and its figures"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 32
+job = "the propose-predict-check reading says one thing with Section 9's, and the kernel direction says which program is meant"
+reader = "the reader comparing the Discussion with the case"
+
+[[raise]]
+date = "2026-11-14"
+section = "Future work and final remark"
+words_added = 13
+job = "the final remark says what a forecast V would and would not say, against Section 10's novelty sentence; GGP is in the metrics"
+reader = "the reader who met a novelty score the paper disclaims"
+
+[[raise]]
+date = "2026-11-14"
+section = "Works cited"
+words_added = 16
+job = "says that the list holds the sources of the main text and of Appendix G"
+reader = "the reader who found seven entries with no citation in the text"
+
+[[cut]]
+date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_removed = 14
+no_longer_did = "'the procedure resembles a diffusion with drift along the tangent spaces' (no definition or result stood behind it); the monotonicity sentence now says conjectured"
+authority = "final reader round wave 3, change request 49; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 29
+job = "the first main result says it is for one term and points to its definition and to the fit; the nondominated set is the whole table; the counts say on which metrics; the maximizer is over a set of designs; local optimality is with the cells held fixed"
+reader = "the evaluator and the mathematician reading the main results as the paper's whole claim"
+
+[[raise]]
+date = "2026-11-14"
+section = "Prior art"
+words_added = 23
+job = "the HoroPCA sentence carries the reviewer's boundaries in one clause (a mechanism demonstration on clean tables, the authors' code at its defaults, one direction at a time)"
+reader = "the reader weighing Appendix H's result as a recovery rate"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 40
+job = "A9 says one covariance for every row, A10 is listed with what it does; the surface's pieces are flat in log space at the sharp limit and rounded by a finite kappa"
+reader = "the mathematician checking each hypothesis code against where it is used"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 50
+job = "the contending set's support is a convention checked under jitter, with the ties read as the record has them; the fits of record are sharp"
+reader = "the reader who asks which kappa the figures use and whether the contending set is the solver's choice"
+
+[[raise]]
+date = "2026-11-14"
+section = "Methods"
+words_added = 78
+job = "R1 to R3 say which optimal dual vector, what the score is, where each is used and what the clean fit and C are; the offset is the log-mean-exp and what the factor 1/N does; the tenth is by convention; the scaler and the tangent term are glossed"
+reader = "the mathematician and the practitioner reading the hypotheses and the conditioning"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 588
+job = "each statement carries what its script proves: the bound with its constant and the entropy, the pigeonhole of the finite stop, the Frank-Wolfe gap, the expected noisy objective and what A10 is for, the kappa = infinity maximum, the active term, the K > 1 chart clause, the cost sign, the sketch's finite-difference check, the Hessian's pieces, what the contending set's refit is against the own-rows refit, and the polish"
+reader = "the three mathematicians who checked Sections 3 to 6 and returned the statements' precision defects"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 135
+job = "the launch budget named once, the launch slot not costed for fleets of one to three, the regimes' gain ranges, Figure 3's launch link, Figure 4's ring and its axis, and the planted recovery counted where it is read"
+reader = "the case reader and the frontier economist asking what the regimes and the thresholds are"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 95
+job = "the case named at its first mention in the margin paragraph, the margin in score space and the radius in parameter space apart, the K = 2 fit's margin and status pointed to, the term led by peak slew power named, Figure 6's level and its tenth above, Figure 8's corner word, Table 2's other variables, the regimes' gain ranges, the 16 of 20 recovery"
+reader = "the executive and the economist reading the case and its figures"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 21
+job = "the certificate says what it covers (the cells held fixed, the exact first-order conditions) and the requirements sentence is tagged Numerical"
+reader = "the reader who took the certificate as a claim about designs"
+
+[[cut]]
+date = "2026-11-14"
+section = "Results"
+words_removed = 9
+no_longer_did = "'The reaches, and the soft fit, see every design.' (the paragraph's first sentence says every term is fitted against every design)"
+authority = "final reader round, third paper unit; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 36
+job = "names the three requirements of the thirteen that the case neither filters on nor prices (the battery peak power ratio, the power margin, the energy balance) and says every feasible design meets them, so the four, six and three add up"
+reader = "the reader who counted ten of thirteen"
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 8
+job = "the open item on the search says the outer loop may move inward on a step, as the supervisor expects it"
+reader = "the reader of the main results who took the search's monotonicity as nearly settled"
+
+[[raise]]
+date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_added = 14
+job = "the open item is the supervisor's: a submartingale property, outward in expectation, with a convergence result when the expected progress ceases; future work, no conditions derived (WP36-decisions.md, 2026-11-14, 12:20)"
+reader = "the reader who would read the search section as promising a monotone loop"
+
+# WP42 Amendment 1 (the build after the spike): tension, the glossary's layers, loss. Each row says what
+# the added words do; the deletions it makes are the [[cut]] rows below.
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 14
+job = "objectives are glossed at first use (the measures the decision-maker wants more of), so the word that stays with the decision is defined where the paper first meets it; PCA's sentence says what it keeps in plain words, since 'loss' is now the method layer's word"
+reader = "the decision-maker meeting objective before the notation section"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 89
+job = "the three nested optimizations in brief (decision, design, method), each with its own word, and where objective, constraint and loss belong; points to Appendix A, which gives each word with its layer"
+reader = "the reader from decision analysis, optimization or machine learning, for whom objective and loss mean different things"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 229
+job = "the definition of tension beside the elasticity (WP42 Amendment 1): the derivative along the term in the conditioned metrics, its negative, zero, blank and reciprocal cases, the term's matrix from the fit and a design's tensions from the data as two objects, the route to the attributes' own units, and that it is a rate and not an effect of changing a variable"
+reader = "the reader who will read a number off the tension matrix or the Section 9 sentence and must know what it is and is not"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 236
+job = "Theorem L21 in the form of the other results: statement, hypotheses, sketch and the pointer to its script, so the definition of tension has its derivation in one place with its steps in Appendix B"
+reader = "the reader who checks the mathematics"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 20
+job = "Figure 3's caption counts the arrows that leave the slew experiment's box (eleven) and says how the box's own ten of thirteen relates to them"
+reader = "the reader who counted the arrows against the box's ten of thirteen"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 287
+job = "Figure 7's caption for the tension matrix (what a cell is, the diagonal, which metrics are drawn, the scale, the elasticity as companion), the sentence that says the matrices are read from the fit while the association stays in the package, and the one generated sentence on the pick's tension (Section 9), which the supervisor accepted as drafted"
+reader = "the decision-maker and the practitioner reading the case"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 6
+job = "the plain words of the glossary: trade-offs for the regional ones, white space for the unoccupied region"
+reader = "the reader who met the glossary's one word for each object"
+
+[[raise]]
+date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_added = 57
+job = "names the procedure's objects (proposal, selection rule, check) and says the check is how a predicted improvement is told from a built one; no result, no figure, no number; the pointer to the check's appendix is left out because the section carries no digit (R-15) (WP41 D-3)"
+reader = "the reader asking what the middle loop hands to the outer loop"
+
+[[raise]]
+date = "2026-11-14"
+section = "Future work and final remark"
+words_added = 1
+job = "dents and disconnected regions replaces dents and holes, since hole is reserved for the topological object of a later study"
+reader = "the reader of the future-work list"
+
+[[cut]]
+date = "2026-11-14"
+section = "Case analysis"
+words_removed = 173
+no_longer_did = "Figure 7 as the association among near-frontier designs, its caption (the Pearson correlation, the outlined contending set, the near-collinear pair, 'peak slew power carries no exponent at K = 1; here it leads term 1', the thin-term line), its claims rows and tests: the association is an analysis of designs and not of the model, stays in the package as plot_association, and the paper's figure draws the model's own rates"
+authority = "the supervisor, 'Compact tension matrix (Recommended)' (WP42-decisions.md, 2026-11-14, 23:00); the 173 words are the old caption and its shows-line, counted before the raise row above, whose 287 is the new caption, shows-line, sentence and generated paragraph"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 23
+job = "Figure 6's caption names V once as the invariant value (Definition 2) and says what the percentage on the horizontal axis is"
+reader = "the reader who found the axis's percentage unexplained and V undefined"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 29
+job = "lists A11, the row-noise assumption that L19 declares, so the codes of the scripts and of Section 3 agree (request 174)"
+reader = "the reader who found A11 in a lemma script and in no list of the main text"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 50
+job = "the proof sketch of Corollary 1 says whose Hessian is tau C (J_tau's) and that J^R's is tau (C + Sigma), the Sigma term of the shift set aside as second order (request 177); the refit comparison says its 60 planted terms are three on each of twenty tables (request 183)"
+reader = "the reader who checked the Hessian of the ridge objective by hand"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 9
+job = "Figure 6's caption names the band as Definition 4 gives it, on both sides of the line, and Table 2's caption says the band claim is of the five picks and not of the baseline row (requests 175, 182)"
+reader = "the reader who read the figure's band and the table's levels against Definition 4"
+
+[[cut]]
+date = "2026-11-14"
+section = "Case construction"
+words_removed = 6
+no_longer_did = "named the 900-row worked example of Appendix C.7 in the sentence that gives the recovery count, which is on twenty other tables of 400 rows; the count now says what it is on"
+authority = "final round, fifth paper unit, request 173; marginal-value test; measured by tests/test_paper.py words_by_section"
+
+[[raise]]
+date = "2026-11-14"
+section = "Future work and final remark"
+words_added = 2
+job = "'selection rules' now names the rule that picks one configuration for a chart point (Section 7); the analyst's choice of K is said in its own words (WP41)"
+reader = "the reader who met the term in Section 7 and again here"
+
+[[raise]]
+date = "2026-11-15"
+section = "Prior art"
+words_added = 111
+job = "his opening paragraph of Section 2 (the decision problem, the learning technique and the optimization beneath it) and the caption of the three-layer figure, which replace the sentence that listed the families"
+reader = "the reader placing the method among its prior art before the family table"
+
+[[raise]]
+date = "2026-11-15"
+section = "Definitions"
+words_added = 81
+job = "the fitted reference surface, the supporting envelope and the Pareto boundary each stated as a definition of their own, in place of the one definition that held three objects"
+reader = "the reader who needs one definition per object, with the Pareto boundary kept apart from the fit"
+
+[[raise]]
+date = "2026-11-15"
+section = "Methods"
+words_added = 147
+job = "the assumptions A1 to A11, moved from Preliminaries and notation to stand beside the conditions of the theory they qualify"
+reader = "the reader checking the mathematics, who looks for the assumptions where the results are stated"
+
+[[raise]]
+date = "2026-11-15"
+section = "Case analysis"
+words_added = 60
+job = "the generated nondominated-set sentence, moved from Section 1 to open Case analysis, where its numbers are read"
+reader = "the reader of the case who wants the dominance count before the fit's reading"
+
+[[raise]]
+date = "2026-11-15"
+section = "Prior art"
+words_added = 8
+job = "Table 1 referenced from the three-layer paragraph (every table is referenced from the text)"
+reader = "the reader who reaches the table from the paragraph that places the families in their layers"
+
+[[raise]]
+date = "2026-11-15"
+section = "Definitions"
+words_added = 2
+job = "the n-lemma figure referenced from the definition it illustrates (every figure is referenced from the text)"
+reader = "the reader who reaches Figure 3 from the n-lemma definition"
+
+# WP54: the paper's skeleton. Four sections leave, two enter; each old ceiling goes to zero and each new section's
+# ceiling is its measured count.
+
+[[cut]]
+date = "2026-11-15"
+section = "Search of the design space (preliminary)"
+words_removed = 304
+no_longer_did = "the section as a section: the proposal, the selection rule, the check, the nested loops and the ascent direction survive in three sentences of Future work; the framing paragraph, the sampling-strategy sentence, the submartingale conjecture and the open convergence point leave the paper (the conjecture and the point to work-packages/review/open-questions.md)"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Reproducibility and your own case"
+words_removed = 182
+no_longer_did = "the section as a section: its content (every figure, table and number comes from a call into a tested module, Appendix F, adapting the pipeline to a table of one's own) moves into AI acknowledgement and Reproducibility"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Future work and final remark"
+words_removed = 190
+no_longer_did = "the list of Beyond-sentences (one per assumption) and the final remark on a forecast V; Future work is rewritten from the spike records around the abstract's three thrusts"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Acknowledgments and process"
+words_removed = 73
+no_longer_did = "the section as a section: gated packages, the inherited harness and the author's responsibility survive in AI acknowledgement and Reproducibility; the sentence calling the derivations machine-checked is gone"
+authority = "WP54 (supervisor, 2026-11-15, ~11:30 EST: ''search of the design space preliminary' belongs in the future work section. not its own section'; approval 'approve 53 and 54'); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Future work"
+words_added = 233
+job = "says what the release accomplished and names the abstract's three directions, each from its spike record (WP41, WP50, WP36 and WP48), written fresh in place of the Beyond-list"
+reader = "the reader who has finished the case and asks what comes next"
+
+[[raise]]
+date = "2026-11-15"
+section = "AI acknowledgement and Reproducibility"
+words_added = 150
+job = "states what AI assistance did and did not do, how the derivations are checked, and how every figure, table and number is reproduced and the pipeline adapted to a table of one's own"
+reader = "the reader who wants to rerun the work or judge how it was made"
+
+# WP55: the mathematics builds up (Section 3's fitting problem, Sections 4 to 6). The Derived and Hypotheses labels,
+# the sketches and the Script boxes leave Results; the several-term algorithm and the thresholds move to Methods.
+
+[[cut]]
+date = "2026-11-15"
+section = "Results"
+words_removed = 853
+no_longer_did = "stated each result twice, as a Derived block with a hypotheses line and again as a sketch and a script box (the proofs and scripts are Appendix B's); previewed the next blocks in sentences that said what they say; the preamble on the badges; the open questions Q1 to Q4 (now work-packages/review/open-questions.md, OQ-5 to OQ-8); the algorithm subsection, which moved to Methods"
+authority = "WP55 (supervisor, 2026-11-15, ~12:50 EST: build structure, define requirements, define terms, internally compatible, no metanarration; the Boyd lineage's 'Let, Assume, Then' with the proof in the appendix); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Definitions"
+words_removed = 195
+no_longer_did = "carried the n-lemma's three thresholds, the jitter check, the solver's tie-breaking, the within-factor-e bound on the band, the numbering of terms by share and the mean aggregation inside definitions (now in Methods), and pointed forward to results and sections"
+authority = "WP55 (supervisor, 2026-11-15, ~12:50 EST; the register's rule for Section 4: no threshold conventions or solver behaviour inside a definition, no forward reference); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Methods"
+words_added = 522
+job = "states the one-term fit as Section 3's problem, the thresholds and ties moved from the n-lemma definition, the assumptions A4, A6 and A8 each displayed where used, the several-term alternation as a numbered heuristic with its three levels of guarantee as certificate, and the estimator's code names (the algorithm text moved here from Results, 853 words left that section)"
+reader = "the reader at calculus, linear algebra and convex optimization who follows Section 3's kit into the method"
+
+# WP57a: the front matter and Appendices A, F and G tightened to the step deeper their citing sentences need
+# (WP57-decisions.md; the map 4f81a4ea:work-packages/WP57-rounds/map.md, section 1). Words by map_counts.py, prose of the cells.
+
+[[cut]]
+date = "2026-11-15"
+section = "Supporting material"
+words_removed = 38
+no_longer_did = "the companion paragraph under the title told the reader which appendix is for whom (check the proofs, reproduce the results, read the case model, see the analog tested); the appendix headings carry it"
+authority = "WP57a (the supervisor's direction in WP57-decisions.md: the appendices tightened, no metanarration); the standing rule on metanarration (2026-11-14); map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix D"
+words_removed = 83
+no_longer_did = "the Job block said what the main text, the appendix and the repository each keep, and that the table is compiled from the glossary and never typed; the heading and the table say it, and the register row C131 that rested on the sentence retires"
+authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix H"
+words_removed = 116
+no_longer_did = "the Job block said what Section 11 keeps, what the appendix carries and what the repository keeps; F.1 to F.4 carry it under their headings"
+authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix A"
+words_removed = 186
+no_longer_did = "the Job block argued with an objection ('answer in advance the objection that this work is just some existing method'), counted Section 2's words and listed the appendix's own contents; the scope sentence ('This register is not exhaustive ... read only in part') is queued for the assumptions, limitations and open questions section (tests/data/wp57/assumptions-queue.md, WP57d); the register row C161 that rested on the Job block retires"
+authority = "WP57a (the supervisor: 'the appendices job IS NOT to opine on the text of the paper'); map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix A"
+words_removed = 12
+no_longer_did = "the pointer cell under the register said that the HoroPCA entry above is tested in Appendix H; the entry's own text cites Appendix H"
+authority = "WP57a; the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix A"
+words_removed = 54
+no_longer_did = "G.2 'What the paper took from where' printed, inside the paper, a 53-row table whose rows quote the paper's own sentences beside the source and the place read, with an introduction saying so; the table is now paper/supplement/reading-pass.md, written by the same function from paper/reading_pass.yaml (the supervisor, WP38: 'keep it in its yaml form for our own checking ... drop it from the supporting materials')"
+authority = "WP57a, the driver's call 2 in WP57-decisions.md on the supervisor's WP38 words; map_counts.py before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Appendix A"
+words_added = 29
+job = "one line at the end of G.1 names the reading pass (one row per citing sentence, the source, the place read) and links its file in the repository"
+reader = "the reader of the register who wants to check what the paper took from a source"
+
+# WP57b: Appendix B is the proofs Section 6 points to, with the one paragraph Sections 5 and 6 need on the restart,
+# stop and polish rules (WP57-decisions.md; the map, section 1). Words by map_counts.py, prose of the cells.
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix E"
+words_removed = 112
+no_longer_did = "the Job block said what the main text keeps, what the appendix carries and what the repository keeps; 'What the scripts establish' (C387 to C389) stays as the cell's whole; how_to_read in paper/generate_proofs.py loses its two-parts list and its closing paragraph, which repeated Section 9's verify-and-validate sentence (about 60 generated words, outside the prose count)"
+authority = "WP57b (the supervisor: tighten the appendices, do not metanarrate); the standing rule on metanarration; map_counts.py before and after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Appendix E"
+words_removed = 277
+no_longer_did = "B.2's 'The algorithm' paragraph (398 words) restated Section 5's alternation, labels and program, commented on each lemma before its table (L16's program and bound, L17's Hessian, L18, L19, L21) and said which result the paper does not use (L19); the 121 words kept are the restart rule, the stop rule, the polish with G-16 and that the status refers to the polished point, what Section 5's 'steps: Appendix B.2' and Section 6's 'Newton steps that close the gap the solver leaves' point at; 'L16 does not prove that the alternation converges' is queued for WP57d (assumptions-queue.md); register rows C132 to C136, C139 to C146 and C667 retire with their sentences, C137, C138 and C666 keep theirs"
+authority = "WP57b; map_counts.py before and after"
+
+[[raise]]
+date = "2026-11-15"
+section = "Prior art"
+words_added = 12
+job = "says that Table 1 summarizes the register of prior art in Appendix G, closing the table's paragraph (WP57a's G5, moved to WP56 as the paper.ipynb writer)"
+reader = "the reader who wants the sources behind a row of Table 1"
+
+# WP56 second unit: Sections 7 to 9 rewritten on the landed figures (WP56-review.md, the before-and-after
+# table). Each cut lowers the section's ceiling to the rendered count after (generated sentences included).
+
+[[cut]]
+date = "2026-11-15"
+section = "Case construction"
+words_removed = 503
+no_longer_did = "the pricing detail (the launch slot, the covered cost, the 8,000,000 USD budget), the ladder provenance of the four thresholds and the illustrative-values caveat (C.8, D.17 and Section 9's limits hold them); the per-paragraph requirement counts (now Table 2, one row per traded metric in the order the case applies them); the participation sentence (queued for D.3), the robust-scaler and resampling sentences (queued for D.5 and the open questions), the planted-table sentence (moved to Section 8, at K = 2), the 'worked example, not a study of either use' sentence and the black-box sentence (the Discussion's answer on reuse). Added: the problem as a triple, the CADRE precedent, the oracle sentence, the baseline configuration carried through"
+authority = "WP56 G1, G6 (the driver's scope approved as the supervisor's proxy, WP56-decisions.md); rendered count 1,482 before, 1,215 after"
+
+[[cut]]
+date = "2026-11-15"
+section = "Case analysis"
+words_removed = 370
+no_longer_did = "the opener's list of pointers, the known-answer paragraph (D.14), the K temperatures sentence (D.15), the strict-convexity remark (D.4), the percentile rule and the never-clipped sentence of propose-predict-check (D.10), the two-stakeholder decision paragraph with the fine-tracker question and the pick's tension sentence (D.19), and the caption's caveats (Section 9's limits). Added: the requirements applied after the fit with their excluded counts, the three stakeholders and the collapse to one trade-off with its refit, the decision on the three-stakeholder rules, and the sentence that names the calls and data behind it"
+authority = "WP56 G2, G6; rendered count 1,901 before, 1,929 after (the ceiling falls from 2,299 to the count)"
+
+[[cut]]
+date = "2026-11-15"
+section = "Discussion"
+words_removed = 309
+no_longer_did = "'Three claims', 'Why a surface', 'Trade-offs beyond the first, and PCA', 'Novelty and white space' and 'The kernel direction' (queued for WP57d's assumptions, limitations and open questions), the Appendix B sentence of 'Verify and validate', the requirements-after-the-fit and 'Numerical' paragraphs (Section 8), the design-sets sentence (Section 8) and the propose-predict-check reading (D.10). Added: what the case showed against Section 1's contribution, the three layers revisited, the limits in one passage at the end"
+authority = "WP56 G5, G6; rendered count 803 before, 494 after"
+
+# WP57c: Appendices C and D (WP57c-review.md). The two main-text pointers the driver's calls allow,
+# and a cut row per appendix (the supporting material is outside the count; the rows record what left
+# and why, by WP57-rounds/map_counts.py, typed prose before and after).
+
+[[raise]]
+date = "2026-11-16"
+section = "Results"
+words_added = 11
+job = "Corollary 1's commentary points to Appendix D.18, the one measurement of the ridge against noise injected into the case's data (the driver's call 1 on the WP57 map)"
+reader = "the reader of Corollary 1 who asks whether the ridge is seen in fitted data"
+
+[[raise]]
+date = "2026-11-16"
+section = "Case analysis"
+words_added = 2
+job = "the nondominated counts' parenthetical names Appendix D.9, the table of those counts in both regimes (WP57c's D.9 default)"
+reader = "the reader who wants the baseline regime's counts and shares"
+
+[[cut]]
+date = "2026-11-16"
+section = "Appendix F"
+words_removed = 460
+no_longer_did = "the Job block (it judged whether the case is a fair test and repeated two Section 7 sentences); C.8's 'What the case leaves out' paragraph and its five items (the case page's 'What the case leaves out' holds them, in its own words). C.5 prints one preview and the 17 pairs at |Spearman| 0.5 or above; the baseline preview and all 78 pairs are paper/supplement/metric-associations.md. Typed prose 789 to 329"
+authority = "WP57c G3 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"
+
+[[cut]]
+date = "2026-11-16"
+section = "Appendix B"
+words_removed = 310
+no_longer_did = "the Job block (it judged the main text's summary and listed the appendix's contents); D.7's typed sentence (generated under D.17's second table); D.12's three paragraphs (the termination page's conditioning_ section); the narrating openers of D.13, D.15, D.18 and D.19; D.17's gloss of each column. D.1 and D.6 are paper/supplement/, D.2 and D.12's tables are D.8's. Added: the pair counted as one (D.4), the proposer's rule and the never-clipped rule (D.10), the ladder of the four limits (D.17), D.19's four rules and D.8's conditioning sentence. Typed prose 1,624 to 1,314"
+authority = "WP57c G2, G4 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md)"
+
+# WP57d: Appendices E and H (WP57d-review.md). No main-text edit; the supporting material is outside
+# the count, and the rows record what changed and why (typed prose by WP57-rounds/map_counts.py; H's
+# rendered prose as tests/test_paper.py counts it against its ceiling).
+
+[[raise]]
+date = "2026-11-16"
+section = "Appendix G"
+words_added = 1545
+job = "Appendix E becomes 'Assumptions, limitations and open questions': the assumptions generated from the derivation's ledger (two tables, their captions typed), the limitations one line each by the section they left with their record, the gaps table in four columns, and every open question of the review ledger with its record, the nine queued sentences of WP56, WP57a and WP57b placed among them. The Job block (92 words) is cut. Typed Markdown 92 to 1,637 words by map_counts.py, links and roles counted as written"
+reader = "the reader who asks what the paper assumes, what it does not establish and what is open, and wants each answer once with its record"
+
+[[cut]]
+date = "2026-11-16"
+section = "Appendix C"
+words_removed = 169
+no_longer_did = "the Job block (it said what the appendix carries and what the main text keeps); H.1's sentence describing the appendix as a follow-up experiment, not a benchmark (C591); H.5, how the formalism and the solvers differ, now notes/directions/wp35-horopca-formalism-and-solvers.md, cited in one line at the end of H.4 (G.1's HoroPCA entry carries the same contrast). Rendered prose 916 to 751"
+authority = "WP57d G3 (the driver's scope approved as the supervisor's proxy, WP57-decisions.md; the driver's call 3)"

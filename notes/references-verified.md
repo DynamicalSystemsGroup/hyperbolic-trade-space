@@ -1,0 +1,194 @@
+# Note: references verified so far (seed for WP5)
+
+Verified 2026-11-07 by web search of bibliographic records. WP5 must resolve each DOI/URL again
+when building `docs/references.bib`; nothing goes into the .bib from memory.
+
+- Hoburg, W., Kirschen, P., Abbeel, P. (2016). "Data fitting with geometric-programming-compatible
+  softmax functions." *Optimization and Engineering* 17(4), 897–918. doi:10.1007/s11081-016-9332-3.
+  Author manuscript on MIT DSpace (handle 1721.1/105753). Software: GPfit (gpfit.readthedocs.io).
+- Magnani, A., Boyd, S. (2009). "Convex piecewise-linear fitting." *Optimization and Engineering*
+  10, 1–17. PDF: https://web.stanford.edu/~boyd/papers/cvx_pwl_fit.html.
+- Boyd, S., Kim, S.-J., Vandenberghe, L., Hassibi, A. (2007). "A tutorial on geometric programming."
+  *Optimization and Engineering* 8, 67–127. doi:10.1007/s11081-007-9001-7.
+- Aigner, D., Lovell, C. A. K., Schmidt, P. (1977). "Formulation and estimation of stochastic
+  frontier production function models." *Journal of Econometrics* 6(1), 21–37.
+- Andersen, P., Petersen, N. C. (1993). "A procedure for ranking efficient units in data envelopment
+  analysis." *Management Science* 39(10), 1261–1264. doi:10.1287/mnsc.39.10.1261.
+- Färe, R., Grosskopf, S., Norris, M., Zhang, Z. (1994). "Productivity growth, technical progress,
+  and efficiency change in industrialized countries." *American Economic Review* 84(1), 66–83.
+- Föllmer, H. "Entropic risk measures on Wiener space" (notes), definition (1/β) log E[exp(−βX)],
+  limits mean (β→0) and essential supremum (β→∞). https://www2.mathematik.hu-berlin.de/~foellmer/papers/ERMWS.pdf
+- Tall, D. O. (2008). "The Transition to Formal Thinking in Mathematics." *Mathematics Education
+  Research Journal* 20(2), 5–24. ERIC EJ820231.
+- Tall, D. O. (2013). *How Humans Learn to Think Mathematically: Exploring the Three Worlds of
+  Mathematics.* Cambridge University Press. ISBN 9781107035706.
+
+Candidates named in the plan but **not yet verified** (WP5 to verify or drop): Aigner & Chu 1968;
+Charnes, Cooper & Rhodes 1978 (DEA); Ahmadi-Javid (entropic value at risk); Aitchison 1983
+(compositional PCA) and Aitchison 1986; Egozcue et al. 2003 (ILR); Rockafellar, *Convex Analysis*
+§13 (support functions); Boyd & Vandenberghe, *Convex Optimization* §5.2 (LP duality); Schölkopf et
+al. (kernel PCA); Chami et al. 2021 (HoroPCA, for disambiguation); Zitzler & Thiele 1999
+(hypervolume); Ross, Hastings et al. 2004 (multi-attribute tradespace exploration); Buchberger 1990;
+Artigue 2002; Sfard 1991.
+
+Added for WP9 (2026-11-08, Crossref DOI records): Candès, E. J., Wakin, M. B., Boyd, S. P. (2008).
+"Enhancing sparsity by reweighted ℓ1 minimization." *J. Fourier Anal. Appl.* 14(5–6), 877–905.
+doi:10.1007/s00041-008-9045-x. Miettinen, K. (1999). *Nonlinear Multiobjective Optimization.*
+Springer US (Kluwer print 1999). doi:10.1007/978-1-4615-5563-6. Ehrgott, M. (2005). *Multicriteria
+Optimization*, 2nd ed. Springer. doi:10.1007/3-540-27659-9 (author from Open Library; Crossref lists none).
+
+## Added for WP10 (2026-11-08, implementer P2)
+
+Method: each DOI was fetched from the Crossref API (authors, title, container, volume, issue, pages,
+date, abstract where present) and resolved through `curl -sIL https://doi.org/<doi>`. The doi.org
+redirect reached the publisher landing page for all fourteen DOIs; Wiley, INFORMS, Royal Society, ASME
+and AIAA answered an automated GET with 403 after the redirect (the DOI is live, the page is not
+machine-readable), Springer, Elsevier (Spero 2014, Allen 1997, Dyson 2001) and Cambridge answered
+200 on the redirect target. Full texts were not read; abstracts were read from Crossref where it has
+them (not for Allen 1997, Dyson 2001, Spero 2014, Ross 2010).
+
+- Fifteen state-of-practice sources (`WP10-decisions.md`, "adopt as listed"): `hirshorn2017nasa`
+  (NTRS page, no DOI), `baker2012survey` (nasa.gov PDF read, page one), `chilli2026decision`
+  (SEBoK page), `smith2007ameliorating`, `parnell2021system`, `madni2018model`, `henderson2021value`,
+  `ross2005tradespace`, `ross2010revisiting`, `stump2009visual`, `spero2014tradespace`,
+  `howard1988decision`, `keeney1993decisions`, `jolliffe2016principal`, `parnell2016trade` (Wiley
+  page, ISBN 9781119237532; no Crossref DOI exists for the book).
+- DEA: `banker1984some`, `allen1997weights`, `dyson2001pitfalls`.
+- `zargham2026incose` (10.1002/iis2.70203, INCOSE International Symposium 36(1), 1501-1514, 2026).
+- Already present, unchanged: `miettinen1999nonlinear` (Crossref dates the Springer record 1998, the
+  Kluwer print 1999), `ehrgott2005multicriteria`, `candes2008enhancing`.
+- Notes: the Crossref title for Ross and Hastings 2005 begins with the session code "11.4.3"; the entry
+  drops it. Baker and Whalen carries no date in the PDF; 2012 rests on the workshop listing found by
+  search (the nasa.gov workshop page itself now returns 404). The NASA handbook's section 6.8 and the
+  SEBoK article body were not read.
+
+## Added for the WP10 Amendment 2 follow-up (2026-11-09, I10 re-based on LICQ)
+
+- Nocedal, J., Wright, S. J. (2006). *Numerical Optimization*, 2nd ed. Springer.
+  doi:10.1007/978-0-387-40065-5 (key `nocedal2006numerical`). Crossref record read (authors, title,
+  Springer New York, 2006); the doi.org redirect reached the Springer landing page. The text of
+  Chapter 12 was read in a course copy (pages.mtu.edu, `NocedalAndWright/Chpt12.pdf`, 51 pages):
+  Definition 12.4 is the linear independence constraint qualification (LICQ: the gradients of the
+  active constraints at the point are linearly independent; the active set is Definition 12.1) and
+  Theorem 12.1 (First-Order Necessary Conditions) states that at a local solution with continuously
+  differentiable f and c_i and LICQ, there is a multiplier vector satisfying the KKT conditions.
+  Numbers confirmed against the chapter text; the copy is not the publisher's, so the author may
+  wish to check the page numbers in the printed second edition. Ledger entry I10 cites these two
+  numbers; the Boyd and Vandenberghe 5.5.3 reference stays only as a convex-case remark.
+
+## Added for the WP10 abstract change (2026-11-09, the one-facet fit is a geometric program)
+
+- Boyd, S., Kim, S.-J., Vandenberghe, L., Hassibi, A. (2007). A tutorial on geometric programming.
+  *Optimization and Engineering* 8(1), 67-127. doi:10.1007/s11081-007-9001-7 (key `boyd2007tutorial`,
+  already in the bibliography). Sections 2.1 (monomials and posynomials), 2.2 (standard form), 2.3
+  (convex form, the change of variables x = exp(y)) and 2.5 (how GPs are solved, with the change of variables; generalized posynomials are section 5.3, see the next entry) were read in
+  the authors' PDF by the derivation implementer; the paper cites it for the one-facet fit being a
+  geometric program (Appendix B, L4.14 to L4.24) and the fitted model a generalized posynomial.
+
+## Added for WP10 Amendment 5, R-41 (2026-11-09, ledger entries I14 and I15, lemma L16)
+
+Both sources were already in the bibliography; the section numbers below were read in the authors'
+PDFs by the derivation implementer (text extracted with pdftotext), not taken from memory.
+
+- Boyd, S., Vandenberghe, L. (2004). *Convex Optimization* (key `boyd2004convex`). PDF
+  https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf. Section 3.1.1 "Definition" gives the
+  two-point inequality (3.1), f(theta x + (1 - theta) y) <= theta f(x) + (1 - theta) f(y), as the
+  definition of a convex function. Section 3.1.8 "Jensen's inequality and extensions" says the basic
+  inequality (3.1) is sometimes called Jensen's inequality and states the finite form: if f is
+  convex, x_1..x_k in dom f and theta_i >= 0 with sum 1, then f(sum theta_i x_i) <= sum theta_i
+  f(x_i). Ledger entry I14 cites 3.1.8, with 3.1.1 for the two-point form. The same section applies
+  the inequality to the convex -log to obtain the arithmetic-geometric mean inequality, the
+  argument L16 uses for Gibbs' inequality.
+- Boyd, S., Kim, S.-J., Vandenberghe, L., Hassibi, A. (2007) (key `boyd2007tutorial`). PDF
+  https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf. Section 5.3 "Generalized posynomials":
+  a function of positive variables is a generalized posynomial if it can be formed from posynomials
+  using addition, multiplication, positive (fractional) power, and maximum. Section 5.4 "Generalized
+  geometric program": minimize f_0 subject to f_i <= 1 and g_i = 1, the g_i monomials and the f_i
+  generalized posynomials; any GP is a GGP. Section 9.1 (signomial programming) notes some authors
+  use the name for the wider, nonconvex class (the older sense the glossary carries in `not`).
+  Ledger entry I15 cites 5.3 (and 5.4 for the program).
+
+## Added for WP17 R-8 (2026-11-09, ledger entry I16, lemma L17)
+
+- Nocedal, J., Wright, S. J. (2006). *Numerical Optimization*, 2nd ed. Springer (key
+  `nocedal2006numerical`, already in the bibliography; doi:10.1007/978-0-387-40065-5). The text of
+  Chapter 12 was read in a course copy of the book (the Kent State copy of the full text,
+  `www.math.kent.edu/~reichel/courses/optimization/Numerical_Optimization.pdf`, text extracted with
+  pdftotext), not taken from memory. Section 12.5 "Second-Order Conditions": "f and c_i are all
+  assumed to be twice continuously differentiable"; the critical cone is defined as C(x*, lambda*) =
+  {w in F(x*) | grad c_i(x*)^T w = 0 for all i in A(x*) ∩ I with lambda_i* > 0}, equivalently (12.53)
+  grad c_i^T w = 0 for i in E and for active inequalities with a positive multiplier, and >= 0 for
+  active inequalities with a zero multiplier. **Theorem 12.6 (Second-Order Sufficient Conditions):**
+  "Suppose that for some feasible point x* there is a Lagrange multiplier vector lambda* such that
+  the KKT conditions (12.34) are satisfied. Suppose also that w^T Hess_xx L(x*, lambda*) w > 0 for
+  all w in C(x*, lambda*), w != 0 (12.65). Then x* is a strict local solution for (12.1)." The text
+  before the theorem says it differs from Theorem 12.5 (the necessary conditions, which assume LICQ)
+  in that the constraint qualification is not required and the inequality is strict. The same
+  section restates (12.65) as positive definiteness of Z^T Hess L Z for a basis Z of the critical
+  cone when it is a subspace. Ledger entry I16 cites Theorem 12.6, the critical cone (12.53) and the
+  KKT conditions (12.34). Status: numbers confirmed against the chapter text; the copy is not the
+  publisher's, so the page numbers (the theorem is on page 333 in that copy) are to be confirmed by
+  the author against the printed second edition.
+
+## Added for P-11 (2026-11-09, MDAO and trade-space exploration in the prior art)
+
+Each DOI fetched from the Crossref API and resolved through doi.org on 2026-11-09 (the literature
+agent's record; the `verified` field of each entry names where its abstract was read). Full texts
+were not read.
+
+- `sobieszczanski1997multidisciplinary`: Sobieszczanski-Sobieski, J., Haftka, R. T. (1997).
+  "Multidisciplinary aerospace design optimization: survey of recent developments." *Structural
+  Optimization* 14(1), 1-23. doi:10.1007/BF01197554. Abstract from the NTRS record of the AIAA/NASA-TM version.
+- `martins2013multidisciplinary`: Martins, J. R. R. A., Lambe, A. B. (2013). "Multidisciplinary design
+  optimization: a survey of architectures." *AIAA Journal* 51(9), 2049-2075. doi:10.2514/1.J051895.
+  Abstract via OpenAlex (the publisher's page refuses an automated read).
+- `lambe2012extensions`: Lambe, A. B., Martins, J. R. R. A. (2012). "Extensions to the design structure
+  matrix for the description of multidisciplinary design, analysis, and optimization processes."
+  *Structural and Multidisciplinary Optimization* 46(2), 273-284. doi:10.1007/s00158-012-0763-y.
+  Abstract from the authors' bibliography page.
+- `gray2019openmdao`: Gray, J. S., Hwang, J. T., Martins, J. R. R. A., Moore, K. T., Naylor, B. A. (2019).
+  "OpenMDAO: an open-source framework for multidisciplinary design, analysis, and optimization."
+  *Structural and Multidisciplinary Optimization* 59(4), 1075-1104. doi:10.1007/s00158-019-02211-z.
+  Abstract via Semantic Scholar.
+- `martins2021engineering`: Martins, J. R. R. A., Ning, A. (2021). *Engineering Design Optimization.*
+  Cambridge University Press. doi:10.1017/9781108980647. Publisher's description read.
+- `stump2003design`: Stump, G. M., Yukish, M., Simpson, T. W., Harris, E. N. (2003). "Design space
+  visualization and its application to a design by shopping paradigm." ASME IDETC/CIE 2003, DAC,
+  795-804. doi:10.1115/DETC2003/DAC-48785. Crossref abstract read.
+- `simpson2008visual`: Simpson, T., Spencer, D., Yukish, M., Stump, G. (2008). "Visual steering commands
+  and test problems to support research in trade space exploration." 12th AIAA/ISSMO MAO Conference,
+  AIAA 2008-6085. doi:10.2514/6.2008-6085. Abstract via OpenAlex.
+- Not entered: `simpson2011trade` (Springer chapter, doi:10.1007/978-0-85729-883-6_7; bibliographic
+  record only, no abstract in any machine-readable record; no sentence of the register needs it).
+  Re-checked and unchanged: `ross2004multi`, `ross2005tradespace`, `stump2009visual`.
+
+## Added for WP11 round 2, the sceptic's register (2026-11-10, the third paper author)
+
+Each DOI fetched from the Crossref API (`curl -s https://api.crossref.org/works/<doi>`) and resolved
+through `curl -sIL https://doi.org/<doi>` on 2026-11-10. Full texts were not read; the `verified`
+field of each entry says what was read.
+
+- `charnes1982multiplicative`: Charnes, A., Cooper, W. W., Seiford, L., Stutz, J. (1982). "A
+  multiplicative model for efficiency analysis." *Socio-Economic Planning Sciences* 16(5), 223-224.
+  doi:10.1016/0038-0121(82)90029-5. Crossref has no abstract; doi.org reached the Elsevier linkinghub
+  page (200); ScienceDirect refuses an automated read. Read by title only.
+- `charnes1983invariant`: Charnes, A., Cooper, W. W., Seiford, L., Stutz, J. (1983). "Invariant
+  multiplicative efficiency and piecewise Cobb-Douglas envelopments." *Operations Research Letters*
+  2(3), 101-103. doi:10.1016/0167-6377(83)90014-7. As above: read by title only.
+- `banker1986piecewise`: Banker, R. D., Maindiratta, A. (1986). "Piecewise loglinear estimation of
+  efficient production surfaces." *Management Science* 32(1), 126-135. doi:10.1287/mnsc.32.1.126.
+  Crossref abstract read in full (linear programs for piecewise log-linear estimation of efficient
+  production surfaces, derived from postulated properties of the production possibility set; unlike
+  the piecewise linear model of Banker, Charnes and Cooper 1984 it admits increasing marginal
+  products and S-shaped production functions; estimates of technical inefficiency, rates of
+  substitution and transformation, marginal products and returns to scale). doi.org reached the
+  INFORMS page (403 to an automated GET after the redirect).
+- `fare1985measurement`: Färe, R., Grosskopf, S., Lovell, C. A. K. (1985). *The Measurement of
+  Efficiency of Production.* Springer Netherlands (Studies in Productivity Analysis 6).
+  doi:10.1007/978-94-015-7721-2. doi.org reached the Springer landing page (200), whose chapter list
+  includes "Hyperbolic Graph Efficiency Measures" (chapter 10.1007/978-94-015-7721-2_5, pp. 107-130);
+  that chapter's abstract was read on its Springer page: the chapter drops the assumption that
+  either inputs or outputs are given, so inputs and outputs are both freely variable and the
+  technology is modelled by its graph rather than by an input or output correspondence. The
+  chapter body (the measure's definition) was not read; the paper and Appendix G say only what the
+  abstract says.

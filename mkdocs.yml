@@ -1,0 +1,93 @@
+site_name: tradespace
+# The description is pyproject.toml's, set by the scripts/site_metadata.py hook (one source of
+# values with the root pages); the hook also puts the public-link metadata on every page.
+site_url: https://dynamicalsystemsgroup.github.io/tradespace/docs/
+repo_url: https://github.com/DynamicalSystemsGroup/tradespace
+repo_name: DynamicalSystemsGroup/tradespace
+docs_dir: docs
+# A bare `mkdocs build` must never wipe the tracked root page in site/ (assemble_site.py and
+# stage_site.py pass -d explicitly).
+site_dir: build/docsite
+strict: true
+
+# The Glossary page is compiled from glossary.yaml into docs/generated/ by
+# scripts/build_generated.py (assemble_site.py and stage_site.py run it first). The notes and
+# specs are working material.
+exclude_docs: |
+  superpowers/
+  references.bib
+
+theme:
+  name: material
+  features: [navigation.sections, navigation.top, content.code.copy]
+  palette:
+    - scheme: default
+      primary: blue grey
+      media: "(prefers-color-scheme: light)"
+    - scheme: slate
+      primary: blue grey
+      media: "(prefers-color-scheme: dark)"
+
+markdown_extensions:
+  - pymdownx.arithmatex: { generic: true }
+  - pymdownx.superfences
+  - admonition
+  - md_in_html
+  - footnotes
+  - tables
+  - toc: { permalink: true }
+
+# `[text](paper:key)` cites a label of the paper; the hook turns it into a link and fails on an
+# undefined key (scripts/paper_keys.py).
+hooks:
+  - scripts/paper_keys.py
+  - scripts/site_metadata.py
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - bibtex:
+      bib_file: docs/references.bib
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: numpy
+            docstring_section_style: list
+            show_root_heading: true
+            show_source: false
+            members_order: source
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - User guide:
+      - "User guide: start here": user-guide/overview.md
+      - Conditioning: user-guide/conditioning.md
+      - Fitting: user-guide/fitting.md
+      - The fit temperature: user-guide/temperature.md
+      - Choosing K: user-guide/choosing-k.md
+      - Trade-offs and tensions: user-guide/tensions.md
+      - Routes back from a tension: user-guide/tension-routes.md
+      - Chart: user-guide/chart.md
+      - Prediction: user-guide/prediction.md
+      - Termination: user-guide/termination.md
+      - Limitations: user-guide/limitations.md
+  - API: api-reference.md
+  - Examples:
+      - examples.md
+      - Perovskite solar cells: examples/perovskite.md
+      - Amniote life histories: examples/amniote.md
+      - Broadbalk wheat: examples/wheat.md
+  - From the chart back to a design: bridge.md
+  - Theory in brief: theory.md
+  - Glossary: generated/glossary.md
+  - Further reading: further-reading.md
+  - Project:
+      - Code owners: code-owners.md
