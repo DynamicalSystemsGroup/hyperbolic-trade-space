@@ -24,6 +24,14 @@ can_approve_pull_request_reviews = false
 [pages]
 build_type = "workflow"
 
+# Settings, General, Pull Requests: "Automatically delete head branches" (GOVERNANCE.md, "Branches":
+# a pull request's branch is deleted at its merge; decided 2026-11-17, WP82 Amendment 3, set after
+# the merge; live was off through 0.1). The REST field delete_branch_on_merge of
+# GET repos/{owner}/{repo}, read on the runner (Metadata). The table is named for the settings page,
+# since the key `repository` above is the repository's name.
+[general]
+delete_branch_on_merge = true
+
 # Who holds authority: the logins on the `*` line of CODEOWNERS, the one record of who may approve,
 # merge and release (decided 2026-11-17, 13:40). Each must be a collaborator with at least this access
 # (the legacy roles: read < write < admin; GitHub reports maintain as write).

@@ -11,3 +11,7 @@ actors empty), `actions__permissions__workflow.json` (read, no approving reviews
 (`main-checks`, `controls` among the required checks); and `rulesets__1.json` with its entry in `rulesets.json` is
 the `governance-files` push ruleset in the API's shape with a placeholder id. A `--record` run after the settings
 are changed replaces all of them with recordings.
+
+`repository.json` (the repository itself, `GET repos/{owner}/{repo}`, for the `[general]` table) was recorded on
+2026-11-17 (WP82 Amendment 3) and its one compared field, `delete_branch_on_merge`, edited from the live `false` to
+the declared `true`; the same `--record` run replaces it.

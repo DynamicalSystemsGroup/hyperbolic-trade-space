@@ -24,8 +24,9 @@ DECLARATION = crs.load_declaration(crs.DECLARATION)
 OWNERS = crs.code_owners(ROOT / ".github" / "CODEOWNERS")
 APPROVERS = crs.paper_approvers(ROOT / ".github" / "CODEOWNERS")
 # the fixture's fields: 61 at WP78; 64 with the paper approvers (WP79: their row and two logins);
-# 69 with the governance-files push ruleset (WP82: target, enforcement, bypass actors, rules, paths)
-FIELDS = 69
+# 69 with the governance-files push ruleset (WP82: target, enforcement, bypass actors, rules,
+# paths); 70 with the general settings' delete_branch_on_merge (WP82 Amendment 3)
+FIELDS = 70
 LOCAL_ONLY = 7  # five rulesets' bypass actors and the two workflow-permission fields
 
 
@@ -199,6 +200,7 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     runner mode; present and differing it is not reported there, and is reported locally."""
     assert DECLARATION["actions"]["checked_on"] == "local"
     others = [DECLARATION["pages"], DECLARATION["code_owners"], DECLARATION["paper_approvers"]]
+    others += [DECLARATION["general"]]
     others += DECLARATION["rulesets"] + DECLARATION["environments"]
     assert all(s.get("checked_on", "both") == "both" for s in others)
     del payloads["actions/permissions/workflow"]
@@ -452,3 +454,18 @@ def test_release_runs_controls_once_and_carries_the_attestation():
     env = release["jobs"]["tag"]["env"]
     assert env["CONTROLS_DECLARATION"] == "${{ needs.controls.outputs.declaration }}"
     assert env["CONTROLS_RESULT"] == "${{ needs.controls.outputs.result }}"
+
+
+def test_a_merged_branch_kept_is_named(payloads):
+    """Settings, General: a merged pull request's branch is deleted (GOVERNANCE.md, "Branches");
+    the field is read on the runner (Metadata), so a drift turns the controls job red."""
+    assert DECLARATION["general"] == {"delete_branch_on_merge": True}
+    payloads["repository"]["delete_branch_on_merge"] = False
+    result = compare(payloads)
+    assert result.exit_code == 1
+    assert result.lines() == ["general.delete_branch_on_merge: expected true, found false"]
+    runner = compare(payloads, runner=True)
+    assert [r.path for r in runner.differences] == ["general.delete_branch_on_merge"]
+    assert crs.fixture_name(crs.REPOSITORY) == "repository.json"
+    del payloads["repository"]
+    assert compare(payloads).exit_code == 2
