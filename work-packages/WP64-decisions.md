@@ -896,3 +896,22 @@ the row in `.github/PR_ADMISSIBILITY.md`; the steps for a code owner as the sect
 `docs/code-owners.md`, in brief in `GOVERNANCE.md`. After the merge a code owner triggers Dependabot's check for
 updates and closes the eight against `main` with a comment naming the route. The governance pull request #16 carries
 WP82 with both amendments.
+
+## The dependency updates as one pull request (2026-11-17, 21:50 to 22:05 EST)
+
+Verbatim, in order:
+
+> all the dependabot PRs have broken CI
+
+> i want to clean up all the dependabot updates into one PR and it needs to pass CI. since as it stands its a bit
+> attention hungry
+
+**Applied as.** The eight bumps (#4 to #11) taken as one change into `dev` on the branch `deps-2026-11`: seven of
+Dependabot's commits cherry-picked with their origin named, the `checkout` bump applied by hand beside the `setup-uv`
+bump with the same SHA and comment; `uv.lock` carries ruff 0.17.5, mystmd 1.13.0, z3-solver 5.4.1.0. Verified
+locally (lock, lint under the new ruff, format, the pins check, the workflow tests, the fast suite) and on the
+runners (the Tests workflow dispatched with Windows; the release dry run on `qc/release`, which carries the
+artefacts through `upload-artifact` 7 and `download-artifact` 4.3.0 together). Opened as a pull request with its
+scope-of-work issue once green; the eight closed against it with a comment. The failing checks on the eight were
+the release admissibility, the template fields and the linked-issue rule, since they targeted `main`; their test
+shards were green.

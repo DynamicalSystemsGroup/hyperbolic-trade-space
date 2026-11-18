@@ -2722,3 +2722,21 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   the driver's re-runs agree. The `draft` labels on #12 and #13 removed by him (the label gate green on both).
   His words of 20:50 to 21:15 verbatim in `WP64-decisions.md`. After Danilo merges #16 he changes the five settings
   in order and runs Dependabot's check for updates; the eight bumps against `main` close then.
+- **Worktrees and branches of the landed units retired (21:50, his "Yes, retire them").** Removed: the fourteen
+  worktrees of landed units and old spikes (the WP78, WP79, WP79b, WP80, WP82 unit worktrees; `gov-pr`; the scratch
+  worktrees `wp8b-drafts`, `wp51fig`, `wp55`, `wp55spike`, `wp56-ternary`, `wp56spike`, `stage` with its port-8000
+  server stopped). Deleted: the branches whose every patch is in `dev` by `git cherry` or in
+  `origin/governance-bypass-removal` (wp78, wp79b, wp80, rehearsal, the WP77 unit branch, wp8b-drafts, gov-pr,
+  wp82-versions, wp82-dependabot, the three `*-land` branches, the harness's `worktree-agent-*` branches). Kept, as
+  refs with patches not in `dev`: `wp51fig` (25), `wp55` (5), `wp55spike` (3), `wp56-ternary` (1), `wp56spike` (3),
+  `wp30b-notebooks` (2 of 33), `preview/site` (1, an old local preview); `v0.2-pre-rebase` and
+  `claude/iron-triangle-example-12a7c6` (the documentation session's); the local `governance-bypass-removal` at
+  1c728c3d in the other session's scratch worktree (stale against the pushed branch; that session's to reset).
+  Kept worktrees: `final-stage` (the staging build), `wp75`, the iron-triangle worktree. The seven kept spike refs
+  are for a tidiness decision: each is a record that landed in another form, and a branch left unmerged is the only
+  thing that keeps its commits.
+- **The dependency updates as one change (21:55 to 22:10).** Branch `deps-2026-11` over `dev` 0dc2f4d2 (the
+  records commits since are not needed by it): Dependabot's eight bumps, seven cherry-picked clean, `checkout`
+  applied by hand (its lines beside `setup-uv`'s). Local: lock clean, ruff 0.17.5 clean, format clean, pins clean,
+  79 workflow tests; the fast suite running. Runners: Tests dispatched with Windows (44220588377) and the release
+  dry run on `qc/release` (44220587981). The issue and the pull request open on green; the eight close against it.
