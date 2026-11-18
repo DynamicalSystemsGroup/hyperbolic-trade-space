@@ -1,0 +1,379 @@
+{
+  "tradespace": {
+    "HyperbolicTradeSpace": {
+      "kind": "class",
+      "methods": {
+        "assign_cells": "(self, X)",
+        "fit": "(self, X, y=None)",
+        "get_feature_names_out": "(self, input_features=None)",
+        "improvement_factors": "(self, X)",
+        "invariant_value": "(self, X)",
+        "inverse_transform": "(self, Xt)",
+        "level_set": "(self, Z, value=1.0)",
+        "novelty_score": "(self, X, calibrated=False)",
+        "project": "(self, X)",
+        "score_samples": "(self, X)",
+        "transform": "(self, X)"
+      },
+      "signature": "(temperature=10.0, min_exponent=0.0, coordinates='ilr', n_terms=1, term_temperature=inf, term_aggregation='sum', tol=1e-10, max_iter=500, penalty=None, alpha=0.0, random_state=None, refit_step='support', n_restarts=5)"
+    },
+    "LogAffinePreconditioner": {
+      "kind": "class",
+      "methods": {
+        "fit": "(self, X, y=None)",
+        "inverse_transform": "(self, Xt)",
+        "transform": "(self, X)"
+      },
+      "signature": "(orientation=None, shift=0.0, scaler='standard')"
+    },
+    "TradeSpaceRegressor": {
+      "kind": "class",
+      "methods": {
+        "fit": "(self, X, y)",
+        "predict": "(self, X)",
+        "predict_coordinates": "(self, X)",
+        "predict_novelty": "(self, X)",
+        "score": "(self, X, y, sample_weight=None)"
+      },
+      "signature": "(regressor, trade_space)"
+    },
+    "design_tensions": {
+      "kind": "function",
+      "signature": "(estimator, X, preconditioner=None, attributes=None, threshold=0.001)"
+    },
+    "frontier_in_original_units": {
+      "kind": "function",
+      "signature": "(estimator, preconditioner)"
+    },
+    "make_configured_frontier_data": {
+      "kind": "function",
+      "signature": "(n_samples, n_features, n_config, exponents=None, log_offset=0.0, frontier_fraction=0.3, interior_scale=1.0, nonlinearity=0.1, noise=0.0, random_state=None)"
+    },
+    "make_frontier_data": {
+      "kind": "function",
+      "signature": "(n_samples, n_features, exponents=None, log_offset=0.0, frontier_fraction=0.3, interior_scale=1.0, noise=0.0, random_state=None, n_terms=1)"
+    },
+    "select_temperature": {
+      "kind": "function",
+      "signature": "(X, target_frac_above=0.1, bounds=(0.1, 10000.0), tol=0.01, **params)"
+    },
+    "tension_matrix": {
+      "kind": "function",
+      "signature": "(estimator, X, threshold=0.001)"
+    },
+    "trade_off_report": {
+      "kind": "function",
+      "signature": "(estimator, X, band=None, min_near_frontier=10, threshold=0.001, association='pearson')"
+    }
+  },
+  "tradespace.coordinates": {
+    "alr_basis": {
+      "kind": "function",
+      "signature": "(d)"
+    },
+    "from_frontier_coordinates": {
+      "kind": "function",
+      "signature": "(Z, log_v, w, beta, B)"
+    },
+    "helmert_basis": {
+      "kind": "function",
+      "signature": "(d)"
+    },
+    "to_frontier_coordinates": {
+      "kind": "function",
+      "signature": "(U, w, beta, B)"
+    }
+  },
+  "tradespace.datasets": {
+    "make_configured_frontier_data": {
+      "kind": "function",
+      "signature": "(n_samples, n_features, n_config, exponents=None, log_offset=0.0, frontier_fraction=0.3, interior_scale=1.0, nonlinearity=0.1, noise=0.0, random_state=None)"
+    },
+    "make_frontier_data": {
+      "kind": "function",
+      "signature": "(n_samples, n_features, exponents=None, log_offset=0.0, frontier_fraction=0.3, interior_scale=1.0, noise=0.0, random_state=None, n_terms=1)"
+    }
+  },
+  "tradespace.estimator": {
+    "EPS_FEAS": {
+      "kind": "float",
+      "value": "1e-09"
+    },
+    "EPS_KKT": {
+      "kind": "float",
+      "value": "1e-08"
+    },
+    "EPS_ZERO_EXPONENT": {
+      "kind": "float",
+      "value": "1e-12"
+    },
+    "GUARD_TOL": {
+      "kind": "float",
+      "value": "1e-12"
+    },
+    "HyperbolicTradeSpace": {
+      "kind": "class",
+      "methods": {
+        "assign_cells": "(self, X)",
+        "fit": "(self, X, y=None)",
+        "get_feature_names_out": "(self, input_features=None)",
+        "improvement_factors": "(self, X)",
+        "invariant_value": "(self, X)",
+        "inverse_transform": "(self, Xt)",
+        "level_set": "(self, Z, value=1.0)",
+        "novelty_score": "(self, X, calibrated=False)",
+        "project": "(self, X)",
+        "score_samples": "(self, X)",
+        "transform": "(self, X)"
+      },
+      "signature": "(temperature=10.0, min_exponent=0.0, coordinates='ilr', n_terms=1, term_temperature=inf, term_aggregation='sum', tol=1e-10, max_iter=500, penalty=None, alpha=0.0, random_state=None, refit_step='support', n_restarts=5)"
+    },
+    "PARTICIPATION_THRESHOLD": {
+      "kind": "float",
+      "value": "0.001"
+    },
+    "POLISH_STEPS": {
+      "kind": "int",
+      "value": "5"
+    }
+  },
+  "tradespace.gaps": {
+    "find_holes": {
+      "kind": "function",
+      "signature": "(Z, resolution=50, threshold=2.0)"
+    },
+    "frontier_targets": {
+      "kind": "function",
+      "signature": "(Z_points, estimator, preconditioner=None)"
+    },
+    "knn_gap_scores": {
+      "kind": "function",
+      "signature": "(Z, k=5)"
+    },
+    "orient_by_pca": {
+      "kind": "function",
+      "signature": "(Z, mask=None)"
+    }
+  },
+  "tradespace.plotting": {
+    "BAND_COLOR": {
+      "kind": "str",
+      "value": "'0.7'"
+    },
+    "FRONTIER_COLOR": {
+      "kind": "str",
+      "value": "'black'"
+    },
+    "HOLE_COLOR": {
+      "kind": "str",
+      "value": "'#D55E00'"
+    },
+    "TENSION_CMAP": {
+      "kind": "str",
+      "value": "'PuOr'"
+    },
+    "cell_labels": {
+      "kind": "function",
+      "signature": "(estimator, X)"
+    },
+    "plot_association": {
+      "kind": "function",
+      "signature": "(report, names=None, ax=None)"
+    },
+    "plot_frontier_coordinates": {
+      "kind": "function",
+      "signature": "(Z, log_v, color=None, holes=None, targets=None, band=None, ax=None)"
+    },
+    "plot_frontier_surface_3d": {
+      "kind": "function",
+      "signature": "(estimator, X=None, z_index=None, grid=25, color=None, ax=None)"
+    },
+    "plot_log_plane": {
+      "kind": "function",
+      "signature": "(estimator, X, color=None, band=None, ax=None, levels=None)"
+    },
+    "plot_temperature_path": {
+      "kind": "function",
+      "signature": "(estimator, X, temperatures=None, names=None, axes=None, target_frac_above=0.1, floor=0.001)"
+    },
+    "plot_ternary": {
+      "kind": "function",
+      "signature": "(estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme='auto', color=None)"
+    },
+    "plot_v_by_variable": {
+      "kind": "function",
+      "signature": "(values, log_v, color=None, band=None, ax=None, label=None)"
+    },
+    "temperature_path": {
+      "kind": "function",
+      "signature": "(estimator, X, temperatures=None)"
+    },
+    "ternary_marker_values": {
+      "kind": "function",
+      "signature": "(estimator, X, names=None)"
+    }
+  },
+  "tradespace.preconditioning": {
+    "LogAffinePreconditioner": {
+      "kind": "class",
+      "methods": {
+        "fit": "(self, X, y=None)",
+        "inverse_transform": "(self, Xt)",
+        "transform": "(self, X)"
+      },
+      "signature": "(orientation=None, shift=0.0, scaler='standard')"
+    },
+    "frontier_in_original_units": {
+      "kind": "function",
+      "signature": "(estimator, preconditioner)"
+    }
+  },
+  "tradespace.predictive": {
+    "TradeSpaceRegressor": {
+      "kind": "class",
+      "methods": {
+        "fit": "(self, X, y)",
+        "predict": "(self, X)",
+        "predict_coordinates": "(self, X)",
+        "predict_novelty": "(self, X)",
+        "score": "(self, X, y, sample_weight=None)"
+      },
+      "signature": "(regressor, trade_space)"
+    }
+  },
+  "tradespace.solvers": {
+    "DISTINCT_TERMS_DISTANCE": {
+      "kind": "float",
+      "value": "0.001"
+    },
+    "EPS_FEAS": {
+      "kind": "float",
+      "value": "1e-09"
+    },
+    "EPS_KKT": {
+      "kind": "float",
+      "value": "1e-08"
+    },
+    "GUARD_TOL": {
+      "kind": "float",
+      "value": "1e-12"
+    },
+    "POLISH_STEPS": {
+      "kind": "int",
+      "value": "5"
+    },
+    "SolveResult": {
+      "kind": "class",
+      "methods": {},
+      "signature": "(w: 'np.ndarray', beta: 'float', p: 'np.ndarray', loss: 'float', n_iter: 'int', success: 'bool', message: 'str') -> None"
+    },
+    "Termination": {
+      "kind": "class",
+      "methods": {},
+      "signature": "(status: 'str', reason: 'str', n_iter: 'int', sum_residual: 'float', floor_residual: 'float', offset_residual: 'float', max_gap: 'float', bound: 'float', loss_change: 'float', assignment_changes: 'int', n_empty: 'int', gamma: 'float', radius: 'float', eps_kkt: 'float', eps_feas: 'float', guard_tol: 'float', gaps: 'np.ndarray', shares: 'np.ndarray', min_curvature: 'float' = nan, n_distinct_terms: 'int' = -1) -> None"
+    },
+    "TermsResult": {
+      "kind": "class",
+      "methods": {},
+      "signature": "(W: 'np.ndarray', beta: 'np.ndarray', labels: 'np.ndarray', loss: 'float', n_iter: 'int', success: 'bool', message: 'str', history: 'np.ndarray', termination: 'Termination') -> None"
+    },
+    "assignment_margin": {
+      "kind": "function",
+      "signature": "(U, W, beta)"
+    },
+    "distinct_terms": {
+      "kind": "function",
+      "signature": "(W, distance=0.001)"
+    },
+    "fixed_assignment_bound": {
+      "kind": "function",
+      "signature": "(U, W, labels, tau, min_exponent=0.0, P=None)"
+    },
+    "log_mean_exp": {
+      "kind": "function",
+      "signature": "(s, tau)"
+    },
+    "loss_and_grad": {
+      "kind": "function",
+      "signature": "(w, U, tau)"
+    },
+    "simplex_gap": {
+      "kind": "function",
+      "signature": "(g, w, min_exponent=0.0)"
+    },
+    "single_term_termination": {
+      "kind": "function",
+      "signature": "(U, w, beta, p, tau, min_exponent, n_iter, reason, n_terms=1)"
+    },
+    "soft_certificate": {
+      "kind": "function",
+      "signature": "(U, W, tau, kappa, min_exponent=0.0)"
+    },
+    "soft_hessian": {
+      "kind": "function",
+      "signature": "(U, W, tau, kappa)"
+    },
+    "soft_loss": {
+      "kind": "function",
+      "signature": "(U, W, beta, kappa, aggregation='sum')"
+    },
+    "soft_weights": {
+      "kind": "function",
+      "signature": "(U, W, beta, kappa)"
+    },
+    "solve_lp": {
+      "kind": "function",
+      "signature": "(U, min_exponent=0.0)"
+    },
+    "solve_slsqp": {
+      "kind": "function",
+      "signature": "(U, tau, min_exponent=0.0, w0=None, tol=1e-10, max_iter=500, penalty=None, alpha=0.0)"
+    },
+    "solve_terms": {
+      "kind": "function",
+      "signature": "(U, n_terms, tau, min_exponent=0.0, penalty=None, alpha=0.0, n_restarts=5, max_iter=50, random_state=None, tol=1e-10, slsqp_max_iter=500, refit_step='support', term_temperature=inf, aggregation='sum')"
+    },
+    "support_weights": {
+      "kind": "function",
+      "signature": "(s, tau)"
+    },
+    "term_gap": {
+      "kind": "function",
+      "signature": "(U, w, ubar, tau, min_exponent=0.0, p=None)"
+    },
+    "term_loss": {
+      "kind": "function",
+      "signature": "(U, w, ubar, tau)"
+    }
+  },
+  "tradespace.tensions": {
+    "DesignTensions": {
+      "kind": "class",
+      "methods": {},
+      "signature": "(term: 'np.ndarray', tensions: 'np.ndarray', by_term: 'np.ndarray', margin: 'np.ndarray', attribute_tensions: 'np.ndarray | None', attribute_by_term: 'np.ndarray | None' = None) -> None"
+    },
+    "TradeOffReport": {
+      "kind": "class",
+      "methods": {},
+      "signature": "(participating: 'np.ndarray', exponents: 'np.ndarray', elasticities: 'np.ndarray', association: 'np.ndarray', association_kind: 'str', closure_note: 'str', spread_directions: 'np.ndarray', spread_loadings: 'np.ndarray', explained_spread: 'np.ndarray', contending_set: 'np.ndarray', contending_exponents: 'np.ndarray', n_lemma: 'int', lemma_name: 'str', band: 'float', n_near_frontier: 'int') -> None"
+    },
+    "design_tensions": {
+      "kind": "function",
+      "signature": "(estimator, X, preconditioner=None, attributes=None, threshold=0.001)"
+    },
+    "tension_matrix": {
+      "kind": "function",
+      "signature": "(estimator, X, threshold=0.001)"
+    },
+    "trade_off_report": {
+      "kind": "function",
+      "signature": "(estimator, X, band=None, min_near_frontier=10, threshold=0.001, association='pearson')"
+    }
+  },
+  "tradespace.tuning": {
+    "select_temperature": {
+      "kind": "function",
+      "signature": "(X, target_frac_above=0.1, bounds=(0.1, 10000.0), tol=0.01, **params)"
+    }
+  }
+}
