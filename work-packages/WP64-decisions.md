@@ -770,3 +770,99 @@ To the handover (the candidate `dev` at eada5a3e; the dry run green; TestPyPI ho
 `dev` into `main` opened with the template's sections and `closes` the issue; the four required checks run on it;
 he merges by his bypass. The changelog's date stays 2026-11-17 (the day in his time zone; the changelog check binds
 no date) and is rewritten if the merge falls on a later day.
+
+## The merge (2026-11-17, 18:55 to 19:26 EST)
+
+With the four required checks green, the pull request's merge box showed "Review required" and no bypass checkbox.
+His words, verbatim, with the screenshot:
+
+> its done but i cannot merge without review
+
+The driver's reading through the API: the `main-review` ruleset names his user (`User:10465438`, pull requests
+only), the ruleset endpoint reports `current_user_can_bypass = pull_requests_only` for him, every required check of
+`main-checks` passed at 0dc2f4d2, and the review rule is the only block; the merge box had not rendered the bypass.
+He ran, under his own login:
+
+```
+gh pr merge 3 --repo DynamicalSystemsGroup/tradespace --merge --admin
+✓ Merged pull request DynamicalSystemsGroup/tradespace#3 (Release 0.1.0)
+```
+
+Then:
+
+> i merged it.
+
+**Applied as.** Merge commit 74e62fda, merged by `mzargham` at 19:25:57 EST on 2026-11-17 (00:25:57Z on the 18th),
+closing issue #2; the changelog's date 2026-11-17 stands (his time zone). The Release run 44207809538 on the merge
+commit is recorded in `WP68-rounds/record.md`, G9.
+
+## The 0.2 pull requests and the README (2026-11-17, 19:30 EST)
+
+Verbatim:
+
+> i merged it. one thing i noticed is the readme appears to be badly out of date. we need to get a readme update into
+> the 0.2 merge candidate. since i was able to merge v0.1, i do need to get to the 0.2 PR so danilo can review that.
+>
+> i want the following
+>
+> * an issue for release 0.2
+> * PR into dev for the governance updates
+> * PR into dev for the documentation and readme updates
+
+Then:
+
+> so i'll get 3 issues and 2 PRs at this time and we'll have a new PR from to dev to main after the 2 PRs clear into
+> main, correct?
+
+**Applied as.** Three issues: #12 (the 0.2 governance update, WP82; scope-of-work template, `draft` label), #13 (the
+0.2 documentation update: WP76, WP81, the README; the same template and label), #14 (Release 0.2.0: what it carries,
+the two reviews, the checklist; closed later by the pull request from `dev` into `main`). The two pull requests clear
+into `dev`, not `main`; the pull request from `dev` into `main` after both is the 0.2 release. The README update is
+a unit on `v0.2` in the documentation session (WP81 unit 4), so the documentation pull request (#15) opened as a
+draft and is marked ready once the README's install is verified against the live package. The governance pull
+request opens when WP82's amendment 1 (below) lands on its branch. The `draft` labels on #12 and #13 are his to
+remove (only a code owner turns a draft into an issue; both scopes he approved verbally).
+
+## Why 0.2.0 and not 0.1.1 (2026-11-17, 20:05 EST)
+
+Verbatim:
+
+> i recommend we also indicate that the governance update is the reason why this qualifies as an 0.2.0 rather than
+> an 0.1.1 since documentation updates since didn't touch the optimizer just the documentation and the governance
+> machinery
+
+**Applied as.** A section "Why 0.2.0 and not 0.1.1" in issue #14 (the package's code unchanged; documentation alone a
+patch; the governance update changes how a release is made, which is part of what each release attests) and one
+sentence in the governance pull request's description pointing at it.
+
+## Semantic versioning as governance (2026-11-17, 20:10 EST)
+
+Verbatim:
+
+> i think we probably need to ensure we have explicit guidance and checks for semantic versioning. this also probably
+> amounts to changes in the governance
+
+Asked where the rule lands, with the options "Amend WP82" (the rule, the surface snapshot and the check join the 0.2
+governance pull request before it opens), "Own package in 0.2" and "Own package after 0.2", his answer, verbatim:
+
+> Amend WP82
+
+**Applied as.** Amendment 1 of `WP82-scope-of-work.md`, built by a unit on the governance branch: a `Versions`
+section in `GOVERNANCE.md` (while the major is 0: a patch changes neither the package's public surface nor a governed
+file; a minor adds capability, changes the surface or changes a secondary rule; the major moves on a breaking change
+once the surface is a commitment), a committed snapshot of the public surface with a test that it matches the live
+package, and the release check `version-kind` in the release workflow's admissibility job (a patch bump with a changed
+surface, a changed governed file or an `Added`/`Removed` changelog section fails before anything publishes); the row
+in `.github/RELEASE_ADMISSIBILITY.md`; no setting on GitHub. Issue #12 and issue #14 amended the same evening.
+
+## The documentation and the live package (2026-11-17, 20:15 EST)
+
+Verbatim:
+
+> its also worth noting that the documentation update can now account for this package being live on pip which can
+> verify once the release lands
+
+**Applied as.** The README and every install instruction on the docs pages lead with the released package
+(`pip install tradespace`, `uv add tradespace`), the clone-and-sync form kept for work on the package; verified in a
+fresh virtual environment outside the repository once PyPI served 0.1.0 (01:35Z), the command and its output in the
+unit's record on `v0.2`.

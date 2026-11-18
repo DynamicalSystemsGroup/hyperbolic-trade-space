@@ -92,3 +92,10 @@ In flight and not part of the release decision: WP8b (its checklist is `release-
   runners (the residual-count baseline; the clean-kernel notebook check's tab-F-datasets drift; the myst build's
   full-size figure links), from WP67's G4 and G5.
 - The `qc/release` branch deleted.
+
+## State after the merge (2026-11-17, 20:45 EST)
+
+Opened as issue #2 and closed by the merge of pull request #3 (74e62fda, 19:25 EST). The release run green end to
+end; the tag, PyPI, the site and the GitHub release with its attestation line: `WP68-rounds/record.md`, G9. `paper`
+fast-forwarded to 0dc2f4d2; the punch list's live checks loaded; the `qc/release` branch gone. Open: `danlessa` as
+Owner on PyPI and TestPyPI (his keyboard); the paper branch's first items (`release-checklist-paper.md`, B5p).

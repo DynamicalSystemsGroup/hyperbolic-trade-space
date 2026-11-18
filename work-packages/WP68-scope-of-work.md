@@ -101,3 +101,7 @@ uses the day of the dry run and is rewritten).
 - Amendment 1 (2026-11-17, his word in `WP64-decisions.md`, "Zenodo stays off"): Zenodo leaves G7 and G9; the 0.1
   release is not archived and mints no DOI. G8 waits, besides his settings and his word, on his click-through of
   the documentation and the top-level site (`WP68-rounds/his-site-review.md`).
+- Amendment 2 (2026-11-17, the driver, under G9): `git branch paper dev` became the fast-forward of the existing
+  `paper` branch to `dev`'s head, since WP79 cut `paper` at c0e210cc on 2026-11-17 and it carried no commits of its
+  own; the three hosted-runner paper tests are filed as `release-checklist-paper.md` row B5p (two fixed by WP79, the
+  baseline his). G1 to G9 are done at 74e62fda; his acceptance of the package is the remaining act.

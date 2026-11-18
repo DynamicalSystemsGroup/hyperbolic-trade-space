@@ -71,6 +71,50 @@ recorded responses follow (`tests/data/wp78/`).
 His word, 23:15 EST 2026-11-17: "Go, open the PR" (`WP64-decisions.md`). The issue and the pull request opened by
 the driver from `dev` at eada5a3e; links in `driver-log.md`.
 
+Merged by him at 19:25:57 EST (the bypass through the API, `gh pr merge 3 --merge --admin`, after the merge box
+did not render the bypass checkbox; `WP64-decisions.md`, "The merge"): merge commit 74e62fda, issue #2 closed by it.
+
 ## G9 after the merge
 
-Pending.
+The Release run on the merge commit, https://github.com/DynamicalSystemsGroup/tradespace/actions/runs/44207809538
+(00:26:20Z to 01:35Z on 2026-11-18, 19:26 to 20:35 EST on the 17th), conclusion success; its jobs in order:
+
+| Job | Result |
+|---|---|
+| controls | success (`conforming (58 fields on the runner; 6 local-only)`) |
+| admissibility | success |
+| build and check | success |
+| test / test (fast), test (slow), test (docs) | success (the slow shard 66 min, as in the dry run) |
+| site / compose | success |
+| tag and draft release | success: `v0.1.0` at 74e62fda |
+| publish to TestPyPI | skipped (a push, not a dispatch) |
+| publish to PyPI | success: https://pypi.org/project/tradespace/0.1.0/ (wheel and sdist) |
+| deploy the site / deploy | success |
+| publish the release | success: https://github.com/DynamicalSystemsGroup/tradespace/releases/tag/v0.1.0 (01:35:03Z; assets `sbom.cdx.json`, the wheel, the sdist) |
+| on failure, clean up and open an issue | skipped |
+
+The release notes carry the attestation line, verbatim:
+`Controls: .github/governance.toml@4088a462f015 checked at 74e62fdaf256cc6e4f2db4fb90e10a02c3df9d6b: conforming (58 fields on the runner; 6 local-only)`.
+
+The punch list's post-release checks, loaded live at 20:40 EST (the script and its output in the driver's scratch,
+quoted here):
+
+| Check | Result |
+|---|---|
+| `/`, `/paper/`, `/docs/`, `/docs/getting-started/`, `/docs/user-guide/overview/`, `/docs/theory/`, `/docs/generated/glossary/`, `/docs/api-reference/`, `/docs/further-reading/` | 200 each |
+| `robots.txt`, `sitemap.xml` (27 entries), `preview.png` | 200 each |
+| The root page's metadata | `og:title`, `rel="canonical"`, JSON-LD present |
+| The Why triangle's three region labels on the deployed build | "all three trade", "metric 3 trades against metric 1", "metric 3 trades against metric 2" (the deployed `ternary-planted-light.png` looked at; the same labels as the Mac build) |
+| GitHub releases page | lists 0.1.0; `releases/latest` 200 |
+| PyPI | `tradespace` 0.1.0, two files |
+| G1: a docs page loaded in a fresh tab after the release | no console error, no failed request (the theme made no releases request on this load) |
+| G2s: every `github.com` link on the deployed pages (from the sitemap) and in `README.md`, `CITATION.cff`, `pyproject.toml`, unauthenticated | 15 on the site and 3 in the files, all 200 |
+
+Also done: `paper` fast-forwarded to `dev`'s head 0dc2f4d2 at 19:27 EST (the branch had no commits of its own since
+its cut at c0e210cc, so no merge commit and no pull request; the paper workflow's push run 44207902935 on it is the
+first with WP79's two fixes, in progress at the time of writing); `qc/release` already deleted; the README's links
+checked from `main`.
+
+Left to him: `danlessa` added as Owner of `tradespace` on PyPI and TestPyPI (Manage, Collaborators), now that the
+project exists under his account. Left to the driver: the paper checklist's first items (`release-checklist-paper.md`,
+row B5p), the worktrees of the landed units retired, his acceptance of WP68 recorded.

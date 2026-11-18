@@ -2686,3 +2686,28 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 - **The candidate: `dev` at e64d402d (23:05).** The dry run at 7b0d7cdf (44180529672) green end to end with `controls` first (`conforming (58 fields on the runner; 6 local-only)`); e64d402d adds his one-line navigation title (`User guide`), push run 44184904829 green, 8797 restaged. `qc/release` deleted. Nothing outward beyond the TestPyPI test project and issue #1. Handover written to him: the release issue and the pull request open on his word.
 - **His word: "Go, open the PR" (23:15).** The release issue and the pull request from `dev` into `main` opened from eada5a3e; links below.
 - **The release issue and the pull request are open (23:25).** Issue https://github.com/DynamicalSystemsGroup/tradespace/issues/2 ("Release 0.1.0", the text of `WP68-rounds/release-issue.md`); pull request https://github.com/DynamicalSystemsGroup/tradespace/pull/3 from `dev` into `main`, closing the issue, with the template's sections filled. On opening: `controls` green three times (the Tests run, the Release run's own and its called copy), admissibility and the three shards running, mergeable, review required (the `main-review` rule; his bypass merges it). The PR is bound to this session's monitor.
+- **The bypass through the API (18:55 to 19:26, 2026-11-17).** With the four checks green the merge box showed "Review
+  required" and no bypass checkbox. Read through the API: `main-review` names his user, the ruleset endpoint reports
+  `current_user_can_bypass = pull_requests_only` for him, `main-checks` satisfied, `viewerCanMergeAsAdmin` false (that
+  field is the legacy admin override, not a ruleset bypass). He merged with `gh pr merge 3 --merge --admin` under his
+  login: 74e62fda at 19:25:57 EST, by `mzargham`, closing #2. Lesson: GitHub's merge box did not render the ruleset
+  bypass for a user-type bypass actor on this pull request, while the merge API applied it; a code owner with a bypass
+  merges from the command line when the box does not offer it.
+- **The release (19:26 to 20:35).** Run 44207809538 on 74e62fda green end to end: `controls`, admissibility, build,
+  the three shards (the slow one 66 min, as in the dry run), the site, the tag `v0.1.0`, PyPI (0.1.0, wheel and sdist),
+  the deploy, the GitHub release with the attestation line. The live checks at 20:40: every punch-list page 200, the
+  metadata present, the triangle's three labels as on the Mac, all GitHub links on the site and in the files 200, no
+  console error on a fresh docs page. `WP68-rounds/record.md` G9; the checklist rows C6, F1, F7, G1, G2s. `paper`
+  fast-forwarded to 0dc2f4d2 at 19:27 (no commits of its own; no merge commit); its push run 44207902935 is the first
+  paper run with WP79's fixes. Left to him: `danlessa` as Owner on PyPI and TestPyPI.
+- **The 0.2 start, on his word (19:30 to 20:45).** Issues #12 (WP82, `draft`), #13 (WP76, WP81, the README,
+  `draft`), #14 (Release 0.2.0, with his "Why 0.2.0 and not 0.1.1" and the versioning rule after his 20:05 and 20:10
+  words; `WP64-decisions.md`). The governance branch rebased onto `dev` 0dc2f4d2 as `gov-pr` (clean); lint, format,
+  lock, the checker (fixture 69 fields; runner 62 and 7 local-only; live, the five differences), vocabulary and 104
+  governance tests green; the fast suite 1 failed on the docs-page rule (`WP82` and `tests/data/wp78` on the code
+  owners' page, case-insensitive `\bWP\d+\b`), reworded in two commits (ea99dfdb, 9e9a4037), the site module 79
+  passed on the released tree as a control. WP82 amendment 1 (the versioning rule, snapshot and `version-kind`
+  check) dispatched as a unit on the branch; the pull request opens when it lands. The documentation session rebased
+  `v0.2` (31 commits over 0dc2f4d2, the register rows renumbered) and committed the README unit at 9e64d44d (fast
+  suite 2,045 passed); pushed, pull request #15 opened as a draft (`closes #13`; both admissibility checks green),
+  marked ready after the fresh-venv install against PyPI. The `draft` labels are his to remove.
