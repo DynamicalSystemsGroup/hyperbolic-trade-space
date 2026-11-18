@@ -946,3 +946,16 @@ repository setting, declared as `delete_branch_on_merge` and checked; `qc/*` del
 with its pull request; local worktrees retired at the landing) with `release_checks.py branches` listing the remote
 branches outside the rule, and the setting as item 6 of his list after the merge. Tonight's dry run of the
 dependency branch runs on a hand-made throwaway commit of that shape (`qc/release` at dfcee17a), deleted after.
+
+## The Dependabot pull requests closed into an issue (2026-11-17, 23:05 EST)
+
+Verbatim:
+
+> also the dependabot issues are really irking me. i feel like they should be processed into an issue to bring the
+> dependencies up to speed and closed. that way they won't disract my team members from the PRs i actually need
+> them to look at.
+
+**Applied as.** Issue #17 ("Dependency updates after 0.1.0: the eight Dependabot bumps as one change into dev", the
+scope-of-work template, `draft` label for his click) opened at once; pull requests #4 to #11 closed with a one-line
+comment naming #17 and the route in #16, their branches deleted. The consolidated pull request from `deps-2026-11`
+closes #17 once its Tests dispatch with Windows and its release dry run are green.

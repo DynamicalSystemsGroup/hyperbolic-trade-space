@@ -2751,3 +2751,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   pushed; its run is watched. The Tests dispatch with Windows (44220588377) runs. His words on preparing the gates
   and on branch sprawl are in `WP64-decisions.md`; amendment 3 of WP82 is a unit on the pull request's branch. The
   lesson for the driver: never gate a push on a piped exit code; the bump and the gates become one command each.
+- **The eight Dependabot pull requests closed into issue #17 (23:05, his word).** Opened #17 from the prepared
+  scope text; closed #4 to #11 with the comment and `--delete-branch`; the remote now holds `main`, `dev`, `paper`,
+  the two pull-request branches, `deps-2026-11` and the transient `qc/release`. The consolidated pull request opens
+  on green (the Tests dispatch 44220588377 and the dry run 44223300180 at the throwaway 0.1.1, both in progress).
