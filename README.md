@@ -37,8 +37,10 @@ metric trades against another, and each numbered marker is a term's characterist
 pip install tradespace
 ```
 
-In a uv project, run `uv add tradespace`. For development setup and checks, see
-[Start contributing](CONTRIBUTING.md#start-contributing).
+In a [uv](https://docs.astral.sh/uv/) project, run `uv add tradespace`.
+For development, install uv and [just](https://just.systems/man/en/packages.html), then run
+`just setup` in your checkout. Run `just check` before submitting a change, or `just` to list commands.
+See [Start contributing](CONTRIBUTING.md#start-contributing) for the checkout instructions.
 
 ## A first fit
 

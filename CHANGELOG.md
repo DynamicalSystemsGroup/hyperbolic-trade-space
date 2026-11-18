@@ -9,6 +9,7 @@ All notable changes to this project are recorded here, in the format of
 
 ### Added
 
+- Added a `justfile` for uv setup, tests, formatting and documentation checks.
 - The Kitchenham-CSC example: 141 software projects' scope against schedule and budget slack, with the page
   `docs/examples/kitchenham.md`, the SysML v2 case model, the provenance and analysis code under
   `examples/kitchenham/` and the verification record (WP76).

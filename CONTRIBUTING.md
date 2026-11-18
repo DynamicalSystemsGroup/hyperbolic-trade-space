@@ -12,8 +12,9 @@ approve the scope before implementing it.
 
 ### Set up a development checkout
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and use Python 3.12. Fork the
-repository on GitHub, then clone your fork, replacing `YOUR-USERNAME`:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and
+[just](https://just.systems/man/en/packages.html). The package requires Python 3.12.
+Fork the repository on GitHub, then clone your fork, replacing `YOUR-USERNAME`:
 
 ```bash
 git clone https://github.com/YOUR-USERNAME/tradespace.git
@@ -21,7 +22,7 @@ cd tradespace
 git remote add upstream https://github.com/DynamicalSystemsGroup/tradespace.git
 git fetch upstream
 git switch -c fix/short-description upstream/dev
-uv sync --locked
+just setup
 ```
 
 ### Check your change
@@ -29,21 +30,34 @@ uv sync --locked
 Run the fast software tests and the style and dependency checks from the repository root:
 
 ```bash
-uv run pytest -m "not slow and not paper"
-uv run ruff check .
-uv run ruff format --check .
-uv lock --check
+just check
 ```
 
-For documentation changes, check vocabulary and compare prose checks with the recorded baseline:
+Run `just` to list commands. Each recipe calls uv and uses the committed lockfile.
+`just setup` checks the lockfile before installing dependencies. Test and lint recipes use
+`uv run --frozen` so they do not rewrite it; `just check` includes `uv lock --check`.
+
+| Command | What it runs |
+|---|---|
+| `just setup` | `uv sync --locked` |
+| `just check` | Lint, formatting and lock checks, then fast tests |
+| `just lint` | `uv run --frozen ruff check .` |
+| `just format` | `uv run --frozen ruff format .` |
+| `just format-check` | `uv run --frozen ruff format --check .` |
+| `just lock-check` | `uv lock --check` |
+| `just test-fast` | Software tests excluding slow and paper tests |
+| `just test` | The full software suite |
+| `just docs-check` | Vocabulary and prose checks |
+
+Pass pytest arguments after `just test` or `just test-fast` to select tests:
 
 ```bash
-uv run python scripts/check_vocabulary.py
-uv run python scripts/check_residuals.py --compare scripts/residuals_baseline.json --strict
+just test tests/test_coordinates.py -q
 ```
 
+For documentation changes, run `just docs-check`.
 Run the relevant slow tests for changes to numerical behavior, examples or site builds.
-Run `uv run pytest` for the full software suite. For paper tests, follow
+For paper tests, follow
 [Contributing to the paper](#contributing-to-the-paper).
 
 Open a pull request targeting `dev`. Describe the problem, your change and the checks you ran,
