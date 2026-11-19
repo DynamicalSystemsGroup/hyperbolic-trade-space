@@ -13,3 +13,13 @@ His words, verbatim, 2026-11-19 (EST, about), in the order given:
 **Applied as.** The scope `WP83-scope-of-work.md` approved as drafted, its Agent's defaults included; the build runs
 tonight through the PM (one worker, one fresh-context reviewer); the driver verifies and pushes the branch
 `talk/openmbee-2026-11-20` once.
+
+## Amendment 1: the SysML views drawn from the model (2026-11-19)
+
+His words, verbatim, about 17:10 EST, with screenshots of the assembly and behavioural view cells: "i thought these
+figures were created from code. can we use the code rather than a display command."
+
+**Applied as.** Amendment 1 of `WP83-scope-of-work.md`: the notebook loads the model with the views generator, draws
+the assembly and behavioural views with PlantUML from the generator's text, and prints the level lines from the
+generator's caption list; the battery range's `W*h` is escaped so Markdown does not italicize it. Executed in a clean
+kernel (exit 0, no stderr output); the generated text equals the committed views' text.

@@ -50,7 +50,7 @@ in the way of getting my notebook ready for the presentation".
 No new simulation, dataset, analysis function or figure generator; no change under `src/`, `examples/adcs/`,
 `docs/`, `paper/`, `site/` or the tests; no merge into `dev` and no requirement that exists only for one (the docs
 site, the claims register, the residual and vocabulary gates); no re-rendering of SysML views (the committed images
-are used); no statement of a capability the package does not ship.
+are used; superseded by Amendment 1); no statement of a capability the package does not ship.
 
 ## Deliverables
 
@@ -95,7 +95,19 @@ None. The branch is pushed (his answer "Pushed, rule widened": the governance pu
   method nesting.
 - Setup as in the paper: one setup cell importing `paper_paths` and `case`; then short cells, mostly one call each;
   narration in Markdown cells in the glossary's words; figures from the case module's figure functions or the
-  committed images.
+  committed images. The two SysML views are drawn from the model in the notebook (Amendment 1).
 - The primary regime only; the stock regime mentioned in one sentence.
 - Build: the PM starts one worker for the notebook and one fresh-context reviewer who runs it and looks at it
   rendered; the driver verifies and hands it to him tonight.
+
+## Amendment 1 (2026-11-19, about 17:20 EST): the SysML views drawn from the model
+
+His word, quoted in `WP83-decisions.md`: the two views are drawn in the notebook by the code that made the committed
+images, not displayed from those images. What changes:
+
+- The non-goal "no re-rendering of SysML views" is superseded. The notebook imports the views generator
+  (`scripts/sysml_project.py`), loads the model, projects it to PlantUML text, and draws that text with PlantUML. The
+  generator, the model and the committed views are unchanged; the generator's text equals the committed `.puml`
+  files (`tests/test_system_model_v2_r1.py`, the committed-views test).
+- R-1 gains a precondition: PlantUML on the `PATH` (`plantuml`, as `scripts/sysml_render.sh` uses it) and Java.
+- The assembly view's level lines come from the generator's caption list, not from `assembly_caption.md`.
