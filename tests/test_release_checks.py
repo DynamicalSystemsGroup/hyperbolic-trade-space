@@ -587,18 +587,20 @@ def test_attribution_lines_read_the_commits_since_the_base(repo):
 
 def test_branches_names_the_stray_and_notices_the_dry_run(monkeypatch, capsys):
     heads = ["main", "dev", "paper", "qc/release", "dependabot/uv/x", "wp-a", "old-b", "mine"]
+    heads.append("talk/demo")
     monkeypatch.setattr(rc, "remote_heads", lambda root, remote: dict.fromkeys(heads, "0" * 40))
     monkeypatch.setattr(rc, "this_branch", lambda root, remote, tips: {"mine"})
     monkeypatch.setattr(rc, "open_pull_request_heads", lambda root: {"wp-a"})
     notices, problems = rc.branch_problems(ROOT)
     assert notices == [
-        "branches: 8 on origin; long-lived main, dev, paper",
+        "branches: 9 on origin; long-lived main, dev, paper",
         "branches: mine is this branch (its pull request comes next)",
         "branches: qc/release is a dry-run branch; delete it after its run",
+        "branches: talk/demo is a talk branch; it stays until a code owner deletes it",
     ]
     assert problems == [
-        "origin/old-b is neither long-lived, an open pull request's head, qc/ nor dependabot/; "
-        "delete it (GOVERNANCE.md, Branches)"
+        "origin/old-b is neither long-lived, an open pull request's head, qc/, talk/ nor "
+        "dependabot/; delete it (GOVERNANCE.md, Branches)"
     ]
     assert rc.main(["branches"]) == 1
     captured = capsys.readouterr()

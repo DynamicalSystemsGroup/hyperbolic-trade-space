@@ -60,6 +60,7 @@ refused by ``tag``, which is the rule doing its job, and ``bump`` is the answer.
 
 ``branches`` lists the remote's branches that are none of the long-lived three (``main``, ``dev``,
 ``paper``), the head of an open pull request, a ``qc/*`` branch (one dry run; named as a notice),
+a ``talk/*`` branch (the material of a talk or demo, never merged; named as a notice),
 a ``dependabot/*`` branch or the branch the check runs on (``HEAD``'s remote-tracking branch, or a
 remote branch whose tip is ``HEAD``: its pull request comes next, so it is named as a notice), and
 exits 1 naming them (``GOVERNANCE.md``, "Branches").
@@ -554,9 +555,10 @@ def bump(
 # ------------------------------------------------------------------ the remote's branches
 
 LONG_LIVED = ("main", "dev", "paper")
-# A branch for one dry run (deleted after it; named as a notice) and the update bot's branches
+# A branch for one dry run (deleted after it; named as a notice), a talk or demo branch (never
+# merged; it stays until a code owner deletes it; named as a notice) and the update bot's branches
 # (each goes with its pull request).
-TOLERATED_PREFIXES = ("qc/", "dependabot/")
+TOLERATED_PREFIXES = ("qc/", "talk/", "dependabot/")
 
 
 def stray_branches(
@@ -566,7 +568,7 @@ def stray_branches(
     ``this`` is the branch the check runs on, whose pull request comes next.
 
     >>> heads = ["main", "dev", "paper", "qc/release", "dependabot/uv/x", "wp-a", "old-b", "mine"]
-    >>> stray_branches(heads, {"wp-a"}, {"mine"})
+    >>> stray_branches(heads + ["talk/demo"], {"wp-a"}, {"mine"})
     (['old-b'], ['qc/release'])
     """
     stray = [
@@ -631,9 +633,14 @@ def branch_problems(root: Path, remote: str = "origin") -> tuple[list[str], list
     notices = [f"branches: {len(tips)} on {remote}; long-lived {', '.join(LONG_LIVED)}"]
     notices += [f"branches: {h} is this branch (its pull request comes next)" for h in sorted(this)]
     notices += [f"branches: {h} is a dry-run branch; delete it after its run" for h in dry_runs]
+    notices += [
+        f"branches: {h} is a talk branch; it stays until a code owner deletes it"
+        for h in sorted(tips)
+        if h.startswith("talk/")
+    ]
     return notices, [
-        f"{remote}/{h} is neither long-lived, an open pull request's head, qc/ nor dependabot/; "
-        "delete it (GOVERNANCE.md, Branches)"
+        f"{remote}/{h} is neither long-lived, an open pull request's head, qc/, talk/ nor "
+        "dependabot/; delete it (GOVERNANCE.md, Branches)"
         for h in stray
     ]
 

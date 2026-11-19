@@ -27,7 +27,8 @@ APPROVERS = crs.paper_approvers(ROOT / ".github" / "CODEOWNERS")
 # 69 with the governance-files push ruleset (WP82: target, enforcement, bypass actors, rules,
 # paths); 70 with the general settings' delete_branch_on_merge (WP82 Amendment 3)
 FIELDS = 70
-LOCAL_ONLY = 7  # five rulesets' bypass actors and the two workflow-permission fields
+# five rulesets' bypass actors, the two workflow-permission fields and delete_branch_on_merge
+LOCAL_ONLY = 8
 
 
 @pytest.fixture
@@ -200,7 +201,7 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     runner mode; present and differing it is not reported there, and is reported locally."""
     assert DECLARATION["actions"]["checked_on"] == "local"
     others = [DECLARATION["pages"], DECLARATION["code_owners"], DECLARATION["paper_approvers"]]
-    others += [DECLARATION["general"]]
+    assert DECLARATION["general"]["checked_on"] == "local"
     others += DECLARATION["rulesets"] + DECLARATION["environments"]
     assert all(s.get("checked_on", "both") == "both" for s in others)
     del payloads["actions/permissions/workflow"]
@@ -217,6 +218,7 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
         "rulesets.governance-files.bypass_actors",
         "actions.default_workflow_permissions",
         "actions.can_approve_pull_request_reviews",
+        "general.delete_branch_on_merge",
     ]
     assert all(
         "Administration (read)" in r for f, r in result.local_only if f.startswith("actions")
@@ -459,14 +461,17 @@ def test_release_runs_controls_once_and_carries_the_attestation():
 
 def test_a_merged_branch_kept_is_named(payloads):
     """Settings, General: a merged pull request's branch is deleted (GOVERNANCE.md, "Branches");
-    the field is read on the runner (Metadata), so a drift turns the controls job red."""
-    assert DECLARATION["general"] == {"delete_branch_on_merge": True}
+    the field is read by a local run only: the endpoint returns it to callers with push access and
+    the workflow token has contents: read, so the runner lists it and does not read it."""
+    assert DECLARATION["general"]["delete_branch_on_merge"] is True
+    assert "push access" in DECLARATION["general"]["local_reason"]
     payloads["repository"]["delete_branch_on_merge"] = False
     result = compare(payloads)
     assert result.exit_code == 1
     assert result.lines() == ["general.delete_branch_on_merge: expected true, found false"]
     runner = compare(payloads, runner=True)
-    assert [r.path for r in runner.differences] == ["general.delete_branch_on_merge"]
+    assert not runner.differences
+    assert "general.delete_branch_on_merge" in [f for f, _ in runner.local_only]
     assert crs.fixture_name(crs.REPOSITORY) == "repository.json"
     del payloads["repository"]
     assert compare(payloads).exit_code == 2
