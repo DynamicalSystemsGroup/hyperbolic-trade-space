@@ -89,20 +89,27 @@ Execution runs on `governance-bypass-removal`; the pull request waits for `dev` 
 Branch `governance-bypass-removal`, rebased onto `dev` 7b0d7cdf (the paper's route, WP79, landed there while the
 package was scoped); content head 9fa94658. The live check on the branch, `uv run python scripts/check_repo_settings.py`,
 reports five differences (six with Amendment 3's `general.delete_branch_on_merge`), which are the settings he
-changes on GitHub after Danilo merges the pull request, in this order (a runner-checked field first, so the window is
-short):
+changes on GitHub. As first written they followed the merge, a runner-checked field first, so that the red window was
+short; Amendment 4 (2026-11-19) moves the three runner-checked ones before the merge, so there is no red window. The
+sequence now: after the declaration is approved in review, in one sitting before the merge of the governance pull
+request, an admin applies
 
-1. Settings, Rules, Rulesets: the `main-checks` ruleset's required status checks gain `controls` (runner-checked:
-   the `controls` job on the push to `dev` is red until this and item 2 are done).
+1. Settings, Rules, Rulesets: the `main-checks` ruleset's required status checks gain `controls` (runner-checked).
 2. Settings, Rules, New push ruleset `governance-files`, enforcement active, "Restrict file paths" with the nine
    governed paths of the declaration, bypass list: Repository admin, always (runner-checked).
-3. Settings, Rules, Rulesets, `main-review`: remove the bypass actor (local-only).
-4. Settings, Actions, General, Workflow permissions: read, and untick "Allow GitHub Actions to create and approve
+3. Settings, General, Pull Requests: "Automatically delete head branches" on (runner-checked; Amendment 3).
+
+Then the merge of the governance pull request; no other push to `dev` happens between the settings and the merge, so
+the push run after it compares the new declaration with settings already changed and is green. After the merge, the
+two local-only settings:
+
+4. Settings, Rules, Rulesets, `main-review`: remove the bypass actor (local-only).
+5. Settings, Actions, General, Workflow permissions: read, and untick "Allow GitHub Actions to create and approve
    pull requests" (local-only).
-5. Settings, General, Pull Requests: "Automatically delete head branches" on (runner-checked; Amendment 3).
+
 6. A local run reads `conforming (70 fields)`; `--runner` reads `conforming (63 fields on the runner; 7
    local-only)`; a `--record tests/data/wp78` run replaces the hand-edited fixture with recordings (a follow-up
-   commit). Re-run the red `controls` job.
+   commit).
 
 The live lines on the branch before any of that, verbatim: `rulesets: expected ["dev", "governance-files",
 "main-checks", "main-review", "paper"], found ["dev", "main-checks", "main-review", "paper"]`;
@@ -273,3 +280,27 @@ files and is left as it is; `CLAUDE.md` is not edited. The times written in the 
 evening of 2026-11-17 after 20:45 EST run ahead of the clock by up to two hours (the entries' sequence is right; the
 commit timestamps of 1f154885, eeab5201, faee0f9c, 068e79d9 and 924e253c are the record).
 
+## Amendment 4: the test workflow on every pull request into dev (2026-11-19)
+
+Asked which rule `dev` should have for the Tests workflow on a pull request into it, with the options "All shards, everyone", "Fast shard, everyone" and
+"Fast, Dependabot only" (Amendment 2's rule). His answer, verbatim:
+
+> Fast shard, everyone
+
+On the cost and the red runs of a pull request whose declaration is ahead of the live settings, verbatim:
+
+> i don't want red CI. just be judicious about when you push so we're not constantly locked up waiting on tests
+
+Asked how far the day's work goes, verbatim:
+
+> Plus mergeable PRs
+
+**Applied as.** Amendment 4 of `WP82-scope-of-work.md` (goal G7, deliverables D-19 to D-21, requirements R-18 to R-20,
+the Agent's defaults). `.github/workflows/test.yml`: every pull request into `dev`, a person's or Dependabot's, runs
+lint and the Linux fast shard; the full set (fast, slow, docs) stays on pull requests into `main`; `controls` is
+skipped on a pull request into `dev` (so no pull request is red for a declaration ahead of the live settings) and runs
+on a push to `dev`, a pull request into `main`, the release's call and a dispatch; no clause on the actor remains.
+Amendment 2's Dependabot-only rule and its actor gate are superseded. The settings sequence is reordered ("Execution"
+above): the three runner-checked settings in one sitting before the merge, the two local-only ones after it, so the
+push run after the merge is green. "No red CI" is read as a rule about the checks' answer, not about their number:
+none of them is relaxed.

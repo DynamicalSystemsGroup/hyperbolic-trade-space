@@ -216,8 +216,8 @@ admissibility checks read it as one, the test workflow runs on it before the mer
 - **R-11** The linked-issue and fields checks pass a dependency update with the notice and fail a pull request missing
   any one of the three conditions (the bot, the label, the base `dev`); the merge check passes a code owner's merge of
   one. Checked by `tests/test_admissibility.py`.
-- **R-12** `test.yml` runs on a pull request into `dev` for Dependabot alone, the fast shard, with `controls`; a
-  pull request into `dev` by anyone else runs no job; `main`'s pull requests, the push to `dev`, the call and the
+- **R-12** `test.yml` runs on the bot's pull request into `dev` (the fast shard, with `controls`) and on no other
+  pull request into `dev` (superseded by R-18); `main`'s pull requests, the push to `dev`, the call and the
   dispatch are unchanged. Checked by `tests/test_ci_shards.py`, `tests/test_release_workflows.py`,
   `tests/test_workflow_permissions.py` and `uv run python scripts/release_checks.py pins`.
 - **R-13** The docs page carries no package number, "supervisor" or "reviewer"; the vocabulary check adds no term.
@@ -356,3 +356,58 @@ the remote carries no branch the rules do not account for.
 - Records ride with the work they record (his word of about 21:45 EST, `WP82-decisions.md`): this amendment's records land
   in the governance pull request and nowhere else; no record-only commit to `dev` from here.
 
+### Amendment 4 (2026-11-19): the test workflow on every pull request into dev
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 4"): asked which rule `dev` should have, "Fast shard, everyone";
+then "i don't want red CI. just be judicious about when you push so we're not constantly locked up waiting on
+tests"; asked how far the day's work goes, "Plus mergeable PRs". The amendment supersedes two things in Amendment 2:
+the rule that only the bot's pull requests into `dev` run the Tests workflow (D-13, R-12 and the default on the
+gate), and the gate itself, `github.actor == 'dependabot[bot]'` on `controls` and `test`. The amendment joins the
+governance pull request before it merges.
+
+**Goal added.** **G7** Every pull request into `dev`, a person's or Dependabot's, runs lint and the Linux fast shard,
+and none is red because its declaration is ahead of the live settings.
+
+**Deliverables added.**
+
+- **D-19** `.github/workflows/test.yml`: `controls` runs unless the event is a pull request into `dev` (`if: ${{
+  (github.workflow == 'Tests' || inputs.controls) && (github.event_name != 'pull_request' || github.base_ref !=
+  'dev') }}`); `test` runs after `controls` succeeded or was skipped (`if: ${{ !cancelled() && (needs.controls.result
+  == 'success' || needs.controls.result == 'skipped') }}`), with no clause on the event or the actor; the matrix, the
+  `windows` job and the triggers unchanged; the header and the comments say it.
+- **D-20** The tests: `tests/test_ci_shards.py` holds the two `if:` lines and the absence of `github.actor` from the
+  workflow (the Dependabot-only test and its constants gone; two test names say pull request into `dev`);
+  `tests/test_repo_settings.py` holds the `controls` line.
+- **D-21** The documents follow the rule: `GOVERNANCE.md` (the declaration paragraph and the dependency paragraph),
+  `docs/code-owners.md` (the settings sequence, the Tests paragraph, "Dependency updates" step 2),
+  `.github/PR_ADMISSIBILITY.md` (the conformance and dependency rows), `CHANGELOG.md`, `work-packages/README.md`; the
+  settings sequence of the execution record reordered (below); this amendment, the decision record, the index row.
+
+**Requirements added.**
+
+- **R-18** A pull request into `dev` runs lint and the fast shard whoever opens it and runs no `controls` job; a push
+  to `dev`, a pull request into `main`, the release's call and a dispatch keep `controls` and their shards. Checked by
+  `tests/test_ci_shards.py`, `tests/test_repo_settings.py`, `tests/test_release_workflows.py`,
+  `tests/test_workflow_permissions.py` and `uv run python scripts/release_checks.py pins`.
+- **R-19** No document says that only Dependabot's pull requests run the tests or that a red `controls` waits for
+  settings after the merge. Checked by a `git grep` for the old wordings (the bot "alone", "anyone else runs
+  nothing", the actor sentence) returning nothing outside the records, and by reading.
+- **R-20** The docs page carries no package number, "supervisor" or "reviewer"; the vocabulary check adds no term.
+  Checked as R-13.
+
+**Agent's defaults (Amendment 4).**
+
+- The settings sequence changes so the push run after the merge is green. Before the merge, in one sitting and after
+  the declaration is approved in review, an admin applies the three runner-checked settings (`controls` among
+  `main-checks`' required checks; the `governance-files` push ruleset; "Automatically delete head branches"); then the
+  merge, with no other push to `dev` between the settings and the merge; after it, the two local-only settings (the
+  `main-review` bypass removed; the workflow permissions read, approving reviews off); then the local run reads
+  `conforming (70 fields)` and the fixture is re-recorded. The count and the five items are as before; only their
+  order and the moment of the first three change. This supersedes the window of R-5 (a red `controls` on the first
+  push after the merge until two settings follow): there is no window if the sitting is kept.
+- `controls` is skipped on a pull request into `dev` rather than allowed red: a pull request may carry a declaration
+  ahead of the live settings by design (this one does), and the person who merges is the one who changes the settings.
+  Amendment 2's fallback (skip `controls` on that event if the bot's token reads red) is taken for every actor.
+- A person's pull request into `dev` now runs the fast shard, a gate no document had asked of it before; the cost is
+  one Linux job per push to a pull request branch, which his word about judicious pushing accepts.
+- The merge-time required checks of `dev`'s own ruleset are unchanged; this amendment edits no setting.
