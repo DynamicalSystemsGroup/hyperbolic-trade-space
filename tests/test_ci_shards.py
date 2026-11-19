@@ -24,11 +24,16 @@ PAPER_MODULES = {
 
 
 CONTROLS = WF["jobs"]["controls"]
-# A pull request into dev runs the workflow for Dependabot alone (the dependency row of
-# PR_ADMISSIBILITY.md); anyone else's pull request into dev runs nothing here.
-BOT_ONLY = (
-    "(github.event_name != 'pull_request' || github.base_ref != 'dev' "
-    "|| github.actor == 'dependabot[bot]')"
+# Every pull request into dev, a person's or Dependabot's, runs lint and the fast shard; the
+# settings check (controls) is skipped there, since a pull request may carry a declaration ahead
+# of the live settings.
+CONTROLS_IF = (
+    "${{ (github.workflow == 'Tests' || inputs.controls) && "
+    "(github.event_name != 'pull_request' || github.base_ref != 'dev') }}"
+)
+TEST_IF = (
+    "${{ !cancelled() && (needs.controls.result == 'success' || "
+    "needs.controls.result == 'skipped') }}"
 )
 
 
@@ -85,7 +90,7 @@ def test_windows_never_runs_on_a_pull_request():
     assert "github.event_name != 'push'" in WINDOWS["if"]
 
 
-def test_a_push_to_dev_and_a_dependency_update_run_the_fast_shard_alone():
+def test_a_push_to_dev_and_a_pull_request_into_dev_run_the_fast_shard_alone():
     # A called workflow sees the caller's event, so both cases name this workflow too (the WP67
     # dry run found the release's test job reduced to the fast shard without it).
     into_dev = "(github.event_name == 'push' || github.base_ref == 'dev')"
@@ -94,16 +99,14 @@ def test_a_push_to_dev_and_a_dependency_update_run_the_fast_shard_alone():
     assert JOB["strategy"]["matrix"]["shard"] == f"${{{{ fromJSON({on_push} {otherwise}) }}}}"
 
 
-def test_a_pull_request_into_dev_runs_for_dependabot_alone():
-    # controls and test both carry the condition: with controls skipped, test would still run (the
-    # release's call runs controls itself), so the shard job says it as well. Windows is already
-    # off on every pull request.
-    assert CONTROLS["if"] == (
-        "${{ (github.workflow == 'Tests' || inputs.controls) && " + BOT_ONLY + " }}"
-    )
-    assert JOB["if"].endswith("&& " + BOT_ONLY + " }}")
-    assert "needs.controls.result == 'success' || needs.controls.result == 'skipped'" in JOB["if"]
-    # The controls job declares the reads its endpoints need; a Dependabot token keeps the reads.
+def test_a_pull_request_into_dev_runs_the_fast_shard_for_anyone_and_skips_controls():
+    # controls is skipped on a pull request into dev; test accepts a skipped controls (the release's
+    # call skips it too) and carries no condition on the event or the actor. Windows is already off
+    # on every pull request.
+    assert CONTROLS["if"] == CONTROLS_IF
+    assert JOB["if"] == TEST_IF
+    assert "github.actor" not in TEXT
+    # The controls job declares the reads its endpoints need.
     assert CONTROLS["permissions"] == {"contents": "read", "actions": "read", "pages": "read"}
 
 

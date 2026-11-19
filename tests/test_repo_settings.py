@@ -435,10 +435,11 @@ def test_release_runs_controls_once_and_carries_the_attestation():
     assert release["jobs"]["test"]["with"] == {"windows": False, "controls": False}
     call_inputs = tests.get("on", tests.get(True))["workflow_call"]["inputs"]
     assert call_inputs["controls"]["default"] is True
-    # The release's call passes controls: false; the second clause is the Dependabot gate on a pull
-    # request into dev (tests/test_ci_shards.py holds it in full).
-    assert tests["jobs"]["controls"]["if"].startswith(
+    # The release's call passes controls: false; the second clause skips the job on a pull request
+    # into dev (tests/test_ci_shards.py holds it in full).
+    assert tests["jobs"]["controls"]["if"] == (
         "${{ (github.workflow == 'Tests' || inputs.controls) && "
+        "(github.event_name != 'pull_request' || github.base_ref != 'dev') }}"
     )
     assert "needs.controls.result == 'skipped'" in tests["jobs"]["test"]["if"]
     outputs = release["jobs"]["controls"]["outputs"]
