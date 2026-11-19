@@ -44,9 +44,13 @@ All notable changes to this project are recorded here, in the format of
   conformance row, and each judged row naming its guideline (WP82).
 - The dependency route: Dependabot's pull requests target `dev` with the `dependencies` label, minor and patch bumps
   grouped weekly per ecosystem and a major on its own (`.github/dependabot.yml`); a dependency row in
-  `.github/PR_ADMISSIBILITY.md` that the linked-issue and fields checks pass with a notice; the Tests workflow runs
-  lint, `controls` and the fast shard on the bot's pull requests into `dev`; the code owner's steps on
+  `.github/PR_ADMISSIBILITY.md` that the linked-issue and fields checks pass with a notice; the code owner's steps on
   `docs/code-owners.md`, "Dependency updates" (WP82, Amendment 2).
+- The Tests workflow runs lint and the Linux fast shard on every pull request into `dev`, a person's or Dependabot's;
+  the full set stays on pull requests into `main`. The settings check, `controls`, does not run on a pull request into
+  `dev` (a pull request may carry a declaration ahead of the live settings); it runs on a push to `dev`, a pull
+  request into `main`, the release's call and a dispatch. The settings the runner checks are changed in one sitting
+  before the merge of the governance change, so the push run after it is green (WP82, Amendment 4).
 
 ## [0.1.0] - 2026-11-17
 

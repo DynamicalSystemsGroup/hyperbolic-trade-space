@@ -71,7 +71,7 @@ The reader-run directories `WP28-inventory/` and `WP28-retest/` stay.
   site only). The paper is edited
   on `paper`; `paper.yml` runs on pushes to `paper` and on `paper-*` tags, which publish the paper as a GitHub
   release. `test.yml` runs on pull requests into `main`, when `release.yml` calls it, and on dispatch, and runs lint and
-  the Linux fast shard on every push to `dev`; a cross-platform check before a merge, when a package touched numerics, is a manual dispatch of it on `dev`.
+  the Linux fast shard on every push to `dev` and every pull request into `dev`; a cross-platform check before a merge, when a package touched numerics, is a manual dispatch of it on `dev`.
   Process records (the driver log, the decisions files, the checklists, the board) ride in the pull request of the
   package they record and nowhere else; between pull requests they live in the working tree or outside the
   repository, never as a record-only commit to `dev` (supervisor, 2026-11-17, about 21:45: "With the work they record",

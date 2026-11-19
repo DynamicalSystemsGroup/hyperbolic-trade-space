@@ -26,23 +26,25 @@ The rulesets, the environments, the Pages source, the code owners' access and th
 in `.github/governance.toml` and checked against the live repository by `uv run python
 scripts/check_repo_settings.py`, which runs first in every CI run as the `controls` job (`GOVERNANCE.md`). Set each
 on GitHub to match the declaration, then run the checker; to change one, change the declaration first, then the
-setting. A field the runner checks (a ruleset, a required check) turns the `controls` job red on the first push to
-`dev` after the merge until the setting follows: change it in the same sitting and re-run the job. A local-only
-field (the workflow permissions, a ruleset's bypass actors) is attested by your local run. The settings below are
-the ones the declaration does not hold.
+setting. The declaration is approved first, in the review. A field the runner checks (a ruleset, a required check,
+a repository setting) is then changed in one sitting before the merge, so the push run of `controls` after the merge
+compares the new declaration with settings already changed and is green. A local-only field (the workflow
+permissions, a ruleset's bypass actors) is attested by your local run after the merge. The settings below are the
+ones the declaration does not hold.
 
 The governed files (`GOVERNANCE.md`, the secondary rules) each have their own `CODEOWNERS` line naming the three
 code owners as the approvers of a change to them, and the `governance-files` push ruleset refuses a push that
 touches one of them by anyone but a Repository admin; a pull request that changes a governed file is merged by an
 admin.
 
-After the merge of the 0.2 governance change, in this order: 1. `main-checks` gains the required check
-`controls`; 2. the push ruleset `governance-files` is created (active; the nine governed paths; bypass Repository
-admin, always); the `controls` job on the push to `dev` is red until these two are done, then re-run it; 3.
-`main-review` loses its bypass actor; 4. the workflow permissions become read, approving reviews off; 5. Settings,
-General, Pull Requests: "Automatically delete head branches" on (runner-checked, as items 1 and 2 are); 6. your local
-run reads `conforming (70 fields)`, and a `--record` run of `scripts/check_repo_settings.py` into the recorded fixture
-under `tests/data/` replaces the hand-edited files in a follow-up commit.
+For the 0.2 governance change, once the declaration is approved, a Repository admin applies the three
+runner-checked settings in one sitting before the merge: 1. `main-checks` gains the required check `controls`; 2. the
+push ruleset `governance-files` is created (active; the nine governed paths; bypass Repository admin, always); 3.
+Settings, General, Pull Requests: "Automatically delete head branches" on. Then the governance pull request is
+merged, and no other push to `dev` happens between the settings and the merge. After the merge, the two local-only
+settings: 4. `main-review` loses its bypass actor; 5. the workflow permissions become read, approving reviews off.
+Then your local run reads `conforming (70 fields)`, and a `--record` run of `scripts/check_repo_settings.py` into the
+recorded fixture under `tests/data/` replaces the hand-edited files in a follow-up commit.
 
 Settings, Labels: create `draft` and `small-fix`. The scope-of-work template applies `draft`; a code owner removes it
 to turn a draft into an issue. `small-fix` stands in for an issue on a pull request that fixes a typo or a broken link.
@@ -50,9 +52,11 @@ The label `release-failure` is created by the Release workflow.
 
 The Tests workflow runs on every pull request into `main` (the required checks), when the Release workflow calls it,
 and on dispatch (Actions, Tests, Run workflow), which also runs Windows. A push to `dev` runs lint and the Linux
-fast shard only, and so does a Dependabot pull request into `dev` (a pull request into `dev` by anyone else runs
-nothing there). It never runs Windows on a pull request or a push. Its first job, `controls`, is the settings check;
-the shards need it.
+fast shard only, and so does every pull request into `dev`, a person's or Dependabot's; the full set (fast, slow,
+docs) stays on pull requests into `main`. It never runs Windows on a pull request or a push. Its first job,
+`controls`, is the settings check; the shards need it. It does not run on a pull request into `dev` (a pull request
+may carry a declaration ahead of the live settings); it runs on a push to `dev`, a pull request into `main`, the
+release's call and a dispatch.
 
 PyPI and TestPyPI: a pending trusted publisher for `tradespace`, owner `DynamicalSystemsGroup`, workflow
 `release.yml`, environment `pypi` (TestPyPI: `testpypi`). No token is stored anywhere.
@@ -101,14 +105,14 @@ Dependabot (`.github/dependabot.yml`) opens its pull requests against `dev` with
 one pull request per ecosystem (`github-actions`, `uv`) for that week's minor and patch bumps, and a pull request of
 its own for each major bump. Its description, the release notes, the commits and the compatibility score, stands in
 for the template, and it names no issue; the pull request checks pass it with a notice that quotes its row in
-`.github/PR_ADMISSIBILITY.md`. The Tests workflow runs on it as on a push to `dev`: lint, the `controls` job and the
-Linux fast shard. When one arrives:
+`.github/PR_ADMISSIBILITY.md`. The Tests workflow runs on it as on any pull request into `dev`: lint and the Linux
+fast shard. When one arrives:
 
 1. Read the bump: what moved, from which version to which, whether a major moved, and the release notes Dependabot
    quotes (a breaking change named there is read before anything runs).
-2. Confirm the Tests workflow ran on the pull request and is green. The workflow runs for Dependabot's pull requests
-   into `dev` alone; if it did not run, the actor was not the bot (a hand-pushed rebase): comment `@dependabot rebase`
-   and it runs on the bot's push.
+2. Confirm the Tests workflow ran on the pull request and is green. The workflow runs lint and the fast shard on
+   every pull request into `dev`, so a missing run means something else (a conflict with `dev`, a closed or
+   retargeted pull request): comment <code>&#64;dependabot rebase</code> and it runs on the bot's push.
 3. For a workflow-action bump: the pin is a full commit SHA with the new version in its trailing comment (`uv run
    python scripts/release_checks.py pins` on the branch), and an admin merges it, since the push ruleset
    `governance-files` covers `.github/workflows/*.yml`.
@@ -117,9 +121,9 @@ Linux fast shard. When one arrives:
 5. Merge with a merge commit. The merge check records that a code owner merged it.
 
 When the run is red, the pull request stays open: file the failure as an issue (the test that failed, the bump that
-caused it), and either fix it on `dev` and comment `@dependabot rebase`, or close the pull request with a comment that
-names the issue (a closed bump is skipped until the dependency's next release; `@dependabot ignore this major
-version` skips the whole line). A major bump of a runtime dependency (`numpy`, `scipy`, `scikit-learn`) is a
+caused it), and either fix it on `dev` and comment <code>&#64;dependabot rebase</code>, or close the pull request with a comment that
+names the issue (a closed bump is skipped until the dependency's next release;
+<code>&#64;dependabot ignore this major version</code> skips the whole line). A major bump of a runtime dependency (`numpy`, `scipy`, `scikit-learn`) is a
 candidate like any other: when it changes behaviour, open a scope-of-work issue for it and deliver the change as a
 pull request that closes the issue, with the record `tests/data/api_surface.json` and the changelog following.
 

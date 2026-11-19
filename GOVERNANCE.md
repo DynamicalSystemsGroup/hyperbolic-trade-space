@@ -96,11 +96,13 @@ after 0.1 is therefore attested by that local run and the ruleset page, not by t
 a declaration change names are changed that local run reports each of them as a difference.
 
 The `controls` job runs it first in the Tests and Release workflows; every other job needs it, so no test, build or
-publish runs while a setting differs from its declaration. Its report is the job summary. A change to a setting
-starts with the declaration: the declaration changes, then the setting, and the next run checks them. For a field
-the runner checks (a ruleset, a required check) the `controls` job is red on the first push to `dev` after the
-merge until the setting follows, so the merger changes the setting in the same sitting and re-runs the job; a
-local-only field is attested by a code owner's local run.
+publish runs while a setting differs from its declaration. It does not run on a pull request into `dev`, since a
+pull request may carry a declaration ahead of the live settings and the check would be red until the settings
+follow; it runs on a push to `dev`, a pull request into `main`, the release's call and a dispatch. Its report is the
+job summary. A change to a setting starts with the declaration: the declaration is approved in review, then a code
+owner changes the settings the runner checks (a ruleset, a required check, a repository setting) in one sitting
+before the merge, and merges; the push run after the merge compares the new declaration with settings already
+changed, so it is green. A local-only field is attested by a code owner's local run after the merge.
 
 Attestation: a release's run summary and its GitHub release notes carry the line
 `Controls: .github/governance.toml@<hash> checked at <merge commit>: conforming (N fields on the runner; M
@@ -160,7 +162,7 @@ change to the paper, with the template's `Paper` section filled), and name the i
 `small-fix` label. A dependency update is Dependabot's pull request into `dev` with the `dependencies` label
 (`.github/dependabot.yml`: weekly, minor and patch bumps grouped per ecosystem, a major on its own); its own
 description stands in for the template and it names no issue (the dependency row of `.github/PR_ADMISSIBILITY.md`).
-A code owner reads the bump, confirms the test workflow ran green on it (lint, `controls`, the fast shard), checks a
+A code owner reads the bump, confirms the test workflow ran green on it (lint, the fast shard), checks a
 moved pin is a full commit SHA with its version comment, and merges it with a merge commit, a Repository admin where
 it touches `.github/workflows/*.yml`; a red run leaves it open with the failure filed as an issue, and a major bump of
 a runtime dependency that changes behaviour is a candidate with a scope-of-work issue like any other. The steps in
