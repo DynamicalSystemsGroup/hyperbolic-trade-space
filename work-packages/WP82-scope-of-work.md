@@ -383,6 +383,14 @@ and none is red because its declaration is ahead of the live settings.
   `.github/PR_ADMISSIBILITY.md` (the conformance and dependency rows), `CHANGELOG.md`, `work-packages/README.md`; the
   settings sequence of the execution record reordered (below); this amendment, the decision record, the index row.
 
+- **D-22** `talk/*` branches: `GOVERNANCE.md`, "Branches"; `scripts/release_checks.py branches` tolerates them with a
+  notice; a case in `tests/test_release_checks.py`; the code owners' page line on the check.
+- **D-23** `.github/governance.toml` `[general]` marked `checked_on = "local"` with its reason;
+  `tests/test_repo_settings.py` at 70 fields, 62 on the runner and 8 local-only; the settings sequence and the
+  documents following.
+- **D-24** Issue #24 named as the checklist of the settings sitting on the code owners' page and in the execution
+  record; the decision record carries his sentence, the maintainer fact and the driver's evidence.
+
 **Requirements added.**
 
 - **R-18** A pull request into `dev` runs lint and the fast shard whoever opens it and runs no `controls` job; a push
@@ -398,16 +406,22 @@ and none is red because its declaration is ahead of the live settings.
 **Agent's defaults (Amendment 4).**
 
 - The settings sequence changes so the push run after the merge is green. Before the merge, in one sitting and after
-  the declaration is approved in review, an admin applies the three runner-checked settings (`controls` among
-  `main-checks`' required checks; the `governance-files` push ruleset; "Automatically delete head branches"); then the
-  merge, with no other push to `dev` between the settings and the merge; after it, the two local-only settings (the
-  `main-review` bypass removed; the workflow permissions read, approving reviews off); then the local run reads
-  `conforming (70 fields)` and the fixture is re-recorded. The count and the five items are as before; only their
-  order and the moment of the first three change. This supersedes the window of R-5 (a red `controls` on the first
+  the declaration is approved in review, an admin applies the two runner-checked settings (`controls` among
+  `main-checks`' required checks; the `governance-files` push ruleset); then the merge, with no other push to `dev`
+  between the settings and the merge; after it, the three local-only settings ("Automatically delete head branches",
+  which may also be set before; the `main-review` bypass removed; the workflow permissions read, approving reviews
+  off); then the local run reads `conforming (70 fields)` and the fixture is re-recorded. The count and the five items
+  are as before; only their order and the moment of the first two change. Any Repository admin does the sitting; issue
+  #24 is its checklist. This supersedes the window of R-5 (a red `controls` on the first
   push after the merge until two settings follow): there is no window if the sitting is kept.
 - `controls` is skipped on a pull request into `dev` rather than allowed red: a pull request may carry a declaration
   ahead of the live settings by design (this one does), and the person who merges is the one who changes the settings.
   Amendment 2's fallback (skip `controls` on that event if the bot's token reads red) is taken for every actor.
 - A person's pull request into `dev` now runs the fast shard, a gate no document had asked of it before; the cost is
   one Linux job per push to a pull request branch, which his word about judicious pushing accepts.
+- `[general]` is `checked_on = "local"`: the repository endpoint returns `delete_branch_on_merge` only to callers with
+  push access and the `controls` token has `contents: read`, so a runner check would read null and be red on the first
+  push after the merge. The runner reads 62 fields and lists 8 as local-only (D-23).
+- `talk/*` is a fourth class of remote branch beside the open pull request's head, the `qc/*` dry run and the bot's
+  branch, on his word "Pushed, rule widened" (D-22).
 - The merge-time required checks of `dev`'s own ruleset are unchanged; this amendment edits no setting.

@@ -89,8 +89,9 @@ build; the code owners' and the paper approvers' minimum access; the default wor
 the live settings through the GitHub API, compares them with the declaration field by field, prints each
 difference and exits non-zero on any; an endpoint it cannot read fails the check by name, never silently. A
 field the declaration marks `checked_on = "local"` is not read on the runner: today the default workflow
-permissions (their endpoint needs a permission the workflow token never has) and the rulesets' bypass actors (the
-API returns them to administrators only; the token sees an empty list). The job's report lists those fields as not
+permissions (their endpoint needs a permission the workflow token never has), the rulesets' bypass actors (the
+API returns them to administrators only; the token sees an empty list) and the deletion of merged branches (the
+repository endpoint returns it only to callers with push access). The job's report lists those fields as not
 checked there, with the reason, and a code owner's local run checks them; the removal of the `main-review` bypass
 after 0.1 is therefore attested by that local run and the ruleset page, not by the runner, and until the settings
 a declaration change names are changed that local run reports each of them as a difference.
@@ -100,7 +101,7 @@ publish runs while a setting differs from its declaration. It does not run on a 
 pull request may carry a declaration ahead of the live settings and the check would be red until the settings
 follow; it runs on a push to `dev`, a pull request into `main`, the release's call and a dispatch. Its report is the
 job summary. A change to a setting starts with the declaration: the declaration is approved in review, then a code
-owner changes the settings the runner checks (a ruleset, a required check, a repository setting) in one sitting
+owner changes the settings the runner checks (a ruleset, a required check) in one sitting
 before the merge, and merges; the push run after the merge compares the new declaration with settings already
 changed, so it is green. A local-only field is attested by a code owner's local run after the merge.
 
@@ -139,10 +140,11 @@ and the admissibility rows change the secondary rules, while the package's code 
 ## Branches
 
 The long-lived branches are `main`, `dev` and `paper`. Every other branch on the remote is the head of an open pull
-request, a `qc/*` branch for one dry run of the release, or the update bot's branch for its pull request. A pull
+request, a `qc/*` branch for one dry run of the release, a `talk/*` branch (the material of a talk or demo, which
+does not merge into `dev`), or the update bot's branch for its pull request. A pull
 request's branch is deleted at its merge by the repository setting (declared in `.github/governance.toml`,
-`general.delete_branch_on_merge`, and checked by the `controls` job); a `qc/*` branch is deleted after its run by
-whoever pushed it; a bot's branch goes with its pull request. Local worktrees and branches of a landed unit are
+`general.delete_branch_on_merge`, and checked by a code owner's local run); a `qc/*` branch is deleted after its run by
+whoever pushed it; a `talk/*` branch stays until a code owner deletes it; a bot's branch goes with its pull request. Local worktrees and branches of a landed unit are
 retired at the landing. `uv run python scripts/release_checks.py branches` names a remote branch that is none of
 these (the branch it runs on, whose pull request comes next, excepted), and `gates` runs it.
 

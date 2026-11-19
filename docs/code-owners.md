@@ -26,24 +26,25 @@ The rulesets, the environments, the Pages source, the code owners' access and th
 in `.github/governance.toml` and checked against the live repository by `uv run python
 scripts/check_repo_settings.py`, which runs first in every CI run as the `controls` job (`GOVERNANCE.md`). Set each
 on GitHub to match the declaration, then run the checker; to change one, change the declaration first, then the
-setting. The declaration is approved first, in the review. A field the runner checks (a ruleset, a required check,
-a repository setting) is then changed in one sitting before the merge, so the push run of `controls` after the merge
-compares the new declaration with settings already changed and is green. A local-only field (the workflow
-permissions, a ruleset's bypass actors) is attested by your local run after the merge. The settings below are the
-ones the declaration does not hold.
+setting. The declaration is approved first, in the review. A field the runner checks (a ruleset, a required check)
+is then changed in one sitting before the merge, so the push run of `controls` after the merge compares the new
+declaration with settings already changed and is green. A local-only field (the workflow permissions, a ruleset's
+bypass actors, the deletion of merged branches) is attested by your local run after the merge. The settings below
+are the ones the declaration does not hold.
 
 The governed files (`GOVERNANCE.md`, the secondary rules) each have their own `CODEOWNERS` line naming the three
 code owners as the approvers of a change to them, and the `governance-files` push ruleset refuses a push that
 touches one of them by anyone but a Repository admin; a pull request that changes a governed file is merged by an
 admin.
 
-For the 0.2 governance change, once the declaration is approved, a Repository admin applies the three
-runner-checked settings in one sitting before the merge: 1. `main-checks` gains the required check `controls`; 2. the
-push ruleset `governance-files` is created (active; the nine governed paths; bypass Repository admin, always); 3.
-Settings, General, Pull Requests: "Automatically delete head branches" on. Then the governance pull request is
-merged, and no other push to `dev` happens between the settings and the merge. After the merge, the two local-only
-settings: 4. `main-review` loses its bypass actor; 5. the workflow permissions become read, approving reviews off.
-Then your local run reads `conforming (70 fields)`, and a `--record` run of `scripts/check_repo_settings.py` into the
+For the 0.2 governance change, once the declaration is approved, any Repository admin (today `mzargham` and
+`danlessa`) applies the two runner-checked settings in one sitting before the merge: 1. `main-checks` gains the
+required check `controls`; 2. the push ruleset `governance-files` is created (active; the nine governed paths; bypass
+Repository admin, always). Issue #24 lists the steps as a checklist for that sitting. Then the governance pull request
+is merged, and no other push to `dev` happens between the settings and the merge. After the merge (the first may also
+be set before it), the three local-only settings: 3. Settings, General, Pull Requests: "Automatically delete head
+branches" on; 4. `main-review` loses its bypass actor; 5. the workflow permissions become read, approving reviews
+off. Then your local run reads `conforming (70 fields)`, and a `--record` run of `scripts/check_repo_settings.py` into the
 recorded fixture under `tests/data/` replaces the hand-edited files in a follow-up commit.
 
 Settings, Labels: create `draft` and `small-fix`. The scope-of-work template applies `draft`; a code owner removes it
@@ -179,7 +180,7 @@ qc/release`). The next version is the one the rule allows: a patch where neither
 nor a governed file changed since the last tag, otherwise the next minor; `version-kind` in `gates --release` says which before the
 push. The bump is needed because the `tag` check refuses a head whose version is already tagged once the package files
 changed since that tag, and a content branch at a released version is exactly that: the rule doing its job, not a
-reason to relax it. The `branches` check names a `qc/*` branch left behind.
+reason to relax it. The `branches` check names a `qc/*` branch left behind, and a `talk/*` branch (a talk or demo, never merged) as a notice; a code owner deletes it when the talk is done.
 
 ## Adding a code owner
 

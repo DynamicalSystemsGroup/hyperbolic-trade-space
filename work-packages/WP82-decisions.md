@@ -90,24 +90,26 @@ Branch `governance-bypass-removal`, rebased onto `dev` 7b0d7cdf (the paper's rou
 package was scoped); content head 9fa94658. The live check on the branch, `uv run python scripts/check_repo_settings.py`,
 reports five differences (six with Amendment 3's `general.delete_branch_on_merge`), which are the settings he
 changes on GitHub. As first written they followed the merge, a runner-checked field first, so that the red window was
-short; Amendment 4 (2026-11-19) moves the three runner-checked ones before the merge, so there is no red window. The
-sequence now: after the declaration is approved in review, in one sitting before the merge of the governance pull
-request, an admin applies
+short; Amendment 4 (2026-11-19) moves the runner-checked ones before the merge, so there is no red window, and finds
+that `general.delete_branch_on_merge` cannot be runner-checked (below), so it is local-only. Any Repository admin
+(today `mzargham` and `danlessa`) does the sitting; issue #24 on the repository is its checklist. The sequence now:
+after the declaration is approved in review, in one sitting before the merge of the governance pull request, an
+admin applies
 
 1. Settings, Rules, Rulesets: the `main-checks` ruleset's required status checks gain `controls` (runner-checked).
 2. Settings, Rules, New push ruleset `governance-files`, enforcement active, "Restrict file paths" with the nine
    governed paths of the declaration, bypass list: Repository admin, always (runner-checked).
-3. Settings, General, Pull Requests: "Automatically delete head branches" on (runner-checked; Amendment 3).
 
 Then the merge of the governance pull request; no other push to `dev` happens between the settings and the merge, so
-the push run after it compares the new declaration with settings already changed and is green. After the merge, the
-two local-only settings:
+the push run after it compares the new declaration with settings already changed and is green. After the merge (the
+first of them may also be set before it), the three local-only settings:
 
+3. Settings, General, Pull Requests: "Automatically delete head branches" on (local-only; Amendment 3, Amendment 4).
 4. Settings, Rules, Rulesets, `main-review`: remove the bypass actor (local-only).
 5. Settings, Actions, General, Workflow permissions: read, and untick "Allow GitHub Actions to create and approve
    pull requests" (local-only).
 
-6. A local run reads `conforming (70 fields)`; `--runner` reads `conforming (63 fields on the runner; 7
+6. A local run reads `conforming (70 fields)`; `--runner` reads `conforming (62 fields on the runner; 8
    local-only)`; a `--record tests/data/wp78` run replaces the hand-edited fixture with recordings (a follow-up
    commit).
 
@@ -304,3 +306,38 @@ Amendment 2's Dependabot-only rule and its actor gate are superseded. The settin
 above): the three runner-checked settings in one sitting before the merge, the two local-only ones after it, so the
 push run after the merge is green. "No red CI" is read as a rule about the checks' answer, not about their number:
 none of them is relaxed.
+
+His question on the demo notebook's branch, put to him as: "Does the demo notebook's branch go up to GitHub? The
+governance PR's branch rule says every remote branch besides main, dev and paper is an open pull request's head (or a
+dry run or a bot's)." With the options "Local only for now", "Pushed, draft PR" and "Pushed, rule widened", his
+answer, verbatim:
+
+> Pushed, rule widened
+
+His sentence on the settings changes, verbatim:
+
+> can you put an issue in github detailing the settings changes in github. the task can be done by anyone with the
+> relevant authorities in github not just me.
+
+The driver opened issue #24 (https://github.com/DynamicalSystemsGroup/tradespace/issues/24) with the sequence. Recorded
+beside it, from his screenshot of 2026-11-19 13:05: `danlessa` is now a maintainer of `tradespace` on PyPI.
+
+**Applied as (the second part).** Three changes join the amendment (D-22 to D-24).
+
+- `talk/*` branches. `GOVERNANCE.md`, "Branches", admits a fourth class: a `talk/*` branch holds the material of a talk
+  or demo, does not merge into `dev`, and stays until a code owner deletes it. `scripts/release_checks.py branches`
+  tolerates it and prints a notice (as for `qc/*`), with a case in `tests/test_release_checks.py`; the code owners'
+  page line on the check says so.
+- Issue #24. The code owners' page and "Execution" above name it as the checklist for the settings sitting and say any
+  Repository admin does it.
+- A correction by the driver. `GET repos/{owner}/{repo}` returns `delete_branch_on_merge` (and the `allow_*_merge`
+  fields) only to callers with push access. Evidence: `gh api repos/DynamicalSystemsGroup/tradespace --jq
+  .delete_branch_on_merge` as an admin prints `false` (the live value today), and the unauthenticated `curl -s
+  https://api.github.com/repos/DynamicalSystemsGroup/tradespace | grep -c delete_branch` prints `0` (the field is
+  omitted). The `controls` job's token has `contents: read`, so a runner check of the field would read null and turn
+  the first push to `dev` after the merge red. `[general]` in `.github/governance.toml` is therefore `checked_on =
+  "local"` with `local_reason = "GET repos/{owner}/{repo} returns delete_branch_on_merge only to callers with push
+  access; the workflow token has contents: read"`; the field stays declared and a code owner's local run compares it.
+  The runner count drops from 63 to 62 fields and the local-only count rises from 7 to 8 (70 in all);
+  `tests/test_repo_settings.py` follows. The sequence of settings above is the result: two runner-checked before the
+  merge, three local-only after it.
