@@ -38,3 +38,23 @@ support module; the notebook is executed in a clean kernel and read cold in a br
 His words, verbatim, about 17:40 EST, with a screenshot of section 9.4: "also the roll up to the vantage point of the fleet is a bit undernarrated. we don't need to over do it, we can simply say if we economic objectives from stakeholders that are computable from the available model or a budgeting forecaste model then we can look at the same system from the perspective of principals who have to make a financial decision while still keeping it routed in the tradespace model and data we fit on."
 
 **Applied as.** Section 9.4 opens with the roll-up: stakeholders' economic objectives computed from the model or a forecast model let the same system be read from the principals' vantage point, grounded in the same model and data; the fleet cost, unit cost and coverage probability are named, and the figure's corners are the sponsor, the manufacturer and the operator.
+
+## Amendment 3: the closed-loop figure (2026-11-19)
+
+His words, verbatim, in the order given (EST, about):
+
+- (17:30) "also think we should make a modified version of the pipeline diagram with extra blocks to \"close the loop\" including our regressor / search optimization. give me candidates to review. the point is to motivate / explain how the design space exploration and optimization loop looks as a block diagram in the same level of depth as the first pipeline but now its a feedback loop because the output of the regressor allows us to define a new configuration, measure it and loop again"
+- (17:42, on candidate C) "i think we need c' to wire into the same port as c. also w,b is the same wire so split the wire. you need to follow block diagram visual sematics"
+- (17:43, on candidate A) "maybe work from this one as its a simpler representaation. more intuitive"
+- (17:45, after seeing the revised A) "show it to me", then "yes add it"
+
+**Applied as.** Amendment 3 of `WP83-scope-of-work.md`: three candidates drawn (A, energy search; B, the analyst's
+target; C, both), C revised to his wiring rules, then A revised the same way and chosen. The figure is drawn by
+`loop_figure` in the support module; its output equals the drawing he approved. Section 10 shows it, followed by one
+paragraph on the loop.
+
+His words, about 17:52 EST: "i am not sure we're using the term surrogate correctly and i am concerned its confusing
+jargon and we should just use plan language". **Applied as.** The use was the optimization sense (a cheap model
+standing in for the expensive evaluation), but the word is not in the glossary and does no work for the audience:
+"surrogate" is replaced by what the regressor does (it predicts a configuration's chart point and level; V̂ is the
+predicted value of V) in sections 9.6 and 10, the code comment and the figure.

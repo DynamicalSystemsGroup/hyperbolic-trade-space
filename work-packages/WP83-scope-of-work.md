@@ -129,3 +129,20 @@ notebook carries prompt leakage and metanarration that needs cleaning up. What c
 - Section 9.4 gains the roll-up to the fleet's vantage point (his word, 17:40 EST, quoted in `WP83-decisions.md`): economic
   objectives computed from the model or a forecast model read the same system as the principals who decide, grounded in
   the same model and data.
+
+## Amendment 3 (2026-11-19, about 17:50 EST): the closed-loop figure in section 10
+
+His word, quoted in `WP83-decisions.md`: a version of the pipeline figure closed into a loop by the regressor and a
+search, as a block diagram at the same depth as the pipeline, chosen from candidates he reviewed. What changes:
+
+- The non-goal "no new ... figure generator" gives way for this one figure. Its drawing function, `loop_figure`,
+  lives in the support module beside the notebook, in the style and with the stage glosses of
+  `paper/figures/pipeline.py`; nothing under `paper/` changes.
+- Block-diagram rules, his: the proposal c′ enters evaluate through the same port as the configurations c (a
+  junction before evaluate), and w, β is one wire out of identify, branched to the regressor at a take-off point.
+- The search block is dashed, with a one-line legend: proposing is case code today, not a function of the package.
+- Section 10 shows the figure after the paragraph on the regressor, and the paragraph after it says what the loop
+  does and what is future work.
+- Plain words for "surrogate" (his word, quoted in `WP83-decisions.md`): the regressor predicts a configuration's
+  chart point and level, and V̂ is the predicted value of V; the figure's gloss reads "predicted V". The word
+  "surrogate" in goal G10 above is the approved text and stays as the record; the notebook no longer uses it.

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 400" width="1040" height="400" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1040" height="400" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect x="150" y="40" width="140" height="60" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="1.5"/>
+  <text x="220" y="76" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">evaluate</text>
+  <text x="220" y="120" text-anchor="middle" font-size="12" fill="#374151">a black box</text>
+  <rect x="360" y="40" width="140" height="60" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="1.5"/>
+  <text x="430" y="76" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">condition</text>
+  <text x="430" y="120" text-anchor="middle" font-size="12" fill="#374151">feature engineering</text>
+  <rect x="590" y="40" width="140" height="60" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="1.5"/>
+  <text x="660" y="76" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">identify</text>
+  <text x="660" y="120" text-anchor="middle" font-size="12" fill="#374151">fit the surface</text>
+  <rect x="860" y="40" width="140" height="60" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="1.5"/>
+  <text x="930" y="76" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">analyse</text>
+  <text x="930" y="120" text-anchor="middle" font-size="12" fill="#374151">decision analysis</text>
+  <rect x="760" y="220" width="140" height="60" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="1.5"/>
+  <text x="830" y="256" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">regress</text>
+  <text x="830" y="300" text-anchor="middle" font-size="12" fill="#374151">c ↦ chart point</text>
+  <rect x="500" y="220" width="140" height="60" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="570" y="256" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">search</text>
+  <text x="570" y="300" text-anchor="middle" font-size="12" fill="#374151">outward, or to z*</text>
+  <path d="M 14 70 L 102 70" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="55" y="58" text-anchor="middle" font-size="16" font-style="italic" fill="#111827">c</text>
+  <text x="55" y="120" text-anchor="middle" font-size="12" fill="#374151">configurations</text>
+  <circle cx="110" cy="70" r="6" fill="#ffffff" stroke="#374151" stroke-width="1.5"/>
+  <path d="M 116 70 L 148 70" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 292 70 L 358 70" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="325" y="58" text-anchor="middle" font-size="16" font-style="italic" fill="#111827">a</text>
+  <text x="325" y="120" text-anchor="middle" font-size="12" fill="#374151">attributes</text>
+  <path d="M 502 70 L 588 70" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="545" y="58" text-anchor="middle" font-size="16" font-style="italic" fill="#111827">m</text>
+  <text x="545" y="120" text-anchor="middle" font-size="12" fill="#374151">metrics</text>
+  <path d="M 732 70 L 858 70" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="770" y="58" text-anchor="middle" font-size="16" font-style="italic" fill="#111827">w, β</text>
+  <text x="770" y="120" text-anchor="middle" font-size="12" fill="#374151">the trade-offs</text>
+  <circle cx="830" cy="70" r="3.5" fill="#374151"/>
+  <path d="M 830 70 L 830 218" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 758 250 L 642 250" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="700" y="238" text-anchor="middle" font-size="16" font-style="italic" fill="#111827">V̂</text>
+  <text x="700" y="300" text-anchor="middle" font-size="12" fill="#374151">the surrogate</text>
+  <path d="M 498 250 L 110 250 L 110 78" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="300" y="238" text-anchor="middle" font-size="16" font-style="italic" fill="#111827">c′</text>
+  <text x="300" y="300" text-anchor="middle" font-size="12" fill="#374151">a proposal</text>
+  <path d="M 1002 70 L 1020 70 L 1020 335 L 628 335 L 628 282" fill="none" stroke="#374151" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="830" y="325" text-anchor="middle" font-size="16" font-style="italic" fill="#111827">z*</text>
+  <text x="830" y="355" text-anchor="middle" font-size="12" fill="#374151">a target (optional)</text>
+  <rect x="14" y="375" width="26" height="14" rx="3" fill="#f3f4f6" stroke="#374151" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="48" y="386" font-size="12" fill="#374151">dashed: not yet a function of the package (case code today)</text>
+</svg>
