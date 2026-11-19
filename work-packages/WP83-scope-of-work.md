@@ -111,3 +111,21 @@ images, not displayed from those images. What changes:
   files (`tests/test_system_model_v2_r1.py`, the committed-views test).
 - R-1 gains a precondition: PlantUML on the `PATH` (`plantuml`, as `scripts/sysml_render.sh` uses it) and Java.
 - The assembly view's level lines come from the generator's caption list, not from `assembly_caption.md`.
+
+## Amendment 2 (2026-11-19, about 17:22 EST): helpers in a support module, process language out
+
+His word, quoted in `WP83-decisions.md`: the setup cell's helper functions belong in a supporting file, and the
+notebook carries prompt leakage and metanarration that needs cleaning up. What changes:
+
+- `talks/2026-11-20-openmbee/demo_support.py` holds the repository root and path setup, the constants `MODEL`,
+  `VIEWS` and `FIGURES`, and the helpers `say`, `excerpt`, `sections` and `draw`. The notebook's setup cell is imports
+  and the two display settings.
+- Markdown cells, code comments and printed or displayed text lose what narrates the process or the page (work-package
+  names, references into the paper, "this notebook", "here", the generator comment, a sentence that repeated a
+  generated one). Text the code emits is filtered in the support module; `src/`, `examples/`, `paper/`, `scripts/` and
+  `docs/` are unchanged. The ten section headings, the order and every number stay.
+- Review: a fresh-context reviewer renders the notebook to HTML, reads it in a browser and lists what still narrates;
+  screenshots in `WP83-rounds/amendment-2/`.
+- Section 9.4 gains the roll-up to the fleet's vantage point (his word, 17:40 EST, quoted in `WP83-decisions.md`): economic
+  objectives computed from the model or a forecast model read the same system as the principals who decide, grounded in
+  the same model and data.

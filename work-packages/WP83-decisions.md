@@ -23,3 +23,18 @@ figures were created from code. can we use the code rather than a display comman
 the assembly and behavioural views with PlantUML from the generator's text, and prints the level lines from the
 generator's caption list; the battery range's `W*h` is escaped so Markdown does not italicize it. Executed in a clean
 kernel (exit 0, no stderr output); the generated text equals the committed views' text.
+
+## Amendment 2: helpers in a support module, process language out (2026-11-19)
+
+His words, verbatim, about 17:22 EST, with a screenshot of the setup cell's `say`, `excerpt` and `draw` functions:
+"these seem like they belong in a supporting utilities file. feels weird to have them in the notebook. there is also a
+lot of prompt leakage / metanarration in the notebook that needs clean up"
+
+**Applied as.** Amendment 2 of `WP83-scope-of-work.md`: the helpers, the path setup and the constants move to
+`talks/2026-11-20-openmbee/demo_support.py` (the setup cell keeps imports and display settings); Markdown, comments and
+emitted text lose the process language, with the filtering of generated sentences and model excerpts done in the
+support module; the notebook is executed in a clean kernel and read cold in a browser by a fresh-context reviewer.
+
+His words, verbatim, about 17:40 EST, with a screenshot of section 9.4: "also the roll up to the vantage point of the fleet is a bit undernarrated. we don't need to over do it, we can simply say if we economic objectives from stakeholders that are computable from the available model or a budgeting forecaste model then we can look at the same system from the perspective of principals who have to make a financial decision while still keeping it routed in the tradespace model and data we fit on."
+
+**Applied as.** Section 9.4 opens with the roll-up: stakeholders' economic objectives computed from the model or a forecast model let the same system be read from the principals' vantage point, grounded in the same model and data; the fleet cost, unit cost and coverage probability are named, and the figure's corners are the sponsor, the manufacturer and the operator.
