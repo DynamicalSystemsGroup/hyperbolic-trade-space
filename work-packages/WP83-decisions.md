@@ -58,3 +58,13 @@ jargon and we should just use plan language". **Applied as.** The use was the op
 standing in for the expensive evaluation), but the word is not in the glossary and does no work for the audience:
 "surrogate" is replaced by what the regressor does (it predicts a configuration's chart point and level; V̂ is the
 predicted value of V) in sections 9.6 and 10, the code comment and the figure.
+
+## Amendment 4: the mathematics in brief (2026-11-19)
+
+His words, verbatim, about 17:55 EST, with a screenshot of section 3 (the pipeline): "after the pipeline before the sysmlv2 model i think we should do the mathematics in brief. similar to whats going in the documentation not whats in the full paper"
+
+And about 17:52 EST, on the word surrogate: "i am not sure we're using the term surrogate correctly and i am concerned its confusing jargon and we should just use plan language"
+
+**Applied as.** Amendment 4 of `WP83-scope-of-work.md`: the new section 4 is written from `docs/theory.md` in plain words (its
+paper links and theorem numbers dropped); the later sections are renumbered. Executed in a clean kernel (exit 0, no
+stderr output); read cold in a browser by a fresh-context reviewer, screenshots in `WP83-rounds/amendment-4/`.

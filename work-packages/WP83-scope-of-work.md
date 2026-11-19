@@ -146,3 +146,13 @@ search, as a block diagram at the same depth as the pipeline, chosen from candid
 - Plain words for "surrogate" (his word, quoted in `WP83-decisions.md`): the regressor predicts a configuration's
   chart point and level, and V̂ is the predicted value of V; the figure's gloss reads "predicted V". The word
   "surrogate" in goal G10 above is the approved text and stays as the record; the notebook no longer uses it.
+
+## Amendment 4 (2026-11-19, about 17:55 EST): the mathematics in brief
+
+His word, quoted in `WP83-decisions.md`: after the pipeline and before the SysML v2 model, the mathematics in brief, as
+in the documentation and not as in the full paper. What changes:
+
+- A new section "4. The mathematics in brief", from `docs/theory.md`: the invariant form, the fitted reference surface
+  and its soft maximum, the chart point, the elasticities and the n-lemma, in about 200 words and four display
+  equations, in plain words, with no links or numbers into the paper.
+- The later sections are renumbered 5 to 11 (subsections 10.1 to 10.7), their words unchanged.
