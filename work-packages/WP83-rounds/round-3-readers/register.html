@@ -1,0 +1,131 @@
+<title>Demo Notebook Reader Register</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; tables scroll inside their own frame; IDs in mono so he can answer by ID. */
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --fg: #17202b; --muted: #556170; --rule: #d9dee5;
+  --accent: #1f5f99; --warn: #a0521a; --bad: #a32d2d; --ok: #2f6b3a; --chip: #e8eef5;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12161c; --panel: #1a2029; --fg: #e4e8ee; --muted: #9aa6b4; --rule: #2c3542;
+  --accent: #7fb2e5; --warn: #e0a06a; --bad: #ec8b8b; --ok: #8fcf98; --chip: #243042; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #12161c; --panel: #1a2029; --fg: #e4e8ee; --muted: #9aa6b4; --rule: #2c3542;
+  --accent: #7fb2e5; --warn: #e0a06a; --bad: #ec8b8b; --ok: #8fcf98; --chip: #243042; color-scheme: dark; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--sans); }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font-size: 26px; font-weight: 600; margin: 0 0 6px; text-wrap: balance; }
+h2 { font-size: 19px; font-weight: 600; margin: 34px 0 6px; text-wrap: balance; }
+p { margin: 6px 0; max-width: 70ch; }
+.sub { color: var(--muted); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 4px; color: var(--muted); font-size: 13.5px; }
+.facts b { color: var(--fg); font-weight: 500; font-variant-numeric: tabular-nums; }
+.frame { overflow-x: auto; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; margin-top: 10px; }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--rule); }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 500; }
+tr:last-child td { border-bottom: 0; }
+td.id { font-family: var(--mono); font-weight: 500; white-space: nowrap; color: var(--accent); }
+td.n { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted); }
+.k { display: inline-block; font: 500 11.5px/1.6 var(--mono); padding: 0 7px; border-radius: 4px; background: var(--chip); color: var(--fg); white-space: nowrap; }
+.k.def { color: var(--bad); } .k.wb { color: var(--bad); } .k.miss { color: var(--warn); } .k.fr { color: var(--muted); } .k.claim { color: var(--warn); }
+.where { color: var(--muted); font-size: 13px; white-space: nowrap; }
+ul { margin: 6px 0; padding-left: 20px; } li { margin: 3px 0; max-width: 78ch; }
+.score { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; margin-top: 10px; }
+.score div { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; font-size: 13.5px; min-width: 0; }
+.score .id { font-family: var(--mono); color: var(--accent); margin-right: 6px; }
+.score .held { color: var(--warn); font-weight: 500; } .score .clear { color: var(--ok); font-weight: 500; }
+code { font-family: var(--mono); font-size: 13px; }
+</style>
+
+<div class="wrap">
+<h1>Demo Notebook Reader Register</h1>
+<p class="sub">The OpenMBEE demo notebook, read cold by fourteen readers as an audience would see it: rendered page images only, no code files, no records. No edits were made. Each item says what it asks of you; answer by ID.</p>
+<div class="facts">
+  <span>Notebook <b>talk/openmbee-2026-11-20 @ cf333ebf</b></span>
+  <span>Pages <b>22</b> (sections 1 to 11)</span>
+  <span>Readers <b>14</b>: 7 reader types × 2 models</span>
+  <span>Answer key fixed before the reads</span>
+</div>
+
+<h2>What the readers came away with</h2>
+<p>All fourteen recalled the arc correctly: a SysML v2 cubesat case, a fit that names which metrics contend and at what rates without elicited weights, dominance that narrows nothing on 13 metrics, and a decision left to the executives (fleet cost against coverage probability). All fourteen said the method does not choose the design and that the search loop is future work.</p>
+<div class="score">
+  <div><span class="id">W1</span>the method picks the design: <span class="held">3 of 14 partly</span>. They took the “between sponsor and operator” row as the page's own pick. See E3, D2.</div>
+  <div><span class="id">W2</span>weights elicited: <span class="clear">none</span>. One director read exponents as “importance”: logged.</div>
+  <div><span class="id">W3</span>the loop ships today: <span class="clear">none</span></div>
+  <div><span class="id">W4</span>run live or made up: <span class="clear">none</span></div>
+  <div><span class="id">W5</span>surface is the Pareto frontier: <span class="clear">none</span></div>
+  <div><span class="id">W6</span>claims novelty: <span class="clear">none</span>. Both sceptics placed it beside Cobb-Douglas and DEA frontiers and found no novelty claim; the SysML wiring read as new to them.</div>
+  <div><span class="id">W7</span>a ternary marker is a design: <span class="clear">none</span></div>
+  <div><span class="id">W8</span>needs SysML or a satellite: <span class="clear">none</span></div>
+  <div><span class="id">W9</span>real flight numbers: <span class="clear">none</span>. Both spacecraft engineers asked for the page to say so (E10).</div>
+</div>
+<p style="margin-top:12px"><b>Keep, by the readers' own account:</b> the SysML excerpts, the behavioural view (“the best page for a systems audience”), the ledger table, the feasibility table, the decision table (“the one I'd put in a review deck”), and the pipeline and loop figures.</p>
+
+<h2>Edits proposed for your sign-off</h2>
+<p class="sub">Each is a phrase, a sentence or a deletion. Your rule decided the triage: add words only where a reader held a wrong belief or lost the thread with nothing on the page to catch them; everything else goes to your voice.</p>
+<div class="frame"><table>
+<thead><tr><th>ID</th><th>Where</th><th>Kind</th><th>Found</th><th>Readers</th><th>Proposed change</th></tr></thead>
+<tbody>
+<tr><td class="id">E1</td><td class="where">§4</td><td><span class="k def">defect</span></td><td>V is defined as the plain product, then log V = w·u − β; “does V include β?”</td><td class="n">1</td><td>Write V as the glossary does, V(m) = e<sup>−β</sup> ∏ m<sub>j</sub><sup>w<sub>j</sub></sup>, so the surface equation follows from it.</td></tr>
+<tr><td class="id">E2</td><td class="where">§5</td><td><span class="k def">defect</span></td><td>“the first two are the configuration view and the rest the assessment view”, while the printed section 7 is a configuration view.</td><td class="n">1</td><td>Delete the clause; the printed section labels say it.</td></tr>
+<tr><td class="id">E3</td><td class="where">§10.7</td><td><span class="k wb">wrong belief</span></td><td>The “between sponsor and operator” row read as the page's offered pick; its rule, “smallest larger shortfall”, opaque to 12.</td><td class="n">3 (12)</td><td>One clause in the note after the table: that row is one more rule, an analyst's, and not the fit's answer. (The alternative is D2.)</td></tr>
+<tr><td class="id">E4</td><td class="where">§10.3</td><td><span class="k miss">missing</span></td><td>Which fit draws the triangles, and why total mass and control effort sit at corners though outside the contending set.</td><td class="n">7</td><td>One clause: each triangle refits its three metrics alone.</td></tr>
+<tr><td class="id">E5</td><td class="where">§10.2</td><td><span class="k fr">friction</span></td><td>Elasticity −0.9 and “its cell for the pair reads −2.8”: two numbers for one trade.</td><td class="n">8</td><td>Drop the cell-value sentence from the page; keep the elasticity.</td></tr>
+<tr><td class="id">E6</td><td class="where">§10.6</td><td><span class="k claim">claim</span></td><td>“(its four-metric fit's, not the case's)” unintroduced; “the check is what keeps the proposal honest” after 0 of 3 passed reads as spin.</td><td class="n">8</td><td>Drop the parenthetical; narrow the line to: all three failed a feasibility condition, and a proposal is a conjecture until it is measured.</td></tr>
+<tr><td class="id">E7</td><td class="where">§8, §9</td><td><span class="k def">defect</span></td><td>One regime, three names: “baseline” in prose, <code>"stock"</code> in code, <code>v2-baseline</code> in the ledger.</td><td class="n">5</td><td>Say once: the baseline regime (<code>"stock"</code> in the code).</td></tr>
+<tr><td class="id">E8</td><td class="where">§8, §10.6</td><td><span class="k fr">friction</span></td><td>The ledger line runs off the right edge; <code>plt.gcf().axes[1].set_ylabel("Z2")</code> reads as a workaround.</td><td class="n">10</td><td>Move both into the support module; each cell becomes one call.</td></tr>
+<tr><td class="id">E9</td><td class="where">§6</td><td><span class="k miss">missing</span></td><td>The level list shows 4 of the variables; Kp and Kd missing.</td><td class="n">3</td><td>Print every line the generator reads, gains included.</td></tr>
+<tr><td class="id">E10</td><td class="where">§8</td><td><span class="k miss">missing</span></td><td>Nothing says the case is a demonstrator: unit cost below a qualified 12U bus and excluding launch, ground and operations; coverage with no orbit geometry; three wheels, no redundancy; wheels sized on one slew.</td><td class="n">2 (P7)</td><td>One sentence: the case is a numerical demonstrator; its cost and coverage are simple models, not a flight program's numbers.</td></tr>
+<tr><td class="id">E11</td><td class="where">§4</td><td><span class="k miss">missing</span></td><td>The temperature τ is in no formula; it first appears in §9.</td><td class="n">6</td><td>One clause after the β sentence: the temperature τ sets how soft that maximum is.</td></tr>
+<tr><td class="id">E12</td><td class="where">§10.4</td><td><span class="k miss">missing</span></td><td>Coverage probability arrives as if one of the 13; the figure's legend says “the one term” while the sentence reports the two-term refit.</td><td class="n">7</td><td>Say it is an objective added for the fleet view, not one of the 13 traded metrics; say the figure is the one-term fit and the sentence the two-term refit.</td></tr>
+<tr><td class="id">E13</td><td class="where">§10.2</td><td><span class="k claim">claim</span></td><td>“No weight was elicited from anyone”, while the sampling and the conditioning are the analyst's choices.</td><td class="n">1 (sceptic)</td><td>Narrow to “no weight was elicited from a stakeholder”.</td></tr>
+</tbody></table></div>
+
+<h2>Decisions that are yours</h2>
+<p class="sub">Readers split, or the change touches your framing.</p>
+<div class="frame"><table>
+<thead><tr><th>ID</th><th>Question</th><th>What the readers said</th><th>Options</th></tr></thead>
+<tbody>
+<tr><td class="id">D1</td><td>The word “energy” (energy level, energy differential, energy-like)</td><td>8 found it unmotivated; one director notes it collides with the energy-balance metric in a satellite talk. It is your framing for the closing.</td><td>Keep it and say it aloud in §4 and §11; or use “level” (log V) on the page and keep “energy-like” only in §11.</td></tr>
+<tr><td class="id">D2</td><td>The “between sponsor and operator” row</td><td>3 read it as the method's pick; 12 could not follow its rule; the sceptic and a spacecraft engineer call it a weight in disguise.</td><td>Keep it with E3's clause; or drop the row and its sentence so the table ends on the stakeholders' own picks.</td></tr>
+<tr><td class="id">D3</td><td>A cell that shows the estimator itself</td><td>Both ML readers and a sceptic: every fit is <code>case.fit_study</code>; “the one cell I wanted” is a plain <code>fit</code>, <code>transform</code>, <code>score_samples</code>.</td><td>Add one short cell in §9 showing the fitted estimator and its <code>score_samples</code>; or leave the case wrappers and point to the docs.</td></tr>
+<tr><td class="id">D4</td><td>The generated-sentence cells</td><td>All 14: the repeated <code>from generate_findings import …</code> lines are noise; 5 could not tell computed numbers from written prose.</td><td>Import once in the setup so each cell is one <code>say(...)</code> call; or leave as is and say aloud that the sentences are computed.</td></tr>
+<tr><td class="id">D5</td><td>The question up front</td><td>3 asked for the question or the answer on the first page (“which cubesat fleet should we build?”).</td><td>Add one line to the opening cell; or leave the opening as is.</td></tr>
+</tbody></table></div>
+
+<h2>For your voice, not the page</h2>
+<p class="sub">Replicated questions an audience will likely ask, by section. No edit proposed.</p>
+<ul>
+  <li><b>§4.</b> What V means in plain words (“it finds which metrics fight”); what the sum-zero basis and Z do; the exact-maximum fit against the fit at τ.</li>
+  <li><b>§9.</b> Why the target fraction is 0.1 (asked by 9); what an effective sample of 74 out of 2,134 says, healthy or fragile; what the three tau-sweep panels are for.</li>
+  <li><b>§10.1.</b> Why those four attributes give 236 nondominated designs; what “near-frontier” (238) means.</li>
+  <li><b>§10.2.</b> How to read a tension cell (the colour is the size on a log scale, the sign the direction); why the title says 8 of 13 carry an exponent while 7 are in the contending set; why K = 2.</li>
+  <li><b>§10.5.</b> Which six requirements cut the shortlist, against the 13 in the behavioural view.</li>
+  <li><b>§10.6.</b> What Z0 to Z2 are; where the three proposals sit in the scatter.</li>
+  <li><b>§10.7.</b> Manufacturer and operator rows are identical by design; why the sponsor's least fleet cost is a fleet of 4 and not 1; unit cost falls with fleet size.</li>
+  <li><b>§7, §8.</b> Which metrics come from the slew and which from the configuration alone; which tool executes the SysML calculations; the baseline's pointing error is outside the primary regime's sample by design.</li>
+</ul>
+
+<h2>Follow-ups outside the talk</h2>
+<ul>
+  <li><b>Docs.</b> The theory page has the same V formula slip as E1 (the glossary form carries e<sup>−β</sup>).</li>
+  <li><b>Case figures.</b> The Z-chart scatter (proposals illegible, axes unnamed) and the tension matrix's legend (“size, log scale” over signed cells) are drawn by the case module.</li>
+  <li><b>Case realism.</b> The cost model's scope, coverage geometry, wheel redundancy and slew-based sizing belong with the case model's own future work.</li>
+  <li><b>Robustness.</b> Five readers asked whether the exponents and the cost-against-coverage conclusion survive another τ target, another sample, and one term against two, and for uncertainty on the exponents.</li>
+</ul>
+
+<h2>Logged, one reader each</h2>
+<ul>
+  <li>Exponents read as importance (director); the predictive part “not trustworthy yet” (director).</li>
+  <li>“No rerun answers the executives' question” is a surprising closing line (spacecraft engineer).</li>
+  <li>“Everything after it is the package”: does that include conditioning, which is case code here (modeller)?</li>
+  <li>The SlewExperiment box, “returns 10 of 13 metrics … computed with no slew”, is hard to untangle (two modellers).</li>
+</ul>
+</div>

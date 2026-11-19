@@ -68,3 +68,44 @@ And about 17:52 EST, on the word surrogate: "i am not sure we're using the term 
 **Applied as.** Amendment 4 of `WP83-scope-of-work.md`: the new section 4 is written from `docs/theory.md` in plain words (its
 paper links and theorem numbers dropped); the later sections are renumbered. Executed in a clean kernel (exit 0, no
 stderr output); read cold in a browser by a fresh-context reviewer, screenshots in `WP83-rounds/amendment-4/`.
+
+## Amendment 5: the cold-reader register's edits (2026-11-19)
+
+His words, verbatim, about 18:22 EST: "All edits, decide D". The register and answer key are copied to
+`WP83-rounds/round-3-readers/`.
+
+**Applied as.** E1 to E13 as listed in Amendment 5 of the scope (E3 with D2). Each is a phrase, a sentence or a deletion;
+the generated-sentence edits (E5, E6) are filters in `demo_support.py`, nothing in `src/`, `examples/`, `paper/`.
+
+His answers to the five open decisions, quoted:
+
+- D1, the word "energy" (eight readers found "energy level" and "energy differential" unmotivated; one noted the clash with
+  the energy-balance metric): "Level on page, energy in §11". **Applied as:** "level" (log V) in sections 4 to 10, in
+  prose, the decision table header and generated sentences (filtered in `say`); section 11 keeps "energy-like".
+- D2, the "between sponsor and operator" row: "Keep it, label it". **Applied as:** one clause in the note after the
+  decision table says the row is one more rule, the analyst's, not the fit's answer.
+- D3, showing the estimator: "Add one short cell". **Applied as:** a two-line cell after the fit prints the estimator and
+  calls `score_samples` on four rows of the conditioned metrics.
+- D4, the generated-sentence cells: "Import once in setup". **Applied as:** one `from generate_findings import (...)` in the
+  setup cell; each later cell is its `say(...)` call.
+- D5, the question up front: "Add one line". **Applied as:** one line in the title cell names the decision: which cubesat
+  fleet to build and how to defend the choice to the executives.
+
+His words, verbatim, about 18:35 EST, with a screenshot of the section 10.6 predict/check figure: "this figure needs a legend"
+
+**Applied as.** The support module's `predict_check_figure` adds one legend below the figure, built from proxy handles
+read from the figure's own marks (a design; a design near the fitted reference surface; a proposal where the regressor
+predicted it; the same proposal where it was measured; the number beside them), and the sentence before the figure that
+described the marks is cut.
+
+His words, verbatim, about 18:40 to 18:45 EST, in order:
+
+- "also we show sweeping temperature but we don't show anything about sweeping K"
+- "we should also have a least a brief block about preprocessing or conditioning our data to conform to the assumptions of the tool"
+- "change the notebook title to"Tradeoff analysis with tradespace and sysml v2""
+
+**Applied as.** K-1: after the temperature sweep a table of the mean slack at the one-term temperature for K = 1, 2, 3, its
+drop per added term and the thinnest term's share at each fit's own temperature (`choosing_k_table` in the support
+module; it leaves out the case's movement-under-resampling column, which takes over three minutes), with a sentence that K is the analyst's
+choice. C-1: the opening of section 9 states what the tool takes and what conditioning does to meet it. T-1: the title is
+"Tradeoff analysis with `tradespace` and SysML v2" (capitalisation and code font smoothed); the question stays under it.

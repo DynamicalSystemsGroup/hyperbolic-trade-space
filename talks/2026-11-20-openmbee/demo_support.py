@@ -4,12 +4,16 @@ Importing this module puts ``paper/`` and ``scripts/`` of the repository on
 ``sys.path``.
 """
 
+import json
 import re
 import subprocess
 import sys
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+import pandas as pd
 from IPython.display import Markdown, display
+from matplotlib.lines import Line2D
 
 ROOT = next(
     p
@@ -44,6 +48,9 @@ def say(sentence):
         r"(?<=\. )[^.]*(?:Theorem \d+|checked by a test of the repository)[^.]*\.\s*", "", text
     )
     text = re.sub(r"has a (\d+)-lemma", r"has \1 contending metrics", text)
+    text = re.sub(r"\s*The tension matrix states.*?reads [-\u2212]?\d+\.\d+\.", "", text)
+    text = text.replace("energy differential", "level").replace("energy level", "level")
+    text = re.sub(r" \(its [^()]*not the case's\)", "", text)
     display(Markdown(text))
 
 
@@ -77,6 +84,78 @@ def sections(path):
     for line in Path(path).read_text().splitlines():
         if re.match(r"\s+// \d\. ", line):
             print(_unref(line.strip()))
+
+
+def ledger_table():
+    """Return the latest ledger entry of each data file of the model's data.
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per output file: run id, evidence kind, rows, file and time.
+    """
+    path = ROOT / "examples/adcs/experiments/ledger/ledger.jsonl"
+    ledger = pd.DataFrame([json.loads(line) for line in path.read_text().splitlines()])
+    latest = ledger[ledger["output_path"].str.contains("data/v2/")]
+    latest = latest.drop_duplicates("output_path", keep="last")
+    latest = latest.assign(id=latest["id"].str.replace(r"@\d+", "", regex=True))
+    columns = ["id", "evidence_kind", "output_rows", "output_path", "time_utc"]
+    return latest[columns].reset_index(drop=True)
+
+
+def predict_check_figure(study, regressor):
+    """Draw the predict-and-check figure, with both chart axes labelled.
+
+    Parameters
+    ----------
+    study : Study
+        The case study.
+    regressor : TradeSpaceRegressor
+        The fitted regressor.
+    """
+    import case
+
+    case.predict_check_figure(study, regressor)
+    fig = plt.gcf()
+    fig.axes[1].set_ylabel("Z2")
+    designs, proposals, measured = fig.axes[0].collections
+    edges = designs.get_edgecolor()
+    ring = edges[edges[:, 3] > 0][0]
+    dot = designs.get_facecolor()[0]
+    handles = [
+        Line2D([], [], ls="", marker="o", mfc=dot, mec="none", ms=designs.get_sizes()[0] ** 0.5),
+        Line2D(
+            [], [], ls="", marker="o", mfc=dot, mec=ring, mew=0.8, ms=designs.get_sizes()[0] ** 0.5
+        ),
+        Line2D(
+            [],
+            [],
+            ls="",
+            marker="o",
+            mfc="none",
+            mec=proposals.get_edgecolor()[0],
+            ms=proposals.get_sizes()[0] ** 0.5,
+        ),
+        Line2D(
+            [],
+            [],
+            ls="",
+            marker="D",
+            mfc=measured.get_facecolor()[0],
+            mec=measured.get_edgecolor()[0],
+            ms=measured.get_sizes()[0] ** 0.5,
+        ),
+        Line2D([], [], ls=""),
+    ]
+    labels = [
+        "a design",
+        "a design near the fitted reference surface",
+        "a proposal, where the regressor predicted it",
+        "the same proposal, where it was measured",
+        "the number beside them is the proposal's number",
+    ]
+    fig.tight_layout(rect=(0, 0.1, 1, 1))
+    fig.legend(handles, labels, loc="lower center", ncol=2, fontsize=11, frameon=False)
 
 
 def draw(plantuml_text):
@@ -184,3 +263,44 @@ def loop_figure():
         f'markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="{_EDGE}"/>'
         "</marker></defs>" + "".join(parts) + "</svg>\n"
     )
+
+
+def choosing_k_table(study, fits):
+    """Tabulate what each added term buys: slack, its drop and the thinnest term.
+
+    The mean slack is read at the temperature of the one-term fit, so the rows
+    compare like with like; the thinnest term's share is read at each fit's own
+    temperature.
+
+    Parameters
+    ----------
+    study : Study
+        The case study.
+    fits : dict of int to Fit
+        One fit per number of terms K, as returned by ``case.k_fits``.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``K``, ``mean slack``, ``drop`` and ``thinnest share, own tau``.
+    """
+    import case
+    import numpy as np
+
+    _, k_terms, _ = case._lib()
+    tau, rows, previous = fits[1].tau, [], None
+    for k, fit in fits.items():
+        est = k_terms.fit_k(study.M, k, tau, study.spec.seed)
+        slack = float(est.mean_slack_)
+        rows.append(
+            {
+                "K": k,
+                "mean slack": slack,
+                "drop": np.nan if previous is None else previous - slack,
+                "thinnest share, own tau": (
+                    float(np.min(fit.estimator.term_share_)) if k > 1 else 1.0
+                ),
+            }
+        )
+        previous = slack
+    return pd.DataFrame(rows)

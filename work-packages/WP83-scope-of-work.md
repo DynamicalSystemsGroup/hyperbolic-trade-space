@@ -156,3 +156,24 @@ in the documentation and not as in the full paper. What changes:
   and its soft maximum, the chart point, the elasticities and the n-lemma, in about 200 words and four display
   equations, in plain words, with no links or numbers into the paper.
 - The later sections are renumbered 5 to 11 (subsections 10.1 to 10.7), their words unchanged.
+
+## Amendment 5 (2026-11-19, about 18:22 EST): the cold-reader register's edits
+
+Fourteen cold readers read the rendered notebook; the driver's triaged register (`WP83-rounds/round-3-readers/register.html`,
+with its answer key) was signed off by him. Edits by ID:
+
+- E1 section 4 writes V as the glossary does, with the e^(-beta) factor; E11 says the temperature sets how soft the soft
+  maximum is. E2 drops the view-split clause in section 5. E4 says each triangle refits its three metrics alone.
+- E5 and E6 filter two generated phrases (the tension cell value, the regressor's own-fit parenthetical) in the support
+  module; E6 also narrows the sentence on the proposals to what failed and what a proposal is. E7 names the baseline
+  regime `"stock"`. E10 says the case is a numerical demonstrator. E12 says coverage probability is added for the fleet
+  view and that the figure is the one-term fit. E13 says "stakeholder".
+- E8 moves the ledger table and the labelled predict/check figure into the support module (one call per cell). E9 prints
+  every level line.
+- His answers: D1 "energy level" and "energy differential" become "level" up to the closing section; D2 (E3) the
+  between-row is labelled as the analyst's rule; D3 one cell shows the fitted estimator and `score_samples`; D4 the
+  findings functions are imported once in setup; D5 one line in the title cell names the decision.
+- His word, 18:35 EST: the predict/check figure gets one legend (support module), and the prose that described its marks
+  is cut.
+- His words, 18:40 to 18:45 EST: K-1 a table for the choice of K after the temperature sweep, C-1 a brief statement of
+  what the tool takes and what conditioning does, T-1 the new title.
