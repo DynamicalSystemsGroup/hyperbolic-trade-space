@@ -220,3 +220,23 @@ both lists; the README says `GOVERNANCE.md` states "the check that runs first in
 root page" on this side too (the README, the docs home, Further reading), as in `GOVERNANCE.md`, the code owners' page
 and the changelog, the glossary having no term for it.
 
+## The rule for pull requests into `dev` (2026-11-19): out of the documentation pull request
+
+Rohan's pull request #20 into `v0.2` (contributor onboarding, the `justfile`, the Dynamical Systems Group branding)
+carried a hunk in `.github/workflows/test.yml` and its test, `tests/test_ci_shards.py`: the Tests workflow on every
+pull request into `dev` with the fast, slow and documentation groups. Asked "Which rule should dev have?" with the
+options "All shards, everyone", "Fast shard, everyone" and "Fast, Dependabot only", he answered, verbatim:
+
+> Fast shard, everyone
+
+and, verbatim:
+
+> i don't want red CI. just be judicious about when you push so we're not constantly locked up waiting on tests
+
+**Applied as.** The two governed files return to `dev`'s content on `v0.2` (`git checkout origin/dev --` the two
+paths), so `git diff origin/dev v0.2` over `.github/`, `GOVERNANCE.md` and `tests/test_ci_shards.py` is empty: the
+documentation pull request (#15) carries no workflow rule; the rule he chose is WP82 amendment 4 in the governance
+pull request (#16). The rest of #20 stays. The changelog bullet loses its sentence on the Tests workflow, and the
+contributing page states the rule as he chose it: lint and the Linux fast group on every pull request into `dev`; the
+fast, slow and documentation groups on the release pull request into `main`.
+
