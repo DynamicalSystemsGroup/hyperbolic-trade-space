@@ -17,7 +17,7 @@ All notable changes to this project are recorded here, in the format of
 ### Changed
 
 - Added README navigation and status badges, documented Python 3.12 support and contributor setup,
-  and corrected the release instructions. The Tests workflow now runs on pull requests into `dev`.
+  and corrected the release instructions.
 - The docs' links into the paper are withdrawn while the paper is in abstract mode, each pointer the docs' own
   statement or removed as the paper's role; the working paper is named on the docs home, in Further reading, on the
   root page and in the README (WP81).

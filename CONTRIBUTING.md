@@ -61,8 +61,9 @@ For paper tests, follow
 [Contributing to the paper](#contributing-to-the-paper).
 
 Open a pull request targeting `dev`. Describe the problem, your change and the checks you ran,
-including their results. Changes to the paper target `paper`. The Tests workflow runs the Linux
-fast, slow and documentation test groups on pull requests into `dev` and `main`.
+including their results. Changes to the paper target `paper`. The Tests workflow runs lint and the
+Linux fast test group on every pull request into `dev`, and the fast, slow and documentation test
+groups on the release pull request into `main`.
 Code owners run Windows checks by manual dispatch and review changes before merging.
 
 Start in `src/tradespace/` for package code, `tests/` for tests, `docs/` for user documentation and
