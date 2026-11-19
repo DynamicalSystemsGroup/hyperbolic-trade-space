@@ -4,14 +4,15 @@ name: Tests
 # every shard says `not paper` and the paper switch is never set). Runs on pull requests into main (the
 # required checks `test (fast)`, `test (slow)`, `test (docs)`), when release.yml calls it (Linux only), and
 # on manual dispatch (Linux and, by default, Windows). A push to dev runs lint and the Linux fast shard
-# only (WP67, the external review of 2026-11-16). Windows never runs on a pull request or a push.
+# only (WP67, the external review of 2026-11-16), and so does every pull request into dev, a person's or
+# Dependabot's (WP82, Amendment 4). Windows never runs on a pull request or a push.
 # The first job, controls, checks the repository's settings against .github/governance.toml
 # (GOVERNANCE.md); every shard needs it.
 on:
   push:
     branches: [dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   workflow_call:
     inputs:
       windows:
@@ -48,8 +49,10 @@ jobs:
     # environments) and Pages (the Pages build); the default workflow permissions need Administration,
     # which the workflow token never has, and the rulesets' bypass actors are returned to administrators
     # only; the declaration marks both local-only and --runner lists them as not checked here (a code
-    # owner's local run checks them).
-    if: ${{ github.workflow == 'Tests' || inputs.controls }}
+    # owner's local run checks them). The job is skipped on a pull request into dev, because a pull request may
+    # carry a declaration ahead of the live settings and the check would be red until the settings follow; it
+    # still runs on a push to dev, a pull request into main, the release's call and a dispatch.
+    if: ${{ (github.workflow == 'Tests' || inputs.controls) && (github.event_name != 'pull_request' || github.base_ref != 'dev') }}
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -66,15 +69,16 @@ jobs:
   test:
     name: test (${{ matrix.shard }})
     needs: controls
-    # Runs after controls passed here, or when release.yml ran controls itself (skipped here).
+    # Runs after controls passed here, or when it was skipped: release.yml ran controls itself, or the event is a
+    # pull request into dev, where controls does not run.
     if: ${{ !cancelled() && (needs.controls.result == 'success' || needs.controls.result == 'skipped') }}
     strategy:
       fail-fast: false
       matrix:
-        # Every shard on a pull request, a call or a dispatch; the fast shard alone on a push to dev. A
-        # called workflow sees the caller's event (a push to main or qc/** calling from release.yml), so the
-        # push case is also tied to this workflow's own name.
-        shard: ${{ fromJSON((github.event_name == 'push' && github.workflow == 'Tests') && '["fast"]' || '["fast", "slow", "docs"]') }}
+        # Every shard on a pull request into main, a call or a dispatch; the fast shard alone on a push to dev
+        # and on a pull request into dev. A called workflow sees the caller's event (a
+        # push to main or qc/** calling from release.yml), so both cases are also tied to this workflow's own name.
+        shard: ${{ fromJSON(((github.event_name == 'push' || github.base_ref == 'dev') && github.workflow == 'Tests') && '["fast"]' || '["fast", "slow", "docs"]') }}
     # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
     runs-on: ubuntu-24.04
     steps:

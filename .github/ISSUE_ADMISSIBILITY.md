@@ -20,3 +20,14 @@ person who removes the label; the label change records who and when.
 | Only a code owner turns a draft into an issue | conformance, machine | the `draft` label is removable by code owners only; any other removal is reverted |
 
 The template that asks for each field is [`ISSUE_TEMPLATE/scope-of-work.yml`](ISSUE_TEMPLATE/scope-of-work.yml).
+
+A bug report ([`ISSUE_TEMPLATE/bug.yml`](ISSUE_TEMPLATE/bug.yml), label `bug`) and a question
+([`ISSUE_TEMPLATE/question.yml`](ISSUE_TEMPLATE/question.yml), label `question`) are not drafts: the form refuses a
+submission without its required fields, and a code owner judges the rest at triage.
+
+| Condition | Kind | Enforced or recorded by |
+|---|---|---|
+| A bug report says what happened and what the documentation says should happen, gives an example that runs as pasted, and names the version and the environment | conformance, machine | the form's required fields |
+| The example reproduces the report and the expectation it quotes is the documentation's | fitness, a code owner | the code owner who triages it, in a comment under the `bug` label; a report that does not reproduce is answered and closed (guideline: `CONTRIBUTING.md`, "How a change moves") |
+| A question says what the asker is trying to do | conformance, machine | the form's required field |
+| The question is answered on the issue, or becomes a scope of work when it names work to do | fitness, a code owner | the code owner who answers, under the `question` label (guideline: `CONTRIBUTING.md`, "An issue is a scope of work") |

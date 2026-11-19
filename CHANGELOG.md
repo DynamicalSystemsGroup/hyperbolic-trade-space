@@ -5,6 +5,53 @@ All notable changes to this project are recorded here, in the format of
 [Semantic Versioning](https://semver.org/). Entries are drawn from the work-package index
 (`work-packages/INDEX.md`) and the git history; the package that made each change is named in parentheses.
 
+## [Unreleased]
+
+### Added
+
+- The versioning rule and its check (`GOVERNANCE.md`, "Versions"): while the major is 0, a patch release changes
+  neither the package's public surface nor a governed file, and a minor release adds capability, changes the surface
+  or changes a secondary rule, so this governance update makes the next release 0.2.0 and not 0.1.1, the package's
+  code unchanged since 0.1.0. The public surface is the record `tests/data/api_surface.json`, written by
+  `scripts/api_surface.py` and held equal to the package by `tests/test_api_surface.py`; the release check
+  `scripts/release_checks.py version-kind` names the bump against the previous `v*` tag and refuses a patch release
+  that changes the record, a governed file, or adds or removes a changelog section (WP82, Amendment 1).
+- The gates prepared by command: `scripts/release_checks.py bump <version> --changelog final|stub|none [--date]`
+  writes a version in every place it is written and refreshes the lock; `scripts/release_checks.py gates
+  [--release]` runs the Tests workflow's checks, the vocabulary, surface, settings and branch checks and, with
+  `--release`, the release admissibility checks locally, one line each with a verdict; `scripts/release_checks.py
+  branches` names a remote branch that is neither long-lived, an open pull request's head, `qc/*` nor the update
+  bot's. The branch rule (`GOVERNANCE.md`, "Branches") with the setting `delete_branch_on_merge` declared in
+  `.github/governance.toml` and checked by the `controls` job, and the dry-run step on the code owners' page (WP82,
+  Amendment 3).
+
+### Removed
+
+- The `main-review` bypass carried for the 0.1 release (one user, `mzargham`, on pull requests): removed from the
+  governance declaration (`.github/governance.toml`) by this change and from the ruleset by a code owner after its
+  merge, attested by a code owner's local run of `scripts/check_repo_settings.py`; the 0.2 release is the first
+  merged under the review rule without it (`GOVERNANCE.md`).
+
+### Changed
+
+- The default workflow permissions are read and a workflow may not approve a pull request (the design's value; live
+  was write through 0.1), and `controls`, the settings check, is a required status check on `main` beside the three
+  shards and `admissibility`; both declared in `.github/governance.toml` and set on GitHub after the merge (WP82).
+- The governed files (the secondary rules of `GOVERNANCE.md`) are under a declared control: a `CODEOWNERS` line per
+  file naming the three code owners as the approvers of a change to it, and the `governance-files` push ruleset,
+  which refuses a push touching one of them by anyone but a Repository admin (WP82).
+- The admissibility documents: rows for a bug report and a question, the `controls` job in the pull request's
+  conformance row, and each judged row naming its guideline (WP82).
+- The dependency route: Dependabot's pull requests target `dev` with the `dependencies` label, minor and patch bumps
+  grouped weekly per ecosystem and a major on its own (`.github/dependabot.yml`); a dependency row in
+  `.github/PR_ADMISSIBILITY.md` that the linked-issue and fields checks pass with a notice; the code owner's steps on
+  `docs/code-owners.md`, "Dependency updates" (WP82, Amendment 2).
+- The Tests workflow runs lint and the Linux fast shard on every pull request into `dev`, a person's or Dependabot's;
+  the full set stays on pull requests into `main`. The settings check, `controls`, does not run on a pull request into
+  `dev` (a pull request may carry a declaration ahead of the live settings); it runs on a push to `dev`, a pull
+  request into `main`, the release's call and a dispatch. The settings the runner checks are changed in one sitting
+  before the merge of the governance change, so the push run after it is green (WP82, Amendment 4).
+
 ## [0.1.0] - 2026-11-17
 
 ### Added

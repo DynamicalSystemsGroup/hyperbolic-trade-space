@@ -23,9 +23,23 @@ PAPER_MODULES = {
 }
 
 
+CONTROLS = WF["jobs"]["controls"]
+# Every pull request into dev, a person's or Dependabot's, runs lint and the fast shard; the
+# settings check (controls) is skipped there, since a pull request may carry a declaration ahead
+# of the live settings.
+CONTROLS_IF = (
+    "${{ (github.workflow == 'Tests' || inputs.controls) && "
+    "(github.event_name != 'pull_request' || github.base_ref != 'dev') }}"
+)
+TEST_IF = (
+    "${{ !cancelled() && (needs.controls.result == 'success' || "
+    "needs.controls.result == 'skipped') }}"
+)
+
+
 def test_workflow_runs_on_dispatch_call_pull_requests_to_main_and_pushes_to_dev():
     assert set(TRIGGERS) == {"push", "pull_request", "workflow_dispatch", "workflow_call"}
-    assert TRIGGERS["pull_request"] == {"branches": ["main"]}
+    assert TRIGGERS["pull_request"] == {"branches": ["main", "dev"]}
     assert TRIGGERS["push"] == {"branches": ["dev"]}
     assert TRIGGERS["workflow_call"]["inputs"]["windows"]["default"] is False
     assert TRIGGERS["workflow_dispatch"]["inputs"]["windows"]["default"] is True
@@ -76,12 +90,24 @@ def test_windows_never_runs_on_a_pull_request():
     assert "github.event_name != 'push'" in WINDOWS["if"]
 
 
-def test_a_push_to_dev_runs_the_fast_shard_alone():
-    # A called workflow sees the caller's event, so the push case names this workflow too (the WP67
+def test_a_push_to_dev_and_a_pull_request_into_dev_run_the_fast_shard_alone():
+    # A called workflow sees the caller's event, so both cases name this workflow too (the WP67
     # dry run found the release's test job reduced to the fast shard without it).
-    on_push = """(github.event_name == 'push' && github.workflow == 'Tests') && '["fast"]'"""
+    into_dev = "(github.event_name == 'push' || github.base_ref == 'dev')"
+    on_push = f"""({into_dev} && github.workflow == 'Tests') && '["fast"]'"""
     otherwise = """|| '["fast", "slow", "docs"]'"""
     assert JOB["strategy"]["matrix"]["shard"] == f"${{{{ fromJSON({on_push} {otherwise}) }}}}"
+
+
+def test_a_pull_request_into_dev_runs_the_fast_shard_for_anyone_and_skips_controls():
+    # controls is skipped on a pull request into dev; test accepts a skipped controls (the release's
+    # call skips it too) and carries no condition on the event or the actor. Windows is already off
+    # on every pull request.
+    assert CONTROLS["if"] == CONTROLS_IF
+    assert JOB["if"] == TEST_IF
+    assert "github.actor" not in TEXT
+    # The controls job declares the reads its endpoints need.
+    assert CONTROLS["permissions"] == {"contents": "read", "actions": "read", "pages": "read"}
 
 
 def test_every_shard_keeps_the_provisioning():

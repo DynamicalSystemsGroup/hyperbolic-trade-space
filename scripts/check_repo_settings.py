@@ -1,8 +1,10 @@
 """Compare the repository's live settings on GitHub with their declaration.
 
-The declaration is ``.github/governance.toml`` (``GOVERNANCE.md``): the rulesets, the environments
+The declaration is ``.github/governance.toml`` (``GOVERNANCE.md``): the rulesets (branch rulesets
+with their conditions; the push ruleset on the governed files, which has none), the environments
 and their deployment policies, the Pages build, the code owners' access, the paper approvers'
-access and the default workflow permissions. The checker reads each through ``gh api`` (the
+access, the default workflow permissions and the repository's general settings (the deletion of
+a merged pull request's branch). The checker reads each through ``gh api`` (the
 user's login locally, the workflow token on a runner), compares field by field, prints each
 difference as ``path: expected X, found Y`` and exits 1 on any. An endpoint that cannot be read is
 named and exits 2, never skipped.
@@ -32,6 +34,7 @@ Metadata always, Actions and Pages when the job declares them, Administration ne
     pages                                                     Pages (read)
     collaborators/{login}/permission                          Metadata (read)
     actions/permissions/workflow                              Administration (read)
+    repository (the repository itself, GET repos/{owner}/{repo})   Metadata (read)
 """
 
 from __future__ import annotations
@@ -53,6 +56,8 @@ RANK = {"none": 0, "read": 1, "triage": 1, "write": 2, "maintain": 2, "admin": 3
 # ("local": its endpoint needs a permission the workflow token never has, named in local_reason).
 SCOPES = {"both", "local"}
 SCOPE_KEYS = ("checked_on", "local_reason", "fields")
+# The endpoint name of the repository itself (its general settings), GET repos/{owner}/{repo}.
+REPOSITORY = "repository"
 BRANCH_POLICY = {
     "all": None,
     "protected": {"protected_branches": True, "custom_branch_policies": False},
@@ -115,9 +120,9 @@ def gh_fetch(repo: str, record: Path | None = None) -> Fetch:
     """Read ``repos/{repo}/{endpoint}`` with ``gh api``; record each answer when asked."""
 
     def fetch(endpoint: str):
-        r = subprocess.run(
-            ["gh", "api", f"repos/{repo}/{endpoint}"], capture_output=True, text=True, check=False
-        )
+        # REPOSITORY is the repository itself, GET repos/{owner}/{repo} (repository.json recorded).
+        url = f"repos/{repo}" if endpoint == REPOSITORY else f"repos/{repo}/{endpoint}"
+        r = subprocess.run(["gh", "api", url], capture_output=True, text=True, check=False)
         if r.returncode != 0:
             lines = [ln for ln in (r.stderr + r.stdout).splitlines() if ln.strip()]
             raise Unreadable(endpoint, lines[-1] if lines else f"gh exited {r.returncode}")
@@ -227,6 +232,7 @@ class Comparison:
         self.code_owners()
         self.paper_approvers()
         self.actions()
+        self.general()
         return self
 
     def rulesets(self) -> None:
@@ -245,9 +251,12 @@ class Comparison:
             p = f"rulesets.{name}"
             self.eq(f"{p}.target", d["target"], detail.get("target"))
             self.eq(f"{p}.enforcement", d["enforcement"], detail.get("enforcement"))
-            cond = (detail.get("conditions") or {}).get("ref_name") or {}
-            self.eq(f"{p}.include", sorted(d["include"]), sorted(cond.get("include") or []))
-            self.eq(f"{p}.exclude", sorted(d.get("exclude", [])), sorted(cond.get("exclude") or []))
+            if d["target"] != "push":  # a push ruleset has no ref condition
+                cond = (detail.get("conditions") or {}).get("ref_name") or {}
+                self.eq(f"{p}.include", sorted(d["include"]), sorted(cond.get("include") or []))
+                self.eq(
+                    f"{p}.exclude", sorted(d.get("exclude", [])), sorted(cond.get("exclude") or [])
+                )
             if not self.local_only_field(d, "bypass_actors", f"{p}.bypass_actors"):
                 self.eq(
                     f"{p}.bypass_actors",
@@ -263,6 +272,9 @@ class Comparison:
                     if key == "required_status_checks":
                         want = sorted(want)
                         got = sorted(c["context"] for c in got or [])
+                    elif isinstance(want, list) and all(isinstance(x, str) for x in want):
+                        want = sorted(want)  # a list of names (restricted file paths): order free
+                        got = sorted(got) if isinstance(got, list) else got
                     self.eq(f"{p}.rules.{rule['type']}.{key}", want, got)
 
     def environments(self) -> None:
@@ -354,6 +366,21 @@ class Comparison:
         for key in fields:
             self.eq(f"actions.{key}", section[key], answer.get(key))
 
+    def general(self) -> None:
+        """Settings, General (the repository record itself), when the declaration has the section:
+        ``delete_branch_on_merge``, the deletion of a merged pull request's branch."""
+        section = self.decl.get("general")
+        if section is None:
+            return
+        fields = [k for k in section if k not in SCOPE_KEYS]
+        if self.local_only_section(section, [f"general.{k}" for k in fields]):
+            return
+        answer = self.read(REPOSITORY)
+        if answer is None:
+            return
+        for key in fields:
+            self.eq(f"general.{key}", section[key], answer.get(key))
+
     # ------------------------------------------------------------------------------ results
 
     @property
@@ -423,7 +450,7 @@ def load_declaration(path: Path) -> dict:
     """The declaration; each section's ``checked_on`` is ``both`` (the default) or ``local``."""
     decl = tomllib.loads(path.read_text(encoding="utf-8"))
     sections = [decl["actions"], decl["pages"], decl["code_owners"]]
-    sections += [decl["paper_approvers"]] if "paper_approvers" in decl else []
+    sections += [decl[k] for k in ("paper_approvers", "general") if k in decl]
     sections += decl.get("rulesets", []) + decl.get("environments", [])
     for section in sections:
         for scope in (section, *(section.get("fields") or {}).values()):

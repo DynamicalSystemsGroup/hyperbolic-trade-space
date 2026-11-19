@@ -120,6 +120,13 @@ jobs:
         run: |
           if [ "$FINAL" = "true" ]; then final=--final; else final=; fi
           uv run --no-project python scripts/release_checks.py changelog --version "$VERSION" $final
+      - name: The version's bump matches what changed since the previous release (GOVERNANCE.md, Versions)
+        # A patch release leaves the public surface, the governed files and the changelog's Added and
+        # Removed sections untouched; the check reads the tags the checkout above fetched (fetch-depth 0)
+        # and needs the project environment when the previous tag carries no surface record and the
+        # surface is computed from its source.
+        if: steps.tag.outputs.tag_state != 'site-only'
+        run: uv run --locked python scripts/release_checks.py version-kind
       - name: The lock matches the declaration
         run: uv lock --check
       - name: Every action is pinned to a commit

@@ -71,8 +71,11 @@ The reader-run directories `WP28-inventory/` and `WP28-retest/` stay.
   site only). The paper is edited
   on `paper`; `paper.yml` runs on pushes to `paper` and on `paper-*` tags, which publish the paper as a GitHub
   release. `test.yml` runs on pull requests into `main`, when `release.yml` calls it, and on dispatch, and runs lint and
-  the Linux fast shard on every push to `dev`; a cross-platform check before a merge, when a package touched numerics, is a manual dispatch of it on `dev`.
-  The merge commit's message names the packages or records it carries. Release control (supervisor,
+  the Linux fast shard on every push to `dev` and every pull request into `dev`; a cross-platform check before a merge, when a package touched numerics, is a manual dispatch of it on `dev`.
+  Process records (the driver log, the decisions files, the checklists, the board) ride in the pull request of the
+  package they record and nowhere else; between pull requests they live in the working tree or outside the
+  repository, never as a record-only commit to `dev` (supervisor, 2026-11-17, about 21:45: "With the work they record",
+  `WP82-decisions.md`). The merge commit's message names the packages or records it carries. Release control (supervisor,
   2026-11-08, at WP14's gate): the review of the staged localhost build of the whole site (root index,
   `/docs/`, `/paper/`) is part of the release pull request and is recorded in the release issue it closes;
   the one-command local build-and-serve is part of the WP14 interface contract and delivered by WP8a.

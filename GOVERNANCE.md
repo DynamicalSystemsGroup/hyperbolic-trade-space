@@ -30,10 +30,10 @@ are `.github/PR_ADMISSIBILITY.md`; the review is recorded in the pull request, t
 Into `main`, a review of the release. A code owner who is not the pull request's author asks: is this candidate the
 release? They read the changelog entry, the release issue the pull request closes and the staged site, and merge.
 The merge is the decision; the `pypi` environment waits for nobody else. A pull request's author cannot approve it,
-so for the 0.1 release the `main-review` ruleset carries a bypass for one named user (`mzargham`) on pull requests
-(decided 2026-11-17; set by name that afternoon), and the release is merged on that bypass. The bypass is removed after 0.1 by a change to the
-declaration first, then to the ruleset, in a pull request of its own, named in the 0.2 changelog; the 0.2 release is
-the first through the review rule without it, and its attestation shows the rule in effect.
+so for the 0.1 release the `main-review` ruleset carried a bypass for one named user (`mzargham`) on pull requests
+(decided 2026-11-17; set by name that afternoon), and 0.1 was merged on it. The bypass is removed after 0.1 by a
+change to the declaration first, then to the ruleset, in a pull request of its own, named in the 0.2 changelog; the
+0.2 release is the first through the review rule without it, attested by a code owner's local run of the checker.
 
 ## The paper's route
 
@@ -73,32 +73,80 @@ script or a test checks it) or a guideline (a named role judges it):
 - `.github/ISSUE_TEMPLATE/*.yml` — executable: `tests/test_admissibility.py` checks that the scope-of-work template carries the fields the checks read.
 - `.github/pull_request_template.md` — executable: `tests/test_admissibility.py` checks that it carries the sections the pull request check reads.
 
-Today each is edited like any other file: a pull request into `dev`, or a direct commit to `dev` by a code owner.
-A tighter control on editing them is an open decision (`work-packages/WP78-rounds/gaps.md`); the declaration's
-`control` field records the answer.
+Each is changed by a pull request into `dev` or a direct commit to `dev`, approved by the owners on its own
+`.github/CODEOWNERS` line (the three code owners) and pushed by a Repository admin: the `governance-files` push
+ruleset refuses a push that touches one of these paths by anyone else, a pull request's merge included, so a
+candidate that changes a governed file is merged by an admin (decided 2026-11-17). The declaration's `codeowners`
+and `control` fields record both.
 
 ## The declaration and the check
 
-`.github/governance.toml` declares the settings that enforce the release rules: the four rulesets (`main-review`,
-`main-checks`, `dev`, `paper`) with their rules, parameters and bypass actors; the four environments
+`.github/governance.toml` declares the settings that enforce the release rules: the five rulesets (`main-review`,
+`main-checks`, `dev`, `paper`, and `governance-files`, the push ruleset on the governed files) with their rules,
+parameters and bypass actors; the four environments
 (`github-pages`, `pypi`, `testpypi`, `paper-release`) with their reviewers and branch or tag policies; the Pages
 build; the code owners' and the paper approvers' minimum access; the default workflow permissions. `scripts/check_repo_settings.py` reads
 the live settings through the GitHub API, compares them with the declaration field by field, prints each
 difference and exits non-zero on any; an endpoint it cannot read fails the check by name, never silently. A
 field the declaration marks `checked_on = "local"` is not read on the runner: today the default workflow
-permissions (their endpoint needs a permission the workflow token never has) and the rulesets' bypass actors (the
-API returns them to administrators only; the token sees an empty list). The job's report lists those fields as not
+permissions (their endpoint needs a permission the workflow token never has), the rulesets' bypass actors (the
+API returns them to administrators only; the token sees an empty list) and the deletion of merged branches (the
+repository endpoint returns it only to callers with push access). The job's report lists those fields as not
 checked there, with the reason, and a code owner's local run checks them; the removal of the `main-review` bypass
-after 0.1 is therefore attested by that local run and the ruleset page, not by the runner.
+after 0.1 is therefore attested by that local run and the ruleset page, not by the runner, and until the settings
+a declaration change names are changed that local run reports each of them as a difference.
 
 The `controls` job runs it first in the Tests and Release workflows; every other job needs it, so no test, build or
-publish runs while a setting differs from its declaration. Its report is the job summary. A change to a setting
-starts with the declaration: the declaration changes, then the setting, and the next run checks them.
+publish runs while a setting differs from its declaration. It does not run on a pull request into `dev`, since a
+pull request may carry a declaration ahead of the live settings and the check would be red until the settings
+follow; it runs on a push to `dev`, a pull request into `main`, the release's call and a dispatch. Its report is the
+job summary. A change to a setting starts with the declaration: the declaration is approved in review, then a code
+owner changes the settings the runner checks (a ruleset, a required check) in one sitting
+before the merge, and merges; the push run after the merge compares the new declaration with settings already
+changed, so it is green. A local-only field is attested by a code owner's local run after the merge.
 
 Attestation: a release's run summary and its GitHub release notes carry the line
 `Controls: .github/governance.toml@<hash> checked at <merge commit>: conforming (N fields on the runner; M
 local-only)`, so the release states which rules were declared, at which commit, that they were in effect when it was
 made, and which fields a code owner checks by hand.
+
+## Versions
+
+The version in `pyproject.toml` is `major.minor.patch`, and the number says what kind of change a release is. While
+the major is 0:
+
+- A patch release (0.x.y to 0.x.y+1) changes neither the package's public surface nor any governed file: fixes,
+  documentation, internal code, the site.
+- A minor release (0.x to 0.x+1.0) adds capability, changes the public surface, or changes a secondary rule (a
+  governed file): a change to how a release is made is a change to the release itself.
+- The major stays 0 until a release whose surface is a commitment; after that release, a breaking change to the
+  surface moves the major.
+
+The public surface is the record `tests/data/api_surface.json`: each public module of `tradespace`, its public
+names, for a class its own methods with their signatures, for a function its signature, for a constant its value.
+`scripts/api_surface.py --write` writes it from the package, and `tests/test_api_surface.py` holds it equal to the
+package, so a pull request that changes the surface rewrites the record and names the change in the changelog.
+
+Executable: `scripts/release_checks.py version-kind`, in the release workflow's admissibility job, reads the version
+and the highest `v*` tag below it, names the bump, and for a patch release refuses a changed record, a changed
+governed file (`git diff` against the tag over the declaration's `governed_files` paths) and an `Added` or
+`Removed` section in the version's changelog entry; a minor or major release passes with the bump printed. Judged:
+whether the changelog's entry names what moved the number, by the code owner who merges the release
+(`.github/RELEASE_ADMISSIBILITY.md`, the fitness row).
+
+0.2.0 is a minor release because of the governance update: the bypass removal, the control on the governed files
+and the admissibility rows change the secondary rules, while the package's code is unchanged since 0.1.0.
+
+## Branches
+
+The long-lived branches are `main`, `dev` and `paper`. Every other branch on the remote is the head of an open pull
+request, a `qc/*` branch for one dry run of the release, a `talk/*` branch (the material of a talk or demo, which
+does not merge into `dev`), or the update bot's branch for its pull request. A pull
+request's branch is deleted at its merge by the repository setting (declared in `.github/governance.toml`,
+`general.delete_branch_on_merge`, and checked by a code owner's local run); a `qc/*` branch is deleted after its run by
+whoever pushed it; a `talk/*` branch stays until a code owner deletes it; a bot's branch goes with its pull request. Local worktrees and branches of a landed unit are
+retired at the landing. `uv run python scripts/release_checks.py branches` names a remote branch that is none of
+these (the branch it runs on, whose pull request comes next, excepted), and `gates` runs it.
 
 ## How the repository is organised
 
@@ -113,12 +161,22 @@ Issues are templated: a scope of work (`.github/ISSUE_TEMPLATE/scope-of-work.yml
 owner approves it), a bug report and a question; blank issues are off, and security reports go to the private
 advisory form. Pull requests have one template (`.github/pull_request_template.md`), target `dev` (`paper` for a
 change to the paper, with the template's `Paper` section filled), and name the issue they resolve or carry the
-`small-fix` label.
+`small-fix` label. A dependency update is Dependabot's pull request into `dev` with the `dependencies` label
+(`.github/dependabot.yml`: weekly, minor and patch bumps grouped per ecosystem, a major on its own); its own
+description stands in for the template and it names no issue (the dependency row of `.github/PR_ADMISSIBILITY.md`).
+A code owner reads the bump, confirms the test workflow ran green on it (lint, the fast shard), checks a
+moved pin is a full commit SHA with its version comment, and merges it with a merge commit, a Repository admin where
+it touches `.github/workflows/*.yml`; a red run leaves it open with the failure filed as an issue, and a major bump of
+a runtime dependency that changes behaviour is a candidate with a scope-of-work issue like any other. The steps in
+full are "Dependency updates" in `docs/code-owners.md`.
 
 Criteria are of two kinds. Executable: the rows marked machine in the three admissibility documents, run by the
 issue and pull request workflows, the test workflow (lint, format, lock, the three test shards, the attribution
-check) and the release workflow (version, tag, changelog, pins, bill of materials, merge, the PyPI hash check), and
-the `controls` job. Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
+check) and the release workflow (version, tag, changelog, version kind, pins, bill of materials, merge, the PyPI hash
+check), and the `controls` job; they run locally by one command before a pull request, `uv run python
+scripts/release_checks.py gates` (`--release` adds the release workflow's admissibility checks), one line per check.
+Judged: the rows marked fitness, decided by the code owner each row names, with the guideline
 in `CONTRIBUTING.md` ("Review is against the scope") and the code owners' page (`docs/code-owners.md`, "Reviewing a
-candidate" and "Cutting a release"). A check with no row, or a judged criterion with no guideline, is a gap, listed
-for decision in `work-packages/WP78-rounds/gaps.md`.
+candidate" and "Cutting a release"); each judged row names its guideline. A check with no row, or a judged criterion
+with no guideline, is a gap, listed for decision in `work-packages/WP78-rounds/gaps.md` (the items he decided on
+2026-11-17 are WP82's; the local-only fields' item stays open there).

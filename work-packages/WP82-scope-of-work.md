@@ -1,0 +1,427 @@
+# WP82 — Scope of work: the 0.2 governance update
+
+**Status:** DRAFT until approved. **Supervisor:** Michael Zargham (`mzargham`). **Approval:** verbal, quoted
+verbatim in `WP82-decisions.md` (the repository's convention). **Acceptance:** his word, quoted there; then the pull
+request from `governance-bypass-removal` into `dev`, opened after `dev` is merged into `main` for 0.1 (his word),
+reviewed and merged by a code owner who is not its author (`danlessa`). The pull request closes the issue that carries
+this scope in the scope-of-work template; the issue is posted on his word.
+
+## Purpose
+
+His release line of 2026-11-17 (`WP64-decisions.md`): 0.1 merged on the `main-review` bypass; then the bypass removed
+by a change to the declaration first and the ruleset second, in a pull request of its own, named in the 0.2 changelog.
+His decision of this evening (`WP82-decisions.md`): that pull request also carries the gap items of WP78's readout he
+picked, so that the 0.2 release, the first through the review rule without a bypass, is also the first under the
+declared control on the governed files.
+
+## Goals
+
+- **G1** The `main-review` bypass is gone from the declaration; after the merge he removes it from the ruleset, and a
+  code owner's local run of the checker attests the live settings conforming.
+- **G2** The gap items he picked are declared: the default workflow permissions `read` with approving reviews off
+  (gap 1); `controls` among the required status checks of `main-checks` (gap 3); the control on the governed files as
+  CODEOWNERS path lines naming all three code owners plus a push ruleset on the governed paths with the Repository
+  admin role as its bypass (amendment 2); the admissibility rows (gaps 4, 6, 7).
+- **G3** The pull request clears the repository's own admissibility: `closes #n`, the template's sections, the field
+  checks green, a non-author code owner's merge, and the suite green on the push after the merge except for the one
+  documented window (R-5).
+
+## Non-goals
+
+- Changing any setting on GitHub: every setting changes after the merge, by him, declaration first (`GOVERNANCE.md`).
+- Gap 2 (the local-only fields stay local-only: no token, no field leaves the declaration); gap 5 (WP79's paper
+  template); gap 8 (the publishers, Zenodo, the labels); the `main-review` rule's other parameters.
+- The documentation pull request (`v0.2` into `dev`) and the 0.2 release itself (version, changelog heading, tag).
+- New workflows: the bug and question templates get rows a code owner judges, not a check.
+
+## Deliverables
+
+- **D-1** `.github/governance.toml`: `rulesets.main-review.bypass_actors = []`; `actions.default_workflow_permissions
+  = "read"` and `can_approve_pull_request_reviews = false`; `controls` in `main-checks`' required status checks; a
+  fifth ruleset `governance-files` (target `push`, rule `file_path_restriction` over the governed paths, bypass
+  `RepositoryRole` 5 `always`); every `governed_files` entry's `control` field names the path line and the ruleset.
+- **D-2** `.github/CODEOWNERS`: one line per governed path naming `@mzargham @danlessa @rororowyourboat`;
+  `scripts/admissibility.py` reads the governed lines (`owners_of`) and `tests/test_admissibility.py` holds this
+  repository's file to them.
+- **D-3** `scripts/check_repo_settings.py` compares a push ruleset (target, the file-path rule's paths, the bypass)
+  if it does not already; `tests/data/wp78/` carries the declared state (the recorded payloads edited for the changed
+  fields, a payload for the new ruleset in the API's shape, marked as such in the fixture's note), and
+  `tests/test_repo_settings.py` names each new kind of drift.
+- **D-4** The documents: `GOVERNANCE.md` (the review paragraph after 0.1; the secondary rules' control; the window of
+  R-5), `.github/ISSUE_ADMISSIBILITY.md` (rows for a bug report and a question), `.github/PR_ADMISSIBILITY.md` (the
+  `controls` job in the conformance row; each judged row naming its guideline page and section), `docs/code-owners.md`
+  (step 4 of a release; the settings to change after this merge, in order), `CHANGELOG.md` (`## [Unreleased]`, the
+  entries).
+- **D-5** Every workflow job declares the permissions it writes with, so `read` as the default changes nothing that
+  runs; checked by reading each workflow and by a test if one does not already hold it.
+- **D-6** The issue (the scope-of-work template, `draft`, posted on his word) and the pull request description (the
+  template's sections, the Tests section quoting the suite at the head, the Defaults section listing the hand-made
+  fixture and the window).
+
+## Requirements
+
+- **R-1** `uv run python scripts/check_repo_settings.py --fixture tests/data/wp78` is conforming, and `--runner` is
+  conforming with the local-only fields listed. Checked by running both.
+- **R-2** A live run on the branch before the merge reports exactly the differences the settings he will change
+  account for (the bypass, the workflow permissions, the required check, the missing ruleset), nothing else. Checked
+  by running it and reading the lines.
+- **R-3** `uv run pytest -m "not slow and not paper"`, `uv run ruff check .`, `uv run ruff format --check .`,
+  `uv lock --check` pass at the head. Checked by running them.
+- **R-4** No setting is changed before the merge, by anyone but him, or without the declaration first. Checked by the
+  live run (R-2) and his word.
+- **R-5** The window is written down: after the merge, the `controls` job on the push to `dev` fails on the required
+  check and the missing ruleset (runner-checked fields) until he changes those two settings; the order of his changes
+  and the local run that closes the window are in `docs/code-owners.md` and the pull request. Checked by reading.
+- **R-6** No AI attribution in commits, the pull request or the documents. Checked by `git log` and reading.
+- **R-7** Every claim in the documents is backed by a setting, a test or his recorded word; the vocabulary and
+  residual checks pass. Checked by `uv run python scripts/check_vocabulary.py` and the residual checker.
+
+## Definition of good
+
+The 0.2 release is merged under the review rule with no bypass, under declared and attested settings, and a change to
+a governed file is approved by a code owner and pushed by an admin, with the declaration, the fixture, the tests, the
+documents and the live repository saying the same thing.
+
+## Definition of good enough
+
+- R-1 and R-3 pass at the head (conformance).
+- R-2's live differences are exactly the four he will set, listed in the pull request (conformance).
+- `tests/test_admissibility.py` holds this repository's CODEOWNERS to the `*` line, the paper line and the governed
+  lines (conformance).
+- The window (R-5) and the order of his settings changes are in `docs/code-owners.md` and the pull request (fitness).
+- The admissibility rows read as rows: a condition, a kind, who enforces or records it (fitness).
+- The pull request carries the bypass removal and the four picked items, nothing else (fitness).
+
+## Definition of done
+
+Good enough met, no open item, his acceptance quoted in `WP82-decisions.md`; the pull request opens after 0.1 and is
+merged by `danlessa`; his settings changes follow, and his local run reads conforming.
+
+## Open decisions
+
+None. His answers of 2026-11-17 are quoted in `WP82-decisions.md`.
+
+## Agent's defaults
+
+- Branch `governance-bypass-removal`, cut from `dev` 7973fbd1, rebased onto `dev` when 0.1 is out; one commit per
+  deliverable.
+- The push ruleset is named `governance-files`; its paths are the `governed_files` table's paths; its bypass actor is
+  `RepositoryRole` 5 (Repository admin), mode `always`; enforcement `active`.
+- The declaration keeps `actions` local-only (gap 2 untouched); `can_approve_pull_request_reviews = false` goes with
+  `read`, as the design (WP65, section 6) said.
+- The required check is named `controls`, the job's name in both workflows.
+- The fixture is hand-edited to the declared state and the new ruleset's payload is hand-made in the API's shape
+  (recorded again by `--record` after his settings change, in a follow-up commit); the fixture directory's note says
+  which files are recordings and which are not.
+- The bug and question rows are fitness rows judged by a code owner at triage (the labels `bug` and `question`
+  record it); no new workflow.
+- Each judged row of `PR_ADMISSIBILITY.md` names its guideline as "page, section" in the row.
+- The changelog entries go under `## [Unreleased]`, `### Removed` and `### Changed`; the 0.2 release renames the
+  heading.
+- The `Tools used` section of the pull request names uv, ruff, pytest and the GitHub CLI; his line on AI tools is his
+  to write.
+
+## Amendments
+
+### Amendment 1 (2026-11-17, evening): the versioning rule and its check
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 1"): "i recommend we also indicate that the governance update is
+the reason why this qualifies as an 0.2.0 rather than an 0.1.1 since documentation updates since didn't touch the
+optimizer just the documentation and the governance machinery"; "i think we probably need to ensure we have explicit
+guidance and checks for semantic versioning. this also probably amounts to changes in the governance"; asked where the
+rule lands, "Amend WP82". The amendment joins the governance pull request before it opens.
+
+**Goal added.** **G4** The version number's meaning is a stated rule with an executable side and a judged side, and
+0.2.0 is named a minor release for the governance update, the package's code unchanged.
+
+**Deliverables added.**
+
+- **D-7** `GOVERNANCE.md`, a `## Versions` section: while the major is 0, a patch release changes neither the public
+  surface nor a governed file; a minor release adds capability, changes the surface or changes a secondary rule; the
+  major stays 0 until a release whose surface is a commitment; what is executable and what is judged; the sentence on
+  0.2.0.
+- **D-8** The public surface as a record: `scripts/api_surface.py` (by import and `inspect`; sorted JSON; `--write`,
+  `--check` naming each differing entry), `tests/data/api_surface.json` committed, `tests/test_api_surface.py` holding
+  the record equal to the package with the rewrite command in its failure message.
+- **D-9** `scripts/release_checks.py version-kind`: the version against the highest `v*` tag below it; the bump named;
+  a patch release refused for a changed record (or, for a previous tag without a record, a surface that differs from
+  the one computed from the tag's `src`), a changed governed file (the declaration's `governed_files` paths) or an
+  `Added` or `Removed` section in the entry; the first release and an already-tagged version pass with a notice; a
+  step in `release.yml`'s admissibility job; tests on temporary repositories with tags.
+- **D-10** The rows: a machine row in `.github/RELEASE_ADMISSIBILITY.md` and the judged part (the entry names what
+  moved the number) in its fitness row; the test named in `.github/PR_ADMISSIBILITY.md`'s conformance row; the rule in
+  `docs/code-owners.md` ("Cutting a release"); the changelog entry under `### Added`; this amendment and the decision
+  record; the index row.
+
+**Requirements added.**
+
+- **R-8** `uv run python scripts/api_surface.py --check` exits 0 at the head, and `tests/test_api_surface.py` fails
+  when the record is stale. Checked by running both (the test's own stale-record case).
+- **R-9** `uv run python scripts/release_checks.py version-kind` classifies patch, minor and major, and refuses each
+  of the three patch conditions with one line per difference. Checked by `tests/test_release_checks.py`.
+- **R-10** `tests/test_release_workflows.py` and `tests/test_release_checks.py` name the step among the gates; the
+  dry-run and TestPyPI paths of `release.yml` are unchanged. Checked by those tests and by reading the job's `if`.
+
+**Agent's defaults (Amendment 1).**
+
+- The record leaves out `__version__` (the version is what the rule classifies) and a class's inherited methods (the
+  base's surface); properties are not recorded; module constants are recorded with their value; a module without
+  `__all__` contributes the public names it defines.
+- The previous release is the highest `v*` tag strictly below the version by version order (a final release above its
+  pre-releases); a tag equal to the version is the redeploy case and passes with a notice, the `tag` check deciding.
+- The bump is the first of the three numbers that moved; a pre-release of a higher number is classified by its number.
+- The patch check reads the committed record at the head (held equal to the package by the test), not a fresh import,
+  so the admissibility job needs no import of the package unless the previous tag lacks a record; that fallback runs
+  `scripts/api_surface.py` in a fresh interpreter over `git archive <tag> src`, so the workflow step runs under
+  `uv run --locked` (the project environment) rather than `--no-project`.
+- The step is skipped on a site-only merge, as the changelog step is; a patch release whose entry is still under
+  `## [Unreleased]` (a dry run) has its sections not read, with a notice.
+- The judged part is folded into the existing fitness row rather than a second fitness row, so the secondary-rules list
+  and the declaration's `by` field ("the fitness row", singular) stay true.
+- Nothing is added to the secondary-rules list: the record is a record, not a rule; the interface contract is not
+  amended, since no package surface changes.
+
+### Amendment 2 (2026-11-17, evening): the Dependabot route
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 2"), with a screenshot of the eight open Dependabot pull requests
+#4 to #11, each "Review required", 15 of 18 checks failing: "we're going to need to handle this stuff. in v0.2 if
+possible"; asked where the route lands, "Amend WP82"; then: "i also think we should extend our governance PR content to
+provide instructions for how dependabot PRs should be handled since it seems like they will be a common occurance
+(some of our dependencies are advancing rather quickly)". The amendment joins the governance pull request before it
+opens.
+
+**Goal added.** **G5** A dependency update has a declared route: Dependabot's pull request targets `dev`, the
+admissibility checks read it as one, the test workflow runs on it before the merge, and a code owner has the steps.
+
+**Deliverables added.**
+
+- **D-11** `.github/dependabot.yml`: `target-branch: dev` and `labels: ["dependencies"]` for both ecosystems; minor and
+  patch bumps grouped into one weekly pull request per ecosystem, a major on its own; the weekly schedule kept.
+- **D-12** The route in the rules: a machine row for a dependency update in `.github/PR_ADMISSIBILITY.md` (opened by
+  `dependabot[bot]` against `dev` with the `dependencies` label; its own description stands in for the template; no
+  issue; the test workflow before the merge; a code owner merges, an admin where it touches a workflow);
+  `scripts/admissibility.py` `linked-issue` and `pr-fields` pass such a pull request with a notice quoting the row,
+  `merge` unchanged (the author is the bot); `pr-fields.yml` fires on `labeled` too; the cases in
+  `tests/test_admissibility.py`, among them one holding `dependabot.yml` to the target, the label and the groups.
+- **D-13** `.github/workflows/test.yml`: the `pull_request` event for base `dev`, gated at job level to
+  `github.actor == 'dependabot[bot]'` on `controls` and `test`; lint, `controls` and the fast shard, as the push to
+  `dev`; the workflow tests (`tests/test_ci_shards.py`) holding the trigger, the gate and the matrix.
+- **D-14** The documents: `GOVERNANCE.md`'s pull-request paragraph (the route and the steps in brief);
+  `docs/code-owners.md`, a sentence under "Reviewing a candidate" and the section "Dependency updates" (the steps a
+  code owner takes, the red-run case, a major bump of a runtime dependency); the Tests paragraph of that page;
+  `CHANGELOG.md` under `### Changed`; this amendment, the decision record, the index row.
+
+**Requirements added.**
+
+- **R-11** The linked-issue and fields checks pass a dependency update with the notice and fail a pull request missing
+  any one of the three conditions (the bot, the label, the base `dev`); the merge check passes a code owner's merge of
+  one. Checked by `tests/test_admissibility.py`.
+- **R-12** `test.yml` runs on the bot's pull request into `dev` (the fast shard, with `controls`) and on no other
+  pull request into `dev` (superseded by R-18); `main`'s pull requests, the push to `dev`, the call and the
+  dispatch are unchanged. Checked by `tests/test_ci_shards.py`, `tests/test_release_workflows.py`,
+  `tests/test_workflow_permissions.py` and `uv run python scripts/release_checks.py pins`.
+- **R-13** The docs page carries no package number, "supervisor" or "reviewer"; the vocabulary check adds no term.
+  Checked by `tests/test_site.py::test_hand_written_pages_carry_no_review_or_proof_content` and
+  `scripts/check_vocabulary.py`.
+
+**Agent's defaults (Amendment 2).**
+
+- `.github/dependabot.yml` is not added to the secondary rules. It is configuration downstream of the route, which is
+  stated in two governed files (`GOVERNANCE.md`, `.github/PR_ADMISSIBILITY.md`) and enforced by the admissibility
+  script and the test workflow's trigger; a drift in it (a target other than `dev`, the label gone) is caught on the
+  bot's next pull request, which then fails the linked-issue and fields checks as any other would, and a test holds
+  the file to its target, label and groups. Keeping it out leaves the `governance-files` ruleset's path list, the
+  CODEOWNERS lines, the declaration, the fixture and the count of nine unchanged, so his post-merge settings list does
+  not grow.
+- The `controls` job runs on the bot's pull request: its endpoints need Metadata (always granted), Actions (read) and
+  Pages (read), which the job declares, and a Dependabot-triggered run's token keeps the read permissions and loses
+  the writes and the secrets, none of which the job uses. The first Dependabot pull request after the merge is the
+  live check; should the job read red for a permission reason, the fallback is to extend the job's `if` to skip it on
+  that event, with the `test` job's `needs` already accepting `skipped`.
+- The gate is `github.actor == 'dependabot[bot]'` on a `pull_request` into `dev`, on `controls` and on `test` (with
+  `controls` skipped the shard would otherwise run, since the release's call runs `controls` itself). A hand push to
+  the bot's branch makes the pusher the actor and skips the run; `@dependabot rebase` restores it. Windows was
+  already off on every pull request.
+- The fast shard alone on the bot's pull request, as on the push to `dev` (the full matrix stays the release pull
+  request's); the matrix expression reads `github.base_ref == 'dev'` beside the push case.
+- The row's three conditions are all required: a person's pull request carrying the `dependencies` label is read as
+  any other, and so is a bot pull request into `main`. `pr-fields.yml` gains the `labeled` type because Dependabot
+  applies the label after the open, so an `opened` payload may not carry it yet; the later `labeled` event re-runs
+  the check (the linked-issue workflow already fires on `labeled`).
+- The groups are named `actions-minor-and-patch` and `python-minor-and-patch`, `patterns: ["*"]`, `update-types:
+  ["minor", "patch"]`; a major bump is outside every group and arrives alone.
+- The notice reads `a dependency update; the row says: <the row>`, the shape of the merge check's notice.
+- `CONTRIBUTING.md`'s sentence ("Dependency updates arrive as pull requests from the update bot and go through the
+  same review as any change") stays true and is not touched.
+
+**After the merge (the eight open pull requests #4 to #11 against `main`).** A code owner, in this order: on the
+repository's Insights, Dependency graph, Dependabot page, "Check for updates" for `github-actions` and for `uv`, which
+runs the bot with the new configuration; the bot's new pull requests arrive against `dev`, grouped, with the label.
+Each pull request still open against `main` afterwards is closed with a one-line comment naming the route ("dependency
+updates target `dev`; superseded by #n"). Whether the bot closes the `main` pull requests itself as superseded when the
+target changes is observed at that first run; a bump the bot does not recreate against `dev` within that run is
+brought by the next weekly run or by "Check for updates" again. Each new pull request is then merged on its own by a
+code owner after the Tests workflow passes on it, an admin where it moves an action pin, following "Dependency
+updates" on the code owners' page.
+
+### Amendment 3 (2026-11-17, evening): the gates prepared by command
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 3"), after a release dry run of a content branch was refused by
+the tag rule and a hand-made throwaway version bump missed one of the six places the version is written: "do we need
+to update how we do dry runs or how we prepare our code before dry runs so we don't have these kinds of errors in the
+future. in general i'd prefer to set up our processes to not fail the gate, than relax the gate"; asked where the
+tooling lands, "Amend WP82"; then, on the remote: "i am also seeing branch sprawl on github remote. another SOP we may
+need integrated into our governance work is making sure we're cleaning up after ourselves". No gate is relaxed. The
+amendment joins the governance pull request before it merges.
+
+**Goal added.** **G6** The gates are prepared by command, not by hand: one command writes a version in every place it
+is written, one command runs the repository's checks locally before a report, a push, a pull request or a dry run, and
+the remote carries no branch the rules do not account for.
+
+**Deliverables added.**
+
+- **D-15** `scripts/release_checks.py bump <version> [--date YYYY-MM-DD] --changelog final|stub|none`: the version in
+  every place it is written (`pyproject.toml`, `tradespace.__version__`, `CITATION.cff` and, with `--date`, its
+  `date-released`, the interface contract's manifest and the two values its document quotes), `uv lock` for the
+  lock's own entry, and `CHANGELOG.md` released (`final`: `## [Unreleased]` becomes `## [<version>] - <date>` with a
+  fresh empty `## [Unreleased]` above it), stubbed (`stub`: a one-line throwaway entry for a `qc/` dry run) or left
+  alone (`none`); each changed file printed; a version not PEP 440 or not above the current one refused with nothing
+  written; never a commit. The places are one constant.
+- **D-16** `scripts/release_checks.py gates [--release] [--since origin/dev]`: in order, the attribution grep over the
+  commits since the base, `uv lock --check`, `ruff check`, `ruff format --check`, the test modules that hold the
+  rules, the vocabulary check, `api_surface.py --check`, `check_repo_settings.py` and `branches` (both skipped with a
+  line when `gh` is not authenticated), and with `--release` `version`, `tag` at `HEAD`, `changelog --final`,
+  `version-kind`, `pins` and the paper's mode check; one line per check with its exit code, a verdict, exit 1 on any
+  failure; the docstring names it as the step before a report, a push, a pull request or a dry run.
+- **D-17** The branch rule: `GOVERNANCE.md`, "Branches" (the long-lived three; every other remote branch an open pull
+  request's head, a `qc/*` dry run or the bot's; who deletes what; local worktrees retired at the landing);
+  `.github/governance.toml` `[general] delete_branch_on_merge = true`, compared by `scripts/check_repo_settings.py`
+  from `GET repos/{owner}/{repo}` (runner-checked), the fixture's `repository.json` recorded and edited to the
+  declared value, `tests/test_repo_settings.py` at 70 fields with the drift named; `scripts/release_checks.py
+  branches`, naming a remote branch that is none of these, in `gates`.
+- **D-18** The documents: `docs/code-owners.md` ("Cutting a release": the bump as step 1, `gates --release` before
+  the pull request, the subsection "A dry run" with the cleanup; "Reviewing a candidate": `gates` before approving,
+  the merged branch deleted by the setting, a `qc/*` or stale branch deleted by a code owner; the post-merge list's
+  item 5 and the count 70); `GOVERNANCE.md` ("Criteria are of two kinds": the command; "Branches"); `CHANGELOG.md`
+  under `### Added`; `work-packages/release-checklist-software.md` row R2; this amendment, the decision record (his
+  words, the two failures, "Applied as", the post-merge list's new item), the index row.
+
+**Requirements added.**
+
+- **R-14** `bump` writes every place: on a copy of the tree the old version remains in none of them and the
+  consumers' assertions hold (pyproject = `__version__` = the manifest = the document's two quoted values =
+  `CITATION.cff`; the released entry holds the former unreleased body); the list of places equals the set of tracked
+  files that assign the current version; a version not PEP 440 or not above the current one, a malformed date, an
+  inconsistent tree and an empty unreleased section are refused with nothing written. Checked by
+  `tests/test_release_checks.py`.
+- **R-15** `gates` names the Tests workflow's checks and the release workflow's admissibility checks in order, a
+  failing check fails the verdict and a skipped one does not; the table at the branch head is in the decision record.
+  Checked by `tests/test_release_checks.py` (the list against the workflows; fake green, red and skipped checks) and
+  by the run.
+- **R-16** The settings check names `delete_branch_on_merge` when it differs, locally and on the runner, exits 2 when
+  the repository record is unreadable, and the fixture conforms at 70 fields; `branches` names a stray branch and
+  exits 1, notices a `qc/*` branch, exits 2 without `gh`. Checked by `tests/test_repo_settings.py` and
+  `tests/test_release_checks.py`.
+- **R-17** The docs page carries no package number, "supervisor" or "reviewer"; the vocabulary check adds no term.
+  Checked as R-13.
+
+**Agent's defaults (Amendment 3).**
+
+- The places are one constant, `VERSION_PLACES`, each a file and a pattern that matches once; `uv.lock` is not a
+  place but follows by `uv lock` (`--no-lock` for the tests). `--changelog` is required with no default: the release
+  case and the dry-run case differ, and a forgotten flag should not choose. Without `--date` the changelog heading
+  carries today and `CITATION.cff`'s `date-released` is untouched; with it both are set. A refusal writes nothing; a
+  tree whose places disagree is named, not repaired.
+- The `final` edit leaves an empty `## [Unreleased]` above the released entry and refuses an empty unreleased section
+  (nothing to release). The `stub` entry is one bullet that names itself a dry-run stub, below the unreleased
+  section, so `changelog --final` passes and `version-kind` reads no `Added` or `Removed` section in it.
+- `gates` runs the rule modules, not the fast shard (the shard is CI's; the modules hold the rules this package
+  touches); `check_repo_settings.py` and `branches` are skipped with a line when `gh auth status` fails; the
+  attribution grep reads `--since origin/dev..HEAD` (the whole log when the ref is absent, as the workflow does); the
+  paper's mode check is among the release gates because the admissibility job runs it. A release gate that refuses is
+  reported as it is and fails the verdict; when the release gates alone refuse, the verdict names `bump` and the
+  stub. `gates` without `--release` is a content branch's command.
+- The declaration's table is `[general]`, named for the settings page, since the top-level key `repository` is the
+  repository's name. The field is runner-checked (Metadata), so the post-merge list gains it as item 5, before the
+  verification step, which becomes item 6 at 70 fields.
+- `branches` tolerates `qc/*` (named as a notice, since one dry run may be in flight), `dependabot/*` (each goes
+  with its pull request) and the branch it runs on (`HEAD`'s remote-tracking branch, or a remote branch whose tip is
+  `HEAD`; named as "this branch (its pull request comes next)", since a code owner runs `gates` before the pull
+  request opens); everything else that is not `main`, `dev`, `paper` or an open pull request's head is stray.
+  At the branch head the live remote carries the stray `deps-2026-11` and the dry-run branch `qc/release`; both are
+  a code owner's to delete, not this unit's.
+- The dry-run bump is the next version the rule allows, not always the next patch: `version-kind` refuses a patch
+  where a governed file or the public surface changed since the last tag, so a governance branch rehearses at the
+  next minor; `gates --release` says which before the push.
+- Records ride with the work they record (his word of about 21:45 EST, `WP82-decisions.md`): this amendment's records land
+  in the governance pull request and nowhere else; no record-only commit to `dev` from here.
+
+### Amendment 4 (2026-11-19): the test workflow on every pull request into dev
+
+His words, verbatim (`WP82-decisions.md`, "Amendment 4"): asked which rule `dev` should have, "Fast shard, everyone";
+then "i don't want red CI. just be judicious about when you push so we're not constantly locked up waiting on
+tests"; asked how far the day's work goes, "Plus mergeable PRs". The amendment supersedes two things in Amendment 2:
+the rule that only the bot's pull requests into `dev` run the Tests workflow (D-13, R-12 and the default on the
+gate), and the gate itself, `github.actor == 'dependabot[bot]'` on `controls` and `test`. The amendment joins the
+governance pull request before it merges.
+
+**Goal added.** **G7** Every pull request into `dev`, a person's or Dependabot's, runs lint and the Linux fast shard,
+and none is red because its declaration is ahead of the live settings.
+
+**Deliverables added.**
+
+- **D-19** `.github/workflows/test.yml`: `controls` runs unless the event is a pull request into `dev` (`if: ${{
+  (github.workflow == 'Tests' || inputs.controls) && (github.event_name != 'pull_request' || github.base_ref !=
+  'dev') }}`); `test` runs after `controls` succeeded or was skipped (`if: ${{ !cancelled() && (needs.controls.result
+  == 'success' || needs.controls.result == 'skipped') }}`), with no clause on the event or the actor; the matrix, the
+  `windows` job and the triggers unchanged; the header and the comments say it.
+- **D-20** The tests: `tests/test_ci_shards.py` holds the two `if:` lines and the absence of `github.actor` from the
+  workflow (the Dependabot-only test and its constants gone; two test names say pull request into `dev`);
+  `tests/test_repo_settings.py` holds the `controls` line.
+- **D-21** The documents follow the rule: `GOVERNANCE.md` (the declaration paragraph and the dependency paragraph),
+  `docs/code-owners.md` (the settings sequence, the Tests paragraph, "Dependency updates" step 2),
+  `.github/PR_ADMISSIBILITY.md` (the conformance and dependency rows), `CHANGELOG.md`, `work-packages/README.md`; the
+  settings sequence of the execution record reordered (below); this amendment, the decision record, the index row.
+
+- **D-22** `talk/*` branches: `GOVERNANCE.md`, "Branches"; `scripts/release_checks.py branches` tolerates them with a
+  notice; a case in `tests/test_release_checks.py`; the code owners' page line on the check.
+- **D-23** `.github/governance.toml` `[general]` marked `checked_on = "local"` with its reason;
+  `tests/test_repo_settings.py` at 70 fields, 62 on the runner and 8 local-only; the settings sequence and the
+  documents following.
+- **D-24** Issue #24 named as the checklist of the settings sitting on the code owners' page and in the execution
+  record; the decision record carries his sentence, the maintainer fact and the driver's evidence.
+
+**Requirements added.**
+
+- **R-18** A pull request into `dev` runs lint and the fast shard whoever opens it and runs no `controls` job; a push
+  to `dev`, a pull request into `main`, the release's call and a dispatch keep `controls` and their shards. Checked by
+  `tests/test_ci_shards.py`, `tests/test_repo_settings.py`, `tests/test_release_workflows.py`,
+  `tests/test_workflow_permissions.py` and `uv run python scripts/release_checks.py pins`.
+- **R-19** No document says that only Dependabot's pull requests run the tests or that a red `controls` waits for
+  settings after the merge. Checked by a `git grep` for the old wordings (the bot "alone", "anyone else runs
+  nothing", the actor sentence) returning nothing outside the records, and by reading.
+- **R-20** The docs page carries no package number, "supervisor" or "reviewer"; the vocabulary check adds no term.
+  Checked as R-13.
+
+**Agent's defaults (Amendment 4).**
+
+- The settings sequence changes so the push run after the merge is green. Before the merge, in one sitting and after
+  the declaration is approved in review, an admin applies the two runner-checked settings (`controls` among
+  `main-checks`' required checks; the `governance-files` push ruleset); then the merge, with no other push to `dev`
+  between the settings and the merge; after it, the three local-only settings ("Automatically delete head branches",
+  which may also be set before; the `main-review` bypass removed; the workflow permissions read, approving reviews
+  off); then the local run reads `conforming (70 fields)` and the fixture is re-recorded. The count and the five items
+  are as before; only their order and the moment of the first two change. Any Repository admin does the sitting; issue
+  #24 is its checklist. This supersedes the window of R-5 (a red `controls` on the first
+  push after the merge until two settings follow): there is no window if the sitting is kept.
+- `controls` is skipped on a pull request into `dev` rather than allowed red: a pull request may carry a declaration
+  ahead of the live settings by design (this one does), and the person who merges is the one who changes the settings.
+  Amendment 2's fallback (skip `controls` on that event if the bot's token reads red) is taken for every actor.
+- A person's pull request into `dev` now runs the fast shard, a gate no document had asked of it before; the cost is
+  one Linux job per push to a pull request branch, which his word about judicious pushing accepts.
+- `[general]` is `checked_on = "local"`: the repository endpoint returns `delete_branch_on_merge` only to callers with
+  push access and the `controls` token has `contents: read`, so a runner check would read null and be red on the first
+  push after the merge. The runner reads 62 fields and lists 8 as local-only (D-23).
+- `talk/*` is a fourth class of remote branch beside the open pull request's head, the `qc/*` dry run and the bot's
+  branch, on his word "Pushed, rule widened" (D-22).
+- The merge-time required checks of `dev`'s own ruleset are unchanged; this amendment edits no setting.

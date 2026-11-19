@@ -23,8 +23,12 @@ spec.loader.exec_module(crs)
 DECLARATION = crs.load_declaration(crs.DECLARATION)
 OWNERS = crs.code_owners(ROOT / ".github" / "CODEOWNERS")
 APPROVERS = crs.paper_approvers(ROOT / ".github" / "CODEOWNERS")
-# the fixture's fields: 61 at WP78; 64 with the paper approvers (WP79: their row and two logins)
-FIELDS = 64
+# the fixture's fields: 61 at WP78; 64 with the paper approvers (WP79: their row and two logins);
+# 69 with the governance-files push ruleset (WP82: target, enforcement, bypass actors, rules,
+# paths); 70 with the general settings' delete_branch_on_merge (WP82 Amendment 3)
+FIELDS = 70
+# five rulesets' bypass actors, the two workflow-permission fields and delete_branch_on_merge
+LOCAL_ONLY = 8
 
 
 @pytest.fixture
@@ -183,11 +187,11 @@ def test_an_unreadable_endpoint_exits_2_and_is_named(payloads, tmp_path, capsys)
 
 def test_a_drift_and_an_unreadable_endpoint_together_exit_2_and_report_both(payloads):
     del payloads["pages"]
-    payloads["actions/permissions/workflow"]["default_workflow_permissions"] = "read"
+    payloads["actions/permissions/workflow"]["default_workflow_permissions"] = "write"
     result = compare(payloads)
     assert result.exit_code == 2
     assert result.lines() == [
-        'actions.default_workflow_permissions: expected "write", found "read"',
+        'actions.default_workflow_permissions: expected "read", found "write"',
         "unreadable: pages (no recorded response)",
     ]
 
@@ -197,19 +201,24 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     runner mode; present and differing it is not reported there, and is reported locally."""
     assert DECLARATION["actions"]["checked_on"] == "local"
     others = [DECLARATION["pages"], DECLARATION["code_owners"], DECLARATION["paper_approvers"]]
+    assert DECLARATION["general"]["checked_on"] == "local"
     others += DECLARATION["rulesets"] + DECLARATION["environments"]
     assert all(s.get("checked_on", "both") == "both" for s in others)
     del payloads["actions/permissions/workflow"]
     result = compare(payloads, runner=True)
     assert result.exit_code == 0 and not result.unreadable
-    assert result.verdict == f"conforming ({FIELDS - 6} fields on the runner; 6 local-only)"
+    assert result.verdict == (
+        f"conforming ({FIELDS - LOCAL_ONLY} fields on the runner; {LOCAL_ONLY} local-only)"
+    )
     assert [f for f, _ in result.local_only] == [
         "rulesets.main-review.bypass_actors",
         "rulesets.main-checks.bypass_actors",
         "rulesets.dev.bypass_actors",
         "rulesets.paper.bypass_actors",
+        "rulesets.governance-files.bypass_actors",
         "actions.default_workflow_permissions",
         "actions.can_approve_pull_request_reviews",
+        "general.delete_branch_on_merge",
     ]
     assert all(
         "Administration (read)" in r for f, r in result.local_only if f.startswith("actions")
@@ -219,17 +228,17 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     assert "- `actions.default_workflow_permissions`: GET actions/permissions/workflow" in text
     # present and differing: not read in runner mode, reported in a local run
     differing = copy.deepcopy(crs.load_fixture(FIXTURE))
-    differing["actions/permissions/workflow"]["default_workflow_permissions"] = "read"
+    differing["actions/permissions/workflow"]["default_workflow_permissions"] = "write"
     runner = compare(differing, runner=True)
     assert runner.exit_code == 0 and runner.differences == []
     local = compare(differing)
     assert local.exit_code == 1
-    assert local.lines() == ['actions.default_workflow_permissions: expected "write", found "read"']
+    assert local.lines() == ['actions.default_workflow_permissions: expected "read", found "write"']
     # a readable endpoint that is missing still exits 2 in runner mode
     del payloads["pages"]
     result = compare(payloads, runner=True)
     assert result.exit_code == 2
-    assert result.verdict == "1 endpoint(s) unreadable; 6 local-only"
+    assert result.verdict == f"1 endpoint(s) unreadable; {LOCAL_ONLY} local-only"
     # the command line
     for path in FIXTURE.glob("*.json"):
         if path.name != "actions__permissions__workflow.json":
@@ -239,15 +248,20 @@ def test_runner_mode_lists_local_only_fields_and_never_reads_them(payloads, tmp_
     assert (
         "local-only: actions.default_workflow_permissions (GET actions/permissions/workflow" in out
     )
-    assert out.strip().endswith(f"conforming ({FIELDS - 6} fields on the runner; 6 local-only)")
+    assert out.strip().endswith(
+        f"conforming ({FIELDS - LOCAL_ONLY} fields on the runner; {LOCAL_ONLY} local-only)"
+    )
 
 
 def test_bypass_actors_are_local_only_on_the_runner_and_compared_locally(payloads):
     """The API returns bypass actors to administrators only (the first controls run on dev,
-    2026-11-17, saw [] for main-review): a field-level override marks them local."""
+    2026-11-17, saw [] for main-review): a field-level override marks them local. The 0.1
+    bypass (a user, on pull requests) put back in the fixture is a ruleset not yet changed."""
     for r in DECLARATION["rulesets"]:
         assert r["fields"]["bypass_actors"]["checked_on"] == "local", r["name"]
-    ruleset(payloads, "main-review")["bypass_actors"] = []
+    ruleset(payloads, "main-review")["bypass_actors"] = [
+        {"actor_id": 10465438, "actor_type": "User", "bypass_mode": "pull_request"}
+    ]
     runner = compare(payloads, runner=True)
     assert runner.exit_code == 0 and runner.differences == []
     assert not any(r.path.endswith(".bypass_actors") for r in runner.rows)
@@ -260,7 +274,7 @@ def test_bypass_actors_are_local_only_on_the_runner_and_compared_locally(payload
     local = compare(payloads)
     assert local.exit_code == 1
     assert local.lines() == [
-        'rulesets.main-review.bypass_actors: expected ["User:10465438:pull_request"], found []'
+        'rulesets.main-review.bypass_actors: expected [], found ["User:10465438:pull_request"]'
     ]
 
 
@@ -279,6 +293,55 @@ def test_a_bad_checked_on_value_is_refused(tmp_path):
         (tmp_path / "g.toml").write_text(text, encoding="utf-8")
         with pytest.raises(ValueError, match="checked_on"):
             crs.load_declaration(tmp_path / "g.toml")
+
+
+def test_a_governed_path_missing_from_the_push_ruleset_is_named(payloads):
+    """The governance-files push ruleset (WP82) restricts pushes touching the governed paths; a path
+    dropped from it is a difference, and a push ruleset has no branch-condition rows."""
+    rule = ruleset(payloads, "governance-files")["rules"][0]
+    assert rule["type"] == "file_path_restriction"
+    rule["parameters"]["restricted_file_paths"].remove("GOVERNANCE.md")
+    result = compare(payloads)
+    assert result.exit_code == 1
+    (line,) = result.lines()
+    assert line.startswith(
+        "rulesets.governance-files.rules.file_path_restriction.restricted_file_paths: expected"
+    )
+    assert '"GOVERNANCE.md"' in line.split("found")[0]
+    assert '"GOVERNANCE.md"' not in line.split("found")[1]
+    paths = [r.path for r in result.rows if r.path.startswith("rulesets.governance-files")]
+    assert paths == [
+        "rulesets.governance-files.target",
+        "rulesets.governance-files.enforcement",
+        "rulesets.governance-files.bypass_actors",
+        "rulesets.governance-files.rules",
+        "rulesets.governance-files.rules.file_path_restriction.restricted_file_paths",
+    ]
+    # the paths compare as a set: the API's order is not the declaration's
+    rule["parameters"]["restricted_file_paths"] = sorted(
+        rule["parameters"]["restricted_file_paths"] + ["GOVERNANCE.md"], reverse=True
+    )
+    assert compare(payloads).exit_code == 0
+
+
+def test_the_governed_files_are_the_push_rulesets_paths_and_each_has_its_codeowners_line():
+    """The declaration's governed_files table, the governance-files ruleset's paths and the
+    CODEOWNERS lines (scripts/admissibility.py) name the same files; each line's approvers are the
+    code owners (his word, 2026-11-17)."""
+    governed = DECLARATION["governed_files"]
+    push = next(r for r in DECLARATION["rulesets"] if r["name"] == "governance-files")
+    assert push["target"] == "push" and "include" not in push
+    (rule,) = push["rules"]
+    assert sorted(rule["parameters"]["restricted_file_paths"]) == sorted(
+        g["path"] for g in governed
+    )
+    assert crs._actors(push["bypass_actors"]) == ["RepositoryRole:5:always"]
+    adm = crs._code_owners_module()
+    lines = adm.governed_owners(ROOT / ".github" / "CODEOWNERS")
+    assert sorted(lines) == sorted(g["codeowners"] for g in governed)
+    assert all(owners == OWNERS for owners in lines.values()), lines
+    for g in governed:
+        assert "CODEOWNERS line" in g["control"] and "governance-files" in g["control"], g["path"]
 
 
 def test_codeowners_without_a_login_is_a_difference(payloads):
@@ -332,6 +395,7 @@ def test_the_declaration_names_this_repository_and_codeowners():
         "main-checks",
         "dev",
         "paper",
+        "governance-files",
     }
     assert {e["name"] for e in DECLARATION["environments"]} == {
         "github-pages",
@@ -373,7 +437,12 @@ def test_release_runs_controls_once_and_carries_the_attestation():
     assert release["jobs"]["test"]["with"] == {"windows": False, "controls": False}
     call_inputs = tests.get("on", tests.get(True))["workflow_call"]["inputs"]
     assert call_inputs["controls"]["default"] is True
-    assert tests["jobs"]["controls"]["if"] == "${{ github.workflow == 'Tests' || inputs.controls }}"
+    # The release's call passes controls: false; the second clause skips the job on a pull request
+    # into dev (tests/test_ci_shards.py holds it in full).
+    assert tests["jobs"]["controls"]["if"] == (
+        "${{ (github.workflow == 'Tests' || inputs.controls) && "
+        "(github.event_name != 'pull_request' || github.base_ref != 'dev') }}"
+    )
     assert "needs.controls.result == 'skipped'" in tests["jobs"]["test"]["if"]
     outputs = release["jobs"]["controls"]["outputs"]
     assert set(outputs) == {"declaration", "result"}
@@ -388,3 +457,21 @@ def test_release_runs_controls_once_and_carries_the_attestation():
     env = release["jobs"]["tag"]["env"]
     assert env["CONTROLS_DECLARATION"] == "${{ needs.controls.outputs.declaration }}"
     assert env["CONTROLS_RESULT"] == "${{ needs.controls.outputs.result }}"
+
+
+def test_a_merged_branch_kept_is_named(payloads):
+    """Settings, General: a merged pull request's branch is deleted (GOVERNANCE.md, "Branches");
+    the field is read by a local run only: the endpoint returns it to callers with push access and
+    the workflow token has contents: read, so the runner lists it and does not read it."""
+    assert DECLARATION["general"]["delete_branch_on_merge"] is True
+    assert "push access" in DECLARATION["general"]["local_reason"]
+    payloads["repository"]["delete_branch_on_merge"] = False
+    result = compare(payloads)
+    assert result.exit_code == 1
+    assert result.lines() == ["general.delete_branch_on_merge: expected true, found false"]
+    runner = compare(payloads, runner=True)
+    assert not runner.differences
+    assert "general.delete_branch_on_merge" in [f for f, _ in runner.local_only]
+    assert crs.fixture_name(crs.REPOSITORY) == "repository.json"
+    del payloads["repository"]
+    assert compare(payloads).exit_code == 2
