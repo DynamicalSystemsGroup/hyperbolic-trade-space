@@ -109,3 +109,14 @@ drop per added term and the thinnest term's share at each fit's own temperature 
 module; it leaves out the case's movement-under-resampling column, which takes over three minutes), with a sentence that K is the analyst's
 choice. C-1: the opening of section 9 states what the tool takes and what conditioning does to meet it. T-1: the title is
 "Tradeoff analysis with `tradespace` and SysML v2" (capitalisation and code font smoothed); the question stays under it.
+
+His words, about 19:00 EST, on the setup cell's import list (D4 applied as one parenthesised import of thirteen names):
+"jut import * from generate findings its too verbose". **Applied as.** The setup cell imports the findings module's
+names with one star import (`from generate_findings import *`); its names overlap the notebook's only in `case` and
+`pd`, the same modules.
+
+His words, about 19:02 EST: "drop "described and not re-run" its metanarration. it doesn't really matter, i could rerun
+them but i just want the talk to wait for that". **Applied as.** The section 8 heading is "8. The simulations" (his arc's
+item "describe the simulations but pull the data from already run simulations" is kept in the content, not the
+heading); the opening's "No simulation is run;" goes for the same reason, leaving "The fits and figures are computed
+from the data."
