@@ -240,3 +240,17 @@ pull request (#16). The rest of #20 stays. The changelog bullet loses its senten
 contributing page states the rule as he chose it: lint and the Linux fast group on every pull request into `dev`; the
 fast, slow and documentation groups on the release pull request into `main`.
 
+## The theory page's definition of V (2026-11-19, about 19:24 EST)
+
+`docs/theory.md` defined the invariant value without its offset, `V(m) = \prod_j m_j^{w_j}`, and then stated the fitted
+reference surface as `\log V = w \cdot u - \beta = 0`, two definitions of V; the glossary (`invariant-value`) and the
+paper's definition carry the factor `e^{-\beta}`. A cold reader of the talk notebook, which copied the page, asked
+whether V includes beta. Asked "Send the theory-page V fix to the documentation session for #15?", he answered,
+verbatim:
+
+> Yes, send it
+
+**Applied as.** The page's formula reads `V(m) = e^{-\beta}\prod_{j=1}^{d} m_j^{\,w_j}` with the constraint line
+unchanged; the fit sentence says the fit chooses `w` and *the* offset beta, the one already in V; nothing else on the
+page changes (`V(\lambda m) = \lambda V(m)` stays true, the factor being constant).
+

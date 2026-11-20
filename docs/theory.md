@@ -9,7 +9,7 @@ The model scores a design by a weighted geometric mean
 
 $$
 \begin{aligned}
-V(m)&=\prod_{j=1}^{d} m_j^{\,w_j},\\
+V(m)&=e^{-\beta}\prod_{j=1}^{d} m_j^{\,w_j},\\
 w_j&\ge 0,\quad \sum_j w_j=1 .
 \end{aligned}
 $$
@@ -25,7 +25,7 @@ Reading off which term scores a design highest is analysis of the fitted model, 
 
 ## V = 1 is the fitted reference surface
 
-The fit chooses $w$ and an offset $\beta$ so that the data lie on or below the surface
+The fit chooses $w$ and the offset $\beta$ so that the data lie on or below the surface
 $\log V=w\cdot u-\beta=0$, using the log-mean-exp (entropic) soft maximum of $w\cdot u$ over the
 designs. With one term this is a convex program. Three objects answer to the word frontier:
 
