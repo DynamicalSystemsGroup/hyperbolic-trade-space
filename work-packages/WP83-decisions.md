@@ -120,3 +120,16 @@ them but i just want the talk to wait for that". **Applied as.** The section 8 h
 item "describe the simulations but pull the data from already run simulations" is kept in the content, not the
 heading); the opening's "No simulation is run;" goes for the same reason, leaving "The fits and figures are computed
 from the data."
+
+His words, about 20:10 EST: "i need my notebook presentation to have a step where i click out of the notebook into the
+view editor briefly"; and, told that the editor times out on the model (twice, "Engine operation timed out after 60
+seconds", on the three model files as written, 104,785 characters), about 20:18 EST: "can you open a subset of the
+model?". **Applied as.** The subset is the whole model with its prose trimmed: each documentation comment cut to its
+first sentence and the other comments removed (58,023 characters, 12,805 elements, the same count as the full text in the
+repository's toolkit). The editor applies it in under 20 s with no issues; its requirements table holds all 13
+requirements and its traceability matrix shows the satisfy and not-satisfy declarations by configuration. A Markdown cell
+at the end of section 7 links the model to the OpenMBEE View Editor (https://openmbee-view-editor.vercel.app/app, Rohan
+Mehta's editor, its address since 2026-11-10 per the team's Slack); the next cell calls `editor_model()` in the support
+module, which writes that text as `cubesat-view-editor.sysml` beside the notebook (committed; the run rewrites it
+unchanged), for the editor's "Open files or project". The editor keeps a project in the presenting browser's local
+recovery, so the file is opened there before the talk.

@@ -304,3 +304,41 @@ def choosing_k_table(study, fits):
         )
         previous = slack
     return pd.DataFrame(rows)
+
+
+def editor_model(path="cubesat-view-editor.sysml"):
+    """Write the case model as one file for the OpenMBEE View Editor.
+
+    The three model files (the cubesat, its stakeholders and its views) joined in that order, each
+    documentation comment cut to its first sentence and the other comments removed: every element
+    stays, and the text is small enough for the editor to apply within its time limit.
+
+    Parameters
+    ----------
+    path : path-like, default="cubesat-view-editor.sysml"
+        Where to write the file.
+
+    Returns
+    -------
+    pathlib.Path
+        The file written.
+    """
+
+    def slim(text):
+        def first_sentence(m):
+            body = re.sub(r"\s+", " ", m.group(1)).strip()
+            first = re.split(r"(?<=[.;])\s", body, maxsplit=1)[0]
+            return "doc /* " + first.replace("*/", "* /") + " */"
+
+        text = re.sub(r"\bdoc\s*/\*(.*?)\*/", first_sentence, text, flags=re.S)
+        text = re.sub(r"(?<!doc )/\*.*?\*/", "", text, flags=re.S)
+        text = re.sub(r"(?m)^[ \t]*//[^\n]*\n", "", text)
+        text = re.sub(r"[ \t]+//[^\n]*", "", text)
+        return re.sub(r"\n{3,}", "\n\n", text)
+
+    folder = MODEL.parent
+    names = ("cubesat.sysml", "stakeholders.sysml", "views.sysml")
+    text = "\n".join(slim((folder / name).read_text(encoding="utf-8")) for name in names)
+    out = Path(path)
+    out.write_text(text, encoding="utf-8")
+    return out
