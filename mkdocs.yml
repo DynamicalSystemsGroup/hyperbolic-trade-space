@@ -19,6 +19,7 @@ exclude_docs: |
 
 theme:
   name: material
+  logo: assets/brand/dsg-logo.png
   features: [navigation.sections, navigation.top, content.code.copy]
   palette:
     - scheme: default
@@ -85,6 +86,7 @@ nav:
       - Perovskite solar cells: examples/perovskite.md
       - Amniote life histories: examples/amniote.md
       - Broadbalk wheat: examples/wheat.md
+      - Kitchenham software projects: examples/kitchenham.md
   - From the chart back to a design: bridge.md
   - Theory in brief: theory.md
   - Glossary: generated/glossary.md

@@ -53,6 +53,7 @@ NAV_PAGES = [
     "examples/perovskite.md",
     "examples/amniote.md",
     "examples/wheat.md",
+    "examples/kitchenham.md",
     "bridge.md",
     "theory.md",
     "generated/glossary.md",
@@ -87,10 +88,12 @@ BUDGETS = {
     "api-reference.md": 298,
     # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33; 671 until WP51 (+251,
     # the synthetic three-metric case, the root page's construction)
-    "examples.md": 990,  # 922 until WP60 (+68, the three datasets\' rows)
+    # 922 until WP60 (+68, the three datasets' rows); 990 until WP76 (+10, the fourth dataset's row)
+    "examples.md": 1000,
     "examples/perovskite.md": 700,  # WP60, the three example pages
     "examples/amniote.md": 700,
     "examples/wheat.md": 700,
+    "examples/kitchenham.md": 700,  # WP76, the iron-triangle example page
     # 805 until the D-5 fresh read named tau, the level and the submartingale (2026-11-15)
     "bridge.md": 815,
     "theory.md": 700,
@@ -101,9 +104,10 @@ BUDGETS = {
 # to it); 7480 until WP41 (the bridge
 # page, 815); 7430 until the docs home took its figure and quickstart (his 350); 7237 until WP42;
 # 7472 until WP33
-TOTAL_BUDGET = (
-    11335  # 9167 until WP60 (+2,100, the three example pages; +68, their rows on Examples)
-)
+# 11335 until WP76 (+700, the Kitchenham-CSC page; +10, its route on Examples); 12045 until his
+# clause for observed cases on the docs home (2026-11-17, +10); WP81 (the paper pointers out, the
+# working paper named on the home and in Further reading) is net negative, so the cap stays
+TOTAL_BUDGET = 12055
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
@@ -404,10 +408,27 @@ def test_docsite_cites_the_paper_only_through_keys():
                 cited.append(href.removeprefix("paper:"))
                 continue
             assert "paper/" not in href and "paper_sections" not in href, f"{path.name}: {href}"
-    assert len(cited) == 23, "the 23 citations of the nine docs pages"
+    # WP81 (his rule, 2026-11-17): while the paper is in abstract mode the docs carry no citation,
+    # since every one would land on the abstract page; the links return under the rule when a pin
+    # is served, and then each key must be in the manifest.
+    if _paper_keys_module().slot() == "abstract":
+        assert cited == [], f"paper citations while the paper is in abstract mode: {cited}"
     assert set(cited) <= set(keys), sorted(set(cited) - set(keys))
     source = (ROOT / "scripts" / "paper_keys.py").read_text(encoding="utf-8")
     assert ".ipynb" not in source, "the docs build reads no notebook"
+
+
+def test_the_working_paper_is_named_where_the_rule_says():
+    """WP81: the home and Further reading name the working paper, say its abstract is published and
+    that the full text builds from the repository; no docs page points into the paper otherwise
+    (notes/paper-references.md)."""
+    for page in ("index.md", "further-reading.md"):
+        text = (DOCS / page).read_text(encoding="utf-8")
+        assert "working paper" in text and "abstract" in text, page
+        assert "builds from" in text and "repository" in text, page
+    if _paper_keys_module().slot() == "abstract":
+        for page in source_pages():
+            assert "(paper:" not in page.read_text(encoding="utf-8"), page.name
 
 
 def test_keys_resolve_to_anchors_in_a_pinned_slot_and_to_the_abstract_otherwise(
@@ -505,7 +526,7 @@ BUILT_IMAGES = {
 def test_root_and_paper_links_classified():
     """Every link on the two hand-written pages is internal and resolvable, or external and
     either the repository or a punch-list URL."""
-    expected = punch_list_urls()
+    expected = punch_list_urls() | {"https://dynamicalsystemsgroup.com/"}
     repo = "https://github.com/DynamicalSystemsGroup/tradespace"
     for rel, page_url in (("index.html", "/"), ("paper/abstract.html", "/paper/")):
         for href in html_links(SITE / rel):
@@ -1588,7 +1609,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
     # the docs home repeats Getting started's Figure 1 as its preview (the supervisor, 2026-11-14:
     # "docs home needs a figure and a quickstart code block"); a repeated image is one figure
-    assert 1 <= len(set(names)) <= bf.MAX_FIGURES == 10  # 8 until WP60's three example pages
+    assert 1 <= len(set(names)) <= bf.MAX_FIGURES == 12  # 10 until WP76's two figures
     assert len(names) - len(set(names)) <= 1
     assert {"first-fit", "three-terms", "tension-report", "log-plane"} <= set(names)
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"

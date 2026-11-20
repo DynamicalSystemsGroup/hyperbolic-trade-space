@@ -33,8 +33,9 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 DEFAULT_OUT = DOCS / "generated" / "figures"
 
-# 8 until WP60: one figure on each of the three example pages (the driver, 2026-11-15)
-MAX_FIGURES = 10
+# 8 until WP60: one figure on each of the three example pages (the driver, 2026-11-15); 10 until
+# WP76: two figures on the Kitchenham-CSC page (shared movement against substitution; participation)
+MAX_FIGURES = 12
 BLOCK = re.compile(r"^```python \{\.runnable\}\n(.*?)^```", re.M | re.S)
 IMAGE = re.compile(r"!\[[^\]]*\]\(([^)\s#]*?)([\w-]+)-light\.png#only-light\)")
 ALT = re.compile(r"!\[([^\]]*)\]\([^)\s#]*?([\w-]+)-light\.png#only-light\)")

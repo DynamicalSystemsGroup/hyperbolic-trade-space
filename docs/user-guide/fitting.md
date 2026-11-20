@@ -59,7 +59,7 @@ for real data start at the default 0.10 with `bounds=(3, 1e4)`. If that raises "
 ## Several terms
 
 One term is flat in log space, with constant elasticities. When the rates vary by region, fit
-`n_terms=K` [terms](paper:thm-extension), where you choose K ([Choosing K](choosing-k.md)):
+`n_terms=K` [terms](../generated/glossary.md), where you choose K ([Choosing K](choosing-k.md)):
 
 ```python {.runnable}
 from tradespace import (

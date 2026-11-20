@@ -1,6 +1,6 @@
 # The fit temperature
 
-The fit temperature tau sets how hard the maximum is ([definition](paper:def-temperature)). A table
+The fit temperature tau sets how hard the maximum is ([temperature](../generated/glossary.md)). A table
 fitted at one tau is one point on a path from tau near zero to infinite tau.
 
 ## Draw the path
@@ -56,7 +56,7 @@ the exponents. The change is sometimes called a "phase transition"; here it mean
 of support.
 
 **Some exponents hold and some move.** The contending set is the support at infinite tau
-([the n-lemma's members](paper:def-nlemma)): here the first four metrics. Their exponents move by less than 0.09
+(the [n-lemma](../generated/glossary.md)'s members): here the first four metrics. Their exponents move by less than 0.09
 across the whole sweep, with the largest move in the third. The fifth metric participates at the fit
 temperature (its exponent is above the participation threshold of 0.001) but is outside the
 contending set: the softness of the maximum holds it in.
@@ -84,12 +84,12 @@ temperatures you could have chosen, and an effective sample that is more than a 
 ## The two ends
 
 **tau to infinity.** The maximum is exact, no design lies above the surface, and the fit is the
-supporting envelope (lemma 5 in [Appendix E](paper:appendix-e)). The last position of the path is
+supporting envelope. The last position of the path is
 this limit.
 
 **tau to zero.** The small-tau end is a regularity the sweep shows, not a derived limit. What is
 derived is that the soft maximum tends to the mean of the scores, so the weights become uniform and
 `n_eff_` tends to the number of designs, and that on centred log-metrics, whose mean score is zero,
-the first term that depends on the exponents is tau over two times the variance of the score
-(lemma 22 in [Appendix E](paper:appendix-e)). Whether the exponents tend to the combination of least variance on the simplex is
-not proved: the lemma does not bound the remainder over the simplex.
+the first term that depends on the exponents is tau over two times the variance of the score.
+Whether the exponents tend to the combination of least variance on the simplex is
+not proved: the derivation does not bound the remainder over the simplex.

@@ -1,0 +1,254 @@
+{
+  "describe": {
+    "largest_function_points": 18137.48,
+    "log_correlation_all_rows": {
+      "budget_overrun|afp": 0.16306016203359486,
+      "sched_overrun|afp": 0.20010652567147938,
+      "sched_overrun|budget_overrun": 0.22126224663546346
+    },
+    "median_budget_overrun_ratio": 0.9727659574468085,
+    "median_function_points": 274.92,
+    "median_schedule_overrun_ratio": 1.0,
+    "no_estimated_completion": 3,
+    "projects_by_client": {
+      "1": 16,
+      "2": 113,
+      "3": 4,
+      "4": 4,
+      "5": 1,
+      "6": 3
+    },
+    "projects_by_type": {
+      "A": 4,
+      "C": 2,
+      "D": 50,
+      "P": 73,
+      "Pr": 1,
+      "U": 1
+    },
+    "rows_excluded": 4,
+    "rows_in_table": 145,
+    "rows_kept": 141,
+    "share_exactly_on_schedule": 0.24113475177304963,
+    "share_on_or_under_budget": 0.6737588652482269,
+    "share_on_or_under_schedule": 0.6312056737588653,
+    "smallest_shifted_slack": 2.1052631578947363,
+    "worst_budget_overrun_ratio": 5.933884297520661,
+    "worst_schedule_overrun_ratio": 8.894736842105264
+  },
+  "frontier_projects": {
+    "all": {
+      "afp": 274.92,
+      "budget_overrun": 0.9727659574468085,
+      "rows": 141,
+      "sched_overrun": 1.0
+    },
+    "near_frontier": {
+      "afp": 551.88,
+      "budget_overrun": 0.7587752053771472,
+      "rows": 15,
+      "sched_overrun": 0.8557213930348259
+    },
+    "near_frontier_rows": [
+      {
+        "afp": 1022.58,
+        "budget_overrun": 0.999477534,
+        "client": 1,
+        "log_v": -0.0432949918,
+        "project": 5,
+        "sched_overrun": 0.9421965318,
+        "type": "D"
+      },
+      {
+        "afp": 210.08,
+        "budget_overrun": 0.7587752054,
+        "client": 1,
+        "log_v": -0.0027922456,
+        "project": 15,
+        "sched_overrun": 0.6680161943,
+        "type": "A"
+      },
+      {
+        "afp": 287.64,
+        "budget_overrun": 0.6466335291,
+        "client": 2,
+        "log_v": -0.0458764361,
+        "project": 26,
+        "sched_overrun": 0.8793103448,
+        "type": "P"
+      },
+      {
+        "afp": 1015.98,
+        "budget_overrun": 1.1632,
+        "client": 2,
+        "log_v": 0.0465589761,
+        "project": 60,
+        "sched_overrun": 0.6703910615,
+        "type": "P"
+      },
+      {
+        "afp": 240.84,
+        "budget_overrun": 0.5635359116,
+        "client": 2,
+        "log_v": -0.0398252369,
+        "project": 62,
+        "sched_overrun": 0.875,
+        "type": "P"
+      },
+      {
+        "afp": 525.96,
+        "budget_overrun": 0.7583838384,
+        "client": 2,
+        "log_v": -0.0413745102,
+        "project": 80,
+        "sched_overrun": 0.9336734694,
+        "type": "P"
+      },
+      {
+        "afp": 156.42,
+        "budget_overrun": 0.4888157895,
+        "client": 2,
+        "log_v": 0.0214110665,
+        "project": 93,
+        "sched_overrun": 0.7033898305,
+        "type": "D"
+      },
+      {
+        "afp": 162.0,
+        "budget_overrun": 0.432,
+        "client": 2,
+        "log_v": -0.022149836,
+        "project": 100,
+        "sched_overrun": 0.8277777778,
+        "type": "P"
+      },
+      {
+        "afp": 18137.48,
+        "budget_overrun": 1.4264429698,
+        "client": 2,
+        "log_v": 0.038005883,
+        "project": 102,
+        "sched_overrun": 1.1248513674,
+        "type": "D"
+      },
+      {
+        "afp": 150.29,
+        "budget_overrun": 0.6665387567,
+        "client": 2,
+        "log_v": -0.0467790281,
+        "project": 110,
+        "sched_overrun": 0.7372881356,
+        "type": "D"
+      },
+      {
+        "afp": 1940.68,
+        "budget_overrun": 0.996218686,
+        "client": 2,
+        "log_v": -0.0059375533,
+        "project": 111,
+        "sched_overrun": 1.0,
+        "type": "D"
+      },
+      {
+        "afp": 980.95,
+        "budget_overrun": 0.9608108108,
+        "client": 2,
+        "log_v": 0.0314765972,
+        "project": 118,
+        "sched_overrun": 0.8067226891,
+        "type": "A"
+      },
+      {
+        "afp": 839.05,
+        "budget_overrun": 0.8769230769,
+        "client": 3,
+        "log_v": 0.0138333734,
+        "project": 134,
+        "sched_overrun": 0.855721393,
+        "type": "D"
+      },
+      {
+        "afp": 809.25,
+        "budget_overrun": 0.9525222552,
+        "client": 5,
+        "log_v": 0.0173393905,
+        "project": 140,
+        "sched_overrun": 0.8,
+        "type": "D"
+      },
+      {
+        "afp": 551.88,
+        "budget_overrun": 0.6367552046,
+        "client": 2,
+        "log_v": 0.0211110875,
+        "project": 145,
+        "sched_overrun": 0.8846153846,
+        "type": "D"
+      }
+    ]
+  },
+  "provenance": {
+    "git_dirty": false,
+    "git_sha": "76a63fd1bfef3659657fd1548c619cf2051da484",
+    "package_version": "0.1.0"
+  },
+  "runs": {
+    "primary": {
+      "association": {
+        "budget slack|scope": -0.9150708318349552,
+        "schedule slack|budget slack": 0.4288263414647285,
+        "schedule slack|scope": -0.7070786532236472
+      },
+      "band": 0.04678370599685118,
+      "band_1_over_tau": 0.04386913376508307,
+      "band_widened": true,
+      "contending_exponents": [
+        0.6554976260130937,
+        0.20073436347457557,
+        0.14376801051233074
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.1843743897883977,
+        "schedule slack": 0.7058351073788806,
+        "scope": 0.10979050283272171
+      },
+      "frac_above": 0.09219858156028368,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.1486644123446702,
+            "schedule slack": 0.7521890363651249,
+            "scope": 0.09914655129020492
+          },
+          {
+            "budget slack": 0.6396325422094146,
+            "schedule slack": 0.0,
+            "scope": 0.3603674577905855
+          }
+        ],
+        "mean_slack": 0.27117579937718295,
+        "status": "certified",
+        "term_share": [
+          1.0,
+          0.0
+        ],
+        "terms": "term 0: only 9 near-frontier rows (|log V| < 0.0467837) but min_near_frontier = 10; use a larger band, band=0.048 (the smallest round band with 10 rows on this term), or fit at temperature=20.8 (the band is 1/temperature), or lower min_near"
+      },
+      "mean_slack_k1": 0.3451713346938137,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "tau_selected": 22.795070569547782
+    }
+  }
+}

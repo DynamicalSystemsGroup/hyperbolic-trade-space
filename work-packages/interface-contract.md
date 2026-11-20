@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 30. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 31. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 30
+contract_version = 31
 package.import_name = "tradespace"
 package.distribution_name = "tradespace"
 package.version = "0.1.0"
@@ -53,7 +53,7 @@ derivation.chain_length = 14
 derivation.generated_dir = "build/generated/"
 derivation.generated_pages = ["derivations.md", "verification.md"]
 derivation.generated_by = "scripts/build_generated.py"
-docs.pages = ["index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/temperature.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/tension-routes.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "examples/perovskite.md", "examples/amniote.md", "examples/wheat.md", "bridge.md", "theory.md", "further-reading.md", "code-owners.md"]
+docs.pages = ["index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/temperature.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/tension-routes.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "examples/perovskite.md", "examples/amniote.md", "examples/wheat.md", "examples/kitchenham.md", "bridge.md", "theory.md", "further-reading.md", "code-owners.md"]
 docs.generated_dir = "docs/generated/"
 docs.generated_pages = ["glossary.md"]
 docs.glossary_source = "glossary.yaml"
@@ -384,6 +384,7 @@ the last row of the change log.
 | 28 | 2026-11-15 | The three example pages (WP60): `docs/examples/perovskite.md`, `docs/examples/amniote.md` and `docs/examples/wheat.md` are added to `docs.pages` and `presentation_pages` after the Examples page, under Examples in the navigation; `docs/examples/` joins WP8a's ownership paths; no symbol changes | presentation (the docs pages; `tests/test_site.py`) | `WP60-scope-of-work.md`, D-1 and D-3 |
 | 29 | 2026-11-16 | The two release lifecycles (WP65 specification 6.1, built by WP66a to c): a merge of the pull request from `dev` into `main` is the software's release; `.github/workflows/pages.yml` is removed and `build.workflow` is `.github/workflows/release.yml`, which composes the site through `site.yml` and deploys it through `pages-deploy.yml` (new `build.site_workflow`, `build.pages_deploy_workflow`; `build.workflow_deploys_on` rewritten); `build.branches` gains `paper`; the paper builds and publishes on its own branch through `paper.yml` (new `build.paper_workflow`, `paper_branch`, `paper_artefacts`, `paper_tag_prefix`, `paper_mode_file`, `paper_modes`, `paper_slot`) and `build.paper_out` becomes the built directory published as `paper-html.tar.gz`; the docs' reference keys come from the manifest `paper/paper-keys.json` (`docs.reference_key_sources`; new `reference_key_manifest_generator`, `reference_key_slot_variable`, `reference_key_abstract_target`); `build.stage.release_control` says the release pull request's review includes the staged site, recorded in the release issue, and `build.stage.paper_slot` is new. Ownership: `pages.yml` leaves WP8a, `site.yml`, `pages-deploy.yml` and `tests/test_paper_slot.py` join it; `paper.yml`, `tests/test_paper_model.py`, `scripts/paper_mode.py` and `scripts/paper_pin.py` join WP10; `CITATION.cff`, `scripts/release_cleanup.py`, `tests/test_release_workflows.py` and `tests/test_release_cleanup.py` join WP8b. Not additive: a pinned workflow is removed, pinned values change. The public paths are unchanged; no number changes | both | `WP64-decisions.md`, his approval of the plan (15:31) and his three answers (15:53 to 15:56); `WP66a-scope-of-work.md`, approved by the driver as his proxy |
 | 30 | 2026-11-17 | The package is renamed `tradespace` (WP77; the supervisor's decision of 2026-11-17, the GitHub repository renamed the same day): `package.import_name` is `tradespace` (was `hyperbolic_trade_space`), `package.distribution_name` is `tradespace` (was `hyperbolic-trade-space`), `package.src_dir` is `src/tradespace/`, `package.version_sources` reads `tradespace.__version__`, `build.public_url` is `https://dynamicalsystemsgroup.github.io/tradespace/` and the paper's base path is `/tradespace/paper`; the ownership paths under `src/` follow. No alias and no deprecation period (section 14's deprecation clause is not invoked): nothing was released under the old name. The public names, the `hts_*` identifiers and the phrase "hyperbolic trade space" where it names the concept are unchanged; no number changes | both | the supervisor, 2026-11-17, the rename to `tradespace` (WP77; quote recorded by the PM in `WP77-decisions.md`) |
+| 31 | 2026-11-17 | The Kitchenham-CSC example page (WP76): `docs/examples/kitchenham.md` is added to `docs.pages` and `presentation_pages` after the wheat page, under Examples in the navigation, as amendment 28 did for the three example pages; `examples/kitchenham/` holds its case model, scripts and derived table under the existing `examples/` ownership; no symbol changes. Additive | presentation (the docs pages; `tests/test_site.py`) | `WP76-scope-of-work.md`, D-1 (the default "The interface contract"); approved by the supervisor 2026-11-17 (`WP76-decisions.md`) |
 
 ## 15. Consumers: may assume, must not touch
 

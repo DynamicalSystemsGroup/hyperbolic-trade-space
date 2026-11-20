@@ -1,8 +1,79 @@
 # Contributing to tradespace
 
-This page says who owns a change here, how tools fit, and how a change moves from an idea to a release. Conduct
-between people is the [code of conduct](CODE_OF_CONDUCT.md), the Contributor Covenant, which this project adopts
-unaltered.
+## Start contributing
+
+Search [existing issues](https://github.com/DynamicalSystemsGroup/tradespace/issues) before reporting
+a bug. Include your package version, a minimal example, and expected and actual behavior.
+Report vulnerabilities privately through [SECURITY.md](SECURITY.md).
+
+For a small fix, open a pull request without an issue and ask a maintainer to apply the `small-fix`
+label. For a new method, feature or public API change, open an issue and wait for a code owner to
+approve the scope before implementing it.
+
+### Set up a development checkout
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and
+[just](https://just.systems/man/en/packages.html). The package requires Python 3.12.
+Fork the repository on GitHub, then clone your fork, replacing `YOUR-USERNAME`:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/tradespace.git
+cd tradespace
+git remote add upstream https://github.com/DynamicalSystemsGroup/tradespace.git
+git fetch upstream
+git switch -c fix/short-description upstream/dev
+just setup
+```
+
+### Check your change
+
+Run the fast software tests and the style and dependency checks from the repository root:
+
+```bash
+just check
+```
+
+Run `just` to list commands. Each recipe calls uv and uses the committed lockfile.
+`just setup` checks the lockfile before installing dependencies. Test and lint recipes use
+`uv run --frozen` so they do not rewrite it; `just check` includes `uv lock --check`.
+
+| Command | What it runs |
+|---|---|
+| `just setup` | `uv sync --locked` |
+| `just check` | Lint, formatting and lock checks, then fast tests |
+| `just lint` | `uv run --frozen ruff check .` |
+| `just format` | `uv run --frozen ruff format .` |
+| `just format-check` | `uv run --frozen ruff format --check .` |
+| `just lock-check` | `uv lock --check` |
+| `just test-fast` | Software tests excluding slow and paper tests |
+| `just test` | The full software suite |
+| `just docs-check` | Vocabulary and prose checks |
+
+Pass pytest arguments after `just test` or `just test-fast` to select tests:
+
+```bash
+just test tests/test_coordinates.py -q
+```
+
+For documentation changes, run `just docs-check`.
+Run the relevant slow tests for changes to numerical behavior, examples or site builds.
+For paper tests, follow
+[Contributing to the paper](#contributing-to-the-paper).
+
+Open a pull request targeting `dev`. Describe the problem, your change and the checks you ran,
+including their results. Changes to the paper target `paper`. The Tests workflow runs lint and the
+Linux fast test group on every pull request into `dev`, and the fast, slow and documentation test
+groups on the release pull request into `main`.
+Code owners run Windows checks by manual dispatch and review changes before merging.
+
+Start in `src/tradespace/` for package code, `tests/` for tests, `docs/` for user documentation and
+`examples/` for applications. `work-packages/` and `notes/` hold development records and research
+guidance. You can try the package and report bugs without reading those records.
+
+## Contribution policy
+
+All contributors must follow the [code of conduct](CODE_OF_CONDUCT.md).
+The project adopts the Contributor Covenant unaltered.
 
 ## Who owns a change
 
@@ -74,12 +145,15 @@ pytest`, the vocabulary and residual checks, and the test workflow on both platf
 commit whose message names a tool as an author or generator. These are conformance; they are necessary and never
 sufficient.
 
-**Merges into `main` are releases.** Only a code owner merges `dev` into `main`, with `git merge --no-ff` and a
-version tag. Versions follow semantic versioning: a patch for a fix, a minor for a compatible addition, a major for a
-breaking change; the changelog names each. Publishing to PyPI runs from the tag through the release workflow and needs
-a code owner's approval of its environment. A release has its own admissibility conditions, each with the check that
-enforces it, in [the release admissibility conditions](.github/RELEASE_ADMISSIBILITY.md); the release workflow refuses
-a tag that fails one.
+**Merges into `main` are releases.** Only a code owner merges `dev` into `main`, with a merge commit.
+The merge starts the release workflow, which creates the version tag, publishes to PyPI by trusted
+publishing, deploys the site and publishes the GitHub release. The code owner approves the release
+by merging it. The PyPI environment requires no further approval. A merge whose version is already released
+and whose package files are unchanged since its tag redeploys the site only. Versions follow
+semantic versioning. Use a patch version for a fix, a minor version for a compatible addition and
+a major version for a breaking change. Record each change in the changelog.
+The release workflow rejects candidates that fail the
+[release checks](.github/RELEASE_ADMISSIBILITY.md).
 
 **Code owners.** The code owners are the permissioned set named in `.github/CODEOWNERS`; the file is the record of who may
 approve, merge and release, and adding one changes that file and nothing here. How a code owner is added, how a

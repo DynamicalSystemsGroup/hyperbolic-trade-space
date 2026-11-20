@@ -2,6 +2,8 @@
 
 The sources the method builds on, by what you may want from each.
 
+The working paper (its abstract on the [root page](../); the full text builds from `paper/` in the repository) carries the literature review, the derivations and the worked example.
+
 **Using the package**
 
 - scikit-learn and its API design [@pedregosa2011scikit; @buitinck2013api]: the conventions the
@@ -24,6 +26,6 @@ The sources the method builds on, by what you may want from each.
   component analysis of compositional data [@aitchison1983principal]: the neighbours of the chart.
 - Kernel principal component analysis [@schoelkopf1998nonlinear]: the related method for the documented kernel direction, which is not
   built.
-- HoroPCA [@chami2021horopca]: the nearest analog in setting; [how this work differs](paper:sect-prior-art).
+- HoroPCA [@chami2021horopca]: the nearest analog in setting; it fits a frame by a non-convex loss, this work a convex soft maximum over the simplex.
 - Data envelopment analysis [@charnes1978measuring]: a frontier estimator from efficiency
   analysis, the nearest neighbour outside engineering design.

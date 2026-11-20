@@ -136,6 +136,9 @@ continuum in mammals, amniote record). Each entry's `verified` field says what w
 The wheat record adds `austin1980genetic` [@austin1980genetic] (variety improvement and the yield potential of winter
 wheat) and `austin1993old` [@austin1993old] (old and modern cultivars on Broadbalk, the harvest-index reading).
 
+The Kitchenham-CSC example (WP76) adds `kitchenham2002empirical` [@kitchenham2002empirical] (the project table's
+paper: estimation accuracy at one company, 1994 to 1999; the table is Zenodo record 268457).
+
 ## 7. The configuration-management sentence of Section 1 (his review, 2026-11-15)
 
 `fulcoly2012evaluating` [@fulcoly2012evaluating] (Fulcoly, Ross and Rhodes, CSER 2012): tradespace analysis of when

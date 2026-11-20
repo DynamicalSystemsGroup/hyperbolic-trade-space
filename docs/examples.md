@@ -2,7 +2,7 @@
 
 ## Where the cubesat designs come from
 
-The case is a fleet of identical 12U-class cubesats whose power, mass and attitude control are coupled, described by a [SysML v2 system model](paper:sect-case-construction). A [configuration](generated/glossary.md) swaps the reaction wheel and the star tracker, tunes the panel span, the battery capacity and the controller gains Kp and Kd, and sets the fleet size; the slew is simulated and the model computes the rest. A row is one synthetic design. Two regimes of 3,000 designs differ in the sampled gains. The model and the data are in [`examples/adcs/`](https://github.com/DynamicalSystemsGroup/tradespace/tree/main/examples/adcs/):
+The case is a fleet of identical 12U-class cubesats whose power, mass and attitude control are coupled, described by a SysML v2 system model. A [configuration](generated/glossary.md) swaps the reaction wheel and the star tracker, tunes the panel span, the battery capacity and the controller gains Kp and Kd, and sets the fleet size; the slew is simulated and the model computes the rest. A row is one synthetic design. Two regimes of 3,000 designs differ in the sampled gains. The model and the data are in [`examples/adcs/`](https://github.com/DynamicalSystemsGroup/tradespace/tree/main/examples/adcs/):
 
 ```bash
 uv run python examples/adcs/k_terms.py
@@ -283,9 +283,9 @@ bsf.build_slices("build/site-figures")
 
 The last two calls write the root page's images.
 
-## Three public datasets
+## Four public datasets
 
-On measured data: [perovskite solar cells](examples/perovskite.md) (40,045 devices, three metrics), [amniote life histories](examples/amniote.md) (2,770 species, four metrics) and [Broadbalk wheat](examples/wheat.md) (3,753 plot-years, two metrics).
+On measured data: [perovskite solar cells](examples/perovskite.md) (40,045 devices, three metrics), [amniote life histories](examples/amniote.md) (2,770 species, four metrics), [Broadbalk wheat](examples/wheat.md) (3,753 plot-years, two metrics) and [software projects](examples/kitchenham.md), 141 projects and three metrics.
 
 ## Proposing a design for a point with no datum
 

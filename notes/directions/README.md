@@ -21,6 +21,7 @@ record of every item planned or raised, each with the readout or ruling it comes
 | 63 | The examples with an arc (a template; four pages redrafted for a cold reader) | Five parts with a must, a must-not and a length each; the four pages redrafted inside their budgets; the wheat figure's level sets his follow-up | `notes/examples-template.md` | `WP63-readout.md`, `WP63-rounds` (his read pending; leave at landing, hash in `INDEX.md`) |
 | 70 | The iron triangle (time, cost, scope) as an HTS study | Kitchenham-CSC the one open table with all three sides; too sparse for a programme; smaller cases in the examples, option A first; his choice pending | (none yet) | `WP70-rounds` (his read pending); `WP70-decisions.md` |
 | 72 | Learning the invariant rather than the trade (a two-sided, within-group estimator) | Planted invariants recovered; wheat's biomass is a size set by year and treatment, not conserved; a constant-product pool's weights recovered to the fee; five decisions his | `git show 4f81a4ea:work-packages/WP72-rounds/readout.md` (his read pending) | `WP72-rounds` (his read pending); `WP72-decisions.md` |
+| 76 | The iron-triangle example on Kitchenham-CSC (the first real case from WP70's option A): what it could test under a conic-expression generalisation | One monomial frontier; the shift is the one affine map in the pipeline and moves the exponents, not the signs; the slacks' shared movement is a candidate shared level, fragile to one project; nothing on quality | `wp76-iron-triangle-conic.md` | `examples/kitchenham/` (the model, scripts, derived table), `docs/examples/kitchenham.md`, `tests/data/wp76/kitchenham/verification-record.md`; `WP76-decisions.md` |
 
 ## 2. The items planned or raised, by stream
 
@@ -40,7 +41,8 @@ recorded; "direction" means raised and not yet spiked.
 ### The examples library
 
 - The breadth axes and the cases placed on them: dimension, terms, fit, origin, lifecycle stage, measurement method (`work-packages/examples-coverage.md`).
-- Candidates not yet pages: ISU-ILCC battery ageing (quality control, end of life); TAWOS sprints (WP70 option B); Kitchenham-CSC (WP70 option A); the rest of the WP44 hunt table.
+- Candidates not yet pages: ISU-ILCC battery ageing (quality control, end of life); TAWOS sprints (WP70 option B); the rest of the WP44 hunt table. Kitchenham-CSC (WP70 option A) is the WP76 page, for the release after 0.1.
+- What the Kitchenham-CSC case could test under a conic-expression generalisation: a shared level for the two slacks, an affine side for the unshifted slack share, a conic in the overrun plane (direction, WP76 note, section 2).
 - One conventional-finance table to find; no crypto-economic example on any public surface; market-maker tables as internal test cases only (ruled, `WP72-decisions.md`, 16:11 and 16:13).
 - The wheat figure with level sets (ruled, `WP63-decisions.md`, 15:51); the size-against-shape plot and a reusable plot beyond the ternary (ruled, `WP70-decisions.md`, 16:04); the dependence screen among metrics at conditioning (`WP70-decisions.md`).
 - The docs example that explicates the synthetic three-metric case (`WP51-decisions.md`).

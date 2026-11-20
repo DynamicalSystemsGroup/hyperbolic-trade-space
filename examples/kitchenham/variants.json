@@ -1,0 +1,3310 @@
+{
+  "bands": [
+    {
+      "association": {
+        "budget slack|scope": -0.9469845419328445,
+        "schedule slack|budget slack": 0.6619604770947234,
+        "schedule slack|scope": -0.8244558825898197
+      },
+      "band": 0.04386913376508307,
+      "holds_pattern": true,
+      "label": "1_over_tau",
+      "n_near_frontier": 12
+    },
+    {
+      "association": {
+        "budget slack|scope": -0.9507942679310524,
+        "schedule slack|budget slack": 0.672231019212601,
+        "schedule slack|scope": -0.8492464038438011
+      },
+      "band": 0.03982921940150253,
+      "holds_pattern": true,
+      "label": "10_rows",
+      "n_near_frontier": 10
+    },
+    {
+      "association": {
+        "budget slack|scope": -0.9150708318349552,
+        "schedule slack|budget slack": 0.4288263414647285,
+        "schedule slack|scope": -0.7070786532236472
+      },
+      "band": 0.04678370599685118,
+      "holds_pattern": true,
+      "label": "15_rows",
+      "n_near_frontier": 15
+    },
+    {
+      "association": {
+        "budget slack|scope": -0.8512612482879836,
+        "schedule slack|budget slack": 0.3090347326145081,
+        "schedule slack|scope": -0.6501506078735918
+      },
+      "band": 0.06615119497048312,
+      "holds_pattern": true,
+      "label": "20_rows",
+      "n_near_frontier": 20
+    },
+    {
+      "association": {
+        "budget slack|scope": -0.8193975175250494,
+        "schedule slack|budget slack": 0.16768500360544653,
+        "schedule slack|scope": -0.5334662409897422
+      },
+      "band": 0.08575599325468325,
+      "holds_pattern": true,
+      "label": "25_rows",
+      "n_near_frontier": 25
+    }
+  ],
+  "conditioning": {
+    "cap_3_shift_3": {
+      "association": {
+        "budget slack|scope": -0.8841095132651319,
+        "schedule slack|budget slack": 0.13406269752581162,
+        "schedule slack|scope": -0.4833498126698837
+      },
+      "band": 0.07793721345828282,
+      "band_1_over_tau": 0.07283480813777511,
+      "band_widened": true,
+      "contending_exponents": [
+        0.5038014627258787,
+        0.2546980091616623,
+        0.24150052811245903
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.2751099710265602,
+        "schedule slack": 0.5143401401896507,
+        "scope": 0.21054988878378922
+      },
+      "frac_above": 0.09929078014184398,
+      "holds_pattern": true,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.2537929951644865,
+            "schedule slack": 0.5609497731021708,
+            "scope": 0.1852572317333428
+          },
+          {
+            "budget slack": 0.5705959524524469,
+            "schedule slack": 0.0,
+            "scope": 0.4294040475475531
+          }
+        ],
+        "mean_slack": 0.443527772470052,
+        "status": "certified",
+        "term_share": [
+          1.0,
+          0.0
+        ],
+        "terms": "term 1: only 0 near-frontier rows (|log V| < 0.0779372) but min_near_frontier = 10; use a larger band, band=0.44 (the smallest round band with 10 rows on this term), or fit at temperature=2.27 (the band is 1/temperature), or lower min_near_"
+      },
+      "mean_slack_k1": 0.54562985717202,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "rows": 141,
+      "rule": "each overrun ratio capped at 3 before the share is taken, shift 3",
+      "tau_selected": 13.72969910359878
+    },
+    "no_scaler": {
+      "association": {
+        "budget slack|scope": 0.0513580042045657,
+        "schedule slack|budget slack": -0.8494786850972517,
+        "schedule slack|scope": 0.187021878268104
+      },
+      "band": 0.0062478643150821675,
+      "band_1_over_tau": 0.005086211227788846,
+      "band_widened": true,
+      "contending_exponents": [
+        0.4501767763884938,
+        0.5498232236115062
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.4807211877798357,
+        "schedule slack": 0.519278812220164,
+        "scope": 3.004392236938152e-16
+      },
+      "frac_above": 0.09219858156028368,
+      "holds_pattern": false,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.47922934682295676,
+            "schedule slack": 0.5207706531770433,
+            "scope": 1.7571961698132023e-17
+          },
+          {
+            "budget slack": 0.9679152447119597,
+            "schedule slack": 0.0,
+            "scope": 0.032084755288040445
+          }
+        ],
+        "mean_slack": 0.029674747753107057,
+        "status": "certified",
+        "term_share": [
+          1.0,
+          0.0
+        ],
+        "terms": "term 1: only 0 near-frontier rows (|log V| < 0.00624786) but min_near_frontier = 10; use a larger band, band=0.037 (the smallest round band with 10 rows on this term), or fit at temperature=27 (the band is 1/temperature), or lower min_near_"
+      },
+      "mean_slack_k1": 0.038864907430059846,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 2,
+      "n_near_frontier": 15,
+      "rows": 141,
+      "rule": "scaler None: the pure logs of the shifted shares and of scope",
+      "tau_selected": 196.61000206527697
+    },
+    "plan_over_actual": {
+      "association": {
+        "budget slack|scope": -0.896691563559015,
+        "schedule slack|budget slack": 0.5018147408150885,
+        "schedule slack|scope": -0.6772919255136046
+      },
+      "band": 0.20077000217670526,
+      "band_1_over_tau": 0.20077000217670526,
+      "band_widened": false,
+      "contending_exponents": [
+        0.386772987299634,
+        0.2043885135028213,
+        0.4088384991975448
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.2128728342727897,
+        "schedule slack": 0.388382612867597,
+        "scope": 0.39874455285961335
+      },
+      "frac_above": 0.09219858156028368,
+      "holds_pattern": true,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.20680008243095027,
+            "schedule slack": 0.37887093269323247,
+            "scope": 0.4143289848758172
+          },
+          {
+            "budget slack": 0.43804003219842824,
+            "schedule slack": 0.5619599678015718,
+            "scope": 3.7334406304117445e-17
+          }
+        ],
+        "mean_slack": 0.612699556215371,
+        "status": "certified",
+        "term_share": [
+          0.85,
+          0.15
+        ],
+        "terms": "term 1: only 3 near-frontier rows (|log V| < 0.20077) but min_near_frontier = 10; use a larger band, band=0.61 (the smallest round band with 10 rows on this term), or fit at temperature=1.64 (the band is 1/temperature), or lower min_near_fr"
+      },
+      "mean_slack_k1": 0.6537139368415753,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 3,
+      "n_near_frontier": 19,
+      "rows": 141,
+      "rule": "plan over actual for both slacks (the overrun's reciprocal), no shift",
+      "tau_selected": 4.9808237742601715
+    },
+    "primary": {
+      "association": {
+        "budget slack|scope": -0.9150708318349552,
+        "schedule slack|budget slack": 0.4288263414647285,
+        "schedule slack|scope": -0.7070786532236472
+      },
+      "band": 0.04678370599685118,
+      "band_1_over_tau": 0.04386913376508307,
+      "band_widened": true,
+      "contending_exponents": [
+        0.6554976260130937,
+        0.20073436347457557,
+        0.14376801051233074
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.1843743897883977,
+        "schedule slack": 0.7058351073788806,
+        "scope": 0.10979050283272171
+      },
+      "frac_above": 0.09219858156028368,
+      "holds_pattern": true,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.1486644123446702,
+            "schedule slack": 0.7521890363651249,
+            "scope": 0.09914655129020492
+          },
+          {
+            "budget slack": 0.6396325422094146,
+            "schedule slack": 0.0,
+            "scope": 0.3603674577905855
+          }
+        ],
+        "mean_slack": 0.27117579937718295,
+        "status": "certified",
+        "term_share": [
+          1.0,
+          0.0
+        ],
+        "terms": "term 0: only 9 near-frontier rows (|log V| < 0.0467837) but min_near_frontier = 10; use a larger band, band=0.048 (the smallest round band with 10 rows on this term), or fit at temperature=20.8 (the band is 1/temperature), or lower min_near"
+      },
+      "mean_slack_k1": 0.3451713346938137,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "rows": 141,
+      "rule": "share of plan for both slacks with shift 10, scope unshifted, standard scaler of the logs, orientation +1 for all three; temperature at a tenth of projects above V = 1",
+      "tau_selected": 22.795070569547782
+    },
+    "robust_scaler": {
+      "association": {
+        "budget slack|scope": -0.8771427295261454,
+        "schedule slack|budget slack": 0.5232563950136265,
+        "schedule slack|scope": -0.741382546066463
+      },
+      "band": 0.12092578132210276,
+      "band_1_over_tau": 0.12092578132210276,
+      "band_widened": false,
+      "contending_exponents": [
+        0.33657168823192274,
+        0.1873798120927881,
+        0.4760484996752892
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.1858249682876102,
+        "schedule slack": 0.353701371823296,
+        "scope": 0.4604736598890939
+      },
+      "frac_above": 0.09929078014184398,
+      "holds_pattern": true,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.1653033500130641,
+            "schedule slack": 0.3844414097519209,
+            "scope": 0.45025524023501495
+          },
+          {
+            "budget slack": 0.3278002287499953,
+            "schedule slack": 3.4935273737238777e-15,
+            "scope": 0.6721997712500012
+          }
+        ],
+        "mean_slack": 0.493598590462623,
+        "status": "certified",
+        "term_share": [
+          0.8333333333333334,
+          0.16666666666666666
+        ],
+        "terms": "term 1: only 3 near-frontier rows (|log V| < 0.120926) but min_near_frontier = 10; use a larger band, band=0.31 (the smallest round band with 10 rows on this term), or fit at temperature=3.23 (the band is 1/temperature), or lower min_near_f"
+      },
+      "mean_slack_k1": 0.7425334443546051,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 3,
+      "n_near_frontier": 17,
+      "rows": 141,
+      "rule": "robust scaler of the logs (unit interquartile range)",
+      "tau_selected": 8.26953515674511
+    },
+    "shift_20": {
+      "association": {
+        "budget slack|scope": -0.9186320964147352,
+        "schedule slack|budget slack": 0.4095575136427037,
+        "schedule slack|scope": -0.6779715750430766
+      },
+      "band": 0.06977962958300402,
+      "band_1_over_tau": 0.056526099643883235,
+      "band_widened": true,
+      "contending_exponents": [
+        0.5842549332261007,
+        0.2280198684595726,
+        0.18772519831432674
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.2294646081331371,
+        "schedule slack": 0.6157429867272188,
+        "scope": 0.15479240513964407
+      },
+      "frac_above": 0.09219858156028368,
+      "holds_pattern": true,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.2041139693081679,
+            "schedule slack": 0.6523616135178382,
+            "scope": 0.14352441717399408
+          },
+          {
+            "budget slack": 0.6090670653745466,
+            "schedule slack": 0.0,
+            "scope": 0.39093293462545353
+          }
+        ],
+        "mean_slack": 0.35419967774920685,
+        "status": "certified",
+        "term_share": [
+          1.0,
+          0.0
+        ],
+        "terms": "term 1: only 0 near-frontier rows (|log V| < 0.0697796) but min_near_frontier = 10; use a larger band, band=0.82 (the smallest round band with 10 rows on this term), or fit at temperature=1.22 (the band is 1/temperature), or lower min_near_"
+      },
+      "mean_slack_k1": 0.4291781650804156,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "rows": 141,
+      "rule": "shift 20 on both slacks",
+      "tau_selected": 17.690942879484723
+    },
+    "shift_40": {
+      "association": {
+        "budget slack|scope": -0.8558013584056186,
+        "schedule slack|budget slack": 0.28075486168423813,
+        "schedule slack|scope": -0.65921865733187
+      },
+      "band": 0.08646749033736675,
+      "band_1_over_tau": 0.056526099643883235,
+      "band_widened": true,
+      "contending_exponents": [
+        0.564811602835478,
+        0.2328823475246964,
+        0.20230604963982557
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.2366383218016176,
+        "schedule slack": 0.5904117461643636,
+        "scope": 0.17294993203401873
+      },
+      "frac_above": 0.09219858156028368,
+      "holds_pattern": true,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.2151151468661186,
+            "schedule slack": 0.6220677707216239,
+            "scope": 0.16281708241225745
+          },
+          {
+            "budget slack": 0.5955518185394899,
+            "schedule slack": 6.927486557546948e-17,
+            "scope": 0.4044481814605099
+          }
+        ],
+        "mean_slack": 0.39450158274385266,
+        "status": "certified",
+        "term_share": [
+          1.0,
+          0.0
+        ],
+        "terms": "term 1: only 0 near-frontier rows (|log V| < 0.0864675) but min_near_frontier = 10; use a larger band, band=0.64 (the smallest round band with 10 rows on this term), or fit at temperature=1.56 (the band is 1/temperature), or lower min_near_"
+      },
+      "mean_slack_k1": 0.4681945286783836,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 141,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "rows": 141,
+      "rule": "shift 40 on both slacks",
+      "tau_selected": 17.690942879484723
+    }
+  },
+  "derived_sha256": "ab9990b5254d0e8fe008b8a0ff03d92d42e33646f339c85ccb5dafa6fedc81f3",
+  "headline": {
+    "band_rows_holding": [
+      "1_over_tau",
+      "10_rows",
+      "15_rows",
+      "20_rows",
+      "25_rows"
+    ],
+    "conditioning_rows_holding": [
+      "primary",
+      "robust_scaler",
+      "shift_20",
+      "shift_40",
+      "cap_3_shift_3",
+      "plan_over_actual"
+    ],
+    "extremes_holding": [
+      "without_largest_project",
+      "without_worst_schedule_overrun",
+      "without_worst_budget_overrun"
+    ],
+    "leave_one_out_holding": 140,
+    "pattern": "schedule slack|scope < 0 and budget slack|scope < 0 and schedule slack|budget slack > 0, near the frontier",
+    "subset_rows_holding": [
+      "type_D"
+    ]
+  },
+  "influence": {
+    "extremes": {
+      "without_largest_project": {
+        "afp_removed": 18137.48,
+        "association": {
+          "budget slack|scope": -0.7719540734283616,
+          "schedule slack|budget slack": 0.09701946677401606,
+          "schedule slack|scope": -0.5179676657743867
+        },
+        "band": 0.056526099643883235,
+        "band_1_over_tau": 0.056526099643883235,
+        "band_widened": false,
+        "contending_exponents": [
+          0.6621020953645828,
+          0.19676821154330132,
+          0.14112969309211593
+        ],
+        "contending_set": [
+          "schedule slack",
+          "budget slack",
+          "scope"
+        ],
+        "exponents_k1": {
+          "budget slack": 0.17872467703342526,
+          "schedule slack": 0.7268638384174055,
+          "scope": 0.09441148454916924
+        },
+        "frac_above": 0.10714285714285714,
+        "holds_pattern": true,
+        "k2": {
+          "exponents": [
+            {
+              "budget slack": 0.12406350871448033,
+              "schedule slack": 0.8114353454070896,
+              "scope": 0.06450114587843006
+            },
+            {
+              "budget slack": 0.5525641479822908,
+              "schedule slack": 1.8040936741729454e-17,
+              "scope": 0.44743585201770925
+            }
+          ],
+          "mean_slack": 0.22786334991849969,
+          "status": "certified",
+          "term_share": [
+            0.9444444444444444,
+            0.05555555555555555
+          ],
+          "terms": "term 1: only 1 near-frontier rows (|log V| < 0.0565261) but min_near_frontier = 10; use a larger band, band=0.31 (the smallest round band with 10 rows on this term), or fit at temperature=3.23 (the band is 1/temperature), or lower min_near_"
+        },
+        "mean_slack_k1": 0.31489859651681096,
+        "metrics": [
+          "schedule slack",
+          "budget slack",
+          "scope"
+        ],
+        "n": 140,
+        "n_lemma": 3,
+        "n_near_frontier": 21,
+        "project_removed": 102,
+        "rows": 140,
+        "rule": "primary rule without project 102",
+        "tau_selected": 17.690942879484723
+      },
+      "without_worst_budget_overrun": {
+        "afp_removed": 165.36,
+        "association": {
+          "budget slack|scope": -0.6827754741950578,
+          "schedule slack|budget slack": 0.26120501566749854,
+          "schedule slack|scope": -0.7542786591766576
+        },
+        "band": 0.056526099643883235,
+        "band_1_over_tau": 0.056526099643883235,
+        "band_widened": false,
+        "contending_exponents": [
+          0.7267319401671082,
+          0.11397861249626727,
+          0.15928944733662453
+        ],
+        "contending_set": [
+          "schedule slack",
+          "budget slack",
+          "scope"
+        ],
+        "exponents_k1": {
+          "budget slack": 0.0671033617700332,
+          "schedule slack": 0.8216541562987704,
+          "scope": 0.1112424819311965
+        },
+        "frac_above": 0.10714285714285714,
+        "holds_pattern": true,
+        "k2": {
+          "exponents": [
+            {
+              "budget slack": 0.04068647533434661,
+              "schedule slack": 0.863769884225035,
+              "scope": 0.09554364044061836
+            },
+            {
+              "budget slack": 0.4722154568961609,
+              "schedule slack": 0.0,
+              "scope": 0.5277845431038392
+            }
+          ],
+          "mean_slack": 0.2599346127294633,
+          "status": "certified",
+          "term_share": [
+            1.0,
+            0.0
+          ],
+          "terms": "term 1: only 0 near-frontier rows (|log V| < 0.0565261) but min_near_frontier = 10; this term owns only 6 usable rows; lower min_near_frontier to 6, use a larger band, or fit with fewer terms"
+        },
+        "mean_slack_k1": 0.3358495773194824,
+        "metrics": [
+          "schedule slack",
+          "budget slack",
+          "scope"
+        ],
+        "n": 140,
+        "n_lemma": 3,
+        "n_near_frontier": 17,
+        "project_removed": 69,
+        "rows": 140,
+        "rule": "primary rule without project 69",
+        "tau_selected": 17.690942879484723
+      },
+      "without_worst_schedule_overrun": {
+        "afp_removed": 203.01,
+        "association": {
+          "budget slack|scope": -0.9126616329816106,
+          "schedule slack|budget slack": 0.3820570288326366,
+          "schedule slack|scope": -0.6560914766202611
+        },
+        "band": 0.08267685749064012,
+        "band_1_over_tau": 0.08267685749064012,
+        "band_widened": false,
+        "contending_exponents": [
+          0.39733914432003786,
+          0.3510031361737448,
+          0.2516577195062174
+        ],
+        "contending_set": [
+          "schedule slack",
+          "budget slack",
+          "scope"
+        ],
+        "exponents_k1": {
+          "budget slack": 0.4291049913026503,
+          "schedule slack": 0.3665190308988036,
+          "scope": 0.20437597779854622
+        },
+        "frac_above": 0.10714285714285714,
+        "holds_pattern": true,
+        "k2": {
+          "exponents": [
+            {
+              "budget slack": 0.4471525995526802,
+              "schedule slack": 0.41091407321552936,
+              "scope": 0.14193332723179042
+            },
+            {
+              "budget slack": 0.6484330778820954,
+              "schedule slack": 0.0,
+              "scope": 0.3515669221179046
+            }
+          ],
+          "mean_slack": 0.41213916560372305,
+          "status": "certified",
+          "term_share": [
+            0.875,
+            0.125
+          ],
+          "terms": "term 1: only 2 near-frontier rows (|log V| < 0.0826769) but min_near_frontier = 10; use a larger band, band=0.31 (the smallest round band with 10 rows on this term), or fit at temperature=3.23 (the band is 1/temperature), or lower min_near_"
+        },
+        "mean_slack_k1": 0.5038380642464503,
+        "metrics": [
+          "schedule slack",
+          "budget slack",
+          "scope"
+        ],
+        "n": 140,
+        "n_lemma": 3,
+        "n_near_frontier": 18,
+        "project_removed": 32,
+        "rows": 140,
+        "rule": "primary rule without project 32",
+        "tau_selected": 12.095283134258102
+      }
+    },
+    "leave_one_out": {
+      "association_range": {
+        "budget slack|scope": [
+          -0.93797667213192,
+          -0.6628584468298855
+        ],
+        "schedule slack|budget slack": [
+          -0.1953420646274881,
+          0.6606539417363646
+        ],
+        "schedule slack|scope": [
+          -0.8188921197446658,
+          -0.4194287263602182
+        ]
+      },
+      "largest_exponent_move": 0.050633354892153815,
+      "largest_exponent_move_project": 138,
+      "move_threshold": 0.05,
+      "per_row": [
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437394281398306,
+            "schedule slack": 0.705838088785578,
+            "scope": 0.10978796840043908
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.981406697410982e-06,
+          "near_frontier_in_primary": false,
+          "project": 1,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978889428,
+            "schedule slack": 0.7058351073785056,
+            "scope": 0.10979050283260017
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.965750033392169e-13,
+          "near_frontier_in_primary": false,
+          "project": 2,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437410139433072,
+            "schedule slack": 0.7058352864879659,
+            "scope": 0.10979061211770337
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.8839406698843995e-07,
+          "near_frontier_in_primary": false,
+          "project": 3,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437444676592604,
+            "schedule slack": 0.7058354686060095,
+            "scope": 0.10979008462806447
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.182046572376308e-07,
+          "near_frontier_in_primary": false,
+          "project": 4,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9137637635150023,
+            "schedule slack|budget slack": 0.40371708421342933,
+            "schedule slack|scope": -0.6929223498100767
+          },
+          "exponents": {
+            "budget slack": 0.18418298306179576,
+            "schedule slack": 0.7058494775248966,
+            "scope": 0.10996753941330778
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00019140672660195035,
+          "near_frontier_in_primary": true,
+          "project": 5,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843743878654072,
+            "schedule slack": 0.7058351124550799,
+            "scope": 0.10979049967951297
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.0761993497516755e-09,
+          "near_frontier_in_primary": false,
+          "project": 6,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438426429604074,
+            "schedule slack": 0.7058325012687149,
+            "scope": 0.10978323443524438
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 9.874507643031771e-06,
+          "near_frontier_in_primary": false,
+          "project": 7,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437467371804836,
+            "schedule slack": 0.7058353196588207,
+            "scope": 0.1097900066231309
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.962095908056519e-07,
+          "near_frontier_in_primary": false,
+          "project": 8,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438984156448,
+            "schedule slack": 0.705835107335487,
+            "scope": 0.10979050282294861
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.316677653688373e-11,
+          "near_frontier_in_primary": false,
+          "project": 9,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843743892240096,
+            "schedule slack": 0.7058351080672377,
+            "scope": 0.10979050270875271
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 6.883571490590157e-10,
+          "near_frontier_in_primary": false,
+          "project": 10,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439756567042,
+            "schedule slack": 0.7058352574017828,
+            "scope": 0.1097903450325469
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.5780017481592523e-07,
+          "near_frontier_in_primary": false,
+          "project": 11,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437687601055122,
+            "schedule slack": 0.7058322545552337,
+            "scope": 0.10979086943421508
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.8528236468705614e-06,
+          "near_frontier_in_primary": false,
+          "project": 12,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437440543018135,
+            "schedule slack": 0.7058351178143081,
+            "scope": 0.10979047675551058
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.6077211126573907e-08,
+          "near_frontier_in_primary": false,
+          "project": 13,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437445262142263,
+            "schedule slack": 0.7058362370305534,
+            "scope": 0.10978931034802394
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.1924846977651171e-06,
+          "near_frontier_in_primary": false,
+          "project": 14,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9248103438501126,
+            "schedule slack|budget slack": 0.43680378713412327,
+            "schedule slack|scope": -0.6823825897491752
+          },
+          "exponents": {
+            "budget slack": 0.18450790415505464,
+            "schedule slack": 0.7059606233146338,
+            "scope": 0.10953147253031155
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0002590303024101598,
+          "near_frontier_in_primary": true,
+          "project": 15,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.6628584468298855,
+            "schedule slack|budget slack": -0.1953420646274881,
+            "schedule slack|scope": -0.4194287263602182
+          },
+          "exponents": {
+            "budget slack": 0.17988444018328084,
+            "schedule slack": 0.7561010914371741,
+            "scope": 0.06401446837954511
+          },
+          "holds_pattern": false,
+          "max_exponent_move": 0.05026598405829352,
+          "near_frontier_in_primary": false,
+          "project": 16,
+          "sign_flips": [
+            "schedule slack|budget slack"
+          ]
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978839774,
+            "schedule slack": 0.7058351073788806,
+            "scope": 0.10979050283272178
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 6.938893903907228e-17,
+          "near_frontier_in_primary": false,
+          "project": 17,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437442270760943,
+            "schedule slack": 0.7058352146088436,
+            "scope": 0.10979036268354703
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.4014917468219146e-07,
+          "near_frontier_in_primary": false,
+          "project": 19,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437440393337381,
+            "schedule slack": 0.7058351378870503,
+            "scope": 0.1097904581795759
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.4653145805928496e-08,
+          "near_frontier_in_primary": false,
+          "project": 20,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18439277969299553,
+            "schedule slack": 0.7058403312270909,
+            "scope": 0.10976688907991365
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.3613752808057664e-05,
+          "near_frontier_in_primary": false,
+          "project": 21,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437463477978608,
+            "schedule slack": 0.7058360199905027,
+            "scope": 0.1097893452297112
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.1576030105042712e-06,
+          "near_frontier_in_primary": false,
+          "project": 22,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18441624495411504,
+            "schedule slack": 0.7058056718130825,
+            "scope": 0.10977808323280247
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.185516571733605e-05,
+          "near_frontier_in_primary": false,
+          "project": 23,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437221960635025,
+            "schedule slack": 0.7058367378890447,
+            "scope": 0.10979104250460511
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.170182047456226e-06,
+          "near_frontier_in_primary": false,
+          "project": 24,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843730879204646,
+            "schedule slack": 0.7058389661670599,
+            "scope": 0.10978794591247558
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.858788179322836e-06,
+          "near_frontier_in_primary": false,
+          "project": 25,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9122233708284286,
+            "schedule slack|budget slack": 0.4455684496956296,
+            "schedule slack|scope": -0.7185931092660424
+          },
+          "exponents": {
+            "budget slack": 0.18457979732037402,
+            "schedule slack": 0.7056851501477406,
+            "scope": 0.10973505253188533
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0002054075319763149,
+          "near_frontier_in_primary": true,
+          "project": 26,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438751370324,
+            "schedule slack": 0.705825729245312,
+            "scope": 0.10978675705144803
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.312391484228903e-05,
+          "near_frontier_in_primary": false,
+          "project": 27,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439032650374,
+            "schedule slack": 0.7058351056082354,
+            "scope": 0.10979050406526086
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.7706451860277639e-09,
+          "near_frontier_in_primary": false,
+          "project": 28,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843743792935251,
+            "schedule slack": 0.7058351110433657,
+            "scope": 0.10979050966310927
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0494872609845274e-08,
+          "near_frontier_in_primary": false,
+          "project": 29,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438891309615,
+            "schedule slack": 0.7058351076839927,
+            "scope": 0.10979050340291119
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.753015534601616e-10,
+          "near_frontier_in_primary": false,
+          "project": 30,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437434731366148,
+            "schedule slack": 0.7058351319283183,
+            "scope": 0.10979052075802026
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.247473622820408e-08,
+          "near_frontier_in_primary": false,
+          "project": 31,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978839768,
+            "schedule slack": 0.7058351073788806,
+            "scope": 0.10979050283272178
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 6.938893903907228e-17,
+          "near_frontier_in_primary": false,
+          "project": 32,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843743545847709,
+            "schedule slack": 0.7058350150981862,
+            "scope": 0.10979063031704284
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.2748432112741348e-07,
+          "near_frontier_in_primary": false,
+          "project": 33,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843857165368611,
+            "schedule slack": 0.7058543395129357,
+            "scope": 0.10975994395020318
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.055888251853045e-05,
+          "near_frontier_in_primary": false,
+          "project": 34,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843743686205501,
+            "schedule slack": 0.7058351208184952,
+            "scope": 0.1097905105609547
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.116784761363455e-08,
+          "near_frontier_in_primary": false,
+          "project": 35,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437453202080464,
+            "schedule slack": 0.7058348767170477,
+            "scope": 0.10979059126214769
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.306618328562493e-07,
+          "near_frontier_in_primary": false,
+          "project": 36,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843741744426335,
+            "schedule slack": 0.705835244744592,
+            "scope": 0.10979058081277453
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.1534576422066465e-07,
+          "near_frontier_in_primary": false,
+          "project": 37,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437437918449748,
+            "schedule slack": 0.7058351174698315,
+            "scope": 0.10979050334567109
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0603900230110597e-08,
+          "near_frontier_in_primary": false,
+          "project": 38,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9040873739119281,
+            "schedule slack|budget slack": 0.4507644780492509,
+            "schedule slack|scope": -0.6664990046669008
+          },
+          "exponents": {
+            "budget slack": 0.18385615043311732,
+            "schedule slack": 0.7007079276562008,
+            "scope": 0.11543592191068182
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.005645419077960109,
+          "near_frontier_in_primary": false,
+          "project": 39,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18429497315234836,
+            "schedule slack": 0.7058132086761054,
+            "scope": 0.10989181817154624
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00010131533882452859,
+          "near_frontier_in_primary": false,
+          "project": 40,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437152054049136,
+            "schedule slack": 0.7058365815908259,
+            "scope": 0.10979189786868288
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.8692479063507914e-06,
+          "near_frontier_in_primary": false,
+          "project": 41,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438982545448,
+            "schedule slack": 0.7058351072388538,
+            "scope": 0.10979050293569176
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.400267679585454e-10,
+          "near_frontier_in_primary": false,
+          "project": 42,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438659777110109,
+            "schedule slack": 0.7058316936850818,
+            "scope": 0.10978170854381722
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.2207982703377196e-05,
+          "near_frontier_in_primary": false,
+          "project": 43,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438189317588924,
+            "schedule slack": 0.705831858808399,
+            "scope": 0.10978624801571167
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.5033874915308996e-06,
+          "near_frontier_in_primary": false,
+          "project": 44,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18436596332821148,
+            "schedule slack": 0.7058431375693218,
+            "scope": 0.10979089910246677
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.42646018622828e-06,
+          "near_frontier_in_primary": false,
+          "project": 45,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843731010473464,
+            "schedule slack": 0.705840478331135,
+            "scope": 0.10978642062151868
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.370952254390993e-06,
+          "near_frontier_in_primary": false,
+          "project": 46,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437773070629096,
+            "schedule slack": 0.7058342567357978,
+            "scope": 0.1097880125579113
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.340917893251971e-06,
+          "near_frontier_in_primary": false,
+          "project": 47,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437041739463048,
+            "schedule slack": 0.7058456433202867,
+            "scope": 0.1097839392850829
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0535941406097926e-05,
+          "near_frontier_in_primary": false,
+          "project": 48,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437957173674233,
+            "schedule slack": 0.7058328758705136,
+            "scope": 0.10978755239274421
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.181948344618048e-06,
+          "near_frontier_in_primary": false,
+          "project": 49,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437477899689228,
+            "schedule slack": 0.70583494697931,
+            "scope": 0.10979027402379779
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.8920849457224627e-07,
+          "near_frontier_in_primary": false,
+          "project": 50,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439987341186,
+            "schedule slack": 0.705835120642936,
+            "scope": 0.10979047948365225
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.334906945566928e-08,
+          "near_frontier_in_primary": false,
+          "project": 51,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843735161533081,
+            "schedule slack": 0.7058358269763322,
+            "scope": 0.10979065687035973
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.736350896043632e-07,
+          "near_frontier_in_primary": false,
+          "project": 52,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437446327096918,
+            "schedule slack": 0.7058353500986047,
+            "scope": 0.10979018663042622
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.162022954861232e-07,
+          "near_frontier_in_primary": false,
+          "project": 53,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978997073,
+            "schedule slack": 0.7058351073762228,
+            "scope": 0.10979050283380659
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.6577628986501622e-12,
+          "near_frontier_in_primary": false,
+          "project": 55,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437392612817632,
+            "schedule slack": 0.7058354199837004,
+            "scope": 0.10979065388812335
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.6366022138366603e-07,
+          "near_frontier_in_primary": false,
+          "project": 56,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437536327400383,
+            "schedule slack": 0.7058469072974574,
+            "scope": 0.10977772942853885
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.2773404182861436e-05,
+          "near_frontier_in_primary": false,
+          "project": 57,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437421637752888,
+            "schedule slack": 0.7058364780245596,
+            "scope": 0.10978930559791157
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.3706456790663069e-06,
+          "near_frontier_in_primary": false,
+          "project": 58,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439001484737,
+            "schedule slack": 0.7058351072553211,
+            "scope": 0.10979050272983164
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.2644966457541216e-10,
+          "near_frontier_in_primary": false,
+          "project": 59,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.93797667213192,
+            "schedule slack|budget slack": 0.6606539417363646,
+            "schedule slack|scope": -0.8188921197446658
+          },
+          "exponents": {
+            "budget slack": 0.18054087717813413,
+            "schedule slack": 0.7082289488144882,
+            "scope": 0.11123017400737772
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.003833512610263573,
+          "near_frontier_in_primary": true,
+          "project": 60,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18443945577412751,
+            "schedule slack": 0.7057791923280101,
+            "scope": 0.1097813518978624
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 6.506598572980637e-05,
+          "near_frontier_in_primary": false,
+          "project": 61,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9122241450540464,
+            "schedule slack|budget slack": 0.4569884530388748,
+            "schedule slack|scope": -0.723910161804081
+          },
+          "exponents": {
+            "budget slack": 0.18470899454653208,
+            "schedule slack": 0.7056044403209318,
+            "scope": 0.1096865651325361
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00033460475813437696,
+          "near_frontier_in_primary": true,
+          "project": 62,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18450781863676452,
+            "schedule slack": 0.7057263234576774,
+            "scope": 0.10976585790555804
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00013342884836681224,
+          "near_frontier_in_primary": false,
+          "project": 63,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437663830035325,
+            "schedule slack": 0.705834509865466,
+            "scope": 0.10978885183418062
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.248511955543764e-06,
+          "near_frontier_in_primary": false,
+          "project": 64,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.184385182094202,
+            "schedule slack": 0.7058273075076714,
+            "scope": 0.10978751039812663
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0792305804280256e-05,
+          "near_frontier_in_primary": false,
+          "project": 65,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437447761215167,
+            "schedule slack": 0.7058350703790348,
+            "scope": 0.10979045200881353
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.782375396365616e-08,
+          "near_frontier_in_primary": false,
+          "project": 66,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.184374014636979,
+            "schedule slack": 0.7058366173727312,
+            "scope": 0.10978936799028988
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.5099938506235588e-06,
+          "near_frontier_in_primary": false,
+          "project": 67,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438751237345,
+            "schedule slack": 0.705835651171266,
+            "scope": 0.1097899613163606
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.437923854545446e-07,
+          "near_frontier_in_primary": false,
+          "project": 68,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978839768,
+            "schedule slack": 0.7058351073788806,
+            "scope": 0.10979050283272175
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.163336342344337e-17,
+          "near_frontier_in_primary": false,
+          "project": 69,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438976660375,
+            "schedule slack": 0.705835106696948,
+            "scope": 0.10979050353644822
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.037265076226262e-10,
+          "near_frontier_in_primary": false,
+          "project": 70,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18444507924378992,
+            "schedule slack": 0.7057618732083303,
+            "scope": 0.10979304754787976
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.32341705502737e-05,
+          "near_frontier_in_primary": false,
+          "project": 71,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437446698230434,
+            "schedule slack": 0.7058349668506565,
+            "scope": 0.10979056616703922
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.405282240574124e-07,
+          "near_frontier_in_primary": false,
+          "project": 72,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.184369507549229,
+            "schedule slack": 0.7058341727337284,
+            "scope": 0.10979631971704268
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.816884320969384e-06,
+          "near_frontier_in_primary": false,
+          "project": 73,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437409179190378,
+            "schedule slack": 0.705838368266284,
+            "scope": 0.10978753994181234
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.2608874034334434e-06,
+          "near_frontier_in_primary": false,
+          "project": 74,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978839768,
+            "schedule slack": 0.7058351073788806,
+            "scope": 0.10979050283272175
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.163336342344337e-17,
+          "near_frontier_in_primary": false,
+          "project": 75,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437064729927213,
+            "schedule slack": 0.7058434898977001,
+            "scope": 0.10978586280302786
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.382518819516349e-06,
+          "near_frontier_in_primary": false,
+          "project": 76,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843739935237851,
+            "schedule slack": 0.7058384172627483,
+            "scope": 0.1097875892134666
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.309883867763652e-06,
+          "near_frontier_in_primary": false,
+          "project": 77,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843788216923313,
+            "schedule slack": 0.7058351419371981,
+            "scope": 0.10978603637047067
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.4664622510376395e-06,
+          "near_frontier_in_primary": false,
+          "project": 78,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18448690762672926,
+            "schedule slack": 0.7057820131478186,
+            "scope": 0.10973107922545208
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00011251783833154949,
+          "near_frontier_in_primary": false,
+          "project": 79,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9151059622703483,
+            "schedule slack|budget slack": 0.44656575955599803,
+            "schedule slack|scope": -0.7148892088514051
+          },
+          "exponents": {
+            "budget slack": 0.1844640878152697,
+            "schedule slack": 0.705696169726908,
+            "scope": 0.1098397424578224
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00013893765197259267,
+          "near_frontier_in_primary": true,
+          "project": 80,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978839693,
+            "schedule slack": 0.705835107378881,
+            "scope": 0.10979050283272206
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.771561172376096e-16,
+          "near_frontier_in_primary": false,
+          "project": 81,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438978814835,
+            "schedule slack": 0.7058351073785458,
+            "scope": 0.10979050283330585
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.841438444065261e-13,
+          "near_frontier_in_primary": false,
+          "project": 82,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437668306534397,
+            "schedule slack": 0.7058344992160628,
+            "scope": 0.10978881771859332
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.293276946258027e-06,
+          "near_frontier_in_primary": false,
+          "project": 83,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843754703780342,
+            "schedule slack": 0.7058349805406434,
+            "scope": 0.1097895490813223
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0805896364929346e-06,
+          "near_frontier_in_primary": false,
+          "project": 84,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437426212241295,
+            "schedule slack": 0.7058352085355931,
+            "scope": 0.10979052934199396
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.27665984755998e-07,
+          "near_frontier_in_primary": false,
+          "project": 85,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843745004023782,
+            "schedule slack": 0.7058354339572585,
+            "scope": 0.1097900656403633
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.371923584128856e-07,
+          "near_frontier_in_primary": false,
+          "project": 86,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437377103135147,
+            "schedule slack": 0.7058354354389521,
+            "scope": 0.10979079352969644
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 6.187570462390379e-07,
+          "near_frontier_in_primary": false,
+          "project": 87,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438606024718293,
+            "schedule slack": 0.7058380218548834,
+            "scope": 0.10977591789793356
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.4584934788147708e-05,
+          "near_frontier_in_primary": false,
+          "project": 88,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439606340533,
+            "schedule slack": 0.7058350836081326,
+            "scope": 0.10979052032846204
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.3770747925588864e-08,
+          "near_frontier_in_primary": false,
+          "project": 89,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18427795459540305,
+            "schedule slack": 0.7059160872396112,
+            "scope": 0.10980595816498583
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 9.643519299465386e-05,
+          "near_frontier_in_primary": false,
+          "project": 90,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18453008104173113,
+            "schedule slack": 0.7057424260712726,
+            "scope": 0.10972749288699625
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00015569125333342315,
+          "near_frontier_in_primary": false,
+          "project": 91,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437427873250548,
+            "schedule slack": 0.7058349014208113,
+            "scope": 0.10979081984668332
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.170139616093248e-07,
+          "near_frontier_in_primary": false,
+          "project": 92,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9065554647468399,
+            "schedule slack|budget slack": 0.3579787553358224,
+            "schedule slack|scope": -0.6690999139852292
+          },
+          "exponents": {
+            "budget slack": 0.18594247480032747,
+            "schedule slack": 0.7050851462046673,
+            "scope": 0.10897237899500527
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0015680850119297596,
+          "near_frontier_in_primary": true,
+          "project": 93,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843640450888568,
+            "schedule slack": 0.70583636292519,
+            "scope": 0.1097995919859533
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0344699540920654e-05,
+          "near_frontier_in_primary": false,
+          "project": 94,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437423351263435,
+            "schedule slack": 0.7058356799658236,
+            "scope": 0.10979008652154212
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.725869430817099e-07,
+          "near_frontier_in_primary": false,
+          "project": 95,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438234817711135,
+            "schedule slack": 0.705842535007629,
+            "scope": 0.1097751168152597
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.5386017462010182e-05,
+          "near_frontier_in_primary": false,
+          "project": 96,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843696388974357,
+            "schedule slack": 0.705827970034588,
+            "scope": 0.10980239106797628
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.1888235254567392e-05,
+          "near_frontier_in_primary": false,
+          "project": 97,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439904725453,
+            "schedule slack": 0.7058351044262801,
+            "scope": 0.10979049652646544
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 9.258856820126837e-09,
+          "near_frontier_in_primary": false,
+          "project": 98,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437570514103344,
+            "schedule slack": 0.7058355228950653,
+            "scope": 0.10978877196390115
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.7308688205625034e-06,
+          "near_frontier_in_primary": false,
+          "project": 99,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9110786003120659,
+            "schedule slack|budget slack": 0.4430637374045752,
+            "schedule slack|scope": -0.7145150721013834
+          },
+          "exponents": {
+            "budget slack": 0.18510602811575128,
+            "schedule slack": 0.7053882467935302,
+            "scope": 0.10950572509071853
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0007316383273535676,
+          "near_frontier_in_primary": true,
+          "project": 100,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437450667091665,
+            "schedule slack": 0.7058343797322805,
+            "scope": 0.1097911135968029
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.276466000849524e-07,
+          "near_frontier_in_primary": false,
+          "project": 101,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9040873739119281,
+            "schedule slack|budget slack": 0.4507644780492509,
+            "schedule slack|scope": -0.6664990046669008
+          },
+          "exponents": {
+            "budget slack": 0.17571913875013262,
+            "schedule slack": 0.707158563480924,
+            "scope": 0.11712229776894346
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.008655251038265088,
+          "near_frontier_in_primary": true,
+          "project": 102,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18429725204375177,
+            "schedule slack": 0.7058533440276399,
+            "scope": 0.1098494039286083
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.713774464593315e-05,
+          "near_frontier_in_primary": false,
+          "project": 103,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437042460190853,
+            "schedule slack": 0.7058374284528841,
+            "scope": 0.10979214694520743
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.965186489179873e-06,
+          "near_frontier_in_primary": false,
+          "project": 104,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843734854764844,
+            "schedule slack": 0.7058361479097276,
+            "scope": 0.10979036661378808
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0405308470406993e-06,
+          "near_frontier_in_primary": false,
+          "project": 105,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1844948360440538,
+            "schedule slack": 0.7057133358703928,
+            "scope": 0.10979182808555346
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00012177150848780016,
+          "near_frontier_in_primary": false,
+          "project": 106,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437279467575296,
+            "schedule slack": 0.7058370382978622,
+            "scope": 0.10979016702638493
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.9309189815963634e-06,
+          "near_frontier_in_primary": false,
+          "project": 107,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18436887425318702,
+            "schedule slack": 0.705842120990541,
+            "scope": 0.10978900475627196
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.013611660444674e-06,
+          "near_frontier_in_primary": false,
+          "project": 108,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437422004577625,
+            "schedule slack": 0.7058362515547186,
+            "scope": 0.10978952839950513
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.1441758380748013e-06,
+          "near_frontier_in_primary": false,
+          "project": 109,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9197040285713352,
+            "schedule slack|budget slack": 0.4047099850037495,
+            "schedule slack|scope": -0.6763833417688425
+          },
+          "exponents": {
+            "budget slack": 0.1845545117959528,
+            "schedule slack": 0.7058032396266396,
+            "scope": 0.10964224857740763
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00018012200755510022,
+          "near_frontier_in_primary": true,
+          "project": 110,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9138771297798253,
+            "schedule slack|budget slack": 0.39480199260586446,
+            "schedule slack|scope": -0.671048806842619
+          },
+          "exponents": {
+            "budget slack": 0.18386289725985874,
+            "schedule slack": 0.7056991957908934,
+            "scope": 0.11043790694924802
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0006474041165263067,
+          "near_frontier_in_primary": true,
+          "project": 111,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843683158253038,
+            "schedule slack": 0.7058392776324541,
+            "scope": 0.10979240654224215
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 6.07396309390551e-06,
+          "near_frontier_in_primary": false,
+          "project": 112,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437250158653623,
+            "schedule slack": 0.7058370550967678,
+            "scope": 0.10979044331669603
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.9477178871962764e-06,
+          "near_frontier_in_primary": false,
+          "project": 113,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843741610930936,
+            "schedule slack": 0.7058365779735507,
+            "scope": 0.10978926093335575
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.4705946701498718e-06,
+          "near_frontier_in_primary": false,
+          "project": 114,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437993628745783,
+            "schedule slack": 0.7058262402396878,
+            "scope": 0.1097938234728544
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.867139192791917e-06,
+          "near_frontier_in_primary": false,
+          "project": 115,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18432112175684767,
+            "schedule slack": 0.7058350545472452,
+            "scope": 0.10984382369590716
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 5.332086318544926e-05,
+          "near_frontier_in_primary": false,
+          "project": 116,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437464609722481,
+            "schedule slack": 0.7058352637267231,
+            "scope": 0.10979009017605208
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.1265666962664316e-07,
+          "near_frontier_in_primary": false,
+          "project": 117,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9137757327249546,
+            "schedule slack|budget slack": 0.4562260822836804,
+            "schedule slack|scope": -0.7219511292342687
+          },
+          "exponents": {
+            "budget slack": 0.18322745880963015,
+            "schedule slack": 0.7061150328633151,
+            "scope": 0.11065750832705479
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0011469309787675575,
+          "near_frontier_in_primary": true,
+          "project": 118,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437438977760195,
+            "schedule slack": 0.7058351073891416,
+            "scope": 0.10979050283325648
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.0795753180303791e-11,
+          "near_frontier_in_primary": false,
+          "project": 119,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437848252685407,
+            "schedule slack": 0.7058357887935088,
+            "scope": 0.10978572867963715
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.774153084557975e-06,
+          "near_frontier_in_primary": false,
+          "project": 120,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843743899783993,
+            "schedule slack": 0.7058351071733239,
+            "scope": 0.10979050284827688
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 2.055566827863231e-10,
+          "near_frontier_in_primary": false,
+          "project": 122,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18434415550992056,
+            "schedule slack": 0.7058170785051948,
+            "scope": 0.1098387659848847
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.826315216299726e-05,
+          "near_frontier_in_primary": false,
+          "project": 123,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843618364894146,
+            "schedule slack": 0.7058395129986503,
+            "scope": 0.10979865051193513
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.2553298983114525e-05,
+          "near_frontier_in_primary": false,
+          "project": 124,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843743182420879,
+            "schedule slack": 0.705835199219223,
+            "scope": 0.10979048253868912
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 9.18403424421399e-08,
+          "near_frontier_in_primary": false,
+          "project": 125,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438225281042217,
+            "schedule slack": 0.7058339514038982,
+            "scope": 0.10978379578567972
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 7.86302202446243e-06,
+          "near_frontier_in_primary": false,
+          "project": 126,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439156922514,
+            "schedule slack": 0.7058351054497115,
+            "scope": 0.10979050298106341
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.9291690467326816e-09,
+          "near_frontier_in_primary": false,
+          "project": 127,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437317458754812,
+            "schedule slack": 0.7058355959782843,
+            "scope": 0.10979122943416758
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 1.215200849585818e-06,
+          "near_frontier_in_primary": false,
+          "project": 128,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437439397786679,
+            "schedule slack": 0.7058350990853136,
+            "scope": 0.10979050693681962
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.293566944317377e-09,
+          "near_frontier_in_primary": false,
+          "project": 129,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1843744217560556,
+            "schedule slack": 0.7058350687905736,
+            "scope": 0.10979050945337093
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.8588306994213895e-08,
+          "near_frontier_in_primary": false,
+          "project": 130,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18438327268621696,
+            "schedule slack": 0.7058308519878035,
+            "scope": 0.1097858753259795
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 8.882897819251223e-06,
+          "near_frontier_in_primary": false,
+          "project": 131,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18434298760858728,
+            "schedule slack": 0.7058501141499435,
+            "scope": 0.10980689824146916
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.140217981043025e-05,
+          "near_frontier_in_primary": false,
+          "project": 132,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.8764374303504714,
+            "schedule slack|budget slack": 0.41258468261293657,
+            "schedule slack|scope": -0.6771370907004757
+          },
+          "exponents": {
+            "budget slack": 0.1652065087506108,
+            "schedule slack": 0.7253534999419474,
+            "scope": 0.10943999130744182
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.019518392563066866,
+          "near_frontier_in_primary": false,
+          "project": 133,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9142123337738617,
+            "schedule slack|budget slack": 0.4258118762887412,
+            "schedule slack|scope": -0.6999912536983145
+          },
+          "exponents": {
+            "budget slack": 0.18402901420071738,
+            "schedule slack": 0.7057144665515986,
+            "scope": 0.11025651924768394
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0004660164149622309,
+          "near_frontier_in_primary": true,
+          "project": 134,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437785385093358,
+            "schedule slack": 0.7058338337062232,
+            "scope": 0.10978831244284323
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.4640625358739463e-06,
+          "near_frontier_in_primary": false,
+          "project": 135,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437779093220755,
+            "schedule slack": 0.7058308415177975,
+            "scope": 0.10979136754999491
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.2658610830415e-06,
+          "near_frontier_in_primary": false,
+          "project": 136,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.1895649903080386,
+            "schedule slack": 0.7008352438367874,
+            "scope": 0.10959976585517406
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.005190600519640903,
+          "near_frontier_in_primary": false,
+          "project": 137,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9207071254040388,
+            "schedule slack|budget slack": 0.3156620643471294,
+            "schedule slack|scope": -0.6244979021464708
+          },
+          "exponents": {
+            "budget slack": 0.2335371531860853,
+            "schedule slack": 0.6552017524867267,
+            "scope": 0.11126109432718806
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.050633354892153815,
+          "near_frontier_in_primary": false,
+          "project": 138,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.8764374303504714,
+            "schedule slack|budget slack": 0.41258468261293657,
+            "schedule slack|scope": -0.6771370907004757
+          },
+          "exponents": {
+            "budget slack": 0.18777063795978327,
+            "schedule slack": 0.6996538737458423,
+            "scope": 0.11257548829437446
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.006181233633038241,
+          "near_frontier_in_primary": false,
+          "project": 139,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150288708686819,
+            "schedule slack|budget slack": 0.44690903157078793,
+            "schedule slack|scope": -0.7129136068405945
+          },
+          "exponents": {
+            "budget slack": 0.18362812391206657,
+            "schedule slack": 0.7060720315395022,
+            "scope": 0.11029984454843128
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0007462658763311425,
+          "near_frontier_in_primary": true,
+          "project": 140,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437756557646612,
+            "schedule slack": 0.7058341772963118,
+            "scope": 0.10978825712722202
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 3.1757880684102346e-06,
+          "near_frontier_in_primary": false,
+          "project": 142,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18427151389853416,
+            "schedule slack": 0.7057991946243114,
+            "scope": 0.10992929147715448
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.00013878864443277183,
+          "near_frontier_in_primary": false,
+          "project": 143,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9150708318349552,
+            "schedule slack|budget slack": 0.4288263414647285,
+            "schedule slack|scope": -0.7070786532236472
+          },
+          "exponents": {
+            "budget slack": 0.18437259106752676,
+            "schedule slack": 0.7058319877538568,
+            "scope": 0.10979542117861645
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 4.918345894736054e-06,
+          "near_frontier_in_primary": false,
+          "project": 144,
+          "sign_flips": []
+        },
+        {
+          "association": {
+            "budget slack|scope": -0.9290108917455135,
+            "schedule slack|budget slack": 0.4496649087693835,
+            "schedule slack|scope": -0.701526027518189
+          },
+          "exponents": {
+            "budget slack": 0.18514879299104797,
+            "schedule slack": 0.7048994195199746,
+            "scope": 0.10995178748897753
+          },
+          "holds_pattern": true,
+          "max_exponent_move": 0.0009356878589059647,
+          "near_frontier_in_primary": true,
+          "project": 145,
+          "sign_flips": []
+        }
+      ],
+      "rows": 141,
+      "rows_holding_pattern": 140,
+      "rows_moving_an_exponent": [
+        16,
+        138
+      ],
+      "rows_with_a_sign_flip": [
+        16
+      ],
+      "temperature_held_at": 22.795070569547782
+    }
+  },
+  "rows": 141,
+  "subsets": {
+    "client_2": {
+      "association": {
+        "budget slack|scope": -0.4097600312236532,
+        "schedule slack|budget slack": -0.09554958687005989,
+        "schedule slack|scope": -0.8154485815926762
+      },
+      "band": 0.033887871741713954,
+      "band_1_over_tau": 0.02642281824451772,
+      "band_widened": true,
+      "contending_exponents": [
+        0.765895967633825,
+        0.16024399934703185,
+        0.0738600330191432
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.11707864750046718,
+        "schedule slack": 0.8321047816446887,
+        "scope": 0.050816570854844104
+      },
+      "frac_above": 0.09734513274336283,
+      "holds_pattern": false,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.0,
+            "schedule slack": 0.9932397304412408,
+            "scope": 0.006760269558759192
+          },
+          {
+            "budget slack": 0.8307422152243406,
+            "schedule slack": 0.0,
+            "scope": 0.1692577847756595
+          }
+        ],
+        "mean_slack": 0.16079456715962215,
+        "status": "certified",
+        "term_share": [
+          0.75,
+          0.25
+        ],
+        "terms": "term 0: only 9 near-frontier rows (|log V| < 0.0338879) but min_near_frontier = 10; use a larger band, band=0.038 (the smallest round band with 10 rows on this term), or fit at temperature=26.3 (the band is 1/temperature), or lower min_near"
+      },
+      "mean_slack_k1": 0.29015377554122684,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 113,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "rows": 113,
+      "rule": "the largest client only (client 2)",
+      "tau_selected": 37.8460764762473
+    },
+    "type_D": {
+      "association": {
+        "budget slack|scope": -0.7021990893694565,
+        "schedule slack|budget slack": 0.26564125470211014,
+        "schedule slack|scope": -0.6483732838241423
+      },
+      "band": 0.3030570079661844,
+      "band_1_over_tau": 0.04386913376508307,
+      "band_widened": true,
+      "contending_exponents": [
+        0.571816641892693,
+        0.15914000790796626,
+        0.2690433501993408
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.15312807489351654,
+        "schedule slack": 0.5867826171151059,
+        "scope": 0.2600893079913776
+      },
+      "frac_above": 0.1,
+      "holds_pattern": true,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.14269795092564067,
+            "schedule slack": 0.6033589145481884,
+            "scope": 0.25394313452617107
+          },
+          {
+            "budget slack": 0.42347696665490786,
+            "schedule slack": 6.246478379515857e-16,
+            "scope": 0.5765230333450916
+          }
+        ],
+        "mean_slack": 0.5716118156822018,
+        "status": "certified",
+        "term_share": [
+          0.0,
+          0.0
+        ],
+        "terms": "term 1: only 2 near-frontier rows (|log V| < 0.303057) but min_near_frontier = 10; this term owns only 6 usable rows; lower min_near_frontier to 6, use a larger band, or fit with fewer terms"
+      },
+      "mean_slack_k1": 0.6547858074326627,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 50,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "rows": 50,
+      "rule": "development projects only (type D)",
+      "tau_selected": 22.795070569547782
+    },
+    "type_P": {
+      "association": {
+        "budget slack|scope": 0.09011134790828013,
+        "schedule slack|budget slack": -0.7366724658442297,
+        "schedule slack|scope": -0.6358390809854735
+      },
+      "band": 0.028813916330507502,
+      "band_1_over_tau": 0.01591472782939954,
+      "band_widened": true,
+      "contending_exponents": [
+        0.9359363636477717,
+        0.05260306223683244,
+        0.011460574115395895
+      ],
+      "contending_set": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "exponents_k1": {
+        "budget slack": 0.05309477158413435,
+        "schedule slack": 0.9293230532134514,
+        "scope": 0.01758217520241423
+      },
+      "frac_above": 0.1095890410958904,
+      "holds_pattern": false,
+      "k2": {
+        "exponents": [
+          {
+            "budget slack": 0.04025668692788819,
+            "schedule slack": 0.9494635690443223,
+            "scope": 0.010279744027789483
+          },
+          {
+            "budget slack": 0.7420046699456775,
+            "schedule slack": 0.0,
+            "scope": 0.2579953300543225
+          }
+        ],
+        "mean_slack": 0.16700571971830344,
+        "status": "certified",
+        "term_share": [
+          1.0,
+          0.0
+        ],
+        "terms": "term 1: only 0 near-frontier rows (|log V| < 0.0288139) but min_near_frontier = 10; this term owns only 5 usable rows; lower min_near_frontier to 5, use a larger band, or fit with fewer terms"
+      },
+      "mean_slack_k1": 0.27833976019721307,
+      "metrics": [
+        "schedule slack",
+        "budget slack",
+        "scope"
+      ],
+      "n": 73,
+      "n_lemma": 3,
+      "n_near_frontier": 15,
+      "rows": 73,
+      "rule": "perfective-maintenance projects only (type P)",
+      "tau_selected": 62.834879158453695
+    }
+  }
+}

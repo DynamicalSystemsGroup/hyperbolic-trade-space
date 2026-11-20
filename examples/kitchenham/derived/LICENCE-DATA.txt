@@ -1,0 +1,6 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Attribution: Kitchenham et al. (2002), project table uploaded by M. Tsunoda (2017), Zenodo, doi:10.5281/zenodo.268457
+Source: https://zenodo.org/records/268457
+Licence: https://creativecommons.org/licenses/by/4.0/
+This table is derived from the source file: the 141 projects with a positive planned duration, with the planned duration (days), the overrun ratios and the three attributes (schedule slack and budget slack as shares of plan, scope in adjusted function points) computed from the source's columns.
